@@ -6,11 +6,11 @@ import lombok.Data;
 public class Item {
     private Integer itemId;
     private String itemCode;
-    private String itemType;
+    private String itemName;
     private String commonCode;
     private Integer partnerId;
     private Integer managerId;
-    private String name;
+    private String itemType;
     private String size;
     private String unit;
     private Integer inPrice;
