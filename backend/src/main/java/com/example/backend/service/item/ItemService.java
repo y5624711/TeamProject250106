@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -35,13 +37,17 @@ public class ItemService {
         item.setPartnerId(1);
         // 담당자명을 통해 담당자 코드 가져오기
         item.setManagerId(2);
-        
+
         item.setCommonCode("I");
         item.setActive(true);
 
         int cnt = mapper.addItem(item);
 
         return cnt == 1;
+    }
+
+    public List<Item> getItemList() {
+        return mapper.getListItem();
     }
 }
 

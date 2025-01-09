@@ -4,11 +4,9 @@ import com.example.backend.dto.item.Item;
 import com.example.backend.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,6 +15,12 @@ import java.util.Map;
 public class ItemController {
 
     final ItemService service;
+
+    // 물품 리스트 가져오기
+    @GetMapping("list")
+    public List<Item> getItemlist() {
+        return service.getItemList();
+    }
 
     // 물품 추가
     @PostMapping("add")

@@ -4,6 +4,9 @@ import com.example.backend.dto.item.Item;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface ItemMapper {
@@ -14,4 +17,10 @@ public interface ItemMapper {
             """)
     @Options(keyProperty = "itemId", useGeneratedKeys = true)
     int addItem(Item item);
+
+    @Select("""
+            SELECT *
+            FROM item
+            """)
+    List<Item> getListItem();
 }
