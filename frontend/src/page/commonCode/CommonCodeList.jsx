@@ -22,10 +22,10 @@ export function CommonCodeList() {
 
   return (
     <Box>
-      <SideBar title={"공통코드"} items={sidebarItems}>
+      <SideBar title={"공통코드"} pageName={""} items={sidebarItems}>
         <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"}>
               <Table.ColumnHeader>공통코드</Table.ColumnHeader>
               <Table.ColumnHeader>코드명</Table.ColumnHeader>
               <Table.ColumnHeader>사용여부</Table.ColumnHeader>
