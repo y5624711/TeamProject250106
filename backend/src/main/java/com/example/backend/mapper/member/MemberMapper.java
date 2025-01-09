@@ -1,7 +1,7 @@
 package com.example.backend.mapper.member;
 
 
-import com.example.backend.dto.Member;
+import com.example.backend.dto.member.Member;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;

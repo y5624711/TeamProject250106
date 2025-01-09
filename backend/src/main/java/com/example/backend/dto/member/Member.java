@@ -1,7 +1,6 @@
-package com.example.backend.dto;
+package com.example.backend.dto.member;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 public class Member {

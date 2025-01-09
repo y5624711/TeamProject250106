@@ -16,7 +16,6 @@ import { Button } from "../ui/button.jsx";
 import axios from "axios";
 
 export function MemberAdd() {
-  const [member, setMember] = useState({});
   const [id, setId] = useState();
   const [password, setPassword] = useState();
   const [selectedCommonCode, setSelectedCommonCode] = useState();
@@ -35,6 +34,9 @@ export function MemberAdd() {
       password: password,
       commonCode: selectedCommonCode.join(""),
     });
+    setId("");
+    setSelectedCommonCode("");
+    setPassword("");
   }
 
   return (

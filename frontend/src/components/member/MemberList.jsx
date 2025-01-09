@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Table } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export function MemberList() {
+  const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
     axios.get("/api/member/list").then((res) => {
@@ -24,7 +26,11 @@ export function MemberList() {
         </Table.Header>
         <Table.Body>
           {memberList.map((item) => (
-            <Table.Row>
+            <Table.Row
+              onClick={() => {
+                navigate("memver/view:id");
+              }}
+            >
               <Table.Cell> {item.memberKey} </Table.Cell>
               <Table.Cell> {item.commonCode} </Table.Cell>
               <Table.Cell> {item.memberId} </Table.Cell>
