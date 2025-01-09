@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, HStack } from "@chakra-ui/react";
-import { ItemMenu } from "../components/item/ItemMenu.jsx";
-import { ItemList } from "../components/item/ItemList.jsx";
-import { ItemAdd } from "../components/item/ItemAdd.jsx";
-import { ItemView } from "../components/item/ItemView.jsx";
+import { ItemMenu } from "../../components/item/ItemMenu.jsx";
+import { ItemList } from "../../components/item/ItemList.jsx";
+import { ItemAdd } from "../../components/item/ItemAdd.jsx";
+import { ItemView } from "../../components/item/ItemView.jsx";
 
 export function Item() {
   const [selectedMenu, setSelectedMenu] = useState(null);
