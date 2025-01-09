@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -17,5 +19,10 @@ public class MemberService {
            int cnt= mapper.addMember(member);
 
            return cnt==1;
+    }
+
+    public List<Member> getAllMembers() {
+
+        return  mapper.getAllMembers();
     }
 }

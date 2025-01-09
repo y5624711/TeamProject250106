@@ -1,6 +1,7 @@
 import {
   Box,
   createListCollection,
+  Heading,
   Input,
   SelectContent,
   SelectItem,
@@ -38,8 +39,25 @@ export function MemberAdd() {
 
   return (
     <Box border={"1px solid black"}>
-      입력해야 하는 정보는 , 회원 번호 , 비밀번호 ,공통 코드
+      <Heading> 회원 등록</Heading>
       <Stack>
+        <SelectRoot
+          collection={frameworks}
+          value={selectedCommonCode}
+          onValueChange={(e) => setSelectedCommonCode(e.value)}
+        >
+          <SelectLabel> 상위 구분 코드</SelectLabel>
+          <SelectTrigger>
+            <SelectValueText placeholder={"선택 해 주세요"} />
+          </SelectTrigger>
+          <SelectContent>
+            {frameworks.items.map((code) => (
+              <SelectItem item={code} key={code.value}>
+                {code.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
         <Input
           placeholder={"회원 번호 ,아이디 입력"}
           value={id}
@@ -57,23 +75,6 @@ export function MemberAdd() {
       </Stack>
       {id}
       {password}
-      <SelectRoot
-        collection={frameworks}
-        value={selectedCommonCode}
-        onValueChange={(e) => setSelectedCommonCode(e.value)}
-      >
-        <SelectLabel> 상위 구분 코드</SelectLabel>
-        <SelectTrigger>
-          <SelectValueText placeholder={"가맹점 번호를 선택해주세요"} />
-        </SelectTrigger>
-        <SelectContent>
-          {frameworks.items.map((code) => (
-            <SelectItem item={code} key={code.value}>
-              {code.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectRoot>
       <Button onClick={() => handleMemberAdd()}>회원 등록</Button>
       <Button onClick={() => {}}> 회원 수정 </Button>
       <Button> 회원 삭제</Button>
