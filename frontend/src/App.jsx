@@ -1,8 +1,10 @@
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { RootLayout } from "./page/root/RootLayout.jsx";
+
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
+import { RootLayout } from "./page/root/RootLayout.jsx";
+import { Item } from "./page/Item.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -18,7 +20,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [],
+    children: [
+      {
+        path: "item",
+        element: <Item />,
+      },
+    ],
   },
 ]);
 
