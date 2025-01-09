@@ -7,6 +7,7 @@ import PartnerAdd from "./page/partner/PartnerAdd.jsx";
 import PartnerList from "./page/partner/PartnerList.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
+import Partner from "./page/partner/Partner.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Main /> },
       { path: "commonCode/list", element: <CommonCodeList /> },
+      {
+        path: "partner",
+        element: <Partner />,
+      },
       {
         path: "partner/add",
         element: <PartnerAdd />,
