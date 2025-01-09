@@ -5,6 +5,8 @@ import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import PartnerAdd from "./page/partner/PartnerAdd.jsx";
 import PartnerList from "./page/partner/PartnerList.jsx";
+import { Main } from "./page/main/Main.jsx";
+import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -21,6 +23,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
+      { index: true, element: <Main /> },
+      { path: "commonCode/list", element: <CommonCodeList /> },
       {
         path: "partner/add",
         element: <PartnerAdd />,
