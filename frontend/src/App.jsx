@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
-import { MemberList } from "./page/member/MemberList.jsx";
+import { Member } from "./page/member/Member.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       //  삭제 범위
       {
         path: "member",
-        element: <MemberList />,
+        element: <Member />,
       },
     ],
   },
