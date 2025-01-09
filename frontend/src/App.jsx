@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
+import PartnerAdd from "./page/partner/PartnerAdd.jsx";
+import PartnerList from "./page/partner/PartnerList.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -18,14 +20,23 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [],
+    children: [
+      {
+        path: "partner/add",
+        element: <PartnerAdd />,
+      },
+      {
+        path: "partner/list",
+        element: <PartnerList />,
+      },
+    ],
   },
 ]);
 
 function App() {
   return (
     <AuthenticationContext>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </AuthenticationContext>
   );
 }
