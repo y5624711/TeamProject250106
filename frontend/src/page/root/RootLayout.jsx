@@ -8,6 +8,7 @@ export function RootLayout() {
       <Box>
         <Navbar />
       </Box>
+
       <Box>
         <Outlet />
       </Box>
