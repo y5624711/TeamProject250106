@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Box, Input, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
+import { getItemCode } from "./ItemMap.jsx";
 
 export function ItemAdd() {
-  const [itemCode, setItemCode] = useState("");
   const [itemType, setItemType] = useState("");
-  const [managerId, setManagerId] = useState("");
-  const [name, setName] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [partnerName, setPartnerName] = useState("");
+  const [managerName, setManagerName] = useState("");
   const [size, setSize] = useState("");
   const [unit, setUnit] = useState("");
   const [inPrice, setInPrice] = useState("");
@@ -17,11 +18,14 @@ export function ItemAdd() {
   const [note, setNote] = useState("");
 
   const handleAddClick = () => {
+    const itemCode = getItemCode(itemType);
+
     const itemData = {
-      itemCode,
       itemType,
-      managerId,
-      name,
+      itemCode,
+      itemName,
+      partnerName,
+      managerName,
       size,
       unit,
       inPrice,
@@ -48,24 +52,24 @@ export function ItemAdd() {
       <Text>물품 등록</Text>
       <Stack>
         <Input
-          placeholder="품목 코드"
-          value={itemCode}
-          onChange={(e) => setItemCode(e.target.value)}
-        />
-        <Input
           placeholder="품목 구분"
           value={itemType}
           onChange={(e) => setItemType(e.target.value)}
         />
         <Input
-          placeholder="취급 담당자 코드"
-          value={managerId}
-          onChange={(e) => setManagerId(e.target.value)}
+          placeholder="품목명"
+          value={itemName}
+          onChange={(e) => setItemName(e.target.value)}
         />
         <Input
-          placeholder="품목명"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="담당업체명"
+          value={partnerName}
+          onChange={(e) => setPartnerName(e.target.value)}
+        />
+        <Input
+          placeholder="취급 담당자명"
+          value={managerName}
+          onChange={(e) => setManagerName(e.target.value)}
         />
         <Input
           placeholder="규격"

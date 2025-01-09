@@ -19,4 +19,7 @@ public class Item {
     private Integer minimumStock;
     private Boolean active;
     private String note;
+
+    private String partnerName;
+    private String managerName;
 }
