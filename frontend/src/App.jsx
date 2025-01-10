@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
+import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
 import { Account } from "./page/account/Account.jsx";
@@ -23,14 +24,15 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      {
-        index: true,
-        element: <Main />,
-      },
+      { index: true, element: <Main /> },
       { path: "commonCode/list", element: <CommonCodeList /> },
       {
         path: "account",
         element: <Account />,
+      },
+      {
+        path: "item",
+        element: <Item />,
       },
     ],
   },
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthenticationContext>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </AuthenticationContext>
   );
 }
