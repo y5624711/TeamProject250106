@@ -29,7 +29,7 @@ export function AccountAdd() {
   });
 
   function handleMemberAdd() {
-    axios.post("/api/member/add", {
+    axios.post("/api/account/add", {
       accountId: id,
       password: password,
       commonCode: selectedCommonCode.join(""),

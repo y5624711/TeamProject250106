@@ -18,10 +18,6 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
-function MemberView() {
-  return <Box>g2</Box>;
-}
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,12 +29,8 @@ const router = createBrowserRouter([
       },
       { path: "commonCode/list", element: <CommonCodeList /> },
       {
-        path: "member",
+        path: "account",
         element: <Account />,
-      },
-      {
-        path: "member/view:id",
-        element: <MemberView />,
       },
     ],
   },
