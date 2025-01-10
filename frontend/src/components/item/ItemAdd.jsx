@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Box, Input, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
-import { getItemCode } from "./ItemMap.jsx";
 
 export function ItemAdd() {
-  const [itemType, setItemType] = useState("");
+  const [itemCode, setItemCode] = useState("");
   const [itemName, setItemName] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [managerName, setManagerName] = useState("");
@@ -18,10 +17,7 @@ export function ItemAdd() {
   const [note, setNote] = useState("");
 
   const handleAddClick = () => {
-    const itemCode = getItemCode(itemType);
-
     const itemData = {
-      itemType,
       itemCode,
       itemName,
       partnerName,
@@ -53,8 +49,8 @@ export function ItemAdd() {
       <Stack>
         <Input
           placeholder="품목 구분"
-          value={itemType}
-          onChange={(e) => setItemType(e.target.value)}
+          value={itemCode}
+          onChange={(e) => setItemCode(e.target.value)}
         />
         <Input
           placeholder="품목명"

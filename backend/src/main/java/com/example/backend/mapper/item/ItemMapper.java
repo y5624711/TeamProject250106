@@ -12,8 +12,8 @@ import java.util.List;
 public interface ItemMapper {
     @Insert("""
             INSERT INTO item
-            (item_code, item_type, item_name, common_code, partner_id, manager_id, size, unit, in_price, out_price, tax, minimum_stock, note)
-            VALUES (#{itemCode}, #{itemType},#{itemName}, #{commonCode}, #{partnerId}, #{managerId}, #{size}, #{unit}, #{inPrice}, #{outPrice}, #{tax}, #{minimumStock},  #{note})
+            (item_code, partner_id, manager_id, item_name, size, unit, in_price, out_price, tax, minimum_stock, note)
+            VALUES (#{itemCode}, #{partnerId}, #{managerId}, #{itemName}, #{size}, #{unit}, #{inPrice}, #{outPrice}, #{tax}, #{minimumStock},  #{note})
             """)
     @Options(keyProperty = "itemId", useGeneratedKeys = true)
     int addItem(Item item);
@@ -22,5 +22,5 @@ public interface ItemMapper {
             SELECT *
             FROM item
             """)
-    List<Item> getListItem();
+    List<Item> getItemList();
 }

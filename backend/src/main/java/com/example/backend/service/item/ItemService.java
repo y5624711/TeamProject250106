@@ -18,7 +18,7 @@ public class ItemService {
     // 물품 정보가 다 입력됐는지 확인
     public boolean validate(Item item) {
         return !(
-                item.getItemType() == null || item.getItemType().trim().isEmpty() ||
+                item.getItemCode() == null || item.getItemCode().trim().isEmpty() ||
                         item.getItemName() == null || item.getItemName().trim().isEmpty() ||
                         item.getPartnerName() == null || item.getPartnerName().trim().isEmpty() ||
                         item.getManagerName() == null || item.getManagerName().trim().isEmpty() ||
@@ -38,16 +38,13 @@ public class ItemService {
         // 담당자명을 통해 담당자 코드 가져오기
         item.setManagerId(2);
 
-        item.setCommonCode("I");
-//        item.setActive(true);
-
         int cnt = mapper.addItem(item);
 
         return cnt == 1;
     }
 
     public List<Item> getItemList() {
-        return mapper.getListItem();
+        return mapper.getItemList();
     }
 
 //    public Item getItemView(int itemId) {
