@@ -80,6 +80,51 @@ export function BranchAdd() {
           />
         </Box>
         <Box mb={4}>
+          <Text>우편번호</Text>
+          <Input
+            name="post"
+            value={branch.post}
+            onChange={handleChange}
+            placeholder="우편번호를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>주소</Text>
+          <Input
+            name="address"
+            value={branch.address}
+            onChange={handleChange}
+            placeholder="주소를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>상세주소</Text>
+          <Input
+            name="details"
+            value={branch.details}
+            onChange={handleChange}
+            placeholder="상세주소를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>광역시도</Text>
+          <Input
+            name="city1"
+            value={branch.city1}
+            onChange={handleChange}
+            placeholder="광역시도를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>시군</Text>
+          <Input
+            name="city2"
+            value={branch.city2}
+            onChange={handleChange}
+            placeholder="시군을 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
           <Text>대표자</Text>
           <Input
             name="representative"
@@ -104,51 +149,6 @@ export function BranchAdd() {
             value={branch.fax}
             onChange={handleChange}
             placeholder="팩스를 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>우편번호</Text>
-          <Input
-            name="post"
-            value={branch.post}
-            onChange={handleChange}
-            placeholder="우편번호를 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>광역시도</Text>
-          <Input
-            name="city1"
-            value={branch.city1}
-            onChange={handleChange}
-            placeholder="광역시도를 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>시군</Text>
-          <Input
-            name="city2"
-            value={branch.city2}
-            onChange={handleChange}
-            placeholder="시군을 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>주소</Text>
-          <Input
-            name="address"
-            value={branch.address}
-            onChange={handleChange}
-            placeholder="주소를 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>상세주소</Text>
-          <Input
-            name="details"
-            value={branch.details}
-            onChange={handleChange}
-            placeholder="상세주소를 입력하세요"
           />
         </Box>
         <Box mb={4}>

@@ -1,7 +1,7 @@
-package com.example.backend.service;
+package com.example.backend.service.branch;
 
-import com.example.backend.dto.Branch;
-import com.example.backend.mapper.BranchMapper;
+import com.example.backend.dto.branch.Branch;
+import com.example.backend.mapper.branch.BranchMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

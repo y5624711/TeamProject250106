@@ -5,6 +5,9 @@ import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
+import { Item } from "./page/item/Item.jsx";
+import { BranchAdd } from "./page/branch/BranchAdd.jsx";
+import { BranchList } from "./page/branch/BranchList.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -34,8 +37,12 @@ const router = createBrowserRouter([
         element: <Item />,
       },
       {
-        path: "branch",
-        element: <Branch />,
+        path: "branch/add",
+        element: <BranchAdd />,
+      },
+      {
+        path: "branch/list",
+        element: <BranchList />,
       },
     ],
   },

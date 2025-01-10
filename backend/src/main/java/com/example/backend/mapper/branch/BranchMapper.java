@@ -1,6 +1,6 @@
-package com.example.backend.mapper;
+package com.example.backend.mapper.branch;
 
-import com.example.backend.dto.Branch;
+import com.example.backend.dto.branch.Branch;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 

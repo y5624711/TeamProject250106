@@ -1,7 +1,7 @@
-package com.example.backend.controller;
+package com.example.backend.controller.branch;
 
-import com.example.backend.dto.Branch;
-import com.example.backend.service.BranchService;
+import com.example.backend.dto.branch.Branch;
+import com.example.backend.service.branch.BranchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
