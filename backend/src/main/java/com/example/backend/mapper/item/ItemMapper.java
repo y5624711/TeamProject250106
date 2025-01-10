@@ -26,8 +26,8 @@ public interface ItemMapper {
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-            SELECT *
-            FROM item
+            SELECT i.*, ic.item_code_name, count(i.item_id) as item_current_count
+            FROM item i LEFT JOIN itemCommonCode ic ON i.item_code = ic.item_code
             """)
     List<Item> getItemList();
 }

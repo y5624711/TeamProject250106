@@ -42,7 +42,8 @@ export function ItemList({ onShowDetail }) {
               <Table.ColumnHeader>담당업체</Table.ColumnHeader>
               <Table.ColumnHeader>취급 담당자</Table.ColumnHeader>
               <Table.ColumnHeader>과세구분</Table.ColumnHeader>
-              <Table.ColumnHeader>기초재고량</Table.ColumnHeader>
+              <Table.ColumnHeader>현재 재고량</Table.ColumnHeader>
+              <Table.ColumnHeader>기초 재고량</Table.ColumnHeader>
               <Table.ColumnHeader>사용 여부</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
@@ -52,16 +53,17 @@ export function ItemList({ onShowDetail }) {
                 key={item.itemId}
                 onClick={() => handleRowClick(item.itemId)}
               >
-                <Table.Cell>{item.itemId}</Table.Cell>
-                <Table.Cell>{item.itemType}</Table.Cell>
+                <Table.Cell textAlign="center">{item.itemId}</Table.Cell>
+                <Table.Cell>{item.itemCodeName}</Table.Cell>
                 <Table.Cell>{item.itemName}</Table.Cell>
                 {/*<Table.Cell>{item.partnerName}</Table.Cell>*/}
                 <Table.Cell>임시 담당업체</Table.Cell>
                 {/*<Table.Cell>{item.managerName}</Table.Cell>*/}
                 <Table.Cell>임시 담당자명</Table.Cell>
-                <Table.Cell>{item.tax}</Table.Cell>
-                <Table.Cell>{item.minimumStock}</Table.Cell>
-                <Table.Cell>
+                <Table.Cell textAlign="end">{item.tax}</Table.Cell>
+                <Table.Cell textAlign="end">{item.itemCurrentCount}</Table.Cell>
+                <Table.Cell textAlign="end">{item.minimumStock}</Table.Cell>
+                <Table.Cell textAlign="center">
                   <Checkbox checked={item.active} />
                 </Table.Cell>
               </Table.Row>

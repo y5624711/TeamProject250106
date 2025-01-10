@@ -22,4 +22,5 @@ public class Item {
     private String itemCodeName;
     private String partnerName;
     private String managerName;
+    private Integer itemCurrentCount;
 }
