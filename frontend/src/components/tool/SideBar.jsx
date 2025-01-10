@@ -1,6 +1,9 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export function SideBar({ title, items, children, onItemClick }) {
+  const navigate = useNavigate();
+
   return (
     <Flex>
       {/*SideBar 영역*/}
@@ -28,7 +31,7 @@ export function SideBar({ title, items, children, onItemClick }) {
             <Box pb={2} pt={4} key={index}>
               <Text
                 as="button"
-                onClick={() => onItemClick(item.param)}
+                onClick={() => navigate(item.path)}
                 _hover={{ cursor: "pointer" }}
                 textAlign="left"
               >

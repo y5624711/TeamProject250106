@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Box, Table } from "@chakra-ui/react";
 import { Checkbox } from "../../components/ui/checkbox.jsx";
 
-export function CommonList({ onShowDetail }) {
-  const [commonList, setCommonList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("/api/commonCode/list")
-      .then((res) => res.data)
-      .then((data) => {
-        setCommonList(data);
-      });
-  }, []);
+export function CommonList({ commonList }) {
+  // const [commonList, setCommonList] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/commonCode/list")
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       setCommonList(data);
+  //     });
+  // }, []);
 
   return (
     <Box>

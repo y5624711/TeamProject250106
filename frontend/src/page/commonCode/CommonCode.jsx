@@ -1,35 +1,29 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { CommonList } from "./CommonList.jsx";
-import { CommonAdd } from "./CommonAdd.jsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function CommonCode() {
-  const [selectedMenu, setSelectedMenu] = useState("list");
-  const [showDetail, setShowDetail] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [commonList, setCommonList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/commonCode/list")
+      .then((res) => res.data)
+      .then((data) => setCommonList(data));
+  }, []);
 
   // Sidebar 데이터
   const sidebarItems = [
-    { label: "공통 코드 목록", param: "list" },
-    { label: "공통 코드 등록", param: "add" },
+    { label: "공통 코드 목록", path: "/commonCode/" },
+    { label: "공통 코드 등록", path: "/commonCode/add" },
   ];
-
-  // 메뉴 선택시 호출되는 함수
-  const handleSelectMenu = (menu) => {
-    setSelectedMenu(menu);
-    setShowDetail(false); //메뉴 변경 시 상세보기 상태 초기화
-  };
 
   return (
     <Box>
-      <SideBar
-        title={"공통코드"}
-        items={sidebarItems}
-        onItemClick={handleSelectMenu}
-      >
-        {selectedMenu === "list" && !showDetail && <CommonList />}
-        {selectedMenu === "add" && <CommonAdd />}
+      <SideBar title={"공통코드"} items={sidebarItems}>
+        <CommonList commonList={commonList} />
       </SideBar>
     </Box>
   );

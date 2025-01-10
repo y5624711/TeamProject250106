@@ -1,6 +1,7 @@
 package com.example.backend.mapper;
 
 import com.example.backend.dto.CommonCode;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,4 +15,11 @@ public interface CommonMapper {
             ORDER BY common_code
             """)
     List<CommonCode> selectAll();
+
+    @Insert("""
+            INSERT INTO commonCode
+            (common_code,name,note)
+            VALUES (#{common_code},#{name},#{note})
+            """)
+    int insertCommonCode(CommonCode commonCode);
 }
