@@ -3,28 +3,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Checkbox } from "../../components/ui/checkbox.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
-import { useSearchParams } from "react-router-dom";
 
 export function CommonCode() {
   const [commonList, setCommonList] = useState([]);
-  const [selectedView, setSelectedView] = useState("list"); // 기본 화면 설정
-  const [searchParam, setSearchParam] = useSearchParams();
+  const [selectedMenu, setSelectedMenu] = useState("list");
   const [showDetail, setShowDetail] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
-  // <  이게 list 어떤 함수
-  useEffect(() => {
-    const view = searchParam.get("view") || "list";
-    setSelectedView(view);
-  }, [searchParam]);
-
-  // 그값을 ,
   useEffect(() => {
     axios
       .get("/api/commonCode/list")
       .then((res) => res.data)
       .then((data) => {
-        console.log(searchParam);
         setCommonList(data);
       });
   }, []);
@@ -35,14 +25,20 @@ export function CommonCode() {
     { label: "공통 코드 등록", param: "add" },
   ];
 
+  // 메뉴 선택시 호출되는 함수
+  const handleSelectMenu = (menu) => {
+    setSelectedMenu(menu);
+    setShowDetail(false); //메뉴 변경 시 상세보기 상태 초기화
+  };
+
   return (
     <Box>
       <SideBar
         title={"공통코드"}
         items={sidebarItems}
-        onItemClick={(param) => setSearchParam({ view: param })}
+        onItemClick={handleSelectMenu}
       >
-        {selectedView === "list" && (
+        {selectedMenu === "list" && !showDetail && (
           <Table.Root>
             <Table.Header>
               <Table.Row whiteSpace={"nowrap"}>
@@ -66,7 +62,7 @@ export function CommonCode() {
             </Table.Body>
           </Table.Root>
         )}
-        {selectedView === "add" && (
+        {selectedMenu === "add" && (
           <Box>
             <Text>입력</Text>
             <Input />
