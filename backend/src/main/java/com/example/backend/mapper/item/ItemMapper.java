@@ -26,8 +26,14 @@ public interface ItemMapper {
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-            SELECT i.*, ic.item_code_name, count(i.item_id) as item_current_count
+            SELECT i.item_id, ic.item_code_name, i.item_name, i.partner_id, i.manager_id, i.tax, count(i.item_id) as item_current_count, i.minimum_stock, i.active
             FROM item i LEFT JOIN itemCommonCode ic ON i.item_code = ic.item_code
             """)
     List<Item> getItemList();
+
+    @Select("""
+            SELECT i.*, ic.item_code_name, count(i.item_id) as item_current_count
+            FROM item i LEFT JOIN itemCommonCode ic ON i.item_code = ic.item_code
+            """)
+    List<Item> getItemView();
 }

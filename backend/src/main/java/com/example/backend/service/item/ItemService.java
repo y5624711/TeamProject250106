@@ -54,9 +54,9 @@ public class ItemService {
         return mapper.getItemList();
     }
 
-
-//    public Item getItemView(int itemId) {
-//
-//    }
+    // 물품 1개 정보 가져오기
+    public List<Item> getItemView(int itemId) {
+        return mapper.getItemView();
+    }
 }
 
