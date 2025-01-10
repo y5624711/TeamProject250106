@@ -39,7 +39,7 @@ public class ItemService {
         item.setManagerId(2);
 
         item.setCommonCode("I");
-        item.setActive(true);
+//        item.setActive(true);
 
         int cnt = mapper.addItem(item);
 
