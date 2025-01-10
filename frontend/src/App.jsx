@@ -1,8 +1,9 @@
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { RootLayout } from "./page/root/RootLayout.jsx";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
+import { RootLayout } from "./page/root/RootLayout.jsx";
+import { Item } from "./page/item/Item.jsx";
 import PartnerAdd from "./page/partner/PartnerAdd.jsx";
 import PartnerList from "./page/partner/PartnerList.jsx";
 import { Main } from "./page/main/Main.jsx";
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Main /> },
       { path: "commonCode/list", element: <CommonCodeList /> },
+      {
+        path: "item",
+        element: <Item />,
+      },
       {
         path: "partner",
         element: <Partner />,
