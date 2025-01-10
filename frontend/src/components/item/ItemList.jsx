@@ -19,6 +19,11 @@ export function ItemList({ onShowDetail }) {
       });
   }, []);
 
+  // 행 클릭 시 onShowDetail을 호출하고 itemId 전달
+  const handleRowClick = (itemId) => {
+    onShowDetail(itemId);
+  };
+
   return (
     <Box>
       <Text>물품 조회</Text>
@@ -43,7 +48,10 @@ export function ItemList({ onShowDetail }) {
           </Table.Header>
           <Table.Body>
             {itemList.map((item) => (
-              <Table.Row key={item.itemId}>
+              <Table.Row
+                key={item.itemId}
+                onClick={() => handleRowClick(item.itemId)}
+              >
                 <Table.Cell>{item.itemId}</Table.Cell>
                 <Table.Cell>{item.itemType}</Table.Cell>
                 <Table.Cell>{item.itemName}</Table.Cell>

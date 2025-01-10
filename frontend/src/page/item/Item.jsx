@@ -8,6 +8,7 @@ import { ItemView } from "../../components/item/ItemView.jsx";
 export function Item() {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
   // 메뉴 선택 시 호출되는 함수
   const handleSelectMenu = (menu) => {
@@ -16,7 +17,8 @@ export function Item() {
   };
 
   // 특정 상품 클릭 시 상세 정보로 이동
-  const handleShowDetail = () => {
+  const handleShowDetail = (itemId) => {
+    setSelectedItemId(itemId);
     setShowDetail(true);
   };
 
@@ -28,7 +30,7 @@ export function Item() {
         {selectedMenu === "list" && !showDetail && (
           <ItemList onShowDetail={handleShowDetail} />
         )}
-        {showDetail && <ItemView />}
+        {showDetail && <ItemView itemId={selectedItemId} />}
       </HStack>
     </Box>
   );
