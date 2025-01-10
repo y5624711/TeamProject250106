@@ -1,7 +1,8 @@
-import { Box, Input, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { CommonList } from "./CommonList.jsx";
+import { CommonAdd } from "./CommonAdd.jsx";
 
 export function CommonCode() {
   const [selectedMenu, setSelectedMenu] = useState("list");
@@ -28,13 +29,7 @@ export function CommonCode() {
         onItemClick={handleSelectMenu}
       >
         {selectedMenu === "list" && !showDetail && <CommonList />}
-        {selectedMenu === "add" && (
-          <Box>
-            <Text>입력</Text>
-            <Input />
-            <Input />
-          </Box>
-        )}
+        {selectedMenu === "add" && <CommonAdd />}
       </SideBar>
     </Box>
   );
