@@ -14,15 +14,9 @@ export function CommonCode() {
       .then((data) => setCommonList(data));
   }, []);
 
-  // Sidebar 데이터
-  const sidebarItems = [
-    { label: "공통 코드 목록", path: "/commonCode/" },
-    { label: "공통 코드 등록", path: "/commonCode/add" },
-  ];
-
   return (
     <Box>
-      <SideBar title={"공통코드"} items={sidebarItems}>
+      <SideBar title={"공통코드"}>
         <CommonList commonList={commonList} />
       </SideBar>
     </Box>

@@ -1,8 +1,27 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export function SideBar({ title, items, children, onItemClick }) {
+export function SideBar({ title, children }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Sidebar 항목을 경로별로 정의
+  const sidebarItemsByPath = {
+    "/commonCode": [
+      { label: "공통 코드 목록", path: "/commonCode/" },
+      { label: "공통 코드 등록", path: "/commonCode/add" },
+    ],
+    "/otherPage": [
+      { label: "다른 메뉴 1", path: "/otherPage/menu1" },
+      { label: "다른 메뉴 2", path: "/otherPage/menu2" },
+    ],
+  };
+
+  // 현재 경로에 맞는 Sidebar 항목 선택
+  const currentPath = location.pathname.split("/")[1] || "/";
+  console.log(currentPath);
+  const sidebarItems =
+    sidebarItemsByPath[`/${currentPath}`] || sidebarItemsByPath["/"];
 
   return (
     <Flex>
@@ -27,7 +46,7 @@ export function SideBar({ title, items, children, onItemClick }) {
         </Box>
 
         <Stack spacing="2">
-          {items.map((item, index) => (
+          {sidebarItems.map((item, index) => (
             <Box pb={2} pt={4} key={index}>
               <Text
                 as="button"

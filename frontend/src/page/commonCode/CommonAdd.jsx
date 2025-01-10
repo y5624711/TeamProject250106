@@ -12,15 +12,9 @@ export function CommonAdd() {
     axios.post("/api/commonCode/add", {});
   };
 
-  // Sidebar 데이터
-  const sidebarItems = [
-    { label: "공통 코드 목록", path: "/commonCode/" },
-    { label: "공통 코드 등록", path: "/commonCode/add" },
-  ];
-
   return (
     <Box>
-      <SideBar title={"공통코드"} items={sidebarItems}>
+      <SideBar title={"공통코드"}>
         <Field label={"공통코드"}>
           <Input />
         </Field>
