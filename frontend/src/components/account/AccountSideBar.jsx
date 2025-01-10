@@ -1,7 +1,6 @@
 import { Box, Heading, Stack } from "@chakra-ui/react";
 
 export function AccountSideBar({ onSelect }) {
-  console.log(onSelect);
   return (
     <Box h={"100%"} bg={"blackAlpha.300"}>
       <Stack>

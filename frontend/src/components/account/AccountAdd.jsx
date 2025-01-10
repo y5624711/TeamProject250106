@@ -75,8 +75,6 @@ export function AccountAdd() {
           }}
         />
       </Stack>
-      {id}
-      {password}
       <Button onClick={() => handleMemberAdd()}>회원 등록</Button>
       <Button onClick={() => {}}> 회원 수정 </Button>
       <Button> 회원 삭제</Button>

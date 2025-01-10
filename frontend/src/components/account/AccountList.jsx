@@ -8,7 +8,6 @@ export function AccountList() {
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
     axios.get("/api/account/list").then((res) => {
-      console.log(res.data);
       setMemberList(res.data);
     });
   }, []);
