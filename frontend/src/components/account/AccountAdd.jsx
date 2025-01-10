@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
 
-export function MemberAdd() {
+export function AccountAdd() {
   const [id, setId] = useState();
   const [password, setPassword] = useState();
   const [selectedCommonCode, setSelectedCommonCode] = useState();
@@ -30,7 +30,7 @@ export function MemberAdd() {
 
   function handleMemberAdd() {
     axios.post("/api/member/add", {
-      memberId: id,
+      accountId: id,
       password: password,
       commonCode: selectedCommonCode.join(""),
     });

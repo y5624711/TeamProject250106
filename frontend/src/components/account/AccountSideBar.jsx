@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import { SideBarItem } from "./SideBarItem.jsx";
 import { useNavigate } from "react-router-dom";
 
-export function MemberSideBar() {
+export function AccountSideBar() {
   const navigate = useNavigate();
   return (
     <Box h={"100%"} bg={"blackAlpha.300"}>

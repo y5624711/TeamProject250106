@@ -5,7 +5,7 @@ import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
-import { Member } from "./page/member/Member.jsx";
+import { Account } from "./page/account/Account.jsx";
 import { Box } from "@chakra-ui/react";
 
 axios.interceptors.request.use(function (config) {
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       { path: "commonCode/list", element: <CommonCodeList /> },
       {
         path: "member",
-        element: <Member />,
+        element: <Account />,
       },
       {
         path: "member/view:id",

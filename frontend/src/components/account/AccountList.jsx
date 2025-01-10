@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-export function MemberList() {
+export function AccountList() {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
@@ -31,9 +31,9 @@ export function MemberList() {
                 navigate("memver/view:id");
               }}
             >
-              <Table.Cell> {item.memberKey} </Table.Cell>
+              <Table.Cell> {item.accountKey} </Table.Cell>
               <Table.Cell> {item.commonCode} </Table.Cell>
-              <Table.Cell> {item.memberId} </Table.Cell>
+              <Table.Cell> {item.accountId} </Table.Cell>
               <Table.Cell> {item.password} </Table.Cell>
             </Table.Row>
           ))}
