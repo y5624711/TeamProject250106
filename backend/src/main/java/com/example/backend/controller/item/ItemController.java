@@ -28,6 +28,12 @@ public class ItemController {
         return service.getItemList();
     }
 
+    // 물품 구분 코드명 영어로 가져오기
+    @GetMapping("commonCode")
+    public List<Map<String, String>> itemCommonCode() {
+        return service.getItemCommonCode();
+    }
+
     // 물품 추가
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addItem(@RequestBody Item item) {

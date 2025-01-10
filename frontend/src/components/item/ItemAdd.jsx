@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Input, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
@@ -15,7 +15,21 @@ export function ItemAdd() {
   const [tax, setTax] = useState("");
   const [minimumStock, setMinimumStock] = useState("");
   const [note, setNote] = useState("");
+  const [itemCommonCode, setItemCommonCode] = useState([]);
 
+  // 물품 구분 코드 가져오기
+  useEffect(() => {
+    axios
+      .get("/api/item/commonCode")
+      .then((res) => {
+        setItemCommonCode(res.data);
+      })
+      .catch((error) => {
+        console.error("데이터 로딩 중 오류 발생: ", error);
+      });
+  }, []);
+
+  // 물품 등록하기
   const handleAddClick = () => {
     const itemData = {
       itemCode,
@@ -45,13 +59,26 @@ export function ItemAdd() {
 
   return (
     <Box>
-      <Text>물품 등록</Text>
+      <Text>물품 등록 </Text>
       <Stack>
-        <Input
-          placeholder="품목 구분"
+        <select
           value={itemCode}
           onChange={(e) => setItemCode(e.target.value)}
-        />
+          style={{
+            width: "100%",
+            padding: "8px",
+            borderRadius: "6px",
+            border: "1px solid #E2E8F0",
+          }}
+        >
+          <option value="">품목 구분</option>
+          {itemCommonCode.map((code) => (
+            <option key={code.item_code} value={code.item_code}>
+              {code.item_code_name}
+            </option>
+          ))}
+        </select>
+
         <Input
           placeholder="품목명"
           value={itemName}

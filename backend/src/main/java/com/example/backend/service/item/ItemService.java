@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -43,9 +44,16 @@ public class ItemService {
         return cnt == 1;
     }
 
+    // 물품 구분 코드 가져오기
+    public List<Map<String, String>> getItemCommonCode() {
+        return mapper.getItemCommonCode();
+    }
+
+    // 물품 리스트 가져오기
     public List<Item> getItemList() {
         return mapper.getItemList();
     }
+
 
 //    public Item getItemView(int itemId) {
 //

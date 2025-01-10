@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ItemMapper {
@@ -17,6 +18,12 @@ public interface ItemMapper {
             """)
     @Options(keyProperty = "itemId", useGeneratedKeys = true)
     int addItem(Item item);
+
+    @Select("""
+            SELECT item_code, item_code_name
+            FROM itemCommonCode
+            """)
+    List<Map<String, String>> getItemCommonCode();
 
     @Select("""
             SELECT *
