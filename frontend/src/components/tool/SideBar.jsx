@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 
-export function SideBar({ title, items, children }) {
-  const navigate = useNavigate();
+export function SideBar({ title, items, children, onItemClick }) {
   return (
     <Flex>
       {/*SideBar 영역*/}
@@ -27,11 +25,10 @@ export function SideBar({ title, items, children }) {
 
         <Stack spacing="2">
           {items.map((item, index) => (
-            <Box pb={2} pt={4}>
+            <Box pb={2} pt={4} key={index}>
               <Text
-                key={index}
                 as="button"
-                onClick={() => navigate(item.path)}
+                onClick={() => onItemClick(item.param)}
                 _hover={{ cursor: "pointer" }}
                 textAlign="left"
               >
