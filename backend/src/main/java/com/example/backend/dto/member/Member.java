@@ -8,5 +8,4 @@ public class Member {
     private int memberId;
     private String password;
     private String commonCode;
-
 }
