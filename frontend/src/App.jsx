@@ -26,9 +26,12 @@ const router = createBrowserRouter([
         index: true,
         element: <Main />,
       },
-      { path: "commonCode/list", element: <CommonCodeList /> },
       {
-        index: "branch",
+        path: "commonCode/list",
+        element: <CommonCodeList />,
+      },
+      {
+        path: "branch",
         element: <Branch />,
       },
     ],
