@@ -7,7 +7,7 @@ export function AccountList() {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
-    axios.get("/api/member/list").then((res) => {
+    axios.get("/api/account/list").then((res) => {
       console.log(res.data);
       setMemberList(res.data);
     });
@@ -26,11 +26,7 @@ export function AccountList() {
         </Table.Header>
         <Table.Body>
           {memberList.map((item) => (
-            <Table.Row
-              onClick={() => {
-                navigate("memver/view:id");
-              }}
-            >
+            <Table.Row>
               <Table.Cell> {item.accountKey} </Table.Cell>
               <Table.Cell> {item.commonCode} </Table.Cell>
               <Table.Cell> {item.accountId} </Table.Cell>

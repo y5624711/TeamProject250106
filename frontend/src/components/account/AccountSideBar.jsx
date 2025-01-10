@@ -1,23 +1,25 @@
 import { Box, Heading, Stack } from "@chakra-ui/react";
-import * as PropTypes from "prop-types";
-import { SideBarItem } from "./SideBarItem.jsx";
-import { useNavigate } from "react-router-dom";
 
-export function AccountSideBar() {
-  const navigate = useNavigate();
+export function AccountSideBar({ onSelect }) {
+  console.log(onSelect);
   return (
     <Box h={"100%"} bg={"blackAlpha.300"}>
       <Stack>
         <Heading> 회원 관리 </Heading>
-        <SideBarItem> 회원 등록</SideBarItem>
-        <SideBarItem
+        <Box
           onClick={() => {
-            navigate();
+            onSelect("list");
           }}
         >
-          {" "}
           회원 조회
-        </SideBarItem>
+        </Box>
+        <Box
+          onClick={() => {
+            onSelect("add");
+          }}
+        >
+          회원 등록
+        </Box>
       </Stack>
     </Box>
   );

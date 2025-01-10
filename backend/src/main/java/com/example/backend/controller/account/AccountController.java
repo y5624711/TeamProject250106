@@ -22,6 +22,7 @@ public class AccountController {
         return allList;
      }
 
+     // 회원 등록
     @PostMapping("add")
     public void addAccount(@RequestBody Account account) {
         System.out.println("account = " + account);
