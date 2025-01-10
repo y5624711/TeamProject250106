@@ -13,7 +13,7 @@ CREATE TABLE partner
     representative VARCHAR(10) NOT NULL,
     tel            VARCHAR(20) NOT NULL,
     fax            VARCHAR(20),
-    start_date     DATE        NOT NULL,
+    start_date     DATE       DEFAULT NOW(),
     end_date       DATE,
     active         BOOLEAN    DEFAULT true,
     note           VARCHAR(50),

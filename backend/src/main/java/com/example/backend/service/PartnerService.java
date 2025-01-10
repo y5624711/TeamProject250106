@@ -12,8 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class PartnerService {
     final PartnerMapper mapper;
 
+    //협력업체 등록
     public void add(Partner partner) {
-//        mapper.add(partner);
-        //sql 추가부터
+        mapper.add(partner);
+
+        partner.setStartDate(mapper.getStartDate(partner.getPartnerId()));
+
+        //계약 종료 날짜 set
+        partner.setEndDate(partner.getStartDate().plusYears(2));
+        mapper.updateEndDate(partner);
+
     }
 }

@@ -1,5 +1,10 @@
 package com.example.backend.dto;
 
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Data
 public class Partner {
     private Integer partnerId;
     private String commonCode;
@@ -14,6 +19,8 @@ public class Partner {
     private String representative;
     private String tel;
     private String fax;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Boolean active;
     private String note;
 }

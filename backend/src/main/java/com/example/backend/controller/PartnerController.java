@@ -17,5 +17,6 @@ public class PartnerController {
     @PostMapping("add")
     public void add(@RequestBody Partner partner) {
         service.add(partner);
+        
     }
 }
