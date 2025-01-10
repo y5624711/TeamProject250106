@@ -9,6 +9,8 @@ export function CommonCode() {
   const [commonList, setCommonList] = useState([]);
   const [selectedView, setSelectedView] = useState("list"); // 기본 화면 설정
   const [searchParam, setSearchParam] = useSearchParams();
+  const [showDetail, setShowDetail] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
   // <  이게 list 어떤 함수
   useEffect(() => {

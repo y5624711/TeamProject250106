@@ -23,8 +23,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Main /> },
-      { path: "commonCode/list", element: <CommonCode /> },
-      { path: "commonCode/list", element: <CommonCodeList /> },
+      { path: "commonCode", element: <CommonCode /> },
       {
         path: "item",
         element: <Item />,
