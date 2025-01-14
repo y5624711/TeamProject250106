@@ -1,7 +1,7 @@
-package com.example.backend.controller;
+package com.example.backend.controller.commonCode;
 
-import com.example.backend.dto.CommonCode;
-import com.example.backend.service.CommonService;
+import com.example.backend.dto.commonCode.CommonCode;
+import com.example.backend.service.commonCode.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

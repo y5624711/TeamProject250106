@@ -1,6 +1,6 @@
-package com.example.backend.mapper;
+package com.example.backend.mapper.commonCode;
 
-import com.example.backend.dto.CommonCode;
+import com.example.backend.dto.commonCode.CommonCode;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

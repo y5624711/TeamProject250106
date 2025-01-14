@@ -1,7 +1,7 @@
-package com.example.backend.service;
+package com.example.backend.service.commonCode;
 
-import com.example.backend.dto.CommonCode;
-import com.example.backend.mapper.CommonMapper;
+import com.example.backend.dto.commonCode.CommonCode;
+import com.example.backend.mapper.commonCode.CommonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
