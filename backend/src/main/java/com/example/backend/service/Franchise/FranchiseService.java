@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,5 +36,10 @@ public class FranchiseService {
     public boolean add(Franchise franchise) {
         int cnt = mapper.insert(franchise);
         return cnt == 1;
+    }
+
+    // 가맹점 리스트 조회
+    public List<Franchise> list() {
+        return mapper.list();
     }
 }

@@ -5,11 +5,9 @@ import com.example.backend.service.Franchise.FranchiseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,5 +30,11 @@ public class FranchiseController {
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
         }
+    }
+
+    // 가맹점 리스트 조회
+    @GetMapping("/list")
+    public List<Franchise> list() {
+        return service.list();
     }
 }
