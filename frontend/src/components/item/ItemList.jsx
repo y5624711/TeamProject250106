@@ -54,7 +54,7 @@ export function ItemList({ onShowDetail }) {
                 <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  <Checkbox checked={item.active} />
+                  <Checkbox checked={item.itemActive} />
                 </Table.Cell>
               </Table.Row>
             ))}

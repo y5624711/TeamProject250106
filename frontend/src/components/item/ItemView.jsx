@@ -19,6 +19,18 @@ export function ItemView({ itemKey }) {
     }
   }, [itemKey]);
 
+  // 물품 삭제 시 사용여부 false
+  const handleDeleteClick = () => {
+    axios
+      .put(`/api/item/delete/${itemKey}`)
+      .then((res) => {
+        console.log("삭제 완료: ".res.data);
+      })
+      .catch((error) => {
+        console.error("물품 삭제 요청 중 오류 발생: ", error);
+      });
+  };
+
   console.log(itemList);
   return (
     <Box>
@@ -46,7 +58,7 @@ export function ItemView({ itemKey }) {
         </Box>
       </HStack>
       <Button>수정</Button>
-      <Button>삭제</Button>
+      <Button onClick={handleDeleteClick}>삭제</Button>
     </Box>
   );
 }

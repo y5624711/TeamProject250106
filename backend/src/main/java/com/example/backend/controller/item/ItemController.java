@@ -18,6 +18,23 @@ public class ItemController {
 
     final ItemService service;
 
+    // 물품 삭제하기
+    @PutMapping("/delete/{itemKey}")
+    public ResponseEntity<Map<String, Object>> deleteProduct(
+            @PathVariable int itemKey) {
+        if (service.deleteItem(itemKey)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{itemKey}번 물품이 삭제되었습니다.")));
+
+        } else {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "물품 삭제 중 문제가 발생하였습니다.")));
+        }
+    }
+
+
     // 물품 1개의 정보 가져오기
     @GetMapping("view/{itemKey}")
     public List<Item> itemView(@PathVariable int itemKey) {

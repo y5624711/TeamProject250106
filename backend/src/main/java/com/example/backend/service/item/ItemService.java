@@ -52,5 +52,12 @@ public class ItemService {
     public List<Item> getItemView(int itemKey) {
         return mapper.getItemView(itemKey);
     }
+
+    // 물품 삭제하기
+    public boolean deleteItem(int itemKey) {
+        int cnt = mapper.deleteItem(itemKey);
+
+        return cnt == 1;
+    }
 }
 

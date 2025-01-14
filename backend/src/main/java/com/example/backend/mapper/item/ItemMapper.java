@@ -1,10 +1,7 @@
 package com.example.backend.mapper.item;
 
 import com.example.backend.dto.item.Item;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -39,4 +36,11 @@ public interface ItemMapper {
             WHERE i.item_key = #{itemKey}
             """)
     List<Item> getItemView(Integer itemKey);
+
+    @Update("""
+            UPDATE TB_ITEMMST
+            SET item_active = 0
+            WHERE item_key = #{itemKey}
+            """)
+    int deleteItem(int itemKey);
 }
