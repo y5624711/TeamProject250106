@@ -18,3 +18,11 @@ CREATE TABLE TB_CUSTMST
 
 # DROP TABLE partner;
 
+
+INSERT INTO TB_CUSTMST
+(customer_name, customer_code, item_code, customer_rep, customer_no,
+ customer_tel, customer_fax, customer_address, customer_address_details,
+ customer_post, customer_active, customer_note)
+VALUES ('중앙셀로', 'CUS0002', 'CEL', '백종원', '1123027845',
+        '0321223213', '0321223213', '용산', null,
+        '10327', true, null);
