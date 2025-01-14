@@ -1,18 +1,14 @@
-CREATE TABLE item
+CREATE TABLE TB_ITEMMST
 (
-    item_id       INT PRIMARY KEY AUTO_INCREMENT,
-    item_code     VARCHAR(5)  NOT NULL,
-    partner_id    INT         NOT NULL,
-    manager_id    INT         NOT NULL,
-    item_name     VARCHAR(20) NOT NULL,
-    size          VARCHAR(20) NOT NULL,
-    unit          VARCHAR(10) NOT NULL,
-    in_price      INT         NOT NULL,
-    out_price     INT         NOT NULL,
-    tax           INT         NOT NULL,
-    minimum_stock INT         NOT NULL,
-    active        BOOLEAN DEFAULT true,
-    note          VARCHAR(50)
+    item_key         INT PRIMARY KEY AUTO_INCREMENT,
+    item_common_code VARCHAR(5)  NOT NULL,
+    customer_code    VARCHAR(13) NOT NULL,
+    input_price      INT         NOT NULL,
+    output_price     INT         NOT NULL,
+    size             VARCHAR(20),
+    unit             VARCHAR(10),
+    item_active      BOOLEAN DEFAULT true,
+    item_note        VARCHAR(50)
 );
 
-drop table item;
+drop table TB_ITEMMST;
