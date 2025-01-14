@@ -16,11 +16,11 @@ public class ItemController {
 
     final ItemService service;
 
-    // 물품 1개의 정보 가져오기
-    @GetMapping("view/{itemId}")
-    public Item itemView(@PathVariable int itemId) {
-        return service.getItemView(itemId);
-    }
+//    // 물품 1개의 정보 가져오기
+//    @GetMapping("view/{itemId}")
+//    public Item itemView(@PathVariable int itemId) {
+//        return service.getItemView(itemId);
+//    }
 
     // 물품 리스트 가져오기
     @GetMapping("list")
