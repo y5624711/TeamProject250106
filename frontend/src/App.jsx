@@ -5,7 +5,10 @@ import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
+import { CommonCode } from "./page/commonCode/CommonCode.jsx";
+import { CommonList } from "./page/commonCode/CommonList.jsx";
+import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
+import { Franchise } from "./page/franchise/Franchise.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -31,12 +34,8 @@ const router = createBrowserRouter([
         element: <Item />,
       },
       {
-        path: "branch/add",
-        element: <BranchAdd />,
-      },
-      {
-        path: "branch/list",
-        element: <BranchList />,
+        path: "franchise",
+        element: <Franchise />,
       },
     ],
   },
