@@ -4,8 +4,6 @@ import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
-import CustomerAdd from "./page/customer/CustomerAdd.jsx";
-import CustomerList from "./page/customer/CustomerList.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCode } from "./page/commonCode/CommonCode.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
@@ -38,14 +36,6 @@ const router = createBrowserRouter([
       {
         path: "customer",
         element: <Customer />,
-      },
-      {
-        path: "customer/add",
-        element: <CustomerAdd />,
-      },
-      {
-        path: "customer/list",
-        element: <CustomerList />,
       },
     ],
   },
