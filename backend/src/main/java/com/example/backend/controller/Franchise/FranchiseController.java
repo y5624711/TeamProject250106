@@ -1,7 +1,7 @@
-package com.example.backend.controller.branch;
+package com.example.backend.controller.Franchise;
 
-import com.example.backend.dto.branch.Branch;
-import com.example.backend.service.branch.BranchService;
+import com.example.backend.dto.Franchise.Franchise;
+import com.example.backend.service.Franchise.FranchiseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +15,16 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/branch")
-public class BranchController {
+@RequestMapping("/api/franchise")
+public class FranchiseController {
 
-    final BranchService service;
+    final FranchiseService service;
 
+    // 가맹점 등록하기
     @PostMapping("/add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Branch branch) {
-        if (service.validate(branch)) {
-            if (service.add(branch)) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Franchise franchise) {
+        if (service.validate(franchise)) {
+            if (service.add(franchise)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점이 등록되었습니다.")));
             } else {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "가맹점 등록에 실패하였습니다.")));
