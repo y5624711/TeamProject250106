@@ -4,14 +4,13 @@ import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
-import PartnerAdd from "./page/partner/PartnerAdd.jsx";
-import PartnerList from "./page/partner/PartnerList.jsx";
+import CustomerAdd from "./page/customer/CustomerAdd.jsx";
+import CustomerList from "./page/customer/CustomerList.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCode } from "./page/commonCode/CommonCode.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
-import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
-import Partner from "./page/partner/Partner.jsx";
+import Customer from "./page/customer/Customer.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -37,16 +36,16 @@ const router = createBrowserRouter([
         element: <Item />,
       },
       {
-        path: "partner",
-        element: <Partner />,
+        path: "customer",
+        element: <Customer />,
       },
       {
-        path: "partner/add",
-        element: <PartnerAdd />,
+        path: "customer/add",
+        element: <CustomerAdd />,
       },
       {
-        path: "partner/list",
-        element: <PartnerList />,
+        path: "customer/list",
+        element: <CustomerList />,
       },
     ],
   },

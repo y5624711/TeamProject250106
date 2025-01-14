@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import PartnerMenu from "../../components/partner/PartnerMenu.jsx";
-import PartnerAddComp from "../../components/partner/PartnerAddComp.jsx";
+import CustomerMenu from "../../components/customer/CustomerMenu.jsx";
+import CustomerAddComp from "../../components/customer/CustomerAddComp.jsx";
 
-function PartnerAdd(props) {
+function CustomerAdd(props) {
   const [name, setName] = useState("");
   const [productCode, setProductCode] = useState(null);
   const [post, setPost] = useState("");
@@ -18,10 +18,10 @@ function PartnerAdd(props) {
 
   return (
     <div>
-      <PartnerMenu />
-      <PartnerAddComp />
+      <CustomerMenu />
+      <CustomerAddComp />
     </div>
   );
 }
 
-export default PartnerAdd;
+export default CustomerAdd;

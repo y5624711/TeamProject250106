@@ -1,11 +1,11 @@
 import React from "react";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 
-function Partner(props) {
+function Customer(props) {
   // Sidebar 데이터
   const sidebarItems = [
-    { label: "협력사 목록", path: "/partner/list" },
-    { label: "협력사 등록", path: "/partner/add" },
+    { label: "협력사 목록", path: "/customer/list" },
+    { label: "협력사 등록", path: "/customer/add" },
   ];
 
   return (
@@ -15,4 +15,4 @@ function Partner(props) {
   );
 }
 
-export default Partner;
+export default Customer;

@@ -1,6 +1,6 @@
 import React from "react";
 
-function PartnerMenu(props) {
+function CustomerMenu(props) {
   return (
     <div>
       <h3>협력사 조회</h3>
@@ -11,4 +11,4 @@ function PartnerMenu(props) {
   );
 }
 
-export default PartnerMenu;
+export default CustomerMenu;

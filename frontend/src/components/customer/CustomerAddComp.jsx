@@ -1,6 +1,6 @@
 import React from "react";
 
-function PartnerAddComp(props) {
+function CustomerAddComp(props) {
   return (
     <div>
       <h2>협력사 등록</h2>
@@ -64,4 +64,4 @@ function PartnerAddComp(props) {
   );
 }
 
-export default PartnerAddComp;
+export default CustomerAddComp;
