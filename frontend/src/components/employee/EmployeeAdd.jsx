@@ -16,11 +16,16 @@ import { Button } from "../ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function AccountAdd() {
+export function EmployeeAdd() {
   const [id, setId] = useState();
   const [password, setPassword] = useState();
   const [selectedCommonCode, setSelectedCommonCode] = useState();
+  const [name, setName] = useState("");
+  const [tel, setTel] = useState("");
+  const [note, setNote] = useState("");
+  const [workPlace, setWorkPlace] = useState("");
   const navigate = useNavigate();
+  const [departMent, setDepartMent] = useState("");
 
   // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
@@ -31,16 +36,28 @@ export function AccountAdd() {
     ],
   });
 
+  // 이거 그러면  보일때는 그렇게 하는데 추가할때는 개인이 개인
   function handleMemberAdd() {
-    axios.post("/api/account/add", {
-      accountId: id,
-      password: password,
-      // 배열로 들어오는데 그거 제거  해주는 코드
-      commonCode: selectedCommonCode.join(""),
-    });
-    setId("");
-    setSelectedCommonCode("");
-    setPassword("");
+    axios
+      .post("/api/employee/add", {
+        // 배열로 들어오는데 그거 제거  해주는 코드
+        employeeCommonCode: selectedCommonCode.join(""),
+        employeeWorkPlaceCode: departMent,
+        employeeNo: id,
+        employeeName: name,
+        employeePassword: password,
+        employeeTel: tel,
+        employeeNote: note,
+      })
+      .then(() => {
+        setId("");
+        setSelectedCommonCode("");
+        setPassword("");
+        setTel("");
+        setWorkPlace("");
+        setDepartMent("");
+        setNote("");
+      });
   }
 
   return (
@@ -64,15 +81,45 @@ export function AccountAdd() {
             ))}
           </SelectContent>
         </SelectRoot>
+
         <Input
-          placeholder={"회원 번호 ,아이디 입력"}
+          placeholder={"소속 코드 / 소속 명"}
+          value={workPlace}
+          onChange={(e) => {
+            setWorkPlace(e.target.value);
+          }}
+        />
+        <Input
+          placeholder={"부서 코드 / 부서 명"}
+          value={departMent}
+          onChange={(e) => {
+            setDepartMent(e.target.value);
+          }}
+        />
+
+        <Input
+          placeholder={"직원명"}
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+        <Input
+          placeholder={"사번"}
           value={id}
           onChange={(e) => {
             setId(e.target.value);
           }}
         />
         <Input
-          placeholder={"비밀번호"}
+          placeholder={"전화번호"}
+          value={tel}
+          onChange={(e) => {
+            setTel(e.target.value);
+          }}
+        />
+        <Input
+          placeholder={"비고"}
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);

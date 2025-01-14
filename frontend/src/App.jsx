@@ -8,9 +8,7 @@ import { Main } from "./page/main/Main.jsx";
 import { CommonCode } from "./page/commonCode/CommonCode.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
-import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
-import { Account } from "./page/account/Account.jsx";
-import { Box } from "@chakra-ui/react";
+import { Employee } from "./page/employee/Employee.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -32,8 +30,8 @@ const router = createBrowserRouter([
       { path: "commonCode/list", element: <CommonList /> },
       { path: "commonCode/add", element: <CommonAdd /> },
       {
-        path: "account",
-        element: <Account />,
+        path: "employee",
+        element: <Employee />,
       },
       {
         path: "item",

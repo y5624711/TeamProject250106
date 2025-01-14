@@ -1,7 +1,7 @@
-package com.example.backend.mapper.account;
+package com.example.backend.mapper.employee;
 
 
-import com.example.backend.dto.account.Account;
+import com.example.backend.dto.employee.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -10,18 +10,18 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface AccountMapper {
+public interface EmployeeMapper {
 
     @Insert("""
-        INSERT INTO account(account_id, password, common_code)
+        INSERT INTO TB_EMPMST(account_id, password, common_code)
         VALUES (#{accountId}, #{password}, #{commonCode})
     """)
     @Options(useGeneratedKeys = true, keyProperty = "accountKey")
-    int addAccount(Account member);
+    int addAccount(Employee member);
 
 
     @Select("""
-        select * from account
+        select * from TB_EMPMST
 """)
-    List<Account> getAllAccounts();
+    List<Employee> getAllAccounts();
 }

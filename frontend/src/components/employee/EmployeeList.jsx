@@ -3,12 +3,12 @@ import axios from "axios";
 import { Box, Heading, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-export function AccountList() {
+export function EmployeeList() {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
     // 전체 어카운트 리스트 불러오기
-    axios.get("/api/account/list").then((res) => {
+    axios.get("/api/employee/list").then((res) => {
       setMemberList(res.data);
     });
   }, []);
@@ -24,7 +24,7 @@ export function AccountList() {
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>개인 키</Table.ColumnHeader>
+            <Table.ColumnHeader>dla</Table.ColumnHeader>
             <Table.ColumnHeader>분류 코드</Table.ColumnHeader>
             <Table.ColumnHeader>분류 코드 아이디</Table.ColumnHeader>
             <Table.ColumnHeader>비번</Table.ColumnHeader>
@@ -34,9 +34,9 @@ export function AccountList() {
         <Table.Body>
           {memberList.map((item) => (
             <Table.Row>
-              <Table.Cell> {item.accountKey} </Table.Cell>
-              <Table.Cell> {item.commonCode} </Table.Cell>
-              <Table.Cell> {item.accountId} </Table.Cell>
+              <Table.Cell> {item.employeeKey} </Table.Cell>
+              <Table.Cell> {item.employeeCommonCode} </Table.Cell>
+              <Table.Cell> {item.empl} </Table.Cell>
               <Table.Cell> {item.password} </Table.Cell>
               <Table.Cell>
                 {item.active === true ? "사용중" : "사용안함"}
