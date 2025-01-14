@@ -19,25 +19,19 @@ public class ItemService {
     // 물품 정보가 다 입력됐는지 확인
     public boolean validate(Item item) {
         return !(
-                item.getItemCode() == null || item.getItemCode().trim().isEmpty() ||
-                        item.getItemName() == null || item.getItemName().trim().isEmpty() ||
-                        item.getPartnerName() == null || item.getPartnerName().trim().isEmpty() ||
-                        item.getManagerName() == null || item.getManagerName().trim().isEmpty() ||
+                item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
+                        item.getCustomerName() == null || item.getCustomerName().trim().isEmpty() ||
                         item.getSize() == null || item.getSize().trim().isEmpty() ||
                         item.getUnit() == null || item.getUnit().trim().isEmpty() ||
-                        item.getInPrice() == null || item.getInPrice() < 0 ||
-                        item.getOutPrice() == null || item.getOutPrice() < 0 ||
-                        item.getTax() == null || item.getTax() < 0 ||
-                        item.getMinimumStock() == null || item.getMinimumStock() < 0 ||
-                        item.getNote() == null || item.getNote().trim().isEmpty());
+                        item.getInputPrice() == null || item.getInputPrice() < 0 ||
+                        item.getOutputPrice() == null || item.getOutputPrice() < 0 ||
+                        item.getItemNote() == null || item.getItemNote().trim().isEmpty());
     }
 
     // 물품 추가하기
     public boolean addItem(Item item) {
         // 협력업체명을 통해 협력업체 코드 가져오기
-        item.setPartnerId(1);
-        // 담당자명을 통해 담당자 코드 가져오기
-        item.setManagerId(2);
+        item.setCustomerCode("123456788");
 
         int cnt = mapper.addItem(item);
 
@@ -55,8 +49,8 @@ public class ItemService {
     }
 
     // 물품 1개 정보 가져오기
-    public List<Item> getItemView(int itemId) {
-        return mapper.getItemView();
+    public List<Item> getItemView(int itemKey) {
+        return mapper.getItemView(itemKey);
     }
 }
 

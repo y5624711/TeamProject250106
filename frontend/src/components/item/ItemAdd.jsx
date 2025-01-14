@@ -4,25 +4,21 @@ import { Button } from "../ui/button.jsx";
 import axios from "axios";
 
 export function ItemAdd() {
-  const [itemCode, setItemCode] = useState("");
-  const [itemName, setItemName] = useState("");
-  const [partnerName, setPartnerName] = useState("");
-  const [managerName, setManagerName] = useState("");
+  const [itemCommonCode, setItemCommonCode] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [size, setSize] = useState("");
   const [unit, setUnit] = useState("");
-  const [inPrice, setInPrice] = useState("");
-  const [outPrice, setOutPrice] = useState("");
-  const [tax, setTax] = useState("");
-  const [minimumStock, setMinimumStock] = useState("");
-  const [note, setNote] = useState("");
-  const [itemCommonCode, setItemCommonCode] = useState([]);
+  const [inputPrice, setInputPrice] = useState("");
+  const [outputPrice, setOutputPrice] = useState("");
+  const [itemNote, setItemNote] = useState("");
+  const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
 
   // 물품 구분 코드 가져오기
   useEffect(() => {
     axios
       .get("/api/item/commonCode")
       .then((res) => {
-        setItemCommonCode(res.data);
+        setItemCommonCodeList(res.data);
       })
       .catch((error) => {
         console.error("데이터 로딩 중 오류 발생: ", error);
@@ -32,17 +28,13 @@ export function ItemAdd() {
   // 물품 등록하기
   const handleAddClick = () => {
     const itemData = {
-      itemCode,
-      itemName,
-      partnerName,
-      managerName,
+      itemCommonCode,
+      customerName,
       size,
       unit,
-      inPrice,
-      outPrice,
-      tax,
-      minimumStock,
-      note,
+      inputPrice,
+      outputPrice,
+      itemNote,
     };
 
     axios
@@ -62,8 +54,8 @@ export function ItemAdd() {
       <Text>물품 등록 </Text>
       <Stack>
         <select
-          value={itemCode}
-          onChange={(e) => setItemCode(e.target.value)}
+          value={itemCommonCode}
+          onChange={(e) => setItemCommonCode(e.target.value)}
           style={{
             width: "100%",
             padding: "8px",
@@ -72,27 +64,17 @@ export function ItemAdd() {
           }}
         >
           <option value="">품목 구분</option>
-          {itemCommonCode.map((code) => (
-            <option key={code.item_code} value={code.item_code}>
-              {code.item_code_name}
+          {itemCommonCodeList.map((code) => (
+            <option key={code.item_common_code} value={code.item_common_code}>
+              {code.item_common_name}
             </option>
           ))}
         </select>
 
         <Input
-          placeholder="품목명"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-        />
-        <Input
-          placeholder="담당업체명"
-          value={partnerName}
-          onChange={(e) => setPartnerName(e.target.value)}
-        />
-        <Input
-          placeholder="취급 담당자명"
-          value={managerName}
-          onChange={(e) => setManagerName(e.target.value)}
+          placeholder="담당업체"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
         />
         <Input
           placeholder="규격"
@@ -106,28 +88,18 @@ export function ItemAdd() {
         />
         <Input
           placeholder="입고가"
-          value={inPrice}
-          onChange={(e) => setInPrice(e.target.value)}
+          value={inputPrice}
+          onChange={(e) => setInputPrice(e.target.value)}
         />
         <Input
           placeholder="출고가"
-          value={outPrice}
-          onChange={(e) => setOutPrice(e.target.value)}
-        />
-        <Input
-          placeholder="과세구분"
-          value={tax}
-          onChange={(e) => setTax(e.target.value)}
-        />
-        <Input
-          placeholder="기초재고량"
-          value={minimumStock}
-          onChange={(e) => setMinimumStock(e.target.value)}
+          value={outputPrice}
+          onChange={(e) => setOutputPrice(e.target.value)}
         />
         <Input
           placeholder="비고"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
+          value={itemNote}
+          onChange={(e) => setItemNote(e.target.value)}
         />
         <Button onClick={handleAddClick}>등록</Button>
       </Stack>

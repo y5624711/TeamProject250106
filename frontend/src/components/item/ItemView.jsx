@@ -3,28 +3,30 @@ import { Box, HStack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../ui/button.jsx";
 
-export function ItemView({ itemId }) {
+export function ItemView({ itemKey }) {
   const [itemList, setItemList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`/api/item/view/${itemId}`)
-      .then((res) => {
-        setItemList(res.data);
-      })
-      .catch((error) => {
-        console.error("물품 상세 정보 요청 중 오류 발생: ", error);
-      });
-  }, []);
+    if (itemKey) {
+      axios
+        .get(`/api/item/view/${itemKey}`)
+        .then((res) => {
+          setItemList(res.data);
+        })
+        .catch((error) => {
+          console.error("물품 상세 정보 요청 중 오류 발생: ", error);
+        });
+    }
+  }, [itemKey]);
 
   console.log(itemList);
   return (
     <Box>
-      <Text>물품 조회 > 물품 상세</Text>
+      <Text>물품 조회 > 물품 상세{itemKey}</Text>
       <HStack>
         {itemList.map((item) => (
           <Box>
-            <Box>{item.itemId}</Box>
+            <Box>{item.itemKey}</Box>
             <Box>{item.itemCodeName}</Box>
             <Box>{item.itemName}</Box>
             <Box>임시 담당 업체</Box>

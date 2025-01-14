@@ -12,28 +12,31 @@ import java.util.Map;
 @Mapper
 public interface ItemMapper {
     @Insert("""
-            INSERT INTO item
-            (item_code, partner_id, manager_id, item_name, size, unit, in_price, out_price, tax, minimum_stock, note)
-            VALUES (#{itemCode}, #{partnerId}, #{managerId}, #{itemName}, #{size}, #{unit}, #{inPrice}, #{outPrice}, #{tax}, #{minimumStock},  #{note})
+            INSERT INTO TB_ITEMMST
+            (item_key, item_common_code, customer_code, input_price, output_price, size, unit, item_note)
+            VALUES (#{itemKey}, #{itemCommonCode}, #{customerCode}, #{inputPrice}, #{outputPrice}, #{size}, #{unit}, #{itemNote})
             """)
-    @Options(keyProperty = "itemId", useGeneratedKeys = true)
+    @Options(keyProperty = "itemKey", useGeneratedKeys = true)
     int addItem(Item item);
 
     @Select("""
-            SELECT item_code, item_code_name
-            FROM itemCommonCode
+            SELECT item_common_code, item_common_name
+            FROM TB_ITEMCOMM
+            ORDER BY binary(item_common_name)
             """)
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-            SELECT i.item_id, ic.item_code_name, i.item_name, i.partner_id, i.manager_id, i.tax, count(i.item_id) as item_current_count, i.minimum_stock, i.active
-            FROM item i LEFT JOIN itemCommonCode ic ON i.item_code = ic.item_code
+            SELECT i.item_key, ic.item_common_name, c.customer_code, i.input_price, i.output_price, i.item_active
+            FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                              LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             """)
     List<Item> getItemList();
 
     @Select("""
-            SELECT i.*, ic.item_code_name, count(i.item_id) as item_current_count
-            FROM item i LEFT JOIN itemCommonCode ic ON i.item_code = ic.item_code
+            SELECT i.*, ic.item_common_name
+            FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+            WHERE i.item_key = #{itemKey}
             """)
-    List<Item> getItemView();
+    List<Item> getItemView(Integer itemKey);
 }
