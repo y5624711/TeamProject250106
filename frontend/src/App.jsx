@@ -1,13 +1,11 @@
 import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { RootLayout } from "./page/root/RootLayout.jsx";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
+import { RootLayout } from "./page/root/RootLayout.jsx";
+import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeList } from "./page/commonCode/CommonCodeList.jsx";
-import { Item } from "./page/item/Item.jsx";
-import { BranchAdd } from "./page/branch/BranchAdd.jsx";
-import { BranchList } from "./page/branch/BranchList.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -24,14 +22,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      {
-        index: true,
-        element: <Main />,
-      },
-      {
-        path: "commonCode/list",
-        element: <CommonCodeList />,
-      },
+      { index: true, element: <Main /> },
+      { path: "commonCode", element: <CommonCode /> },
+      { path: "commonCode/list", element: <CommonList /> },
+      { path: "commonCode/add", element: <CommonAdd /> },
       {
         path: "item",
         element: <Item />,

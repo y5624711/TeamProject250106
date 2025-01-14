@@ -46,7 +46,7 @@ export function Navbar() {
         <NavItem>협력업체 관리</NavItem>
         <NavItem>물품 관리</NavItem>
         <NavItem>자산 관리</NavItem>
-        <NavItem onClick={() => navigate("/commonCode/list")}>공통코드</NavItem>
+        <NavItem onClick={() => navigate("/commonCode")}>공통코드</NavItem>
         <NavItem>인사관리</NavItem>
         <NavItem>회원관리</NavItem>
       </Flex>
