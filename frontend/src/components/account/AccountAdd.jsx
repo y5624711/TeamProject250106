@@ -14,12 +14,15 @@ import {
 import { useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function AccountAdd() {
   const [id, setId] = useState();
   const [password, setPassword] = useState();
   const [selectedCommonCode, setSelectedCommonCode] = useState();
+  const navigate = useNavigate();
 
+  // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
       { label: "가맹점", value: "B" },
@@ -32,6 +35,7 @@ export function AccountAdd() {
     axios.post("/api/account/add", {
       accountId: id,
       password: password,
+      // 배열로 들어오는데 그거 제거  해주는 코드
       commonCode: selectedCommonCode.join(""),
     });
     setId("");
@@ -40,7 +44,7 @@ export function AccountAdd() {
   }
 
   return (
-    <Box border={"1px solid black"}>
+    <Box>
       <Heading> 회원 등록</Heading>
       <Stack>
         <SelectRoot
@@ -75,9 +79,15 @@ export function AccountAdd() {
           }}
         />
       </Stack>
-      <Button onClick={() => handleMemberAdd()}>회원 등록</Button>
-      <Button onClick={() => {}}> 회원 수정 </Button>
-      <Button> 회원 삭제</Button>
+      <Button
+        onClick={() => {
+          handleMemberAdd();
+          //
+          navigate();
+        }}
+      >
+        회원 등록
+      </Button>
     </Box>
   );
 }

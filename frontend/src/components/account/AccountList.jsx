@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Table } from "@chakra-ui/react";
+import { Box, Heading, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export function AccountList() {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
+    // 전체 어카운트 리스트 불러오기
     axios.get("/api/account/list").then((res) => {
       setMemberList(res.data);
     });
   }, []);
 
+  const sidebarItems = [
+    { label: "회원 조회", path: "/account/list" },
+    { label: "회원 등록", path: "/account/add" },
+  ];
+
   return (
     <Box>
+      <Heading> 낄낄</Heading>
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>개인키</Table.ColumnHeader>
+            <Table.ColumnHeader>개인 키</Table.ColumnHeader>
             <Table.ColumnHeader>분류 코드</Table.ColumnHeader>
-            <Table.ColumnHeader>번호</Table.ColumnHeader>
+            <Table.ColumnHeader>분류 코드 아이디</Table.ColumnHeader>
             <Table.ColumnHeader>비번</Table.ColumnHeader>
+            <Table.ColumnHeader>사용 여부</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -30,6 +38,9 @@ export function AccountList() {
               <Table.Cell> {item.commonCode} </Table.Cell>
               <Table.Cell> {item.accountId} </Table.Cell>
               <Table.Cell> {item.password} </Table.Cell>
+              <Table.Cell>
+                {item.active === true ? "사용중" : "사용안함"}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

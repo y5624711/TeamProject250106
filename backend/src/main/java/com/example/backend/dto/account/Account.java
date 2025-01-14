@@ -8,4 +8,5 @@ public class Account {
     private int accountId;
     private String password;
     private String commonCode;
+    private boolean active;
 }
