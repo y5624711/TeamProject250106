@@ -15,17 +15,17 @@ public class EmployeeController {
 
 
      @GetMapping("/list")  //  모든 멤버 출력
-     public List<Employee> getAllAccount() {
+     public List<Employee> getAllEmployees() {
 
-        List<Employee> allList = service.getAllAccount();
+        List<Employee> allList = service.getAllEmployee();
 
         return allList;
      }
 
      // 회원 등록
     @PostMapping("add")
-    public void addAccount(@RequestBody Employee employee) {
+    public void addEmployee(@RequestBody Employee employee) {
         System.out.println("account = " + employee);
-        service.addAccount(employee);
+        service.addEmployee(employee);
     }
 }

@@ -12,16 +12,19 @@ import java.util.List;
 @Mapper
 public interface EmployeeMapper {
 
+    // 추가 버튼
     @Insert("""
-        INSERT INTO TB_EMPMST(account_id, password, common_code)
-        VALUES (#{accountId}, #{password}, #{commonCode})
+        INSERT INTO TB_EMPMST(employee_common_code ,employee_workplace_code,
+                          employee_no, employee_name,
+                          employee_tel,employee_note)
+        VALUES (#{employeeCommonCode},#{employeeWorkPlaceCode},#{employeeNo}, #{employeeName}, #{employeeTel}, #{employeeNote})
     """)
-    @Options(useGeneratedKeys = true, keyProperty = "accountKey")
-    int addAccount(Employee member);
+    @Options(useGeneratedKeys = true, keyProperty = "employeeKey")
+    int addEmployee(Employee member);
 
 
     @Select("""
         select * from TB_EMPMST
 """)
-    List<Employee> getAllAccounts();
+    List<Employee> getAllEmployees();
 }

@@ -14,15 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService {
         final EmployeeMapper mapper;
-    public boolean addAccount(Employee employee) {
+    public boolean addEmployee(Employee employee) {
 
-           int cnt= mapper.addAccount(employee);
+           int cnt= mapper.addEmployee(employee);
 
            return cnt==1;
     }
 
-    public List<Employee> getAllAccount() {
+    public List<Employee> getAllEmployee() {
 
-        return  mapper.getAllAccounts();
+        return  mapper.getAllEmployees();
     }
 }

@@ -42,10 +42,9 @@ export function EmployeeAdd() {
       .post("/api/employee/add", {
         // 배열로 들어오는데 그거 제거  해주는 코드
         employeeCommonCode: selectedCommonCode.join(""),
-        employeeWorkPlaceCode: departMent,
+        employeeWorkPlaceCode: workPlace,
         employeeNo: id,
         employeeName: name,
-        employeePassword: password,
         employeeTel: tel,
         employeeNote: note,
       })
@@ -120,9 +119,9 @@ export function EmployeeAdd() {
         />
         <Input
           placeholder={"비고"}
-          value={password}
+          value={note}
           onChange={(e) => {
-            setPassword(e.target.value);
+            setNote(e.target.value);
           }}
         />
       </Stack>
