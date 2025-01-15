@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Input, Stack } from "@chakra-ui/react";
+import { Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
 
@@ -20,7 +20,7 @@ function CustomerView({ customerKey }) {
   if (!customer) {
     return <p>로딩 중이거나 고객 정보가 없습니다.</p>;
   }
-  //
+
   // console.log(customerKey);
   // console.log(customer);
 
@@ -35,11 +35,14 @@ function CustomerView({ customerKey }) {
   //수정 버튼
   const handleEditClick = () => {
     // console.log(customer);
-
     axios
       .put("api/customer/update", customer)
       .then()
       .catch((err) => console.error("오류", err));
+  };
+
+  const handleDeleteClick = () => {
+    axios.put(`api/customer/delete/${customerKey}`).then().catch();
   };
 
   return (
@@ -64,11 +67,7 @@ function CustomerView({ customerKey }) {
           />
         </Field>
         <Field label={"품목 코드(차후 셀렉트)"}>
-          <Input
-            name="itemCode"
-            value={customer.itemCode}
-            onChange={handleInputChange}
-          />
+          <Input readOnly name="itemCode" value={customer.itemCode} />
         </Field>
         <Field label={"사업자 번호"}>
           <Input
@@ -113,7 +112,7 @@ function CustomerView({ customerKey }) {
           />
         </Field>
         <Field label={"비고"}>
-          <Input
+          <Textarea
             name={"customerNote"}
             value={customer.customerNote}
             onChange={handleInputChange}
@@ -121,7 +120,7 @@ function CustomerView({ customerKey }) {
         </Field>
       </Stack>
       <div>
-        <Button>삭제</Button>
+        <Button onClick={handleDeleteClick}>삭제</Button>
         <Button onClick={handleEditClick}>수정</Button>
       </div>
     </div>
