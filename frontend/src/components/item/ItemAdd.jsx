@@ -10,12 +10,12 @@ import {
   SelectTrigger,
   SelectValueText,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
 
 export function ItemAdd() {
   const [itemCommonCode, setItemCommonCode] = useState("");
@@ -100,7 +100,6 @@ export function ItemAdd() {
 
   return (
     <Box>
-      <Text>물품 등록 </Text>
       <Stack>
         <SelectRoot
           onValueChange={(e) => {
@@ -114,7 +113,7 @@ export function ItemAdd() {
             }
           }}
         >
-          <SelectLabel>취급 품목</SelectLabel>
+          <SelectLabel>품목</SelectLabel>
           <SelectTrigger>
             <SelectValueText>
               {itemCommonName != "" ? itemCommonName : "품목 선택"}
@@ -129,36 +128,48 @@ export function ItemAdd() {
           </SelectContent>
         </SelectRoot>
 
-        <Input readOnly placeholder="담당업체" value={customerName} />
-        <Input
-          placeholder="규격"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-        />
-        <Input
-          placeholder="단위"
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-        />
-        <NumberInputRoot>
-          <NumberInputField
-            placeholder="입고가"
-            value={inputPrice}
-            onChange={(e) => setInputPrice(e.target.value)}
+        <Field label={"담당업체"}>
+          <Input readOnly placeholder="담당업체" value={customerName} />
+        </Field>
+        <Field label={"규격"}>
+          <Input
+            placeholder="규격"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
           />
-        </NumberInputRoot>
-        <NumberInputRoot>
-          <NumberInputField
-            placeholder="출고가"
-            value={outputPrice}
-            onChange={(e) => setOutputPrice(e.target.value)}
+        </Field>
+        <Field label={"단위"}>
+          <Input
+            placeholder="단위"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
           />
-        </NumberInputRoot>
-        <Input
-          placeholder="비고"
-          value={itemNote}
-          onChange={(e) => setItemNote(e.target.value)}
-        />
+        </Field>
+        <Field label={"입고가"}>
+          <NumberInputRoot>
+            <NumberInputField
+              placeholder="입고가"
+              value={inputPrice}
+              onChange={(e) => setInputPrice(e.target.value)}
+            />
+          </NumberInputRoot>
+        </Field>
+        <Field label={"출고가"}>
+          <NumberInputRoot>
+            <NumberInputField
+              placeholder="출고가"
+              value={outputPrice}
+              onChange={(e) => setOutputPrice(e.target.value)}
+            />
+          </NumberInputRoot>
+        </Field>
+        <Field label={"비고"}>
+          <Input
+            placeholder="비고"
+            value={itemNote}
+            onChange={(e) => setItemNote(e.target.value)}
+          />
+        </Field>
         <Button onClick={handleAddClick}>등록</Button>
       </Stack>
     </Box>

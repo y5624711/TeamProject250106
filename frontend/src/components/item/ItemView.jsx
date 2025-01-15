@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
 
 export function ItemView({ itemKey }) {
   const [itemList, setItemList] = useState([]);
@@ -97,60 +98,92 @@ export function ItemView({ itemKey }) {
 
   return (
     <Box>
-      <Text>물품 조회 > 물품 상세 {itemKey}</Text>
       <HStack>
         {itemList.map((item) => (
           <Box key={item.itemKey}>
             <Box>
               {isEditing ? (
                 <>
-                  <Input readOnly value={item.itemCommonName} />
-                  <Input readOnly value={item.customerName} />
-                  <Input
-                    name="size"
-                    placeholder="규격"
-                    value={editedItem.size}
-                    onChange={handleChange}
-                  />
-                  <Input
-                    name="unit"
-                    placeholder="단위"
-                    value={editedItem.unit}
-                    onChange={handleChange}
-                  />
-                  <NumberInputRoot>
-                    <NumberInputField
-                      name="inputPrice"
-                      placeholder="입고가"
-                      value={editedItem.inputPrice}
+                  <Field label={"품목"}>
+                    <Input readOnly value={item.itemCommonName} />
+                  </Field>
+                  <Field label={"담당업체"}>
+                    <Input readOnly value={item.customerName} />
+                  </Field>
+                  <Field label={"규격"}>
+                    <Input
+                      name="size"
+                      placeholder="규격"
+                      value={editedItem.size}
                       onChange={handleChange}
                     />
-                  </NumberInputRoot>
-                  <NumberInputRoot>
-                    <NumberInputField
-                      name="outputPrice"
-                      placeholder="출고가"
-                      value={editedItem.outputPrice}
+                  </Field>
+                  <Field label={"단위"}>
+                    <Input
+                      name="unit"
+                      placeholder="단위"
+                      value={editedItem.unit}
                       onChange={handleChange}
                     />
-                  </NumberInputRoot>
-                  <Input
-                    name="itemNote"
-                    placeholder="비고"
-                    value={editedItem.itemNote}
-                    onChange={handleChange}
-                  />
+                  </Field>
+                  <Field label={"입고가"}>
+                    <NumberInputRoot>
+                      <NumberInputField
+                        name="inputPrice"
+                        placeholder="입고가"
+                        value={editedItem.inputPrice}
+                        onChange={handleChange}
+                      />
+                    </NumberInputRoot>
+                  </Field>
+                  <Field label={"출고가"}>
+                    <NumberInputRoot>
+                      <NumberInputField
+                        name="outputPrice"
+                        placeholder="출고가"
+                        value={editedItem.outputPrice}
+                        onChange={handleChange}
+                      />
+                    </NumberInputRoot>
+                  </Field>
+                  <Field label={"비고"}>
+                    <Input
+                      name="itemNote"
+                      placeholder="비고"
+                      value={editedItem.itemNote}
+                      onChange={handleChange}
+                    />
+                  </Field>
                 </>
               ) : (
                 <>
-                  <Box>{item.itemCommonName}</Box>
-                  <Box>{item.customerName}</Box>
-                  <Box>{item.size}</Box>
-                  <Box>{item.unit}</Box>
-                  <Box>{item.inputPrice}</Box>
-                  <Box>{item.outputPrice}</Box>
-                  <Box>{item.itemActive ? "사용" : "미사용"}</Box>
-                  <Box>{item.itemNote}</Box>
+                  <Field label={"품목"}>
+                    <Input readOnly value={item.itemCommonName} />
+                  </Field>
+                  <Field label={"담당업체"}>
+                    <Input readOnly value={item.customerName} />
+                  </Field>
+                  <Field label={"규격"}>
+                    <Input readOnly value={item.size} />
+                  </Field>
+                  <Field label={"단위"}>
+                    <Input readOnly value={item.unit} />
+                  </Field>
+                  <Field label={"입고가"}>
+                    <Input readOnly value={item.inputPrice} />
+                  </Field>
+                  <Field label={"출고가"}>
+                    <Input readOnly value={item.outputPrice} />
+                  </Field>
+                  <Field label={"사용여부"}>
+                    <Input
+                      readOnly
+                      value={item.itemActive ? "사용" : "미사용"}
+                    />
+                  </Field>
+                  <Field label={"비고"}>
+                    <Input readOnly value={item.itemNote} />
+                  </Field>
                 </>
               )}
             </Box>
