@@ -34,7 +34,9 @@ export function Navbar() {
       <Flex gap={5} pt={5} w={"80%"} mx={"auto"}>
         <Heading>Choongang System</Heading>
         <Spacer />
-        <Text onClick={() => navigate("/commonCode")}>공통 코드 관리</Text>
+        <Text onClick={() => navigate("/commonCode/system/list")}>
+          공통 코드 관리
+        </Text>
         <Text>유저 아이디</Text>
         <Text>로그아웃</Text>
       </Flex>

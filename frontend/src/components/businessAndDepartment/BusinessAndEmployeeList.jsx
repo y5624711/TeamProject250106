@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, HStack, Input, Spinner, Stack } from "@chakra-ui/react";
-import { Field } from "../ui/field.jsx";
-import { EmployeeList } from "./EmployeeList.jsx";
-import { Button } from "../ui/button.jsx";
+import { Box, Spinner, Stack } from "@chakra-ui/react";
+import { BusinessInfo } from "./BusinessInfo.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
-export function BusinessAndEmployeeList() {
-  const [business, setBusiness] = useState([]);
-  const [employee, setEmployee] = useState([]);
-  const [business_name, setBusiness_name] = useState("");
-  const [business_rep, setBusiness_rep] = useState("");
-  const [business_no, setBusiness_no] = useState("");
-  const [business_tel, setBusiness_tel] = useState("");
-  const [business_fax, setBusiness_fax] = useState("");
-  const [business_address, setBusiness_address] = useState("");
+export function BusinessView() {
+  const [business, setBusiness] = useState(null); // 초기값을 객체로 설정
+
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -23,13 +16,42 @@ export function BusinessAndEmployeeList() {
       .then((res) => res.data)
       .then((data) => {
         setBusiness(data["회사"]);
-        setEmployee(data["사원"]);
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const handleSaveClick = () => {
+    axios
+      .put("/api/business/update", {
+        businessKey: business.businessKey,
+        businessCode: business.businessCode,
+        businessName: business.businessName,
+        businessRep: business.businessRep,
+        businessNo: business.businessNo,
+        businessTel: business.businessTel,
+        businessFax: business.businessFax,
+        businessAddress: business.businessAddress,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        const message = error.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
+  };
 
   if (loading) {
     return <Spinner />;
@@ -38,45 +60,13 @@ export function BusinessAndEmployeeList() {
   return (
     <Box>
       <Stack w={"70%"}>
-        <Box p={5} bgColor={"gray.200"}>
-          <Field label={"회사명"}>
-            <Input
-              borderColor="black" // 외곽선 색상
-              _hover={{ borderColor: "black" }} // 호버 상태에서 검은 외곽선 유지
-              _focus={{
-                borderColor: "black", // 포커스 상태에서도 검은 외곽선 유지
-                boxShadow: "0 0 0 1px black", // 검은 외곽선 스타일
-              }}
-              value={business.business_name}
-              onChange={(e) => setBusiness_name(e.target.value)}
-            />
-          </Field>
-          {/*<HStack>*/}
-          {/*  <Field label={"대표"}>*/}
-          {/*    <Input value={business.business_rep} />*/}
-          {/*  </Field>*/}
-          {/*  <Field label={"사업자번호"}>*/}
-          {/*    <Input value={business.business_no} />*/}
-          {/*  </Field>*/}
-          {/*</HStack>*/}
-          {/*<HStack>*/}
-          {/*  <Field label={"대표 전화번호"}>*/}
-          {/*    <Input value={business.business_tel} />*/}
-          {/*  </Field>*/}
-          {/*  <Field label={"팩스번호"}>*/}
-          {/*    <Input value={business.business_fax} />*/}
-          {/*  </Field>*/}
-          {/*</HStack>*/}
-          {/*<Field label={"주소"}>*/}
-          {/*  <Input value={business.business_address} />*/}
-          {/*</Field>*/}
-          <HStack>
-            <Button onClick={() => {}}>수정</Button>
-            <Button>저장</Button>
-          </HStack>
-        </Box>
-
-        <EmployeeList data={employee}></EmployeeList>
+        <BusinessInfo
+          business={business} // 현재 상태 전달
+          setBusiness={setBusiness} // 상태 업데이트 핸들러 전달
+          isEditing={isEditing} // 수정 상태 전달
+          toggleEditing={() => setIsEditing(!isEditing)}
+          handleSaveClick={handleSaveClick}
+        />
       </Stack>
     </Box>
   );

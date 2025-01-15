@@ -5,13 +5,13 @@ import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { CommonList } from "./page/commonCode/CommonList.jsx";
-import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
 import { BusinessAndEmployee } from "./page/businessAndDepartment/BusinessAndEmployee.jsx";
+import { CommonList } from "./page/commonCode/CommonList.jsx";
+import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
