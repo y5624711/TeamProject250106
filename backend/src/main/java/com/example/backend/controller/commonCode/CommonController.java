@@ -21,7 +21,7 @@ public class CommonController {
     }
 
     @PostMapping("/system/add")
-    private ResponseEntity<Map<String, Object>> addCommon(@RequestBody CommonCode commonCode) {
+    private ResponseEntity<Map<String, Object>> addCommon(@RequestBody CommonSysCode commonCode) {
         if (service.validate(commonCode)) {
             if (service.addCommonCode(commonCode)) {
                 return ResponseEntity.ok().body(Map.of("message",

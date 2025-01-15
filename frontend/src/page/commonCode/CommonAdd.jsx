@@ -13,9 +13,9 @@ export function CommonAdd() {
   const handleSaveClick = () => {
     axios
       .post("/api/commonCode/system/add", {
-        common_code: commonCode,
-        common_code_name: codeName,
-        common_code_note: codeNote,
+        commonCode: commonCode,
+        commonCodeName: codeName,
+        commonCodeNote: codeNote,
       })
       .then((res) => res.data)
       .then((data) => {

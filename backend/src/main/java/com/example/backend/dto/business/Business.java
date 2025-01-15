@@ -6,12 +6,12 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Business {
-    private int business_key;
-    private String business_code;
-    private String business_name;
-    private String business_rep;
-    private String business_no;
-    private String business_tel;
-    private String business_fax;
-    private String business_address;
+    private int businessKey;
+    private String businessCode;
+    private String businessName;
+    private String businessRep;
+    private String businessNo;
+    private String businessTel;
+    private String businessFax;
+    private String businessAddress;
 }
