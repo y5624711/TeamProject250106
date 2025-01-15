@@ -17,7 +17,7 @@ import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 
-export function ItemAdd() {
+export function ItemAdd({ onCancel }) {
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [itemCommonName, setItemCommonName] = useState("");
   const [customerName, setCustomerName] = useState("");
@@ -100,6 +100,7 @@ export function ItemAdd() {
 
   return (
     <Box>
+      <Button onClick={onCancel}>취소</Button>
       <Stack>
         <SelectRoot
           onValueChange={(e) => {

@@ -7,12 +7,11 @@ import { Button } from "../../components/ui/button.jsx";
 import { ItemView } from "../../components/item/ItemView.jsx";
 
 export function Item() {
-  const [selectedItemKey, setSelectedItemKey] = useState(1);
-  const [isAdding, setIsAdding] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("view");
+  const [itemKey, setItemKey] = useState(1);
 
-  const handleShowDetail = (itemKey) => {
-    setSelectedItemKey(itemKey);
-    setIsAdding(false);
+  const handleSelectPage = (page) => {
+    setSelectedPage(page);
   };
 
   return (
@@ -21,18 +20,22 @@ export function Item() {
         <SideBar />
         <Stack>
           기준정보 관리 > 품목 관리
-          <ItemList onShowDetail={handleShowDetail} />
+          <ItemList setItemKey={setItemKey} />
         </Stack>
         <Stack>
-          <Button
-            onClick={() => {
-              setIsAdding((prev) => !prev);
-              setSelectedItemKey(null);
-            }}
-          >
-            {isAdding ? "닫기" : "추가"}
-          </Button>
-          {isAdding ? <ItemAdd /> : <ItemView itemKey={selectedItemKey} />}
+          {selectedPage === "view" && (
+            <Button onClick={() => handleSelectPage("add")}>추가</Button>
+          )}
+          {selectedPage === "add" ? (
+            <ItemAdd
+              onCancel={() => {
+                handleSelectPage("view");
+                setItemKey(1);
+              }}
+            />
+          ) : (
+            <ItemView itemKey={itemKey} />
+          )}
         </Stack>
       </HStack>
     </Box>

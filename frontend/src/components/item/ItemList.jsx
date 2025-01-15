@@ -24,7 +24,7 @@ import { Button } from "../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 import { Switch } from "../ui/switch.jsx";
 
-export function ItemList({ onShowDetail }) {
+export function ItemList({ setItemKey }) {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [itemList, setItemList] = useState([]);
   const [count, setCount] = useState(0);
@@ -89,6 +89,15 @@ export function ItemList({ onShowDetail }) {
     }
   };
 
+  const headers = [
+    { key: "itemKey", label: "#" },
+    { key: "itemCommonName", label: "품목명" },
+    { key: "customerName", label: "담당업체" },
+    { key: "inputPrice", label: "입고가" },
+    { key: "outputPrice", label: "출고가" },
+    { key: "itemActive", label: "사용여부" },
+  ];
+
   return (
     <Box>
       <HStack>
@@ -133,22 +142,25 @@ export function ItemList({ onShowDetail }) {
         전체 상품 조회
       </Switch>
       <Box>
-        <Table.Root size="sm">
+        <Table.Root>
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>#</Table.ColumnHeader>
-              <Table.ColumnHeader>품목명</Table.ColumnHeader>
-              <Table.ColumnHeader>담당업체</Table.ColumnHeader>
-              <Table.ColumnHeader>입고가</Table.ColumnHeader>
-              <Table.ColumnHeader>출고가</Table.ColumnHeader>
-              <Table.ColumnHeader>사용여부</Table.ColumnHeader>
+              {headers.map((header) => (
+                <Table.ColumnHeader
+                  key={header.key}
+                  onClick={() => handleSort(header.key)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {header.label}
+                </Table.ColumnHeader>
+              ))}
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {itemList.list?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
-                onClick={() => onShowDetail(item.itemKey)}
+                onClick={() => setItemKey(item.itemKey)}
                 style={{ cursor: "pointer" }}
               >
                 <Table.Cell textAlign="center"> {index + 1}</Table.Cell>
