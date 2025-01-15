@@ -1,7 +1,7 @@
-package com.example.backend.service.Franchise;
+package com.example.backend.service.franchise;
 
-import com.example.backend.dto.Franchise.Franchise;
-import com.example.backend.mapper.Franchise.FranchiseMapper;
+import com.example.backend.dto.franchise.Franchise;
+import com.example.backend.mapper.franchise.FranchiseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

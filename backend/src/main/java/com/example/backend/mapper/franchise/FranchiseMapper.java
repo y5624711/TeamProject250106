@@ -1,6 +1,6 @@
-package com.example.backend.mapper.Franchise;
+package com.example.backend.mapper.franchise;
 
-import com.example.backend.dto.Franchise.Franchise;
+import com.example.backend.dto.franchise.Franchise;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;

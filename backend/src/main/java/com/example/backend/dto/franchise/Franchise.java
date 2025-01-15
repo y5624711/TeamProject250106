@@ -1,4 +1,4 @@
-package com.example.backend.dto.Franchise;
+package com.example.backend.dto.franchise;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.example.backend.controller.Franchise;
+package com.example.backend.controller.franchise;
 
-import com.example.backend.dto.Franchise.Franchise;
-import com.example.backend.service.Franchise.FranchiseService;
+import com.example.backend.dto.franchise.Franchise;
+import com.example.backend.service.franchise.FranchiseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
