@@ -42,4 +42,9 @@ public class FranchiseService {
     public List<Franchise> list() {
         return mapper.list();
     }
+
+    // 특정 가맹점 조회
+    public Franchise getFranchise(int franchiseKey) {
+        return mapper.getFranchise(franchiseKey);
+    }
 }

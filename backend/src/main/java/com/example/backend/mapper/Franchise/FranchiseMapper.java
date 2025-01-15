@@ -27,4 +27,15 @@ public interface FranchiseMapper {
             FROM TB_FRNCHSMST
             """)
     List<Franchise> list();
+
+    // 특정 가맹점 조회
+    @Select("""
+            SELECT 
+                franchise_key, business_employee_no, franchise_name, franchise_code, franchise_rep, 
+                franchise_no, franchise_tel, franchise_address, franchise_address_detail, 
+                franchise_post, franchise_state, franchise_city, franchise_active, franchise_note
+            FROM TB_FRNCHSMST
+            WHERE franchise_key = #{franchiseKey}
+            """)
+    Franchise getFranchise(int franchiseKey);
 }

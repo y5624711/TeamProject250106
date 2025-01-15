@@ -37,4 +37,10 @@ public class FranchiseController {
     public List<Franchise> list() {
         return service.list();
     }
+
+    // 특정 가맹점 조회
+    @GetMapping("view/{franchiseKey}")
+    public Franchise view(@PathVariable int franchiseKey) {
+        return service.getFranchise(franchiseKey);
+    }
 }
