@@ -4,6 +4,7 @@ import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
 import { FranchiseSideBar } from "../../components/franchise/FranchiseSideBar.jsx";
 import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
 import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
+import { FranchiseEdit } from "../../components/franchise/FranchiseEdit.jsx";
 
 export function Franchise() {
   const [viewMode, setViewMode] = useState("view");
@@ -27,17 +28,23 @@ export function Franchise() {
         </Box>
         <Box flex={"1"} pl={4}>
           <Button colorScheme="teal" onClick={() => setViewMode("add")} mb={4}>
-            가맹점 등록
+            추가
           </Button>
           {/* viewMode에 따라 컴포넌트 변경 */}
-          {viewMode === "view" && selectedFranchiseKey && (
-            <FranchiseView franchiseKey={selectedFranchiseKey} />
-          )}
           {viewMode === "add" && (
             <FranchiseAdd
               setViewMode={setViewMode} // 상태 변경 함수 전달
               setSelectedFranchiseKey={setSelectedFranchiseKey} // 선택된 가맹점 키 설정 함수 전달
             />
+          )}
+          {viewMode === "view" && selectedFranchiseKey && (
+            <FranchiseView
+              franchiseKey={selectedFranchiseKey}
+              setViewMode={setViewMode} // 상태 변경 함수 전달
+            />
+          )}
+          {viewMode === "edit" && selectedFranchiseKey && (
+            <FranchiseEdit franchiseKey={selectedFranchiseKey} />
           )}
         </Box>
       </Box>

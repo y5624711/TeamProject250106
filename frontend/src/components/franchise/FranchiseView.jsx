@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import axios from "axios";
 
-export function FranchiseView({ franchiseKey }) {
+export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
 
   useEffect(() => {
@@ -26,11 +26,19 @@ export function FranchiseView({ franchiseKey }) {
     return <Text>Loading...</Text>;
   }
 
+  const handleEditClick = () => {
+    setViewMode("edit"); // 수정 모드로 전환
+  };
+
   return (
-    <Box>
-      <Heading size="lg" mb={4}>
-        가맹점 상세 정보
-      </Heading>
+    <Box
+      p="5"
+      height="710px"
+      width="900px"
+      borderRadius="md"
+      boxShadow="0px 10px 30px rgba(0, 0, 0, 0.2)"
+      bg="white"
+    >
       <Text fontWeight="bold">
         본사 직원 사번: {franchise.businessEmployeeNo}
       </Text>
@@ -46,6 +54,7 @@ export function FranchiseView({ franchiseKey }) {
       <Text>시군: {franchise.franchiseCity}</Text>
       <Text>사용 여부: {franchise.franchiseActive ? "활성" : "비활성"}</Text>
       <Text>비고: {franchise.franchiseNote}</Text>
+      <Button onClick={handleEditClick}>수정</Button>
     </Box>
   );
 }
