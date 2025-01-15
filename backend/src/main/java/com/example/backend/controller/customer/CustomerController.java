@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +24,12 @@ public class CustomerController {
 
     //협력사 목록
     @GetMapping("list")
-    public List<Customer> customerList() {
-        List<Customer> customerList = service.customerList();
-//        System.out.println(customerList);
-        return customerList;
+    public Map<String, Object> customerList(
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        return service.getCustomerList(active, page, type, keyword);
     }
 
     //협력사 상세

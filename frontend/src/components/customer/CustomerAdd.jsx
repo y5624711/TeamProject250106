@@ -69,6 +69,13 @@ function CustomerAdd({ onCancel }) {
     }),
   });
 
+  const type = createListCollection({
+    items: [
+      { label: "업체명", value: "customerName" },
+      { label: "취급 물품", value: "itemName" },
+    ],
+  });
+
   return (
     <div>
       <Heading>협력 업체 등록</Heading>

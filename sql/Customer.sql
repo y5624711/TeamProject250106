@@ -40,3 +40,13 @@ FROM TB_ITEMCOMM ic
                     FROM TB_CUSTMST
                     WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
 WHERE cm.item_code IS NULL;
+
+SELECT customer_key, customer_name, customer_code, item_code, item_common_name, customer_rep, customer_active
+FROM TB_CUSTMST
+         LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code;
+
+SELECT customer_key, customer_name, customer_code, item_code, item_common_name itemName, customer_rep, customer_active
+FROM TB_CUSTMST
+         LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+WHERE customer_active = false
+  AND customer_name LIKE CONCAT('중앙');

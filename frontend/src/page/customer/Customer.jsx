@@ -4,32 +4,94 @@ import axios from "axios";
 import { Box, Button, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 import CustomerView from "../../components/customer/CustomerView.jsx";
-import { SideBar } from "../../components/tool/SideBar.jsx"; // import CustomerList from "../../components/customer/CustomerList.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx";
+import { useSearchParams } from "react-router-dom"; // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
-  const [selectedMenu, setSelectedMenu] = useState("customerList");
   const [selectedPage, setSelectedPage] = useState("view");
   const [customerKey, setCustomerKey] = useState(2);
+  const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
+  const [checkedActive, setCheckedActive] = useState(
+    false || searchParams.get("active"),
+  );
+  const [search, setSearch] = useState({
+    type: searchParams.get("type") ?? "all",
+    keyword: searchParams.get("key") ?? "",
+  });
 
   useEffect(() => {
     axios
-      .get(`api/customer/list`)
+      .get(`api/customer/list`, {
+        params: {
+          type: searchParams.get("type") || "all",
+          keyword: searchParams.get("keyword") || "",
+          page: searchParams.get("page") || "1",
+          active: searchParams.get("active") || "false",
+        },
+      })
       .then((res) => res.data)
-      .then((data) => setCustomerList(data));
+      .then((data) => {
+        setCount(data.count);
+        setCustomerList(data.customerList);
+      });
   }, []);
+  console.log(customerList);
 
-  // const handleSelectMenu = (menu) => {
-  //   setSelectedMenu(menu);
-  // };
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("type")) {
+      nextSearch.type = searchParams.get("type");
+    } else {
+      nextSearch.type = "all";
+    }
+
+    if (searchParams.get("keyword")) {
+      nextSearch.keyword = searchParams.get("keyword");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
+  }, [searchParams]);
 
   const handleSelectPage = (page) => {
     setSelectedPage(page);
   };
 
-  // const handleSelectCustomer = () => {};
+  //검색어 변경 처리
+  function handleSearchClick() {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    if (search.keyword.trim().length > 0) {
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
+      nextSearchParam.set("page", "1");
+    } else {
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
+    }
+
+    setSearchParams(nextSearchParam);
+  }
+
+  //pagination
+  const pageParam = searchParams.get("page") ?? "1";
+  const page = Number(pageParam);
+
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
+  function handlePageChange(e) {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
 
   return (
     <Box>
@@ -44,6 +106,15 @@ function Customer() {
             customerList={customerList}
             customerKey={customerKey}
             setCustomerKey={setCustomerKey}
+            currentPage={currentPage}
+            count={count}
+            handlePageChange={handlePageChange}
+            setSearchParams={setSearchParams}
+            checkedActive={checkedActive}
+            setCheckedActive={setCheckedActive}
+            search={search}
+            setSearch={setSearch}
+            handleSearchClick={handleSearchClick}
           />
         </Stack>
         <Stack>

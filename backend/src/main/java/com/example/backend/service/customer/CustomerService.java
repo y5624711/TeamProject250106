@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -26,8 +27,16 @@ public class CustomerService {
         mapper.addCustomer(customer);
     }
 
-    public List<Customer> customerList() {
-        return mapper.customerList();
+    public Map<String, Object> getCustomerList(Boolean active, Integer page, String type, String keyword) {
+        int offset = (page - 1) * 10;
+
+        //검색
+        List<Customer> customerList = mapper.getCustomerList(active, offset, type, keyword);
+
+        //목록 수
+        Integer count = mapper.countCustomerList(active, type, keyword);
+
+        return Map.of("customerList", customerList, "count", count);
     }
 
     public Customer viewCustomer(String customerKey) {
