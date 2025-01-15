@@ -140,11 +140,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
 
   const handleDelete = () => {
     console.log("실행");
-    axios.put("api/employee/delete", {
-      params: {
-        viewKey: viewKey,
-      },
-    });
+    axios.put("api/employee/delete", { employeeKey: viewKey });
   };
   return (
     <Box border={"1px solid black"}>
@@ -221,6 +217,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
           />
         )}
       </Stack>
+
       <Button onClick={handleSubmit}>
         {viewKey === -1 ? "회원 등록" : "회원 수정"}
       </Button>

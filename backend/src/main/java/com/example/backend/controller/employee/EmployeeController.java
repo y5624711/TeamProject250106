@@ -18,7 +18,6 @@ public class EmployeeController {
 
      @GetMapping("view")
      public Employee getEmployee(@RequestParam int viewKey) {
-         System.out.println("viewKey = " + viewKey);
 
 
 //         return  new Employee();
@@ -59,8 +58,10 @@ public class EmployeeController {
     }
 
     @PutMapping("delete")
-    public void deleteEmployee(@RequestParam int viewKey) {
-        System.out.println("viewKey = " + viewKey);
+    public void deleteEmployeeByKey(@RequestBody Employee employee) {
+
+        System.out.println("employee = " + employee);
+        service.deleteEmployeeByKey(employee.getEmployeeKey());
     }
 
 }

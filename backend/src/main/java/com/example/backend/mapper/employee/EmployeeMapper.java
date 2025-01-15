@@ -45,4 +45,12 @@ public interface EmployeeMapper {
     WHERE employee_key = #{employeeKey}
 """)
     int editEmployeeByKey(Employee employee);
+
+
+    @Update("""
+    UPDATE TB_EMPMST
+    SET employee_active=false
+        where employee_key = #{employeeKey}
+""")
+    int deleteEmployeeByKey(int employeeKey);
 }

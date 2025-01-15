@@ -38,4 +38,10 @@ public class EmployeeService {
         int cnt =mapper.editEmployeeByKey(employee);
         return   cnt==1;
     }
+
+    public boolean deleteEmployeeByKey(int employeeKey) {
+
+        int cnt = mapper.deleteEmployeeByKey(employeeKey);
+        return cnt==1;
+    }
 }
