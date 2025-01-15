@@ -161,8 +161,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
     axios
       .put("api/employee/delete", { employeeKey: viewKey })
       .then((res) => {
-        console.log(res);
-        console.log(res.data); // 응답 데이터 로그
+        formDataClear();
         toaster.create({
           type: res.data.message.type,
           description: res.data.message.text,
@@ -176,6 +175,9 @@ export function EmployeeAdd({ viewKey, onChange }) {
           type: error.response.data.message.type,
           description: error.response.data.message.text,
         });
+      })
+      .finally(() => {
+        onChange();
       });
   };
 
