@@ -25,4 +25,11 @@ public class EmployeeService {
 
         return  mapper.getAllEmployees();
     }
+
+    // 인사관리 리스트 클릭시 상세정보 가져오는 서비스
+    public Employee getOneEmployeeByKey(int viewKey) {
+
+        return  mapper.getOneEmployeeByKey(viewKey);
+
+    }
 }

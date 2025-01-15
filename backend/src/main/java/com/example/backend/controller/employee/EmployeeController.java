@@ -14,6 +14,16 @@ public class EmployeeController {
      final EmployeeService service;
 
 
+     @GetMapping("view")
+     public Employee getEmployee(@RequestParam int viewKey) {
+         System.out.println("viewKey = " + viewKey);
+
+
+//         return  new Employee();
+         return  service.getOneEmployeeByKey(viewKey);
+     }
+
+
      @GetMapping("/list")  //  모든 멤버 출력
      public List<Employee> getAllEmployees() {
 
@@ -27,5 +37,13 @@ public class EmployeeController {
     public void addEmployee(@RequestBody Employee employee) {
         System.out.println("account = " + employee);
         service.addEmployee(employee);
+    }
+    
+    // 회원 수정
+    @PutMapping("update")
+    public void updateEmployee(@RequestBody Employee employee) {
+        System.out.println("employee = " + employee);
+         
+//         service.updateEmployeeByKey(employee);
     }
 }

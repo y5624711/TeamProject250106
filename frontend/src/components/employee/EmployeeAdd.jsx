@@ -11,64 +11,109 @@ import {
   SelectValueText,
   Stack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function EmployeeAdd() {
-  const [id, setId] = useState();
-  const [password, setPassword] = useState();
-  const [selectedCommonCode, setSelectedCommonCode] = useState();
-  const [name, setName] = useState("");
-  const [tel, setTel] = useState("");
-  const [note, setNote] = useState("");
-  const [workPlace, setWorkPlace] = useState("");
-  const navigate = useNavigate();
-  const [departMent, setDepartMent] = useState("");
+export function EmployeeAdd({ viewKey }) {
+  const [formData, setFormData] = useState({
+    id: "",
+    password: "",
+    selectedCommonCode: "",
+    name: "",
+    tel: "",
+    note: "",
+    workPlace: "",
+    departMent: "",
+  });
 
   // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
-      { label: "가맹점", value: "B" },
-      { label: "협력업체", value: "P" },
-      { label: "직원", value: "M" },
+      { label: "협력업체", value: "PAR" },
+      { label: "직원", value: "EMP" },
     ],
   });
 
-  // 이거 그러면  보일때는 그렇게 하는데 추가할때는 개인이 개인
-  function handleMemberAdd() {
-    axios
-      .post("/api/employee/add", {
-        // 배열로 들어오는데 그거 제거  해주는 코드
-        employeeCommonCode: selectedCommonCode.join(""),
-        employeeWorkPlaceCode: workPlace,
-        employeeNo: id,
-        employeeName: name,
-        employeeTel: tel,
-        employeeNote: note,
-      })
+  //  viewKey 값이 변동 되었을경우  출력을 위해 서버에서 받아오는 코드
+  useEffect(() => {
+    if (viewKey !== -1) {
+      axios
+        .get("api/employee/view", {
+          params: { viewKey },
+        })
+        .then((res) => {
+          setFormData({
+            id: res.data.employeeNo || "",
+            selectedCommonCode: res.data.employeeCommonCode || "",
+            password: res.data.employeePassword || "",
+            tel: res.data.employeeTel || "",
+            workPlace: res.data.employeeWorkPlaceCode || "",
+            departMent: res.data.department || "",
+            note: res.data.employeeNote || "",
+            name: res.data.employeeName || "",
+          });
+        });
+    }
+  }, [viewKey]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  //  클릭 버튼 시
+  const handleSubmit = () => {
+    // 수정 일때와 , 추가 일때의 경로 매핑
+    const url = viewKey === -1 ? "/api/employee/add" : "/api/employee/update";
+    const method = viewKey === -1 ? "post" : "put";
+    // selectedCommonCode.join(""),
+
+    const data = {
+      employeeCommonCode: formData.selectedCommonCode.join(""),
+      employeeWorkPlaceCode: formData.workPlace,
+      employeeNo: formData.id,
+      employeeName: formData.name,
+      employeeTel: formData.tel,
+      employeeNote: formData.note,
+      employeeDepartment: formData.departMent,
+      employeePassword: formData.password,
+    };
+
+    axios[method](url, data)
       .then(() => {
-        setId("");
-        setSelectedCommonCode("");
-        setPassword("");
-        setTel("");
-        setWorkPlace("");
-        setDepartMent("");
-        setNote("");
+        setFormData({
+          id: "",
+          password: "",
+          selectedCommonCode: "",
+          name: "",
+          tel: "",
+          note: "",
+          workPlace: "",
+          departMent: "",
+        });
+      })
+      .catch((err) => {
+        console.error("전송중 오류 발생:", err);
       });
-  }
+  };
 
   return (
-    <Box>
-      <Heading> 회원 등록</Heading>
-      <Stack>
+    <Box border={"1px solid black"}>
+      <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
+      <Stack spacing={4}>
         <SelectRoot
           collection={frameworks}
-          value={selectedCommonCode}
-          onValueChange={(e) => setSelectedCommonCode(e.value)}
+          value={formData.selectedCommonCode}
+          onValueChange={(e) =>
+            setFormData({ ...formData, selectedCommonCode: e.value })
+          }
         >
-          <SelectLabel> 상위 구분 코드</SelectLabel>
+          <SelectLabel>상위 구분 코드</SelectLabel>
           <SelectTrigger>
             <SelectValueText placeholder={"선택 해 주세요"} />
           </SelectTrigger>
@@ -82,57 +127,52 @@ export function EmployeeAdd() {
         </SelectRoot>
 
         <Input
+          name="workPlace"
           placeholder={"소속 코드 / 소속 명"}
-          value={workPlace}
-          onChange={(e) => {
-            setWorkPlace(e.target.value);
-          }}
+          value={formData.workPlace}
+          onChange={handleInputChange}
         />
         <Input
+          name="departMent"
           placeholder={"부서 코드 / 부서 명"}
-          value={departMent}
-          onChange={(e) => {
-            setDepartMent(e.target.value);
-          }}
+          value={formData.departMent}
+          onChange={handleInputChange}
         />
-
         <Input
+          name="name"
           placeholder={"직원명"}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
+          value={formData.name}
+          onChange={handleInputChange}
         />
         <Input
+          name="id"
           placeholder={"사번"}
-          value={id}
-          onChange={(e) => {
-            setId(e.target.value);
-          }}
+          value={formData.id}
+          onChange={handleInputChange}
         />
         <Input
+          name="tel"
           placeholder={"전화번호"}
-          value={tel}
-          onChange={(e) => {
-            setTel(e.target.value);
-          }}
+          value={formData.tel}
+          onChange={handleInputChange}
         />
         <Input
+          name="note"
           placeholder={"비고"}
-          value={note}
-          onChange={(e) => {
-            setNote(e.target.value);
-          }}
+          value={formData.note}
+          onChange={handleInputChange}
         />
+        {viewKey !== -1 && (
+          <Input
+            name="password"
+            placeholder={"비밀번호"}
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+        )}
       </Stack>
-      <Button
-        onClick={() => {
-          handleMemberAdd();
-          //
-          navigate();
-        }}
-      >
-        회원 등록
+      <Button onClick={handleSubmit}>
+        {viewKey === -1 ? "회원 등록" : "회원 수정"}
       </Button>
     </Box>
   );

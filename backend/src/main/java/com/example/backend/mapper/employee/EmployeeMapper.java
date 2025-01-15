@@ -27,4 +27,10 @@ public interface EmployeeMapper {
         select * from TB_EMPMST
 """)
     List<Employee> getAllEmployees();
+
+    @Select("""
+        select * from TB_EMPMST
+        WHERE employee_key = #{viewKey}
+""")
+    Employee getOneEmployeeByKey(int viewKey);
 }
