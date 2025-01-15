@@ -28,6 +28,7 @@ public interface ItemMapper {
             SELECT i.item_key, ic.item_common_name, c.customer_name, i.input_price, i.output_price, i.item_active
             FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            WHERE i.item_active = 1
             ORDER BY i.item_key
             """)
     List<Item> getItemList();
