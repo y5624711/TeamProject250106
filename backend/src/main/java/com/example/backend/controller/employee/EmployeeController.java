@@ -3,9 +3,11 @@ package com.example.backend.controller.employee;
 import com.example.backend.dto.employee.Employee;
 import com.example.backend.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,16 +36,26 @@ public class EmployeeController {
 
      // 회원 등록
     @PostMapping("add")
-    public void addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee) {
         System.out.println("account = " + employee);
-        service.addEmployee(employee);
+        if(service.addEmployee(employee)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 되었습니다.")));
+        } else {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 실패했습니다..")));
+        }
+
     }
     
     // 회원 수정
     @PutMapping("update")
     public void updateEmployee(@RequestBody Employee employee) {
         System.out.println("employee = " + employee);
-         
+
          service.updateEmployeeByKey(employee);
     }
+
 }

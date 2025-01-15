@@ -1,6 +1,7 @@
 import {
   Box,
   createListCollection,
+  createToaster,
   Heading,
   Input,
   SelectContent,
@@ -115,7 +116,7 @@ export function EmployeeAdd({ viewKey }) {
     }
 
     axios[method](url, data)
-      .then(() => {
+      .then((res) => {
         setFormData({
           employeeNo: "",
           password: "",
@@ -125,6 +126,11 @@ export function EmployeeAdd({ viewKey }) {
           note: "",
           workPlace: "",
           departMent: "",
+        });
+        console.log(res);
+        toaster.create({
+          description: "File saved successfully",
+          type: "loading",
         });
       })
       .catch((err) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Heading, Table } from "@chakra-ui/react";
+import { Box, Checkbox, Heading, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export function EmployeeList({ onSelect }) {
@@ -32,7 +32,7 @@ export function EmployeeList({ onSelect }) {
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
     <Box>
-      <Heading> 낄낄</Heading>
+      <Heading> 리스트</Heading>
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -57,7 +57,7 @@ export function EmployeeList({ onSelect }) {
               <Table.Cell> {item.employeePassword} </Table.Cell>
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeNo} </Table.Cell>
-              <Table.Cell> {item.employeeActive} </Table.Cell>
+
               <Table.Cell>
                 {item.employeeActive === true ? "사용중" : "사용안함"}
               </Table.Cell>
