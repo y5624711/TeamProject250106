@@ -40,4 +40,12 @@ public interface FranchiseMapper {
                 WHERE franchise_key = #{franchiseKey}
             """)
     int editFranchise(Franchise franchise);
+
+    // 특정 가맹점 삭제 (비활성화)
+    @Update("""
+            UPDATE TB_FRNCHSMST
+            SET franchise_active = false
+            WHERE franchise_key = #{franchiseKey}
+            """)
+    int deleteFranchise(int franchiseKey);
 }

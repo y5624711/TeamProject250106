@@ -53,4 +53,10 @@ public class FranchiseService {
         int cnt = mapper.editFranchise(franchise);
         return cnt == 1;
     }
+
+    // 특정 가맹점 삭제 (비활성화)
+    public boolean deleteFranchise(int franchiseKey) {
+        int cnt = mapper.deleteFranchise(franchiseKey);
+        return cnt == 1;
+    }
 }

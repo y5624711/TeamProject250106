@@ -47,11 +47,11 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
   const handleDeleteClick = () => {
     if (window.confirm("정말로 이 가맹점을 삭제하시겠습니까?")) {
       axios
-        .delete(`/api/franchise/delete/${franchiseKey}`)
+        .put(`/api/franchise/delete/${franchiseKey}`)
         .then((response) => {
-          alert("삭제가 성공적으로 완료되었습니다.");
+          alert("가맹점이 삭제되었습니다.");
           console.log("삭제 결과:", response.data);
-          setViewMode("list"); // 삭제 후 목록 화면으로 전환
+          setViewMode("list");
         })
         .catch((error) => {
           console.error("삭제 중 오류 발생:", error);

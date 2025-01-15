@@ -58,4 +58,14 @@ public class FranchiseController {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
         }
     }
+
+    // 특정 가맹점 삭제 (비활성화)
+    @PutMapping("delete/{franchiseKey}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int franchiseKey) {
+        if (service.deleteFranchise(franchiseKey)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점이 비활성화되었습니다.")));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error", "text", "가맹점 비활성화에 실패하였습니다.")));
+        }
+    }
 }
