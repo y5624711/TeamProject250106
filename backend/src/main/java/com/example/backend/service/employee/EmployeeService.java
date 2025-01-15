@@ -33,9 +33,9 @@ public class EmployeeService {
 
     }
 
-    public boolean updateEmployeeByKey(Employee employee) {
+    public boolean editEmployeeByKey(Employee employee) {
 
-        int cnt =mapper.updateEmployeeByKey(employee);
+        int cnt =mapper.editEmployeeByKey(employee);
         return   cnt==1;
     }
 }

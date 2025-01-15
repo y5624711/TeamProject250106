@@ -52,10 +52,15 @@ public class EmployeeController {
     
     // 회원 수정
     @PutMapping("update")
-    public void updateEmployee(@RequestBody Employee employee) {
+    public void editEmployee(@RequestBody Employee employee) {
         System.out.println("employee = " + employee);
 
-         service.updateEmployeeByKey(employee);
+         service.editEmployeeByKey(employee);
+    }
+
+    @PutMapping("delete")
+    public void deleteEmployee(@RequestParam int viewKey) {
+        System.out.println("viewKey = " + viewKey);
     }
 
 }

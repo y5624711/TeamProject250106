@@ -44,5 +44,5 @@ public interface EmployeeMapper {
         employee_name = #{employeeName}
     WHERE employee_key = #{employeeKey}
 """)
-    int updateEmployeeByKey(Employee employee);
+    int editEmployeeByKey(Employee employee);
 }
