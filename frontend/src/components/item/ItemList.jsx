@@ -21,7 +21,7 @@ import {
 } from "../ui/pagination.jsx";
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Button } from "../ui/button.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Switch } from "../ui/switch.jsx";
 
 export function ItemList({ onShowDetail }) {
@@ -32,7 +32,6 @@ export function ItemList({ onShowDetail }) {
     type: "all",
     keyword: "",
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -89,8 +88,6 @@ export function ItemList({ onShowDetail }) {
       setSearchParams(nextSearchParam);
     }
   };
-
-  console.log(itemList);
 
   return (
     <Box>

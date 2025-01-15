@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
@@ -7,6 +19,7 @@ import { toaster } from "../ui/toaster.jsx";
 
 export function ItemAdd() {
   const [itemCommonCode, setItemCommonCode] = useState("");
+  const [itemCommonName, setItemCommonName] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [size, setSize] = useState("");
@@ -76,27 +89,45 @@ export function ItemAdd() {
       });
   };
 
+  const itemCommonCodes = createListCollection({
+    items: itemCommonCodeList.map((itemCode) => {
+      return {
+        label: itemCode.item_common_name,
+        value: itemCode.item_common_code,
+      };
+    }),
+  });
+
   return (
     <Box>
       <Text>물품 등록 </Text>
       <Stack>
-        <select
-          value={itemCommonCode}
-          onChange={(e) => setItemCommonCode(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "8px",
-            borderRadius: "6px",
-            border: "1px solid #E2E8F0",
+        <SelectRoot
+          onValueChange={(e) => {
+            setItemCommonName(e.value);
+            const selectedItem = itemCommonCodeList.find(
+              (item) => item.item_common_name == e.value,
+            );
+            console.log("내부", selectedItem);
+            if (selectedItem) {
+              setItemCommonCode(selectedItem.item_common_code); // 선택된 품목 코드 설정
+            }
           }}
         >
-          <option value="">품목 구분</option>
-          {itemCommonCodeList.map((code) => (
-            <option key={code.item_common_code} value={code.item_common_code}>
-              {code.item_common_name}
-            </option>
-          ))}
-        </select>
+          <SelectLabel>취급 품목</SelectLabel>
+          <SelectTrigger>
+            <SelectValueText>
+              {itemCommonName != "" ? itemCommonName : "품목 선택"}
+            </SelectValueText>
+          </SelectTrigger>
+          <SelectContent>
+            {itemCommonCodes.items.map((item) => (
+              <SelectItem item={item.label} key={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
 
         <Input readOnly placeholder="담당업체" value={customerName} />
         <Input
