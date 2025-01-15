@@ -1,26 +1,73 @@
 package com.example.backend.mapper.item;
 
 import com.example.backend.dto.item.Item;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ItemMapper {
     @Insert("""
-            INSERT INTO item
-            (item_code, item_type, item_name, common_code, partner_id, manager_id, size, unit, in_price, out_price, tax, minimum_stock, active, note)
-            VALUES (#{itemCode}, #{itemType},#{itemName}, #{commonCode}, #{partnerId}, #{managerId}, #{size}, #{unit}, #{inPrice}, #{outPrice}, #{tax}, #{minimumStock}, #{active}, #{note})
+            INSERT INTO TB_ITEMMST
+            (item_key, item_common_code, customer_code, input_price, output_price, size, unit, item_note)
+            VALUES (#{itemKey}, #{itemCommonCode}, #{customerCode}, #{inputPrice}, #{outputPrice}, #{size}, #{unit}, #{itemNote})
             """)
-    @Options(keyProperty = "itemId", useGeneratedKeys = true)
+    @Options(keyProperty = "itemKey", useGeneratedKeys = true)
     int addItem(Item item);
 
     @Select("""
-            SELECT *
-            FROM item
+            SELECT c.item_code, ic.item_common_name
+            FROM TB_CUSTMST c LEFT JOIN TB_ITEMCOMM ic ON c.item_code = ic.item_common_code
+            WHERE c.item_code NOT IN (SELECT item_common_code FROM TB_ITEMMST)
+            ORDER BY binary(item_common_name)
             """)
-    List<Item> getListItem();
+    List<Map<String, String>> getItemCommonCode();
+
+    @Select("""
+            SELECT i.item_key, ic.item_common_name, c.customer_name, i.input_price, i.output_price, i.item_active
+            FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                              LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            ORDER BY i.item_key
+            """)
+    List<Item> getItemList();
+
+    @Select("""
+            SELECT i.*, ic.item_common_name, c.customer_name
+            FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                              LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            WHERE i.item_key = #{itemKey}
+            """)
+    List<Item> getItemView(Integer itemKey);
+
+    @Update("""
+            UPDATE TB_ITEMMST
+            SET item_active = 0
+            WHERE item_key = #{itemKey}
+            """)
+    int deleteItem(int itemKey);
+
+    @Select("""
+            SELECT customer_name, customer_code
+            FROM TB_CUSTMST
+            WHERE item_code = #{itemCommonCode}
+            """)
+    List<Item> getCustomerName(String itemCommonCode);
+
+    @Update("""
+            UPDATE TB_ITEMMST
+            SET input_price = #{item.inputPrice},
+            output_price = #{item.outputPrice},
+            size = #{item.size},
+            unit = #{item.unit},
+            item_note = #{item.itemNote}
+            WHERE item_key = #{itemKey}
+            """)
+    int editItem(int itemKey, Item item);
+
+    @Select("""
+            SELECT item_common_code
+            FROM TB_ITEMMST
+            """)
+    List<String> getUsedItemCommonCode(String itemCommonCode);
 }

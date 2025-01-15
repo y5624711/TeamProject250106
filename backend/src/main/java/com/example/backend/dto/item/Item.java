@@ -4,22 +4,17 @@ import lombok.Data;
 
 @Data
 public class Item {
-    private Integer itemId;
-    private String itemCode;
+    private Integer itemKey;
+    private String itemCommonCode;
     private String itemName;
-    private String commonCode;
-    private Integer partnerId;
-    private Integer managerId;
-    private String itemType;
+    private String customerCode;
+    private Integer inputPrice;
+    private Integer outputPrice;
     private String size;
     private String unit;
-    private Integer inPrice;
-    private Integer outPrice;
-    private Integer tax;
-    private Integer minimumStock;
-    private Boolean active;
-    private String note;
+    private Boolean itemActive;
+    private String itemNote;
 
-    private String partnerName;
-    private String managerName;
+    private String itemCommonName;
+    private String customerName;
 }

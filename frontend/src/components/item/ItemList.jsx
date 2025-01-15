@@ -12,17 +12,13 @@ export function ItemList({ onShowDetail }) {
       .get("/api/item/list")
       .then((res) => {
         setItemList(res.data);
-        console.log(itemList);
       })
       .catch((error) => {
         console.error("물품 목록 요청 중 오류 발생: ", error);
       });
   }, []);
 
-  // 행 클릭 시 onShowDetail을 호출하고 itemId 전달
-  const handleRowClick = (itemId) => {
-    onShowDetail(itemId);
-  };
+  console.log(itemList);
 
   return (
     <Box>
@@ -36,33 +32,29 @@ export function ItemList({ onShowDetail }) {
         <Table.Root size="sm">
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>품목 번호</Table.ColumnHeader>
-              <Table.ColumnHeader>품목 구분</Table.ColumnHeader>
+              <Table.ColumnHeader>#</Table.ColumnHeader>
               <Table.ColumnHeader>품목명</Table.ColumnHeader>
               <Table.ColumnHeader>담당업체</Table.ColumnHeader>
-              <Table.ColumnHeader>취급 담당자</Table.ColumnHeader>
-              <Table.ColumnHeader>과세구분</Table.ColumnHeader>
-              <Table.ColumnHeader>기초재고량</Table.ColumnHeader>
-              <Table.ColumnHeader>사용 여부</Table.ColumnHeader>
+              <Table.ColumnHeader>입고가</Table.ColumnHeader>
+              <Table.ColumnHeader>출고가</Table.ColumnHeader>
+              <Table.ColumnHeader>사용여부</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {itemList.map((item) => (
               <Table.Row
-                key={item.itemId}
-                onClick={() => handleRowClick(item.itemId)}
+                key={item.itemKey}
+                onClick={() => onShowDetail(item.itemKey)}
+                style={{ cursor: "pointer" }}
               >
-                <Table.Cell>{item.itemId}</Table.Cell>
-                <Table.Cell>{item.itemType}</Table.Cell>
-                <Table.Cell>{item.itemName}</Table.Cell>
-                {/*<Table.Cell>{item.partnerName}</Table.Cell>*/}
-                <Table.Cell>임시 담당업체</Table.Cell>
-                {/*<Table.Cell>{item.managerName}</Table.Cell>*/}
-                <Table.Cell>임시 담당자명</Table.Cell>
-                <Table.Cell>{item.tax}</Table.Cell>
-                <Table.Cell>{item.minimumStock}</Table.Cell>
-                <Table.Cell>
-                  <Checkbox checked={item.active} />
+                {/*번호 증가값으로 수정*/}
+                <Table.Cell textAlign="center">{item.itemKey}</Table.Cell>
+                <Table.Cell>{item.itemCommonName}</Table.Cell>
+                <Table.Cell>{item.customerName}</Table.Cell>
+                <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
+                <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  <Checkbox checked={item.itemActive} />
                 </Table.Cell>
               </Table.Row>
             ))}

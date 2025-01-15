@@ -21,7 +21,7 @@ function SidebarItem({ children, path, ...rest }) {
   );
 }
 
-export function SideBar() {
+export function CommonCodeSideBar() {
   const navigate = useNavigate();
 
   return (

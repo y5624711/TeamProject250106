@@ -1,36 +1,39 @@
 import React, { useState } from "react";
-import { Box, HStack } from "@chakra-ui/react";
-import { ItemMenu } from "../../components/item/ItemMenu.jsx";
+import { Box, HStack, Stack } from "@chakra-ui/react";
 import { ItemList } from "../../components/item/ItemList.jsx";
 import { ItemAdd } from "../../components/item/ItemAdd.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx";
+import { Button } from "../../components/ui/button.jsx";
 import { ItemView } from "../../components/item/ItemView.jsx";
 
 export function Item() {
-  const [selectedMenu, setSelectedMenu] = useState(null);
-  const [showDetail, setShowDetail] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItemKey, setSelectedItemKey] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
-  // 메뉴 선택 시 호출되는 함수
-  const handleSelectMenu = (menu) => {
-    setSelectedMenu(menu);
-    setShowDetail(false); // 메뉴 변경 시 상세보기 상태 초기화
-  };
-
-  // 특정 상품 클릭 시 상세 정보로 이동
-  const handleShowDetail = (itemId) => {
-    setSelectedItemId(itemId);
-    setShowDetail(true);
+  const handleShowDetail = (itemKey) => {
+    setSelectedItemKey(itemKey);
+    setIsAdding(false);
   };
 
   return (
     <Box>
-      <HStack>
-        <ItemMenu onSelect={handleSelectMenu} />
-        {selectedMenu === "add" && <ItemAdd />}
-        {selectedMenu === "list" && !showDetail && (
+      <HStack align="flex-start">
+        <SideBar />
+        <Stack>
+          기준정보 관리 > 품목 관리
           <ItemList onShowDetail={handleShowDetail} />
-        )}
-        {showDetail && <ItemView itemId={selectedItemId} />}
+        </Stack>
+        <Stack>
+          <Button
+            onClick={() => {
+              setIsAdding((prev) => !prev);
+              setSelectedItemKey(null);
+            }}
+          >
+            {isAdding ? "닫기" : "추가"}
+          </Button>
+          {isAdding ? <ItemAdd /> : <ItemView itemKey={selectedItemKey} />}
+        </Stack>
       </HStack>
     </Box>
   );
