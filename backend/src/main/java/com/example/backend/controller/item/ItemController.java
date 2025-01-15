@@ -34,28 +34,34 @@ public class ItemController {
         }
     }
 
-
     // 물품 1개의 정보 가져오기
     @GetMapping("view/{itemKey}")
     public List<Item> itemView(@PathVariable int itemKey) {
         return service.getItemView(itemKey);
     }
 
-    // 물품 리스트 가져오기
+    // 물품 전체 리스트 가져오기
     @GetMapping("list")
     public List<Item> getItemlist() {
         return service.getItemList();
     }
 
-    // 물품 구분 코드 가져오기
+    // 물품을 취급하는 협력업체 이름 가져오기
+    @GetMapping("customer/{itemCommonCode}")
+    public List<Item> getCustomerName(@PathVariable String itemCommonCode) {
+        return service.getCustomerName(itemCommonCode);
+    }
+
+    // 물품 구분 코드 리스트 가져오기
     @GetMapping("commonCode")
-    public List<Map<String, String>> itemCommonCode() {
+    public List<Map<String, String>> getItemCommonCode() {
         return service.getItemCommonCode();
     }
 
     // 물품 추가
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addItem(@RequestBody Item item) {
+        System.out.println(item);
         if (service.validate(item)) {
             if (service.addItem(item)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",

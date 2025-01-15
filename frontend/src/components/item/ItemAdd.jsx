@@ -6,6 +6,7 @@ import axios from "axios";
 export function ItemAdd() {
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [customerName, setCustomerName] = useState("");
+  const [customerCode, setCustomerCode] = useState("");
   const [size, setSize] = useState("");
   const [unit, setUnit] = useState("");
   const [inputPrice, setInputPrice] = useState("");
@@ -25,17 +26,39 @@ export function ItemAdd() {
       });
   }, []);
 
+  // 물품 선택 시 협력업체 이름 가져오기
+  useEffect(() => {
+    if (itemCommonCode) {
+      axios
+        .get(`/api/item/customer/${itemCommonCode}`)
+        .then((res) => {
+          const customerName = res.data[0]?.customerName || "없음";
+          const customerCode = res.data[0]?.customerCode || "";
+
+          setCustomerName(customerName);
+          setCustomerCode(customerCode);
+        })
+        .catch((error) => {
+          console.error("협력업체 정보 로드 중 오류 발생: ", error);
+          setCustomerName(""); // 오류 시 초기화
+        });
+    } else {
+      setCustomerName(""); // 선택 해제 시 초기화
+    }
+  }, [itemCommonCode]);
+
   // 물품 등록하기
   const handleAddClick = () => {
     const itemData = {
       itemCommonCode,
-      customerName,
+      customerCode,
       size,
       unit,
       inputPrice,
       outputPrice,
       itemNote,
     };
+    console.log(itemData);
 
     axios
       .post("/api/item/add", itemData)

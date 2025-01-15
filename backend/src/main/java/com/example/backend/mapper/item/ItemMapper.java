@@ -43,4 +43,11 @@ public interface ItemMapper {
             WHERE item_key = #{itemKey}
             """)
     int deleteItem(int itemKey);
+
+    @Select("""
+            SELECT customer_name, customer_code
+            FROM TB_CUSTMST
+            WHERE item_code = #{itemCommonCode}
+            """)
+    List<Item> getCustomerName(String itemCommonCode);
 }

@@ -20,7 +20,7 @@ public class ItemService {
     public boolean validate(Item item) {
         return !(
                 item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
-                        item.getCustomerName() == null || item.getCustomerName().trim().isEmpty() ||
+                        item.getCustomerCode() == null || item.getCustomerCode().trim().isEmpty() ||
                         item.getSize() == null || item.getSize().trim().isEmpty() ||
                         item.getUnit() == null || item.getUnit().trim().isEmpty() ||
                         item.getInputPrice() == null || item.getInputPrice() < 0 ||
@@ -30,9 +30,6 @@ public class ItemService {
 
     // 물품 추가하기
     public boolean addItem(Item item) {
-        // 협력업체명을 통해 협력업체 코드 가져오기
-        item.setCustomerCode("123456788");
-
         int cnt = mapper.addItem(item);
 
         return cnt == 1;
@@ -58,6 +55,10 @@ public class ItemService {
         int cnt = mapper.deleteItem(itemKey);
 
         return cnt == 1;
+    }
+
+    public List<Item> getCustomerName(String itemCommonCode) {
+        return mapper.getCustomerName(itemCommonCode);
     }
 }
 
