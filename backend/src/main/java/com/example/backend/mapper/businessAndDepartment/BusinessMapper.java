@@ -20,8 +20,7 @@ public interface BusinessMapper {
 
     @Select("""
             SELECT *
-            FROM TB_EMPMST
-            ORDER BY employee_key;
+            FROM TB_EMPMST;
             """)
     List<Employee> listEmployeeSelect();
 

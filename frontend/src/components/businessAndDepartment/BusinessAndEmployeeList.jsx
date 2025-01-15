@@ -44,8 +44,8 @@ export function BusinessView() {
         });
         setIsEditing(false);
       })
-      .catch((error) => {
-        const message = error.data.message;
+      .catch((e) => {
+        const message = e.data.message;
         toaster.create({
           type: message.type,
           description: message.text,

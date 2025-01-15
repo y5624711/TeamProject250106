@@ -30,7 +30,7 @@ public class BusinessController {
                         Map.of("type", "error", "text", "코드가 등록 되지 않았습니다.")));
             }
         } else {
-            return ResponseEntity.badRequest().body(
+            return ResponseEntity.ok().body(
                     Map.of("message",
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
         }
