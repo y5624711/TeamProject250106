@@ -16,6 +16,7 @@ export function FranchiseAdd() {
     franchisePost: "",
     franchiseState: "",
     franchiseCity: "",
+    franchiseActive: true,
     franchiseNote: "",
   });
 
