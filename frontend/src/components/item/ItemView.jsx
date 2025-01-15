@@ -47,10 +47,10 @@ export function ItemView({ itemKey }) {
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setEditedItem((prevItem) => ({
       ...prevItem,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 
@@ -109,6 +109,7 @@ export function ItemView({ itemKey }) {
                   />
                   <NumberInputRoot>
                     <NumberInputField
+                      name="inputPrice"
                       placeholder="입고가"
                       value={editedItem.inputPrice}
                       onChange={handleChange}
@@ -116,6 +117,7 @@ export function ItemView({ itemKey }) {
                   </NumberInputRoot>
                   <NumberInputRoot>
                     <NumberInputField
+                      name="outputPrice"
                       placeholder="출고가"
                       value={editedItem.outputPrice}
                       onChange={handleChange}

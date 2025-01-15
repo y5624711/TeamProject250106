@@ -7,7 +7,7 @@ import { Button } from "../../components/ui/button.jsx";
 import { ItemView } from "../../components/item/ItemView.jsx";
 
 export function Item() {
-  const [selectedItemKey, setSelectedItemKey] = useState(null);
+  const [selectedItemKey, setSelectedItemKey] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
   const handleShowDetail = (itemKey) => {
