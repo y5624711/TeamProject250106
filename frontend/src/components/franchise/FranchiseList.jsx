@@ -5,7 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from "@chakra-ui/react";
-import { Checkbox } from "../../components/ui/checkbox.jsx";
+import { Checkbox } from "../ui/checkbox.jsx";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
