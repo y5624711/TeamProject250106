@@ -33,7 +33,12 @@ export function Franchise() {
           {viewMode === "view" && selectedFranchiseKey && (
             <FranchiseView franchiseKey={selectedFranchiseKey} />
           )}
-          {viewMode === "add" && <FranchiseAdd />}
+          {viewMode === "add" && (
+            <FranchiseAdd
+              setViewMode={setViewMode} // 상태 변경 함수 전달
+              setSelectedFranchiseKey={setSelectedFranchiseKey} // 선택된 가맹점 키 설정 함수 전달
+            />
+          )}
         </Box>
       </Box>
     </Box>
