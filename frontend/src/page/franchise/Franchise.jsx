@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
-import { FranchiseSideBar } from "../../components/franchise/FranchiseSideBar.jsx";
 import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
 import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
-import { FranchiseEdit } from "../../components/franchise/FranchiseEdit.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx";
 
 export function Franchise() {
   const [viewMode, setViewMode] = useState("view");
@@ -18,7 +17,7 @@ export function Franchise() {
 
   return (
     <Box display={"flex"} h={"100vh"}>
-      <FranchiseSideBar />
+      <SideBar />
       <Box flex={"1"} display={"flex"} p={4}>
         <Box flex={"1"} pr={4}>
           <Heading size="md" mb={4}>
@@ -42,9 +41,6 @@ export function Franchise() {
               franchiseKey={selectedFranchiseKey}
               setViewMode={setViewMode} // 상태 변경 함수 전달
             />
-          )}
-          {viewMode === "edit" && selectedFranchiseKey && (
-            <FranchiseEdit franchiseKey={selectedFranchiseKey} />
           )}
         </Box>
       </Box>
