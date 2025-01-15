@@ -3,6 +3,7 @@ package com.example.backend.mapper.Franchise;
 import com.example.backend.dto.Franchise.Franchise;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface FranchiseMapper {
                 #{franchiseNo}, #{franchiseTel}, #{franchiseAddress}, #{franchiseAddressDetail}, 
                 #{franchisePost}, #{franchiseState}, #{franchiseCity}, #{franchiseActive}, #{franchiseNote})
             """)
+    @Options(keyProperty = "franchiseKey", useGeneratedKeys = true)
     int insert(Franchise franchise);
 
     // 가맹점 리스트 조회
