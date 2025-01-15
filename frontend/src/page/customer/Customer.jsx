@@ -12,7 +12,7 @@ function Customer() {
   const [customerList, setCustomerList] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState("customerList");
   const [selectedPage, setSelectedPage] = useState("view");
-  const [customerKey, setCustomerKey] = useState(1);
+  const [customerKey, setCustomerKey] = useState(2);
 
   useEffect(() => {
     axios

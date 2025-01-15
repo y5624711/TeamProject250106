@@ -26,3 +26,17 @@ INSERT INTO TB_CUSTMST
 VALUES ('중앙셀로', 'CUS0002', 'CEL', '백종원', '1123027845',
         '0321223213', '0321223213', '용산', null,
         '10327', true, null);
+
+SELECT *
+FROM TB_ITEMCOMM;
+# WHERE item_common_code NOT IN
+SELECT item_code
+FROM TB_CUSTMST
+WHERE customer_active = TRUE;
+
+SELECT ic.*
+FROM TB_ITEMCOMM ic
+         LEFT JOIN (SELECT DISTINCT item_code
+                    FROM TB_CUSTMST
+                    WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
+WHERE cm.item_code IS NULL;

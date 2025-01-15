@@ -56,8 +56,13 @@ public interface CustomerMapper {
     int editCustomer(Customer customer);
 
     @Select("""
-            SELECT *
-            FROM TB_ITEMCOMM    
+            SELECT ic.*
+            FROM TB_ITEMCOMM ic
+                     LEFT JOIN (SELECT DISTINCT item_code
+                                FROM TB_CUSTMST
+                                WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
+            WHERE cm.item_code IS NULL
+              AND ic.item_common_code_active = TRUE
             """)
     List<CommonCode> itemCodeList();
 }
