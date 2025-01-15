@@ -9,6 +9,7 @@ import { CommonCode } from "./page/commonCode/CommonCode.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
+import Customer from "./page/customer/Customer.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "commonCode/item",
         element: <CommonCodeItem />,
+      },
+      {
+        path: "customer",
+        element: <Customer />,
       },
     ],
   },
