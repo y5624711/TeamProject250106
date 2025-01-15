@@ -42,7 +42,7 @@ export function Navbar() {
         flexWrap="wrap" // 줄바꿈 활성화
         overflow="hidden" // 넘치는 요소를 숨김
       >
-        <NavItem onClick={() => navigate("/branch")}>가맹점 관리</NavItem>
+        <NavItem onClick={() => navigate("/franchise")}>가맹점 관리</NavItem>
         <NavItem>협력업체 관리</NavItem>
         <NavItem>물품 관리</NavItem>
         <NavItem>자산 관리</NavItem>
