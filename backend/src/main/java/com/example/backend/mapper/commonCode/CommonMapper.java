@@ -11,15 +11,15 @@ import java.util.List;
 public interface CommonMapper {
     @Select("""
             SELECT *
-            FROM commonCode
-            ORDER BY common_code
+            FROM TB_SYSCOMM
+            ORDER BY common_code_key
             """)
     List<CommonCode> selectAll();
 
     @Insert("""
-            INSERT INTO commonCode
-            (common_code,name,note)
-            VALUES (#{common_code},#{name},#{note})
+            INSERT INTO TB_SYSCOMM
+            (common_code, common_code_name, common_code_note)
+            VALUES (#{common_code},#{common_code_name},#{common_code_note})
             """)
     int insertCommonCode(CommonCode commonCode);
 }
