@@ -32,6 +32,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
           type: message.type,
           description: message.text,
         });
+        setIsReadOnly(true); // 저장 후 읽기 모드로 전환
       })
       .catch((e) => {
         console.log(e);
