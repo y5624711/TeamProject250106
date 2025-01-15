@@ -1,4 +1,4 @@
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 function SidebarItem({ children, path, ...rest }) {
@@ -22,8 +22,6 @@ function SidebarItem({ children, path, ...rest }) {
 }
 
 export function CommonCodeSideBar() {
-  const navigate = useNavigate();
-
   return (
     <Flex>
       {/*SideBar 영역*/}
@@ -42,18 +40,17 @@ export function CommonCodeSideBar() {
           alignItems="center" // 세로 방향 가운데 정렬
         >
           <Text fontWeight="bold" color={"white"} fontSize={"25px"}>
-            기준정보 관리
+            코드 관리
           </Text>
         </Box>
 
         <Stack spacing="2" mt="4">
-          <SidebarItem path="/branch">사업장/부서 관리</SidebarItem>
-          <SidebarItem path="/employee">인사 관리</SidebarItem>
-          <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
-          <SidebarItem path="/customer">협력업체 관리</SidebarItem>
-          <SidebarItem path="/item">품목 관리</SidebarItem>
-          <SidebarItem path="/warehouse">창고 관리</SidebarItem>
-          <SidebarItem path="/location">로케이션 관리</SidebarItem>
+          <Heading>공통 코드 조회</Heading>
+          <SidebarItem path="/commonCode/item/list">품목 코드</SidebarItem>
+          <SidebarItem path="/commonCode/system/list">업무 코드</SidebarItem>
+          <Heading>공통 코드 등록</Heading>
+          <SidebarItem path="/commonCode/item/add">품목 코드</SidebarItem>
+          <SidebarItem path="/commonCode/system/add">업무 코드</SidebarItem>
         </Stack>
       </Box>
     </Flex>
