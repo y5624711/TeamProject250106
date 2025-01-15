@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../components/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, HStack, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
-import CustomerView from "../../components/customer/CustomerView.jsx"; // import CustomerList from "../../components/customer/CustomerList.jsx";
+import CustomerView from "../../components/customer/CustomerView.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx"; // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 
@@ -32,13 +33,13 @@ function Customer() {
 
   return (
     <Box>
-      {/*<Box display={"flex"}>*/}
-      {/*  <CustomerSideBar onSelect={handleSelectMenu} />*/}
-      {/*  {selectedMenu === "customerList" && <CustomerList />}*/}
-      {/*  {selectedMenu === "customerAdd" && <CustomerAdd />}*/}
-      {/*</Box>*/}
       <HStack align={"flex-start"}>
         <Stack>
+          <SideBar />
+        </Stack>
+        <Stack>
+          <Heading>협력사 조회</Heading>
+
           <CustomerList
             customerList={customerList}
             customerKey={customerKey}

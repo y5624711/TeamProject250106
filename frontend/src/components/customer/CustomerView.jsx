@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Input, Stack, Textarea } from "@chakra-ui/react";
+import { Heading, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
 
@@ -36,7 +36,7 @@ function CustomerView({ customerKey }) {
   const handleEditClick = () => {
     // console.log(customer);
     axios
-      .put("api/customer/update", customer)
+      .put("api/customer/edit", customer)
       .then()
       .catch((err) => console.error("오류", err));
   };
@@ -47,7 +47,7 @@ function CustomerView({ customerKey }) {
 
   return (
     <div>
-      <h2>협력 업체 정보</h2>
+      <Heading>협력 업체 정보</Heading>
       <Stack gap={5}>
         <Field label={"업체 코드"}>
           <Input readOnly value={customer.customerCode} />

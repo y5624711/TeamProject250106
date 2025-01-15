@@ -19,21 +19,21 @@ public class CustomerService {
         mapper.addCustomer(customer);
     }
 
-    public List<Customer> list() {
-        return mapper.selectAllCustomer();
+    public List<Customer> customerList() {
+        return mapper.customerList();
     }
 
-    public Customer getCustomer(String customerKey) {
-        return mapper.selectByCustomerKey(customerKey);
+    public Customer viewCustomer(String customerKey) {
+        return mapper.viewCustomer(customerKey);
     }
 
-    public void deactivateCustomer(String customerKey) {
-        mapper.deactivateCustomer(customerKey);
+    public void deleteCustomer(String customerKey) {
+        mapper.deleteCustomer(customerKey);
     }
 
-    public Boolean updateCustomer(Customer customer) {
+    public Boolean editCustomer(Customer customer) {
         int cnt = 0;
-        cnt = mapper.updateCustomer(customer);
+        cnt = mapper.editCustomer(customer);
         return cnt == 1;
     }
 }

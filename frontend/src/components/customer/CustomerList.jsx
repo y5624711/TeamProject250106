@@ -7,7 +7,6 @@ function CustomerList({ customerList, customerKey, setCustomerKey }) {
 
   return (
     <div>
-      <h2>협력사 조회</h2>
       <Table.Root interactive>
         <Table.Header>
           <Table.Row>

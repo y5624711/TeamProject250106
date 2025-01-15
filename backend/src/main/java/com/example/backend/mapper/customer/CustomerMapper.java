@@ -27,21 +27,21 @@ public interface CustomerMapper {
             SELECT customer_key, customer_name, customer_code, item_code, customer_rep, customer_active 
             FROM TB_CUSTMST    
             """)
-    List<Customer> selectAllCustomer();
+    List<Customer> customerList();
 
     @Select("""
             SELECT *
             FROM TB_CUSTMST
             WHERE customer_key = #{customerKey}
             """)
-    Customer selectByCustomerKey(String customerKey);
+    Customer viewCustomer(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
             SET customer_active = FALSE
             WHERE customer_key = #{customerKey}    
             """)
-    int deactivateCustomer(String customerKey);
+    int deleteCustomer(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
@@ -52,5 +52,5 @@ public interface CustomerMapper {
             customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
             WHERE customer_key = #{customerKey}    
             """)
-    int updateCustomer(Customer customer);
+    int editCustomer(Customer customer);
 }
