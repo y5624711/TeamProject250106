@@ -15,16 +15,16 @@ public interface CustomerMapper {
             INSERT INTO TB_CUSTMST
             (customer_name, customer_code, item_code, customer_rep, customer_no, 
              customer_tel, customer_fax, customer_address, customer_address_details, 
-             customer_post, customer_active, customer_note)
+             customer_post, customer_note)
             VALUES (#{customerName},#{customerCode},#{itemCode}, #{customerRep}, #{customerNo}, 
                     #{customerTel}, #{customerFax}, #{customerAddress}, #{customerAddressDetail}, 
-                    #{customerPost}, #{customerActive}, #{customerNote})
+                    #{customerPost}, #{customerNote})
             """)
     int addCustomer(Customer customer);
 
 
     @Select("""
-            SELECT customer_name, customer_code, item_code, customer_rep, customer_active 
+            SELECT customer_key, customer_name, customer_code, item_code, customer_rep, customer_active 
             FROM TB_CUSTMST    
             """)
     List<Customer> selectAllCustomer();
@@ -32,16 +32,16 @@ public interface CustomerMapper {
     @Select("""
             SELECT *
             FROM TB_CUSTMST
-            WHERE customer_code = #{customerCode}
+            WHERE customer_key = #{customerKey}
             """)
-    Customer selectByCustomerCode(String customerCode);
+    Customer selectByCustomerKey(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
             SET customer_active = FALSE
-            WHERE customer_code = #{customerCode}    
+            WHERE customer_key = #{customerKey}    
             """)
-    int deactivateCustomer(String customerCode);
+    int deactivateCustomer(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
@@ -50,6 +50,7 @@ public interface CustomerMapper {
             customer_tel = #{customerTel}, customer_fax = #{customerFax},
             customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetail}, 
             customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
+            WHERE customer_key = #{customerKey}    
             """)
     int updateCustomer(Customer customer);
 }

@@ -23,15 +23,17 @@ public class CustomerService {
         return mapper.selectAllCustomer();
     }
 
-    public Customer getCustomer(String customerCode) {
-        return mapper.selectByCustomerCode(customerCode);
+    public Customer getCustomer(String customerKey) {
+        return mapper.selectByCustomerKey(customerKey);
     }
 
-    public void deactivateCustomer(String customerCode) {
-        mapper.deactivateCustomer(customerCode);
+    public void deactivateCustomer(String customerKey) {
+        mapper.deactivateCustomer(customerKey);
     }
 
-    public void updateCustomer(Customer customer) {
-        mapper.updateCustomer(customer);
+    public Boolean updateCustomer(Customer customer) {
+        int cnt = 0;
+        cnt = mapper.updateCustomer(customer);
+        return cnt == 1;
     }
 }

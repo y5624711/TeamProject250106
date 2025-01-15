@@ -1,8 +1,9 @@
 import React from "react";
 import { Table } from "@chakra-ui/react";
 
-function CustomerList(customerList) {
+function CustomerList({ customerList, customerKey, setCustomerKey }) {
   // console.log("list", customerList);
+  // console.log(customerKey);
 
   return (
     <div>
@@ -18,8 +19,11 @@ function CustomerList(customerList) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {customerList.customerList.map((customer, index) => (
-            <Table.Row key={index}>
+          {customerList.map((customer, index) => (
+            <Table.Row
+              key={index}
+              onClick={() => setCustomerKey(customer.customerKey)}
+            >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{customer.customerName}</Table.Cell>
               <Table.Cell>{customer.itemCode}</Table.Cell>

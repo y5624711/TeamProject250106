@@ -25,18 +25,20 @@ public class CustomerController {
         return customerList;
     }
 
-    @GetMapping("view/{customerCode}")
-    public Customer view(@PathVariable("customerCode") String customerCode) {
-        return service.getCustomer(customerCode);
+    @GetMapping("view/{customerKey}")
+    public Customer view(@PathVariable("customerKey") String customerKey) {
+        return service.getCustomer(customerKey);
     }
 
-    @PutMapping("delete/{customerCode}")
-    public void delete(@PathVariable("customerCode") String customerCode) {
+    @PutMapping("delete/{customerKey}")
+    public void delete(@PathVariable("customerKey") String customerCode) {
         service.deactivateCustomer(customerCode);
     }
 
     @PutMapping("update")
     public void update(@RequestBody Customer customer) {
+//        System.out.println(customer);
+//        System.out.println(service.updateCustomer(customer));
         service.updateCustomer(customer);
     }
 }
