@@ -66,7 +66,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="businessEmployeeNo"
             value={franchise.businessEmployeeNo}
             onChange={handleChange}
-            placeholder="본사 직원 사번을 입력하세요"
+            placeholder="본사 직원 사번"
           />
         </Box>
         <Box mb={4}>
@@ -75,7 +75,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseCode"
             value={franchise.franchiseCode}
             onChange={handleChange}
-            placeholder="가맹점 코드를 입력하세요"
+            placeholder="가맹점 코드"
           />
         </Box>
         <Box mb={4}>
@@ -84,7 +84,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseName"
             value={franchise.franchiseName}
             onChange={handleChange}
-            placeholder="가맹점명을 입력하세요"
+            placeholder="가맹점명"
           />
         </Box>
         <Box mb={4}>
@@ -93,7 +93,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseRep"
             value={franchise.franchiseRep}
             onChange={handleChange}
-            placeholder="가맹점주를 입력하세요"
+            placeholder="가맹점주"
           />
         </Box>
         <Box mb={4}>
@@ -102,7 +102,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseTel"
             value={franchise.franchiseTel}
             onChange={handleChange}
-            placeholder="전화번호를 입력하세요"
+            placeholder="전화번호"
           />
         </Box>
         <Box mb={4}>
@@ -111,7 +111,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
-            placeholder="사업자 번호를 입력하세요"
+            placeholder="사업자 번호"
           />
         </Box>
         <Box mb={4}>
@@ -120,7 +120,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseAddress"
             value={franchise.franchiseAddress}
             onChange={handleChange}
-            placeholder="주소를 입력하세요"
+            placeholder="주소"
           />
         </Box>
         <Box mb={4}>
@@ -129,7 +129,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
             onChange={handleChange}
-            placeholder="상세 주소를 입력하세요"
+            placeholder="상세 주소"
           />
         </Box>
         <Box mb={4}>
@@ -138,7 +138,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchisePost"
             value={franchise.franchisePost}
             onChange={handleChange}
-            placeholder="우편 번호를 입력하세요"
+            placeholder="우편 번호"
           />
         </Box>
         <Box mb={4}>
@@ -147,7 +147,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseState"
             value={franchise.franchiseState}
             onChange={handleChange}
-            placeholder="광역시도를 입력하세요"
+            placeholder="광역시도"
           />
         </Box>
         <Box mb={4}>
@@ -156,7 +156,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseCity"
             value={franchise.franchiseCity}
             onChange={handleChange}
-            placeholder="시군을 입력하세요"
+            placeholder="시군"
           />
         </Box>
         <Box mb={4}>
@@ -165,7 +165,7 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             name="franchiseNote"
             value={franchise.franchiseNote}
             onChange={handleChange}
-            placeholder="비고를 입력하세요"
+            placeholder="비고"
           />
         </Box>
         <Button onClick={handleSaveClick}>등록</Button>

@@ -90,7 +90,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="businessEmployeeNo"
             value={franchise.businessEmployeeNo}
             onChange={handleChange}
-            placeholder="본사 직원 사번을 입력하세요"
+            placeholder="본사 직원 사번"
             readOnly={isReadOnly}
           />
         </Box>
@@ -100,7 +100,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseCode"
             value={franchise.franchiseCode}
             onChange={handleChange}
-            placeholder="가맹점 코드를 입력하세요"
+            placeholder="가맹점 코드"
             readOnly={isReadOnly}
           />
         </Box>
@@ -110,7 +110,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseName"
             value={franchise.franchiseName}
             onChange={handleChange}
-            placeholder="가맹점명을 입력하세요"
+            placeholder="가맹점명"
             readOnly={isReadOnly}
           />
         </Box>
@@ -120,7 +120,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseRep"
             value={franchise.franchiseRep}
             onChange={handleChange}
-            placeholder="가맹점주를 입력하세요"
+            placeholder="가맹점주"
             readOnly={isReadOnly}
           />
         </Box>
@@ -130,7 +130,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseTel"
             value={franchise.franchiseTel}
             onChange={handleChange}
-            placeholder="전화번호를 입력하세요"
+            placeholder="전화번호"
             readOnly={isReadOnly}
           />
         </Box>
@@ -140,7 +140,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
-            placeholder="사업자 번호를 입력하세요"
+            placeholder="사업자 번호"
             readOnly={isReadOnly}
           />
         </Box>
@@ -150,7 +150,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseAddress"
             value={franchise.franchiseAddress}
             onChange={handleChange}
-            placeholder="주소를 입력하세요"
+            placeholder="주소"
             readOnly={isReadOnly}
           />
         </Box>
@@ -160,7 +160,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
             onChange={handleChange}
-            placeholder="상세 주소를 입력하세요"
+            placeholder="상세 주소"
             readOnly={isReadOnly}
           />
         </Box>
@@ -170,7 +170,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchisePost"
             value={franchise.franchisePost}
             onChange={handleChange}
-            placeholder="우편 번호를 입력하세요"
+            placeholder="우편 번호"
             readOnly={isReadOnly}
           />
         </Box>
@@ -180,7 +180,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseState"
             value={franchise.franchiseState}
             onChange={handleChange}
-            placeholder="광역시도를 입력하세요"
+            placeholder="광역시도"
             readOnly={isReadOnly}
           />
         </Box>
@@ -190,7 +190,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseCity"
             value={franchise.franchiseCity}
             onChange={handleChange}
-            placeholder="시군을 입력하세요"
+            placeholder="시군"
             readOnly={isReadOnly}
           />
         </Box>
@@ -200,7 +200,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             name="franchiseNote"
             value={franchise.franchiseNote}
             onChange={handleChange}
-            placeholder="비고를 입력하세요"
+            placeholder="비고"
             readOnly={isReadOnly}
           />
         </Box>
