@@ -47,4 +47,10 @@ public class FranchiseService {
     public Franchise getFranchise(int franchiseKey) {
         return mapper.getFranchise(franchiseKey);
     }
+
+    // 특정 가맹점 수정
+    public boolean editFranchise(Franchise franchise) {
+        int cnt = mapper.editFranchise(franchise);
+        return cnt == 1;
+    }
 }

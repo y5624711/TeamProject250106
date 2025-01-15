@@ -1,9 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
+import { toaster } from "../ui/toaster.jsx";
 
 export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
+  const [isReadOnly, setIsReadOnly] = useState(true);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFranchise((prevFranchise) => ({
+      ...prevFranchise,
+      [name]: value,
+    }));
+  };
+
+  const handleEditClick = () => {
+    setIsReadOnly(false); // 수정 모드 활성화
+  };
+
+  const handleCancelClick = () => {
+    setIsReadOnly(true); // 수정 모드 취소
+  };
+  const handleSaveClick = () => {
+    axios
+      .put(`/api/franchise/edit/${franchiseKey}`, franchise)
+      .then((res) => {
+        console.log("수정 결과:", res.data);
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
+  };
+
+  const handleDeleteClick = () => {
+    if (window.confirm("정말로 이 가맹점을 삭제하시겠습니까?")) {
+      axios
+        .delete(`/api/franchise/delete/${franchiseKey}`)
+        .then((response) => {
+          alert("삭제가 성공적으로 완료되었습니다.");
+          console.log("삭제 결과:", response.data);
+          setViewMode("list"); // 삭제 후 목록 화면으로 전환
+        })
+        .catch((error) => {
+          console.error("삭제 중 오류 발생:", error);
+          alert("삭제 중 오류가 발생했습니다.");
+        });
+    }
+  };
 
   useEffect(() => {
     const franchiseData = () => {
@@ -26,35 +80,151 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     return <Text>Loading...</Text>;
   }
 
-  const handleEditClick = () => {
-    setViewMode("edit"); // 수정 모드로 전환
-  };
-
   return (
-    <Box
-      p="5"
-      height="710px"
-      width="900px"
-      borderRadius="md"
-      boxShadow="0px 10px 30px rgba(0, 0, 0, 0.2)"
-      bg="white"
-    >
-      <Text fontWeight="bold">
-        본사 직원 사번: {franchise.businessEmployeeNo}
-      </Text>
-      <Text>가맹점 코드: {franchise.franchiseCode}</Text>
-      <Text>가맹점명: {franchise.franchiseName}</Text>
-      <Text>가맹점주: {franchise.franchiseRep}</Text>
-      <Text>전화번호: {franchise.franchiseTel}</Text>
-      <Text>사업자 번호: {franchise.franchiseNo}</Text>
-      <Text>주소: {franchise.franchiseAddress}</Text>
-      <Text>상세 주소: {franchise.franchiseAddressDetail}</Text>
-      <Text>우편 번호: {franchise.franchisePost}</Text>
-      <Text>광역시도: {franchise.franchiseState}</Text>
-      <Text>시군: {franchise.franchiseCity}</Text>
-      <Text>사용 여부: {franchise.franchiseActive ? "활성" : "비활성"}</Text>
-      <Text>비고: {franchise.franchiseNote}</Text>
-      <Button onClick={handleEditClick}>수정</Button>
+    <Box>
+      <Box maxW="500px" mx="auto" p={4}>
+        <Box mb={4}>
+          <Text>본사 직원 사번</Text>
+          <Input
+            name="businessEmployeeNo"
+            value={franchise.businessEmployeeNo}
+            onChange={handleChange}
+            placeholder="본사 직원 사번을 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>가맹점 코드</Text>
+          <Input
+            name="franchiseCode"
+            value={franchise.franchiseCode}
+            onChange={handleChange}
+            placeholder="가맹점 코드를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>가맹점명</Text>
+          <Input
+            name="franchiseName"
+            value={franchise.franchiseName}
+            onChange={handleChange}
+            placeholder="가맹점명을 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>가맹점주</Text>
+          <Input
+            name="franchiseRep"
+            value={franchise.franchiseRep}
+            onChange={handleChange}
+            placeholder="가맹점주를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>전화번호</Text>
+          <Input
+            name="franchiseTel"
+            value={franchise.franchiseTel}
+            onChange={handleChange}
+            placeholder="전화번호를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>사업자 번호</Text>
+          <Input
+            name="franchiseNo"
+            value={franchise.franchiseNo}
+            onChange={handleChange}
+            placeholder="사업자 번호를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>주소</Text>
+          <Input
+            name="franchiseAddress"
+            value={franchise.franchiseAddress}
+            onChange={handleChange}
+            placeholder="주소를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>상세 주소</Text>
+          <Input
+            name="franchiseAddressDetail"
+            value={franchise.franchiseAddressDetail}
+            onChange={handleChange}
+            placeholder="상세 주소를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>우편 번호</Text>
+          <Input
+            name="franchisePost"
+            value={franchise.franchisePost}
+            onChange={handleChange}
+            placeholder="우편 번호를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>광역시도</Text>
+          <Input
+            name="franchiseState"
+            value={franchise.franchiseState}
+            onChange={handleChange}
+            placeholder="광역시도를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>시군</Text>
+          <Input
+            name="franchiseCity"
+            value={franchise.franchiseCity}
+            onChange={handleChange}
+            placeholder="시군을 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>비고</Text>
+          <Input
+            name="franchiseNote"
+            value={franchise.franchiseNote}
+            onChange={handleChange}
+            placeholder="비고를 입력하세요"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between" mt={4}>
+          {isReadOnly ? (
+            <>
+              <Button onClick={handleEditClick} colorScheme="blue">
+                수정
+              </Button>
+              <Button onClick={handleDeleteClick} colorScheme="red">
+                삭제
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={handleSaveClick} colorScheme="green">
+                저장
+              </Button>
+              <Button onClick={handleCancelClick} colorScheme="gray">
+                취소
+              </Button>
+            </>
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 }

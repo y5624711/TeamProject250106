@@ -44,4 +44,18 @@ public class FranchiseController {
     public Franchise view(@PathVariable int franchiseKey) {
         return service.getFranchise(franchiseKey);
     }
+
+    // 특정 가맹점 수정
+    @PutMapping("edit/{franchiseKey}")
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody Franchise franchise) {
+        if (service.validate(franchise)) {
+            if (service.editFranchise(franchise)) {
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점 정보가 성공적으로 수정되었습니다.")));
+            } else {
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error", "text", "가맹점 정보가 수정되지 않았습니다.")));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
+        }
+    }
 }
