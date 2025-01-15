@@ -13,10 +13,10 @@ public interface FranchiseMapper {
 
     // 가맹점 등록하기
     @Insert("""
-            INSERT INTO TB_FRNCHSMST (business_employee_no, franchise_name, franchise_code, franchise_rep, 
+            INSERT INTO TB_FRNCHSMST (business_employee_no, franchise_code, franchise_name, franchise_rep, 
                 franchise_no, franchise_tel, franchise_address, franchise_address_detail, 
                 franchise_post, franchise_state, franchise_city, franchise_active, franchise_note)
-            VALUES (#{businessEmployeeNo}, #{franchiseName}, #{franchiseCode}, #{franchiseRep}, 
+            VALUES (#{businessEmployeeNo}, #{franchiseCode}, #{franchiseName}, #{franchiseRep}, 
                 #{franchiseNo}, #{franchiseTel}, #{franchiseAddress}, #{franchiseAddressDetail}, 
                 #{franchisePost}, #{franchiseState}, #{franchiseCity}, #{franchiseActive}, #{franchiseNote})
             """)
@@ -33,7 +33,7 @@ public interface FranchiseMapper {
     // 특정 가맹점 조회
     @Select("""
             SELECT 
-                franchise_key, business_employee_no, franchise_name, franchise_code, franchise_rep, 
+                franchise_key, business_employee_no, franchise_code, franchise_name, franchise_rep, 
                 franchise_no, franchise_tel, franchise_address, franchise_address_detail, 
                 franchise_post, franchise_state, franchise_city, franchise_active, franchise_note
             FROM TB_FRNCHSMST

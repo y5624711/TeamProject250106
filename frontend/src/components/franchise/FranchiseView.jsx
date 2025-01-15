@@ -34,11 +34,11 @@ export function FranchiseView({ franchiseKey }) {
       <Text fontWeight="bold">
         본사 직원 사번: {franchise.businessEmployeeNo}
       </Text>
-      <Text>가맹점명: {franchise.franchiseName}</Text>
       <Text>가맹점 코드: {franchise.franchiseCode}</Text>
+      <Text>가맹점명: {franchise.franchiseName}</Text>
       <Text>가맹점주: {franchise.franchiseRep}</Text>
-      <Text>사업자 번호: {franchise.franchiseNo}</Text>
       <Text>전화번호: {franchise.franchiseTel}</Text>
+      <Text>사업자 번호: {franchise.franchiseNo}</Text>
       <Text>주소: {franchise.franchiseAddress}</Text>
       <Text>상세 주소: {franchise.franchiseAddressDetail}</Text>
       <Text>우편 번호: {franchise.franchisePost}</Text>

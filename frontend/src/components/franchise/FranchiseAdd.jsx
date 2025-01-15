@@ -6,8 +6,8 @@ import { toaster } from "../ui/toaster.jsx";
 export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
   const [franchise, setFranchise] = useState({
     businessEmployeeNo: "",
-    franchiseName: "",
     franchiseCode: "",
+    franchiseName: "",
     franchiseRep: "",
     franchiseNo: "",
     franchiseTel: "",
@@ -70,21 +70,21 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
           />
         </Box>
         <Box mb={4}>
-          <Text>가맹점명</Text>
-          <Input
-            name="franchiseName"
-            value={franchise.franchiseName}
-            onChange={handleChange}
-            placeholder="가맹점명을 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
           <Text>가맹점 코드</Text>
           <Input
             name="franchiseCode"
             value={franchise.franchiseCode}
             onChange={handleChange}
             placeholder="가맹점 코드를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>가맹점명</Text>
+          <Input
+            name="franchiseName"
+            value={franchise.franchiseName}
+            onChange={handleChange}
+            placeholder="가맹점명을 입력하세요"
           />
         </Box>
         <Box mb={4}>
@@ -97,21 +97,21 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
           />
         </Box>
         <Box mb={4}>
-          <Text>사업자 번호</Text>
-          <Input
-            name="franchiseNo"
-            value={franchise.franchiseNo}
-            onChange={handleChange}
-            placeholder="사업자 번호를 입력하세요"
-          />
-        </Box>
-        <Box mb={4}>
           <Text>전화번호</Text>
           <Input
             name="franchiseTel"
             value={franchise.franchiseTel}
             onChange={handleChange}
             placeholder="전화번호를 입력하세요"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>사업자 번호</Text>
+          <Input
+            name="franchiseNo"
+            value={franchise.franchiseNo}
+            onChange={handleChange}
+            placeholder="사업자 번호를 입력하세요"
           />
         </Box>
         <Box mb={4}>
