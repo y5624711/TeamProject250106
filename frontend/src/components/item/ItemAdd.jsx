@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Input, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
+import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
 
 export function ItemAdd() {
@@ -58,7 +59,6 @@ export function ItemAdd() {
       outputPrice,
       itemNote,
     };
-    console.log(itemData);
 
     axios
       .post("/api/item/add", itemData)
@@ -109,16 +109,20 @@ export function ItemAdd() {
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
         />
-        <Input
-          placeholder="입고가"
-          value={inputPrice}
-          onChange={(e) => setInputPrice(e.target.value)}
-        />
-        <Input
-          placeholder="출고가"
-          value={outputPrice}
-          onChange={(e) => setOutputPrice(e.target.value)}
-        />
+        <NumberInputRoot>
+          <NumberInputField
+            placeholder="입고가"
+            value={inputPrice}
+            onChange={(e) => setInputPrice(e.target.value)}
+          />
+        </NumberInputRoot>
+        <NumberInputRoot>
+          <NumberInputField
+            placeholder="출고가"
+            value={outputPrice}
+            onChange={(e) => setOutputPrice(e.target.value)}
+          />
+        </NumberInputRoot>
         <Input
           placeholder="비고"
           value={itemNote}

@@ -19,6 +19,7 @@ public interface ItemMapper {
     @Select("""
             SELECT item_common_code, item_common_name
             FROM TB_ITEMCOMM
+            WHERE item_common_code NOT IN (SELECT item_code FROM TB_CUSTMST)
             ORDER BY binary(item_common_name)
             """)
     List<Map<String, String>> getItemCommonCode();
@@ -63,4 +64,10 @@ public interface ItemMapper {
             WHERE item_key = #{itemKey}
             """)
     int editItem(int itemKey, Item item);
+
+    @Select("""
+            SELECT item_common_code
+            FROM TB_ITEMMST
+            """)
+    List<String> getUsedItemCommonCode(String itemCommonCode);
 }

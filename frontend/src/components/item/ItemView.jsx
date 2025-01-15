@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
+import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 
 export function ItemView({ itemKey }) {
   const [itemList, setItemList] = useState([]);
@@ -106,18 +107,20 @@ export function ItemView({ itemKey }) {
                     value={editedItem.unit}
                     onChange={handleChange}
                   />
-                  <Input
-                    name="inputPrice"
-                    placeholder="입고가"
-                    value={editedItem.inputPrice}
-                    onChange={handleChange}
-                  />
-                  <Input
-                    name="outputPrice"
-                    placeholder="출고가"
-                    value={editedItem.outputPrice}
-                    onChange={handleChange}
-                  />
+                  <NumberInputRoot>
+                    <NumberInputField
+                      placeholder="입고가"
+                      value={editedItem.inputPrice}
+                      onChange={handleChange}
+                    />
+                  </NumberInputRoot>
+                  <NumberInputRoot>
+                    <NumberInputField
+                      placeholder="출고가"
+                      value={editedItem.outputPrice}
+                      onChange={handleChange}
+                    />
+                  </NumberInputRoot>
                   <Input
                     name="itemNote"
                     placeholder="비고"

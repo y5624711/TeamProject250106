@@ -28,6 +28,12 @@ public class ItemService {
                         item.getItemNote() == null || item.getItemNote().trim().isEmpty());
     }
 
+    // 물품 중복 검증
+    public boolean duplicate(String itemCommonCode) {
+        List<String> itemList = mapper.getUsedItemCommonCode(itemCommonCode);
+        return itemList.contains(itemCommonCode);
+    }
+
     // 물품 추가하기
     public boolean addItem(Item item) {
         int cnt = mapper.addItem(item);
@@ -64,7 +70,6 @@ public class ItemService {
     // 물품 수정하기
     public boolean editItem(int itemKey, Item item) {
         int cnt = mapper.editItem(itemKey, item);
-        System.out.println(item);
         return cnt == 1;
     }
 }
