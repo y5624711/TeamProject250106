@@ -26,6 +26,7 @@ function NavItem({ children, path, ...rest }) {
 
 export function Navbar() {
   const { id, isAuthenticated, logout } = useContext(AuthenticationContext);
+
   const navigate = useNavigate();
 
   return (
