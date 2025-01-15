@@ -8,6 +8,7 @@ public class Customer {
     private String customerName;
     private String customerCode;
     private String itemCode;
+    private String itemName;
     private String customerRep;
     private String customerNo;
     private String customerTel;

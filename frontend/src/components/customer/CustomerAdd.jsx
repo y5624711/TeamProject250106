@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "../ui/button.jsx";
 import {
+  createListCollection,
   Heading,
   Input,
   SelectContent,
@@ -18,6 +19,7 @@ function CustomerAdd({ onCancel }) {
   const [customerName, setCustomerName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [itemCode, setItemCode] = useState("");
+  const [itemName, setItemName] = useState("");
   const [itemCodeList, setItemCodeList] = useState([]);
   const [customerRep, setCustomerRep] = useState("");
   const [customerNo, setCustomerNo] = useState("");
@@ -36,7 +38,8 @@ function CustomerAdd({ onCancel }) {
       .catch((error) => console.log("오류", error));
   }, []);
   console.log(itemCodeList);
-  console.log("설정", itemCode);
+  console.log("설정1", itemCode);
+  console.log("설정2", itemName);
 
   const handleSaveClick = () => {
     axios
@@ -45,6 +48,7 @@ function CustomerAdd({ onCancel }) {
         customerName,
         customerRep,
         itemCode,
+        // itemName,
         customerNo,
         customerTel,
         customerFax,
@@ -55,6 +59,15 @@ function CustomerAdd({ onCancel }) {
       })
       .then();
   };
+
+  const myitems = createListCollection({
+    items: itemCodeList.map((itemCode) => {
+      return {
+        label: itemCode.common_code_name,
+        value: itemCode.common_code,
+      };
+    }),
+  });
 
   return (
     <div>
@@ -81,26 +94,27 @@ function CustomerAdd({ onCancel }) {
           />
         </Field>
         <SelectRoot
-          value={itemCode}
           onValueChange={(e) => {
-            console.log("설정2", e.value);
-            setItemCode(e.value);
+            setItemName(e.value);
+            const selectedItem = itemCodeList.find(
+              (item) => item.common_code_name == e.value,
+            );
+            console.log("내부", selectedItem);
+            if (selectedItem) {
+              setItemCode(selectedItem.common_code); // 선택된 품목 코드 설정
+            }
           }}
         >
           <SelectLabel>취급 품목</SelectLabel>
           <SelectTrigger>
             <SelectValueText>
-              {itemCode != "" ? 1 : "품목 선택"}
+              {itemName != "" ? itemName : "품목 선택"}
             </SelectValueText>
           </SelectTrigger>
           <SelectContent>
-            {itemCodeList.map((choice) => (
-              <SelectItem
-                item={choice}
-                // key={choice.common_code_key}
-                key={choice.common_code}
-              >
-                {choice.common_code_name}
+            {myitems.items.map((item) => (
+              <SelectItem item={item.label} key={item.value}>
+                {item.label}
               </SelectItem>
             ))}
           </SelectContent>
