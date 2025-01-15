@@ -1,6 +1,26 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
+function SidebarItem({ children, path, ...rest }) {
+  const navigate = useNavigate();
+
+  return (
+    <Box
+      h="40px"
+      display="flex"
+      alignItems="center"
+      px="4"
+      _hover={{ bgColor: "gray.200", cursor: "pointer" }}
+      onClick={() => path && navigate(path)}
+      {...rest}
+    >
+      <Text fontWeight="medium" color="gray.700">
+        {children}
+      </Text>
+    </Box>
+  );
+}
+
 export function SideBar() {
   const navigate = useNavigate();
 
@@ -17,7 +37,7 @@ export function SideBar() {
         <Box
           bgColor={"steelBlue"}
           h={"70px"}
-          display="flex" // Flexbox 사용
+          display="flex"
           justifyContent="center" // 가로 방향 가운데 정렬
           alignItems="center" // 세로 방향 가운데 정렬
         >
@@ -26,19 +46,14 @@ export function SideBar() {
           </Text>
         </Box>
 
-        <Stack spacing="2">
-          <Text>사업장/부서 관리</Text>
-          <Text>인사 관리</Text>
-          <Text>가맹점 관리</Text>
-          <Text>협력업체 관리</Text>
-          <Text
-            onClick={() => navigate("/item")}
-            _hover={{ cursor: "pointer" }}
-          >
-            품목 관리
-          </Text>
-          <Text>창고 관리</Text>
-          <Text>로케이션 관리</Text>
+        <Stack spacing="2" mt="4">
+          <SidebarItem path="/branch">사업장/부서 관리</SidebarItem>
+          <SidebarItem path="/employee">인사 관리</SidebarItem>
+          <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
+          <SidebarItem path="/customer">협력업체 관리</SidebarItem>
+          <SidebarItem path="/item">품목 관리</SidebarItem>
+          <SidebarItem path="/warehouse">창고 관리</SidebarItem>
+          <SidebarItem path="/location">로케이션 관리</SidebarItem>
         </Stack>
       </Box>
     </Flex>
