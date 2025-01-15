@@ -59,9 +59,11 @@ public class ItemController {
     @GetMapping("list")
     public Map<String, Object> getItemlist(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "active", defaultValue = "1") Integer active
+            @RequestParam(value = "active", defaultValue = "1") Integer active,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
-        return service.getItemList(page, active);
+        return service.getItemList(page, active, type, keyword);
     }
 
     // 물품을 취급하는 협력업체 이름 가져오기

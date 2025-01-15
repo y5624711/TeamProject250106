@@ -20,15 +20,18 @@ import {
   PaginationRoot,
 } from "../ui/pagination.jsx";
 import { Checkbox } from "../ui/checkbox.jsx";
-import { Switch } from "../ui/switch.jsx";
 import { Button } from "../ui/button.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { Switch } from "../ui/switch.jsx";
 
 export function ItemList({ onShowDetail }) {
-  const [itemList, setItemList] = useState([]);
-  const [isActive, setIsActive] = useState(1);
-  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
+  const [itemList, setItemList] = useState([]);
+  const [count, setCount] = useState(0);
+  const [search, setSearch] = useState({
+    type: "all",
+    keyword: "",
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,6 +52,12 @@ export function ItemList({ onShowDetail }) {
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
+  // 사용 여부
+  const activeParam = searchParams.get("active")
+    ? searchParams.get("active")
+    : "1";
+  const active = Number(activeParam);
+
   // 페이지 이동
   const handlePageChange = (e) => {
     const nextSearchParams = new URLSearchParams(searchParams);
@@ -58,13 +67,27 @@ export function ItemList({ onShowDetail }) {
 
   // 스위치 상태 변경 핸들러
   const handleSwitchChange = () => {
-    const nextIsActive = isActive === 1 ? 0 : 1;
-    setIsActive(nextIsActive);
-
-    // active 쿼리 파라미터를 업데이트
     const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", nextIsActive.toString());
+    nextSearchParams.set("active", active === 1 ? "0" : "1");
+    nextSearchParams.set("page", "1");
     setSearchParams(nextSearchParams);
+  };
+
+  // 검색
+  const handleSearchClick = () => {
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      const nextSearchParam = new URLSearchParams(searchParams);
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
+      setSearchParams(nextSearchParam);
+    } else {
+      // 검색 안함
+      const nextSearchParam = new URLSearchParams(searchParams);
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
+      setSearchParams(nextSearchParam);
+    }
   };
 
   console.log(itemList);
@@ -75,8 +98,7 @@ export function ItemList({ onShowDetail }) {
         <HStack>
           <SelectRoot
             collection={itemSearchList}
-            size="sm"
-            width="100px"
+            width="150px"
             position="relative"
           >
             <SelectTrigger>
@@ -84,7 +106,7 @@ export function ItemList({ onShowDetail }) {
             </SelectTrigger>
             <SelectContent
               style={{
-                width: "100px",
+                width: "150px",
                 top: "40px",
                 position: "absolute",
               }}
@@ -107,10 +129,10 @@ export function ItemList({ onShowDetail }) {
               }
             }}
           ></Input>
-          <Button>검색</Button>
+          <Button onClick={handleSearchClick}>검색</Button>
         </HStack>
       </HStack>
-      <Switch isChecked={isActive} onChange={handleSwitchChange}>
+      <Switch checked={!active} onChange={handleSwitchChange}>
         전체 상품 조회
       </Switch>
       <Box>
