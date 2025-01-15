@@ -44,6 +44,6 @@ public class EmployeeController {
     public void updateEmployee(@RequestBody Employee employee) {
         System.out.println("employee = " + employee);
          
-//         service.updateEmployeeByKey(employee);
+         service.updateEmployeeByKey(employee);
     }
 }

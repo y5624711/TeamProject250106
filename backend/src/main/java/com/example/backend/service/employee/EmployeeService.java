@@ -32,4 +32,10 @@ public class EmployeeService {
         return  mapper.getOneEmployeeByKey(viewKey);
 
     }
+
+    public boolean updateEmployeeByKey(Employee employee) {
+
+        int cnt =mapper.updateEmployeeByKey(employee);
+        return   cnt==1;
+    }
 }

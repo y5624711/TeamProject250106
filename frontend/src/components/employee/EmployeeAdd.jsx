@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export function EmployeeAdd({ viewKey }) {
   const [formData, setFormData] = useState({
-    id: "",
+    employeeNo: "",
     password: "",
     selectedCommonCode: "",
     name: "",
@@ -45,7 +45,7 @@ export function EmployeeAdd({ viewKey }) {
         })
         .then((res) => {
           setFormData({
-            id: res.data.employeeNo || "",
+            employeeNo: res.data.employeeNo || "",
             selectedCommonCode: res.data.employeeCommonCode || "",
             password: res.data.employeePassword || "",
             tel: res.data.employeeTel || "",
@@ -57,6 +57,17 @@ export function EmployeeAdd({ viewKey }) {
         });
     }
   }, [viewKey]);
+
+  // 사번 부여 함수
+  function createEmployeeNo() {
+    const randomNumber = Math.floor(Math.random() * 1e10); // 1e10은 10자리 숫자
+    var randomNo = formData.selectedCommonCode.join("") + randomNumber;
+
+    return randomNo;
+  }
+
+  console.log(formData.selectedCommonCode);
+  console.log(Math.floor(Math.random() * 1e10));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,22 +83,41 @@ export function EmployeeAdd({ viewKey }) {
     const url = viewKey === -1 ? "/api/employee/add" : "/api/employee/update";
     const method = viewKey === -1 ? "post" : "put";
     // selectedCommonCode.join(""),
+    var data;
 
-    const data = {
-      employeeCommonCode: formData.selectedCommonCode.join(""),
-      employeeWorkPlaceCode: formData.workPlace,
-      employeeNo: formData.id,
-      employeeName: formData.name,
-      employeeTel: formData.tel,
-      employeeNote: formData.note,
-      employeeDepartment: formData.departMent,
-      employeePassword: formData.password,
-    };
+    if (viewKey === -1) {
+      // 등록 데이터 폼
+
+      console.log(formData.employeeNo);
+      data = {
+        employeeCommonCode: formData.selectedCommonCode.join(""),
+        employeeWorkPlaceCode: formData.workPlace,
+        employeeName: formData.name,
+        employeeTel: formData.tel,
+        employeeNote: formData.note,
+        employeeDepartment: formData.departMent,
+        employeeNo: createEmployeeNo(),
+      };
+    } else {
+      // 수정 데이터 폼
+      data = {
+        // 공통 코드  , 소속 코드 , 사번 , 이름 , 전화 번호 , 비고 , 부서 , 비번
+        employeeKey: viewKey,
+        employeeCommonCode: formData.selectedCommonCode,
+        employeeWorkPlaceCode: formData.workPlace,
+        employeeNo: formData.employeeNo,
+        employeeName: formData.name,
+        employeeTel: formData.tel,
+        employeeNote: formData.note,
+        employeeDepartment: formData.departMent,
+        employeePassword: formData.password,
+      };
+    }
 
     axios[method](url, data)
       .then(() => {
         setFormData({
-          id: "",
+          employeeNo: "",
           password: "",
           selectedCommonCode: "",
           name: "",
@@ -108,7 +138,11 @@ export function EmployeeAdd({ viewKey }) {
       <Stack spacing={4}>
         <SelectRoot
           collection={frameworks}
-          value={formData.selectedCommonCode}
+          value={
+            viewKey === -1
+              ? formData.selectedCommonCode
+              : [formData.selectedCommonCode]
+          }
           onValueChange={(e) =>
             setFormData({ ...formData, selectedCommonCode: e.value })
           }
@@ -144,12 +178,14 @@ export function EmployeeAdd({ viewKey }) {
           value={formData.name}
           onChange={handleInputChange}
         />
-        <Input
-          name="id"
-          placeholder={"사번"}
-          value={formData.id}
-          onChange={handleInputChange}
-        />
+        {viewKey === -1 || (
+          <Input
+            name="employeeNo"
+            placeholder={"사번"}
+            value={formData.employeeNo}
+            onChange={handleInputChange}
+          />
+        )}
         <Input
           name="tel"
           placeholder={"전화번호"}

@@ -29,6 +29,7 @@ export function EmployeeList({ onSelect }) {
     { label: "회원 등록", path: "/account/add" },
   ];
 
+  // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
     <Box>
       <Heading> 낄낄</Heading>
