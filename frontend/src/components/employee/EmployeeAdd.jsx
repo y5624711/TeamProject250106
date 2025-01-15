@@ -17,7 +17,7 @@ import { Button } from "../ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function EmployeeAdd({ viewKey }) {
+export function EmployeeAdd({ viewKey, onChange }) {
   const [formData, setFormData] = useState({
     employeeNo: "",
     password: "",
@@ -66,9 +66,6 @@ export function EmployeeAdd({ viewKey }) {
 
     return randomNo;
   }
-
-  console.log(formData.selectedCommonCode);
-  console.log(Math.floor(Math.random() * 1e10));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -135,9 +132,20 @@ export function EmployeeAdd({ viewKey }) {
       })
       .catch((err) => {
         console.error("전송중 오류 발생:", err);
+      })
+      .finally(() => {
+        onChange();
       });
   };
 
+  const handleDelete = () => {
+    console.log("실행");
+    axios.put("api/employee/delete", {
+      params: {
+        viewKey: viewKey,
+      },
+    });
+  };
   return (
     <Box border={"1px solid black"}>
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
@@ -216,6 +224,17 @@ export function EmployeeAdd({ viewKey }) {
       <Button onClick={handleSubmit}>
         {viewKey === -1 ? "회원 등록" : "회원 수정"}
       </Button>
+      {/*view 화면 일때만 보여주기*/}
+      {viewKey !== -1 && (
+        <Button
+          onClick={() => {
+            handleDelete();
+          }}
+        >
+          {" "}
+          회원 삭제
+        </Button>
+      )}
     </Box>
   );
 }

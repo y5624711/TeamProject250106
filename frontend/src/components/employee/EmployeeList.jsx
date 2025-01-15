@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, Checkbox, Heading, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-export function EmployeeList({ onSelect }) {
+export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
@@ -17,7 +17,7 @@ export function EmployeeList({ onSelect }) {
         console.log(err);
         console.log("직원 정보를 받는중 오류");
       });
-  }, []);
+  }, [updateList]);
 
   // 리스트 클릭시 , 해당 키 값의 상세 정보를 보여주기 위해서
   const handleSelectedItem = (no) => {
