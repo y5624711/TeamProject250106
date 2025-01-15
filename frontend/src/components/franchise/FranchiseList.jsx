@@ -5,18 +5,17 @@ import {
   TableHeader,
   TableRow,
 } from "@chakra-ui/react";
-import { Checkbox } from "../ui/checkbox.jsx";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export function FranchiseList() {
+export function FranchiseList({ onFranchiseClick }) {
   const [franchises, setFranchises] = useState([]);
 
   useEffect(() => {
     axios
       .get("/api/franchise/list")
       .then((res) => {
-        setFranchises(res.data); // 데이터를 받아서 상태에 저장
+        setFranchises(res.data);
       })
       .catch((err) => {
         console.error("데이터를 불러오는 데 오류가 발생했습니다:", err);
@@ -39,16 +38,16 @@ export function FranchiseList() {
         </TableHeader>
         <Table.Body>
           {franchises.map((franchise) => (
-            <Table.Row>
+            <Table.Row
+              key={franchise.franchiseKey}
+              onClick={() => onFranchiseClick(franchise.franchiseKey)} // 클릭 시 부모 컴포넌트로 franchiseKey 전달
+            >
               <Table.Cell>{franchise.franchiseKey}</Table.Cell>
               <Table.Cell>{franchise.franchiseName}</Table.Cell>
               <Table.Cell>{franchise.franchiseRep}</Table.Cell>
               <Table.Cell>{franchise.franchiseState}</Table.Cell>
               <Table.Cell>{franchise.franchiseCity}</Table.Cell>
               <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
-              <Table.Cell>
-                <Checkbox isChecked={franchise.franchiseActive} isReadOnly />
-              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
