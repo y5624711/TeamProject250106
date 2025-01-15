@@ -23,6 +23,42 @@ public interface FranchiseMapper {
             """)
     List<Franchise> list();
 
+    // 페이징을 위한 메서드 (현재 페이지에 맞는 데이터 가져오기)
+    @Select("""
+            <script>
+                SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, business_employee_no
+                FROM TB_FRNCHSMST
+                <where>
+                    <if test="category != null and category != 'all'">
+                        AND franchiseState = #{category}
+                    </if>
+                    <if test="keyword != null and keyword != ''">
+                        AND franchiseName LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </where>
+                 ORDER BY franchise_key DESC
+                LIMIT #{offset}, 10
+            </script>
+            """)
+    List<Franchise> selectPage(Integer offset, String category, String keyword);
+
+    // 총 데이터 개수 (페이지네이션을 위해 사용)
+    @Select("""
+            <script>
+                SELECT COUNT(*)
+                FROM TB_FRNCHSMST
+                <where>
+                    <if test="category != null and category != 'all'">
+                        AND franchiseState = #{category}
+                    </if>
+                    <if test="keyword != null and keyword != ''">
+                        AND franchiseName LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </where>
+            </script>
+            """)
+    Integer countAll(String category, String keyword);
+
     // 특정 가맹점 조회
     @Select("""
             SELECT *

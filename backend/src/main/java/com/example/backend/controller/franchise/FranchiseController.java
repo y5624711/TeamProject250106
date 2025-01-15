@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -35,8 +34,10 @@ public class FranchiseController {
 
     // 가맹점 리스트 조회
     @GetMapping("/list")
-    public List<Franchise> list() {
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "st", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "sk", defaultValue = "") String keyword) {
+        return service.list(page, searchType, keyword);
     }
 
     // 특정 가맹점 조회
