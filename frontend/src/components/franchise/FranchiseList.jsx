@@ -5,7 +5,6 @@ import {
   TableHeader,
   TableRow,
 } from "@chakra-ui/react";
-import { Checkbox } from "../ui/checkbox.jsx";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -34,7 +33,6 @@ export function FranchiseList({ onFranchiseClick }) {
             <TableColumnHeader>광역시도</TableColumnHeader>
             <TableColumnHeader>시군</TableColumnHeader>
             <TableColumnHeader>본사 직원</TableColumnHeader>
-            <TableColumnHeader>계약 여부</TableColumnHeader>
           </TableRow>
         </TableHeader>
         <Table.Body>
@@ -49,9 +47,6 @@ export function FranchiseList({ onFranchiseClick }) {
               <Table.Cell>{franchise.franchiseState}</Table.Cell>
               <Table.Cell>{franchise.franchiseCity}</Table.Cell>
               <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
-              <Table.Cell>
-                <Checkbox isChecked={franchise.franchiseActive} isReadOnly />
-              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
