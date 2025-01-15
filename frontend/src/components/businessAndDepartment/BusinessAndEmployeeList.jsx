@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, HStack, Input, Spinner, Stack } from "@chakra-ui/react";
-import { Field } from "../../components/ui/field.jsx";
+import { Field } from "../ui/field.jsx";
 import { EmployeeList } from "./EmployeeList.jsx";
-import { Button } from "../../components/ui/button.jsx";
+import { Button } from "../ui/button.jsx";
 
 export function BusinessAndEmployeeList() {
   const [business, setBusiness] = useState([]);
@@ -24,6 +24,9 @@ export function BusinessAndEmployeeList() {
       .then((data) => {
         setBusiness(data["회사"]);
         setEmployee(data["사원"]);
+      })
+      .catch((error) => {
+        console.log(error);
       })
       .finally(() => setLoading(false));
   }, []);

@@ -7,7 +7,7 @@ export function CommonList() {
 
   useEffect(() => {
     axios
-      .get("/api/commonCode/list")
+      .get("/api/commonCode/system/list")
       .then((res) => res.data)
       .then((data) => {
         setCommonList(data);
