@@ -22,12 +22,15 @@ public interface EmployeeMapper {
 
     @Select("""
         select * from TB_EMPMST
+                 where  employee_active=true
+        LIMIT   #{offset} ,10
 """)
-    List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees(int offset, Boolean isActiveVisible);
+
 
     @Select("""
         select * from TB_EMPMST
-        WHERE employee_key = #{viewKey}
+        WHERE employee_key = #{viewKey} 
 """)
     Employee getOneEmployeeByKey(int viewKey);
 
@@ -53,4 +56,17 @@ public interface EmployeeMapper {
         where employee_key = #{employeeKey}
 """)
     int deleteEmployeeByKey(int employeeKey);
+
+    @Select("""
+    <script>
+    SELECT COUNT(employee_key)
+    FROM TB_EMPMST
+    <where>
+        <if test="isActiveVisible != null and !isActiveVisible">
+            employee_active = true
+        </if>
+    </where>
+          </script>
+""")
+    int countAllEmployee(@Param("isActiveVisible") Boolean isActiveVisible);
 }

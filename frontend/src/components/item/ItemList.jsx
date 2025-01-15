@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Table, Text } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  PaginationItem,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+  Table,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../ui/button.jsx";
 import { Checkbox } from "../ui/checkbox.jsx";

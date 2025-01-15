@@ -19,16 +19,15 @@ public class EmployeeController {
      @GetMapping("view")
      public Employee getEmployee(@RequestParam int viewKey) {
 
-
-//         return  new Employee();
          return  service.getOneEmployeeByKey(viewKey);
      }
 
 
      @GetMapping("/list")  //  모든 멤버 출력
-     public List<Employee> getAllEmployees() {
-
-        List<Employee> allList = service.getAllEmployee();
+     public List<Employee> getAllEmployees(@RequestParam int page ,Boolean isActiveVisible) {
+         System.out.println("페이지 페이지 page = " + page);
+         System.out.println("isActiveVisible = " + isActiveVisible);
+        List<Employee> allList = service.getAllEmployee(page ,isActiveVisible);
 
         return allList;
      }
@@ -52,7 +51,6 @@ public class EmployeeController {
     @PutMapping("update")
     public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee) {
         System.out.println("employee = " + employee);
-
          if(service.editEmployeeByKey(employee)){
              return ResponseEntity.ok()
                      .body(Map.of("message", Map.of("type", "success",

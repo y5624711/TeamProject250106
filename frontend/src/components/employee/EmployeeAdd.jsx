@@ -169,7 +169,6 @@ export function EmployeeAdd({ viewKey, onChange }) {
       })
       .catch((error) => {
         console.error("삭제 실패:", error);
-        // 오류가 발생하면 사용자에게 알림을 주는 것도 좋습니다.
         console.log(error);
         toaster.create({
           type: error.response.data.message.type,

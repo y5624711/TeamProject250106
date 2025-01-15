@@ -21,9 +21,20 @@ public class EmployeeService {
            return cnt==1;
     }
 
-    public List<Employee> getAllEmployee() {
+    public List<Employee> getAllEmployee(int page, Boolean isActiveVisible) {
 
-        return  mapper.getAllEmployees();
+        // 총 갯수
+        int count = mapper.countAllEmployee(isActiveVisible);
+
+        int selectPage=page;
+
+        int offset= (page-1) *10 +1;
+        System.out.println("count = " + count);
+
+
+
+
+        return  mapper.getAllEmployees(offset ,isActiveVisible);
     }
 
     // 인사관리 리스트 클릭시 상세정보 가져오는 서비스
