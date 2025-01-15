@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
   Input,
@@ -11,24 +13,48 @@ import {
   SelectValueText,
   Table,
 } from "@chakra-ui/react";
-import axios from "axios";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../ui/pagination.jsx";
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Switch } from "../ui/switch.jsx";
 import { Button } from "../ui/button.jsx";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function ItemList({ onShowDetail }) {
   const [itemList, setItemList] = useState([]);
+  const [isAllItems, setIsAllItems] = useState(false);
+  const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("/api/item/list")
+      .get("/api/item/list", {
+        params: searchParams,
+      })
       .then((res) => {
         setItemList(res.data);
+        setCount(res.data.count);
       })
       .catch((error) => {
         console.error("물품 목록 요청 중 오류 발생: ", error);
       });
-  }, []);
+  }, [searchParams]);
+
+  // 페이지 번호
+  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
+  const page = Number(pageParam);
+
+  // 페이지 이동
+  const handlePageChange = (e) => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  };
 
   console.log(itemList);
 
@@ -87,7 +113,7 @@ export function ItemList({ onShowDetail }) {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {itemList.map((item, index) => (
+            {itemList.list?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
                 onClick={() => onShowDetail(item.itemKey)}
@@ -105,6 +131,21 @@ export function ItemList({ onShowDetail }) {
             ))}
           </Table.Body>
         </Table.Root>
+        <Center>
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            page={page}
+            variant="solid"
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
       </Box>
     </Box>
   );

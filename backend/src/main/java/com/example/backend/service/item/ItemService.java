@@ -52,8 +52,9 @@ public class ItemService {
     }
 
     // 물품 리스트 가져오기
-    public List<Item> getItemList() {
-        return mapper.getItemList();
+    public Map<String, Object> getItemList(Integer page) {
+        return Map.of("list", mapper.getItemList((page - 1) * 10),
+                "count", mapper.countAll());
     }
 
     // 물품 1개 정보 가져오기

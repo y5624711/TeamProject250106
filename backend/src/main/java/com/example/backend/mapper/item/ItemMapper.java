@@ -30,8 +30,9 @@ public interface ItemMapper {
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             WHERE i.item_active = 1
             ORDER BY i.item_key
+            LIMIT #{offset}, 10
             """)
-    List<Item> getItemList();
+    List<Item> getItemList(Integer offset);
 
     @Select("""
             SELECT i.*, ic.item_common_name, c.customer_name
@@ -71,4 +72,10 @@ public interface ItemMapper {
             FROM TB_ITEMMST
             """)
     List<String> getUsedItemCommonCode(String itemCommonCode);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_ITEMMST
+            """)
+    Integer countAll();
 }
