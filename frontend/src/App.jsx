@@ -5,7 +5,6 @@ import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { CommonCode } from "./page/commonCode/CommonCode.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 
@@ -25,7 +24,6 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Main /> },
-      { path: "commonCode", element: <CommonCode /> },
       { path: "commonCode/list", element: <CommonList /> },
       { path: "commonCode/add", element: <CommonAdd /> },
       {

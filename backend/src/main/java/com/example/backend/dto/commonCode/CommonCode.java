@@ -6,8 +6,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CommonCode {
+    private Integer common_code_key;
     private String common_code;
-    private String name;
-    private boolean active;
-    private String note;
+    private String common_code_name;
+    private boolean common_code_active;
+    private String common_code_note;
 }
