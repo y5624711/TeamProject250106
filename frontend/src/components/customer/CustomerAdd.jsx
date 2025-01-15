@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "../ui/button.jsx";
-import { Input, Stack } from "@chakra-ui/react";
+import {
+  Heading,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Stack,
+} from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
 
 function CustomerAdd({ onCancel }) {
@@ -18,13 +28,15 @@ function CustomerAdd({ onCancel }) {
   const [customerPost, setCustomerPost] = useState("");
   const [customerNote, setCustomerNote] = useState("");
 
-  // 머지 후 물품 코드 불러오기
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/item/commonCode")
-  //     .then((res) => setItemCodeList(res.data))
-  //     .catch(error=>console.log("오류", error))
-  // }, []);
+  // 물품 코드 불러오기
+  useEffect(() => {
+    axios
+      .get("/api/customer/itemCode/list")
+      .then((res) => setItemCodeList(res.data))
+      .catch((error) => console.log("오류", error));
+  }, []);
+  console.log(itemCodeList);
+  console.log("설정", itemCode);
 
   const handleSaveClick = () => {
     axios
@@ -46,7 +58,7 @@ function CustomerAdd({ onCancel }) {
 
   return (
     <div>
-      <h2>협력 업체 등록</h2>
+      <Heading>협력 업체 등록</Heading>
       <Stack gap={5}>
         <Field label={"협력 업체 코드(차후 자동생성)"}>
           <Input
@@ -68,12 +80,49 @@ function CustomerAdd({ onCancel }) {
             onChange={(e) => setCustomerRep(e.target.value)}
           />
         </Field>
-        <Field label={"품목 코드(차후 셀렉트)"}>
-          <Input
-            value={itemCode}
-            onChange={(e) => setItemCode(e.target.value)}
-          />
-        </Field>
+        <SelectRoot
+          value={itemCode}
+          onValueChange={(e) => {
+            console.log("설정2", e.value);
+            setItemCode(e.value);
+          }}
+        >
+          <SelectLabel>취급 품목</SelectLabel>
+          <SelectTrigger>
+            <SelectValueText>
+              {itemCode != "" ? 1 : "품목 선택"}
+            </SelectValueText>
+          </SelectTrigger>
+          <SelectContent>
+            {itemCodeList.map((choice) => (
+              <SelectItem
+                item={choice}
+                // key={choice.common_code_key}
+                key={choice.common_code}
+              >
+                {choice.common_code_name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+        {/*<select*/}
+        {/*  name="itemCode"*/}
+        {/*  value={itemCode}*/}
+        {/*  onChange={(e) => setItemCode(e.target.value)}*/}
+        {/*>*/}
+        {/*  <option value="">품목 구분</option>*/}
+        {/*  {itemCodeList.map((code) => (*/}
+        {/*    <option key={code.item_common_code} value={code.item_common_code}>*/}
+        {/*      {code.item_common_name}*/}
+        {/*    </option>*/}
+        {/*  ))}*/}
+        {/*</select>*/}
+        {/*<Field label={"취급 물품"}>*/}
+        {/*<Input*/}
+        {/*  value={itemCode}*/}
+        {/*  onChange={(e) => setItemCode(e.target.value)}*/}
+        {/*/>*/}
+        {/*</Field>*/}
         <Field label={"사업자 번호"}>
           <Input
             value={customerNo}

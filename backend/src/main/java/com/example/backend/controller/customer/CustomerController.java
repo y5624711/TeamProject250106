@@ -1,5 +1,6 @@
 package com.example.backend.controller.customer;
 
+import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import com.example.backend.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +46,10 @@ public class CustomerController {
 //        System.out.println(customer);
 //        System.out.println(service.updateCustomer(customer));
         service.editCustomer(customer);
+    }
+
+    @GetMapping("itemCode/list")
+    private List<CommonCode> itemCodeList() {
+        return service.itemCodeList();
     }
 }

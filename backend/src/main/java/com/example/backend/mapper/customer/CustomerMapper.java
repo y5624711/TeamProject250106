@@ -1,5 +1,6 @@
 package com.example.backend.mapper.customer;
 
+import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -53,4 +54,10 @@ public interface CustomerMapper {
             WHERE customer_key = #{customerKey}    
             """)
     int editCustomer(Customer customer);
+
+    @Select("""
+            SELECT *
+            FROM TB_ITEMCOMM    
+            """)
+    List<CommonCode> itemCodeList();
 }

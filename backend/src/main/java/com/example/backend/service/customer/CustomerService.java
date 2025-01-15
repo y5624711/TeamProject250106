@@ -1,5 +1,6 @@
 package com.example.backend.service.customer;
 
+import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import com.example.backend.mapper.customer.CustomerMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,9 @@ public class CustomerService {
         int cnt = 0;
         cnt = mapper.editCustomer(customer);
         return cnt == 1;
+    }
+
+    public List<CommonCode> itemCodeList() {
+        return mapper.itemCodeList();
     }
 }
