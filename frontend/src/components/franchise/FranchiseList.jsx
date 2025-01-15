@@ -38,6 +38,7 @@ export function FranchiseList({ onFranchiseClick }) {
         <Table.Body>
           {franchises.map((franchise) => (
             <Table.Row
+              style={{ cursor: "pointer" }}
               key={franchise.franchiseKey}
               onClick={() => onFranchiseClick(franchise.franchiseKey)} // 클릭 시 부모 컴포넌트로 franchiseKey 전달
             >
