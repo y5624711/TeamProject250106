@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../ui/toaster.jsx";
 
 export function EmployeeAdd({ viewKey, onChange }) {
   const [formData, setFormData] = useState({
@@ -75,6 +76,19 @@ export function EmployeeAdd({ viewKey, onChange }) {
     }));
   };
 
+  const formDataClear = () => {
+    setFormData({
+      employeeNo: "",
+      password: "",
+      selectedCommonCode: "",
+      name: "",
+      tel: "",
+      note: "",
+      workPlace: "",
+      departMent: "",
+    });
+  };
+
   //  클릭 버튼 시
   const handleSubmit = () => {
     // 수정 일때와 , 추가 일때의 경로 매핑
@@ -114,24 +128,28 @@ export function EmployeeAdd({ viewKey, onChange }) {
 
     axios[method](url, data)
       .then((res) => {
-        setFormData({
-          employeeNo: "",
-          password: "",
-          selectedCommonCode: "",
-          name: "",
-          tel: "",
-          note: "",
-          workPlace: "",
-          departMent: "",
-        });
-        console.log(res);
+        formDataClear();
+        // setFormData({
+        //   employeeNo: "",
+        //   password: "",
+        //   selectedCommonCode: "",
+        //   name: "",
+        //   tel: "",
+        //   note: "",
+        //   workPlace: "",
+        //   departMent: "",
+        // });
         toaster.create({
-          description: "File saved successfully",
-          type: "loading",
+          type: res.data.message.type,
+          description: res.data.message.text,
         });
       })
-      .catch((err) => {
-        console.error("전송중 오류 발생:", err);
+      .catch((error) => {
+        console.error("전송중 오류 발생:", error);
+        toaster.create({
+          type: error.response.data.message.type,
+          description: error.response.data.message.text,
+        });
       })
       .finally(() => {
         onChange();
@@ -140,8 +158,27 @@ export function EmployeeAdd({ viewKey, onChange }) {
 
   const handleDelete = () => {
     console.log("실행");
-    axios.put("api/employee/delete", { employeeKey: viewKey });
+    axios
+      .put("api/employee/delete", { employeeKey: viewKey })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data); // 응답 데이터 로그
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
+      })
+      .catch((error) => {
+        console.error("삭제 실패:", error);
+        // 오류가 발생하면 사용자에게 알림을 주는 것도 좋습니다.
+        console.log(error);
+        toaster.create({
+          type: error.response.data.message.type,
+          description: error.response.data.message.text,
+        });
+      });
   };
+
   return (
     <Box border={"1px solid black"}>
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>

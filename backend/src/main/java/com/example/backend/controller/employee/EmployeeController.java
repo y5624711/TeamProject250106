@@ -40,28 +40,43 @@ public class EmployeeController {
         if(service.addEmployee(employee)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 되었습니다.")));
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 등록 되었습니다.")));
         } else {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "warning",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 실패했습니다..")));
+            return ResponseEntity.status(401)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 등록 실패했습니다..")));
         }
-
     }
     
     // 회원 수정
     @PutMapping("update")
-    public void editEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee) {
         System.out.println("employee = " + employee);
 
-         service.editEmployeeByKey(employee);
+         if(service.editEmployeeByKey(employee)){
+             return ResponseEntity.ok()
+                     .body(Map.of("message", Map.of("type", "success",
+                             "text", STR."\{employee.getEmployeeKey()}번 직원 수정 되었습니다.")));
+         }else{
+             return ResponseEntity.status(401)
+                     .body(Map.of("message", Map.of("type", "error",
+                             "text", STR."\{employee.getEmployeeKey()}번 직원 수정 실패했습니다..")));
+         }
     }
 
     @PutMapping("delete")
-    public void deleteEmployeeByKey(@RequestBody Employee employee) {
+    public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee) {
 
         System.out.println("employee = " + employee);
-        service.deleteEmployeeByKey(employee.getEmployeeKey());
+        if(service.deleteEmployeeByKey(employee.getEmployeeKey())) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 삭제 되었습니다.")));
+        }else {
+            return ResponseEntity.status(401)
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", STR."\{employee.getEmployeeKey()}번 직원 삭제 실패했습니다.")));
+        }
     }
 
 }
