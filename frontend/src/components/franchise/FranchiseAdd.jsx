@@ -16,7 +16,6 @@ export function FranchiseAdd() {
     franchisePost: "",
     franchiseState: "",
     franchiseCity: "",
-    franchiseActive: true, // 초기값 true로 설정
     franchiseNote: "",
   });
 
@@ -150,11 +149,6 @@ export function FranchiseAdd() {
             placeholder="시군을 입력하세요"
           />
         </Box>
-        <Box mb={4}>
-          <Text>사용 여부</Text>
-          <Text>{franchise.franchiseActive ? "활성" : "비활성"}</Text>
-        </Box>
-
         <Box mb={4}>
           <Text>비고</Text>
           <Input
