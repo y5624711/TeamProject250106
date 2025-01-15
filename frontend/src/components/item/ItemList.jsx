@@ -26,7 +26,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function ItemList({ onShowDetail }) {
   const [itemList, setItemList] = useState([]);
-  const [isAllItems, setIsAllItems] = useState(false);
+  const [isActive, setIsActive] = useState(1);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
   const navigate = useNavigate();
@@ -53,6 +53,17 @@ export function ItemList({ onShowDetail }) {
   const handlePageChange = (e) => {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  };
+
+  // 스위치 상태 변경 핸들러
+  const handleSwitchChange = () => {
+    const nextIsActive = isActive === 1 ? 0 : 1;
+    setIsActive(nextIsActive);
+
+    // active 쿼리 파라미터를 업데이트
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextIsActive.toString());
     setSearchParams(nextSearchParams);
   };
 
@@ -99,7 +110,9 @@ export function ItemList({ onShowDetail }) {
           <Button>검색</Button>
         </HStack>
       </HStack>
-      <Switch>전체 상품 조회</Switch>
+      <Switch isChecked={isActive} onChange={handleSwitchChange}>
+        전체 상품 조회
+      </Switch>
       <Box>
         <Table.Root size="sm">
           <Table.Header>

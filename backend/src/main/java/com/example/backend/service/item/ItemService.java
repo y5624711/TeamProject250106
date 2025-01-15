@@ -52,9 +52,11 @@ public class ItemService {
     }
 
     // 물품 리스트 가져오기
-    public Map<String, Object> getItemList(Integer page) {
-        return Map.of("list", mapper.getItemList((page - 1) * 10),
-                "count", mapper.countAll());
+    public Map<String, Object> getItemList(Integer page, Integer active) {
+        // LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+        return Map.of("list", mapper.getItemList(offset, active),
+                "count", mapper.countAll(active));
     }
 
     // 물품 1개 정보 가져오기
