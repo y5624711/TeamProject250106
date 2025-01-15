@@ -3,6 +3,7 @@ import { Box, Input, Stack, Text } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
+import { toaster } from "../ui/toaster.jsx";
 
 export function ItemAdd() {
   const [itemCommonCode, setItemCommonCode] = useState("");
@@ -62,13 +63,16 @@ export function ItemAdd() {
 
     axios
       .post("/api/item/add", itemData)
-      .then((res) => {
-        const message = res.data.message;
-        console.log(message);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
       })
       .catch((e) => {
         const message = e.response.data.message;
-        console.log(message);
+        toaster.create({ description: message.text, type: message.type });
       });
   };
 
@@ -94,11 +98,7 @@ export function ItemAdd() {
           ))}
         </select>
 
-        <Input
-          placeholder="담당업체"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-        />
+        <Input readOnly placeholder="담당업체" value={customerName} />
         <Input
           placeholder="규격"
           value={size}

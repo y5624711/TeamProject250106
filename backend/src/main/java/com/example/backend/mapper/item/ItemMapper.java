@@ -17,7 +17,7 @@ public interface ItemMapper {
     int addItem(Item item);
 
     @Select("""
-            SELECT c.item_code, ic.item_common_name
+            SELECT c.item_code AS item_common_code, ic.item_common_name
             FROM TB_CUSTMST c LEFT JOIN TB_ITEMCOMM ic ON c.item_code = ic.item_common_code
             WHERE c.item_code NOT IN (SELECT item_common_code FROM TB_ITEMMST)
             ORDER BY binary(item_common_name)

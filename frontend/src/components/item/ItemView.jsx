@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 export function ItemView({ itemKey }) {
   const [itemList, setItemList] = useState([]);
@@ -63,12 +64,17 @@ export function ItemView({ itemKey }) {
   const handleSubmitClick = () => {
     axios
       .put(`/api/item/edit/${itemKey}`, editedItem)
-      .then((res) => {
-        console.log("수정 완료: ", res.data);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
         setIsEditing(false);
       })
-      .catch((error) => {
-        console.error("물품 수정 요청 중 오류 발생: ", error);
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({ description: message.text, type: message.type });
       });
   };
 
@@ -76,11 +82,16 @@ export function ItemView({ itemKey }) {
   const handleDeleteClick = () => {
     axios
       .put(`/api/item/delete/${itemKey}`)
-      .then((res) => {
-        console.log("삭제 완료: ", res.data);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
       })
       .catch((error) => {
-        console.error("물품 삭제 요청 중 오류 발생: ", error);
+        const message = e.response.data.message;
+        toaster.create({ description: message.text, type: message.type });
       });
   };
 
