@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Input, Spinner, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 
@@ -78,7 +78,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
   }, [franchiseKey]);
 
   if (!franchise) {
-    return <Text>Loading...</Text>;
+    return <Spinner />;
   }
 
   return (
