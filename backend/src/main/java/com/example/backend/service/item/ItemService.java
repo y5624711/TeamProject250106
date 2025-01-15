@@ -40,6 +40,11 @@ public class ItemService {
         return mapper.getItemCommonCode();
     }
 
+    // 물품을 취급하는 협력업체 이름 가져오기
+    public List<Item> getCustomerName(String itemCommonCode) {
+        return mapper.getCustomerName(itemCommonCode);
+    }
+
     // 물품 리스트 가져오기
     public List<Item> getItemList() {
         return mapper.getItemList();
@@ -55,10 +60,6 @@ public class ItemService {
         int cnt = mapper.deleteItem(itemKey);
 
         return cnt == 1;
-    }
-
-    public List<Item> getCustomerName(String itemCommonCode) {
-        return mapper.getCustomerName(itemCommonCode);
     }
 }
 

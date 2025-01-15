@@ -24,7 +24,7 @@ public interface ItemMapper {
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-            SELECT i.item_key, ic.item_common_name, c.customer_code, i.input_price, i.output_price, i.item_active
+            SELECT i.item_key, ic.item_common_name, c.customer_name, i.input_price, i.output_price, i.item_active
             FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             """)

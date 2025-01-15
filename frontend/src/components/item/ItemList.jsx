@@ -50,7 +50,7 @@ export function ItemList({ onShowDetail }) {
                 {/*번호 증가값으로 수정*/}
                 <Table.Cell textAlign="center">{item.itemKey}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
-                <Table.Cell>임시 담당업체</Table.Cell>
+                <Table.Cell>{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
                 <Table.Cell textAlign="center">
