@@ -15,7 +15,7 @@ public class WarehouseController {
 
     final WarehouseService service;
 
-    @GetMapping("list")
+    @GetMapping("management")
     public Map<String, Object> list(Integer page) {
         return service.list();
     }

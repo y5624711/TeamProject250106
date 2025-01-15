@@ -10,8 +10,8 @@ import java.util.List;
 public interface WarehouseMapper {
 
     @Select("""
-            SELECT warehouse_key, warehouse_name, warehouse_state, warehouse_city, warehouse_active
+            SELECT *
             FROM TB_WHMST
             """)
-    List<Warehouse> listUp();
+    List<Warehouse> list();
 }

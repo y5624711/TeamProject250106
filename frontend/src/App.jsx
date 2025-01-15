@@ -12,6 +12,7 @@ import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
+import Warehouse from "./page/warehouse/Warehouse.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "franchise",
         element: <Franchise />,
+      },
+      {
+        path: "warehouse/management",
+        element: <Warehouse />,
       },
     ],
   },

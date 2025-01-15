@@ -1,9 +1,11 @@
 package com.example.backend.service.warehouse;
 
+import com.example.backend.dto.warehouse.Warehouse;
 import com.example.backend.mapper.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -13,8 +15,8 @@ public class WarehouseService {
     final WarehouseMapper mapper;
 
     public Map<String, Object> list() {
-        mapper.listUp();
+        List<Warehouse> list = mapper.list();
 
-        return null;
+        return Map.of("list", list);
     }
 }
