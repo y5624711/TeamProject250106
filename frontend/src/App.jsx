@@ -7,6 +7,7 @@ import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
+import { BusinessAndEmployeeList } from "./page/businessAndDepartment/BusinessAndEmployeeList.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -24,12 +25,10 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Main /> },
+      { path: "business/list", element: <BusinessAndEmployeeList /> },
       { path: "commonCode/list", element: <CommonList /> },
       { path: "commonCode/add", element: <CommonAdd /> },
-      {
-        path: "item",
-        element: <Item />,
-      },
+      { path: "item", element: <Item /> },
     ],
   },
 ]);

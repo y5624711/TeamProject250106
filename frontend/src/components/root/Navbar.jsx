@@ -42,13 +42,10 @@ export function Navbar() {
         flexWrap="wrap" // 줄바꿈 활성화
         overflow="hidden" // 넘치는 요소를 숨김
       >
-        <NavItem>가맹점 관리</NavItem>
-        <NavItem>협력업체 관리</NavItem>
-        <NavItem>물품 관리</NavItem>
-        <NavItem>자산 관리</NavItem>
-        <NavItem onClick={() => navigate("/commonCode")}>공통코드</NavItem>
-        <NavItem>인사관리</NavItem>
-        <NavItem>회원관리</NavItem>
+        <NavItem>기준정보 관리</NavItem>
+        <NavItem>구매설치 관리</NavItem>
+        <NavItem>물류 관리</NavItem>
+        <NavItem>공통코드 관리</NavItem>
       </Flex>
     </Box>
   );
