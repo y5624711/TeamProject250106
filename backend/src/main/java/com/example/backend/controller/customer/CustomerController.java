@@ -17,7 +17,7 @@ public class CustomerController {
     //협력사 등록
     @PostMapping("add")
     public void addCustomer(@RequestBody Customer customer) {
-        System.out.println("c" + customer);
+//        System.out.println("c" + customer);
         service.addCustomer(customer);
     }
 

@@ -37,9 +37,9 @@ function CustomerAdd({ onCancel }) {
       .then((res) => setItemCodeList(res.data))
       .catch((error) => console.log("오류", error));
   }, []);
-  console.log(itemCodeList);
-  console.log("설정1", itemCode);
-  console.log("설정2", itemName);
+  // console.log(itemCodeList);
+  // console.log("설정1", itemCode);
+  // console.log("설정2", itemName);
 
   const handleSaveClick = () => {
     axios
@@ -99,7 +99,7 @@ function CustomerAdd({ onCancel }) {
             const selectedItem = itemCodeList.find(
               (item) => item.common_code_name == e.value,
             );
-            console.log("내부", selectedItem);
+            // console.log("내부", selectedItem);
             if (selectedItem) {
               setItemCode(selectedItem.common_code); // 선택된 품목 코드 설정
             }
