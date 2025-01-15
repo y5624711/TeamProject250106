@@ -33,8 +33,8 @@ public class FranchiseService {
     }
 
     // 가맹점 등록하기
-    public boolean add(Franchise franchise) {
-        int cnt = mapper.insert(franchise);
+    public boolean addFranchise(Franchise franchise) {
+        int cnt = mapper.addFranchise(franchise);
         return cnt == 1;
     }
 

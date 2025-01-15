@@ -21,7 +21,7 @@ public interface FranchiseMapper {
                 #{franchisePost}, #{franchiseState}, #{franchiseCity}, #{franchiseActive}, #{franchiseNote})
             """)
     @Options(keyProperty = "franchiseKey", useGeneratedKeys = true)
-    int insert(Franchise franchise);
+    int addFranchise(Franchise franchise);
 
     // 가맹점 리스트 조회
     @Select("""

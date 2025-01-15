@@ -22,7 +22,7 @@ public class FranchiseController {
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Franchise franchise) {
         if (service.validate(franchise)) {
-            if (service.add(franchise)) {
+            if (service.addFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success", "text", "가맹점이 등록되었습니다."), "franchiseKey", franchise.getFranchiseKey()));
             } else {
