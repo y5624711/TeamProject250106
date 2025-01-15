@@ -37,13 +37,7 @@ export function Navbar() {
         <Text>유저 아이디</Text>
         <Text>로그아웃</Text>
       </Flex>
-      <Flex
-        mb={-2}
-        bgColor={"lightSlateGray"}
-        width="100%"
-        justify="center"
-        gap={10}
-      >
+      <Flex bgColor={"lightSlateGray"} width="100%" justify="center" gap={10}>
         <NavItem path="/branch">기준정보 관리</NavItem>
         <NavItem>구매/설치 관리</NavItem>
         <NavItem>물류 관리</NavItem>
