@@ -27,12 +27,14 @@ public interface ItemMapper {
             SELECT i.item_key, ic.item_common_name, c.customer_name, i.input_price, i.output_price, i.item_active
             FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            ORDER BY i.item_key
             """)
     List<Item> getItemList();
 
     @Select("""
-            SELECT i.*, ic.item_common_name
+            SELECT i.*, ic.item_common_name, c.customer_name
             FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                              LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             WHERE i.item_key = #{itemKey}
             """)
     List<Item> getItemView(Integer itemKey);
@@ -50,4 +52,15 @@ public interface ItemMapper {
             WHERE item_code = #{itemCommonCode}
             """)
     List<Item> getCustomerName(String itemCommonCode);
+
+    @Update("""
+            UPDATE TB_ITEMMST
+            SET input_price = #{item.inputPrice},
+            output_price = #{item.outputPrice},
+            size = #{item.size},
+            unit = #{item.unit},
+            item_note = #{item.itemNote}
+            WHERE item_key = #{itemKey}
+            """)
+    int editItem(int itemKey, Item item);
 }

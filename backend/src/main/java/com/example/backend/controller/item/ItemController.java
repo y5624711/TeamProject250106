@@ -18,9 +18,24 @@ public class ItemController {
 
     final ItemService service;
 
+    // 물품 수정하기
+    @PutMapping("/edit/{itemKey}")
+    public ResponseEntity<Map<String, Object>> editItem(@PathVariable int itemKey, @RequestBody Item item) {
+        if (service.editItem(itemKey, item)) {
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "물품 정보를 수정하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "물품 수정 중 문제가 발생하였습니다..")));
+        }
+    }
+
     // 물품 삭제하기
     @PutMapping("/delete/{itemKey}")
-    public ResponseEntity<Map<String, Object>> deleteProduct(
+    public ResponseEntity<Map<String, Object>> deleteItem(
             @PathVariable int itemKey) {
         if (service.deleteItem(itemKey)) {
             return ResponseEntity.ok()

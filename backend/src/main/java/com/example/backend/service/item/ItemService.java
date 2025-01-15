@@ -58,7 +58,13 @@ public class ItemService {
     // 물품 삭제하기
     public boolean deleteItem(int itemKey) {
         int cnt = mapper.deleteItem(itemKey);
+        return cnt == 1;
+    }
 
+    // 물품 수정하기
+    public boolean editItem(int itemKey, Item item) {
+        int cnt = mapper.editItem(itemKey, item);
+        System.out.println(item);
         return cnt == 1;
     }
 }
