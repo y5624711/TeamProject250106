@@ -16,17 +16,15 @@ import java.util.List;
 public class EmployeeService {
         final EmployeeMapper mapper;
     public boolean addEmployee(Employee employee) {
-        //           이 시점에서 이미 workplace_code가 있는거니까
-        //3글자 , 10 숫자  ,
-//         앞에 3글자는 공통코드와 같음
+     
+        // 0 또는 숫자 조회
         Integer maxNo=mapper.viewMaxEmployeeNo(employee.getEmployeeCommonCode());
 
-        System.out.println("maxNo = " + maxNo);
+        //  부족한 자리수 만큼  0 채우기
         String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
 
         String insertEmployeeNo = employee.getEmployeeCommonCode()+newNumber;
          employee.setEmployeeNo(insertEmployeeNo);
-        System.out.println("insertEmployeeNo = " + insertEmployeeNo);
            int cnt= mapper.addEmployee(employee);
 
            return cnt==1;
