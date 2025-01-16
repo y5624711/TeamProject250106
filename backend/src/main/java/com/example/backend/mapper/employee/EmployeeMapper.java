@@ -46,13 +46,15 @@ public interface EmployeeMapper {
                  </if>
              </if>
              
-             <!-- 정렬 조건 -->
+             <!-- 정렬 조건   -->
              ORDER BY\s
              <choose>
                  <when test="convertedSort != null and convertedSort != ''\s
                                    and (convertedSort == 'employee_name'\s
                                    or convertedSort == 'employee_no'\s
+                                   or convertedSort == 'employee_active'\s
                                    or convertedSort == 'employee_workplace_code')">
+                                
                      ${convertedSort}
                  </when>
                  <otherwise>

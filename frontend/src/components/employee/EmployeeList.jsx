@@ -3,7 +3,6 @@ import axios from "axios";
 import {
   Box,
   Button,
-  Checkbox,
   createListCollection,
   Heading,
   HStack,
@@ -17,6 +16,7 @@ import {
   Stack,
   Table,
 } from "@chakra-ui/react";
+import { Checkbox } from "../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import {
@@ -309,34 +309,27 @@ export function EmployeeList({ onSelect, updateList }) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {/* isActiveVisible 이 true면  다 통과시키는 구조 고 ,  아니면  active가 트루인것만 */}
-          {memberList
-            // .filter((item) =>
-            //   isActiveVisible ? true : item.employeeActive === true,
-            // )
-            .map((item, index) => (
-              <Table.Row
-                key={item.employeeKey}
-                onClick={() => handleSelectedItem(item.employeeKey)}
-              >
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
-                <Table.Cell>
-                  {/*  기업 명  {item.franchiseName??} */}
-                </Table.Cell>
-                <Table.Cell>
-                  {/*  부서 명  {item.employeePassword} */}
-                </Table.Cell>
-                <Table.Cell> {item.employeeName} </Table.Cell>
-                <Table.Cell> {item.employeeNo} </Table.Cell>
+          {memberList.map((item, index) => (
+            <Table.Row
+              key={item.employeeKey}
+              onClick={() => handleSelectedItem(item.employeeKey)}
+            >
+              <Table.Cell>{index + 1}</Table.Cell>
+              <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
+              <Table.Cell>{/*  기업 명  {item.franchiseName??} */}</Table.Cell>
+              <Table.Cell>{/*  부서 명  {item.employeePassword} */}</Table.Cell>
+              <Table.Cell> {item.employeeName} </Table.Cell>
+              <Table.Cell> {item.employeeNo} </Table.Cell>
 
-                {isActiveVisible && (
-                  <Table.Cell>
-                    {item.employeeActive === true ? "사용중" : "사용안함"}
-                  </Table.Cell>
-                )}
-              </Table.Row>
-            ))}
+              {/*사용여부 버튼 누른지 아닌지 확인*/}
+              {isActiveVisible && (
+                <Table.Cell textAlign="center">
+                  <Checkbox checked={item.employeeActive} />
+                  {/*{item.employeeActive === true ? "사용중" : "사용안함"}*/}
+                </Table.Cell>
+              )}
+            </Table.Row>
+          ))}
           {memberList.length === 0 && <Box> 조회 결과 x</Box>}
         </Table.Body>
         <Table.Footer></Table.Footer>
