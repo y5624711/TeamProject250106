@@ -19,7 +19,7 @@ public class FranchiseController {
 
     // 가맹점 등록하기
     @PostMapping("/add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Franchise franchise) {
+    public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise) {
         if (service.validate(franchise)) {
             if (service.addFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of(
@@ -42,13 +42,13 @@ public class FranchiseController {
 
     // 특정 가맹점 조회
     @GetMapping("view/{franchiseKey}")
-    public Franchise view(@PathVariable int franchiseKey) {
-        return service.getFranchise(franchiseKey);
+    public Franchise viewFranchise(@PathVariable int franchiseKey) {
+        return service.viewFranchise(franchiseKey);
     }
 
     // 특정 가맹점 수정
     @PutMapping("edit/{franchiseKey}")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody Franchise franchise) {
+    public ResponseEntity<Map<String, Object>> editFranchise(@RequestBody Franchise franchise) {
         if (service.validate(franchise)) {
             if (service.editFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점 정보가 성공적으로 수정되었습니다.")));
@@ -62,7 +62,7 @@ public class FranchiseController {
 
     // 특정 가맹점 삭제 (비활성화)
     @PutMapping("delete/{franchiseKey}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable int franchiseKey) {
+    public ResponseEntity<Map<String, Object>> deleteFranchise(@PathVariable int franchiseKey) {
         if (service.deleteFranchise(franchiseKey)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점이 비활성화되었습니다.")));
         } else {

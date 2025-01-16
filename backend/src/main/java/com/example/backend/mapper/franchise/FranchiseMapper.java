@@ -67,7 +67,7 @@ public interface FranchiseMapper {
             FROM TB_FRNCHSMST
             WHERE franchise_key = #{franchiseKey}
             """)
-    Franchise getFranchise(int franchiseKey);
+    Franchise viewFranchise(int franchiseKey);
 
     // 특정 가맹점 수정
     @Update("""

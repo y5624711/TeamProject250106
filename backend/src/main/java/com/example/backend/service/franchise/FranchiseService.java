@@ -55,8 +55,8 @@ public class FranchiseService {
     }
 
     // 특정 가맹점 조회
-    public Franchise getFranchise(int franchiseKey) {
-        return mapper.getFranchise(franchiseKey);
+    public Franchise viewFranchise(int franchiseKey) {
+        return mapper.viewFranchise(franchiseKey);
     }
 
     // 특정 가맹점 수정
