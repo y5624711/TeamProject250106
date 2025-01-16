@@ -22,7 +22,7 @@ import { Button } from "../ui/button.jsx";
 import { Switch } from "../ui/switch.jsx";
 
 export function ItemList({
-  items,
+  itemList,
   count,
   searchParams,
   setSearchParams,
@@ -164,7 +164,7 @@ export function ItemList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {items?.map((item, index) => (
+            {itemList?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
                 onClick={() => setItemKey(item.itemKey)}

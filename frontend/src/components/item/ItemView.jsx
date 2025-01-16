@@ -6,8 +6,8 @@ import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function ItemView({ itemKey, setItems }) {
-  const [itemList, setItemList] = useState([]);
+export function ItemView({ itemKey, setItemList, setSearchParams }) {
+  const [item, setItem] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedItem, setEditedItem] = useState({
@@ -19,13 +19,18 @@ export function ItemView({ itemKey, setItems }) {
     itemNote: "",
   });
 
+  // 수정 상태에서 물품 정보 변경 시 수정 상태 해제
+  useEffect(() => {
+    setIsEditing(false);
+  }, [itemKey]);
+
   // 물품 상세 정보를 가져오기
   useEffect(() => {
     if (itemKey) {
       axios
         .get(`/api/item/view/${itemKey}`)
         .then((res) => {
-          setItemList(res.data);
+          setItem(res.data);
           setEditedItem(res.data[0]); // 첫 번째 물품 정보로 상태 설정
         })
         .catch((error) => {
@@ -60,14 +65,15 @@ export function ItemView({ itemKey, setItems }) {
         });
         setIsEditing(false);
         // 수정된 항목을 부모 컴포넌트에 전달하여 상태를 갱신
-        setItems((prevItems) =>
+        setItemList((prevItems) =>
           prevItems.map((item) =>
             item.itemKey === itemKey ? { ...item, ...editedItem } : item,
           ),
         );
 
-        // 물품 수정 후, itemList를 직접 업데이트하여 view에 바로 반영되도록 함
-        setItemList((prevList) =>
+        setSearchParams((prev) => new URLSearchParams(prev));
+        // 물품 수정 후, item를 직접 업데이트하여 view에 바로 반영되도록 함
+        setItem((prevList) =>
           prevList.map((item) =>
             item.itemKey === itemKey ? { ...item, ...editedItem } : item,
           ),
@@ -90,7 +96,7 @@ export function ItemView({ itemKey, setItems }) {
           type: data.message.type,
         });
         // 삭제 후 부모 컴포넌트로 삭제된 항목을 반영
-        setItems((prevItems) =>
+        setItemList((prevItems) =>
           prevItems.filter((item) => item.itemKey !== itemKey),
         );
         setIsDialogOpen(false);
@@ -104,7 +110,7 @@ export function ItemView({ itemKey, setItems }) {
   return (
     <Box>
       <HStack>
-        {itemList.map((item) => (
+        {item.map((item) => (
           <Box key={item.itemKey}>
             <Box>
               {isEditing ? (

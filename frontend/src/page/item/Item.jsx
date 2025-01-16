@@ -11,7 +11,7 @@ import { useSearchParams } from "react-router-dom";
 export function Item() {
   const [selectedPage, setSelectedPage] = useState("view");
   const [itemKey, setItemKey] = useState(1);
-  const [items, setItems] = useState([]);
+  const [itemList, setItemList] = useState([]);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
 
@@ -21,7 +21,7 @@ export function Item() {
         params: searchParams,
       })
       .then((res) => {
-        setItems(res.data.list || []);
+        setItemList(res.data.list || []);
         setCount(res.data.count);
       })
       .catch((error) => {
@@ -34,7 +34,7 @@ export function Item() {
   };
 
   const handleAddItem = (newItem) => {
-    setItems((prevItems) => [newItem, ...prevItems]);
+    setItemList((prevItems) => [newItem, ...prevItems]);
     handleSelectPage("view");
   };
 
@@ -46,7 +46,7 @@ export function Item() {
           기준정보 관리 > 품목 관리
           <ItemList
             count={count}
-            items={items}
+            itemList={itemList}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
             setItemKey={setItemKey}
@@ -66,7 +66,11 @@ export function Item() {
               setItemKey={setItemKey}
             />
           ) : (
-            <ItemView itemKey={itemKey} setItems={setItems} />
+            <ItemView
+              itemKey={itemKey}
+              setItemList={setItemList}
+              setSearchParams={setSearchParams}
+            />
           )}
         </Stack>
       </HStack>
