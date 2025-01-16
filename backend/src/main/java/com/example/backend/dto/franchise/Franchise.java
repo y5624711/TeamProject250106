@@ -17,5 +17,6 @@ public class Franchise {
     private String franchisePost;
     private String franchiseState;
     private String franchiseCity;
+    private Boolean franchiseActive;
     private String franchiseNote;
 }

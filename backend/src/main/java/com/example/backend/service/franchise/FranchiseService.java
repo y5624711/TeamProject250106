@@ -41,17 +41,17 @@ public class FranchiseService {
     }
 
     // 가맹점 리스트 조회
-    public Map<String, Object> list(Integer page, String searchType, String keyword) {
+    public Map<String, Object> franchiseList(Boolean active, Integer page, String type, String keyword) {
 
-        // SQL 의 LIMIT 키워드에서 사용되는 offset
+        // SQL의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
         // 조회되는 게시물들
-        List<Franchise> list = mapper.selectPage(offset, searchType, keyword);
+        List<Franchise> franchiseList = mapper.getFranchiseList(active, offset, type, keyword);
 
         // 전체 게시물 수
-        Integer count = mapper.countAll(searchType, keyword);
-        return Map.of("list", list, "count", count);
+        Integer count = mapper.countFranchiseList(active, type, keyword);
+        return Map.of("franchiseList", franchiseList, "count", count);
     }
 
     // 특정 가맹점 조회

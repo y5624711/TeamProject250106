@@ -28,39 +28,67 @@ public interface FranchiseMapper {
     // 페이징을 위한 메서드 (현재 페이지에 맞는 데이터 가져오기)
     @Select("""
             <script>
-                SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, business_employee_name
+                SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, franchise_active, business_employee_name
                 FROM TB_FRNCHSMST
-                <where>
-                    <if test="category != null and category != 'all'">
-                        AND franchiseState = #{category}
-                    </if>
-                    <if test="keyword != null and keyword != ''">
-                        AND franchiseName LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                </where>
-                 ORDER BY franchise_key DESC
+                WHERE franchise_active != #{active}
+                <if test="keyword != null and keyword.trim() != ''">
+                    AND (
+                        <trim prefixOverrides="OR">
+                            <if test="type=='all' or type=='franchiseName'">
+                                franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseRep'">
+                                franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseState'">
+                                franchise_state LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseCity'">
+                                franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='businessEmployeeName'">
+                                business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </trim>
+                    )
+                </if>
+                ORDER BY franchise_key DESC
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<Franchise> selectPage(Integer offset, String category, String keyword);
+    List<Franchise> getFranchiseList(Boolean active, Integer offset, String type, String keyword);
 
     // 총 데이터 개수 (페이지네이션을 위해 사용)
     @Select("""
             <script>
                 SELECT COUNT(*)
                 FROM TB_FRNCHSMST
-                <where>
-                    <if test="category != null and category != 'all'">
-                        AND franchiseState = #{category}
-                    </if>
-                    <if test="keyword != null and keyword != ''">
-                        AND franchiseName LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
-                </where>
+                WHERE franchise_active != #{active}
+                <if test="keyword != null and keyword.trim() != ''">
+                    AND (
+                        <trim prefixOverrides="OR">
+                            <if test="type=='all' or type=='franchiseName'">
+                                franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseRep'">
+                                franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseState'">
+                                franchise_state LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseCity'">
+                                franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='businessEmployeeName'">
+                                business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </trim>
+                    )
+                </if>
             </script>
             """)
-    Integer countAll(String category, String keyword);
-
+    Integer countFranchiseList(Boolean active, String type, String keyword);
+    
     // 특정 가맹점 조회
     @Select("""
             SELECT *

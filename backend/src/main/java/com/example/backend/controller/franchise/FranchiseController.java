@@ -34,10 +34,12 @@ public class FranchiseController {
 
     // 가맹점 리스트 조회
     @GetMapping("/list")
-    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "st", defaultValue = "all") String searchType,
-                                    @RequestParam(value = "sk", defaultValue = "") String keyword) {
-        return service.list(page, searchType, keyword);
+    public Map<String, Object> franchiseList(
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        return service.franchiseList(active, page, type, keyword);
     }
 
     // 특정 가맹점 조회
