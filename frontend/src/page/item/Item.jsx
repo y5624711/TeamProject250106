@@ -35,6 +35,7 @@ export function Item() {
 
   const handleAddItem = (newItem) => {
     setItems((prevItems) => [newItem, ...prevItems]);
+    handleSelectPage("view");
   };
 
   return (
@@ -62,6 +63,7 @@ export function Item() {
                 setItemKey(1);
               }}
               onAdd={handleAddItem}
+              setItemKey={setItemKey}
             />
           ) : (
             <ItemView itemKey={itemKey} setItems={setItems} />
