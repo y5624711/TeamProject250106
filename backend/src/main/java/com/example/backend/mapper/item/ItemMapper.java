@@ -25,68 +25,69 @@ public interface ItemMapper {
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-                <script>
-                     SELECT i.item_key, ic.item_common_name, c.customer_name, i.input_price, i.output_price, i.item_active
-                     FROM TB_ITEMMST i 
-                     LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-                     LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-                     <where>
-                        <if test="active == 1">
-                            AND i.item_active = 1
-                        </if>
-                        <if test="type != null and keyword != null and keyword != ''">
-                          <choose>
-                              <when test="type == 'all'">
-                                  AND (
-                                      ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                      OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                      OR i.input_price LIKE CONCAT('%', #{keyword}, '%')
-                                      OR i.output_price LIKE CONCAT('%', #{keyword}, '%')
-                                  )
-                              </when>
-                              <when test="type == 'itemName'">
-                                  AND ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                              </when>
-                              <when test="type == 'customerName'">
-                                  AND c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                              </when>
-                              <when test="type == 'inputPrice'">
-                                  AND i.input_price LIKE CONCAT('%', #{keyword}, '%')
-                              </when>
-                              <when test="type == 'outputPrice'">
-                                  AND i.output_price LIKE CONCAT('%', #{keyword}, '%')
-                              </when>
-                          </choose>
-                      </if>
-                     </where>
-                      <choose>
-                                 <when test="sort != null and sort != '' and (
-                                     sort == 'itemKey' or\s
-                                     sort == 'itemCommonName' or\s
-                                     sort == 'customerName' or\s
-                                     sort == 'inputPrice' or\s
-                                     sort == 'outputPrice')">
-                                     ORDER BY\s
-                                     <choose>
-                                         <when test="sort == 'itemKey'">i.item_key</when>
-                                         <when test="sort == 'itemCommonName'">ic.item_common_name</when>
-                                         <when test="sort == 'customerName'">c.customer_name</when>
-                                         <when test="sort == 'inputPrice'">i.input_price</when>
-                                         <when test="sort == 'outputPrice'">i.output_price</when>
-                                     </choose>
-                                     <if test="order != null and (order == 'asc' or order == 'desc')">
-                                         ${order}
-                                     </if>
-                                     <if test="order == null or (order != 'asc' and order != 'desc')">
-                                         asc
-                                     </if>
-                                 </when>
-                                 <otherwise>
-                                     ORDER BY i.item_key asc
-                                 </otherwise>
-                             </choose>
-                     LIMIT #{offset}, 10
-                </script>
+            <script>
+                SELECT\s
+                    i.item_key,
+                    ic.item_common_name,
+                    c.customer_name,
+                    i.input_price,
+                    i.output_price,
+                    i.item_active
+                FROM TB_ITEMMST i\s
+                LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+                <trim prefix="WHERE" prefixOverrides="AND">
+                    <if test="active == 1">
+                        i.item_active = 1
+                    </if>
+                   \s
+                    <if test="keyword != null and keyword != ''">
+                        <choose>
+                            <when test="type == 'all'">
+                                AND (
+                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </when>
+                            <when test="type == 'itemName'">
+                                AND ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'customerName'">
+                                AND c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'inputPrice'">
+                                AND CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'outputPrice'">
+                                AND CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                        </choose>
+                    </if>
+                </trim>
+               \s
+                <trim prefix="ORDER BY">
+                    <choose>
+                        <when test="sort != null and sort != ''">
+                            <choose>
+                                <when test="sort == 'itemKey'">i.item_key</when>
+                                <when test="sort == 'itemCommonName'">ic.item_common_name</when>
+                                <when test="sort == 'customerName'">c.customer_name</when>
+                                <when test="sort == 'inputPrice'">i.input_price</when>
+                                <when test="sort == 'outputPrice'">i.output_price</when>
+                                <otherwise>i.item_key</otherwise>
+                            </choose>
+                            ${order}
+                        </when>
+                        <otherwise>
+                            i.item_key ASC
+                        </otherwise>
+                    </choose>
+                </trim>
+               \s
+                LIMIT #{offset}, 10
+            </script>
             """)
     List<Item> getItemList(Integer offset, Integer active, String type, String keyword, String sort, String order);
 
@@ -128,71 +129,47 @@ public interface ItemMapper {
             SELECT item_common_code
             FROM TB_ITEMMST
             """)
-    List<String> getUsedItemCommonCode(String itemCommonCode);
+    List<String> getUsedItemCommonCode();
 
     @Select("""
-                <script>
-                    SELECT COUNT(*)
+            <script>
+                SELECT COUNT(*)
                     FROM TB_ITEMMST i
                     LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                     LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-                    <where>
-                         <if test="active == 1">
-                             AND i.item_active = 1
-                         </if>
-                         <if test="type != null and keyword != null and keyword != ''">
-                              <choose>
-                                  <when test="type == 'all'">
-                                      AND (
-                                          ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                          OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                          OR i.input_price LIKE CONCAT('%', #{keyword}, '%')
-                                          OR i.output_price LIKE CONCAT('%', #{keyword}, '%')
-                                      )
-                                  </when>
-                                  <when test="type == 'itemName'">
-                                      AND ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                  </when>
-                                  <when test="type == 'customerName'">
-                                      AND c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                  </when>
-                                  <when test="type == 'inputPrice'">
-                                      AND i.input_price LIKE CONCAT('%', #{keyword}, '%')
-                                  </when>
-                                  <when test="type == 'outputPrice'">
-                                      AND i.output_price LIKE CONCAT('%', #{keyword}, '%')
-                                  </when>
-                              </choose>
-                          </if>
-                    </where>
-                     <choose>
-                                <when test="sort != null and sort != '' and (
-                                    sort == 'itemKey' or\s
-                                    sort == 'itemCommonName' or\s
-                                    sort == 'customerName' or\s
-                                    sort == 'inputPrice' or\s
-                                    sort == 'outputPrice')">
-                                    ORDER BY\s
-                                    <choose>
-                                        <when test="sort == 'itemKey'">i.item_key</when>
-                                        <when test="sort == 'itemCommonName'">ic.item_common_name</when>
-                                        <when test="sort == 'customerName'">c.customer_name</when>
-                                        <when test="sort == 'inputPrice'">i.input_price</when>
-                                        <when test="sort == 'outputPrice'">i.output_price</when>
-                                    </choose>
-                                    <if test="order != null and (order == 'asc' or order == 'desc')">
-                                        ${order}
-                                    </if>
-                                    <if test="order == null or (order != 'asc' and order != 'desc')">
-                                        asc
-                                    </if>
-                                </when>
-                                <otherwise>
-                                    ORDER BY i.item_key asc
-                                </otherwise>
-                            </choose>
-                </script>
+                   <trim prefix="WHERE" prefixOverrides="AND">
+                    <if test="active == 1">
+                        i.item_active = 1
+                    </if>
+                   \s
+                    <if test="keyword != null and keyword != ''">
+                        <choose>
+                            <when test="type == 'all'">
+                                AND (
+                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </when>
+                            <when test="type == 'itemName'">
+                                AND ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'customerName'">
+                                AND c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'inputPrice'">
+                                AND CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'outputPrice'">
+                                AND CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                        </choose>
+                    </if>
+                </trim>
+            
+            </script>
             """)
-    Integer countAll(Integer active, String type, String keyword, String sort, String order);
+    Integer countAll(Integer active, String type, String keyword);
 
 }
