@@ -54,7 +54,7 @@ export function BusinessEmployeeList() {
     if (searchParams.get("st")) {
       nextSearch.type = searchParams.get("st");
     } else {
-      nextSearch.type = "all";
+      nextSearch.type = "number";
     }
     if (searchParams.get("sk")) {
       nextSearch.keyword = searchParams.get("sk");
@@ -97,6 +97,24 @@ export function BusinessEmployeeList() {
 
   return (
     <Box>
+      <HStack>
+        <Box>
+          <select
+            value={search.type}
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <option value={"number"}>사원번호</option>
+            <option value={"name"}>이름</option>
+          </select>
+        </Box>
+        <Input
+          value={search.keyword}
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
+        />
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
       <Table.Root>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
@@ -117,24 +135,7 @@ export function BusinessEmployeeList() {
           ))}
         </Table.Body>
       </Table.Root>
-      <HStack>
-        <Box>
-          <select
-            value={search.type}
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
-          >
-            <option value={"number"}>사원번호</option>
-            <option value={"name"}>이름</option>
-          </select>
-        </Box>
-        <Input
-          value={search.keyword}
-          onChange={(e) =>
-            setSearch({ ...search, keyword: e.target.value.trim() })
-          }
-        />
-        <Button onClick={handleSearchClick}>검색</Button>
-      </HStack>
+
       <Center>
         <PaginationRoot
           onPageChange={handlePageChange}

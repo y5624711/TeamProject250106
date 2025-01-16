@@ -35,10 +35,10 @@ public class BusinessController {
         if (service.validate(business)) {
             if (service.updateBusiness(business)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "코드가 등록 되었습니다.")));
+                        Map.of("type", "success", "text", "수정 되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "error", "text", "코드가 등록 되지 않았습니다.")));
+                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
             }
         } else {
             return ResponseEntity.ok().body(

@@ -1,6 +1,7 @@
 import { Box, Heading, HStack, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
 import { Button } from "../ui/button.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 function CustomInput({ onChange, readOnly = false, ...props }) {
   return (
@@ -21,6 +22,28 @@ export function BusinessInfo({
   toggleEditing,
   handleSaveClick,
 }) {
+  const isValid = () => {
+    return (
+      business.businessName?.trim() && // 회사명이 비어 있지 않은지 확인
+      business.businessRep?.trim() && // 대표명이 비어 있지 않은지 확인
+      business.businessNo?.trim() && // 사업자번호가 비어 있지 않은지 확인
+      business.businessTel?.trim() && // 대표 전화번호가 비어 있지 않은지 확인
+      business.businessAddress?.trim() // 주소가 비어 있지 않은지 확인
+    );
+  };
+
+  // 저장 버튼 클릭 시 처리
+  const handleSave = () => {
+    if (isValid()) {
+      handleSaveClick(); // 모든 필드가 유효하면 저장 처리
+    } else {
+      toaster.create({
+        type: "warning",
+        description: "내용을 입력해 주세요",
+      });
+    }
+  };
+
   return (
     <Box p={3} bg={"gray.100"} w={"500px"}>
       <Box>
@@ -106,7 +129,7 @@ export function BusinessInfo({
         </Stack>
         <HStack pt={3}>
           {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
-          {isEditing && <Button onClick={handleSaveClick}>저장</Button>}
+          {isEditing && <Button onClick={handleSave}>저장</Button>}
         </HStack>
       </Box>
     </Box>

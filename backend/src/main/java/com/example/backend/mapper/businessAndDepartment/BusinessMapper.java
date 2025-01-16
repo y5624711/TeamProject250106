@@ -27,7 +27,7 @@ public interface BusinessMapper {
                     <if test="searchType == 'number'"  >
                         employee_no LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="searchType == 'number' or searchType == 'name'"  >
+                    <if test="searchType == 'name'"  >
                         OR employee_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>
@@ -55,7 +55,7 @@ public interface BusinessMapper {
             FROM TB_EMPMST
             WHERE
                 <trim prefixOverrides="OR">
-                    <if test="searchType == 'number'"  >
+                <if test="searchType == 'number'"  >
                         employee_no LIKE CONCAT('%',#{keyword},'%')
                     </if>
                     <if test="searchType == 'name'"  >

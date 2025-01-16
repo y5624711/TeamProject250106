@@ -45,6 +45,7 @@ export function BusinessView() {
         setIsEditing(false);
       })
       .catch((e) => {
+        setIsEditing(true);
         const message = e.data.message;
         toaster.create({
           type: message.type,
@@ -59,7 +60,7 @@ export function BusinessView() {
 
   return (
     <Box>
-      <Stack w={"70%"}>
+      <Stack>
         <BusinessInfo
           business={business} // 현재 상태 전달
           setBusiness={setBusiness} // 상태 업데이트 핸들러 전달
