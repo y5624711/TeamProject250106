@@ -98,7 +98,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
 
     if (viewKey === -1) {
       // 등록 데이터 폼
-
+      console.log(formData.selectedCommonCode);
       console.log(formData.employeeNo);
       data = {
         employeeCommonCode: formData.selectedCommonCode.join(""),
@@ -191,7 +191,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
               : [formData.selectedCommonCode]
           }
           onValueChange={(e) =>
-            setFormData({ ...formData, selectedCommonCode: e.target.value })
+            setFormData({ ...formData, selectedCommonCode: e.value })
           }
         >
           <SelectLabel>상위 구분 코드</SelectLabel>

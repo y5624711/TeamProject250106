@@ -14,10 +14,11 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Stack,
   Table,
 } from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import {
   PaginationItem,
   PaginationItems,
@@ -26,6 +27,7 @@ import {
   PaginationRoot,
 } from "../ui/pagination.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
+import { FaArrowDown } from "react-icons/fa6";
 
 export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
@@ -34,17 +36,19 @@ export function EmployeeList({ onSelect, updateList }) {
   const [searchParams, setSearchParams] = useSearchParams();
   // 상태 초기화: 쿼리 파라미터에서 값 가져오기
   const [page, setPage] = useState(searchParams.get("page") || 1);
-  const [sort, setSort] = useState(searchParams.get("sort") || "asc");
+  const [sort, setSort] = useState(searchParams.get("sort") || "all");
   const [isActiveVisible, setIsActiveVisible] = useState(
     searchParams.get("active") === "true",
   );
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
   const [type, setType] = useState(searchParams.get("type") || "all");
+  const [order, setOrder] = useState(searchParams.get("order") || "desc");
 
   const updateQuery = () => {
     setSearchParams({
       page: page,
-      sort: "desc",
+      sort: sort,
+      order: order,
       active: isActiveVisible,
       keyword: keyword,
       type: type,
@@ -53,13 +57,18 @@ export function EmployeeList({ onSelect, updateList }) {
 
   useEffect(() => {
     // 전체 직원 리스트 불러오기
+    if (Array.isArray(type)) {
+      type.join("");
+    }
     axios
       .get("/api/employee/list", {
         params: {
           page: page,
           isActiveVisible: isActiveVisible,
           keyword: keyword,
-          type: "all",
+          type: type,
+          sort: sort,
+          order: order,
         },
       })
       .then((res) => {
@@ -96,8 +105,16 @@ export function EmployeeList({ onSelect, updateList }) {
   }
 
   function handleSearchButton() {
-    updateQuery();
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev); // 복사본 생성
+      newParams.set("type", type);
+      newParams.set("keyword", keyword); //
+      // 검색하고 첫 페이지 보이게끔
+      setPage(1);
+      return newParams;
+    });
   }
+
   const frameworks = createListCollection({
     items: [
       { label: "소속구분", value: "소속구분" },
@@ -109,7 +126,6 @@ export function EmployeeList({ onSelect, updateList }) {
     ],
   });
 
-  console.log("타입", type);
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
     <Box>
@@ -129,10 +145,7 @@ export function EmployeeList({ onSelect, updateList }) {
           <SelectRoot
             collection={frameworks}
             value={type}
-            onValueChange={(e) => {
-              log("동작 확인");
-              setType(e.target.value);
-            }}
+            onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
               <SelectValueText placeholder={"선택 해 주세요"} />
@@ -160,7 +173,14 @@ export function EmployeeList({ onSelect, updateList }) {
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>#</Table.ColumnHeader>
-            <Table.ColumnHeader>소속 구분</Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                소속 구분
+                <Stack>
+                  <FaArrowUp /> <FaArrowDown />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
             <Table.ColumnHeader>기업명</Table.ColumnHeader>
             <Table.ColumnHeader>부서명</Table.ColumnHeader>
             <Table.ColumnHeader>직원명</Table.ColumnHeader>

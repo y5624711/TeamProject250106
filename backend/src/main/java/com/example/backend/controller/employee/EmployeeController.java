@@ -17,6 +17,7 @@ public class EmployeeController {
      final EmployeeService service;
 
 
+
      @GetMapping("view")
      public Employee getEmployee(@RequestParam int viewKey) {
 
@@ -25,11 +26,17 @@ public class EmployeeController {
 
 
      @GetMapping("/list")  //  모든 멤버 출력
-     public EmployeeResponse getAllEmployees(@RequestParam int page , Boolean isActiveVisible , String keyword, String type) {
-         System.out.println("keyword = " + keyword);
-         System.out.println("type = " + type);
+     public EmployeeResponse getAllEmployees(@RequestParam int page , Boolean isActiveVisible , String keyword, String type
+                                            , String sort, String order) {
 
-         EmployeeResponse employeeResponse = service.getAllEmployee(page ,isActiveVisible,keyword,type);
+
+         // 컬럼명 숨길려고  서버에서 처리
+         String convertedType= Employee.correctCommonCode(type);
+         String convertedSort= Employee.correctCommonCode(sort);
+         System.out.println("convertedSort = " + convertedSort);
+         System.out.println("convertedType = " + convertedType);
+
+         EmployeeResponse employeeResponse = service.getAllEmployee(page ,isActiveVisible,keyword,convertedType);
 
         return   employeeResponse;
      }
