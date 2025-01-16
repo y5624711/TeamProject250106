@@ -6,14 +6,17 @@ import {
   Checkbox,
   Heading,
   HStack,
-  PaginationItem,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
   Table,
 } from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  PaginationItem,
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../ui/pagination.jsx";
 
 export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
@@ -67,10 +70,10 @@ export function EmployeeList({ onSelect, updateList }) {
     });
   };
   //  페이지 버튼 클릭시
-  const handlePageClick = (item) => {
-    setPage(item);
+  function handlePageChange(e) {
+    setPage(e.page);
     updateQuery();
-  };
+  }
 
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
@@ -117,7 +120,6 @@ export function EmployeeList({ onSelect, updateList }) {
                 onClick={() => handleSelectedItem(item.employeeKey)}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
-                {/*<Table.Cell> {item.employeeKey} </Table.Cell>*/}
                 <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
                 <Table.Cell> {item.empl} </Table.Cell>
                 <Table.Cell> {item.employeePassword} </Table.Cell>
@@ -135,9 +137,10 @@ export function EmployeeList({ onSelect, updateList }) {
         <Table.Footer></Table.Footer>
       </Table.Root>
       <PaginationRoot
-        // onPageChange={}
+        onPageChange={handlePageChange}
         count={count}
         pageSize={10}
+        page={page}
         defaultPage={1}
         variant={"solid"}
       >
@@ -145,17 +148,7 @@ export function EmployeeList({ onSelect, updateList }) {
           <PaginationPrevTrigger>
             <FaArrowLeft />
           </PaginationPrevTrigger>
-
-          <PaginationItem
-            onClick={(e) => {
-              handlePageClick(2);
-            }}
-          >
-            2
-          </PaginationItem>
-          <PaginationItem>2</PaginationItem>
-          <PaginationItem>3</PaginationItem>
-
+          <PaginationItems />
           <PaginationNextTrigger>
             <FaArrowRight />
           </PaginationNextTrigger>
