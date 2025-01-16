@@ -127,10 +127,6 @@ export function BusinessEmployeeList() {
     setSort({ column, order });
   }
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   const toggleCheckActive = () => {
     const nextValue = !active;
     // setActive(nextValue);
@@ -140,12 +136,17 @@ export function BusinessEmployeeList() {
     setSearchParams(nextSearchParams);
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Box>
       <Checkbox checked={active} onCheckedChange={toggleCheckActive}>
         근무여부
       </Checkbox>
       <Flex>
+        {/*셀렉트 &&검색창*/}
         <SelectRoot
           collection={optionList}
           value={[search.type]}
@@ -166,6 +167,8 @@ export function BusinessEmployeeList() {
             ))}
           </SelectContent>
         </SelectRoot>
+
+        {/*검색창*/}
         <Input
           value={search.keyword}
           onChange={(e) =>
@@ -174,7 +177,8 @@ export function BusinessEmployeeList() {
         />
         <Button onClick={handleSearchClick}>검색</Button>
       </Flex>
-      <Flex></Flex>
+
+      {/*리스트*/}
       <Table.Root>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
@@ -208,6 +212,7 @@ export function BusinessEmployeeList() {
         </Table.Body>
       </Table.Root>
 
+      {/*페이지네이션*/}
       <Center>
         <PaginationRoot
           onPageChange={handlePageChange}
