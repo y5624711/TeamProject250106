@@ -59,12 +59,24 @@ export function ItemList({
     setSearchParams(nextSearchParam);
   };
 
+  // 검색 조건
+  const itemSearchList = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "품목명", value: "itemName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "입고가", value: "inputPrice" },
+      { label: "출고가", value: "outputPrice" },
+    ],
+  });
+
   // 검색
   const handleSearchClick = () => {
     if (search.keyword.trim().length > 0) {
       // 검색
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("type", search.type);
+      console.log(search.type);
       nextSearchParam.set("keyword", search.keyword);
       setSearchParams(nextSearchParam);
     } else {
@@ -108,6 +120,7 @@ export function ItemList({
             collection={itemSearchList}
             width="150px"
             position="relative"
+            onValueChange={(item) => setSearch({ ...search, type: item.value })}
           >
             <SelectTrigger>
               <SelectValueText placeholder="검색 항목" />
@@ -198,13 +211,3 @@ export function ItemList({
     </Box>
   );
 }
-
-const itemSearchList = createListCollection({
-  items: [
-    { label: "전체", value: "all" },
-    { label: "품목명", value: "itemName" },
-    { label: "담당 업체", value: "customerName" },
-    { label: "입고가", value: "inputPrice" },
-    { label: "출고가", value: "outputPrice" },
-  ],
-});

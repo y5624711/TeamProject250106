@@ -30,7 +30,7 @@ public class ItemService {
 
     // 물품 중복 검증
     public boolean duplicate(String itemCommonCode) {
-        List<String> itemList = mapper.getUsedItemCommonCode(itemCommonCode);
+        List<String> itemList = mapper.getUsedItemCommonCode();
         return itemList.contains(itemCommonCode);
     }
 
@@ -56,7 +56,7 @@ public class ItemService {
         // LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
         return Map.of("list", mapper.getItemList(offset, active, type, keyword, sort, order),
-                "count", mapper.countAll(active, type, keyword, sort, order));
+                "count", mapper.countAll(active, type, keyword));
     }
 
     // 물품 1개 정보 가져오기
