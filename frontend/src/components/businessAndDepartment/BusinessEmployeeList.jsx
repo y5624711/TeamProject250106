@@ -30,6 +30,7 @@ export function BusinessEmployeeList() {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [sort, setSort] = useState({ column: "", order: "desc" });
 
   const [search, setSearch] = useState({
     type: "number",
@@ -52,7 +53,11 @@ export function BusinessEmployeeList() {
     const controller = new AbortController();
     axios
       .get("/api/business/list", {
-        params: searchParams,
+        params: {
+          ...Object.fromEntries(searchParams),
+          sortColum: sort.column,
+          sortOrder: sort.order,
+        },
         signal: controller.signal,
       })
       .then((res) => res.data)
@@ -68,7 +73,7 @@ export function BusinessEmployeeList() {
     return () => {
       controller.abort();
     };
-  }, [searchParams]);
+  }, [searchParams, sort]);
 
   // 검색창
   useEffect(() => {
@@ -86,7 +91,7 @@ export function BusinessEmployeeList() {
     }
 
     setSearch(nextSearch);
-  }, [searchParams]);
+  }, [searchParams, sort]);
 
   const active = searchParams.get("active") === "true";
 
@@ -115,17 +120,20 @@ export function BusinessEmployeeList() {
     }
   }
 
+  function handleSort(column) {
+    console.log(column);
+    const order =
+      sort.column === column && sort.order === "asc" ? "desc" : "asc";
+    setSort({ column, order });
+  }
+
   if (loading) {
     return <Spinner />;
   }
 
-  console.log(active);
-
   const toggleCheckActive = () => {
     const nextValue = !active;
     // setActive(nextValue);
-    console.log(active);
-    console.log(nextValue);
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
@@ -170,9 +178,21 @@ export function BusinessEmployeeList() {
       <Table.Root>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
-            <Table.ColumnHeader>ID</Table.ColumnHeader>
-            <Table.ColumnHeader>사원번호</Table.ColumnHeader>
-            <Table.ColumnHeader>이름</Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => handleSort("employee_key")}>
+              ID
+              {sort.column === "employeeKey" &&
+                (sort.order === "asc" ? "↑" : "↓")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => handleSort("employee_no")}>
+              사원번호
+              {sort.column === "employeeNo" &&
+                (sort.order === "asc" ? "↑" : "↓")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => handleSort("employee_name")}>
+              이름
+              {sort.column === "employeeName" &&
+                (sort.order === "asc" ? "↑" : "↓")}
+            </Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
 

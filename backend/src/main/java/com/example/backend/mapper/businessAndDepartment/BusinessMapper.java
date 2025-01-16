@@ -37,11 +37,11 @@ public interface BusinessMapper {
                         OR employee_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
-            ORDER BY employee_key DESC
+            ORDER BY ${sortColum} ${sortOrder}
             LIMIT #{offset},10
             </script>
             """)
-    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword, Boolean active);
+    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword, Boolean active, String sortColum, String sortOrder);
 
     @Update("""
             UPDATE TB_BIZMST
