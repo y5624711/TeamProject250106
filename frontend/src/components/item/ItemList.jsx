@@ -13,8 +13,8 @@ import {
   Table,
 } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
-import { Switch } from "../ui/switch.jsx";
 import { Pagination } from "../tool/Pagination.jsx";
+import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 
 export function ItemList({
   itemList,
@@ -28,18 +28,15 @@ export function ItemList({
     keyword: "",
   });
 
-  // 사용 여부
-  const activeParam = searchParams.get("active")
-    ? searchParams.get("active")
-    : "1";
-  const active = Number(activeParam);
-
-  // 스위치 상태 변경 핸들러
-  const handleSwitchChange = () => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-    nextSearchParam.set("active", active === 1 ? "0" : "1");
-    nextSearchParam.set("page", "1");
-    setSearchParams(nextSearchParam);
+  // 사용 여부에 따른 active 변경
+  const handleActiveChange = (active) => {
+    // 연속해서 처리 시 param 처리가 늦어지는 오류 -> 이전 값을 기준으로 param 설정
+    setSearchParams((prevParams) => {
+      const nextSearchParams = new URLSearchParams(prevParams);
+      nextSearchParams.set("active", active ? "1" : "0");
+      nextSearchParams.set("page", "1"); // 스위치 변경 시 첫 페이지로 이동
+      return nextSearchParams;
+    });
   };
 
   // 검색 조건
@@ -136,9 +133,10 @@ export function ItemList({
           <Button onClick={handleSearchClick}>검색</Button>
         </HStack>
       </HStack>
-      <Switch checked={!active} onChange={handleSwitchChange}>
-        전체 상품 조회
-      </Switch>
+      <ActiveSwitch
+        defaultActive={searchParams.get("active") === "1"}
+        onActiveChange={handleActiveChange}
+      />
       <Box>
         <Table.Root>
           <Table.Header>
