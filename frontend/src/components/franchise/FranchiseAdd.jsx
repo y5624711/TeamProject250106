@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { toaster } from "../ui/toaster.jsx";
 
-export function FranchiseAdd() {
+export function FranchiseAdd({ onCancel }) {
   const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
   const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -164,6 +164,9 @@ export function FranchiseAdd() {
           />
         </Box>
         <Button onClick={handleSaveClick}>등록</Button>
+        <Button onClick={onCancel} ml={4}>
+          취소
+        </Button>
       </Box>
     </Box>
   );
