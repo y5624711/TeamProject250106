@@ -26,7 +26,6 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     axios
       .put(`/api/franchise/edit/${franchiseKey}`, franchise)
       .then((res) => {
-        console.log("수정 결과:", res.data);
         const message = res.data.message;
         toaster.create({
           type: message.type,
@@ -35,7 +34,6 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         setIsReadOnly(true); // 저장 후 읽기 모드로 전환
       })
       .catch((e) => {
-        console.log(e);
         const message = e.response.data.message;
         toaster.create({
           type: message.type,
@@ -48,14 +46,20 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     if (window.confirm("정말로 이 가맹점을 삭제하시겠습니까?")) {
       axios
         .put(`/api/franchise/delete/${franchiseKey}`)
-        .then((response) => {
-          alert("가맹점이 삭제되었습니다.");
-          console.log("삭제 결과:", response.data);
+        .then((res) => {
+          const message = res.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
           setViewMode("list");
         })
-        .catch((error) => {
-          console.error("삭제 중 오류 발생:", error);
-          alert("삭제 중 오류가 발생했습니다.");
+        .catch((e) => {
+          const message = e.response.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
         });
     }
   };

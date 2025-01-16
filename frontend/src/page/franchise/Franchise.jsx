@@ -21,16 +21,16 @@ import {
 } from "../../components/ui/pagination.jsx";
 
 export function Franchise() {
-  const [franchiseList, setFranchiseList] = useState([]);
   const [viewMode, setViewMode] = useState("view");
+  const [franchiseList, setFranchiseList] = useState([]);
   const [franchiseKey, setFranchiseKey] = useState(null);
-  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [count, setCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
   const [checkedActive, setCheckedActive] = useState(
-    false || searchParams.get("active"),
+    searchParams.get("active") === "true",
   );
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
@@ -75,11 +75,28 @@ export function Franchise() {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  // 검색어 변경
-  function handleSearchClick() {
+  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
+  const toggleCheckedActive = () => {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    setSearchParams(nextSearchParams);
+  };
+
+  // 검색 타입 변경 및 파라미터 업데이트
+  const handleSearchTypeChange = (type) => {
+    setSearch((prev) => ({ ...prev, type }));
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("type", type);
+    setSearchParams(nextSearchParams);
+  };
+
+  // 검색 파라미터 업데이트
+  const handleSearchClick = () => {
     const nextSearchParam = new URLSearchParams(searchParams);
     if (search.keyword.trim().length > 0) {
-      nextSearchParam.set("page", "1");
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("keyword", search.keyword);
     } else {
@@ -87,7 +104,7 @@ export function Franchise() {
       nextSearchParam.delete("keyword");
     }
     setSearchParams(nextSearchParam);
-  }
+  };
 
   // 페이지네이션
   const pageParam = searchParams.get("page") ?? "1";
@@ -115,15 +132,17 @@ export function Franchise() {
             가맹점 조회
           </Heading>
           <FranchiseList
+            franchiseList={franchiseList}
             count={count}
+            currentPage={currentPage}
             search={search}
             setSearch={setSearch}
             checkedActive={checkedActive}
             setCheckedActive={setCheckedActive}
-            currentPage={currentPage}
-            franchiseList={franchiseList}
+            toggleCheckedActive={toggleCheckedActive}
             handlePageChange={handlePageChange}
             handleSearchClick={handleSearchClick}
+            handleSearchTypeChange={handleSearchTypeChange}
             onFranchiseClick={handleFranchiseClick}
           />
 
@@ -156,7 +175,10 @@ export function Franchise() {
               {viewMode === "add" ? (
                 <FranchiseAdd onCancel={() => setViewMode("view")} />
               ) : (
-                <FranchiseView franchiseKey={franchiseKey} /> // 첫 번째 가맹점의 정보 표시
+                <FranchiseView
+                  franchiseKey={franchiseKey}
+                  setViewMode={setViewMode}
+                />
               )}
             </>
           )}
