@@ -35,6 +35,8 @@ export function SearchBar({ onSearchChange }) {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
     }
+    const active = searchParams.get("active") ?? "1"; // 기본값은 "1" (활성화 상태)
+    nextSearchParam.set("active", active);
     return nextSearchParam;
   };
 
