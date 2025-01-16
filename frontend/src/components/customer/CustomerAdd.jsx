@@ -14,9 +14,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
-import { toaster } from "../ui/toaster.jsx";
 
-function CustomerAdd({ onCancel }) {
+function CustomerAdd({ onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [itemCode, setItemCode] = useState("");
@@ -33,47 +32,27 @@ function CustomerAdd({ onCancel }) {
 
   // 물품 코드 불러오기
   useEffect(() => {
-    axios
-      .get("/api/customer/itemCode/list")
-      .then((res) => {
-        setItemCodeList(res.data);
-        res.data;
-      })
-      .then((data) => {
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
+    axios.get("/api/customer/itemCode/list").then((res) => {
+      setItemCodeList(res.data);
+    });
   }, []);
-  // console.log(itemCodeList);
-  // console.log("설정1", itemCode);
-  // console.log("설정2", itemName);
 
   const handleSaveClick = () => {
-    axios
-      .post("api/customer/add", {
-        customerCode,
-        customerName,
-        customerRep,
-        itemCode,
-        // itemName,
-        customerNo,
-        customerTel,
-        customerFax,
-        customerPost,
-        customerAddress,
-        customerAddressDetail,
-        customerNote,
-      })
-      .then();
+    const customerData = {
+      customerCode,
+      customerName,
+      customerRep,
+      itemCode,
+      // itemName,
+      customerNo,
+      customerTel,
+      customerFax,
+      customerPost,
+      customerAddress,
+      customerAddressDetail,
+      customerNote,
+    };
+    onSave(customerData);
   };
 
   const myitems = createListCollection({

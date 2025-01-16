@@ -5,7 +5,8 @@ import { Box, Button, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 import CustomerView from "../../components/customer/CustomerView.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
-import { useSearchParams } from "react-router-dom"; // import CustomerList from "../../components/customer/CustomerList.jsx";
+import { useSearchParams } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx"; // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerList from "../../components/customer/CustomerList.jsx";
 // import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 
@@ -25,6 +26,25 @@ function Customer() {
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+
+  const handleSaveClick = (customerData) => {
+    axios
+      .post("api/customer/add", customerData)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
@@ -142,7 +162,10 @@ function Customer() {
 
           {/* 조건부 렌더링 */}
           {selectedPage === "add" ? (
-            <CustomerAdd onCancel={() => handleSelectPage("view")} />
+            <CustomerAdd
+              onSave={handleSaveClick}
+              onCancel={() => handleSelectPage("view")}
+            />
           ) : (
             <CustomerView customerKey={customerKey} />
           )}
