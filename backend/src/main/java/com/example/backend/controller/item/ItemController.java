@@ -21,6 +21,20 @@ public class ItemController {
     // 품목 수정하기
     @PutMapping("/edit/{itemKey}")
     public ResponseEntity<Map<String, Object>> editItem(@PathVariable int itemKey, @RequestBody Item item) {
+        // 품목 입력 검증
+        if (!service.validate(item)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
+            ));
+        }
+
+        // 중복 체크
+        if (service.duplicate(item.getItemCommonCode())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 등록된 품목입니다.")
+            ));
+        }
+
         if (service.editItem(itemKey, item)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",

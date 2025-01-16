@@ -19,6 +19,21 @@ public class CommonController {
     // 품목 공통 코드 수정하기
     @PutMapping("item/edit/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> editItemCommonCode(@PathVariable int itemCommonCodeKey, @RequestBody ItemCommonCode itemCommonCode) {
+
+        // 품목 공통 코드 입력 검증
+        if (!service.validateItemCommonCode(itemCommonCode)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "품목 공통 코드 정보가 입력되지 않았습니다.")
+            ));
+        }
+
+        // 중복 체크
+        if (service.duplicateItemCommonCode(itemCommonCode.getItemCommonCode(), itemCommonCode.getItemCommonName())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 등록된 품목 공통 코드입니다.")
+            ));
+        }
+
         if (service.editItemCommonCode(itemCommonCodeKey, itemCommonCode)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",

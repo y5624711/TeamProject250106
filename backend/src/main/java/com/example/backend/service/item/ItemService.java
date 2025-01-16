@@ -21,11 +21,8 @@ public class ItemService {
         return !(
                 item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
                         item.getCustomerCode() == null || item.getCustomerCode().trim().isEmpty() ||
-                        item.getSize() == null || item.getSize().trim().isEmpty() ||
-                        item.getUnit() == null || item.getUnit().trim().isEmpty() ||
                         item.getInputPrice() == null || item.getInputPrice() < 0 ||
-                        item.getOutputPrice() == null || item.getOutputPrice() < 0 ||
-                        item.getItemNote() == null || item.getItemNote().trim().isEmpty());
+                        item.getOutputPrice() == null || item.getOutputPrice() < 0);
     }
 
     // 품목 중복 검증
