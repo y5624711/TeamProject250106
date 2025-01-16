@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";
@@ -11,8 +11,6 @@ export function ItemView({ itemKey, setItems }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedItem, setEditedItem] = useState({
-    itemCommonCode: "",
-    customerName: "",
     size: "",
     unit: "",
     inputPrice: "",
@@ -35,17 +33,6 @@ export function ItemView({ itemKey, setItems }) {
         });
     }
   }, [itemKey]);
-
-  // 물품 구분 코드 가져오기
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/item/commonCode")
-  //     .then((res) => {
-  //     })
-  //     .catch((error) => {
-  //       console.error("데이터 로딩 중 오류 발생: ", error);
-  //     });
-  // }, []);
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
@@ -72,6 +59,19 @@ export function ItemView({ itemKey, setItems }) {
           type: data.message.type,
         });
         setIsEditing(false);
+        // 수정된 항목을 부모 컴포넌트에 전달하여 상태를 갱신
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.itemKey === itemKey ? { ...item, ...editedItem } : item,
+          ),
+        );
+
+        // 물품 수정 후, itemList를 직접 업데이트하여 view에 바로 반영되도록 함
+        setItemList((prevList) =>
+          prevList.map((item) =>
+            item.itemKey === itemKey ? { ...item, ...editedItem } : item,
+          ),
+        );
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -100,6 +100,7 @@ export function ItemView({ itemKey, setItems }) {
         toaster.create({ description: message.text, type: message.type });
       });
   };
+  console.log(itemList);
 
   return (
     <Box>
@@ -109,6 +110,7 @@ export function ItemView({ itemKey, setItems }) {
             <Box>
               {isEditing ? (
                 <>
+                  <Text fontSize={"xs"}>품목 수정은 불가능합니다.</Text>
                   <Field label={"품목"}>
                     <Input readOnly value={item.itemCommonName} />
                   </Field>
