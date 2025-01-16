@@ -202,6 +202,11 @@ export function BusinessEmployeeList() {
               {sort.column === "employee_name" &&
                 (sort.order === "asc" ? "↑" : "↓")}
             </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => handleSort("employee_note")}>
+              비고
+              {sort.column === "employee_note" &&
+                (sort.order === "asc" ? "↑" : "↓")}
+            </Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
 
@@ -211,6 +216,7 @@ export function BusinessEmployeeList() {
               <Table.Cell>{list.employeeKey}</Table.Cell>
               <Table.Cell>{list.employeeNo}</Table.Cell>
               <Table.Cell>{list.employeeName}</Table.Cell>
+              <Table.Cell>{list.employeeNote}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
