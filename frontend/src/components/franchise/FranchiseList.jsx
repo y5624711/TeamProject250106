@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@chakra-ui/react";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   PaginationItems,
@@ -16,6 +15,7 @@ import {
   PaginationRoot,
 } from "../ui/pagination.jsx";
 import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 export function FranchiseList({ onFranchiseClick }) {
   const [franchises, setFranchises] = useState([]);

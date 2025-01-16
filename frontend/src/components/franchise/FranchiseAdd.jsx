@@ -3,7 +3,11 @@ import axios from "axios";
 import { useState } from "react";
 import { toaster } from "../ui/toaster.jsx";
 
-export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
+export function FranchiseAdd({
+  setViewMode,
+  setSelectedFranchiseKey,
+  setFranchises,
+}) {
   const [franchise, setFranchise] = useState({
     businessEmployeeNo: "",
     businessEmployeeName: "",
@@ -34,22 +38,21 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
     axios
       .post("/api/franchise/add", franchise)
       .then((res) => {
-        console.log(res.data); // 응답 데이터 확인
         const message = res.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
 
-        // 응답 구조에 맞게 franchiseKey 설정
+        // 가맹점 추가 후 부모 컴포넌트에 가맹점 리스트 업데이트
         if (res.data && res.data.franchiseKey) {
-          setFranchiseKey(res.data.franchiseKey); // 올바른 키로 설정
+          // 새로 추가된 가맹점 추가
+          setFranchises((prevFranchises) => [...prevFranchises, res.data]);
           setSelectedFranchiseKey(res.data.franchiseKey); // 선택된 가맹점 키 설정
           setViewMode("view"); // 뷰모드로 전환
         }
       })
       .catch((e) => {
-        console.log(e);
         const message = e.response.data.message;
         toaster.create({
           type: message.type,

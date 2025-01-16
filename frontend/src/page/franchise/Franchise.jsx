@@ -8,6 +8,7 @@ import axios from "axios";
 
 export function Franchise() {
   const [viewMode, setViewMode] = useState("view");
+  const [franchises, setFranchises] = useState([]);
   const [selectedFranchiseKey, setSelectedFranchiseKey] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -16,6 +17,7 @@ export function Franchise() {
     axios
       .get("/api/franchise/list")
       .then((response) => {
+        setFranchises(response.data.list); // 가맹점 목록 업데이트
         if (response.data.list && response.data.list.length > 0) {
           setSelectedFranchiseKey(response.data.list[0].franchiseKey); // 첫 번째 가맹점 선택
         }
@@ -42,7 +44,10 @@ export function Franchise() {
           <Heading size="md" mb={4}>
             가맹점 조회
           </Heading>
-          <FranchiseList onFranchiseClick={handleFranchiseClick} />
+          <FranchiseList
+            onFranchiseClick={handleFranchiseClick}
+            franchises={franchises}
+          />
         </Box>
         <Box flex={"1"} pl={4}>
           <Button colorScheme="teal" onClick={() => setViewMode("add")} mb={4}>
@@ -57,6 +62,7 @@ export function Franchise() {
                 <FranchiseAdd
                   setViewMode={setViewMode} // 상태 변경 함수 전달
                   setSelectedFranchiseKey={setSelectedFranchiseKey} // 선택된 가맹점 키 설정 함수 전달
+                  setFranchises={setFranchises}
                 />
               )}
               {viewMode === "view" && selectedFranchiseKey && (
