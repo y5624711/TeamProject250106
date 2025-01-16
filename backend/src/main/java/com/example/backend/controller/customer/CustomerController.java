@@ -37,17 +37,13 @@ public class CustomerController {
             @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "type", defaultValue = "all") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword
-//            @RequestParam(value = "sort", defaultValue = "customerKey") String sort,
-//            @RequestParam(value = "order", defaultValue = "false") Boolean order
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "customer_key") String sort,
+            @RequestParam(value = "order", defaultValue = "asc") String order
     ) {
-        System.out.println("active: " + active);
-        System.out.println("페이지: " + page);
-        System.out.println("검색어: " + keyword);
-        System.out.println("검색기: " + type);
-        System.out.println(" ");
 
-        return service.getCustomerList(active, page, type, keyword);
+
+        return service.getCustomerList(active, page, type, keyword, sort, order);
     }
 
     //협력사 상세

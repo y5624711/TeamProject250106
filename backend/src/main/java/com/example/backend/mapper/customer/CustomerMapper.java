@@ -50,11 +50,11 @@ public interface CustomerMapper {
                     </trim>
                 )    
             </if>
-            ORDER BY customer_key
+            ORDER BY ${sort} ${order}
             LIMIT #{offset}, 10
             </script>
             """)
-    List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword);
+    List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
     @Select("""
             SELECT *

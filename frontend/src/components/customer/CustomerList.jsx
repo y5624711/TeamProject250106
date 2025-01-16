@@ -15,10 +15,12 @@ import {
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Button } from "../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
-import { LuChevronsUpDown } from "react-icons/lu";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 function CustomerList({
   customerList,
+  standard,
+  onHeader,
   customerKey,
   setCustomerKey,
   currentPage,
@@ -48,6 +50,7 @@ function CustomerList({
   });
 
   // console.log("c", customerList);
+  // console.log(standard.order);
 
   return (
     <div>
@@ -99,37 +102,57 @@ function CustomerList({
       <Table.Root interactive>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("customer_key")}>
               <HStack align={"flex-start"}>
                 <Stack>
                   <MdOutlineNumbers />
                 </Stack>
                 <Stack>
-                  <LuChevronsUpDown />
+                  {standard.sort === "customer_key" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("customer_name")}>
               <HStack align={"flex-start"}>
                 <Stack>업체명</Stack>
                 <Stack>
-                  <LuChevronsUpDown />
+                  {standard.sort === "customer_name" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
               <HStack align={"flex-start"}>
                 <Stack>취급 물품</Stack>
                 <Stack>
-                  <LuChevronsUpDown />
+                  {standard.sort === "item_common_name" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("customer_rep")}>
               <HStack align={"flex-start"}>
                 <Stack>대표</Stack>
                 <Stack>
-                  <LuChevronsUpDown />
+                  {standard.sort === "customer_rep" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
                 </Stack>
               </HStack>
             </Table.ColumnHeader>

@@ -24,8 +24,7 @@ function Customer() {
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
-  // const [currentSort, setCurrentSort] = useState("index");
-  // const [currentOrder, setCurrentOrder] = useState("ASC");
+  const [standard, setStandard] = useState({ sort: "", order: "ASC" });
 
   // 고객 목록 불러오기 함수
   // 초기 데이터 불러오기
@@ -33,6 +32,8 @@ function Customer() {
     axios
       .get(`/api/customer/list`, {
         params: {
+          sort: "",
+          order: "ASC",
           page: "1",
           type: "all",
           keyword: "",
@@ -185,6 +186,8 @@ function Customer() {
     axios
       .get(`/api/customer/list`, {
         params: {
+          sort: searchParams.get("sort") || "customer_key",
+          order: searchParams.get("order") || "asc",
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
@@ -251,6 +254,28 @@ function Customer() {
     setCurrentPage(page);
   }, [searchParams]);
 
+  function handleStandard(sort) {
+    const currentSort = searchParams.get("sort");
+    const currentOrder = searchParams.get("order");
+
+    const newOrder =
+      currentSort === sort && currentOrder === "asc" ? "desc" : "asc";
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("sort", sort);
+    nextSearchParams.set("order", newOrder);
+
+    setSearchParams(nextSearchParams);
+  }
+
+  useEffect(() => {
+    const sort = searchParams.get("sort") || "customer_key";
+    const order = searchParams.get("order") || "asc";
+    setStandard({ sort, order });
+  }, [searchParams]);
+
+  // console.log("p", standard);
+
   return (
     <Box>
       <HStack align={"flex-start"}>
@@ -262,6 +287,8 @@ function Customer() {
 
           <CustomerList
             customerList={customerList}
+            standard={standard}
+            onHeader={handleStandard}
             customerKey={customerKey}
             setCustomerKey={setCustomerKey}
             currentPage={currentPage}
