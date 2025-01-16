@@ -180,17 +180,17 @@ export function BusinessEmployeeList() {
           <Table.Row whiteSpace={"nowrap"}>
             <Table.ColumnHeader onClick={() => handleSort("employee_key")}>
               ID
-              {sort.column === "employeeKey" &&
+              {sort.column === "employee_key" &&
                 (sort.order === "asc" ? "↑" : "↓")}
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => handleSort("employee_no")}>
               사원번호
-              {sort.column === "employeeNo" &&
+              {sort.column === "employee_no" &&
                 (sort.order === "asc" ? "↑" : "↓")}
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => handleSort("employee_name")}>
               이름
-              {sort.column === "employeeName" &&
+              {sort.column === "employee_name" &&
                 (sort.order === "asc" ? "↑" : "↓")}
             </Table.ColumnHeader>
           </Table.Row>
