@@ -100,7 +100,6 @@ export function ItemView({ itemKey, setItems }) {
         toaster.create({ description: message.text, type: message.type });
       });
   };
-  console.log(itemList);
 
   return (
     <Box>
@@ -197,14 +196,19 @@ export function ItemView({ itemKey, setItems }) {
           </Box>
         ))}
       </HStack>
-      <HStack>
-        <Button onClick={() => setIsDialogOpen(true)}>삭제</Button>
+      <Box>
         {isEditing ? (
-          <Button onClick={handleSubmitClick}>수정 저장</Button>
+          <HStack>
+            <Button onClick={handleSubmitClick}>저장</Button>
+            <Button onClick={() => setIsEditing(false)}>취소</Button>
+          </HStack>
         ) : (
-          <Button onClick={handleEditClick}>수정</Button>
+          <HStack>
+            <Button onClick={handleEditClick}>수정</Button>
+            <Button onClick={() => setIsDialogOpen(true)}>삭제</Button>
+          </HStack>
         )}
-      </HStack>
+      </Box>
 
       <DialogConfirmation
         isOpen={isDialogOpen}
