@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 
-export function SearchAndFilter({
+export function BusinessSearchAndFilter({
   search,
   setSearch,
   searchParams,

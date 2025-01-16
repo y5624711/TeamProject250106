@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { Checkbox } from "../ui/checkbox.jsx";
-import { SearchAndFilter } from "./SearchAndFilter.jsx";
+import { BusinessSearchAndFilter } from "./BusinessSearchAndFilter.jsx";
 import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
 
@@ -104,7 +104,7 @@ export function BusinessEmployeeList() {
           </Checkbox>
 
           {/*검색창&필터*/}
-          <SearchAndFilter
+          <BusinessSearchAndFilter
             search={search}
             setSearch={setSearch}
             searchParams={searchParams}
