@@ -29,12 +29,12 @@ public class BusinessController {
             @RequestParam(value = "sortColum", defaultValue = "employee_key") String sortColum,
             @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
 
-        System.out.println("active = " + active);
-        System.out.println("page = " + page);
-        System.out.println("searchType = " + searchType);
-        System.out.println("searchKeyword = " + searchKeyword);
-        System.out.println("sortColum = " + sortColum);
-        System.out.println("sortOrder = " + sortOrder);
+//        System.out.println("active = " + active);
+//        System.out.println("page = " + page);
+//        System.out.println("searchType = " + searchType);
+//        System.out.println("searchKeyword = " + searchKeyword);
+//        System.out.println("sortColum = " + sortColum);
+//        System.out.println("sortOrder = " + sortOrder);
         return service.businessEmpList(page, searchType, searchKeyword, active, sortColum, sortOrder);
     }
 
