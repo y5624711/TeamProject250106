@@ -27,7 +27,11 @@ export function Employee() {
       {selectedMenu === "list" && (
         <EmployeeList onSelect={handleSelectedNo} updateList={addCheck} />
       )}
-      <EmployeeAdd viewKey={selectedEmployeeNo} onChange={handleAddCheck} />
+      <EmployeeAdd
+        viewKey={selectedEmployeeNo}
+        onChange={handleAddCheck}
+        onSelect={handleSelectedNo}
+      />
     </Box>
   );
 }

@@ -29,14 +29,12 @@ public class EmployeeController {
      public EmployeeResponse getAllEmployees(@RequestParam int page , Boolean isActiveVisible , String keyword, String type
                                             , String sort, String order) {
 
-
          // 컬럼명 숨길려고  서버에서 처리
          String convertedType= Employee.correctCommonCode(type);
          String convertedSort= Employee.correctCommonCode(sort);
-         System.out.println("convertedSort = " + convertedSort);
-         System.out.println("convertedType = " + convertedType);
 
-         EmployeeResponse employeeResponse = service.getAllEmployee(page ,isActiveVisible,keyword,convertedType);
+
+         EmployeeResponse employeeResponse = service.getAllEmployee(page ,isActiveVisible,keyword,convertedType ,convertedSort,order);
 
         return   employeeResponse;
      }

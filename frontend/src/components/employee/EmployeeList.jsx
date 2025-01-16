@@ -56,17 +56,19 @@ export function EmployeeList({ onSelect, updateList }) {
   };
 
   useEffect(() => {
+    // if (Array.isArray(type)) {
+    //   var realType = type.join("");
+    // }
+
     // 전체 직원 리스트 불러오기
-    if (Array.isArray(type)) {
-      type.join("");
-    }
     axios
       .get("/api/employee/list", {
         params: {
           page: page,
           isActiveVisible: isActiveVisible,
           keyword: keyword,
-          type: type,
+          //  배열이면 , 삭제한값 <
+          type: Array.isArray(type) ? type.join("") : type,
           sort: sort,
           order: order,
         },
@@ -74,12 +76,14 @@ export function EmployeeList({ onSelect, updateList }) {
       .then((res) => {
         setMemberList(res.data.employeeList);
         setCount(res.data.totalCount);
+        // 정렬된 첫 번째 값을 불러오기 위해서
+        handleSelectedItem(res.data.employeeList[0].employeeKey);
       })
       .catch((err) => {
         console.log("직원 정보를 받는중 오류", err);
       });
     updateQuery();
-  }, [updateList, page, searchParams]);
+  }, [updateList, searchParams]);
 
   // 리스트 클릭시 , 해당 키 값의 상세 정보를 보여주기 위해서
   const handleSelectedItem = (no) => {
@@ -105,13 +109,14 @@ export function EmployeeList({ onSelect, updateList }) {
   }
 
   function handleSearchButton() {
+    setPage(1); // 페이지를 1로 초기화
+
     setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("type", type);
-      newParams.set("keyword", keyword); //
-      // 검색하고 첫 페이지 보이게끔
-      setPage(1);
-      return newParams;
+      const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
+      newParams.type = type; // type 값 업데이트
+      newParams.keyword = keyword; // keyword 값 업데이트
+
+      return newParams; // 새로운 객체를 반환
     });
   }
 
@@ -125,6 +130,16 @@ export function EmployeeList({ onSelect, updateList }) {
       { label: "계약여부", value: "계약여부" },
     ],
   });
+
+  const handleSortControl = (sortName, orderName) => {
+    setSearchParams((prev) => {
+      setSort(sortName);
+      setOrder(orderName);
+      const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
+      newParams.order = orderName;
+      return newParams; // 새로운 객체를 반환
+    });
+  };
 
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
@@ -166,7 +181,6 @@ export function EmployeeList({ onSelect, updateList }) {
             setKeyword(e.target.value);
           }}
         />
-
         <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
       <Table.Root>
@@ -177,14 +191,87 @@ export function EmployeeList({ onSelect, updateList }) {
               <HStack>
                 소속 구분
                 <Stack>
-                  <FaArrowUp /> <FaArrowDown />
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("소속구분", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("소속구분", "desc");
+                    }}
+                  />
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>기업명</Table.ColumnHeader>
-            <Table.ColumnHeader>부서명</Table.ColumnHeader>
-            <Table.ColumnHeader>직원명</Table.ColumnHeader>
-            <Table.ColumnHeader>사번</Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                기업명{" "}
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("기업명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("기업명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                부서명{" "}
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("부서명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("부서명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                직원명
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("직원명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("직원명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                사번{" "}
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("사번", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("사번", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
             {isActiveVisible && (
               <Table.ColumnHeader>계약여부</Table.ColumnHeader>
             )}
@@ -203,8 +290,12 @@ export function EmployeeList({ onSelect, updateList }) {
               >
                 <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
-                <Table.Cell> {item.empl} </Table.Cell>
-                <Table.Cell> {item.employeePassword} </Table.Cell>
+                <Table.Cell>
+                  {/*  기업 명  {item.franchiseName??} */}
+                </Table.Cell>
+                <Table.Cell>
+                  {/*  부서 명  {item.employeePassword} */}
+                </Table.Cell>
                 <Table.Cell> {item.employeeName} </Table.Cell>
                 <Table.Cell> {item.employeeNo} </Table.Cell>
 

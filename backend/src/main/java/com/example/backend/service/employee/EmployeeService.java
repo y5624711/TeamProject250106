@@ -22,7 +22,7 @@ public class EmployeeService {
            return cnt==1;
     }
 
-    public EmployeeResponse getAllEmployee(int page, Boolean isActiveVisible, String keyword, String type) {
+    public EmployeeResponse getAllEmployee(int page, Boolean isActiveVisible, String keyword, String type, String convertedSort, String order) {
 
         // 총 갯수
         int count = mapper.countAllEmployee(isActiveVisible,keyword ,type);
@@ -31,7 +31,7 @@ public class EmployeeService {
         int offset= (page-1) *10 +1;
         System.out.println("count = " + count);
 
-         List<Employee> employeeList= mapper.getAllEmployees(offset ,isActiveVisible,keyword,type);
+         List<Employee> employeeList= mapper.getAllEmployees(offset ,isActiveVisible,keyword,type ,convertedSort,order);
 
          EmployeeResponse employeeResponse = new EmployeeResponse();
          employeeResponse.setEmployeeList(employeeList);

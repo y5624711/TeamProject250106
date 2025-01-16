@@ -18,7 +18,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster.jsx";
 
-export function EmployeeAdd({ viewKey, onChange }) {
+export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [formData, setFormData] = useState({
     employeeNo: "",
     password: "",
@@ -178,9 +178,22 @@ export function EmployeeAdd({ viewKey, onChange }) {
         onChange();
       });
   };
+  const handleSelectedItem = (no) => {
+    onSelect(no);
+  };
 
   return (
     <Box border={"1px solid black"}>
+      <Button
+        onClick={() => {
+          formDataClear();
+          // 등록 화면
+          handleSelectedItem(-1);
+        }}
+      >
+        {" "}
+        등록
+      </Button>
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
       <Stack spacing={4}>
         <SelectRoot
