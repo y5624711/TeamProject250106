@@ -22,7 +22,7 @@ function Warehouse(props) {
   useEffect(() => {
     axios.get(`/api/warehouse/management`).then((res) => {
       setWarehouseList(res.data.list);
-      // console.log(res.data);
+      setCountWarehouse(res.data.count);
     });
     window.scrollTo(0, 0);
   }, []);
@@ -52,6 +52,7 @@ function Warehouse(props) {
           />
           {/*리스트 jsx*/}
           <WarehouseList
+            countWarehouse={countWarehouse}
             warehouseList={warehouseList}
             onShowDetail={handleShowDetail}
           />

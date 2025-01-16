@@ -16,8 +16,9 @@ public class WarehouseService {
 
     public Map<String, Object> list() {
         List<Warehouse> list = mapper.list();
+        Integer count = list.size();
 
-        return Map.of("list", list);
+        return Map.of("list", list, "count", count);
     }
 
     public Warehouse view(Integer warehouseKey) {
