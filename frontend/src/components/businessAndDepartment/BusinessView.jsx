@@ -12,10 +12,10 @@ export function BusinessView() {
 
   useEffect(() => {
     axios
-      .get("/api/business/list")
+      .get("/api/business/view")
       .then((res) => res.data)
       .then((data) => {
-        setBusiness(data["회사"]);
+        setBusiness(data);
       })
       .catch((error) => {
         console.log(error);

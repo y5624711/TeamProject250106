@@ -14,9 +14,20 @@ import java.util.Map;
 public class BusinessController {
     final BusinessService service;
 
-    @GetMapping("list")
-    private Map<String, Object> list() {
+
+    @GetMapping("view")
+    private Business view() {
         return service.businessInfo();
+    }
+
+    @GetMapping("list")
+    private Map<String, Object> list(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "st", defaultValue = "number") String searchType,
+            @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
+
+
+        return service.businessEmpList(page, searchType, searchKeyword);
     }
 
     @PutMapping("update")

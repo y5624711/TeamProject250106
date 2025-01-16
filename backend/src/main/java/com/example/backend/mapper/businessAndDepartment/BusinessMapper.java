@@ -19,10 +19,23 @@ public interface BusinessMapper {
     Business businessSelect();
 
     @Select("""
+            <script>
             SELECT *
-            FROM TB_EMPMST;
+            FROM TB_EMPMST
+            WHERE
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'number'"  >
+                        employee_no LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="searchType == 'number' or searchType == 'name'"  >
+                        OR employee_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>
+            ORDER BY employee_key DESC
+            LIMIT #{offset},10
+            </script>
             """)
-    List<Employee> listEmployeeSelect();
+    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword);
 
     @Update("""
             UPDATE TB_BIZMST
@@ -35,4 +48,21 @@ public interface BusinessMapper {
             WHERE business_key =#{businessKey};
             """)
     int updateBusiness(Business business);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_EMPMST
+            WHERE
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'number'"  >
+                        employee_no LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="searchType == 'name'"  >
+                        OR employee_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>
+            </script>
+            """)
+    Integer empCountAll(String searchType, String keyword);
 }

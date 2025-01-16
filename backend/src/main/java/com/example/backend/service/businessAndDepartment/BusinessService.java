@@ -1,13 +1,11 @@
 package com.example.backend.service.businessAndDepartment;
 
 import com.example.backend.dto.business.Business;
-import com.example.backend.dto.employee.Employee;
 import com.example.backend.mapper.businessAndDepartment.BusinessMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,14 +14,21 @@ import java.util.Map;
 public class BusinessService {
     final BusinessMapper mapper;
 
-    public Map<String, Object> businessInfo() {
-        Business corp = mapper.businessSelect();
 
-        List<Employee> empList = mapper.listEmployeeSelect();
-
-
-        return Map.of("회사", corp, "사원", empList);
+    public Business businessInfo() {
+        return mapper.businessSelect();
     }
+
+    public Map<String, Object> businessEmpList(Integer page, String searchType, String keyword) {
+        int offset = (page - 1) * 10;
+
+        if (searchType.isEmpty()) searchType = "number";
+        if (keyword.isEmpty()) keyword = "";
+
+        return Map.of("list", mapper.listEmployeeSelect(offset, searchType, keyword),
+                "count", mapper.empCountAll(searchType, keyword));
+    }
+
 
     public boolean validate(Business business) {
         Boolean name = !business.getBusinessName().trim().isEmpty();
@@ -39,4 +44,5 @@ public class BusinessService {
         int cnt = mapper.updateBusiness(business);
         return cnt == 1;
     }
+
 }

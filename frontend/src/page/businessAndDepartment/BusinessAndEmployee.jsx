@@ -1,6 +1,6 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { SideBar } from "../../components/tool/SideBar.jsx";
-import { BusinessView } from "../../components/businessAndDepartment/BusinessAndEmployeeList.jsx";
+import { BusinessView } from "../../components/businessAndDepartment/BusinessView.jsx";
 import { BusinessEmployeeList } from "../../components/businessAndDepartment/BusinessEmployeeList.jsx";
 
 export function BusinessAndEmployee() {
@@ -8,10 +8,10 @@ export function BusinessAndEmployee() {
     <Box>
       <Flex>
         <SideBar />
-        <Stack>
+        <BusinessEmployeeList />
+        <Box ml="auto" height="auto">
           <BusinessView />
-          <BusinessEmployeeList />
-        </Stack>
+        </Box>
       </Flex>
     </Box>
   );
