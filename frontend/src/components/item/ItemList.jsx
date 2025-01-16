@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Box,
   Center,
@@ -20,32 +19,20 @@ import {
   PaginationRoot,
 } from "../ui/pagination.jsx";
 import { Button } from "../ui/button.jsx";
-import { useSearchParams } from "react-router-dom";
 import { Switch } from "../ui/switch.jsx";
 
-export function ItemList({ setItemKey }) {
-  const [searchParams, setSearchParams] = useSearchParams("");
-  const [itemList, setItemList] = useState([]);
-  const [count, setCount] = useState(0);
+export function ItemList({
+  items,
+  count,
+  searchParams,
+  setSearchParams,
+  setItemKey,
+}) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
   });
   const [sort, setSort] = useState({ key: null, order: "asc" });
-
-  useEffect(() => {
-    axios
-      .get("/api/item/list", {
-        params: searchParams,
-      })
-      .then((res) => {
-        setItemList(res.data);
-        setCount(res.data.count);
-      })
-      .catch((error) => {
-        console.error("물품 목록 요청 중 오류 발생: ", error);
-      });
-  }, [searchParams]);
 
   // 페이지 번호
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
@@ -177,7 +164,7 @@ export function ItemList({ setItemKey }) {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {itemList.list?.map((item, index) => (
+            {items?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
                 onClick={() => setItemKey(item.itemKey)}

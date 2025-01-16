@@ -17,7 +17,7 @@ import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 
-export function ItemAdd({ onCancel }) {
+export function ItemAdd({ onCancel, onAdd }) {
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [itemCommonName, setItemCommonName] = useState("");
   const [customerName, setCustomerName] = useState("");
@@ -82,6 +82,7 @@ export function ItemAdd({ onCancel }) {
           description: data.message.text,
           type: data.message.type,
         });
+        onAdd(itemData);
       })
       .catch((e) => {
         const message = e.response.data.message;
