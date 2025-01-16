@@ -57,4 +57,9 @@ public class CommonService {
         int cnt = mapper.addItemCommonCode(itemCommonCode);
         return cnt == 1;
     }
+
+    // 물품 공통 코드 1개 정보 가져오기
+    public List<ItemCommonCode> getItemCommonCodeView(int itemCommonCodeKey) {
+        return mapper.getItemCommonCodeView(itemCommonCodeKey);
+    }
 }

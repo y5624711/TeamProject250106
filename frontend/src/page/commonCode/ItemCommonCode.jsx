@@ -46,7 +46,7 @@ export function ItemCommonCode() {
             itemCommonCodeList={itemCommonCodeList}
             // searchParams={searchParams}
             // setSearchParams={setSearchParams}
-            itemCommonCodeKey={itemCommonCodeKey}
+            setItemCommonCodeKey={setItemCommonCodeKey}
           />
         </Stack>
         <Stack>
@@ -65,10 +65,10 @@ export function ItemCommonCode() {
             />
           ) : (
             <ItemCommonCodeView
-            // itemKey={itemKey}
-            // setItemList={setItemList}
-            // setSearchParams={setSearchParams}
-            // setChange={setChange}
+              itemCommonCodeKey={itemCommonCodeKey}
+              itemCommonCodeList={itemCommonCodeList}
+              // setSearchParams={setSearchParams}
+              setChange={setChange}
             />
           )}
         </Stack>

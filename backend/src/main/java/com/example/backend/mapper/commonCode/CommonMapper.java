@@ -51,4 +51,11 @@ public interface CommonMapper {
             """)
     @Options(keyProperty = "itemCommonCodeKey", useGeneratedKeys = true)
     int addItemCommonCode(ItemCommonCode itemCommonCode);
+
+    @Select("""
+            SELECT *
+            FROM TB_ITEMCOMM
+            WHERE item_common_code_key = #{itemCommonCodeKey}
+            """)
+    List<ItemCommonCode> getItemCommonCodeView(int itemCommonCodeKey);
 }

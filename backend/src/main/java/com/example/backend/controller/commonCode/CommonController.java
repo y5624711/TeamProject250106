@@ -16,7 +16,13 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
-    // 물품 추가
+    // 물품 공통 코드 1개의 정보 가져오기
+    @GetMapping("item/view/{itemCommonCodeKey}")
+    public List<ItemCommonCode> itemView(@PathVariable int itemCommonCodeKey) {
+        return service.getItemCommonCodeView(itemCommonCodeKey);
+    }
+
+    // 물품 공통 코드 등록
     @PostMapping("item/add")
     public ResponseEntity<Map<String, Object>> addItem(@RequestBody ItemCommonCode itemCommonCode) {
         System.out.println(itemCommonCode);
