@@ -34,21 +34,26 @@ function Customer() {
         setCustomerList(customerList);
         setCount(count);
 
-        // URL에 customerKey가 없으면 첫 번째 고객으로 설정
-        if (!searchParams.get("customerKey") && customerList.length > 0) {
-          const defaultKey = customerList[0].customerKey;
-          setCustomerKey(defaultKey);
-          const nextSearchParams = new URLSearchParams(searchParams);
-          nextSearchParams.set("customerKey", defaultKey);
-          setSearchParams(nextSearchParams);
+        // 첫 페이지 첫 번째 고객을 기본 customerKey로 설정
+        if (currentPage === 1 && customerList.length > 0) {
+          setCustomerKey(customerList[0].customerKey);
         }
+
+        // // URL에 customerKey가 없으면 첫 번째 고객으로 설정
+        // if (!searchParams.get("customerKey") && customerList.length > 0) {
+        //   const defaultKey = customerList[0].customerKey;
+        //   setCustomerKey(defaultKey);
+        //   const nextSearchParams = new URLSearchParams(searchParams);
+        //   nextSearchParams.set("customerKey", defaultKey);
+        //   setSearchParams(nextSearchParams);
+        // }
       })
       .catch((error) => {
         console.error("고객 목록을 불러오는 중 오류가 발생했습니다.", error);
       });
   };
-  console.log("p", customerList);
-  console.log("key", customerKey);
+  // console.log("p", customerList);
+  // console.log("key", customerKey);
 
   // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
   useEffect(() => {
@@ -60,11 +65,17 @@ function Customer() {
   }, [searchParams]);
 
   // customerKey 변경 시 URL 쿼리 파라미터 업데이트
-  const handleCustomerKeyChange = (key) => {
+  // const handleCustomerKeyChange = (key) => {
+  //   setCustomerKey(key);
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   nextSearchParams.set("customerKey", key);
+  //   setSearchParams(nextSearchParams);
+  // };
+
+  // 리스트 행 클릭 시 동작
+  const handleRowClick = (key) => {
     setCustomerKey(key);
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("customerKey", key);
-    setSearchParams(nextSearchParams);
+    setSelectedPage("view");
   };
 
   //협력사 등록
@@ -133,6 +144,8 @@ function Customer() {
   const handleSelectPage = (page) => {
     setSelectedPage(page);
   };
+
+  console.log(selectedPage);
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
@@ -226,9 +239,10 @@ function Customer() {
           <CustomerList
             customerList={customerList}
             customerKey={customerKey}
-            setCustomerKey={handleCustomerKeyChange}
+            setCustomerKey={setCustomerKey}
             currentPage={currentPage}
             count={count}
+            onRowClick={handleRowClick}
             handlePageChange={handlePageChange}
             setSearchParams={setSearchParams}
             checkedActive={checkedActive}

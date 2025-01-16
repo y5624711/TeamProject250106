@@ -24,6 +24,7 @@ function CustomerList({
   currentPage,
   count,
   handlePageChange,
+  onRowClick,
   checkedActive,
   search,
   setSearch,
@@ -145,8 +146,10 @@ function CustomerList({
         <Table.Body>
           {customerList.map((customer, index) => (
             <Table.Row
-              key={index}
-              onClick={() => setCustomerKey(customer.customerKey)}
+              key={customer.customerKey}
+              onClick={() => {
+                onRowClick(customer.customerKey);
+              }}
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{customer.customerName}</Table.Cell>
