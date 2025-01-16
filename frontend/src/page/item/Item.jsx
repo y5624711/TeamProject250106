@@ -12,6 +12,7 @@ export function Item() {
   const [selectedPage, setSelectedPage] = useState("view");
   const [itemKey, setItemKey] = useState(1);
   const [itemList, setItemList] = useState([]);
+  const [change, setChange] = useState(false);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
 
@@ -27,7 +28,7 @@ export function Item() {
       .catch((error) => {
         console.error("물품 목록 요청 중 오류 발생: ", error);
       });
-  }, [searchParams]);
+  }, [searchParams, change]);
 
   const handleSelectPage = (page) => {
     setSelectedPage(page);
@@ -64,12 +65,14 @@ export function Item() {
               }}
               onAdd={handleAddItem}
               setItemKey={setItemKey}
+              setChange={setChange}
             />
           ) : (
             <ItemView
               itemKey={itemKey}
               setItemList={setItemList}
               setSearchParams={setSearchParams}
+              setChange={setChange}
             />
           )}
         </Stack>

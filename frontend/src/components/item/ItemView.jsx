@@ -6,7 +6,7 @@ import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function ItemView({ itemKey, setItemList, setSearchParams }) {
+export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
   const [item, setItem] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -70,6 +70,8 @@ export function ItemView({ itemKey, setItemList, setSearchParams }) {
             item.itemKey === itemKey ? { ...item, ...editedItem } : item,
           ),
         );
+        // 수정 시에 정렬된 리스트를 불러오기 위해 변경 상태 전달
+        setChange((prev) => !prev);
 
         setSearchParams((prev) => new URLSearchParams(prev));
         // 물품 수정 후, item를 직접 업데이트하여 view에 바로 반영되도록 함
