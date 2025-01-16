@@ -24,11 +24,11 @@ public class EmployeeController {
          return  service.getOneEmployeeByKey(viewKey);
      }
 
-     @GetMapping("maxemployeeno")
-     public int viewMaxEmployeeNo(){
-
-         return  service.viewMaxEmployeeNo();
-     }
+//     @GetMapping("maxemployeeno")
+//     public int viewMaxEmployeeNo(){
+//
+//         return  service.viewMaxEmployeeNo();
+//     }
 
 
      @GetMapping("/list")  //  모든 멤버 출력

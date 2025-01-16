@@ -60,16 +60,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     }
   }, [viewKey]);
 
-  // 사번 부여 함수
-  function createEmployeeNo() {
-    //  사번 번호를 부여하기 위해 제일 위에있는 번호를 가져오는 코드
-    // axios.get("/api/employee/maxemployeeno");
-    const randomNumber = Math.floor(Math.random() * 1e10); // 1e10은 10자리 숫자
-    var randomNo = formData.selectedCommonCode.join("") + randomNumber;
-
-    return randomNo;
-  }
-
   //인풋창 입력시 , 해당 내용 formdata에 적용되도록
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -111,7 +101,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeTel: formData.tel,
         employeeNote: formData.note,
         employeeDepartment: formData.departMent,
-        employeeNo: createEmployeeNo(),
+        employeeNo: "",
       };
     } else {
       // 수정 데이터 폼

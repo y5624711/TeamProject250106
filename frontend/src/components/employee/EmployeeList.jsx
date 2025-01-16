@@ -151,7 +151,7 @@ export function EmployeeList({ onSelect, updateList }) {
             handleVisible();
           }}
         >
-          변경버튼 ㅋ-ㅋ
+          자세히보기
         </Button>{" "}
       </Heading>
       <HStack>

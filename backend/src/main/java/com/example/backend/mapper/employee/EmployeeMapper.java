@@ -133,8 +133,14 @@ public interface EmployeeMapper {
 
 
     @Select("""
-           select Max(employee_No) FROM TB_EMPMST
-        
+       <script>
+      SELECT COALESCE(MAX(CAST(SUBSTRING(employee_no, 4) AS UNSIGNED)), 0) AS maxNumber
+       FROM TB_EMPMST
+       WHERE employee_no LIKE CONCAT(#{employeeCommonCode}, '%')
+       AND employee_no REGEXP '^[A-Za-z]+[0-9]+$'
+       </script>
    """)
-    int viewMaxEmployeeNo();
+    Integer viewMaxEmployeeNo(String employeeCommonCode);
 }
+
+
