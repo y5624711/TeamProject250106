@@ -14,6 +14,7 @@ function Warehouse(props) {
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
+  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(1);
 
   // 창고 정보 가져오기
   useEffect(() => {
@@ -31,6 +32,11 @@ function Warehouse(props) {
     navigate(`/warehouse/management?${searchQuery.toString()}`);
   }
 
+  const handleShowDetail = (warehouseKey) => {
+    setSelectedWarehouseKey(warehouseKey);
+    console.log(warehouseKey);
+  };
+
   // 추가 버튼
   function handleAddClick() {}
 
@@ -47,14 +53,17 @@ function Warehouse(props) {
             handleSearchClick={handleSearchClick}
           />
           {/*리스트 jsx*/}
-          <WarehouseList warehouseList={warehouseList} />
+          <WarehouseList
+            warehouseList={warehouseList}
+            onShowDetail={handleShowDetail}
+          />
         </Stack>
         <Stack>
           <Button onClick={handleAddClick} width="85px">
             창고 추가
           </Button>
           {/*상세 jsx*/}
-          <WarehouseView />
+          <WarehouseView warehouseKey={selectedWarehouseKey} />
         </Stack>
       </HStack>
     </Box>

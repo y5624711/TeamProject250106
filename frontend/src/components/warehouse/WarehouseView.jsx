@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Input } from "@chakra-ui/react";
 
-function WarehouseView(prop) {
+function WarehouseView({ warehouseKey }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`/api/warehouse/view/2`)
+      .get(`/api/warehouse/view/${warehouseKey}`)
       .then((res) => {
         setWarehouseDetail(res.data);
       })
       .catch((error) => {
         console.error("창고 상세 정보 요청 중 오류 발생: ", error);
       });
-  }, []);
+  }, [warehouseKey]);
   return (
     <Box width="350px">
       창고 코드

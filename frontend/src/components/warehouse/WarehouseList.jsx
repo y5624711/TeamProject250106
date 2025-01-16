@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "@chakra-ui/react";
 
-function WarehouseList({ warehouseList }) {
+function WarehouseList({ warehouseList, onShowDetail }) {
   return (
     <div>
       <Table.Root interactive>
@@ -18,7 +18,12 @@ function WarehouseList({ warehouseList }) {
         </Table.Header>
         <Table.Body>
           {warehouseList.map((warehouse) => (
-            <Table.Row onClick={() => setWarehouseKey(warehouse.warehouseKey)}>
+            <Table.Row
+              key={warehouse.warehouseKey}
+              onClick={() => {
+                onShowDetail(warehouse.warehouseKey);
+              }}
+            >
               <Table.Cell>{warehouse.warehouseKey}</Table.Cell>
               <Table.Cell>{warehouse.warehouseName}</Table.Cell>
               <Table.Cell>{warehouse.customerCode}</Table.Cell>
