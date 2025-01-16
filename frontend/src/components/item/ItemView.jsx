@@ -6,7 +6,7 @@ import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function ItemView({ itemKey }) {
+export function ItemView({ itemKey, setItems }) {
   const [itemList, setItemList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -89,6 +89,10 @@ export function ItemView({ itemKey }) {
           description: data.message.text,
           type: data.message.type,
         });
+        // 삭제 후 부모 컴포넌트로 삭제된 항목을 반영
+        setItems((prevItems) =>
+          prevItems.filter((item) => item.itemKey !== itemKey),
+        );
         setIsDialogOpen(false);
       })
       .catch((e) => {

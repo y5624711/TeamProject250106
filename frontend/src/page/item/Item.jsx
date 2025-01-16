@@ -64,7 +64,7 @@ export function Item() {
               onAdd={handleAddItem}
             />
           ) : (
-            <ItemView itemKey={itemKey} />
+            <ItemView itemKey={itemKey} setItems={setItems} />
           )}
         </Stack>
       </HStack>
