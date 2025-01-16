@@ -2,6 +2,7 @@ package com.example.backend.service.employee;
 
 
 import com.example.backend.dto.employee.Employee;
+import com.example.backend.dto.employee.EmployeeResponse;
 import com.example.backend.mapper.employee.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,20 +22,21 @@ public class EmployeeService {
            return cnt==1;
     }
 
-    public List<Employee> getAllEmployee(int page, Boolean isActiveVisible) {
+    public EmployeeResponse getAllEmployee(int page, Boolean isActiveVisible, String keyword, String type) {
 
         // 총 갯수
-        int count = mapper.countAllEmployee(isActiveVisible);
+        int count = mapper.countAllEmployee(isActiveVisible,keyword ,type);
 
-        int selectPage=page;
 
         int offset= (page-1) *10 +1;
         System.out.println("count = " + count);
 
+         List<Employee> employeeList= mapper.getAllEmployees(offset ,isActiveVisible,keyword,type);
 
-
-
-        return  mapper.getAllEmployees(offset ,isActiveVisible);
+         EmployeeResponse employeeResponse = new EmployeeResponse();
+         employeeResponse.setEmployeeList(employeeList);
+         employeeResponse.setTotalCount(count);
+        return  employeeResponse;
     }
 
     // 인사관리 리스트 클릭시 상세정보 가져오는 서비스

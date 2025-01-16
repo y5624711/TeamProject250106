@@ -30,7 +30,6 @@ export function EmployeeAdd({ viewKey, onChange }) {
     departMent: "",
   });
 
-  // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "PAR" },
@@ -192,7 +191,7 @@ export function EmployeeAdd({ viewKey, onChange }) {
               : [formData.selectedCommonCode]
           }
           onValueChange={(e) =>
-            setFormData({ ...formData, selectedCommonCode: e.value })
+            setFormData({ ...formData, selectedCommonCode: e.target.value })
           }
         >
           <SelectLabel>상위 구분 코드</SelectLabel>

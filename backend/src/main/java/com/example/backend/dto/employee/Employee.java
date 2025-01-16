@@ -13,6 +13,7 @@ public class Employee {
     private String employeeTel;
     private String employeeNote;
     private boolean employeeActive;
+    private int employeeCount;
 }
 
 

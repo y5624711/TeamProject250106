@@ -1,6 +1,7 @@
 package com.example.backend.controller.employee;
 
 import com.example.backend.dto.employee.Employee;
+import com.example.backend.dto.employee.EmployeeResponse;
 import com.example.backend.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,13 @@ public class EmployeeController {
 
 
      @GetMapping("/list")  //  모든 멤버 출력
-     public List<Employee> getAllEmployees(@RequestParam int page ,Boolean isActiveVisible) {
-         System.out.println("페이지 페이지 page = " + page);
-         System.out.println("isActiveVisible = " + isActiveVisible);
-        List<Employee> allList = service.getAllEmployee(page ,isActiveVisible);
+     public EmployeeResponse getAllEmployees(@RequestParam int page , Boolean isActiveVisible , String keyword, String type) {
+         System.out.println("keyword = " + keyword);
+         System.out.println("type = " + type);
 
-        return allList;
+         EmployeeResponse employeeResponse = service.getAllEmployee(page ,isActiveVisible,keyword,type);
+
+        return   employeeResponse;
      }
 
      // 회원 등록

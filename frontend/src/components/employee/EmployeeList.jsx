@@ -4,8 +4,16 @@ import {
   Box,
   Button,
   Checkbox,
+  createListCollection,
   Heading,
   HStack,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   Table,
 } from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -17,11 +25,12 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../ui/pagination.jsx";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
-  const [count, setCount] = useState(100);
+  const [count, setCount] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   // 상태 초기화: 쿼리 파라미터에서 값 가져오기
   const [page, setPage] = useState(searchParams.get("page") || 1);
@@ -29,29 +38,36 @@ export function EmployeeList({ onSelect, updateList }) {
   const [isActiveVisible, setIsActiveVisible] = useState(
     searchParams.get("active") === "true",
   );
+  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+  const [type, setType] = useState(searchParams.get("type") || "all");
 
   const updateQuery = () => {
-    setSearchParams({ page: page, sort: "desc", active: isActiveVisible });
+    setSearchParams({
+      page: page,
+      sort: "desc",
+      active: isActiveVisible,
+      keyword: keyword,
+      type: type,
+    });
   };
 
-  console.log("page 변경 확인", page);
   useEffect(() => {
-    // 전체 임플로이 리스트 불러오기
+    // 전체 직원 리스트 불러오기
     axios
       .get("/api/employee/list", {
         params: {
           page: page,
           isActiveVisible: isActiveVisible,
+          keyword: keyword,
+          type: "all",
         },
       })
       .then((res) => {
-        setMemberList(res.data);
-        // setPage();
-        // setCount();
+        setMemberList(res.data.employeeList);
+        setCount(res.data.totalCount);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("직원 정보를 받는중 오류");
+        console.log("직원 정보를 받는중 오류", err);
       });
     updateQuery();
   }, [updateList, page, searchParams]);
@@ -72,9 +88,28 @@ export function EmployeeList({ onSelect, updateList }) {
   //  페이지 버튼 클릭시
   function handlePageChange(e) {
     setPage(e.page);
-    updateQuery();
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev); // 복사본 생성
+      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      return newParams;
+    });
   }
 
+  function handleSearchButton() {
+    updateQuery();
+  }
+  const frameworks = createListCollection({
+    items: [
+      { label: "소속구분", value: "소속구분" },
+      { label: "기업명", value: "기업명" },
+      { label: "부서명", value: "부서명" },
+      { label: "직원명", value: "직원명" },
+      { label: "사번", value: "사번" },
+      { label: "계약여부", value: "계약여부" },
+    ],
+  });
+
+  console.log("타입", type);
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
     <Box>
@@ -90,9 +125,36 @@ export function EmployeeList({ onSelect, updateList }) {
         </Button>{" "}
       </Heading>
       <HStack>
-        <Box>검색 항목</Box>
-        <Box>검색 내용</Box>
-        <Button>검색</Button>
+        <Box>
+          <SelectRoot
+            collection={frameworks}
+            value={type}
+            onValueChange={(e) => {
+              log("동작 확인");
+              setType(e.target.value);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder={"선택 해 주세요"} />
+            </SelectTrigger>
+            <SelectContent>
+              {frameworks.items.map((code) => (
+                <SelectItem item={code} key={code.value}>
+                  {code.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        </Box>
+        <Input
+          placeholder={"검색어를 입력해주세요"}
+          value={keyword}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+          }}
+        />
+
+        <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
       <Table.Root>
         <Table.Header>
@@ -111,9 +173,9 @@ export function EmployeeList({ onSelect, updateList }) {
         <Table.Body>
           {/* isActiveVisible 이 true면  다 통과시키는 구조 고 ,  아니면  active가 트루인것만 */}
           {memberList
-            .filter((item) =>
-              isActiveVisible ? true : item.employeeActive === true,
-            )
+            // .filter((item) =>
+            //   isActiveVisible ? true : item.employeeActive === true,
+            // )
             .map((item, index) => (
               <Table.Row
                 key={item.employeeKey}
