@@ -8,7 +8,7 @@ import { Main } from "./page/main/Main.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 import { BusinessAndEmployeeList } from "./page/businessAndDepartment/BusinessAndEmployeeList.jsx";
-import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
+import { ItemCommonCode } from "./page/commonCode/ItemCommonCode.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       { path: "commonCode/add", element: <CommonAdd /> },
       {
         path: "commonCode/item",
-        element: <CommonCodeItem />,
+        element: <ItemCommonCode />,
       },
       {
         path: "employee",
