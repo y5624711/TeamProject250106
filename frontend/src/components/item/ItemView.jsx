@@ -4,10 +4,12 @@ import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
+import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
 export function ItemView({ itemKey }) {
   const [itemList, setItemList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedItem, setEditedItem] = useState({
     itemCommonCode: "",
     customerName: "",
@@ -18,7 +20,6 @@ export function ItemView({ itemKey }) {
     itemActive: false,
     itemNote: "",
   });
-  const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
 
   // 물품 상세 정보를 가져오기
   useEffect(() => {
@@ -36,16 +37,15 @@ export function ItemView({ itemKey }) {
   }, [itemKey]);
 
   // 물품 구분 코드 가져오기
-  useEffect(() => {
-    axios
-      .get("/api/item/commonCode")
-      .then((res) => {
-        setItemCommonCodeList(res.data);
-      })
-      .catch((error) => {
-        console.error("데이터 로딩 중 오류 발생: ", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/item/commonCode")
+  //     .then((res) => {
+  //     })
+  //     .catch((error) => {
+  //       console.error("데이터 로딩 중 오류 발생: ", error);
+  //     });
+  // }, []);
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
@@ -80,7 +80,7 @@ export function ItemView({ itemKey }) {
   };
 
   // 물품 삭제 시 사용여부 false
-  const handleDeleteClick = () => {
+  const handleDeleteConfirm = () => {
     axios
       .put(`/api/item/delete/${itemKey}`)
       .then((res) => res.data)
@@ -89,8 +89,9 @@ export function ItemView({ itemKey }) {
           description: data.message.text,
           type: data.message.type,
         });
+        setIsDialogOpen(false);
       })
-      .catch((error) => {
+      .catch((e) => {
         const message = e.response.data.message;
         toaster.create({ description: message.text, type: message.type });
       });
@@ -190,13 +191,22 @@ export function ItemView({ itemKey }) {
           </Box>
         ))}
       </HStack>
+      <HStack>
+        <Button onClick={() => setIsDialogOpen(true)}>삭제</Button>
+        {isEditing ? (
+          <Button onClick={handleSubmitClick}>수정 저장</Button>
+        ) : (
+          <Button onClick={handleEditClick}>수정</Button>
+        )}
+      </HStack>
 
-      <Button onClick={handleDeleteClick}>삭제</Button>
-      {isEditing ? (
-        <Button onClick={handleSubmitClick}>수정 저장</Button>
-      ) : (
-        <Button onClick={handleEditClick}>수정</Button>
-      )}
+      <DialogConfirmation
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title="삭제 확인"
+        body="정말로 이 항목을 삭제하시겠습니까?"
+      />
     </Box>
   );
 }
