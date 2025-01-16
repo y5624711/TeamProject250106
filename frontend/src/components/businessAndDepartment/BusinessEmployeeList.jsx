@@ -30,9 +30,7 @@ export function BusinessEmployeeList() {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [active, setActive] = useState(
-    () => searchParams.get("active") === "true",
-  );
+
   const [search, setSearch] = useState({
     type: "number",
     keyword: "",
@@ -90,6 +88,8 @@ export function BusinessEmployeeList() {
     setSearch(nextSearch);
   }, [searchParams]);
 
+  const active = searchParams.get("active") === "true";
+
   function handlePageChange(e) {
     const nextSearchParam = new URLSearchParams(searchParams);
     nextSearchParam.set("page", e.page);
@@ -119,9 +119,13 @@ export function BusinessEmployeeList() {
     return <Spinner />;
   }
 
+  console.log(active);
+
   const toggleCheckActive = () => {
     const nextValue = !active;
-    setActive(nextValue);
+    // setActive(nextValue);
+    console.log(active);
+    console.log(nextValue);
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
@@ -130,7 +134,7 @@ export function BusinessEmployeeList() {
 
   return (
     <Box>
-      <Checkbox checked={active} onChange={toggleCheckActive}>
+      <Checkbox checked={active} onCheckedChange={toggleCheckActive}>
         근무여부
       </Checkbox>
       <Flex>
