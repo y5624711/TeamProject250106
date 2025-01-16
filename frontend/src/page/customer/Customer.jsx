@@ -19,22 +19,46 @@ function Customer() {
     parseInt(searchParams.get("page")) || 1,
   );
   const [checkedActive, setCheckedActive] = useState(
-    false || searchParams.get("active") === "true",
+    searchParams.get("active") === "true",
   );
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
 
-  //삭제 정보도 같이 보기
-  function toggleCheckedActive() {
+  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
+  const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
     setSearchParams(nextSearchParams);
-  }
+  };
+
+  // 검색 타입 변경 처리 및 URL 업데이트
+  const handleSearchTypeChange = (type) => {
+    setSearch((prev) => ({ ...prev, type }));
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("type", type);
+    setSearchParams(nextSearchParams);
+  };
+
+  // 검색 실행 처리 및 URL 업데이트
+  const handleSearchClick = () => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+
+    if (search.keyword.trim().length > 0) {
+      nextSearchParams.set("type", search.type);
+      nextSearchParams.set("keyword", search.keyword);
+    } else {
+      nextSearchParams.delete("type");
+      nextSearchParams.delete("keyword");
+    }
+
+    setSearchParams(nextSearchParams);
+  };
 
   useEffect(() => {
     axios
@@ -52,7 +76,6 @@ function Customer() {
         setCustomerList(data.customerList);
       });
   }, [searchParams, checkedActive]);
-  // console.log(customerList);
 
   useEffect(() => {
     const nextSearch = { ...search };
@@ -75,23 +98,6 @@ function Customer() {
   const handleSelectPage = (page) => {
     setSelectedPage(page);
   };
-
-  //검색어 변경 처리
-  function handleSearchClick() {
-    const nextSearchParam = new URLSearchParams(searchParams);
-
-    if (search.keyword.trim().length > 0) {
-      nextSearchParam.set("type", search.type);
-      nextSearchParam.set("keyword", search.keyword);
-      nextSearchParam.set("page", "1");
-      nextSearchParam.set("active", false);
-    } else {
-      nextSearchParam.delete("type");
-      nextSearchParam.delete("keyword");
-    }
-
-    setSearchParams(nextSearchParam);
-  }
 
   //pagination
   const pageParam = searchParams.get("page") ?? "1";
@@ -123,10 +129,10 @@ function Customer() {
             setSearchParams={setSearchParams}
             checkedActive={checkedActive}
             toggleCheckedActive={toggleCheckedActive}
-            setCheckedActive={setCheckedActive}
             search={search}
             setSearch={setSearch}
             handleSearchClick={handleSearchClick}
+            handleSearchTypeChange={handleSearchTypeChange}
           />
         </Stack>
         <Stack>

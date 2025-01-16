@@ -20,11 +20,11 @@ function CustomerList({
   count,
   handlePageChange,
   checkedActive,
-  setCheckedActive,
   search,
   setSearch,
   handleSearchClick,
   toggleCheckedActive,
+  handleSearchTypeChange,
 }) {
   const totalPages = Math.ceil(count / 10);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -47,7 +47,7 @@ function CustomerList({
       <div>
         <SelectRoot
           collection={optionList}
-          defaultValue={["all"]}
+          value={[search.type]}
           onValueChange={(oc) => {
             setSearch({ ...search, type: oc.value[0] });
           }}
@@ -77,7 +77,7 @@ function CustomerList({
       </div>
 
       {/* 체크박스 필터 */}
-      <Checkbox isChecked={checkedActive} onChange={toggleCheckedActive}>
+      <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
         삭제 내역 포함해서 보기
       </Checkbox>
 
@@ -89,7 +89,7 @@ function CustomerList({
             <Table.ColumnHeader>업체명</Table.ColumnHeader>
             <Table.ColumnHeader>취급 물품</Table.ColumnHeader>
             <Table.ColumnHeader>대표자</Table.ColumnHeader>
-            {/*<Table.ColumnHeader>계약여부</Table.ColumnHeader>*/}
+            <Table.ColumnHeader>계약여부</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -102,9 +102,9 @@ function CustomerList({
               <Table.Cell>{customer.customerName}</Table.Cell>
               <Table.Cell>{customer.itemName}</Table.Cell>
               <Table.Cell>{customer.customerRep}</Table.Cell>
-              {/*<Table.Cell>*/}
-              {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
-              {/*</Table.Cell>*/}
+              <Table.Cell>
+                {customer.customerActive ? "계약" : "계약 종료"}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -116,16 +116,6 @@ function CustomerList({
           </Button>
         ))}
       </Center>
-      {/*pagination*/}
-      {/*<Center>*/}
-      {/*  <PaginationRoot count={10} pageSize={2} defaultPage={1} variant="solid">*/}
-      {/*    <HStack>*/}
-      {/*      <PaginationPrevTrigger />*/}
-      {/*      <PaginationItem />*/}
-      {/*      <PaginationNextTrigger />*/}
-      {/*    </HStack>*/}
-      {/*  </PaginationRoot>*/}
-      {/*</Center>*/}
     </div>
   );
 }
