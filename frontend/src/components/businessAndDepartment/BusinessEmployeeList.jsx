@@ -31,11 +31,7 @@ export function BusinessEmployeeList() {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState({ column: "", order: "desc" });
-
-  const [search, setSearch] = useState({
-    type: "number",
-    keyword: "",
-  });
+  const [search, setSearch] = useState({ type: "number", keyword: "" });
 
   /*검색타입*/
   const optionList = createListCollection({
