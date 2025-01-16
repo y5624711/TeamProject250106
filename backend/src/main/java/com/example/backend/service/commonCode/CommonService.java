@@ -62,4 +62,10 @@ public class CommonService {
     public List<ItemCommonCode> getItemCommonCodeView(int itemCommonCodeKey) {
         return mapper.getItemCommonCodeView(itemCommonCodeKey);
     }
+
+    // 물품 공통 코드 삭제하기
+    public boolean deleteItemCommonCodeKey(int itemCommonCodeKey) {
+        int cnt = mapper.deleteItemCommonCodeKey(itemCommonCodeKey);
+        return cnt == 1;
+    }
 }

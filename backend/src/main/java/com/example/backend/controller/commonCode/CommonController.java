@@ -16,6 +16,22 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
+    // 물품 공통 코드 삭제하기
+    @PutMapping("item/delete/{itemCommonCodeKey}")
+    public ResponseEntity<Map<String, Object>> deleteItemCommonCodeKey(
+            @PathVariable int itemCommonCodeKey) {
+        if (service.deleteItemCommonCodeKey(itemCommonCodeKey)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{itemCommonCodeKey}번 물품이 삭제되었습니다.")));
+
+        } else {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "물품 삭제 중 문제가 발생하였습니다.")));
+        }
+    }
+
     // 물품 공통 코드 1개의 정보 가져오기
     @GetMapping("item/view/{itemCommonCodeKey}")
     public List<ItemCommonCode> itemView(@PathVariable int itemCommonCodeKey) {

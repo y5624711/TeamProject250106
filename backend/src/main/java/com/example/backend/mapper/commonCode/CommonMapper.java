@@ -2,10 +2,7 @@ package com.example.backend.mapper.commonCode;
 
 import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.commonCode.ItemCommonCode;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -58,4 +55,11 @@ public interface CommonMapper {
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
     List<ItemCommonCode> getItemCommonCodeView(int itemCommonCodeKey);
+
+    @Update("""
+            UPDATE TB_ITEMCOMM
+            SET item_common_code_active = 0
+            WHERE item_common_code_key = #{itemCommonCodeKey}
+            """)
+    int deleteItemCommonCodeKey(int itemCommonCodeKey);
 }
