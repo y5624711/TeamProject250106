@@ -132,7 +132,6 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
-        console.log("now", data);
       })
       .catch((e) => {
         const data = e.response.data;
