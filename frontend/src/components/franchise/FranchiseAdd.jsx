@@ -6,6 +6,7 @@ import { toaster } from "../ui/toaster.jsx";
 export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
   const [franchise, setFranchise] = useState({
     businessEmployeeNo: "",
+    businessEmployeeName: "",
     franchiseCode: "",
     franchiseName: "",
     franchiseRep: "",
@@ -67,6 +68,15 @@ export function FranchiseAdd({ setViewMode, setSelectedFranchiseKey }) {
             value={franchise.businessEmployeeNo}
             onChange={handleChange}
             placeholder="본사 직원 사번"
+          />
+        </Box>
+        <Box mb={4}>
+          <Text>본사 직원 이름</Text>
+          <Input
+            name="businessEmployeeName"
+            value={franchise.businessEmployeeName}
+            onChange={handleChange}
+            placeholder="본사 직원 이름"
           />
         </Box>
         <Box mb={4}>

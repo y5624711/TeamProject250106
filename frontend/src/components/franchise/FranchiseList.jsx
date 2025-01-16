@@ -65,7 +65,7 @@ export function FranchiseList({ onFranchiseClick }) {
             <TableColumnHeader>가맹점주</TableColumnHeader>
             <TableColumnHeader>광역시도</TableColumnHeader>
             <TableColumnHeader>시군</TableColumnHeader>
-            <TableColumnHeader>본사 직원</TableColumnHeader>
+            <TableColumnHeader>본사 직원 이름</TableColumnHeader>
           </TableRow>
         </TableHeader>
         <Table.Body>
@@ -80,7 +80,7 @@ export function FranchiseList({ onFranchiseClick }) {
               <Table.Cell>{franchise.franchiseRep}</Table.Cell>
               <Table.Cell>{franchise.franchiseState}</Table.Cell>
               <Table.Cell>{franchise.franchiseCity}</Table.Cell>
-              <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
+              <Table.Cell>{franchise.businessEmployeeName}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

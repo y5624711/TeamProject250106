@@ -19,6 +19,7 @@ public class FranchiseService {
     // 필드 유효성 확인
     public boolean validate(Franchise franchise) {
         boolean businessEmployeeNoValid = franchise.getBusinessEmployeeNo() != null && !franchise.getBusinessEmployeeNo().trim().isEmpty();
+        boolean businessEmployeeNameValid = franchise.getBusinessEmployeeName() != null && !franchise.getBusinessEmployeeName().trim().isEmpty();
         boolean franchiseNameValid = franchise.getFranchiseName() != null && !franchise.getFranchiseName().trim().isEmpty();
         boolean franchiseCodeValid = franchise.getFranchiseCode() != null && !franchise.getFranchiseCode().trim().isEmpty();
         boolean franchiseRepValid = franchise.getFranchiseRep() != null && !franchise.getFranchiseRep().trim().isEmpty();
@@ -29,7 +30,7 @@ public class FranchiseService {
         boolean franchiseStateValid = franchise.getFranchiseState() != null && !franchise.getFranchiseState().trim().isEmpty();
         boolean franchiseCityValid = franchise.getFranchiseCity() != null && !franchise.getFranchiseCity().trim().isEmpty();
 
-        return businessEmployeeNoValid && franchiseNameValid && franchiseCodeValid && franchiseRepValid
+        return businessEmployeeNoValid && businessEmployeeNameValid && franchiseNameValid && franchiseCodeValid && franchiseRepValid
                && franchiseNoValid && franchiseTelValid && franchiseAddressValid && franchisePostValid && franchiseStateValid && franchiseCityValid;
     }
 

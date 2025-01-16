@@ -6,6 +6,7 @@ import lombok.Data;
 public class Franchise {
     private Integer franchiseKey;
     private String businessEmployeeNo;
+    private String businessEmployeeName;
     private String franchiseCode;
     private String franchiseName;
     private String franchiseRep;

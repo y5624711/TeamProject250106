@@ -95,6 +95,16 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
           />
         </Box>
         <Box mb={4}>
+          <Text>본사 직원 이름</Text>
+          <Input
+            name="businessEmployeeName"
+            value={franchise.businessEmployeeName}
+            onChange={handleChange}
+            placeholder="본사 직원 이름"
+            readOnly={isReadOnly}
+          />
+        </Box>
+        <Box mb={4}>
           <Text>가맹점 코드</Text>
           <Input
             name="franchiseCode"
