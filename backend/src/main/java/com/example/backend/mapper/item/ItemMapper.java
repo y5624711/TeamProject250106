@@ -31,9 +31,9 @@ public interface ItemMapper {
                      LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                      LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
                      <where>
-                          <if test="active == 1">
-                              AND i.item_active = 1
-                          </if>
+                        <if test="active == 1">
+                            AND i.item_active = 1
+                        </if>
                         <if test="type != null and keyword != null and keyword != ''">
                           <choose>
                               <when test="type == 'all'">
@@ -59,11 +59,36 @@ public interface ItemMapper {
                           </choose>
                       </if>
                      </where>
-                     ORDER BY i.item_key
+                      <choose>
+                                 <when test="sort != null and sort != '' and (
+                                     sort == 'itemKey' or\s
+                                     sort == 'itemCommonName' or\s
+                                     sort == 'customerName' or\s
+                                     sort == 'inputPrice' or\s
+                                     sort == 'outputPrice')">
+                                     ORDER BY\s
+                                     <choose>
+                                         <when test="sort == 'itemKey'">i.item_key</when>
+                                         <when test="sort == 'itemCommonName'">ic.item_common_name</when>
+                                         <when test="sort == 'customerName'">c.customer_name</when>
+                                         <when test="sort == 'inputPrice'">i.input_price</when>
+                                         <when test="sort == 'outputPrice'">i.output_price</when>
+                                     </choose>
+                                     <if test="order != null and (order == 'asc' or order == 'desc')">
+                                         ${order}
+                                     </if>
+                                     <if test="order == null or (order != 'asc' and order != 'desc')">
+                                         asc
+                                     </if>
+                                 </when>
+                                 <otherwise>
+                                     ORDER BY i.item_key asc
+                                 </otherwise>
+                             </choose>
                      LIMIT #{offset}, 10
                 </script>
             """)
-    List<Item> getItemList(Integer offset, Integer active, String type, String keyword);
+    List<Item> getItemList(Integer offset, Integer active, String type, String keyword, String sort, String order);
 
 
     @Select("""
@@ -140,8 +165,34 @@ public interface ItemMapper {
                               </choose>
                           </if>
                     </where>
+                     <choose>
+                                <when test="sort != null and sort != '' and (
+                                    sort == 'itemKey' or\s
+                                    sort == 'itemCommonName' or\s
+                                    sort == 'customerName' or\s
+                                    sort == 'inputPrice' or\s
+                                    sort == 'outputPrice')">
+                                    ORDER BY\s
+                                    <choose>
+                                        <when test="sort == 'itemKey'">i.item_key</when>
+                                        <when test="sort == 'itemCommonName'">ic.item_common_name</when>
+                                        <when test="sort == 'customerName'">c.customer_name</when>
+                                        <when test="sort == 'inputPrice'">i.input_price</when>
+                                        <when test="sort == 'outputPrice'">i.output_price</when>
+                                    </choose>
+                                    <if test="order != null and (order == 'asc' or order == 'desc')">
+                                        ${order}
+                                    </if>
+                                    <if test="order == null or (order != 'asc' and order != 'desc')">
+                                        asc
+                                    </if>
+                                </when>
+                                <otherwise>
+                                    ORDER BY i.item_key asc
+                                </otherwise>
+                            </choose>
                 </script>
             """)
-    Integer countAll(Integer active, String type, String keyword);
+    Integer countAll(Integer active, String type, String keyword, String sort, String order);
 
 }

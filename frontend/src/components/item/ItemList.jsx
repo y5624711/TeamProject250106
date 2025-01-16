@@ -19,7 +19,6 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../ui/pagination.jsx";
-import { Checkbox } from "../ui/checkbox.jsx";
 import { Button } from "../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 import { Switch } from "../ui/switch.jsx";
@@ -32,6 +31,7 @@ export function ItemList({ setItemKey }) {
     type: "all",
     keyword: "",
   });
+  const [sort, setSort] = useState({ key: null, order: "asc" });
 
   useEffect(() => {
     axios
@@ -51,25 +51,25 @@ export function ItemList({ setItemKey }) {
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
+  // 페이지 이동
+  const handlePageChange = (e) => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+    nextSearchParam.set("page", e.page);
+    setSearchParams(nextSearchParam);
+  };
+
   // 사용 여부
   const activeParam = searchParams.get("active")
     ? searchParams.get("active")
     : "1";
   const active = Number(activeParam);
 
-  // 페이지 이동
-  const handlePageChange = (e) => {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("page", e.page);
-    setSearchParams(nextSearchParams);
-  };
-
   // 스위치 상태 변경 핸들러
   const handleSwitchChange = () => {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", active === 1 ? "0" : "1");
-    nextSearchParams.set("page", "1");
-    setSearchParams(nextSearchParams);
+    const nextSearchParam = new URLSearchParams(searchParams);
+    nextSearchParam.set("active", active === 1 ? "0" : "1");
+    nextSearchParam.set("page", "1");
+    setSearchParams(nextSearchParam);
   };
 
   // 검색
@@ -89,14 +89,29 @@ export function ItemList({ setItemKey }) {
     }
   };
 
+  // 정렬 헤더
   const headers = [
     { key: "itemKey", label: "#" },
     { key: "itemCommonName", label: "품목명" },
     { key: "customerName", label: "담당업체" },
     { key: "inputPrice", label: "입고가" },
     { key: "outputPrice", label: "출고가" },
-    { key: "itemActive", label: "사용여부" },
   ];
+
+  // 정렬
+  const handleSort = (key) => {
+    const currentOrder = searchParams.get("order") || "asc";
+    const nextOrder =
+      searchParams.get("sort") === key && currentOrder === "asc"
+        ? "desc"
+        : "asc";
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("sort", key);
+    nextSearchParams.set("order", nextOrder);
+    nextSearchParams.set("page", "1"); // 정렬 시 첫 페이지로 이동
+    setSearchParams(nextSearchParams);
+  };
 
   return (
     <Box>
@@ -152,6 +167,11 @@ export function ItemList({ setItemKey }) {
                   style={{ cursor: "pointer" }}
                 >
                   {header.label}
+                  {searchParams.get("sort") === header.key
+                    ? searchParams.get("order") === "asc"
+                      ? "▲"
+                      : "▼"
+                    : ""}
                 </Table.ColumnHeader>
               ))}
             </Table.Row>
@@ -168,9 +188,6 @@ export function ItemList({ setItemKey }) {
                 <Table.Cell>{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
-                <Table.Cell textAlign="center">
-                  <Checkbox checked={item.itemActive} />
-                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

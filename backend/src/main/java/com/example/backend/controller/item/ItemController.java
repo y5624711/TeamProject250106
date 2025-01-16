@@ -61,9 +61,11 @@ public class ItemController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "active", defaultValue = "1") Integer active,
             @RequestParam(value = "type", defaultValue = "all") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "") String sort,
+            @RequestParam(value = "order", defaultValue = "") String order
     ) {
-        return service.getItemList(page, active, type, keyword);
+        return service.getItemList(page, active, type, keyword, sort, order);
     }
 
     // 물품을 취급하는 협력업체 이름 가져오기
