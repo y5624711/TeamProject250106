@@ -12,14 +12,9 @@ import {
   SelectValueText,
   Table,
 } from "@chakra-ui/react";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../ui/pagination.jsx";
 import { Button } from "../ui/button.jsx";
 import { Switch } from "../ui/switch.jsx";
+import { Pagination } from "../tool/Pagination.jsx";
 
 export function ItemList({
   itemList,
@@ -32,18 +27,6 @@ export function ItemList({
     type: "all",
     keyword: "",
   });
-  const [sort, setSort] = useState({ key: null, order: "asc" });
-
-  // 페이지 번호
-  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
-  const page = Number(pageParam);
-
-  // 페이지 이동
-  const handlePageChange = (e) => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-    nextSearchParam.set("page", e.page);
-    setSearchParams(nextSearchParam);
-  };
 
   // 사용 여부
   const activeParam = searchParams.get("active")
@@ -193,19 +176,15 @@ export function ItemList({
           </Table.Body>
         </Table.Root>
         <Center>
-          <PaginationRoot
-            onPageChange={handlePageChange}
+          <Pagination
             count={count}
             pageSize={10}
-            page={page}
-            variant="solid"
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
+            onPageChange={(newPage) => {
+              const nextSearchParam = new URLSearchParams(searchParams);
+              nextSearchParam.set("page", newPage);
+              setSearchParams(nextSearchParam);
+            }}
+          />
         </Center>
       </Box>
     </Box>
