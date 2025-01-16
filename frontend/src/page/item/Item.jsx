@@ -24,6 +24,7 @@ export function Item() {
       .then((res) => {
         setItemList(res.data.list || []);
         setCount(res.data.count);
+        setItemKey(res.data.list[0].itemKey);
       })
       .catch((error) => {
         console.error("물품 목록 요청 중 오류 발생: ", error);
@@ -61,7 +62,7 @@ export function Item() {
             <ItemAdd
               onCancel={() => {
                 handleSelectPage("view");
-                setItemKey(1);
+                setItemKey(itemKey);
               }}
               onAdd={handleAddItem}
               setItemKey={setItemKey}
