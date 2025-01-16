@@ -151,7 +151,6 @@ export function EmployeeList({ onSelect, updateList }) {
             handleVisible();
           }}
         >
-          {" "}
           변경버튼 ㅋ-ㅋ
         </Button>{" "}
       </Heading>
@@ -186,7 +185,23 @@ export function EmployeeList({ onSelect, updateList }) {
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>#</Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                #
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("기본키", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("기본키", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
             <Table.ColumnHeader>
               <HStack>
                 소속 구분
@@ -273,7 +288,23 @@ export function EmployeeList({ onSelect, updateList }) {
               </HStack>
             </Table.ColumnHeader>
             {isActiveVisible && (
-              <Table.ColumnHeader>계약여부</Table.ColumnHeader>
+              <Table.ColumnHeader>
+                <HStack>
+                  계약여부{" "}
+                  <Stack>
+                    <FaArrowUp
+                      onClick={() => {
+                        handleSortControl("계약여부", "asc");
+                      }}
+                    />
+                    <FaArrowDown
+                      onClick={() => {
+                        handleSortControl("계약여부", "desc");
+                      }}
+                    />
+                  </Stack>
+                </HStack>
+              </Table.ColumnHeader>
             )}
           </Table.Row>
         </Table.Header>
@@ -306,6 +337,7 @@ export function EmployeeList({ onSelect, updateList }) {
                 )}
               </Table.Row>
             ))}
+          {memberList.length === 0 && <Box> 조회 결과 x</Box>}
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>

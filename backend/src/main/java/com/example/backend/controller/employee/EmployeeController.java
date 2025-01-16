@@ -24,6 +24,12 @@ public class EmployeeController {
          return  service.getOneEmployeeByKey(viewKey);
      }
 
+     @GetMapping("maxemployeeno")
+     public int viewMaxEmployeeNo(){
+
+         return  service.viewMaxEmployeeNo();
+     }
+
 
      @GetMapping("/list")  //  모든 멤버 출력
      public EmployeeResponse getAllEmployees(@RequestParam int page , Boolean isActiveVisible , String keyword, String type

@@ -13,12 +13,16 @@ public class Employee {
     private String employeeTel;
     private String employeeNote;
     private boolean employeeActive;
-    private int employeeCount;
 
 
 
+    
     public static String correctCommonCode(String commonCode) {
         switch (commonCode) {
+            case "기본키":
+                return "employee_key";
+            case "공통구부":
+                return "employee_common_code";
             case "소속구분":
                 return "employee_workplace_code";
             case "기업명":

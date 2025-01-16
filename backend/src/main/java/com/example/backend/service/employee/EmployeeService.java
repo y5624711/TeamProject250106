@@ -28,7 +28,8 @@ public class EmployeeService {
         int count = mapper.countAllEmployee(isActiveVisible,keyword ,type);
 
 
-        int offset= (page-1) *10 +1;
+        int offset= (page-1) *10 ;
+//        int offset= (page-1) *10 +1;
         System.out.println("count = " + count);
 
          List<Employee> employeeList= mapper.getAllEmployees(offset ,isActiveVisible,keyword,type ,convertedSort,order);
@@ -57,4 +58,10 @@ public class EmployeeService {
         int cnt = mapper.deleteEmployeeByKey(employeeKey);
         return cnt==1;
     }
+
+    public int viewMaxEmployeeNo() {
+
+        return mapper.viewMaxEmployeeNo();
+    }
+
 }

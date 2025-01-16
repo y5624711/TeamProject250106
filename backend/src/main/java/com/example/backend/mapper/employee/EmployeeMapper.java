@@ -20,98 +20,49 @@ public interface EmployeeMapper {
     int addEmployee(Employee member);
 
 
-//    @Select("""
-//    <script>
-//    SELECT *
-//    FROM TB_EMPMST
-//    WHERE 1=1
-//    <!-- isActiveVisible이 false일 경우 employee_active = true 조건 추가 -->
-//    <if test="isActiveVisible == false">
-//        AND employee_active = true
-//    </if>
-//
-//    <!-- keyword가 공백이 아니면 LIKE 조건 추가 -->
-//    <if test="keyword != null and keyword.trim() != ''">
-//        <if test="type == 'all'">
-//            AND (employee_name LIKE CONCAT('%', #{keyword}, '%')
-//                 OR employee_common_code LIKE CONCAT('%', #{keyword}, '%')
-//                 OR employee_name LIKE CONCAT('%', #{keyword}, '%'))
-//                OR employee_no LIKE CONCAT('%', #{keyword}, '%')
-//                OR employee_workplace_code LIKE CONCAT('%', #{keyword}, '%')
-//        </if>
-//        <if test="type != 'all'">
-//            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-//        </if>
-//        <if test="convertedSort!='all'">
-//            order by #{convertedSort}  #{order}
-//        </if>
-//    </if>
-//
-//    LIMIT #{offset}, 10
-//    </script>
-//""")
-//    List<Employee> getAllEmployees(@Param("offset") int offset,
-//                                   @Param("isActiveVisible") boolean isActiveVisible,
-//                                   @Param("keyword") String keyword,
-//                                   @Param("type") String type, String convertedSort, String order);
-
+//    나중에 조인시   ,기업명,부서명만 추가하면 됨
     @Select("""
     <script>
-    SELECT * 
-    FROM TB_EMPMST
-    WHERE 1=1
-
-    <!-- isActiveVisible이 false일 경우 employee_active = true 조건 추가 -->
-    <if test="isActiveVisible == false">
-        AND employee_active = true
-    </if>
-
-    <!-- keyword가 공백이 아니면 LIKE 조건 추가 -->
-    <if test="keyword != null and keyword.trim() != ''">
-        <if test="type == 'all'">
-            AND (
-                employee_name LIKE CONCAT('%', #{keyword}, '%')
-                OR employee_common_code LIKE CONCAT('%', #{keyword}, '%')
-                OR employee_no LIKE CONCAT('%', #{keyword}, '%')
-                OR employee_workplace_code LIKE CONCAT('%', #{keyword}, '%')
-            )
-        </if>
-        <if test="type != 'all'">
-            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-        </if>
-    </if>
-
-    <!-- 정렬 조건 추가 -->
-    <if test="convertedSort != null and convertedSort != '' and order != null and order != ''">
-        <choose>
-            <!-- 정렬 컬럼이 허용된 값인지 확인 -->
-            <when test="convertedSort == 'employee_name' or convertedSort == 'employee_no' or convertedSort == 'employee_workplace_code'">
-                ORDER BY ${convertedSort} 
-                <choose>
-                    <when test="order.toUpperCase() == 'ASC'">
-                        ASC
-                    </when>
-                    <when test="order.toUpperCase() == 'DESC'">
-                        DESC
-                    </when>
-                    <otherwise>
-                        ASC <!-- 기본값 설정 -->
-                    </otherwise>
-                </choose>
-            </when>
-            <otherwise>
-                ORDER BY employee_name ASC <!-- 기본 정렬 -->
-            </otherwise>
-        </choose>
-    </if>
-
-    <!-- 기본 정렬이 없을 경우를 대비 -->
-    <if test="convertedSort == null or convertedSort == ''">
-        ORDER BY employee_name ASC
-    </if>
-
-    LIMIT #{offset}, 10
-    </script>
+             SELECT *
+             FROM TB_EMPMST
+             WHERE 1=1
+             
+             <!-- isActiveVisible이 false일 경우 employee_active = true 조건 추가 -->
+             <if test="isActiveVisible == false">   \s
+                 AND employee_active = true
+             </if>
+             
+             <!-- keyword가 공백이 아니면 LIKE 조건 추가 -->
+             <if test="keyword != null and keyword.trim() != ''">
+                 <if test="type == 'all'">
+                     AND (
+                         employee_name LIKE CONCAT('%', #{keyword}, '%')
+                         OR employee_no LIKE CONCAT('%', #{keyword}, '%')
+                         OR employee_workplace_code LIKE CONCAT('%', #{keyword}, '%')
+                     )
+                 </if>
+                 <if test="type != 'all'">
+                     AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                 </if>
+             </if>
+             
+             <!-- 정렬 조건 -->
+             ORDER BY\s
+             <choose>
+                 <when test="convertedSort != null and convertedSort != ''\s
+                                   and (convertedSort == 'employee_name'\s
+                                   or convertedSort == 'employee_no'\s
+                                   or convertedSort == 'employee_workplace_code')">
+                     ${convertedSort}
+                 </when>
+                 <otherwise>
+                     employee_key
+                 </otherwise>
+             </choose>
+             ${order}
+             
+             LIMIT #{offset}, 10
+             </script>
 """)
     List<Employee> getAllEmployees(
             @Param("offset") int offset,
@@ -177,4 +128,11 @@ public interface EmployeeMapper {
     int countAllEmployee(@Param("isActiveVisible") Boolean isActiveVisible,
                          @Param("keyword") String keyword,
                          @Param("type") String type);
+
+
+    @Select("""
+           select Max(employee_No) FROM TB_EMPMST
+        
+   """)
+    int viewMaxEmployeeNo();
 }
