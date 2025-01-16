@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  createListCollection,
-  HStack,
-  Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { SideBar } from "../../components/tool/SideBar.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
+import WarehouseView from "../../components/warehouse/WarehouseView.jsx";
+import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
+import { Button } from "../../components/ui/button.jsx";
 
 function Warehouse(props) {
   const [value, setValue] = useState([]);
@@ -24,6 +15,7 @@ function Warehouse(props) {
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
 
+  // 창고 정보 가져오기
   useEffect(() => {
     axios.get(`/api/warehouse/management`).then((res) => {
       setWarehouseList(res.data.list);
@@ -32,11 +24,15 @@ function Warehouse(props) {
     window.scrollTo(0, 0);
   }, []);
 
+  // 검색 버튼
   function handleSearchClick() {
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/warehouse/list?${searchQuery.toString()}`);
+    navigate(`/warehouse/management?${searchQuery.toString()}`);
   }
+
+  // 추가 버튼
+  function handleAddClick() {}
 
   return (
     <Box>
@@ -44,47 +40,21 @@ function Warehouse(props) {
         <SideBar />
         <Stack>
           창고 관리
-          <Box>
-            <Stack justify={"top"} direction={"row"}>
-              <Box>
-                <SelectRoot
-                  collection={warehouseOptionList}
-                  defaultValue={["all"]}
-                  width="120px"
-                >
-                  <SelectTrigger>
-                    <SelectValueText />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {warehouseOptionList.items.map((items) => (
-                      <SelectItem item={items} key={items.value}>
-                        {items.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </SelectRoot>
-              </Box>
-
-              <Box>
-                <Input
-                  placeholder="키워드를 입력해주세요"
-                  width="400px"
-                  onChange={(e) =>
-                    setSearch({ ...search, keyword: e.target.value })
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearchClick();
-                    }
-                  }}
-                ></Input>
-              </Box>
-              <Box>
-                <Button>검색</Button>
-              </Box>
-            </Stack>
-          </Box>
+          {/*검색 jsx*/}
+          <WarehouseSearch
+            warehouseOptionList={warehouseOptionList}
+            setSearch={setSearch}
+            handleSearchClick={handleSearchClick}
+          />
+          {/*리스트 jsx*/}
           <WarehouseList warehouseList={warehouseList} />
+        </Stack>
+        <Stack>
+          <Button onClick={handleAddClick} width="85px">
+            창고 추가
+          </Button>
+          {/*상세 jsx*/}
+          <WarehouseView />
         </Stack>
       </HStack>
     </Box>

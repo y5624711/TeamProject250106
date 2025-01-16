@@ -19,4 +19,8 @@ public class WarehouseService {
 
         return Map.of("list", list);
     }
+
+    public Warehouse view(Integer warehouseKey) {
+        return mapper.view(warehouseKey);
+    }
 }

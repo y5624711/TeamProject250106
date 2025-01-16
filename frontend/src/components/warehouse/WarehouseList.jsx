@@ -4,7 +4,6 @@ import { Table } from "@chakra-ui/react";
 function WarehouseList({ warehouseList }) {
   return (
     <div>
-      <h2>창고 조회</h2>
       <Table.Root interactive>
         <Table.Header>
           <Table.Row>

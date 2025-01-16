@@ -14,4 +14,11 @@ public interface WarehouseMapper {
             FROM TB_WHMST
             """)
     List<Warehouse> list();
+
+    @Select("""
+            SELECT *
+            FROM TB_WHMST
+            WHERE warehouse_key=#{warehouseKey}
+            """)
+    Warehouse view(Integer warehouseKey);
 }
