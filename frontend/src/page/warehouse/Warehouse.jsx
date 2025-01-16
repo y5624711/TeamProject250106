@@ -7,6 +7,7 @@ import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
 import WarehouseView from "../../components/warehouse/WarehouseView.jsx";
 import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import WarehouseAdd from "../../components/warehouse/WarehouseAdd.jsx";
 
 function Warehouse(props) {
   const [value, setValue] = useState([]);
@@ -14,7 +15,8 @@ function Warehouse(props) {
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
-  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(1);
+  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
 
   // 창고 정보 가져오기
   useEffect(() => {
@@ -34,11 +36,7 @@ function Warehouse(props) {
 
   const handleShowDetail = (warehouseKey) => {
     setSelectedWarehouseKey(warehouseKey);
-    console.log(warehouseKey);
   };
-
-  // 추가 버튼
-  function handleAddClick() {}
 
   return (
     <Box>
@@ -59,11 +57,20 @@ function Warehouse(props) {
           />
         </Stack>
         <Stack>
-          <Button onClick={handleAddClick} width="85px">
-            창고 추가
+          <Button
+            width="85px"
+            onClick={() => {
+              setIsAdding((prev) => !prev);
+              setSelectedWarehouseKey(null);
+            }}
+          >
+            {isAdding ? "닫기" : "창고 추가"}
           </Button>
-          {/*상세 jsx*/}
-          <WarehouseView warehouseKey={selectedWarehouseKey} />
+          {isAdding ? (
+            <WarehouseAdd />
+          ) : (
+            <WarehouseView warehouseKey={selectedWarehouseKey} />
+          )}
         </Stack>
       </HStack>
     </Box>

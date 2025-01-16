@@ -3,10 +3,7 @@ package com.example.backend.controller.warehouse;
 import com.example.backend.dto.warehouse.Warehouse;
 import com.example.backend.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,5 +22,11 @@ public class WarehouseController {
     @GetMapping("view/{warehouseKey}")
     public Warehouse view(@PathVariable Integer warehouseKey) {
         return service.view(warehouseKey);
+    }
+
+    @PostMapping("add")
+    public void add(@RequestBody Warehouse warehouse) {
+        service.add(warehouse);
+        System.out.println(warehouse);
     }
 }

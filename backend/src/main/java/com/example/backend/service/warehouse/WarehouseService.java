@@ -23,4 +23,8 @@ public class WarehouseService {
     public Warehouse view(Integer warehouseKey) {
         return mapper.view(warehouseKey);
     }
+
+    public void add(Warehouse warehouse) {
+        mapper.add(warehouse);
+    }
 }
