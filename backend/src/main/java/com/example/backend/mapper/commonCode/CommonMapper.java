@@ -4,6 +4,7 @@ import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.commonCode.ItemCommonCode;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -30,4 +31,24 @@ public interface CommonMapper {
             ORDER BY item_common_code_key
             """)
     List<ItemCommonCode> getItemCommonCodeList();
+
+    @Select("""
+            SELECT item_common_code
+            FROM TB_ITEMCOMM
+            """)
+    List<String> getItemCommonCode();
+
+    @Select("""
+            SELECT item_common_name
+            FROM TB_ITEMCOMM
+            """)
+    List<String> getItemCommonName();
+
+    @Insert("""
+            INSERT INTO TB_ITEMCOMM
+            (item_common_code_key, item_common_code, item_common_name, item_common_code_note)
+            VALUES (#{itemCommonCodeKey}, #{itemCommonCode}, #{itemCommonName}, #{itemCommonCodeNote})
+            """)
+    @Options(keyProperty = "itemCommonCodeKey", useGeneratedKeys = true)
+    int addItemCommonCode(ItemCommonCode itemCommonCode);
 }

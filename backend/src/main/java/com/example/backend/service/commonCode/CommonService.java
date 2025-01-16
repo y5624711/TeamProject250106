@@ -32,21 +32,29 @@ public class CommonService {
         return cnt == 1;
     }
 
-    // 물품 코드 정보 입력됐는지 확인
-    public boolean validateItemCode(ItemCommonCode itemCommonCode) {
-        return !(
-                itemCommonCode.getItemCommonCode() == null || itemCommonCode.getItemCommonCode().trim().isEmpty() ||
-                        itemCommonCode.getItemCommonName() == null || itemCommonCode.getItemCommonName().trim().isEmpty() ||
-                        itemCommonCode.getItemCommonCodeNote() == null || itemCommonCode.getItemCommonCodeNote().trim().isEmpty());
-    }
 
-    // 물품 코드 등록
-//    public boolean addItemCommonCode(ItemCommonCode itemCommonCode) {
-//
-//    }
-
-    // 물품 코드 조회
+    // 물품 공통 코드 조회
     public List<ItemCommonCode> getItemCommonCodeList() {
         return mapper.getItemCommonCodeList();
+    }
+
+    // 물품 공통 코드 정보 입력됐는지 확인
+    public boolean validateItemCommonCode(ItemCommonCode itemCommonCode) {
+        return !(
+                itemCommonCode.getItemCommonCode() == null || itemCommonCode.getItemCommonCode().trim().isEmpty() ||
+                        itemCommonCode.getItemCommonName() == null || itemCommonCode.getItemCommonName().trim().isEmpty());
+    }
+
+    // 물품 공통 코드 중복 화인
+    public boolean duplicateItemCommonCode(String itemCommonCode) {
+        List<String> itemCommonCodeList = mapper.getItemCommonCode();
+        List<String> itemCommonNameList = mapper.getItemCommonName();
+        return itemCommonCodeList.contains(itemCommonCode) || itemCommonNameList.contains(itemCommonCode);
+    }
+
+    // 물품 공통 코드 추가
+    public boolean addItemCommonCode(ItemCommonCode itemCommonCode) {
+        int cnt = mapper.addItemCommonCode(itemCommonCode);
+        return cnt == 1;
     }
 }

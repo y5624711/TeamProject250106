@@ -16,29 +16,44 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
+    // 물품 추가
+    @PostMapping("item/add")
+    public ResponseEntity<Map<String, Object>> addItem(@RequestBody ItemCommonCode itemCommonCode) {
+        System.out.println(itemCommonCode);
+        // 물품 공통 코드 입력 검증
+        if (!service.validateItemCommonCode(itemCommonCode)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "물품 정보가 입력되지 않았습니다.")
+            ));
+        }
+
+        // 중복 체크
+        if (service.duplicateItemCommonCode(itemCommonCode.getItemCommonCode())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 등록된 물품입니다.")
+            ));
+        }
+
+        // 물품 공통 코드 등록
+        System.out.println(itemCommonCode);
+        if (service.addItemCommonCode(itemCommonCode)) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success",
+                            "text", itemCommonCode.getItemCommonCodeKey() + "번 물품이 등록되었습니다."),
+                    "data", itemCommonCode
+            ));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "물품 등록이 실패하였습니다.")
+            ));
+        }
+    }
+
     // 물품 공통 코드 리스트 조회
     @GetMapping("item/list")
     public List<ItemCommonCode> getItemCommonCode() {
         return service.getItemCommonCodeList();
     }
-
-    // 물품 공통 코드 등록하기
-//    @PostMapping("item/add")
-//    private ResponseEntity<Map<String, Object>> addItemCommonCode(@RequestBody ItemCommonCode itemCommonCode) {
-//        if (service.validateItemCode(itemCommonCode)) {
-//            if (service.addItemCommonCode(itemCommonCode)) {
-//                return ResponseEntity.ok().body(Map.of("message",
-//                        Map.of("type", "success", "text", "물품 코드가 등록 되었습니다.")));
-//            } else {
-//                return ResponseEntity.internalServerError().body(Map.of("message",
-//                        Map.of("type", "error", "text", "물품 코드 등록 중 문제가 발생하였습니다.")));
-//            }
-//        } else {
-//            return ResponseEntity.badRequest().body(
-//                    Map.of("message",
-//                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
-//        }
-//    }
 
     @GetMapping("list")
     private List<CommonCode> list() {
