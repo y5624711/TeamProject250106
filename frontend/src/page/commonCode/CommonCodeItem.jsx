@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, HStack, Stack, Table } from "@chakra-ui/react";
-import { CommonCodeSideBar } from "../../components/tool/CommonCodeSideBar.jsx";
 import axios from "axios";
 import { Switch } from "../../components/ui/switch.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx";
 
-export function CommonCodeItemList() {
+export function CommonCodeItem() {
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
 
   // 물품 공통 코드 정보를 가져오기
@@ -24,7 +24,7 @@ export function CommonCodeItemList() {
   return (
     <Box>
       <Flex>
-        <CommonCodeSideBar />
+        <SideBar />
         <Box w="100%">
           <Stack>
             <HStack w="70%" justify="space-between">

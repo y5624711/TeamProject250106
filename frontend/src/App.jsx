@@ -8,11 +8,10 @@ import { Main } from "./page/main/Main.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 import { BusinessAndEmployeeList } from "./page/businessAndDepartment/BusinessAndEmployeeList.jsx";
-import { CommonCodeItemList } from "./page/commonCode/CommonCodeItemList.jsx";
+import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
-import { CommonCodeItemAdd } from "./page/commonCode/CommonCodeItemAdd.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -34,12 +33,8 @@ const router = createBrowserRouter([
       { path: "commonCode/list", element: <CommonList /> },
       { path: "commonCode/add", element: <CommonAdd /> },
       {
-        path: "commonCode/item/list",
-        element: <CommonCodeItemList />,
-      },
-      {
-        path: "commonCode/item/add",
-        element: <CommonCodeItemAdd />,
+        path: "commonCode/item",
+        element: <CommonCodeItem />,
       },
       {
         path: "employee",

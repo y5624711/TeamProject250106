@@ -1,5 +1,6 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function SidebarItem({ children, path, ...rest }) {
   const navigate = useNavigate();
@@ -22,8 +23,10 @@ function SidebarItem({ children, path, ...rest }) {
 }
 
 export function SideBar() {
-  const navigate = useNavigate();
-
+  const [isCommonCodeOpen, setIsCommonCodeOpen] = useState(false);
+  const toggleCommonCodeMenu = () => {
+    setIsCommonCodeOpen((prev) => !prev); // 공통 코드 클릭 시 하위 메뉴 토글
+  };
   return (
     <Flex>
       {/*SideBar 영역*/}
@@ -54,6 +57,15 @@ export function SideBar() {
           <SidebarItem path="/item">품목 관리</SidebarItem>
           <SidebarItem path="/warehouse">창고 관리</SidebarItem>
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
+          <SidebarItem onClick={toggleCommonCodeMenu}>
+            {isCommonCodeOpen ? "공통 코드   ▼" : "공통 코드   ▲"}
+          </SidebarItem>
+          {isCommonCodeOpen && (
+            <>
+              <SidebarItem path="/commonCode/item">품목 코드</SidebarItem>
+              <SidebarItem path="/commonCode/system">업무 코드</SidebarItem>
+            </>
+          )}
         </Stack>
       </Box>
     </Flex>
