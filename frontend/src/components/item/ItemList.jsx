@@ -3,6 +3,7 @@ import { Box, Center, Table } from "@chakra-ui/react";
 import { Pagination } from "../tool/Pagination.jsx";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { SearchBar } from "../tool/SearchBar.jsx";
+import { Sort } from "../tool/Sort.jsx";
 
 export function ItemList({
   itemList,
@@ -12,28 +13,13 @@ export function ItemList({
   setItemKey,
 }) {
   // 정렬 헤더
-  const headers = [
+  const sortOptions = [
     { key: "itemKey", label: "#" },
     { key: "itemCommonName", label: "품목명" },
     { key: "customerName", label: "담당업체" },
     { key: "inputPrice", label: "입고가" },
     { key: "outputPrice", label: "출고가" },
   ];
-
-  // 정렬
-  const handleSort = (key) => {
-    const currentOrder = searchParams.get("order") || "asc";
-    const nextOrder =
-      searchParams.get("sort") === key && currentOrder === "asc"
-        ? "desc"
-        : "asc";
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("sort", key);
-    nextSearchParams.set("order", nextOrder);
-    nextSearchParams.set("page", "1"); // 정렬 시 첫 페이지로 이동
-    setSearchParams(nextSearchParams);
-  };
 
   return (
     <Box>
@@ -47,20 +33,12 @@ export function ItemList({
         <Table.Root>
           <Table.Header>
             <Table.Row>
-              {headers.map((header) => (
-                <Table.ColumnHeader
-                  key={header.key}
-                  onClick={() => handleSort(header.key)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {header.label}
-                  {searchParams.get("sort") === header.key
-                    ? searchParams.get("order") === "asc"
-                      ? "▲"
-                      : "▼"
-                    : ""}
-                </Table.ColumnHeader>
-              ))}
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
             </Table.Row>
           </Table.Header>
           <Table.Body>

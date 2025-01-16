@@ -35,8 +35,14 @@ export function SearchBar({ onSearchChange }) {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
     }
-    const active = searchParams.get("active") ?? "1"; // 기본값은 "1" (활성화 상태)
+    // 검색해도 active, sort, order 값 유지
+    const active = searchParams.get("active") ?? "1";
     nextSearchParam.set("active", active);
+
+    const sort = searchParams.get("sort") ?? "";
+    const order = searchParams.get("order") ?? "asc";
+    nextSearchParam.set("sort", sort);
+    nextSearchParam.set("order", order);
     return nextSearchParam;
   };
 
