@@ -19,12 +19,22 @@ function Customer() {
     parseInt(searchParams.get("page")) || 1,
   );
   const [checkedActive, setCheckedActive] = useState(
-    false || searchParams.get("active"),
+    false || searchParams.get("active") === "true",
   );
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+
+  //삭제 정보도 같이 보기
+  function toggleCheckedActive() {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    setSearchParams(nextSearchParams);
+  }
 
   useEffect(() => {
     axios
@@ -33,7 +43,7 @@ function Customer() {
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
           page: searchParams.get("page") || "1",
-          active: searchParams.get("active") || "false",
+          active: checkedActive.toString(),
         },
       })
       .then((res) => res.data)
@@ -41,7 +51,7 @@ function Customer() {
         setCount(data.count);
         setCustomerList(data.customerList);
       });
-  }, []);
+  }, [searchParams, checkedActive]);
   // console.log(customerList);
 
   useEffect(() => {
@@ -74,6 +84,7 @@ function Customer() {
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("keyword", search.keyword);
       nextSearchParam.set("page", "1");
+      nextSearchParam.set("active", false);
     } else {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
@@ -111,6 +122,7 @@ function Customer() {
             handlePageChange={handlePageChange}
             setSearchParams={setSearchParams}
             checkedActive={checkedActive}
+            toggleCheckedActive={toggleCheckedActive}
             setCheckedActive={setCheckedActive}
             search={search}
             setSearch={setSearch}

@@ -24,12 +24,13 @@ function CustomerList({
   search,
   setSearch,
   handleSearchClick,
+  toggleCheckedActive,
 }) {
   const totalPages = Math.ceil(count / 10);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   // console.log("list", customerList);
   // console.log(customerKey);
-  console.log("서치", search);
+  console.log(checkedActive);
 
   const optionList = createListCollection({
     items: [
@@ -48,7 +49,6 @@ function CustomerList({
           collection={optionList}
           defaultValue={["all"]}
           onValueChange={(oc) => {
-            console.log("data", oc);
             setSearch({ ...search, type: oc.value[0] });
           }}
           size="md"
@@ -69,7 +69,6 @@ function CustomerList({
           type="text"
           value={search.keyword}
           onChange={(e) => {
-            console.log("input", e);
             setSearch({ ...search, keyword: e.target.value });
           }}
           placeholder="검색어 입력"
@@ -78,10 +77,7 @@ function CustomerList({
       </div>
 
       {/* 체크박스 필터 */}
-      <Checkbox
-        isChecked={checkedActive}
-        onChange={() => setCheckedActive(!checkedActive)}
-      >
+      <Checkbox isChecked={checkedActive} onChange={toggleCheckedActive}>
         삭제 내역 포함해서 보기
       </Checkbox>
 
