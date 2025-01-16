@@ -3,12 +3,11 @@ import axios from "axios";
 import { Heading, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
-import { toaster } from "../ui/toaster.jsx";
 
-function CustomerView({ customerKey }) {
+function CustomerView({ customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
 
-  // //정보 불러오기
+  //정보 불러오기
   useEffect(() => {
     if (customerKey) {
       axios
@@ -28,46 +27,6 @@ function CustomerView({ customerKey }) {
       ...prevCustomer,
       [name]: value,
     }));
-  };
-
-  //수정 버튼
-  const handleEditClick = () => {
-    // console.log(customer);
-    axios
-      .put("api/customer/edit", customer)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
-
-  const handleDeleteClick = () => {
-    axios
-      .put(`api/customer/delete/${customerKey}`)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
   };
 
   return (
@@ -145,8 +104,8 @@ function CustomerView({ customerKey }) {
         </Field>
       </Stack>
       <div>
-        <Button onClick={handleDeleteClick}>삭제</Button>
-        <Button onClick={handleEditClick}>수정</Button>
+        <Button onClick={onDelete}>삭제</Button>
+        <Button onClick={() => onEdit(customer)}>수정</Button>
       </div>
     </div>
   );

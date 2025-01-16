@@ -27,6 +27,7 @@ function Customer() {
     keyword: searchParams.get("key") ?? "",
   });
 
+  //협력사 등록
   const handleSaveClick = (customerData) => {
     axios
       .post("api/customer/add", customerData)
@@ -44,6 +45,50 @@ function Customer() {
           description: data.message.text,
         });
       });
+  };
+
+  //수정 버튼
+  const handleEditClick = (customerData) => {
+    // console.log(customer);
+    axios
+      .put("api/customer/edit", customerData)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
+  const handleDeleteClick = () => {
+    axios
+      .put(`api/customer/delete/${customerKey}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
+  const handleSelectPage = (page) => {
+    setSelectedPage(page);
   };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
@@ -115,10 +160,6 @@ function Customer() {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  const handleSelectPage = (page) => {
-    setSelectedPage(page);
-  };
-
   //pagination
   const pageParam = searchParams.get("page") ?? "1";
   const page = Number(pageParam);
@@ -167,7 +208,11 @@ function Customer() {
               onCancel={() => handleSelectPage("view")}
             />
           ) : (
-            <CustomerView customerKey={customerKey} />
+            <CustomerView
+              customerKey={customerKey}
+              onDelete={handleDeleteClick}
+              onEdit={handleEditClick}
+            />
           )}
         </Stack>
       </HStack>
