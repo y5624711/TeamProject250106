@@ -21,11 +21,17 @@ public interface EmployeeMapper {
 
 
     @Select("""
-        select * from TB_EMPMST
-                 where  employee_active=true
-        LIMIT   #{offset} ,10
-""")
-    List<Employee> getAllEmployees(int offset, Boolean isActiveVisible);
+        <script>
+        SELECT * 
+        FROM TB_EMPMST
+        WHERE 1=1
+        <if test="isActiveVisible == false">
+            AND employee_active = true
+        </if>
+        LIMIT #{offset}, 10
+        </script>
+        """)
+    List<Employee> getAllEmployees(@Param("offset") int offset, @Param("isActiveVisible") boolean isActiveVisible);
 
 
     @Select("""

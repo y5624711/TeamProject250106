@@ -18,14 +18,17 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
-  const [isActiveVisible, setIsActiveVisible] = useState(false);
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState();
-
+  const [count, setCount] = useState(100);
   const [searchParams, setSearchParams] = useSearchParams();
+  // 상태 초기화: 쿼리 파라미터에서 값 가져오기
+  const [page, setPage] = useState(searchParams.get("page") || 1);
+  const [sort, setSort] = useState(searchParams.get("sort") || "asc");
+  const [isActiveVisible, setIsActiveVisible] = useState(
+    searchParams.get("active") === "true",
+  );
 
   const updateQuery = () => {
-    setSearchParams({ page: page, sort: "desc" });
+    setSearchParams({ page: page, sort: "desc", active: isActiveVisible });
   };
 
   console.log("page 변경 확인", page);
@@ -48,14 +51,20 @@ export function EmployeeList({ onSelect, updateList }) {
         console.log("직원 정보를 받는중 오류");
       });
     updateQuery();
-  }, [updateList, page]);
+  }, [updateList, page, searchParams]);
 
   // 리스트 클릭시 , 해당 키 값의 상세 정보를 보여주기 위해서
   const handleSelectedItem = (no) => {
     onSelect(no);
   };
+  // active 보여주는거 정하는 버튼
   const handleVisible = () => {
     setIsActiveVisible(!isActiveVisible);
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev); // 복사본 생성
+      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      return newParams;
+    });
   };
   //  페이지 버튼 클릭시
   const handlePageClick = (item) => {
@@ -127,7 +136,7 @@ export function EmployeeList({ onSelect, updateList }) {
       </Table.Root>
       <PaginationRoot
         // onPageChange={}
-        count={100}
+        count={count}
         pageSize={10}
         defaultPage={1}
         variant={"solid"}
