@@ -16,7 +16,7 @@ public class ItemService {
 
     final ItemMapper mapper;
 
-    // 물품 정보가 다 입력됐는지 확인
+    // 품목 정보가 다 입력됐는지 확인
     public boolean validate(Item item) {
         return !(
                 item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
@@ -28,30 +28,30 @@ public class ItemService {
                         item.getItemNote() == null || item.getItemNote().trim().isEmpty());
     }
 
-    // 물품 중복 검증
+    // 품목 중복 검증
     public boolean duplicate(String itemCommonCode) {
         List<String> itemList = mapper.getUsedItemCommonCode();
         return itemList.contains(itemCommonCode);
     }
 
-    // 물품 추가하기
+    // 품목 추가하기
     public boolean addItem(Item item) {
         int cnt = mapper.addItem(item);
 
         return cnt == 1;
     }
 
-    // 물품 구분 코드 가져오기
+    // 품목 구분 코드 가져오기
     public List<Map<String, String>> getItemCommonCode() {
         return mapper.getItemCommonCode();
     }
 
-    // 물품을 취급하는 협력업체 이름 가져오기
+    // 품목을 취급하는 협력업체 이름 가져오기
     public List<Item> getCustomerName(String itemCommonCode) {
         return mapper.getCustomerName(itemCommonCode);
     }
 
-    // 물품 리스트 가져오기
+    // 품목 리스트 가져오기
     public Map<String, Object> getItemList(Integer page, Integer active, String type, String keyword, String sort, String order) {
         // LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
@@ -59,18 +59,18 @@ public class ItemService {
                 "count", mapper.countAll(active, type, keyword));
     }
 
-    // 물품 1개 정보 가져오기
+    // 품목 1개 정보 가져오기
     public List<Item> getItemView(int itemKey) {
         return mapper.getItemView(itemKey);
     }
 
-    // 물품 삭제하기
+    // 품목 삭제하기
     public boolean deleteItem(int itemKey) {
         int cnt = mapper.deleteItem(itemKey);
         return cnt == 1;
     }
 
-    // 물품 수정하기
+    // 품목 수정하기
     public boolean editItem(int itemKey, Item item) {
         int cnt = mapper.editItem(itemKey, item);
         return cnt == 1;

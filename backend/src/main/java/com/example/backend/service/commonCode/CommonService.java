@@ -33,43 +33,42 @@ public class CommonService {
     }
 
 
-    // 물품 공통 코드 조회
+    // 품목 공통 코드 조회
     public List<ItemCommonCode> getItemCommonCodeList() {
         return mapper.getItemCommonCodeList();
     }
 
-    // 물품 공통 코드 정보 입력됐는지 확인
+    // 품목 공통 코드 정보 입력됐는지 확인
     public boolean validateItemCommonCode(ItemCommonCode itemCommonCode) {
         return !(
                 itemCommonCode.getItemCommonCode() == null || itemCommonCode.getItemCommonCode().trim().isEmpty() ||
                         itemCommonCode.getItemCommonName() == null || itemCommonCode.getItemCommonName().trim().isEmpty());
     }
 
-    // 물품 공통 코드 중복 화인
-    public boolean duplicateItemCommonCode(String itemCommonCode) {
-        List<String> itemCommonCodeList = mapper.getItemCommonCode();
-        List<String> itemCommonNameList = mapper.getItemCommonName();
-        return itemCommonCodeList.contains(itemCommonCode) || itemCommonNameList.contains(itemCommonCode);
+    // 품목 공통 코드 중복 화인
+    public boolean duplicateItemCommonCode(String itemCommonCode, String itemCommonName) {
+        int count = mapper.countByCodeOrName(itemCommonCode, itemCommonName);
+        return count > 0;
     }
 
-    // 물품 공통 코드 추가
+    // 품목 공통 코드 추가
     public boolean addItemCommonCode(ItemCommonCode itemCommonCode) {
         int cnt = mapper.addItemCommonCode(itemCommonCode);
         return cnt == 1;
     }
 
-    // 물품 공통 코드 1개 정보 가져오기
+    // 품목 공통 코드 1개 정보 가져오기
     public List<ItemCommonCode> getItemCommonCodeView(int itemCommonCodeKey) {
         return mapper.getItemCommonCodeView(itemCommonCodeKey);
     }
 
-    // 물품 공통 코드 삭제하기
+    // 품목 공통 코드 삭제하기
     public boolean deleteItemCommonCode(int itemCommonCodeKey) {
         int cnt = mapper.deleteItemCommonCode(itemCommonCodeKey);
         return cnt == 1;
     }
 
-    // 물품 공통 코드 수정하기
+    // 품목 공통 코드 수정하기
     public boolean editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode) {
         int cnt = mapper.editItemCommonCode(itemCommonCodeKey, itemCommonCode);
         return cnt == 1;

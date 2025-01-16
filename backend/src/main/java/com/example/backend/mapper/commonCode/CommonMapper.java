@@ -30,16 +30,18 @@ public interface CommonMapper {
     List<ItemCommonCode> getItemCommonCodeList();
 
     @Select("""
-            SELECT item_common_code
+            SELECT COUNT(*)
             FROM TB_ITEMCOMM
+            WHERE item_common_code = #{itemCommonCode}
+               OR item_common_name = #{itemCommonName}
             """)
-    List<String> getItemCommonCode();
+    int countByCodeOrName(String itemCommonCode, String itemCommonName);
 
-    @Select("""
-            SELECT item_common_name
-            FROM TB_ITEMCOMM
-            """)
-    List<String> getItemCommonName();
+//    @Select("""
+//            SELECT item_common_name
+//            FROM TB_ITEMCOMM
+//            """)
+//    List<String> getItemCommonName();
 
     @Insert("""
             INSERT INTO TB_ITEMCOMM

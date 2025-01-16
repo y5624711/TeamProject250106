@@ -16,77 +16,77 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
-    // 물품 공통 코드 수정하기
+    // 품목 공통 코드 수정하기
     @PutMapping("item/edit/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> editItemCommonCode(@PathVariable int itemCommonCodeKey, @RequestBody ItemCommonCode itemCommonCode) {
         if (service.editItemCommonCode(itemCommonCodeKey, itemCommonCode)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",
-                            "text", "물품 공통 코드 정보를 수정하였습니다.")));
+                            "text", "품목 공통 코드 정보를 수정하였습니다.")));
         } else {
             return ResponseEntity.badRequest()
                     .body(Map.of("message",
                             Map.of("type", "error",
-                                    "text", "물품 공통 코드 수정 중 문제가 발생하였습니다..")));
+                                    "text", "품목 공통 코드 수정 중 문제가 발생하였습니다..")));
         }
     }
 
-    // 물품 공통 코드 삭제하기
+    // 품목 공통 코드 삭제하기
     @PutMapping("item/delete/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> deleteItemCommonCode(
             @PathVariable int itemCommonCodeKey) {
         if (service.deleteItemCommonCode(itemCommonCodeKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{itemCommonCodeKey}번 물품 공통 코드가 삭제되었습니다.")));
+                            "text", STR."\{itemCommonCodeKey}번 품목 공통 코드가 삭제되었습니다.")));
 
         } else {
             return ResponseEntity.internalServerError()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "물품 공통 코드 삭제 중 문제가 발생하였습니다.")));
+                            "text", "품목 공통 코드 삭제 중 문제가 발생하였습니다.")));
         }
     }
 
-    // 물품 공통 코드 1개의 정보 가져오기
+    // 품목 공통 코드 1개의 정보 가져오기
     @GetMapping("item/view/{itemCommonCodeKey}")
     public List<ItemCommonCode> getItemCommonCodeView(@PathVariable int itemCommonCodeKey) {
         return service.getItemCommonCodeView(itemCommonCodeKey);
     }
 
-    // 물품 공통 코드 등록
+    // 품목 공통 코드 등록
     @PostMapping("item/add")
     public ResponseEntity<Map<String, Object>> addItem(@RequestBody ItemCommonCode itemCommonCode) {
         System.out.println(itemCommonCode);
-        // 물품 공통 코드 입력 검증
+        // 품목 공통 코드 입력 검증
         if (!service.validateItemCommonCode(itemCommonCode)) {
             return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "물품 공통 코드 정보가 입력되지 않았습니다.")
+                    "message", Map.of("type", "error", "text", "품목 공통 코드 정보가 입력되지 않았습니다.")
             ));
         }
 
         // 중복 체크
-        if (service.duplicateItemCommonCode(itemCommonCode.getItemCommonCode())) {
+        if (service.duplicateItemCommonCode(itemCommonCode.getItemCommonCode(), itemCommonCode.getItemCommonName())) {
             return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 등록된 물품 공통 코드입니다.")
+                    "message", Map.of("type", "error", "text", "이미 등록된 품목 공통 코드입니다.")
             ));
         }
 
-        // 물품 공통 코드 등록
+        // 품목 공통 코드 등록
         System.out.println(itemCommonCode);
         if (service.addItemCommonCode(itemCommonCode)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
-                            "text", itemCommonCode.getItemCommonCodeKey() + "번 물품 공통 코드가 등록되었습니다."),
+                            "text", itemCommonCode.getItemCommonCodeKey() + "번 품목 공통 코드가 등록되었습니다."),
                     "data", itemCommonCode
             ));
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "물품 공통 코드 등록이 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "품목 공통 코드 등록이 실패하였습니다.")
             ));
         }
     }
 
-    // 물품 공통 코드 리스트 조회
+    // 품목 공통 코드 리스트 조회
     @GetMapping("item/list")
     public List<ItemCommonCode> getItemCommonCode() {
         return service.getItemCommonCodeList();
