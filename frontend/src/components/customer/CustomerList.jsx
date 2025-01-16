@@ -2,15 +2,19 @@ import React from "react";
 import {
   Center,
   createListCollection,
+  HStack,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Stack,
   Table,
 } from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Button } from "../ui/button.jsx";
+import { MdOutlineNumbers } from "react-icons/md";
+import { LuChevronsUpDown } from "react-icons/lu";
 
 function CustomerList({
   customerList,
@@ -85,11 +89,48 @@ function CustomerList({
       <Table.Root interactive>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>#</Table.ColumnHeader>
-            <Table.ColumnHeader>업체명</Table.ColumnHeader>
-            <Table.ColumnHeader>취급 물품</Table.ColumnHeader>
-            <Table.ColumnHeader>대표자</Table.ColumnHeader>
-            <Table.ColumnHeader>계약여부</Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack align={"flex-start"}>
+                <Stack>
+                  <MdOutlineNumbers />
+                </Stack>
+                <Stack>
+                  <LuChevronsUpDown />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack align={"flex-start"}>
+                <Stack>업체명</Stack>
+                <Stack>
+                  <LuChevronsUpDown />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack align={"flex-start"}>
+                <Stack>취급 물품</Stack>
+                <Stack>
+                  <LuChevronsUpDown />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack align={"flex-start"}>
+                <Stack>대표</Stack>
+                <Stack>
+                  <LuChevronsUpDown />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            {/*<Table.ColumnHeader>*/}
+            {/*  <HStack align={"flex-start"}>*/}
+            {/*    <Stack>계약 여부</Stack>*/}
+            {/*    <Stack>*/}
+            {/*      <LuChevronsUpDown />*/}
+            {/*    </Stack>*/}
+            {/*  </HStack>*/}
+            {/*</Table.ColumnHeader>*/}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -102,13 +143,15 @@ function CustomerList({
               <Table.Cell>{customer.customerName}</Table.Cell>
               <Table.Cell>{customer.itemName}</Table.Cell>
               <Table.Cell>{customer.customerRep}</Table.Cell>
-              <Table.Cell>
-                {customer.customerActive ? "계약" : "계약 종료"}
-              </Table.Cell>
+              {/*<Table.Cell>*/}
+              {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
+              {/*</Table.Cell>*/}
             </Table.Row>
           ))}
         </Table.Body>
       </Table.Root>
+
+      {/*pagination*/}
       <Center>
         {pages.map((page) => (
           <Button key={page} onClick={() => handlePageChange({ page })}>

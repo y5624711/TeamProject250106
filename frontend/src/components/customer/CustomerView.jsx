@@ -94,7 +94,7 @@ function CustomerView({ customerKey }) {
             onChange={handleInputChange}
           />
         </Field>
-        <Field label={"품목 코드(차후 셀렉트)"}>
+        <Field label={"품목 코드"}>
           <Input readOnly name="itemCode" value={customer.itemCode} />
         </Field>
         <Field label={"사업자 번호"}>
