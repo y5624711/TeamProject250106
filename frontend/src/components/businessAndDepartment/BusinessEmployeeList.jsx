@@ -1,9 +1,15 @@
 import {
   Box,
   Center,
+  createListCollection,
   Flex,
   HStack,
   Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   Spinner,
   Table,
 } from "@chakra-ui/react";
@@ -28,6 +34,12 @@ export function BusinessEmployeeList() {
   const [search, setSearch] = useState({
     type: "number",
     keyword: "",
+  });
+  const optionList = createListCollection({
+    items: [
+      { label: "사원번호", value: "number" },
+      { label: "이름", value: "name" },
+    ],
   });
 
   //페이지 번호얻기
@@ -115,16 +127,27 @@ export function BusinessEmployeeList() {
           </Radio>
         </Flex>
       </RadioGroup>
-      <HStack>
-        <Box>
-          <select
-            value={search.type}
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
-          >
-            <option value={"number"}>사원번호</option>
-            <option value={"name"}>이름</option>
-          </select>
-        </Box>
+      <Flex>
+        <SelectRoot
+          collection={optionList}
+          value={[search.type]}
+          onValueChange={(sel) => {
+            setSearch({ ...search, type: sel.value[0] });
+          }}
+          size="sm"
+          width="320px"
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {optionList.items.map((option) => (
+              <SelectItem item={option} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
         <Input
           value={search.keyword}
           onChange={(e) =>
@@ -132,7 +155,7 @@ export function BusinessEmployeeList() {
           }
         />
         <Button onClick={handleSearchClick}>검색</Button>
-      </HStack>
+      </Flex>
       <Flex></Flex>
       <Table.Root>
         <Table.Header>
