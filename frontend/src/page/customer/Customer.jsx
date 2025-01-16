@@ -6,14 +6,12 @@ import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 import CustomerView from "../../components/customer/CustomerView.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { useSearchParams } from "react-router-dom";
-import { toaster } from "../../components/ui/toaster.jsx"; // import CustomerList from "../../components/customer/CustomerList.jsx";
-// import CustomerList from "../../components/customer/CustomerList.jsx";
-// import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
   const [selectedPage, setSelectedPage] = useState("view");
-  const [customerKey, setCustomerKey] = useState(2);
+  const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
@@ -27,12 +25,55 @@ function Customer() {
     keyword: searchParams.get("key") ?? "",
   });
 
+  // 고객 목록 불러오기 함수
+  const fetchCustomerList = () => {
+    axios
+      .get(`/api/customer/list`)
+      .then((res) => {
+        const { count, customerList } = res.data;
+        setCustomerList(customerList);
+        setCount(count);
+
+        // URL에 customerKey가 없으면 첫 번째 고객으로 설정
+        if (!searchParams.get("customerKey") && customerList.length > 0) {
+          const defaultKey = customerList[0].customerKey;
+          setCustomerKey(defaultKey);
+          const nextSearchParams = new URLSearchParams(searchParams);
+          nextSearchParams.set("customerKey", defaultKey);
+          setSearchParams(nextSearchParams);
+        }
+      })
+      .catch((error) => {
+        console.error("고객 목록을 불러오는 중 오류가 발생했습니다.", error);
+      });
+  };
+  console.log("p", customerList);
+  console.log("key", customerKey);
+
+  // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
+  useEffect(() => {
+    const keyFromURL = searchParams.get("customerKey");
+    if (keyFromURL) {
+      setCustomerKey(keyFromURL);
+    }
+    fetchCustomerList();
+  }, [searchParams]);
+
+  // customerKey 변경 시 URL 쿼리 파라미터 업데이트
+  const handleCustomerKeyChange = (key) => {
+    setCustomerKey(key);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("customerKey", key);
+    setSearchParams(nextSearchParams);
+  };
+
   //협력사 등록
   const handleSaveClick = (customerData) => {
     axios
       .post("api/customer/add", customerData)
       .then((res) => res.data)
       .then((data) => {
+        fetchCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
@@ -54,6 +95,7 @@ function Customer() {
       .put("api/customer/edit", customerData)
       .then((res) => res.data)
       .then((data) => {
+        fetchCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
@@ -73,6 +115,7 @@ function Customer() {
       .put(`api/customer/delete/${customerKey}`)
       .then((res) => res.data)
       .then((data) => {
+        fetchCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
@@ -183,7 +226,7 @@ function Customer() {
           <CustomerList
             customerList={customerList}
             customerKey={customerKey}
-            setCustomerKey={setCustomerKey}
+            setCustomerKey={handleCustomerKeyChange}
             currentPage={currentPage}
             count={count}
             handlePageChange={handlePageChange}

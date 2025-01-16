@@ -35,7 +35,7 @@ function CustomerList({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   // console.log("list", customerList);
   // console.log(customerKey);
-  console.log(checkedActive);
+  // console.log(checkedActive);
 
   const optionList = createListCollection({
     items: [
@@ -45,6 +45,8 @@ function CustomerList({
       { label: "대표자", value: "customerRep" },
     ],
   });
+
+  // console.log("c", customerList);
 
   return (
     <div>
