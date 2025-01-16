@@ -6,14 +6,16 @@ import { SideBar } from "../../components/tool/SideBar.jsx";
 import { ItemCommonCodeList } from "../../components/commonCode/ItemCommonCodeList.jsx";
 import { ItemCommonCodeAdd } from "../../components/commonCode/ItemCommonCodeAdd.jsx";
 import { ItemCommonCodeView } from "../../components/commonCode/ItemCommonCodeView.jsx";
+import { useSearchParams } from "react-router-dom";
 
 export function ItemCommonCode() {
   const [selectedPage, setSelectedPage] = useState("view");
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
   const [itemCommonCodeKey, setItemCommonCodeKey] = useState(1);
   const [change, setChange] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams("");
 
-  // 물품 공통 코드 정보를 가져오기
+  // 물품 공통 코드 목록 가져오기
   useEffect(() => {
     axios
       .get(`/api/commonCode/item/list`)
@@ -22,15 +24,15 @@ export function ItemCommonCode() {
         setItemCommonCodeKey(res.data[0].itemCommonCodeKey);
       })
       .catch((error) => {
-        console.error("물품 구분 코드 정보 요청 중 오류 발생: ", error);
+        console.error("물품 공통 코드 목록 요청 중 오류 발생: ", error);
       });
-  }, [change]);
+  }, [searchParams, change]);
 
   const handleSelectPage = (page) => {
     setSelectedPage(page);
   };
 
-  const handleAddItem = (newItem) => {
+  const handleAddItemCommonCode = (newItem) => {
     setItemCommonCodeList((prevItems) => [newItem, ...prevItems]);
     handleSelectPage("view");
   };
@@ -44,8 +46,8 @@ export function ItemCommonCode() {
           <ItemCommonCodeList
             // count={count}
             itemCommonCodeList={itemCommonCodeList}
-            // searchParams={searchParams}
-            // setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
             setItemCommonCodeKey={setItemCommonCodeKey}
           />
         </Stack>
@@ -59,15 +61,15 @@ export function ItemCommonCode() {
                 handleSelectPage("view");
                 setItemCommonCodeKey(itemCommonCodeKey);
               }}
-              onAdd={handleAddItem}
+              onAdd={handleAddItemCommonCode}
               setItemCommonCodeKey={setItemCommonCodeKey}
               setChange={setChange}
             />
           ) : (
             <ItemCommonCodeView
               itemCommonCodeKey={itemCommonCodeKey}
-              itemCommonCodeList={itemCommonCodeList}
-              // setSearchParams={setSearchParams}
+              setItemCommonCodeList={setItemCommonCodeList}
+              setSearchParams={setSearchParams}
               setChange={setChange}
             />
           )}

@@ -64,8 +64,14 @@ public class CommonService {
     }
 
     // 물품 공통 코드 삭제하기
-    public boolean deleteItemCommonCodeKey(int itemCommonCodeKey) {
-        int cnt = mapper.deleteItemCommonCodeKey(itemCommonCodeKey);
+    public boolean deleteItemCommonCode(int itemCommonCodeKey) {
+        int cnt = mapper.deleteItemCommonCode(itemCommonCodeKey);
+        return cnt == 1;
+    }
+
+    // 물품 공통 코드 수정하기
+    public boolean editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode) {
+        int cnt = mapper.editItemCommonCode(itemCommonCodeKey, itemCommonCode);
         return cnt == 1;
     }
 }

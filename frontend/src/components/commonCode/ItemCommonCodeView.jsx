@@ -8,6 +8,7 @@ import { toaster } from "../ui/toaster.jsx";
 export function ItemCommonCodeView({
   itemCommonCodeKey,
   setItemCommonCodeList,
+  setSearchParams,
   setChange,
 }) {
   const [itemCommonCode, setItemCommonCode] = useState([]);
@@ -46,6 +47,52 @@ export function ItemCommonCodeView({
       ...prevItem,
       [name]: value,
     }));
+  };
+
+  // 수정 버튼 클릭 시
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  // 수정된 물품 공통 코드 데이터 서버로 전송
+  const handleSubmitClick = () => {
+    axios
+      .put(
+        `/api/commonCode/item/edit/${itemCommonCodeKey}`,
+        editedItemCommonCode,
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        setIsEditing(false);
+        // 수정된 항목을 부모 컴포넌트에 전달하여 리스트 상태를 갱신
+        setItemCommonCodeList((prevItems) =>
+          prevItems.map((itemCommonCode) =>
+            itemCommonCode.itemCommonCodeKey === itemCommonCodeKey
+              ? { ...itemCommonCode, ...editedItemCommonCode }
+              : itemCommonCode,
+          ),
+        );
+        // 수정 시에 정렬된 리스트를 불러오기 위해 변경 상태 전달
+        setChange((prev) => !prev);
+
+        setSearchParams((prev) => new URLSearchParams(prev));
+        // 물품 공통 코드 수정 후, itemCommonCode를 직접 업데이트하여 view에 바로 반영되도록 함
+        setItemCommonCode((prevList) =>
+          prevList.map((itemCommonCode) =>
+            itemCommonCode.itemCommonCodeKey === itemCommonCodeKey
+              ? { ...itemCommonCode, ...editedItemCommonCode }
+              : itemCommonCode,
+          ),
+        );
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
   };
 
   // 물품 공통 코드 삭제 시 사용여부 false

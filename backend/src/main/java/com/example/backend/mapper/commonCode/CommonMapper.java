@@ -61,5 +61,14 @@ public interface CommonMapper {
             SET item_common_code_active = 0
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
-    int deleteItemCommonCodeKey(int itemCommonCodeKey);
+    int deleteItemCommonCode(int itemCommonCodeKey);
+
+    @Update("""
+            UPDATE TB_ITEMCOMM
+            SET item_common_code = #{itemCommonCode.itemCommonCode},
+            item_common_name = #{itemCommonCode.itemCommonName},
+            item_common_code_note = #{itemCommonCode.itemCommonCodeNote}
+            WHERE item_common_code_key = #{itemCommonCodeKey}
+            """)
+    int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
 }
