@@ -24,32 +24,33 @@ function Customer() {
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+  // const [currentSort, setCurrentSort] = useState("index");
+  // const [currentOrder, setCurrentOrder] = useState("ASC");
 
   // 고객 목록 불러오기 함수
-  const fetchCustomerList = () => {
+  // 초기 데이터 불러오기
+  const fetchInitialCustomerList = () => {
     axios
-      .get(`/api/customer/list`)
+      .get(`/api/customer/list`, {
+        params: {
+          page: "1",
+          type: "all",
+          keyword: "",
+          active: "true",
+        },
+      })
       .then((res) => {
         const { count, customerList } = res.data;
         setCustomerList(customerList);
         setCount(count);
-
-        // 첫 페이지 첫 번째 고객을 기본 customerKey로 설정
-        if (currentPage === 1 && customerList.length > 0) {
+        console.log("initial");
+        // 초기 customerKey 설정
+        if (customerList.length > 0) {
           setCustomerKey(customerList[0].customerKey);
         }
-
-        // // URL에 customerKey가 없으면 첫 번째 고객으로 설정
-        // if (!searchParams.get("customerKey") && customerList.length > 0) {
-        //   const defaultKey = customerList[0].customerKey;
-        //   setCustomerKey(defaultKey);
-        //   const nextSearchParams = new URLSearchParams(searchParams);
-        //   nextSearchParams.set("customerKey", defaultKey);
-        //   setSearchParams(nextSearchParams);
-        // }
       })
       .catch((error) => {
-        console.error("고객 목록을 불러오는 중 오류가 발생했습니다.", error);
+        console.error("초기 고객 목록 불러오기 오류:", error);
       });
   };
   // console.log("p", customerList);
@@ -61,7 +62,7 @@ function Customer() {
     if (keyFromURL) {
       setCustomerKey(keyFromURL);
     }
-    fetchCustomerList();
+    fetchUpdatedCustomerList();
   }, [searchParams]);
 
   // customerKey 변경 시 URL 쿼리 파라미터 업데이트
@@ -84,7 +85,7 @@ function Customer() {
       .post("api/customer/add", customerData)
       .then((res) => res.data)
       .then((data) => {
-        fetchCustomerList();
+        fetchUpdatedCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
@@ -106,7 +107,7 @@ function Customer() {
       .put("api/customer/edit", customerData)
       .then((res) => res.data)
       .then((data) => {
-        fetchCustomerList();
+        fetchUpdatedCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
@@ -126,11 +127,12 @@ function Customer() {
       .put(`api/customer/delete/${customerKey}`)
       .then((res) => res.data)
       .then((data) => {
-        fetchCustomerList();
+        fetchUpdatedCustomerList();
         toaster.create({
           type: data.message.type,
           description: data.message.text,
         });
+        console.log("now", data);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -144,8 +146,6 @@ function Customer() {
   const handleSelectPage = (page) => {
     setSelectedPage(page);
   };
-
-  console.log(selectedPage);
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
@@ -181,21 +181,41 @@ function Customer() {
     setSearchParams(nextSearchParams);
   };
 
-  useEffect(() => {
+  // 업데이트 데이터 불러오기
+  const fetchUpdatedCustomerList = () => {
     axios
-      .get(`api/customer/list`, {
+      .get(`/api/customer/list`, {
         params: {
+          page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
-          page: searchParams.get("page") || "1",
           active: checkedActive.toString(),
         },
       })
-      .then((res) => res.data)
-      .then((data) => {
-        setCount(data.count);
-        setCustomerList(data.customerList);
+      .then((res) => {
+        const { count, customerList } = res.data;
+        setCustomerList(customerList);
+        setCount(count);
+        // update시 customerKey 설정
+        if (customerList.length > 0) {
+          setCustomerKey(customerList[0].customerKey);
+        }
+      })
+      .catch((error) => {
+        console.error("업데이트 고객 목록 불러오기 오류:", error);
       });
+  };
+
+  // 상태가 변경될 때만 업데이트된 데이터 불러오기
+  useEffect(() => {
+    if (
+      searchParams.get("page") ||
+      searchParams.get("type") ||
+      searchParams.get("keyword")
+    ) {
+      fetchUpdatedCustomerList();
+      console.log("second");
+    }
   }, [searchParams, checkedActive]);
 
   useEffect(() => {
@@ -226,6 +246,11 @@ function Customer() {
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
   }
+
+  useEffect(() => {
+    const pageParam = Number(searchParams.get("page") || "1");
+    setCurrentPage(page);
+  }, [searchParams]);
 
   return (
     <Box>
