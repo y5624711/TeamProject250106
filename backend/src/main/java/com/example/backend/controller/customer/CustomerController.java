@@ -29,6 +29,11 @@ public class CustomerController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        System.out.println(active);
+        System.out.println(page);
+        System.out.println(keyword);
+        System.out.println(type);
+
         return service.getCustomerList(active, page, type, keyword);
     }
 

@@ -42,7 +42,7 @@ function Customer() {
         setCustomerList(data.customerList);
       });
   }, []);
-  console.log(customerList);
+  // console.log(customerList);
 
   useEffect(() => {
     const nextSearch = { ...search };

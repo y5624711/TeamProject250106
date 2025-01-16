@@ -1,5 +1,14 @@
 import React from "react";
-import { createListCollection, Table } from "@chakra-ui/react";
+import {
+  Center,
+  createListCollection,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Table,
+} from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Button } from "../ui/button.jsx";
 
@@ -20,13 +29,14 @@ function CustomerList({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   // console.log("list", customerList);
   // console.log(customerKey);
+  console.log("서치", search);
 
   const optionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
       { label: "업체명", value: "customerName" },
       { label: "취급 물품", value: "itemName" },
-      { label: "업체 대표", value: "customerRep" },
+      { label: "대표자", value: "customerRep" },
     ],
   });
 
@@ -34,10 +44,34 @@ function CustomerList({
     <div>
       {/* 검색창 */}
       <div>
+        <SelectRoot
+          collection={optionList}
+          defaultValue={["all"]}
+          onValueChange={(oc) => {
+            console.log("data", oc);
+            setSearch({ ...search, type: oc.value[0] });
+          }}
+          size="md"
+          width="130px"
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {optionList.items.map((option) => (
+              <SelectItem item={option} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
         <input
           type="text"
           value={search.keyword}
-          onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+          onChange={(e) => {
+            console.log("input", e);
+            setSearch({ ...search, keyword: e.target.value });
+          }}
           placeholder="검색어 입력"
         />
         <Button onClick={handleSearchClick}>검색</Button>
@@ -79,6 +113,13 @@ function CustomerList({
           ))}
         </Table.Body>
       </Table.Root>
+      <Center>
+        {pages.map((page) => (
+          <Button key={page} onClick={() => handlePageChange({ page })}>
+            {page}
+          </Button>
+        ))}
+      </Center>
       {/*pagination*/}
       {/*<Center>*/}
       {/*  <PaginationRoot count={10} pageSize={2} defaultPage={1} variant="solid">*/}

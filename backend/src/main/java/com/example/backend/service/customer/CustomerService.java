@@ -3,7 +3,6 @@ package com.example.backend.service.customer;
 import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import com.example.backend.mapper.customer.CustomerMapper;
-import com.example.backend.mapper.item.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomerService {
     final CustomerMapper mapper;
-    final ItemMapper itemMapper;
 
     //협력업체 등록
     public void addCustomer(Customer customer) {

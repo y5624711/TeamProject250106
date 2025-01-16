@@ -86,7 +86,9 @@ export function ItemView({ itemKey }) {
 
   return (
     <Box>
-      <Text>물품 조회 > 물품 상세 {itemKey}</Text>
+      <Text>
+        물품 조회 {">"} 물품 상세 {itemKey}
+      </Text>
       <HStack>
         {itemList.map((item) => (
           <Box key={item.itemKey}>

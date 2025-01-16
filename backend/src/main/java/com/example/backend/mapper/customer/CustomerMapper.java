@@ -26,17 +26,17 @@ public interface CustomerMapper {
 
     @Select("""
             <script>
-            SELECT customer_key, customer_name, customer_code, item_code, item_common_name itemName, customer_rep, customer_active 
+            SELECT customer_key, customer_name, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_active 
             FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
             WHERE customer_active!=#{active}
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
-                    <trim prefix="OR">
+                    <trim prefixOverrides="OR">
                         <if test="type=='all' or type=='customerName'">
                             customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='itemName'">
-                            OR itemName LIKE CONCAT('%', #{keyword}, '%')
+                            OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='customerRep'">
                             OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
@@ -87,16 +87,16 @@ public interface CustomerMapper {
     @Select("""
                     <script>
                     SELECT COUNT(*)
-                    FROM TB_CUSTMST 
+                    FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
                     WHERE customer_active!=#{active}
                     <if test="keyword != null and keyword.trim()!=''">
                         AND (
-                            <trim prefix="OR">
+                            <trim prefixOverrides="OR">
                                 <if test="type=='all' or type=='customerName'">
                                     customer_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
                                 <if test="type=='all' or type=='itemName'">
-                                    OR itemName LIKE CONCAT('%', #{keyword}, '%')
+                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
                                 <if test="type=='all' or type=='customerRep'">
                                     OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
