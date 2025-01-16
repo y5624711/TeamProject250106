@@ -1,30 +1,11 @@
-import {
-  Box,
-  Center,
-  createListCollection,
-  Flex,
-  HStack,
-  Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-  Spinner,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
+import { Box, Center, Spinner, Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../ui/pagination.jsx";
 import { useSearchParams } from "react-router-dom";
-import { Button } from "../ui/button.jsx";
 import { Checkbox } from "../ui/checkbox.jsx";
+import { SearchAndFilter } from "./SearchAndFilter.jsx";
+import { BusinessListTable } from "./BusinessListTable.jsx";
+import { BusinessPageNation } from "./BusinessPageNation.jsx";
 
 export function BusinessEmployeeList() {
   const [employee, setEmployee] = useState([]);
@@ -33,14 +14,6 @@ export function BusinessEmployeeList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState({ column: "", order: "desc" });
   const [search, setSearch] = useState({ type: "number", keyword: "" });
-
-  /*검색타입*/
-  const optionList = createListCollection({
-    items: [
-      { label: "사원번호", value: "number" },
-      { label: "이름", value: "name" },
-    ],
-  });
 
   //페이지 번호얻기
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
@@ -98,25 +71,6 @@ export function BusinessEmployeeList() {
     setSearchParams(nextSearchParam);
   }
 
-  function handleSearchClick() {
-    if (search.keyword.trim().length > 0) {
-      // 검색
-      const nextSearchParam = new URLSearchParams(searchParams);
-      nextSearchParam.set("st", search.type);
-      nextSearchParam.set("sk", search.keyword);
-      nextSearchParam.set("page", 1);
-
-      setSearchParams(nextSearchParam);
-    } else {
-      // 검색 안함
-      const nextSearchParam = new URLSearchParams(searchParams);
-      nextSearchParam.delete("st");
-      nextSearchParam.delete("sk");
-
-      setSearchParams(nextSearchParam);
-    }
-  }
-
   function handleSort(column) {
     console.log(column);
     const order =
@@ -148,96 +102,30 @@ export function BusinessEmployeeList() {
           >
             근무여부
           </Checkbox>
-          <Flex>
-            {/*셀렉트 &&검색창*/}
-            <SelectRoot
-              collection={optionList}
-              value={[search.type]}
-              onValueChange={(sel) => {
-                setSearch({ ...search, type: sel.value[0] });
-              }}
-              size="sm"
-              width="200px"
-            >
-              <SelectTrigger>
-                <SelectValueText />
-              </SelectTrigger>
-              <SelectContent>
-                {optionList.items.map((option) => (
-                  <SelectItem item={option} key={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
 
-            {/*검색창*/}
-            <Input
-              value={search.keyword}
-              onChange={(e) =>
-                setSearch({ ...search, keyword: e.target.value.trim() })
-              }
-            />
-            <Button onClick={handleSearchClick}>검색</Button>
-          </Flex>
+          {/*검색창&필터*/}
+          <SearchAndFilter
+            search={search}
+            setSearch={setSearch}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </Stack>
       </Center>
 
       {/*리스트*/}
-      <Table.Root variant={"outline"}>
-        <Table.Header>
-          <Table.Row whiteSpace={"nowrap"}>
-            <Table.ColumnHeader onClick={() => handleSort("employee_key")}>
-              ID
-              {sort.column === "employee_key" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("employee_no")}>
-              사원번호
-              {sort.column === "employee_no" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("employee_name")}>
-              이름
-              {sort.column === "employee_name" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("employee_note")}>
-              비고
-              {sort.column === "employee_note" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {employee.map((list, index) => (
-            <Table.Row key={list.employeeKey || index}>
-              <Table.Cell>{list.employeeKey}</Table.Cell>
-              <Table.Cell>{list.employeeNo}</Table.Cell>
-              <Table.Cell>{list.employeeName}</Table.Cell>
-              <Table.Cell>{list.employeeNote}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+      <BusinessListTable
+        employee={employee}
+        sort={sort}
+        handleSort={handleSort}
+      />
 
       {/*페이지네이션*/}
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChange}
-          count={count}
-          pageSize={10}
-          page={page}
-          variant="solid"
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
+      <BusinessPageNation
+        count={count}
+        page={page}
+        handlePageChange={handlePageChange}
+      />
     </Box>
   );
 }
