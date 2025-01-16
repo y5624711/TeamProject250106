@@ -28,7 +28,13 @@ public interface CustomerMapper {
             <script>
             SELECT customer_key, customer_name, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_active 
             FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
-            WHERE customer_active!=#{active}
+            WHERE 
+                <if test="active == false">
+                    customer_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
@@ -85,10 +91,16 @@ public interface CustomerMapper {
     List<CommonCode> itemCodeList();
 
     @Select("""
-                    <script>
-                    SELECT COUNT(*)
-                    FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
-                    WHERE customer_active!=#{active}
+            <script>
+                SELECT COUNT(*)
+                FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+                WHERE 
+                <if test="active == false">
+                    customer_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
                     <if test="keyword != null and keyword.trim()!=''">
                         AND (
                             <trim prefixOverrides="OR">
@@ -103,8 +115,8 @@ public interface CustomerMapper {
                                 </if>                
                             </trim>
                         )    
-                    </if>
-                    </script>
+                </if>
+            </script>
             """)
     Integer countCustomerList(Boolean active, String type, String keyword);
 }
