@@ -24,10 +24,14 @@ public class BusinessController {
     private Map<String, Object> list(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "st", defaultValue = "number") String searchType,
-            @RequestParam(value = "sk", defaultValue = "") String searchKeyword) {
+            @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
+            @RequestParam(value = "active", defaultValue = "false") Boolean active) {
 
-
-        return service.businessEmpList(page, searchType, searchKeyword);
+        System.out.println("active = " + active);
+        System.out.println("page = " + page);
+        System.out.println("searchType = " + searchType);
+        System.out.println("searchKeyword = " + searchKeyword);
+        return service.businessEmpList(page, searchType, searchKeyword, active);
     }
 
     @PutMapping("update")

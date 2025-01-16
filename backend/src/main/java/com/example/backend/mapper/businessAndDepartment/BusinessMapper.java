@@ -23,19 +23,25 @@ public interface BusinessMapper {
             SELECT *
             FROM TB_EMPMST
             WHERE
-                <trim prefixOverrides="OR">
+                <if test="active == false">
+                    employee_active=TRUE
+                </if>
+                <if test="active == true">
+                    employee_active=false
+                </if>
+                AND(<trim prefixOverrides="OR">
                     <if test="searchType == 'number'"  >
                         employee_no LIKE CONCAT('%',#{keyword},'%')
                     </if>
                     <if test="searchType == 'name'"  >
                         OR employee_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                </trim>
+                </trim>)
             ORDER BY employee_key DESC
             LIMIT #{offset},10
             </script>
             """)
-    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword);
+    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword, Boolean active);
 
     @Update("""
             UPDATE TB_BIZMST
@@ -54,15 +60,21 @@ public interface BusinessMapper {
             SELECT COUNT(*)
             FROM TB_EMPMST
             WHERE
-                <trim prefixOverrides="OR">
-                <if test="searchType == 'number'"  >
+                <if test="active == false">
+                    employee_active=TRUE
+                </if>
+                <if test="active == true">
+                    employee_active=false
+                </if>
+                AND(<trim prefixOverrides="OR">
+                    <if test="searchType == 'number'"  >
                         employee_no LIKE CONCAT('%',#{keyword},'%')
                     </if>
                     <if test="searchType == 'name'"  >
                         OR employee_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                </trim>
+                </trim>)
             </script>
             """)
-    Integer empCountAll(String searchType, String keyword);
+    Integer empCountAll(String searchType, String keyword, Boolean active);
 }

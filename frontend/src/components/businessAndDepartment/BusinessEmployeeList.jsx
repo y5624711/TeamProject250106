@@ -23,18 +23,22 @@ import {
 } from "../ui/pagination.jsx";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
-import { Radio, RadioGroup } from "../ui/radio.jsx";
+import { Checkbox } from "../ui/checkbox.jsx";
 
 export function BusinessEmployeeList() {
   const [employee, setEmployee] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [active, setActive] = useState(
+    () => searchParams.get("active") === "true",
+  );
   const [search, setSearch] = useState({
     type: "number",
     keyword: "",
   });
+
+  /*검색타입*/
   const optionList = createListCollection({
     items: [
       { label: "사원번호", value: "number" },
@@ -115,18 +119,20 @@ export function BusinessEmployeeList() {
     return <Spinner />;
   }
 
+  const toggleCheckActive = () => {
+    const nextValue = !active;
+    setActive(nextValue);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    setSearchParams(nextSearchParams);
+  };
+
   return (
     <Box>
-      <RadioGroup defaultValue="1" pt={2} pb={2}>
-        <Flex gap={5}>
-          <Radio value="1" onChange={() => setActive(true)}>
-            근무 사원
-          </Radio>
-          <Radio value="2" onChange={() => setActive(false)}>
-            퇴사자
-          </Radio>
-        </Flex>
-      </RadioGroup>
+      <Checkbox checked={active} onChange={toggleCheckActive}>
+        근무여부
+      </Checkbox>
       <Flex>
         <SelectRoot
           collection={optionList}
@@ -135,7 +141,7 @@ export function BusinessEmployeeList() {
             setSearch({ ...search, type: sel.value[0] });
           }}
           size="sm"
-          width="320px"
+          width="150px"
         >
           <SelectTrigger>
             <SelectValueText />

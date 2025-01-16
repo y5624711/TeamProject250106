@@ -19,14 +19,14 @@ public class BusinessService {
         return mapper.businessSelect();
     }
 
-    public Map<String, Object> businessEmpList(Integer page, String searchType, String keyword) {
+    public Map<String, Object> businessEmpList(Integer page, String searchType, String keyword, Boolean active) {
         int offset = (page - 1) * 10;
 
         if (searchType.isEmpty()) searchType = "number";
         if (keyword.isEmpty()) keyword = "";
 
-        return Map.of("list", mapper.listEmployeeSelect(offset, searchType, keyword),
-                "count", mapper.empCountAll(searchType, keyword));
+        return Map.of("list", mapper.listEmployeeSelect(offset, searchType, keyword, active),
+                "count", mapper.empCountAll(searchType, keyword, active));
     }
 
 
