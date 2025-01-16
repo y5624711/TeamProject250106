@@ -27,7 +27,7 @@ export function Item() {
         setItemKey(res.data.list[0].itemKey);
       })
       .catch((error) => {
-        console.error("물품 목록 요청 중 오류 발생: ", error);
+        console.error("품목 목록 요청 중 오류 발생: ", error);
       });
   }, [searchParams, change]);
 

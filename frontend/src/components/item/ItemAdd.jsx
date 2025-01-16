@@ -29,7 +29,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
   const [itemNote, setItemNote] = useState("");
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
 
-  // 물품 구분 코드 가져오기
+  // 품목 구분 코드 가져오기
   useEffect(() => {
     axios
       .get("/api/item/commonCode")
@@ -41,7 +41,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
       });
   }, []);
 
-  // 물품 선택 시 협력업체 이름 가져오기
+  // 품목 선택 시 협력업체 이름 가져오기
   useEffect(() => {
     if (itemCommonCode) {
       axios
@@ -62,7 +62,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
     }
   }, [itemCommonCode]);
 
-  // 물품 등록하기
+  // 품목 등록하기
   const handleAddClick = () => {
     const itemData = {
       itemCommonCode,

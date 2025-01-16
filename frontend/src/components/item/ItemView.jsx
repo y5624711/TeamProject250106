@@ -19,22 +19,22 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
     itemNote: "",
   });
 
-  // 수정 상태에서 물품 정보 변경 시 수정 상태 해제
+  // 수정 상태에서 품목 정보 변경 시 수정 상태 해제
   useEffect(() => {
     setIsEditing(false);
   }, [itemKey]);
 
-  // 물품 상세 정보를 가져오기
+  // 품목 상세 정보를 가져오기
   useEffect(() => {
     if (itemKey) {
       axios
         .get(`/api/item/view/${itemKey}`)
         .then((res) => {
           setItem(res.data);
-          setEditedItem(res.data[0]); // 첫 번째 물품 정보로 상태 설정
+          setEditedItem(res.data[0]); // 첫 번째 품목 정보로 상태 설정
         })
         .catch((error) => {
-          console.error("물품 상세 정보 요청 중 오류 발생: ", error);
+          console.error("품목 상세 정보 요청 중 오류 발생: ", error);
         });
     }
   }, [itemKey]);
@@ -53,7 +53,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
     setIsEditing(true);
   };
 
-  // 수정된 물품 데이터 서버로 전송
+  // 수정된 품목 데이터 서버로 전송
   const handleSubmitClick = () => {
     axios
       .put(`/api/item/edit/${itemKey}`, editedItem)
@@ -74,7 +74,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
         setChange((prev) => !prev);
 
         setSearchParams((prev) => new URLSearchParams(prev));
-        // 물품 수정 후, item를 직접 업데이트하여 view에 바로 반영되도록 함
+        // 품목 수정 후, item를 직접 업데이트하여 view에 바로 반영되도록 함
         setItem((prevList) =>
           prevList.map((item) =>
             item.itemKey === itemKey ? { ...item, ...editedItem } : item,
@@ -87,7 +87,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
       });
   };
 
-  // 물품 삭제 시 사용여부 false
+  // 품목 삭제 시 사용여부 false
   const handleDeleteConfirm = () => {
     axios
       .put(`/api/item/delete/${itemKey}`)

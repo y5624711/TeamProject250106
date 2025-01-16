@@ -15,7 +15,7 @@ export function ItemCommonCodeAdd({
   const [itemCommonName, setItemCommonName] = useState("");
   const [itemCommonCodeNote, setItemCommonCodeNote] = useState("");
 
-  // 물품 공통 코드 등록하기
+  // 품목 공통 코드 등록하기
   const handleAddClick = () => {
     const itemData = {
       itemCommonCode,

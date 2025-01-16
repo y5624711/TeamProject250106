@@ -20,12 +20,12 @@ export function ItemCommonCodeView({
     itemCommonCodeNote: "",
   });
 
-  // 수정 상태에서 물품 공통 코드 변경 시 수정 상태 해제
+  // 수정 상태에서 품목 공통 코드 변경 시 수정 상태 해제
   useEffect(() => {
     setIsEditing(false);
   }, [itemCommonCodeKey]);
 
-  // 물품 공통 코드 상세 정보 가져오기
+  // 품목 공통 코드 상세 정보 가져오기
   useEffect(() => {
     if (itemCommonCodeKey) {
       axios
@@ -35,7 +35,7 @@ export function ItemCommonCodeView({
           setEditedItemCommonCode(res.data[0]);
         })
         .catch((error) => {
-          console.error("물품 공통 코드 정보 요청 중 오류 발생: ", error);
+          console.error("품목 공통 코드 정보 요청 중 오류 발생: ", error);
         });
     }
   }, [itemCommonCodeKey]);
@@ -54,7 +54,7 @@ export function ItemCommonCodeView({
     setIsEditing(true);
   };
 
-  // 수정된 물품 공통 코드 데이터 서버로 전송
+  // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSubmitClick = () => {
     axios
       .put(
@@ -80,7 +80,7 @@ export function ItemCommonCodeView({
         setChange((prev) => !prev);
 
         setSearchParams((prev) => new URLSearchParams(prev));
-        // 물품 공통 코드 수정 후, itemCommonCode를 직접 업데이트하여 view에 바로 반영되도록 함
+        // 품목 공통 코드 수정 후, itemCommonCode를 직접 업데이트하여 view에 바로 반영되도록 함
         setItemCommonCode((prevList) =>
           prevList.map((itemCommonCode) =>
             itemCommonCode.itemCommonCodeKey === itemCommonCodeKey
@@ -95,7 +95,7 @@ export function ItemCommonCodeView({
       });
   };
 
-  // 물품 공통 코드 삭제 시 사용여부 false
+  // 품목 공통 코드 삭제 시 사용여부 false
   const handleDeleteConfirm = () => {
     axios
       .put(`/api/commonCode/item/delete/${itemCommonCodeKey}`)

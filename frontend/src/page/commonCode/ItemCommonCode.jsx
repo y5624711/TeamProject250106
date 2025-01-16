@@ -15,7 +15,7 @@ export function ItemCommonCode() {
   const [change, setChange] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams("");
 
-  // 물품 공통 코드 목록 가져오기
+  // 품목 공통 코드 목록 가져오기
   useEffect(() => {
     axios
       .get(`/api/commonCode/item/list`)
@@ -24,7 +24,7 @@ export function ItemCommonCode() {
         setItemCommonCodeKey(res.data[0].itemCommonCodeKey);
       })
       .catch((error) => {
-        console.error("물품 공통 코드 목록 요청 중 오류 발생: ", error);
+        console.error("품목 공통 코드 목록 요청 중 오류 발생: ", error);
       });
   }, [searchParams, change]);
 
