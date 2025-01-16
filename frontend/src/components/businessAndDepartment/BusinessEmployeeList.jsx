@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValueText,
   Spinner,
+  Stack,
   Table,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -138,44 +139,52 @@ export function BusinessEmployeeList() {
 
   return (
     <Box>
-      <Checkbox checked={active} onCheckedChange={toggleCheckActive}>
-        근무여부
-      </Checkbox>
-      <Flex>
-        {/*셀렉트 &&검색창*/}
-        <SelectRoot
-          collection={optionList}
-          value={[search.type]}
-          onValueChange={(sel) => {
-            setSearch({ ...search, type: sel.value[0] });
-          }}
-          size="sm"
-          width="150px"
-        >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {optionList.items.map((option) => (
-              <SelectItem item={option} key={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+      <Center>
+        <Stack>
+          <Checkbox
+            variant={"subtle"}
+            checked={active}
+            onCheckedChange={toggleCheckActive}
+          >
+            근무여부
+          </Checkbox>
+          <Flex>
+            {/*셀렉트 &&검색창*/}
+            <SelectRoot
+              collection={optionList}
+              value={[search.type]}
+              onValueChange={(sel) => {
+                setSearch({ ...search, type: sel.value[0] });
+              }}
+              size="sm"
+              width="200px"
+            >
+              <SelectTrigger>
+                <SelectValueText />
+              </SelectTrigger>
+              <SelectContent>
+                {optionList.items.map((option) => (
+                  <SelectItem item={option} key={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
 
-        {/*검색창*/}
-        <Input
-          value={search.keyword}
-          onChange={(e) =>
-            setSearch({ ...search, keyword: e.target.value.trim() })
-          }
-        />
-        <Button onClick={handleSearchClick}>검색</Button>
-      </Flex>
+            {/*검색창*/}
+            <Input
+              value={search.keyword}
+              onChange={(e) =>
+                setSearch({ ...search, keyword: e.target.value.trim() })
+              }
+            />
+            <Button onClick={handleSearchClick}>검색</Button>
+          </Flex>
+        </Stack>
+      </Center>
 
       {/*리스트*/}
-      <Table.Root>
+      <Table.Root variant={"outline"}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
             <Table.ColumnHeader onClick={() => handleSort("employee_key")}>
@@ -202,7 +211,6 @@ export function BusinessEmployeeList() {
               <Table.Cell>{list.employeeKey}</Table.Cell>
               <Table.Cell>{list.employeeNo}</Table.Cell>
               <Table.Cell>{list.employeeName}</Table.Cell>
-              <Table.Cell></Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
