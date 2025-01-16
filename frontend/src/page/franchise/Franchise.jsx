@@ -54,11 +54,12 @@ export function Franchise() {
       .then((data) => {
         setCount(data.count);
         setFranchiseList(data.franchiseList);
-        console.log("Franchise List:", data.franchiseList);
-        setIsLoading(false); // 데이터 로딩 완료
+        setFranchiseKey(data.franchiseList[0]?.franchiseKey);
+        setIsLoading(false);
       });
   }, [searchParams]); // searchParams가 변경될 때마다 다시 실행
 
+  // URLSearchParams의 값에 따라 search 상태를 업데이트
   useEffect(() => {
     const nextSearch = { ...search };
     if (searchParams.get("type")) {
@@ -155,7 +156,7 @@ export function Franchise() {
               {viewMode === "add" ? (
                 <FranchiseAdd onCancel={() => setViewMode("view")} />
               ) : (
-                <FranchiseView franchiseKey={franchiseKey} />
+                <FranchiseView franchiseKey={franchiseKey} /> // 첫 번째 가맹점의 정보 표시
               )}
             </>
           )}
