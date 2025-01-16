@@ -3,6 +3,7 @@ import {
   Center,
   createListCollection,
   HStack,
+  Input,
   SelectContent,
   SelectItem,
   SelectRoot,
@@ -48,37 +49,43 @@ function CustomerList({
   return (
     <div>
       {/* 검색창 */}
-      <div>
-        <SelectRoot
-          collection={optionList}
-          value={[search.type]}
-          onValueChange={(oc) => {
-            setSearch({ ...search, type: oc.value[0] });
-          }}
-          size="md"
-          width="130px"
-        >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {optionList.items.map((option) => (
-              <SelectItem item={option} key={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-        <input
-          type="text"
-          value={search.keyword}
-          onChange={(e) => {
-            setSearch({ ...search, keyword: e.target.value });
-          }}
-          placeholder="검색어 입력"
-        />
-        <Button onClick={handleSearchClick}>검색</Button>
-      </div>
+      <HStack align={"flex-start"}>
+        <Stack>
+          <SelectRoot
+            collection={optionList}
+            value={[search.type]}
+            onValueChange={(oc) => {
+              setSearch({ ...search, type: oc.value[0] });
+            }}
+            size="md"
+            width="130px"
+          >
+            <SelectTrigger>
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {optionList.items.map((option) => (
+                <SelectItem item={option} key={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        </Stack>
+        <Stack>
+          <Input
+            type="text"
+            value={search.keyword}
+            onChange={(e) => {
+              setSearch({ ...search, keyword: e.target.value });
+            }}
+            placeholder="검색어 입력"
+          />
+        </Stack>
+        <Stack>
+          <Button onClick={handleSearchClick}>검색</Button>
+        </Stack>
+      </HStack>
 
       {/* 체크박스 필터 */}
       <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>

@@ -22,9 +22,6 @@ function CustomerView({ customerKey }) {
     return <p>로딩 중이거나 고객 정보가 없습니다.</p>;
   }
 
-  // console.log(customerKey);
-  // console.log(customer);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCustomer((prevCustomer) => ({
