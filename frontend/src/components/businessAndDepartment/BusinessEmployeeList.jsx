@@ -1,4 +1,12 @@
-import { Box, Center, HStack, Input, Spinner, Table } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Input,
+  Spinner,
+  Table,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -9,10 +17,12 @@ import {
 } from "../ui/pagination.jsx";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../ui/button.jsx";
+import { Radio, RadioGroup } from "../ui/radio.jsx";
 
 export function BusinessEmployeeList() {
   const [employee, setEmployee] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [active, setActive] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
@@ -33,7 +43,6 @@ export function BusinessEmployeeList() {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
         setEmployee(data.list);
         setCount(data.count);
       })
@@ -66,7 +75,6 @@ export function BusinessEmployeeList() {
   }, [searchParams]);
 
   function handlePageChange(e) {
-    console.log(e.page);
     const nextSearchParam = new URLSearchParams(searchParams);
     nextSearchParam.set("page", e.page);
     setSearchParams(nextSearchParam);
@@ -97,6 +105,16 @@ export function BusinessEmployeeList() {
 
   return (
     <Box>
+      <RadioGroup defaultValue="1" pt={2} pb={2}>
+        <Flex gap={5}>
+          <Radio value="1" onChange={() => setActive(true)}>
+            근무 사원
+          </Radio>
+          <Radio value="2" onChange={() => setActive(false)}>
+            퇴사자
+          </Radio>
+        </Flex>
+      </RadioGroup>
       <HStack>
         <Box>
           <select
@@ -115,6 +133,7 @@ export function BusinessEmployeeList() {
         />
         <Button onClick={handleSearchClick}>검색</Button>
       </HStack>
+      <Flex></Flex>
       <Table.Root>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>

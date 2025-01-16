@@ -1,4 +1,12 @@
-import { Box, Heading, HStack, Input, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Spacer,
+  Stack,
+} from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
 import { Button } from "../ui/button.jsx";
 import { toaster } from "../ui/toaster.jsx";
@@ -8,6 +16,7 @@ function CustomInput({ onChange, readOnly = false, ...props }) {
     <Input
       borderColor="black" // 기본 외곽선 색상
       boxShadow="0 0 0 1px black" // 기본 외곽선 스타일
+      size="sm"
       readOnly={readOnly}
       onChange={!readOnly ? onChange : undefined} // onChange 핸들러 전달
       {...props} // 추가 속성 전달
@@ -45,12 +54,15 @@ export function BusinessInfo({
   };
 
   return (
-    <Box p={3} bg={"gray.100"} w={"500px"}>
+    <Box p={2} bg={"gray.100"}>
       <Box>
-        <Heading>사업장 정보</Heading>
+        <Flex>
+          <Heading>사업장 정보</Heading>
+          <Spacer />
+          {isEditing && <Heading color={"red"}>수정중</Heading>}
+        </Flex>
         <Stack>
-          {isEditing && <Heading color={"red"}>수정중..</Heading>}
-          <HStack>
+          <HStack gap={5}>
             <Field label={"회사명"}>
               <CustomInput
                 value={business.businessName}
@@ -88,7 +100,7 @@ export function BusinessInfo({
               />
             </Field>
           </HStack>
-          <HStack>
+          <HStack gap={5}>
             <Field label={"대표 전화번호"}>
               <CustomInput
                 value={business.businessTel || ""}
@@ -127,10 +139,10 @@ export function BusinessInfo({
             />
           </Field>
         </Stack>
-        <HStack pt={3}>
+        <Box pt={3}>
           {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
           {isEditing && <Button onClick={handleSave}>저장</Button>}
-        </HStack>
+        </Box>
       </Box>
     </Box>
   );

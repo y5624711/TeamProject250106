@@ -7,7 +7,7 @@ export function BusinessAndEmployee() {
   return (
     <Flex>
       <SideBar />
-      <Stack>
+      <Stack w={"60%"}>
         <BusinessView />
         <BusinessEmployeeList />
       </Stack>
