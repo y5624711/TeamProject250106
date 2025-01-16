@@ -11,17 +11,6 @@ export function ItemList({
   setSearchParams,
   setItemKey,
 }) {
-  // 사용 여부에 따른 active 변경
-  const handleActiveChange = (active) => {
-    // 연속해서 처리 시 param 처리가 늦어지는 오류 -> 이전 값을 기준으로 param 설정
-    setSearchParams((prevParams) => {
-      const nextSearchParams = new URLSearchParams(prevParams);
-      nextSearchParams.set("active", active ? "1" : "0");
-      nextSearchParams.set("page", "1");
-      return nextSearchParams;
-    });
-  };
-
   // 정렬 헤더
   const headers = [
     { key: "itemKey", label: "#" },
@@ -52,8 +41,7 @@ export function ItemList({
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
       <ActiveSwitch
-        // defaultActive={searchParams?.get("active") === "1"}
-        onActiveChange={handleActiveChange}
+        onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
       <Box>
         <Table.Root>
