@@ -14,6 +14,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 function CustomerAdd({ onCancel }) {
   const [customerName, setCustomerName] = useState("");
@@ -34,8 +35,23 @@ function CustomerAdd({ onCancel }) {
   useEffect(() => {
     axios
       .get("/api/customer/itemCode/list")
-      .then((res) => setItemCodeList(res.data))
-      .catch((error) => console.log("오류", error));
+      .then((res) => {
+        setItemCodeList(res.data);
+        res.data;
+      })
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   }, []);
   // console.log(itemCodeList);
   // console.log("설정1", itemCode);
@@ -126,24 +142,7 @@ function CustomerAdd({ onCancel }) {
             ))}
           </SelectContent>
         </SelectRoot>
-        {/*<select*/}
-        {/*  name="itemCode"*/}
-        {/*  value={itemCode}*/}
-        {/*  onChange={(e) => setItemCode(e.target.value)}*/}
-        {/*>*/}
-        {/*  <option value="">품목 구분</option>*/}
-        {/*  {itemCodeList.map((code) => (*/}
-        {/*    <option key={code.item_common_code} value={code.item_common_code}>*/}
-        {/*      {code.item_common_name}*/}
-        {/*    </option>*/}
-        {/*  ))}*/}
-        {/*</select>*/}
-        {/*<Field label={"취급 물품"}>*/}
-        {/*<Input*/}
-        {/*  value={itemCode}*/}
-        {/*  onChange={(e) => setItemCode(e.target.value)}*/}
-        {/*/>*/}
-        {/*</Field>*/}
+
         <Field label={"사업자 번호"}>
           <Input
             value={customerNo}

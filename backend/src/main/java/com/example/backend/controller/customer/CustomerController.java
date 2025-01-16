@@ -4,6 +4,7 @@ import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import com.example.backend.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +18,17 @@ public class CustomerController {
 
     //협력사 등록
     @PostMapping("add")
-    public void addCustomer(@RequestBody Customer customer) {
-//        System.out.println("c" + customer);
-        service.addCustomer(customer);
+    public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer) {
+        if (service.addCustomer(customer)) {
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "등록하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "등록 중 문제가 발생하였습니다.")));
+        }
     }
 
     //협력사 목록
@@ -29,10 +38,10 @@ public class CustomerController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        System.out.println(active);
-        System.out.println(page);
-        System.out.println(keyword);
-        System.out.println(type);
+//        System.out.println(active);
+//        System.out.println(page);
+//        System.out.println(keyword);
+//        System.out.println(type);
 
         return service.getCustomerList(active, page, type, keyword);
     }
@@ -45,16 +54,33 @@ public class CustomerController {
 
     //협력사 삭제
     @PutMapping("delete/{customerKey}")
-    public void deleteCustomer(@PathVariable("customerKey") String customerCode) {
-        service.deleteCustomer(customerCode);
+    public ResponseEntity<Map<String, Object>> deleteCustomer(
+            @PathVariable("customerKey") String customerCode) {
+        if (service.deleteCustomer(customerCode)) {
+            return ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."삭제되었습니다.")));
+
+        } else {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "삭제 중 문제가 발생하였습니다.")));
+        }
     }
 
     //협력사 정보 수정
     @PutMapping("edit")
-    public void editCustomer(@RequestBody Customer customer) {
-//        System.out.println(customer);
-//        System.out.println(service.updateCustomer(customer));
-        service.editCustomer(customer);
+    public ResponseEntity<Map<String, Object>> editCustomer(@RequestBody Customer customer) {
+        if (service.editCustomer(customer)) {
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "수정하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "수정 중 문제가 발생하였습니다.")));
+        }
     }
 
     @GetMapping("itemCode/list")

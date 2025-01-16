@@ -50,6 +50,8 @@ public interface CustomerMapper {
                     </trim>
                 )    
             </if>
+            ORDER BY customer_key
+            LIMIT #{offset}, 10
             </script>
             """)
     List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword);

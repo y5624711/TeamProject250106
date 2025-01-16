@@ -3,6 +3,7 @@ import axios from "axios";
 import { Heading, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 function CustomerView({ customerKey }) {
   const [customer, setCustomer] = useState(null);
@@ -37,12 +38,39 @@ function CustomerView({ customerKey }) {
     // console.log(customer);
     axios
       .put("api/customer/edit", customer)
-      .then()
-      .catch((err) => console.error("오류", err));
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   };
 
   const handleDeleteClick = () => {
-    axios.put(`api/customer/delete/${customerKey}`).then().catch();
+    axios
+      .put(`api/customer/delete/${customerKey}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
   };
 
   return (

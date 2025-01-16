@@ -17,12 +17,9 @@ public class CustomerService {
     final CustomerMapper mapper;
 
     //협력업체 등록
-    public void addCustomer(Customer customer) {
-//        System.out.println(customer.getItemName());
-//        customer.setItemCode(itemMapper.getItemCode(customer.getItemName()));
-//        System.out.println(customer);
-
-        mapper.addCustomer(customer);
+    public Boolean addCustomer(Customer customer) {
+        int count = mapper.addCustomer(customer);
+        return count == 1;
     }
 
     public Map<String, Object> getCustomerList(Boolean active, Integer page, String type, String keyword) {
@@ -41,14 +38,14 @@ public class CustomerService {
         return mapper.viewCustomer(customerKey);
     }
 
-    public void deleteCustomer(String customerKey) {
-        mapper.deleteCustomer(customerKey);
+    public Boolean deleteCustomer(String customerKey) {
+        int count = mapper.deleteCustomer(customerKey);
+        return count == 1;
     }
 
     public Boolean editCustomer(Customer customer) {
-        int cnt = 0;
-        cnt = mapper.editCustomer(customer);
-        return cnt == 1;
+        int cnt = mapper.editCustomer(customer);
+        return cnt >= 1;
     }
 
     public List<CommonCode> itemCodeList() {
