@@ -38,8 +38,10 @@ public class FranchiseController {
             @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "type", defaultValue = "all") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        return service.franchiseList(active, page, type, keyword);
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "franchise_key") String sort,
+            @RequestParam(value = "order", defaultValue = "asc") String order) {
+        return service.franchiseList(active, page, type, keyword, sort, order);
     }
 
     // 특정 가맹점 조회

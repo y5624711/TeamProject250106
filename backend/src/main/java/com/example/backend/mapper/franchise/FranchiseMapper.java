@@ -53,11 +53,11 @@ public interface FranchiseMapper {
                         </trim>
                     )
                 </if>
-                ORDER BY franchise_key DESC
+                ORDER BY ${sort} ${order}
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<Franchise> getFranchiseList(Boolean active, Integer offset, String type, String keyword);
+    List<Franchise> getFranchiseList(Boolean active, Integer offset, String type, String keyword, String sort, String order);
 
     // 총 데이터 개수 (페이지네이션을 위해 사용)
     @Select("""

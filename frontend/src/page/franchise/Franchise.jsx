@@ -36,6 +36,10 @@ export function Franchise() {
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
   });
+  const [standard, setStandard] = useState({
+    sort: "franchise_key",
+    order: "ASC",
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   // 가맹점 목록을 가져오기
@@ -48,6 +52,8 @@ export function Franchise() {
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
+          sort: searchParams.get("sort") || standard.sort,
+          order: searchParams.get("order") || standard.order,
         },
       })
       .then((res) => res.data)
@@ -57,7 +63,7 @@ export function Franchise() {
         setFranchiseKey(data.franchiseList[0]?.franchiseKey);
         setIsLoading(false);
       });
-  }, [searchParams]); // searchParams가 변경될 때마다 다시 실행
+  }, [searchParams, standard]); // standard 상태가 변경될 때마다 실행
 
   // URLSearchParams의 값에 따라 search 상태를 업데이트
   useEffect(() => {
@@ -123,6 +129,17 @@ export function Franchise() {
     setViewMode("view");
   }
 
+  // 정렬 변경 시 URL 파라미터 업데이트
+  const handleSortChange = (sortField) => {
+    const nextOrder = standard.order === "ASC" ? "DESC" : "ASC";
+    setStandard({ sort: sortField, order: nextOrder });
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("sort", sortField);
+    nextSearchParams.set("order", nextOrder);
+    setSearchParams(nextSearchParams);
+  };
+
   return (
     <Box display={"flex"} h={"100vh"}>
       <SideBar />
@@ -144,6 +161,7 @@ export function Franchise() {
             handleSearchClick={handleSearchClick}
             handleSearchTypeChange={handleSearchTypeChange}
             onFranchiseClick={handleFranchiseClick}
+            handleSortChange={handleSortChange} // 정렬 변경 핸들러
           />
 
           <Center>

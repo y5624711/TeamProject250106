@@ -41,13 +41,13 @@ public class FranchiseService {
     }
 
     // 가맹점 리스트 조회
-    public Map<String, Object> franchiseList(Boolean active, Integer page, String type, String keyword) {
+    public Map<String, Object> franchiseList(Boolean active, Integer page, String type, String keyword, String sort, String order) {
 
         // SQL의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
         // 조회되는 게시물들
-        List<Franchise> franchiseList = mapper.getFranchiseList(active, offset, type, keyword);
+        List<Franchise> franchiseList = mapper.getFranchiseList(active, offset, type, keyword, sort, order);
 
         // 전체 게시물 수
         Integer count = mapper.countFranchiseList(active, type, keyword);
