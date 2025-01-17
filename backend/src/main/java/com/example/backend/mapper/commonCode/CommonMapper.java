@@ -30,6 +30,22 @@ public interface CommonMapper {
                     <if test="active == 1">
                         item_common_code_active = 1
                     </if>
+                    <if test="keyword != null and keyword != ''">
+                        <choose>
+                            <when test="type == 'all'">
+                                AND (
+                                    item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </when>
+                            <when test="type == 'itemCommonCode'">
+                                AND item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'itemCommonName'">
+                                AND item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                        </choose>
+                    </if>
                 </trim>
             
                 <trim prefix="ORDER BY">
@@ -51,20 +67,36 @@ public interface CommonMapper {
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active, String sort, String order);
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active, String sort, String order, String type, String keyword);
 
     @Select("""
             <script>
                 SELECT COUNT(*)
                 FROM TB_ITEMCOMM
-              <where>
+                <where>
                     <if test="active == 1">
                         item_common_code_active = 1
                     </if>
-            </where>
+                    <if test="keyword != null and keyword != ''">
+                        <choose>
+                            <when test="type == 'all'">
+                                AND (
+                                    item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </when>
+                            <when test="type == 'itemCommonCode'">
+                                AND item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                            <when test="type == 'itemCommonName'">
+                                AND item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            </when>
+                        </choose>
+                    </if>
+                </where>
             </script>
             """)
-    Integer countAll(Integer active);
+    Integer countAll(Integer active, String type, String keyword);
 
     @Select("""
             SELECT COUNT(*)

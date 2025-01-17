@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Center, Table } from "@chakra-ui/react";
+import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { Sort } from "../tool/Sort.jsx";
 import { Pagination } from "../tool/Pagination.jsx";
+import { SearchBar } from "../tool/SearchBar.jsx";
 
 export function ItemCommonCodeList({
   itemCommonCodeList,
@@ -11,6 +12,15 @@ export function ItemCommonCodeList({
   searchParams,
   setSearchParams,
 }) {
+  // 검색 옵션
+  const itemSearchOptions = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "품목코드", value: "itemCommonCode" },
+      { label: "품목명", value: "itemCommonName" },
+    ],
+  });
+
   // 정렬 헤더
   const sortOptions = [
     { key: "itemCommonCodeKey", label: "#" },
@@ -20,7 +30,10 @@ export function ItemCommonCodeList({
 
   return (
     <Box>
-      {/*<SearchBar />*/}
+      <SearchBar
+        itemSearchOptions={itemSearchOptions}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
       <ActiveSwitch
         onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />

@@ -107,8 +107,10 @@ public class CommonController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "active", defaultValue = "1") Integer active,
             @RequestParam(value = "sort", defaultValue = "") String sort,
-            @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.getItemCommonCodeList(page, active, sort, order);
+            @RequestParam(value = "order", defaultValue = "") String order,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        return service.getItemCommonCodeList(page, active, sort, order, type, keyword);
     }
 
     @GetMapping("list")

@@ -25,7 +25,7 @@ export function ItemCommonCode() {
       .then((res) => {
         setItemCommonCodeList(res.data.list || []);
         setCount(res.data.count);
-        setItemCommonCodeKey(res.data[0].itemCommonCodeKey);
+        setItemCommonCodeKey(res.data.list[0].itemCommonCodeKey);
       })
       .catch((error) => {
         console.error("품목 공통 코드 목록 요청 중 오류 발생: ", error);
