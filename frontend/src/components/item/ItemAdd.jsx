@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValueText,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
@@ -28,6 +29,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
   const [outputPrice, setOutputPrice] = useState("");
   const [itemNote, setItemNote] = useState("");
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
+  const [isValid, setIsValid] = useState(false);
 
   // 품목 구분 코드 가져오기
   useEffect(() => {
@@ -101,6 +103,11 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
     }),
   });
 
+  // 버튼 활성화를 위한 유효성 검사
+  useEffect(() => {
+    setIsValid(itemCommonCode && customerName && inputPrice && outputPrice);
+  }, [itemCommonCode, customerName, inputPrice, outputPrice]);
+
   return (
     <Box>
       <Button onClick={onCancel}>취소</Button>
@@ -117,7 +124,12 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
             }
           }}
         >
-          <SelectLabel>품목</SelectLabel>
+          <SelectLabel>
+            품목{" "}
+            <Text as="span" color="red.500">
+              *
+            </Text>
+          </SelectLabel>
           <SelectTrigger>
             <SelectValueText>
               {itemCommonName != "" ? itemCommonName : "품목 선택"}
@@ -132,7 +144,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
           </SelectContent>
         </SelectRoot>
 
-        <Field label={"담당업체"}>
+        <Field label={"담당업체"} required>
           <Input readOnly placeholder="담당업체" value={customerName} />
         </Field>
         <Field label={"규격"}>
@@ -149,7 +161,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
             onChange={(e) => setUnit(e.target.value)}
           />
         </Field>
-        <Field label={"입고가"}>
+        <Field label={"입고가"} required>
           <NumberInputRoot>
             <NumberInputField
               placeholder="입고가"
@@ -158,7 +170,7 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
             />
           </NumberInputRoot>
         </Field>
-        <Field label={"출고가"}>
+        <Field label={"출고가"} required>
           <NumberInputRoot>
             <NumberInputField
               placeholder="출고가"
@@ -174,7 +186,9 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
             onChange={(e) => setItemNote(e.target.value)}
           />
         </Field>
-        <Button onClick={handleAddClick}>등록</Button>
+        <Button onClick={handleAddClick} disabled={!isValid}>
+          등록
+        </Button>
       </Stack>
     </Box>
   );

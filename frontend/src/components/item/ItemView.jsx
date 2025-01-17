@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";
@@ -18,6 +18,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
     itemActive: false,
     itemNote: "",
   });
+  const [isValid, setIsValid] = useState(false);
 
   // 수정 상태에서 품목 정보 변경 시 수정 상태 해제
   useEffect(() => {
@@ -109,6 +110,21 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
       });
   };
 
+  // 버튼 활성화를 위한 유효성 검사
+  useEffect(() => {
+    setIsValid(
+      editedItem.itemCommonCode &&
+        editedItem.customerName &&
+        editedItem.inputPrice &&
+        editedItem.outputPrice,
+    );
+  }, [
+    editedItem.itemCommonCode,
+    editedItem.customerName,
+    editedItem.inputPrice,
+    editedItem.outputPrice,
+  ]);
+
   return (
     <Box>
       <HStack>
@@ -117,11 +133,14 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
             <Box>
               {isEditing ? (
                 <>
-                  <Text fontSize={"xs"}>품목 수정은 불가능합니다.</Text>
-                  <Field label={"품목"}>
+                  <Field
+                    label={"품목"}
+                    required
+                    helperText="품목 수정은 불가능합니다."
+                  >
                     <Input readOnly value={item.itemCommonName} />
                   </Field>
-                  <Field label={"담당업체"}>
+                  <Field label={"담당업체"} required>
                     <Input readOnly value={item.customerName} />
                   </Field>
                   <Field label={"규격"}>
@@ -140,7 +159,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
                       onChange={handleChange}
                     />
                   </Field>
-                  <Field label={"입고가"}>
+                  <Field label={"입고가"} required>
                     <NumberInputRoot>
                       <NumberInputField
                         name="inputPrice"
@@ -150,7 +169,7 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
                       />
                     </NumberInputRoot>
                   </Field>
-                  <Field label={"출고가"}>
+                  <Field label={"출고가"} required>
                     <NumberInputRoot>
                       <NumberInputField
                         name="outputPrice"
@@ -207,7 +226,9 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
       <Box>
         {isEditing ? (
           <HStack>
-            <Button onClick={handleSubmitClick}>저장</Button>
+            <Button onClick={handleSubmitClick} disabled={!isValid}>
+              저장
+            </Button>
             <Button onClick={() => setIsEditing(false)}>취소</Button>
           </HStack>
         ) : (
