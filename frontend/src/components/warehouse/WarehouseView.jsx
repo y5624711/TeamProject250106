@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, HStack, Input } from "@chakra-ui/react";
-import { Button } from "../ui/button.jsx";
+import { Box, Input } from "@chakra-ui/react";
 
 function WarehouseView({ warehouseKey }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
@@ -48,12 +47,6 @@ function WarehouseView({ warehouseKey }) {
         <Input value={warehouseDetail.warehouseNote} readOnly />
       </Box>
       <br />
-      <Box>
-        <HStack>
-          <Button>수정</Button>
-          <Button>삭제</Button>
-        </HStack>
-      </Box>
     </Box>
   );
 }

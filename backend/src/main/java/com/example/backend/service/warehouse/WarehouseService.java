@@ -28,4 +28,6 @@ public class WarehouseService {
     public void add(Warehouse warehouse) {
         mapper.add(warehouse);
     }
+
+    
 }

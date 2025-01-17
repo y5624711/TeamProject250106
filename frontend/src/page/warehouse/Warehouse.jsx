@@ -4,10 +4,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
-import WarehouseView from "../../components/warehouse/WarehouseView.jsx";
 import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import WarehouseAdd from "../../components/warehouse/WarehouseAdd.jsx";
+import WarehouseDetail from "../../components/warehouse/WarehouseDetail.jsx";
 
 function Warehouse(props) {
   const [value, setValue] = useState([]);
@@ -21,27 +21,22 @@ function Warehouse(props) {
 
   // 창고 정보 가져오기
   useEffect(() => {
-    axios
-      .get(`/api/warehouse/management?${searchParams.toString()}`)
-      .then((res) => {
-        setWarehouseList(res.data.list);
-        setCountWarehouse(res.data.count);
-      });
+    axios.get(`/api/warehouse/list?${searchParams.toString()}`).then((res) => {
+      setWarehouseList(res.data.list);
+      setCountWarehouse(res.data.count);
+    });
     window.scrollTo(0, 0);
   }, [searchParams]);
-
-  console.log("isAdding", isAdding);
 
   // 검색 버튼
   function handleSearchClick() {
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/warehouse/management?${searchQuery.toString()}`);
+    navigate(`/warehouse/list?${searchQuery.toString()}`);
   }
 
   const handleShowDetail = (warehouseKey) => {
     setSelectedWarehouseKey(warehouseKey);
-    console.log("창고키", warehouseKey);
   };
 
   return (
@@ -77,7 +72,7 @@ function Warehouse(props) {
           {isAdding ? (
             <WarehouseAdd />
           ) : (
-            <WarehouseView warehouseKey={selectedWarehouseKey} />
+            <WarehouseDetail warehouseKey={selectedWarehouseKey} />
           )}
         </Stack>
       </HStack>

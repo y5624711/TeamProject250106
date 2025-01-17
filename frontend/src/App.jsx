@@ -14,6 +14,7 @@ import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 import { LoginPage } from "./page/login/LoginPage.jsx";
 import Warehouse from "./page/warehouse/Warehouse.jsx";
+import Location from "./page/location/Location.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -55,8 +56,12 @@ const router = createBrowserRouter([
         element: <Franchise />,
       },
       {
-        path: "warehouse/management",
+        path: "warehouse",
         element: <Warehouse />,
+      },
+      {
+        path: "location",
+        element: <Location />,
       },
     ],
   },
