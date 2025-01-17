@@ -30,14 +30,13 @@ export function FranchiseList({
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "사업자번호", value: "franchiseCode" },
+      { label: "사업자 번호", value: "franchiseCode" },
       { label: "가맹점명", value: "franchiseName" },
       { label: "가맹점주", value: "franchiseRep" },
-      { label: "전화번호", value: "franchiseTel" },
       { label: "광역시도", value: "franchiseState" },
       { label: "시군", value: "franchiseCity" },
-      { label: "본사 직원 사번", value: "businessEmployeeNo" },
-      { label: "본사 직원 이름", value: "businessEmployeeName" },
+      { label: "직원 사번", value: "businessEmployeeNo" },
+      { label: "직원 이름", value: "businessEmployeeName" },
     ],
   });
 
@@ -82,7 +81,12 @@ export function FranchiseList({
           <SelectTrigger>
             <SelectValueText />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent
+            style={{
+              width: "150px",
+              position: "absolute",
+            }}
+          >
             {FranchiseOptionList.items.map((option) => (
               <SelectItem item={option} key={option.value}>
                 {option.label}
@@ -156,14 +160,14 @@ export function FranchiseList({
             <TableColumnHeader
               onClick={() => HeaderClick("businessEmployeeNo")}
             >
-              본사 직원 사번{" "}
+              직원 사번{" "}
               {standard.sort === "businessEmployeeNo" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader
               onClick={() => HeaderClick("businessEmployeeName")}
             >
-              본사 직원 이름{" "}
+              직원 이름{" "}
               {standard.sort === "businessEmployeeName" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>

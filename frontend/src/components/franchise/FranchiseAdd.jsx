@@ -60,19 +60,19 @@ export function FranchiseAdd({ onCancel }) {
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
         <Box mb={4}>
-          <Text>본사 직원 사번</Text>
+          <Text>직원 사번</Text>
           <Input
             value={businessEmployeeNo}
             onChange={(e) => setBusinessEmployeeNo(e.target.value)}
-            placeholder="본사 직원 사번"
+            placeholder="직원 사번"
           />
         </Box>
         <Box mb={4}>
-          <Text>본사 직원 이름</Text>
+          <Text>직원 이름</Text>
           <Input
             value={businessEmployeeName}
             onChange={(e) => setBusinessEmployeeName(e.target.value)}
-            placeholder="본사 직원 이름"
+            placeholder="직원 이름"
           />
         </Box>
         <Box mb={4}>

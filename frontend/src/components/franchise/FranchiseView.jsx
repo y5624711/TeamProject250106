@@ -89,7 +89,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
         <Box mb={4}>
-          <Text>본사 직원 사번</Text>
+          <Text>직원 사번</Text>
           <Input
             name="businessEmployeeNo"
             value={franchise.businessEmployeeNo}
@@ -99,7 +99,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
           />
         </Box>
         <Box mb={4}>
-          <Text>본사 직원 이름</Text>
+          <Text>직원 이름</Text>
           <Input
             name="businessEmployeeName"
             value={franchise.businessEmployeeName}
