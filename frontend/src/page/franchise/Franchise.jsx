@@ -81,14 +81,6 @@ export function Franchise() {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  // 검색 타입 변경 시 파라미터 업데이트
-  const handleSearchTypeChange = (type) => {
-    setSearch((prev) => ({ ...prev, type }));
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("type", type);
-    setSearchParams(nextSearchParams);
-  };
-
   // 검색 파라미터 업데이트
   const handleSearchClick = () => {
     const nextSearchParam = new URLSearchParams(searchParams);
@@ -147,7 +139,6 @@ export function Franchise() {
             setCheckedActive={setCheckedActive}
             handlePageChange={handlePageChange}
             handleSearchClick={handleSearchClick}
-            handleSearchTypeChange={handleSearchTypeChange}
             handleSortChange={handleSortChange}
             onFranchiseClick={handleFranchiseClick}
           />
