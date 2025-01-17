@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Center, Table } from "@chakra-ui/react";
+import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { Pagination } from "../tool/Pagination.jsx";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { SearchBar } from "../tool/SearchBar.jsx";
@@ -12,6 +12,17 @@ export function ItemList({
   setSearchParams,
   setItemKey,
 }) {
+  // 검색 옵션
+  const itemSearchOptions = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "품목명", value: "itemName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "입고가", value: "inputPrice" },
+      { label: "출고가", value: "outputPrice" },
+    ],
+  });
+
   // 정렬 헤더
   const sortOptions = [
     { key: "itemKey", label: "#" },
@@ -24,6 +35,7 @@ export function ItemList({
   return (
     <Box>
       <SearchBar
+        itemSearchOptions={itemSearchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
       <ActiveSwitch

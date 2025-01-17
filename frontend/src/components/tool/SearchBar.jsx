@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  createListCollection,
   HStack,
   Input,
   SelectContent,
@@ -12,7 +11,7 @@ import {
 import { Button } from "../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 
-export function SearchBar({ onSearchChange }) {
+export function SearchBar({ onSearchChange, itemSearchOptions }) {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [search, setSearch] = useState({
     type: "all",
@@ -56,7 +55,7 @@ export function SearchBar({ onSearchChange }) {
   return (
     <HStack>
       <SelectRoot
-        collection={itemSearchList}
+        collection={itemSearchOptions}
         width="150px"
         position="relative"
         value={[search.type]}
@@ -74,7 +73,7 @@ export function SearchBar({ onSearchChange }) {
             position: "absolute",
           }}
         >
-          {itemSearchList.items.map((option) => (
+          {itemSearchOptions.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}
             </SelectItem>
@@ -97,14 +96,3 @@ export function SearchBar({ onSearchChange }) {
     </HStack>
   );
 }
-
-// 물품 관리 검색 조건
-const itemSearchList = createListCollection({
-  items: [
-    { label: "전체", value: "all" },
-    { label: "품목명", value: "itemName" },
-    { label: "담당 업체", value: "customerName" },
-    { label: "입고가", value: "inputPrice" },
-    { label: "출고가", value: "outputPrice" },
-  ],
-});
