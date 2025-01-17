@@ -25,7 +25,7 @@ function WarehouseSearch({
             collection={warehouseOptionList}
             defaultValue={["all"]}
             width="120px"
-            onChange={(oc) => setSearch({ ...search, type: oc.target.value })}
+            onValueChange={(oc) => setSearch({ ...search, type: oc.value })}
           >
             <SelectTrigger>
               <SelectValueText />

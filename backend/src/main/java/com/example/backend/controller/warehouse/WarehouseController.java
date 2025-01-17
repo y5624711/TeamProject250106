@@ -17,10 +17,7 @@ public class WarehouseController {
     @GetMapping("management")
     public Map<String, Object> list(@RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
-
-        System.out.println(searchType);
-        System.out.println(searchKeyword);
-        return service.list();
+        return service.list(searchType, searchKeyword);
     }
 
     @GetMapping("view/{warehouseKey}")

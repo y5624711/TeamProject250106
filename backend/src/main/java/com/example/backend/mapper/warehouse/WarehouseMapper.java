@@ -10,11 +10,49 @@ import java.util.List;
 @Mapper
 public interface WarehouseMapper {
 
+    //    customer_code를 customer 이름으로 변경
     @Select("""
+            <script>
             SELECT *
             FROM TB_WHMST
+            WHERE 
+                                <if test="searchType == 'all'">
+                                    warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
+                                 OR warehouse_active LIKE CONCAT('%',#{searchKeyword},'%')
+                                </if>
+                                <if test="searchType != 'all'">
+                                     <choose>
+                                         <when test="searchType == 'warehouseName'">
+                                             warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'customer'">
+                                             customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'customerEmployee'">
+                                             customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'warehouseState'">
+                                             warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'warehouseCity'">
+                                             warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <when test="searchType == 'warehouseActive'">
+                                             warehouse_active LIKE CONCAT('%', #{searchKeyword}, '%')
+                                         </when>
+                                         <otherwise>
+                                             1 = 0 
+                                         </otherwise>
+                                     </choose>
+                                 </if>
+                        ORDER BY warehouse_name DESC
+                        </script>
             """)
-    List<Warehouse> list();
+    List<Warehouse> list(String searchType, String searchKeyword);
 
     @Select("""
             SELECT *
