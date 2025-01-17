@@ -44,7 +44,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
-      { label: "협력업체", value: "PAR" },
+      { label: "협력업체", value: "CUS" },
       { label: "직원", value: "EMP" },
     ],
   });

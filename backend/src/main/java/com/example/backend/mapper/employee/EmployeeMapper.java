@@ -23,10 +23,36 @@ public interface EmployeeMapper {
 //    나중에 조인시   ,기업명,부서명만 추가하면 됨
     @Select("""
     <script>
-             SELECT *
-             FROM TB_EMPMST
-             WHERE 1=1
-             
+             SELECT\s
+                                                                                 E.employee_key,
+                                                                                 E.employee_name,
+                                                                                 E.employee_tel,
+                                                                                 E.employee_no,
+                                                                                 E.employee_workplace_code,
+                                                                                 E.employee_common_code,
+                                                                                 E.employee_active,
+                                                                                 E.employee_note,
+                                                                                 CASE
+                                                                                     WHEN E.employee_common_code = 'EMP' THEN D.department_name
+                                                                                     WHEN E.employee_common_code = 'CUS' THEN C.customer_name
+                                                                                     ELSE NULL
+                                                                                 END AS employee_workplace_name,
+                                                                                 CASE
+                                                                                     WHEN E.employee_common_code = 'EMP' THEN D.department_tel
+                                                                                     WHEN E.employee_common_code = 'CUS' THEN C.customer_tel
+                                                                                     ELSE NULL
+                                                                                 END AS employee_workplace_tel
+                                                                             FROM
+                                                                                 TB_EMPMST E
+                                                                                 LEFT JOIN TB_DEPARTMST D
+                                                                                     ON E.employee_common_code = 'EMP'
+                                                                                     AND E.employee_workplace_code = D.department_code
+                                                                                 LEFT JOIN TB_CUSTMST C
+                                        ON E.employee_common_code = 'CUS'
+                     AND E.employee_workplace_code = C.customer_code
+                      WHERE
+                          1=1
+            
              <!-- isActiveVisible이 false일 경우 employee_active = true 조건 추가 -->
              <if test="isActiveVisible == false">   \s
                  AND employee_active = true
@@ -44,6 +70,7 @@ public interface EmployeeMapper {
                  <if test="type != 'all'">
                      AND ${type} LIKE CONCAT('%', #{keyword}, '%')
                  </if>
+                 
              </if>
              
              <!-- 정렬 조건   -->
@@ -54,7 +81,7 @@ public interface EmployeeMapper {
                                    or convertedSort == 'employee_no'\s
                                    or convertedSort == 'employee_active'\s
                                    or convertedSort == 'employee_workplace_code')">
-                                
+            
                      ${convertedSort}
                  </when>
                  <otherwise>

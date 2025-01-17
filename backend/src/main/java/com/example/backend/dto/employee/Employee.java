@@ -7,10 +7,12 @@ public class Employee {
     private int employeeKey;
     private String employeeCommonCode;
     private String employeeWorkPlaceCode;
+    private String employeeWorkPlaceName;
     private String employeeNo;
     private String employeePassword;
     private String employeeName;
     private String employeeTel;
+    private String employeeWorkPlaceTel;
     private String employeeNote;
     private boolean employeeActive;
 

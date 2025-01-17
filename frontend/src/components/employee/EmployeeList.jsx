@@ -28,6 +28,17 @@ import {
 } from "../ui/pagination.jsx";
 import log from "eslint-plugin-react/lib/util/log.js";
 import { FaArrowDown } from "react-icons/fa6";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog.jsx";
 
 export function EmployeeList({ onSelect, updateList }) {
   const navigate = useNavigate();
@@ -56,10 +67,6 @@ export function EmployeeList({ onSelect, updateList }) {
   };
 
   useEffect(() => {
-    // if (Array.isArray(type)) {
-    //   var realType = type.join("");
-    // }
-
     // 전체 직원 리스트 불러오기
     axios
       .get("/api/employee/list", {
@@ -67,7 +74,7 @@ export function EmployeeList({ onSelect, updateList }) {
           page: page,
           isActiveVisible: isActiveVisible,
           keyword: keyword,
-          //  배열이면 , 삭제한값 <
+          //  배열이면 , 삭제한값
           type: Array.isArray(type) ? type.join("") : type,
           sort: sort,
           order: order,
@@ -141,7 +148,6 @@ export function EmployeeList({ onSelect, updateList }) {
     });
   };
 
-  // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
     <Box h={"100vh"}>
       <Heading>
@@ -152,7 +158,8 @@ export function EmployeeList({ onSelect, updateList }) {
           }}
         >
           자세히보기
-        </Button>{" "}
+        </Button>
+        <Button>추가버튼</Button>
       </Heading>
       <HStack
         style={{
@@ -240,26 +247,77 @@ export function EmployeeList({ onSelect, updateList }) {
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            {/*<Table.ColumnHeader>*/}
-            {/*  /!*<HStack>*!/*/}
-            {/*  /!*  부서명{" "}*!/*/}
-            {/*  /!*  <Stack>*!/*/}
-            {/*  /!*    <FaArrowUp*!/*/}
-            {/*  /!*      onClick={() => {*!/*/}
-            {/*  /!*        handleSortControl("부서명", "asc");*!/*/}
-            {/*  /!*      }}*!/*/}
-            {/*  /!*    />*!/*/}
-            {/*  /!*    <FaArrowDown*!/*/}
-            {/*  /!*      onClick={() => {*!/*/}
-            {/*  /!*        handleSortControl("부서명", "desc");*!/*/}
-            {/*  /!*      }}*!/*/}
-            {/*  /!*    />*!/*/}
-            {/*  /!*  </Stack>*!/*/}
-            {/*  /!*</HStack>*!/*/}
-            {/*</Table.ColumnHeader>*/}
+            <Table.ColumnHeader>
+              <HStack>
+                기업 전화번호
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("기본키", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("기본키", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                부서명{" "}
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("부서명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("부서명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                부서 번호
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("부서명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("부서명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
             <Table.ColumnHeader>
               <HStack>
                 직원명
+                <Stack>
+                  <FaArrowUp
+                    onClick={() => {
+                      handleSortControl("직원명", "asc");
+                    }}
+                  />
+                  <FaArrowDown
+                    onClick={() => {
+                      handleSortControl("직원명", "desc");
+                    }}
+                  />
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader>
+              <HStack>
+                직원전화번호
                 <Stack>
                   <FaArrowUp
                     onClick={() => {
@@ -321,18 +379,29 @@ export function EmployeeList({ onSelect, updateList }) {
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
               <Table.Cell>
-                {/*  기업 명  {item.franchiseName??} */}
-                {item.employeeCommonCode === "EMP" ? "중앙시스템" : "회사이름"}
+                {item.employeeCommonCode === "CUS"
+                  ? item.employeeWorkPlaceName
+                  : "(주)중앙컴퍼니"}
               </Table.Cell>
-              {/* 부서명   <Table.Cell>/!*  부서 명  {item.} *!/</Table.Cell>*/}
+              <Table.Cell>{item.employeeWorkPlaceTel}</Table.Cell>
+              <Table.Cell>
+                {/*협력업체는 부서가 없어서 */}
+                {item.employeeCommonCode === "CUS"
+                  ? ""
+                  : item.employeeWorkPlaceName}
+              </Table.Cell>
+              <Table.Cell>
+                {item.employeeCommonCode === "CUS"
+                  ? ""
+                  : item.employeeWorkPlaceTel}
+              </Table.Cell>
               <Table.Cell> {item.employeeName} </Table.Cell>
+              <Table.Cell> {item.employeeTel} </Table.Cell>
               <Table.Cell> {item.employeeNo} </Table.Cell>
-
               {/*사용여부 버튼 누른지 아닌지 확인*/}
               {isActiveVisible && (
                 <Table.Cell textAlign="center">
                   <Checkbox checked={item.employeeActive} />
-                  {/*{item.employeeActive === true ? "사용중" : "사용안함"}*/}
                 </Table.Cell>
               )}
             </Table.Row>
