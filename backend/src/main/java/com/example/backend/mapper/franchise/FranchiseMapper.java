@@ -21,15 +21,15 @@ public interface FranchiseMapper {
     // 가맹점 리스트 불러오기
     @Select("""
             <script>
-                SELECT franchise_key, franchise_code, franchise_name, franchise_rep, franchise_no, franchise_state, franchise_city, franchise_active, business_employee_no, business_employee_name
+                SELECT franchise_key, franchise_no, franchise_name, franchise_rep, franchise_tel, franchise_state, franchise_city, franchise_active, business_employee_no, business_employee_name
                 FROM TB_FRNCHSMST
                 WHERE <if test="active == false">franchise_active = TRUE</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
                       <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
                 <if test="keyword != null and keyword.trim() != ''">
                     AND (
                         <trim prefixOverrides="OR">
-                            <if test="type=='all' or type=='franchiseCode'">
-                                  franchise_code LIKE CONCAT('%', #{keyword}, '%')
+                            <if test="type=='all' or type=='franchiseNo'">
+                                  franchise_no LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseName'">
                                OR franchise_name LIKE CONCAT('%', #{keyword}, '%')
@@ -37,8 +37,8 @@ public interface FranchiseMapper {
                             <if test="type=='all' or type=='franchiseRep'">
                                OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
                             </if>
-                            <if test="type=='all' or type=='franchiseNo'">
-                               OR franchise_no LIKE CONCAT('%', #{keyword}, '%')
+                            <if test="type=='all' or type=='franchiseTel'">
+                               OR franchise_tel LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
                                OR franchise_state LIKE CONCAT('%', #{keyword}, '%')

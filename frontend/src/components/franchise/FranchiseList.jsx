@@ -30,7 +30,7 @@ export function FranchiseList({
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "사업자 번호", value: "franchiseCode" },
+      { label: "사업자 번호", value: "franchiseNo" },
       { label: "가맹점명", value: "franchiseName" },
       { label: "가맹점주", value: "franchiseRep" },
       { label: "광역시도", value: "franchiseState" },
@@ -127,9 +127,9 @@ export function FranchiseList({
               {standard.sort === "franchiseKey" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseCode")}>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
               사업자 번호{" "}
-              {standard.sort === "franchiseCode" &&
+              {standard.sort === "franchiseNo" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseName")}>
@@ -142,9 +142,9 @@ export function FranchiseList({
               {standard.sort === "franchiseRep" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseTel")}>
               전화번호{" "}
-              {standard.sort === "franchiseNo" &&
+              {standard.sort === "franchiseTel" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseState")}>
@@ -182,10 +182,10 @@ export function FranchiseList({
                 style={{ cursor: "pointer" }}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{franchise.franchiseCode}</Table.Cell>
+                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
                 <Table.Cell>{franchise.franchiseName}</Table.Cell>
                 <Table.Cell>{franchise.franchiseRep}</Table.Cell>
-                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
+                <Table.Cell>{franchise.franchiseTel}</Table.Cell>
                 <Table.Cell>{franchise.franchiseState}</Table.Cell>
                 <Table.Cell>{franchise.franchiseCity}</Table.Cell>
                 <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
