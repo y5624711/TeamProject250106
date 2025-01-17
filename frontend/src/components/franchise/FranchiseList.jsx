@@ -26,7 +26,6 @@ export function FranchiseList({
   onFranchiseClick,
   franchiseList, // 이미 부모에서 받은 franchiseList 사용
 }) {
-  console.log(franchiseList);
   console.log("체크박스 상태:", checkedActive);
 
   const [sortColumn, setSortColumn] = React.useState("franchiseKey"); // 초기 정렬 기준
@@ -106,10 +105,9 @@ export function FranchiseList({
       </Box>
       <Checkbox
         mt={3}
-        Checked={checkedActive}
+        checked={checkedActive}
         onChange={() => {
           setCheckedActive(!checkedActive); // 상태 업데이트
-          console.log("checkedActive 상태:", !checkedActive);
         }}
       >
         삭제 내역 포함 보기

@@ -30,8 +30,8 @@ public interface FranchiseMapper {
             <script>
                 SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, franchise_active, business_employee_name
                 FROM TB_FRNCHSMST
-                WHERE <if test="active == false">franchise_active = TRUE</if>
-                      <if test="active == true">1=1</if>
+                WHERE <if test="active == false">franchise_active = TRUE</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
+                      <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
                 <if test="keyword != null and keyword.trim() != ''">
                     AND (
                         <trim prefixOverrides="OR">

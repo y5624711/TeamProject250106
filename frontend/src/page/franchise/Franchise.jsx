@@ -29,9 +29,7 @@ export function Franchise() {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
-  const [checkedActive, setCheckedActive] = useState(
-    searchParams.get("active") === "true",
-  );
+  const [checkedActive, setCheckedActive] = useState(false);
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
@@ -48,7 +46,8 @@ export function Franchise() {
     axios
       .get("/api/franchise/list", {
         params: {
-          active: searchParams.get("active") || "false",
+          // active: searchParams.get("active") || "false",
+          active: checkedActive,
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
@@ -63,7 +62,7 @@ export function Franchise() {
         setFranchiseKey(data.franchiseList[0]?.franchiseKey);
         setIsLoading(false);
       });
-  }, [searchParams, standard]); // standard 상태가 변경될 때마다 실행
+  }, [searchParams, standard, checkedActive]);
 
   // URLSearchParams의 값에 따라 search 상태를 업데이트
   useEffect(() => {
