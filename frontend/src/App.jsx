@@ -9,7 +9,7 @@ import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
-import { BusinessAndEmployee } from "./page/businessAndDepartment/BusinessAndEmployee.jsx";
+import { BusinessAndDepartment } from "./page/businessAndDepartment/BusinessAndDepartment.jsx";
 import { CommonList } from "./page/commonCode/CommonList.jsx";
 import { CommonAdd } from "./page/commonCode/CommonAdd.jsx";
 
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Main /> },
-      { path: "business", element: <BusinessAndEmployee /> },
+      { path: "business", element: <BusinessAndDepartment /> },
       { path: "commonCode/system/list", element: <CommonList /> },
       { path: "commonCode/system/add", element: <CommonAdd /> },
       {

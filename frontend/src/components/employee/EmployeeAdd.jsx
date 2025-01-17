@@ -1,7 +1,6 @@
 import {
   Box,
   createListCollection,
-  createToaster,
   Heading,
   Input,
   SelectContent,
@@ -15,7 +14,6 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export function EmployeeAdd({ viewKey }) {
   const [formData, setFormData] = useState({
@@ -81,7 +79,8 @@ export function EmployeeAdd({ viewKey }) {
   //  클릭 버튼 시
   const handleSubmit = () => {
     // 수정 일때와 , 추가 일때의 경로 매핑
-    const url = viewKey === -1 ? "/api/employee/add" : "/api/employee/update";
+    const url =
+      viewKey === -1 ? "/api/department/add" : "/api/department/update";
     const method = viewKey === -1 ? "post" : "put";
     // selectedCommonCode.join(""),
     var data;

@@ -7,8 +7,8 @@ import { BusinessSearchAndFilter } from "./BusinessSearchAndFilter.jsx";
 import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
 
-export function BusinessEmployeeList() {
-  const [employee, setEmployee] = useState([]);
+export function BusinessDepartmentList() {
+  const [departmentList, setDepartmentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,7 +32,7 @@ export function BusinessEmployeeList() {
       })
       .then((res) => res.data)
       .then((data) => {
-        setEmployee(data.list);
+        setDepartmentList(data.list);
         setCount(data.count);
       })
       .catch((error) => {
@@ -115,7 +115,7 @@ export function BusinessEmployeeList() {
 
       {/*리스트*/}
       <BusinessListTable
-        employee={employee}
+        department={departmentList}
         sort={sort}
         handleSort={handleSort}
       />
@@ -129,5 +129,3 @@ export function BusinessEmployeeList() {
     </Box>
   );
 }
-
-export default BusinessEmployeeList;

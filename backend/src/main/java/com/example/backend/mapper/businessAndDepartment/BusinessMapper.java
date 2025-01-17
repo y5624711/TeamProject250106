@@ -1,7 +1,7 @@
 package com.example.backend.mapper.businessAndDepartment;
 
 import com.example.backend.dto.business.Business;
-import com.example.backend.dto.employee.Employee;
+import com.example.backend.dto.department.Department;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -21,27 +21,32 @@ public interface BusinessMapper {
     @Select("""
             <script>
             SELECT *
-            FROM TB_EMPMST
+            FROM TB_DEPARTMST
             WHERE
                 <if test="active == false">
-                    employee_active=TRUE
+                    department_active=TRUE
                 </if>
                 <if test="active == true">
-                    employee_active=false
+                    department_active=false
                 </if>
                 AND(<trim prefixOverrides="OR">
                     <if test="searchType == 'number'"  >
-                        employee_no LIKE CONCAT('%',#{keyword},'%')
+                        department_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
                     <if test="searchType == 'name'"  >
-                        OR employee_name LIKE CONCAT('%',#{keyword},'%')
+                        OR department_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
             ORDER BY ${sortColum} ${sortOrder}
             LIMIT #{offset},10
             </script>
             """)
-    List<Employee> listEmployeeSelect(Integer offset, String searchType, String keyword, Boolean active, String sortColum, String sortOrder);
+    List<Department> listDepartmentSelect(Integer offset,
+                                          String searchType,
+                                          String keyword,
+                                          Boolean active,
+                                          String sortColum,
+                                          String sortOrder);
 
     @Update("""
             UPDATE TB_BIZMST
@@ -58,23 +63,23 @@ public interface BusinessMapper {
     @Select("""
             <script>
             SELECT COUNT(*)
-            FROM TB_EMPMST
+            FROM TB_DEPARTMST
             WHERE
                 <if test="active == false">
-                    employee_active=TRUE
+                    department_active=TRUE
                 </if>
                 <if test="active == true">
-                    employee_active=false
+                    department_active=false
                 </if>
                 AND(<trim prefixOverrides="OR">
                     <if test="searchType == 'number'"  >
-                        employee_no LIKE CONCAT('%',#{keyword},'%')
+                        department_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
                     <if test="searchType == 'name'"  >
-                        OR employee_name LIKE CONCAT('%',#{keyword},'%')
+                        OR department_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
             </script>
             """)
-    Integer empCountAll(String searchType, String keyword, Boolean active);
+    Integer departmentCountAll(String searchType, String keyword, Boolean active);
 }

@@ -19,8 +19,8 @@ export function BusinessSearchAndFilter({
   /*검색타입*/
   const optionList = createListCollection({
     items: [
-      { label: "사원번호", value: "number" },
-      { label: "이름", value: "name" },
+      { label: "부서번호", value: "number" },
+      { label: "부서명", value: "name" },
     ],
   });
 

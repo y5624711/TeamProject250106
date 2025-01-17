@@ -26,7 +26,7 @@ public class BusinessController {
             @RequestParam(value = "st", defaultValue = "number") String searchType,
             @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
             @RequestParam(value = "active", defaultValue = "false") Boolean active,
-            @RequestParam(value = "sortColum", defaultValue = "employee_key") String sortColum,
+            @RequestParam(value = "sortColum", defaultValue = "department_code") String sortColum,
             @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
 
 //        System.out.println("active = " + active);
@@ -35,7 +35,7 @@ public class BusinessController {
 //        System.out.println("searchKeyword = " + searchKeyword);
 //        System.out.println("sortColum = " + sortColum);
 //        System.out.println("sortOrder = " + sortOrder);
-        return service.businessEmpList(page, searchType, searchKeyword, active, sortColum, sortOrder);
+        return service.businessDepartmentList(page, searchType, searchKeyword, active, sortColum, sortOrder);
     }
 
     @PutMapping("update")
