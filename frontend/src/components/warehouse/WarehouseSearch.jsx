@@ -15,6 +15,7 @@ function WarehouseSearch({
   warehouseOptionList,
   setSearch,
   handleSearchClick,
+  search,
 }) {
   return (
     <Box>
@@ -52,7 +53,7 @@ function WarehouseSearch({
           ></Input>
         </Box>
         <Box>
-          <Button>검색</Button>
+          <Button onClick={handleSearchClick}>검색</Button>
         </Box>
       </Stack>
     </Box>

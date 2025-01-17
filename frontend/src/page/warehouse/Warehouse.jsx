@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
@@ -11,21 +11,24 @@ import WarehouseAdd from "../../components/warehouse/WarehouseAdd.jsx";
 
 function Warehouse(props) {
   const [value, setValue] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
   const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const navigate = useNavigate();
 
   // 창고 정보 가져오기
   useEffect(() => {
-    axios.get(`/api/warehouse/management`).then((res) => {
-      setWarehouseList(res.data.list);
-      setCountWarehouse(res.data.count);
-    });
+    axios
+      .get(`/api/warehouse/management?${searchParams.toString()}`)
+      .then((res) => {
+        setWarehouseList(res.data.list);
+        setCountWarehouse(res.data.count);
+      });
     window.scrollTo(0, 0);
-  }, []);
+  }, [searchParams]);
 
   // 검색 버튼
   function handleSearchClick() {
@@ -48,6 +51,7 @@ function Warehouse(props) {
           <WarehouseSearch
             warehouseOptionList={warehouseOptionList}
             setSearch={setSearch}
+            search={search}
             handleSearchClick={handleSearchClick}
           />
           {/*리스트 jsx*/}

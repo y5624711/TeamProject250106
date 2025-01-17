@@ -1,40 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  HStack,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-
-function PaginationItems() {
-  return null;
-}
+import React from "react";
+import { Box, Stack, Table } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1,
-  );
 
-  function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/warehouse/management?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
-  }
-
-  useEffect(() => {
-    const page = parseInt(searchParams.get("page")) || 1;
-    setCurrentPage(page);
-  }, [searchParams]);
   return (
     <Box>
       <Stack>
@@ -72,22 +42,6 @@ function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
               ))}
             </Table.Body>
           </Table.Root>
-        </Box>
-        <Box>
-          <PaginationRoot
-            count={countWarehouse}
-            pageSize={10}
-            defaultPage={currentPage}
-            onPageChange={handlePageChangeClick}
-            siblingCount={2}
-            variant="solid"
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
         </Box>
       </Stack>
     </Box>
