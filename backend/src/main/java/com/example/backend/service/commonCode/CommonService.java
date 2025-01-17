@@ -34,10 +34,10 @@ public class CommonService {
     }
 
     // 품목 공통 코드 조회
-    public Map<String, Object> getItemCommonCodeList(Integer page) {
+    public Map<String, Object> getItemCommonCodeList(Integer page, Integer active) {
         Integer offset = (page - 1) * 10;
-        return Map.of("list", mapper.getItemCommonCodeList(offset),
-                "count", mapper.countAll());
+        return Map.of("list", mapper.getItemCommonCodeList(offset, active),
+                "count", mapper.countAll(active));
     }
 
     // 품목 공통 코드 정보 입력됐는지 확인

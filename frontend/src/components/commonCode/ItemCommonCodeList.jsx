@@ -21,7 +21,9 @@ export function ItemCommonCodeList({
   return (
     <Box>
       {/*<SearchBar />*/}
-      <ActiveSwitch />
+      <ActiveSwitch
+        onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
       <Box>
         <Table.Root>
           <Table.Header>

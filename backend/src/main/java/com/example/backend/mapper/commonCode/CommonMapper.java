@@ -23,18 +23,32 @@ public interface CommonMapper {
     int insertCommonCode(CommonCode commonCode);
 
     @Select("""
-            SELECT *
-            FROM TB_ITEMCOMM
-            ORDER BY item_common_code_key
-            LIMIT #{offset}, 10
+            <script>
+                SELECT *
+                FROM TB_ITEMCOMM
+              <where>
+                    <if test=" active == 1">
+                        item_common_code_active = 1
+                    </if>
+            </where>
+                ORDER BY item_common_code_key
+                LIMIT #{offset}, 10
+            </script>
             """)
-    List<ItemCommonCode> getItemCommonCodeList(Integer offset);
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM TB_ITEMCOMM
+            <script>
+                SELECT COUNT(*)
+                FROM TB_ITEMCOMM
+              <where>
+                    <if test="active == 1">
+                        item_common_code_active = 1
+                    </if>
+            </where>
+            </script>
             """)
-    Integer countAll();
+    Integer countAll(Integer active);
 
     @Select("""
             SELECT COUNT(*)

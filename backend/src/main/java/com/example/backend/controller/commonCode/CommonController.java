@@ -103,8 +103,10 @@ public class CommonController {
 
     // 품목 공통 코드 리스트 조회
     @GetMapping("item/list")
-    public Map<String, Object> getItemCommonCodeList(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-        return service.getItemCommonCodeList(page);
+    public Map<String, Object> getItemCommonCodeList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "active", defaultValue = "1") Integer active) {
+        return service.getItemCommonCodeList(page, active);
     }
 
     @GetMapping("list")
