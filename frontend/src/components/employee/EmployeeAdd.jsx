@@ -38,9 +38,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     tel: "",
     note: "",
     workPlace: "",
-    department: "",
+    departMent: "",
   });
 
+  // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "PAR" },
@@ -265,7 +266,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         )}
       </Stack>
-
       <Button onClick={handleSubmit}>
         {viewKey === -1 ? "회원 등록" : "회원 수정"}
       </Button>

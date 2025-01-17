@@ -19,7 +19,7 @@ public interface CommonMapper {
     @Insert("""
             INSERT INTO TB_SYSCOMM
             (common_code, common_code_name, common_code_note)
-            VALUES (#{common_code},#{common_code_name},#{common_code_note})
+            VALUES (#{commonCode},#{commonCodeName},#{commonCodeNote})
             """)
     int insertCommonCode(CommonCode commonCode);
 }

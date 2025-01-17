@@ -4,8 +4,12 @@ import lombok.Data;
 
 @Data
 public class Department {
-    private Integer departmentId;
-    private String commonCode;
-    private String name;
-
+    private Integer departmentKey;
+    private String departmentCommonCode;
+    private String departmentCode;
+    private String departmentName;
+    private String departmentTel;
+    private String departmentFax;
+    private Boolean departmentActive;
+    private String departmentNote;
 }

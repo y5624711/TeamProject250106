@@ -15,12 +15,12 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
-    @GetMapping("list")
+    @GetMapping("/system/list")
     private List<CommonCode> list() {
         return service.selectAllList();
     }
 
-    @PostMapping("add")
+    @PostMapping("/system/add")
     private ResponseEntity<Map<String, Object>> addCommon(@RequestBody CommonCode commonCode) {
         if (service.validate(commonCode)) {
             if (service.addCommonCode(commonCode)) {

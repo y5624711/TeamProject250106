@@ -34,12 +34,14 @@ export function Navbar() {
       <Flex gap={5} pt={5} w={"80%"} mx={"auto"}>
         <Heading>Choongang System</Heading>
         <Spacer />
-        <Text onClick={() => navigate("/commonCode")}>공통 코드 관리</Text>
+        <Text onClick={() => navigate("/commonCode/system/list")}>
+          공통 코드 관리
+        </Text>
         <Text>유저 아이디</Text>
         <Text>로그아웃</Text>
       </Flex>
       <Flex bgColor={"lightSlateGray"} width="100%" justify="center" gap={10}>
-        <NavItem path="/business/list">기준정보 관리</NavItem>
+        <NavItem path="/business">기준정보 관리</NavItem>
         <NavItem>구매/설치 관리</NavItem>
         <NavItem>물류 관리</NavItem>
       </Flex>

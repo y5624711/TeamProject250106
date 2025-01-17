@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,12 +14,40 @@ import java.util.Map;
 public class BusinessService {
     final BusinessMapper mapper;
 
-    public Map<String, Object> businessInfo() {
-        Business corp = mapper.businessSelect();
 
-        List<String> empList = mapper.employeeSelect();
-
-
-        return Map.of("회사", corp, "사원", empList);
+    public Business businessInfo() {
+        return mapper.businessSelect();
     }
+
+    public Map<String, Object> businessDepartmentList(Integer page,
+                                                      String searchType,
+                                                      String keyword,
+                                                      Boolean active,
+                                                      String sortColum,
+                                                      String sortOrder) {
+        int offset = (page - 1) * 10;
+
+        if (searchType.isEmpty()) searchType = "number";
+        if (keyword.isEmpty()) keyword = "";
+
+        return Map.of("list", mapper.listDepartmentSelect(offset, searchType, keyword, active, sortColum, sortOrder),
+                "count", mapper.departmentCountAll(searchType, keyword, active));
+    }
+
+
+    public boolean validate(Business business) {
+        Boolean name = !business.getBusinessName().trim().isEmpty();
+        Boolean rep = !business.getBusinessRep().trim().isEmpty();
+        Boolean no = !business.getBusinessNo().trim().isEmpty();
+        Boolean tel = !business.getBusinessTel().trim().isEmpty();
+        Boolean address = !business.getBusinessAddress().trim().isEmpty();
+
+        return name && rep && no && tel && address;
+    }
+
+    public boolean updateBusiness(Business business) {
+        int cnt = mapper.updateBusiness(business);
+        return cnt == 1;
+    }
+
 }

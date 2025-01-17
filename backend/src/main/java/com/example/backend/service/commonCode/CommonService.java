@@ -20,8 +20,8 @@ public class CommonService {
 
     //값이 입력되었는지 체크
     public boolean validate(CommonCode commonCode) {
-        boolean common_code = !commonCode.getCommon_code().trim().isEmpty();
-        boolean common_name = !commonCode.getCommon_code_name().trim().isEmpty();
+        boolean common_code = !commonCode.getCommonCode().trim().isEmpty();
+        boolean common_name = !commonCode.getCommonCodeName().trim().isEmpty();
 
         return common_code && common_name;
     }
