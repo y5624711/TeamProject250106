@@ -39,16 +39,16 @@ public interface FranchiseMapper {
                                 franchise_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseRep'">
-                                franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
-                                franchise_state LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseCity'">
-                                franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='businessEmployeeName'">
-                                business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                         </trim>
                     )
@@ -73,16 +73,16 @@ public interface FranchiseMapper {
                                 franchise_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseRep'">
-                                franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
-                                franchise_state LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseCity'">
-                                franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                               OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='businessEmployeeName'">
-                                business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                         </trim>
                     )
