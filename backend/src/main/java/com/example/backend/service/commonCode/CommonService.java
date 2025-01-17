@@ -42,9 +42,16 @@ public class CommonService {
 
     // 품목 공통 코드 정보 입력됐는지 확인
     public boolean validateItemCommonCode(ItemCommonCode itemCommonCode) {
-        return !(
-                itemCommonCode.getItemCommonCode() == null || itemCommonCode.getItemCommonCode().trim().isEmpty() ||
-                        itemCommonCode.getItemCommonName() == null || itemCommonCode.getItemCommonName().trim().isEmpty());
+        // 품목 코드가 null이 아니고, 공백이 아니며, 영문 대문자 3자리로 되어있는지 검증
+        boolean isValidItemCommonCode = itemCommonCode.getItemCommonCode() != null &&
+                !itemCommonCode.getItemCommonCode().trim().isEmpty() &&
+                itemCommonCode.getItemCommonCode().matches("^[A-Z]{3}$");
+
+        // 품목명도 null이 아니고, 공백이 아닌지 확인
+        boolean isValidItemCommonName = itemCommonCode.getItemCommonName() != null &&
+                !itemCommonCode.getItemCommonName().trim().isEmpty();
+
+        return isValidItemCommonCode && isValidItemCommonName;
     }
 
     // 품목 공통 코드 중복 화인

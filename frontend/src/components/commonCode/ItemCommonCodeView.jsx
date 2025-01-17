@@ -19,11 +19,26 @@ export function ItemCommonCodeView({
     itemCommonName: "",
     itemCommonCodeNote: "",
   });
+  const [isValid, setIsValid] = useState(false);
 
-  // 수정 상태에서 품목 공통 코드 변경 시 수정 상태 해제
+  // 수정 상태에서 품목 공통 코드 변경 시 수정 상태 해제, 버
   useEffect(() => {
     setIsEditing(false);
   }, [itemCommonCodeKey]);
+
+  // 품목 코드와 품목명이 조건에 맞는지 확인
+  useEffect(() => {
+    if (isEditing) {
+      setIsValid(
+        /^[A-Z]{3}$/.test(editedItemCommonCode.itemCommonCode) &&
+          editedItemCommonCode.itemCommonName.trim() !== "",
+      );
+    }
+  }, [
+    editedItemCommonCode.itemCommonCode,
+    editedItemCommonCode.itemCommonName,
+    isEditing, // 수정 상태일 때만 유효성 검사
+  ]);
 
   // 품목 공통 코드 상세 정보 가져오기
   useEffect(() => {
@@ -127,7 +142,11 @@ export function ItemCommonCodeView({
             <Box>
               {isEditing ? (
                 <>
-                  <Field label={"품목코드"}>
+                  <Field
+                    label={"품목코드"}
+                    required
+                    helperText="품목 코드는 영문 대문자 3자리로 입력하세요."
+                  >
                     <Input
                       name="itemCommonCode"
                       placeholder="품목코드"
@@ -135,7 +154,7 @@ export function ItemCommonCodeView({
                       onChange={handleChange}
                     />
                   </Field>
-                  <Field label={"품목명"}>
+                  <Field label={"품목명"} required>
                     <Input
                       name="itemCommonName"
                       placeholder="품목명"
@@ -181,7 +200,9 @@ export function ItemCommonCodeView({
       <Box>
         {isEditing ? (
           <HStack>
-            <Button onClick={handleSubmitClick}>저장</Button>
+            <Button onClick={handleSubmitClick} disabled={!isValid}>
+              저장
+            </Button>
             <Button onClick={() => setIsEditing(false)}>취소</Button>
           </HStack>
         ) : (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import { Box, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
@@ -14,9 +14,25 @@ export function ItemCommonCodeAdd({
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [itemCommonName, setItemCommonName] = useState("");
   const [itemCommonCodeNote, setItemCommonCodeNote] = useState("");
+  const [isValid, setIsValid] = useState(false);
+
+  // 품목 공통 코드는 영문 대문자 3자리, 코드명은 입력되어야 버튼 활성화
+  useEffect(() => {
+    setIsValid(
+      /^[A-Z]{3}$/.test(itemCommonCode) && itemCommonName.trim() !== "",
+    );
+  }, [itemCommonCode, itemCommonName]);
 
   // 품목 공통 코드 등록하기
   const handleAddClick = () => {
+    if (!/^[A-Z]{3}$/.test(itemCommonCode)) {
+      toaster.create({
+        description: "품목 코드는 대문자 3자리로 입력해야 합니다.",
+        type: "error",
+      });
+      return;
+    }
+
     const itemData = {
       itemCommonCode,
       itemCommonName,
@@ -45,14 +61,20 @@ export function ItemCommonCodeAdd({
     <Box>
       <Button onClick={onCancel}>취소</Button>
       <Stack>
-        <Field label={"품목 코드"}>
+        <Field
+          label={"품목 코드"}
+          required
+          helperText="품목 코드는 영문 대문자 3자리로 입력하세요."
+        >
           <Input
             placeholder="품목 코드"
             value={itemCommonCode}
             onChange={(e) => setItemCommonCode(e.target.value)}
+            maxLength={3}
           />
         </Field>
-        <Field label={"품목명"}>
+
+        <Field label={"품목명"} required>
           <Input
             placeholder="품목명"
             value={itemCommonName}
@@ -67,7 +89,9 @@ export function ItemCommonCodeAdd({
           />
         </Field>
 
-        <Button onClick={handleAddClick}>등록</Button>
+        <Button onClick={handleAddClick} disabled={!isValid}>
+          등록
+        </Button>
       </Stack>
     </Box>
   );
