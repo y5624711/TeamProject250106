@@ -1,4 +1,4 @@
-package com.example.backend.dto.Franchise;
+package com.example.backend.dto.franchise;
 
 import lombok.Data;
 
@@ -6,6 +6,7 @@ import lombok.Data;
 public class Franchise {
     private Integer franchiseKey;
     private String businessEmployeeNo;
+    private String businessEmployeeName;
     private String franchiseCode;
     private String franchiseName;
     private String franchiseRep;
@@ -16,6 +17,6 @@ public class Franchise {
     private String franchisePost;
     private String franchiseState;
     private String franchiseCity;
-    private boolean franchiseActive;
+    private Boolean franchiseActive;
     private String franchiseNote;
 }
