@@ -1,7 +1,7 @@
-package com.example.backend.controller.businessAndDepartment;
+package com.example.backend.controller.business;
 
 import com.example.backend.dto.business.Business;
-import com.example.backend.service.businessAndDepartment.BusinessService;
+import com.example.backend.service.business.BusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +20,6 @@ public class BusinessController {
         return service.businessInfo();
     }
 
-    @GetMapping("list")
-    private Map<String, Object> list(
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "st", defaultValue = "number") String searchType,
-            @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
-            @RequestParam(value = "active", defaultValue = "false") Boolean active,
-            @RequestParam(value = "sortColum", defaultValue = "department_code") String sortColum,
-            @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
-
-//        System.out.println("active = " + active);
-//        System.out.println("page = " + page);
-//        System.out.println("searchType = " + searchType);
-//        System.out.println("searchKeyword = " + searchKeyword);
-//        System.out.println("sortColum = " + sortColum);
-//        System.out.println("sortOrder = " + sortOrder);
-        return service.businessDepartmentList(page, searchType, searchKeyword, active, sortColum, sortOrder);
-    }
 
     @PutMapping("update")
     private ResponseEntity<Map<String, Object>> update(@RequestBody Business business) {
@@ -54,4 +37,6 @@ public class BusinessController {
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
         }
     }
+
+
 }
