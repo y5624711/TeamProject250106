@@ -25,7 +25,7 @@ function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
               {warehouseList.map((warehouse) => (
                 <Table.Row
                   key={warehouse.warehouseKey}
-                  onClick={() => {
+                  onDoubleClick={() => {
                     onShowDetail(warehouse.warehouseKey);
                   }}
                 >
