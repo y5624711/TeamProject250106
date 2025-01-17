@@ -127,6 +127,9 @@ export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
 
   return (
     <Box>
+      <Text>
+        물품 조회 {">"} 물품 상세 {itemKey}
+      </Text>
       <HStack>
         {item.map((item) => (
           <Box key={item.itemKey}>

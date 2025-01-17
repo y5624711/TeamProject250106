@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Input, Stack, Textarea } from "@chakra-ui/react";
+import { Heading, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
 
-function CustomerView({ customerKey }) {
+function CustomerView({ customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
 
-  // //정보 불러오기
+  //정보 불러오기
   useEffect(() => {
     if (customerKey) {
       axios
@@ -21,9 +21,6 @@ function CustomerView({ customerKey }) {
     return <p>로딩 중이거나 고객 정보가 없습니다.</p>;
   }
 
-  // console.log(customerKey);
-  // console.log(customer);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCustomer((prevCustomer) => ({
@@ -32,22 +29,9 @@ function CustomerView({ customerKey }) {
     }));
   };
 
-  //수정 버튼
-  const handleEditClick = () => {
-    // console.log(customer);
-    axios
-      .put("api/customer/update", customer)
-      .then()
-      .catch((err) => console.error("오류", err));
-  };
-
-  const handleDeleteClick = () => {
-    axios.put(`api/customer/delete/${customerKey}`).then().catch();
-  };
-
   return (
     <div>
-      <h2>협력 업체 정보</h2>
+      <Heading>협력 업체 정보</Heading>
       <Stack gap={5}>
         <Field label={"업체 코드"}>
           <Input readOnly value={customer.customerCode} />
@@ -66,7 +50,7 @@ function CustomerView({ customerKey }) {
             onChange={handleInputChange}
           />
         </Field>
-        <Field label={"품목 코드(차후 셀렉트)"}>
+        <Field label={"품목 코드"}>
           <Input readOnly name="itemCode" value={customer.itemCode} />
         </Field>
         <Field label={"사업자 번호"}>
@@ -120,8 +104,8 @@ function CustomerView({ customerKey }) {
         </Field>
       </Stack>
       <div>
-        <Button onClick={handleDeleteClick}>삭제</Button>
-        <Button onClick={handleEditClick}>수정</Button>
+        <Button onClick={onDelete}>삭제</Button>
+        <Button onClick={() => onEdit(customer)}>수정</Button>
       </div>
     </div>
   );

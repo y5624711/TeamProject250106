@@ -1,5 +1,6 @@
 package com.example.backend.mapper.customer;
 
+import com.example.backend.dto.commonCode.CommonCode;
 import com.example.backend.dto.customer.Customer;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,24 +25,50 @@ public interface CustomerMapper {
 
 
     @Select("""
-            SELECT customer_key, customer_name, customer_code, item_code, customer_rep, customer_active 
-            FROM TB_CUSTMST    
+            <script>
+            SELECT customer_key, customer_name, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_active 
+            FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+            WHERE 
+                <if test="active == false">
+                    customer_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+            <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='customerName'">
+                            customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='itemName'">
+                            OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='customerRep'">
+                            OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                    </trim>
+                )    
+            </if>
+            ORDER BY ${sort} ${order}
+            LIMIT #{offset}, 10
+            </script>
             """)
-    List<Customer> selectAllCustomer();
+    List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
     @Select("""
             SELECT *
             FROM TB_CUSTMST
             WHERE customer_key = #{customerKey}
             """)
-    Customer selectByCustomerKey(String customerKey);
+    Customer viewCustomer(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
             SET customer_active = FALSE
             WHERE customer_key = #{customerKey}    
             """)
-    int deactivateCustomer(String customerKey);
+    int deleteCustomer(String customerKey);
 
     @Update("""
             UPDATE TB_CUSTMST
@@ -52,5 +79,46 @@ public interface CustomerMapper {
             customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
             WHERE customer_key = #{customerKey}    
             """)
-    int updateCustomer(Customer customer);
+    int editCustomer(Customer customer);
+
+    @Select("""
+            SELECT ic.*
+            FROM TB_ITEMCOMM ic
+                     LEFT JOIN (SELECT DISTINCT item_code
+                                FROM TB_CUSTMST
+                                WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
+            WHERE cm.item_code IS NULL
+              AND ic.item_common_code_active = TRUE
+            """)
+    List<CommonCode> itemCodeList();
+
+    @Select("""
+            <script>
+                SELECT COUNT(*)
+                FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+                WHERE 
+                <if test="active == false">
+                    customer_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                    <if test="keyword != null and keyword.trim()!=''">
+                        AND (
+                            <trim prefixOverrides="OR">
+                                <if test="type=='all' or type=='customerName'">
+                                    customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                </if>                
+                                <if test="type=='all' or type=='itemName'">
+                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                </if>                
+                                <if test="type=='all' or type=='customerRep'">
+                                    OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
+                                </if>                
+                            </trim>
+                        )    
+                </if>
+            </script>
+            """)
+    Integer countCustomerList(Boolean active, String type, String keyword);
 }

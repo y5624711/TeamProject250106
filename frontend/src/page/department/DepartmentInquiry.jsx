@@ -13,7 +13,7 @@ function DepartmentInquiry(props) {
 
   return (
     <div>
-      <h1>인사 조회 > 부서 조회</h1>
+      <h1>인사 조회 {">"} 부서 조회</h1>
       <div>
         {departmentList.map((d) => (
           <ul>
