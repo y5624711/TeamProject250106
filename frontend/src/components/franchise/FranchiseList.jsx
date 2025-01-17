@@ -30,10 +30,13 @@ export function FranchiseList({
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
+      { label: "사업자번호", value: "franchiseCode" },
       { label: "가맹점명", value: "franchiseName" },
       { label: "가맹점주", value: "franchiseRep" },
+      { label: "전화번호", value: "franchiseTel" },
       { label: "광역시도", value: "franchiseState" },
       { label: "시군", value: "franchiseCity" },
+      { label: "본사 직원 사번", value: "businessEmployeeNo" },
       { label: "본사 직원 이름", value: "businessEmployeeName" },
     ],
   });
@@ -120,6 +123,11 @@ export function FranchiseList({
               {standard.sort === "franchiseKey" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseCode")}>
+              사업자 번호{" "}
+              {standard.sort === "franchiseCode" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseName")}>
               가맹점명{" "}
               {standard.sort === "franchiseName" &&
@@ -130,6 +138,11 @@ export function FranchiseList({
               {standard.sort === "franchiseRep" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
+              전화번호{" "}
+              {standard.sort === "franchiseNo" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseState")}>
               광역시도{" "}
               {standard.sort === "franchiseState" &&
@@ -138,6 +151,13 @@ export function FranchiseList({
             <TableColumnHeader onClick={() => HeaderClick("franchiseCity")}>
               시군{" "}
               {standard.sort === "franchiseCity" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
+            <TableColumnHeader
+              onClick={() => HeaderClick("businessEmployeeNo")}
+            >
+              본사 직원 사번{" "}
+              {standard.sort === "businessEmployeeNo" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader
@@ -158,10 +178,13 @@ export function FranchiseList({
                 style={{ cursor: "pointer" }}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
+                <Table.Cell>{franchise.franchiseCode}</Table.Cell>
                 <Table.Cell>{franchise.franchiseName}</Table.Cell>
                 <Table.Cell>{franchise.franchiseRep}</Table.Cell>
+                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
                 <Table.Cell>{franchise.franchiseState}</Table.Cell>
                 <Table.Cell>{franchise.franchiseCity}</Table.Cell>
+                <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
                 <Table.Cell>{franchise.businessEmployeeName}</Table.Cell>
               </Table.Row>
             ))
