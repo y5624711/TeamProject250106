@@ -91,6 +91,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>본사 직원 사번</Text>
           <Input
+            name="businessEmployeeNo"
             value={franchise.businessEmployeeNo}
             onChange={handleChange}
             placeholder="본사 직원 사번"
@@ -100,6 +101,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>본사 직원 이름</Text>
           <Input
+            name="businessEmployeeName"
             value={franchise.businessEmployeeName}
             onChange={handleChange}
             placeholder="본사 직원 이름"
@@ -109,6 +111,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>가맹점 코드</Text>
           <Input
+            name="franchiseCode"
             value={franchise.franchiseCode}
             onChange={handleChange}
             placeholder="가맹점 코드"
@@ -118,6 +121,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>가맹점명</Text>
           <Input
+            name="franchiseName"
             value={franchise.franchiseName}
             onChange={handleChange}
             placeholder="가맹점명"
@@ -127,6 +131,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>가맹점주</Text>
           <Input
+            name="franchiseRep"
             value={franchise.franchiseRep}
             onChange={handleChange}
             placeholder="가맹점주"
@@ -136,6 +141,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>전화번호</Text>
           <Input
+            name="franchiseTel"
             value={franchise.franchiseTel}
             onChange={handleChange}
             placeholder="전화번호"
@@ -145,6 +151,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>사업자 번호</Text>
           <Input
+            name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
             placeholder="사업자 번호"
@@ -164,6 +171,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>상세 주소</Text>
           <Input
+            name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
             onChange={handleChange}
             placeholder="상세 주소"
@@ -173,6 +181,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>우편 번호</Text>
           <Input
+            name="franchisePost"
             value={franchise.franchisePost}
             onChange={handleChange}
             placeholder="우편 번호"
@@ -182,6 +191,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>광역시도</Text>
           <Input
+            name="franchiseState"
             value={franchise.franchiseState}
             onChange={handleChange}
             placeholder="광역시도"
@@ -191,6 +201,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>시군</Text>
           <Input
+            name="franchiseCity"
             value={franchise.franchiseCity}
             onChange={handleChange}
             placeholder="시군"
@@ -200,6 +211,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         <Box mb={4}>
           <Text>비고</Text>
           <Input
+            name="franchiseNote"
             value={franchise.franchiseNote}
             onChange={handleChange}
             placeholder="비고"
