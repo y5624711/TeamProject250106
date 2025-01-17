@@ -53,7 +53,7 @@ export function SideBar() {
           <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
           <SidebarItem path="/customer">협력업체 관리</SidebarItem>
           <SidebarItem path="/item">품목 관리</SidebarItem>
-          <SidebarItem path="/warehouse">창고 관리</SidebarItem>
+          <SidebarItem path="/warehouse/management">창고 관리</SidebarItem>
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
         </Stack>
       </Box>
