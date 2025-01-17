@@ -31,9 +31,9 @@ function WarehouseSearch({
               <SelectValueText />
             </SelectTrigger>
             <SelectContent>
-              {warehouseOptionList.items.map((items) => (
-                <SelectItem item={items} key={items.value}>
-                  {items.label}
+              {warehouseOptionList.items.map((option) => (
+                <SelectItem item={option} key={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>

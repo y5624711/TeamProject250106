@@ -30,6 +30,8 @@ function Warehouse(props) {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  console.log("isAdding", isAdding);
+
   // 검색 버튼
   function handleSearchClick() {
     const searchInfo = { type: search.type, keyword: search.keyword };
@@ -39,6 +41,7 @@ function Warehouse(props) {
 
   const handleShowDetail = (warehouseKey) => {
     setSelectedWarehouseKey(warehouseKey);
+    console.log("창고키", warehouseKey);
   };
 
   return (

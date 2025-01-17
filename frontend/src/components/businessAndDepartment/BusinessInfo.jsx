@@ -14,7 +14,7 @@ import { toaster } from "../ui/toaster.jsx";
 function CustomInput({ onChange, readOnly = false, ...props }) {
   return (
     <Input
-      borderColor="black" // 기본 외곽선 색상
+      // borderColor="black" // 기본 외곽선 색상
       boxShadow="0 0 0 1px black" // 기본 외곽선 스타일
       size="sm"
       readOnly={readOnly}
@@ -54,7 +54,7 @@ export function BusinessInfo({
   };
 
   return (
-    <Box p={2} bg={"gray.100"}>
+    <Box p={10}>
       <Box>
         <Flex>
           <Heading>사업장 정보</Heading>
