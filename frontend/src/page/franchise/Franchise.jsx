@@ -128,7 +128,7 @@ export function Franchise() {
       <Box flex={"1"} display={"flex"} p={4}>
         <Box flex={"1"} pr={4}>
           <Heading size="md" mb={4}>
-            가맹점 관리 {">"} 가맹점 조회
+            가맹점 관리
           </Heading>
           <FranchiseList
             franchiseList={franchiseList}
