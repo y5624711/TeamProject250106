@@ -4,7 +4,6 @@ import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useState } from "react";
 import { toaster } from "../../components/ui/toaster.jsx";
-import { CommonCodeSideBar } from "../../components/tool/CommonCodeSideBar.jsx";
 
 export function CommonAdd() {
   const [commonCode, setCommonCode] = useState("");
@@ -28,7 +27,6 @@ export function CommonAdd() {
   return (
     <Box>
       <HStack>
-        <CommonCodeSideBar />
         <Stack>
           <Field label={"공통코드"}>
             <Input

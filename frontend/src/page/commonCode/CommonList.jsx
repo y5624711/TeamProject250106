@@ -1,7 +1,6 @@
 import { Box, HStack, Stack, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { CommonCodeSideBar } from "../../components/tool/CommonCodeSideBar.jsx";
 
 export function CommonList() {
   const [commonList, setCommonList] = useState([]);
@@ -18,7 +17,6 @@ export function CommonList() {
   return (
     <Box>
       <HStack>
-        <CommonCodeSideBar />
         <Stack>
           <Table.Root>
             <Table.Header>

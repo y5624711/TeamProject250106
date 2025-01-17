@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";

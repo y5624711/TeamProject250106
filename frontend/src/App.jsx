@@ -5,8 +5,6 @@ import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
-import { BusinessAndEmployeeList } from "./page/businessAndDepartment/BusinessAndEmployeeList.jsx";
 import { ItemCommonCode } from "./page/commonCode/ItemCommonCode.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
