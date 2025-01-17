@@ -17,8 +17,17 @@ import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+} from "../ui/dialog.jsx";
 
-export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
+export function ItemAdd({ isOpen, onClose, onAdd, setItemKey, setChange }) {
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [itemCommonName, setItemCommonName] = useState("");
   const [customerName, setCustomerName] = useState("");
@@ -35,12 +44,8 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
   useEffect(() => {
     axios
       .get("/api/item/commonCode")
-      .then((res) => {
-        setItemCommonCodeList(res.data);
-      })
-      .catch((error) => {
-        console.error("데이터 로딩 중 오류 발생: ", error);
-      });
+      .then((res) => setItemCommonCodeList(res.data))
+      .catch((error) => console.error("데이터 로딩 중 오류 발생:", error));
   }, []);
 
   // 품목 선택 시 협력업체 이름 가져오기
@@ -49,11 +54,9 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
       axios
         .get(`/api/item/customer/${itemCommonCode}`)
         .then((res) => {
-          const customerName = res.data[0]?.customerName || "없음";
-          const customerCode = res.data[0]?.customerCode || "";
-
-          setCustomerName(customerName);
-          setCustomerCode(customerCode);
+          const customerData = res.data[0] || {};
+          setCustomerName(customerData.customerName || "없음");
+          setCustomerCode(customerData.customerCode || "");
         })
         .catch((error) => {
           console.error("협력업체 정보 로드 중 오류 발생: ", error);
@@ -110,85 +113,174 @@ export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
 
   return (
     <Box>
-      <Button onClick={onCancel}>취소</Button>
+      <DialogRoot open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>품목 등록</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <Stack spacing={4}>
+              <SelectRoot
+                onValueChange={(e) => {
+                  setItemCommonName(e.value);
+                  const selectedItem = itemCommonCodeList.find(
+                    (item) => item.item_common_name == e.value,
+                  );
+                  console.log("내부", selectedItem);
+                  if (selectedItem) {
+                    setItemCommonCode(selectedItem.item_common_code); // 선택된 품목 코드 설정
+                  }
+                }}
+              >
+                <SelectLabel>
+                  품목{" "}
+                  <Text as="span" color="red.500">
+                    *
+                  </Text>
+                </SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText>
+                    {itemCommonName != "" ? itemCommonName : "품목 선택"}
+                  </SelectValueText>
+                </SelectTrigger>
+                <SelectContent>
+                  {itemCommonCodes.items.map((item) => (
+                    <SelectItem item={item.label} key={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+              <Field label={"담당업체"} required>
+                <Input readOnly placeholder="담당업체" value={customerName} />
+              </Field>
+              <Field label="규격">
+                <Input
+                  placeholder="규격"
+                  value={size}
+                  onChange={(e) => setSize(e.target.value)}
+                />
+              </Field>
+              <Field label="단위">
+                <Input
+                  placeholder="단위"
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                />
+              </Field>
+              <Field label="입고가" required>
+                <NumberInputRoot>
+                  <NumberInputField
+                    placeholder="입고가"
+                    value={inputPrice}
+                    onChange={(e) => setInputPrice(e.target.value)}
+                  />
+                </NumberInputRoot>
+              </Field>
+              <Field label="출고가" required>
+                <NumberInputRoot>
+                  <NumberInputField
+                    placeholder="출고가"
+                    value={outputPrice}
+                    onChange={(e) => setOutputPrice(e.target.value)}
+                  />
+                </NumberInputRoot>
+              </Field>
+              <Field label="비고">
+                <Input
+                  placeholder="비고"
+                  value={itemNote}
+                  onChange={(e) => setItemNote(e.target.value)}
+                />
+              </Field>
+            </Stack>
+          </DialogBody>
+          <DialogFooter>
+            <DialogCloseTrigger asChild>
+              <Button variant="outline">취소</Button>
+            </DialogCloseTrigger>
+            <Button onClick={handleAddClick}>등록</Button>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
       <Stack>
-        <SelectRoot
-          onValueChange={(e) => {
-            setItemCommonName(e.value);
-            const selectedItem = itemCommonCodeList.find(
-              (item) => item.item_common_name == e.value,
-            );
-            console.log("내부", selectedItem);
-            if (selectedItem) {
-              setItemCommonCode(selectedItem.item_common_code); // 선택된 품목 코드 설정
-            }
-          }}
-        >
-          <SelectLabel>
-            품목{" "}
-            <Text as="span" color="red.500">
-              *
-            </Text>
-          </SelectLabel>
-          <SelectTrigger>
-            <SelectValueText>
-              {itemCommonName != "" ? itemCommonName : "품목 선택"}
-            </SelectValueText>
-          </SelectTrigger>
-          <SelectContent>
-            {itemCommonCodes.items.map((item) => (
-              <SelectItem item={item.label} key={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+        {/*<SelectRoot*/}
+        {/*  onValueChange={(e) => {*/}
+        {/*    setItemCommonName(e.value);*/}
+        {/*    const selectedItem = itemCommonCodeList.find(*/}
+        {/*      (item) => item.item_common_name == e.value,*/}
+        {/*    );*/}
+        {/*    console.log("내부", selectedItem);*/}
+        {/*    if (selectedItem) {*/}
+        {/*      setItemCommonCode(selectedItem.item_common_code); // 선택된 품목 코드 설정*/}
+        {/*    }*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <SelectLabel>*/}
+        {/*    품목{" "}*/}
+        {/*    <Text as="span" color="red.500">*/}
+        {/*      **/}
+        {/*    </Text>*/}
+        {/*  </SelectLabel>*/}
+        {/*  <SelectTrigger>*/}
+        {/*    <SelectValueText>*/}
+        {/*      {itemCommonName != "" ? itemCommonName : "품목 선택"}*/}
+        {/*    </SelectValueText>*/}
+        {/*  </SelectTrigger>*/}
+        {/*  <SelectContent>*/}
+        {/*    {itemCommonCodes.items.map((item) => (*/}
+        {/*      <SelectItem item={item.label} key={item.value}>*/}
+        {/*        {item.label}*/}
+        {/*      </SelectItem>*/}
+        {/*    ))}*/}
+        {/*  </SelectContent>*/}
+        {/*</SelectRoot>*/}
 
-        <Field label={"담당업체"} required>
-          <Input readOnly placeholder="담당업체" value={customerName} />
-        </Field>
-        <Field label={"규격"}>
-          <Input
-            placeholder="규격"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-          />
-        </Field>
-        <Field label={"단위"}>
-          <Input
-            placeholder="단위"
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-          />
-        </Field>
-        <Field label={"입고가"} required>
-          <NumberInputRoot>
-            <NumberInputField
-              placeholder="입고가"
-              value={inputPrice}
-              onChange={(e) => setInputPrice(e.target.value)}
-            />
-          </NumberInputRoot>
-        </Field>
-        <Field label={"출고가"} required>
-          <NumberInputRoot>
-            <NumberInputField
-              placeholder="출고가"
-              value={outputPrice}
-              onChange={(e) => setOutputPrice(e.target.value)}
-            />
-          </NumberInputRoot>
-        </Field>
-        <Field label={"비고"}>
-          <Input
-            placeholder="비고"
-            value={itemNote}
-            onChange={(e) => setItemNote(e.target.value)}
-          />
-        </Field>
-        <Button onClick={handleAddClick} disabled={!isValid}>
-          등록
-        </Button>
+        {/*  <Field label={"담당업체"} required>*/}
+        {/*    <Input readOnly placeholder="담당업체" value={customerName} />*/}
+        {/*  </Field>*/}
+        {/*  <Field label={"규격"}>*/}
+        {/*    <Input*/}
+        {/*      placeholder="규격"*/}
+        {/*      value={size}*/}
+        {/*      onChange={(e) => setSize(e.target.value)}*/}
+        {/*    />*/}
+        {/*  </Field>*/}
+        {/*  <Field label={"단위"}>*/}
+        {/*    <Input*/}
+        {/*      placeholder="단위"*/}
+        {/*      value={unit}*/}
+        {/*      onChange={(e) => setUnit(e.target.value)}*/}
+        {/*    />*/}
+        {/*  </Field>*/}
+        {/*  <Field label={"입고가"} required>*/}
+        {/*    <NumberInputRoot>*/}
+        {/*      <NumberInputField*/}
+        {/*        placeholder="입고가"*/}
+        {/*        value={inputPrice}*/}
+        {/*        onChange={(e) => setInputPrice(e.target.value)}*/}
+        {/*      />*/}
+        {/*    </NumberInputRoot>*/}
+        {/*  </Field>*/}
+        {/*  <Field label={"출고가"} required>*/}
+        {/*    <NumberInputRoot>*/}
+        {/*      <NumberInputField*/}
+        {/*        placeholder="출고가"*/}
+        {/*        value={outputPrice}*/}
+        {/*        onChange={(e) => setOutputPrice(e.target.value)}*/}
+        {/*      />*/}
+        {/*    </NumberInputRoot>*/}
+        {/*  </Field>*/}
+        {/*  <Field label={"비고"}>*/}
+        {/*    <Input*/}
+        {/*      placeholder="비고"*/}
+        {/*      value={itemNote}*/}
+        {/*      onChange={(e) => setItemNote(e.target.value)}*/}
+        {/*    />*/}
+        {/*  </Field>*/}
+        {/*  <Button onClick={handleAddClick} disabled={!isValid}>*/}
+        {/*    등록*/}
+        {/*  </Button>*/}
       </Stack>
     </Box>
   );

@@ -7,6 +7,17 @@ import { Button } from "../../components/ui/button.jsx";
 import { ItemView } from "../../components/item/ItemView.jsx";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog.jsx";
 
 export function Item() {
   const [selectedPage, setSelectedPage] = useState("view");
@@ -15,6 +26,7 @@ export function Item() {
   const [change, setChange] = useState(false);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -60,10 +72,10 @@ export function Item() {
           )}
           {selectedPage === "add" ? (
             <ItemAdd
-              onCancel={() => {
-                handleSelectPage("view");
-                setItemKey(itemKey);
-              }}
+              // onCancel={() => {
+              //   handleSelectPage("view");
+              //   setItemKey(itemKey);
+              // }}
               onAdd={handleAddItem}
               setItemKey={setItemKey}
               setChange={setChange}
@@ -77,6 +89,36 @@ export function Item() {
             />
           )}
         </Stack>
+        <Button onClick={() => setIsDialogOpen(true)}>물품 등록</Button>
+        <ItemAdd
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onAdd={handleAddItem}
+        />
+        <DialogRoot>
+          <DialogTrigger asChild>
+            <Button>품목 등록</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>품목 등록</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <ItemAdd
+                onAdd={handleAddItem}
+                setItemKey={setItemKey}
+                setChange={setChange}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogActionTrigger>
+              <Button>Save</Button>
+            </DialogFooter>
+            <DialogCloseTrigger />
+          </DialogContent>
+        </DialogRoot>
       </HStack>
     </Box>
   );
