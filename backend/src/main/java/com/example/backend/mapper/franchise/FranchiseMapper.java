@@ -8,6 +8,17 @@ import java.util.List;
 @Mapper
 public interface FranchiseMapper {
 
+    // 가맹점 코드 생성하기
+    @Select("""
+            <script>
+            SELECT COALESCE(MAX(CAST(SUBSTRING(franchise_code, 4) AS UNSIGNED)), 0) AS maxNumber
+            FROM TB_FRNCHSMST
+            WHERE franchise_code LIKE CONCAT(#{franchiseCode}, '%')
+            AND franchise_code REGEXP '^[A-Za-z]+[0-9]+$'
+            </script>
+            """)
+    Long viewMaxFranchiseCode(String franchiseCode);
+
     // 가맹점 등록하기
     @Insert("""
             INSERT INTO TB_FRNCHSMST 
