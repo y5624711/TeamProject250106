@@ -14,23 +14,19 @@ import {
   TableRow,
 } from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
-import React from "react";
+import React, { useMemo } from "react";
 
 export function FranchiseList({
-  franchiseKey,
+  franchiseList,
   search,
   setSearch,
   handleSearchClick,
   checkedActive,
   setCheckedActive,
   onFranchiseClick,
-  franchiseList, // 이미 부모에서 받은 franchiseList 사용
+  standard,
+  setStandard,
 }) {
-  console.log("체크박스 상태:", checkedActive);
-
-  const [sortColumn, setSortColumn] = React.useState("franchiseKey"); // 초기 정렬 기준
-  const [sortOrder, setSortOrder] = React.useState("asc"); // 초기 정렬 방향
-
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
@@ -42,28 +38,32 @@ export function FranchiseList({
     ],
   });
 
+  // 정렬 기준 변경
   const HeaderClick = (column) => {
-    if (sortColumn === column) {
-      // 이미 해당 컬럼으로 정렬 중이면, 정렬 방향 반전
-      setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+    if (standard.sort === column) {
+      setStandard({
+        sort: column,
+        order: standard.order === "asc" ? "desc" : "asc",
+      });
     } else {
-      // 새로 클릭한 컬럼으로 정렬
-      setSortColumn(column);
-      setSortOrder("asc");
+      setStandard({
+        sort: column,
+        order: "asc",
+      });
     }
   };
 
   // 정렬된 데이터 반환
-  const sortedFranchiseList = React.useMemo(() => {
+  const sortedFranchiseList = useMemo(() => {
     return [...franchiseList].sort((a, b) => {
-      const aValue = a[sortColumn];
-      const bValue = b[sortColumn];
+      const aValue = a[standard.sort];
+      const bValue = b[standard.sort];
 
-      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      if (aValue < bValue) return standard.order === "asc" ? -1 : 1;
+      if (aValue > bValue) return standard.order === "asc" ? 1 : -1;
       return 0;
     });
-  }, [franchiseList, sortColumn, sortOrder]);
+  }, [franchiseList, standard]);
 
   return (
     <Box>
@@ -117,35 +117,35 @@ export function FranchiseList({
           <TableRow>
             <TableColumnHeader onClick={() => HeaderClick("franchiseKey")}>
               #{" "}
-              {sortColumn === "franchiseKey" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "franchiseKey" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseName")}>
               가맹점명{" "}
-              {sortColumn === "franchiseName" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "franchiseName" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseRep")}>
               가맹점주{" "}
-              {sortColumn === "franchiseRep" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "franchiseRep" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseState")}>
               광역시도{" "}
-              {sortColumn === "franchiseState" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "franchiseState" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseCity")}>
               시군{" "}
-              {sortColumn === "franchiseCity" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "franchiseCity" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader
               onClick={() => HeaderClick("businessEmployeeName")}
             >
               본사 직원 이름{" "}
-              {sortColumn === "businessEmployeeName" &&
-                (sortOrder === "asc" ? "↑" : "↓")}
+              {standard.sort === "businessEmployeeName" &&
+                (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
           </TableRow>
         </TableHeader>

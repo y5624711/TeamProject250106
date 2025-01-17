@@ -140,6 +140,8 @@ export function Franchise() {
             handlePageChange={handlePageChange}
             handleSearchClick={handleSearchClick}
             handleSortChange={handleSortChange}
+            standard={standard}
+            setStandard={setStandard}
             onFranchiseClick={handleFranchiseClick}
           />
           <Center>
