@@ -7,6 +7,6 @@ public class ItemCommonCode {
     private Integer itemCommonCodeKey;
     private String itemCommonCode;
     private String itemCommonName;
-    private boolean itemCommonCodeActive;
+    private Boolean itemCommonCodeActive;
     private String itemCommonCodeNote;
 }

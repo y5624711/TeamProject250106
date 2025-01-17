@@ -37,8 +37,11 @@ public interface ItemMapper {
                 LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                 LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
                 <trim prefix="WHERE" prefixOverrides="AND">
-                    <if test="active == 1">
-                        i.item_active = 1
+                   <if test="active == false">
+                        i.item_active = TRUE
+                    </if>
+                    <if test="active == true">
+                        1=1
                     </if>
                    \s
                     <if test="keyword != null and keyword != ''">
@@ -89,7 +92,7 @@ public interface ItemMapper {
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<Item> getItemList(Integer offset, Integer active, String type, String keyword, String sort, String order);
+    List<Item> getItemList(Integer offset, Boolean active, String type, String keyword, String sort, String order);
 
 
     @Select("""
@@ -138,8 +141,11 @@ public interface ItemMapper {
                     LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                     LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
                    <trim prefix="WHERE" prefixOverrides="AND">
-                    <if test="active == 1">
-                        i.item_active = 1
+                    <if test="active == false">
+                        i.item_active = TRUE
+                    </if>
+                    <if test="active == true">
+                        1=1
                     </if>
                    \s
                     <if test="keyword != null and keyword != ''">
@@ -170,6 +176,6 @@ public interface ItemMapper {
             
             </script>
             """)
-    Integer countAll(Integer active, String type, String keyword);
+    Integer countAll(Boolean active, String type, String keyword);
 
 }

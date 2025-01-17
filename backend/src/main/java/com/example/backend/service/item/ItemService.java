@@ -49,7 +49,7 @@ public class ItemService {
     }
 
     // 품목 리스트 가져오기
-    public Map<String, Object> getItemList(Integer page, Integer active, String type, String keyword, String sort, String order) {
+    public Map<String, Object> getItemList(Integer page, Boolean active, String type, String keyword, String sort, String order) {
         // LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
         return Map.of("list", mapper.getItemList(offset, active, type, keyword, sort, order),

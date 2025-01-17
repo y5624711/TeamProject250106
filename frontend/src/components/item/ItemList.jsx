@@ -4,6 +4,7 @@ import { Pagination } from "../tool/Pagination.jsx";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { SearchBar } from "../tool/SearchBar.jsx";
 import { Sort } from "../tool/Sort.jsx";
+import { Checkbox } from "../ui/checkbox.jsx";
 
 export function ItemList({
   itemList,
@@ -32,6 +33,12 @@ export function ItemList({
     { key: "outputPrice", label: "출고가" },
   ];
 
+  // active가 true인 경우 사용 여부 컬럼 추가
+  const active = searchParams.get("active") === "true";
+  const dynamicSortOptions = active
+    ? [...sortOptions, { key: "isActive", label: "사용 여부" }]
+    : sortOptions;
+
   return (
     <Box>
       <SearchBar
@@ -46,7 +53,7 @@ export function ItemList({
           <Table.Header>
             <Table.Row>
               <Sort
-                sortOptions={sortOptions}
+                sortOptions={dynamicSortOptions}
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
@@ -65,6 +72,11 @@ export function ItemList({
                 <Table.Cell>{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
+                {active && (
+                  <Table.Cell textAlign="center">
+                    <Checkbox checked={item.itemActive} />
+                  </Table.Cell>
+                )}
               </Table.Row>
             ))}
           </Table.Body>

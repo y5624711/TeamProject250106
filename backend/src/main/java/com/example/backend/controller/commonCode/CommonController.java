@@ -99,7 +99,7 @@ public class CommonController {
     @GetMapping("item/list")
     public Map<String, Object> getItemCommonCodeList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "active", defaultValue = "1") Integer active,
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "type", defaultValue = "all") String type,

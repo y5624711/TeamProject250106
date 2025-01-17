@@ -27,7 +27,7 @@ public class ItemController {
                     "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
             ));
         }
-        
+
 
         if (service.editItem(itemKey, item)) {
             return ResponseEntity.ok(Map.of("message",
@@ -67,7 +67,7 @@ public class ItemController {
     @GetMapping("list")
     public Map<String, Object> getItemlist(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "active", defaultValue = "1") Integer active,
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "") String sort,

@@ -4,6 +4,7 @@ import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { Sort } from "../tool/Sort.jsx";
 import { Pagination } from "../tool/Pagination.jsx";
 import { SearchBar } from "../tool/SearchBar.jsx";
+import { Checkbox } from "../ui/checkbox.jsx";
 
 export function ItemCommonCodeList({
   itemCommonCodeList,
@@ -28,6 +29,12 @@ export function ItemCommonCodeList({
     { key: "itemCommonName", label: "품목명" },
   ];
 
+  // active가 true인 경우 사용 여부 컬럼 추가
+  const active = searchParams.get("active") === "true";
+  const dynamicSortOptions = active
+    ? [...sortOptions, { key: "isActive", label: "사용 여부" }]
+    : sortOptions;
+
   return (
     <Box>
       <SearchBar
@@ -42,7 +49,7 @@ export function ItemCommonCodeList({
           <Table.Header>
             <Table.Row>
               <Sort
-                sortOptions={sortOptions}
+                sortOptions={dynamicSortOptions}
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
@@ -59,6 +66,11 @@ export function ItemCommonCodeList({
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell>{item.itemCommonCode}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
+                {active && (
+                  <Table.Cell textAlign="center">
+                    <Checkbox checked={item.itemCommonCodeActive} />
+                  </Table.Cell>
+                )}
               </Table.Row>
             ))}
           </Table.Body>

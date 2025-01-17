@@ -27,8 +27,11 @@ public interface CommonMapper {
                 SELECT *
                 FROM TB_ITEMCOMM
                 <trim prefix="WHERE" prefixOverrides="AND">
-                    <if test="active == 1">
-                        item_common_code_active = 1
+                    <if test="active == false">
+                        item_common_code_active = TRUE
+                    </if>
+                    <if test="active == true">
+                        1=1
                     </if>
                     <if test="keyword != null and keyword != ''">
                         <choose>
@@ -67,15 +70,18 @@ public interface CommonMapper {
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active, String sort, String order, String type, String keyword);
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Boolean active, String sort, String order, String type, String keyword);
 
     @Select("""
             <script>
                 SELECT COUNT(*)
                 FROM TB_ITEMCOMM
                 <where>
-                    <if test="active == 1">
-                        item_common_code_active = 1
+                    <if test="active == false">
+                        item_common_code_active = TRUE
+                    </if>
+                    <if test="active == true">
+                        1=1
                     </if>
                     <if test="keyword != null and keyword != ''">
                         <choose>
@@ -96,7 +102,7 @@ public interface CommonMapper {
                 </where>
             </script>
             """)
-    Integer countAll(Integer active, String type, String keyword);
+    Integer countAll(Boolean active, String type, String keyword);
 
     @Select("""
             SELECT COUNT(*)
