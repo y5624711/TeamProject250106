@@ -19,6 +19,17 @@ import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
+  //   공통코드 가져오는 뭐시기
+  useEffect(() => {
+    getCommonCode();
+  }, []);
+
+  const getCommonCode = () => {
+    axios.get("api/commonCode/list").then((res) => {
+      console.log(res.data);
+    });
+  };
+
   const [formData, setFormData] = useState({
     employeeNo: "",
     password: "",
@@ -27,7 +38,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     tel: "",
     note: "",
     workPlace: "",
-    departMent: "",
+    department: "",
   });
 
   const frameworks = createListCollection({
@@ -52,7 +63,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             password: res.data.employeePassword || "",
             tel: res.data.employeeTel || "",
             workPlace: res.data.employeeWorkPlaceCode || "",
-            departMent: res.data.department || "",
+            department: res.data.department || "",
             note: res.data.employeeNote || "",
             name: res.data.employeeName || "",
           });
@@ -78,7 +89,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       tel: "",
       note: "",
       workPlace: "",
-      departMent: "",
+      department: "",
     });
   };
 
@@ -100,7 +111,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeName: formData.name,
         employeeTel: formData.tel,
         employeeNote: formData.note,
-        employeeDepartment: formData.departMent,
+        employeeDepartment: formData.department,
         employeeNo: "",
       };
     } else {
@@ -114,7 +125,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeName: formData.name,
         employeeTel: formData.tel,
         employeeNote: formData.note,
-        employeeDepartment: formData.departMent,
+        employeeDepartment: formData.department,
         employeePassword: formData.password,
       };
     }
@@ -122,16 +133,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     axios[method](url, data)
       .then((res) => {
         formDataClear();
-        // setFormData({
-        //   employeeNo: "",
-        //   password: "",
-        //   selectedCommonCode: "",
-        //   name: "",
-        //   tel: "",
-        //   note: "",
-        //   workPlace: "",
-        //   departMent: "",
-        // });
+
         toaster.create({
           type: res.data.message.type,
           description: res.data.message.text,
@@ -220,12 +222,14 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           value={formData.workPlace}
           onChange={handleInputChange}
         />
-        <Input
-          name="departMent"
-          placeholder={"부서 코드 / 부서 명"}
-          value={formData.departMent}
-          onChange={handleInputChange}
-        />
+
+        {/* 혹시 모르니까 남겨둠 */}
+        {/*<Input*/}
+        {/*  name="department"*/}
+        {/*  placeholder={"부서 코드 / 부서 명"}*/}
+        {/*  value={formData.department}*/}
+        {/*  onChange={handleInputChange}*/}
+        {/*/>*/}
         <Input
           name="name"
           placeholder={"직원명"}

@@ -143,7 +143,7 @@ export function EmployeeList({ onSelect, updateList }) {
 
   // TODO :  나중에 테이블 다 생기면, 조인 해서 기업명, 부서명 등 가져와야함
   return (
-    <Box>
+    <Box h={"100vh"}>
       <Heading>
         인사관리
         <Button
@@ -154,7 +154,11 @@ export function EmployeeList({ onSelect, updateList }) {
           자세히보기
         </Button>{" "}
       </Heading>
-      <HStack>
+      <HStack
+        style={{
+          alignItems: "flex-start",
+        }}
+      >
         <Box>
           <SelectRoot
             collection={frameworks}
@@ -162,7 +166,7 @@ export function EmployeeList({ onSelect, updateList }) {
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
-              <SelectValueText placeholder={"선택 해 주세요"} />
+              <SelectValueText placeholder={"선택해 주세요"} />
             </SelectTrigger>
             <SelectContent>
               {frameworks.items.map((code) => (
@@ -236,23 +240,23 @@ export function EmployeeList({ onSelect, updateList }) {
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                부서명{" "}
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("부서명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("부서명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
+            {/*<Table.ColumnHeader>*/}
+            {/*  /!*<HStack>*!/*/}
+            {/*  /!*  부서명{" "}*!/*/}
+            {/*  /!*  <Stack>*!/*/}
+            {/*  /!*    <FaArrowUp*!/*/}
+            {/*  /!*      onClick={() => {*!/*/}
+            {/*  /!*        handleSortControl("부서명", "asc");*!/*/}
+            {/*  /!*      }}*!/*/}
+            {/*  /!*    />*!/*/}
+            {/*  /!*    <FaArrowDown*!/*/}
+            {/*  /!*      onClick={() => {*!/*/}
+            {/*  /!*        handleSortControl("부서명", "desc");*!/*/}
+            {/*  /!*      }}*!/*/}
+            {/*  /!*    />*!/*/}
+            {/*  /!*  </Stack>*!/*/}
+            {/*  /!*</HStack>*!/*/}
+            {/*</Table.ColumnHeader>*/}
             <Table.ColumnHeader>
               <HStack>
                 직원명
@@ -316,8 +320,11 @@ export function EmployeeList({ onSelect, updateList }) {
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
-              <Table.Cell>{/*  기업 명  {item.franchiseName??} */}</Table.Cell>
-              <Table.Cell>{/*  부서 명  {item.employeePassword} */}</Table.Cell>
+              <Table.Cell>
+                {/*  기업 명  {item.franchiseName??} */}
+                {item.employeeCommonCode === "EMP" ? "중앙시스템" : "회사이름"}
+              </Table.Cell>
+              {/* 부서명   <Table.Cell>/!*  부서 명  {item.} *!/</Table.Cell>*/}
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeNo} </Table.Cell>
 
@@ -339,7 +346,7 @@ export function EmployeeList({ onSelect, updateList }) {
         count={count}
         pageSize={10}
         page={page}
-        defaultPage={1}
+        defaultPage={page}
         variant={"solid"}
       >
         <HStack>
