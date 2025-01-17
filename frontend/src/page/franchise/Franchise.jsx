@@ -7,40 +7,41 @@ import {
   HStack,
   Spinner,
 } from "@chakra-ui/react";
-import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
-import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
-import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
-import { SideBar } from "../../components/tool/SideBar.jsx";
-import axios from "axios";
-import { useSearchParams } from "react-router-dom";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import { SideBar } from "../../components/tool/SideBar.jsx";
+import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
+import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
+import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 export function Franchise() {
+  // 뷰 모드 관련 상태
   const [viewMode, setViewMode] = useState("view");
-  const [franchiseList, setFranchiseList] = useState([]);
-  const [franchiseKey, setFranchiseKey] = useState(null);
+  // 검색 및 필터링 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
-  const [count, setCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1,
-  );
-  const [checkedActive, setCheckedActive] = useState(false);
   const [search, setSearch] = useState({
-    type: searchParams.get("type") ?? "all",
-    keyword: searchParams.get("key") ?? "",
+    type: "all",
+    keyword: "",
   });
+  const [checkedActive, setCheckedActive] = useState(false);
   const [standard, setStandard] = useState({
     sort: "franchise_key",
     order: "ASC",
   });
+  // 데이터 및 페이지 관련 상태
+  const [franchiseList, setFranchiseList] = useState([]);
+  const [count, setCount] = useState(0);
+  // 선택된 항목 관련 상태
+  const [franchiseKey, setFranchiseKey] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 가맹점 목록을 가져오기
+  // 가맹점 리스트 가져오기
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -64,7 +65,7 @@ export function Franchise() {
       });
   }, [searchParams, standard, checkedActive]);
 
-  // URLSearchParams의 값에 따라 search 상태를 업데이트
+  // 검색 상태를 URLSearchParams에 맞게 업데이트
   useEffect(() => {
     const nextSearch = { ...search };
     if (searchParams.get("type")) {
@@ -80,17 +81,7 @@ export function Franchise() {
     setSearch(nextSearch);
   }, [searchParams]);
 
-  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
-  const toggleCheckedActive = () => {
-    const nextValue = !checkedActive;
-    setCheckedActive(nextValue);
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", nextValue.toString());
-    setSearchParams(nextSearchParams);
-  };
-
-  // 검색 타입 변경 및 파라미터 업데이트
+  // 검색 타입 변경 시 파라미터 업데이트
   const handleSearchTypeChange = (type) => {
     setSearch((prev) => ({ ...prev, type }));
     const nextSearchParams = new URLSearchParams(searchParams);
@@ -115,20 +106,14 @@ export function Franchise() {
   const pageParam = searchParams.get("page") ?? "1";
   const page = Number(pageParam);
 
-  // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
   function handlePageChange(e) {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
   }
 
-  // 클릭된 가맹점에 대한 상세 정보 표시
-  function handleFranchiseClick(franchiseKey) {
-    setFranchiseKey(franchiseKey);
-    setViewMode("view");
-  }
-
-  // 정렬 변경 시 URL 파라미터 업데이트
+  // 정렬 기준 변경 시 URL 파라미터 업데이트
   const handleSortChange = (sortField) => {
     const nextOrder = standard.order === "ASC" ? "DESC" : "ASC";
     setStandard({ sort: sortField, order: nextOrder });
@@ -138,6 +123,12 @@ export function Franchise() {
     nextSearchParams.set("order", nextOrder);
     setSearchParams(nextSearchParams);
   };
+
+  // 클릭된 가맹점의 상세 정보 표시
+  function handleFranchiseClick(franchiseKey) {
+    setFranchiseKey(franchiseKey);
+    setViewMode("view");
+  }
 
   return (
     <Box display={"flex"} h={"100vh"}>
@@ -150,19 +141,16 @@ export function Franchise() {
           <FranchiseList
             franchiseList={franchiseList}
             count={count}
-            currentPage={currentPage}
             search={search}
             setSearch={setSearch}
             checkedActive={checkedActive}
             setCheckedActive={setCheckedActive}
-            toggleCheckedActive={toggleCheckedActive}
             handlePageChange={handlePageChange}
             handleSearchClick={handleSearchClick}
             handleSearchTypeChange={handleSearchTypeChange}
+            handleSortChange={handleSortChange}
             onFranchiseClick={handleFranchiseClick}
-            handleSortChange={handleSortChange} // 정렬 변경 핸들러
           />
-
           <Center>
             <PaginationRoot
               onPageChange={handlePageChange}
@@ -178,7 +166,6 @@ export function Franchise() {
             </PaginationRoot>
           </Center>
         </Box>
-
         <Box flex={"1"} pl={4}>
           <Button colorScheme="teal" onClick={() => setViewMode("add")} mb={4}>
             추가
