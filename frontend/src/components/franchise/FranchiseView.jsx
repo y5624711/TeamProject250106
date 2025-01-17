@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Input, Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
 
 export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
@@ -88,68 +89,67 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
   return (
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
-        <Box mb={4}>
-          <Text>직원 사번</Text>
-          <Input
-            name="businessEmployeeNo"
-            value={franchise.businessEmployeeNo}
-            onChange={handleChange}
-            placeholder="본사 직원 사번"
-            readOnly={isReadOnly}
-          />
+        <Box display="flex" gap={4}>
+          <Field label="직원 사번" mb={4}>
+            <Input
+              name="businessEmployeeNo"
+              value={franchise.businessEmployeeNo}
+              onChange={handleChange}
+              placeholder="직원 사번"
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="직원 이름" mb={4}>
+            <Input
+              name="businessEmployeeName"
+              value={franchise.businessEmployeeName}
+              onChange={handleChange}
+              placeholder="직원 이름"
+              readOnly={isReadOnly}
+            />
+          </Field>
         </Box>
-        <Box mb={4}>
-          <Text>직원 이름</Text>
-          <Input
-            name="businessEmployeeName"
-            value={franchise.businessEmployeeName}
-            onChange={handleChange}
-            placeholder="본사 직원 이름"
-            readOnly={isReadOnly}
-          />
+        <Box display="flex" gap={4}>
+          <Field label="가맹점 코드" mb={4}>
+            <Input
+              name="franchiseCode"
+              value={franchise.franchiseCode}
+              onChange={handleChange}
+              placeholder="가맹점 코드"
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="가맹점명" mb={4}>
+            <Input
+              name="franchiseName"
+              value={franchise.franchiseName}
+              onChange={handleChange}
+              placeholder="가맹점명"
+              readOnly={isReadOnly}
+            />
+          </Field>
         </Box>
-        <Box mb={4}>
-          <Text>가맹점 코드</Text>
-          <Input
-            name="franchiseCode"
-            value={franchise.franchiseCode}
-            onChange={handleChange}
-            placeholder="가맹점 코드"
-            readOnly={isReadOnly}
-          />
+        <Box display="flex" gap={4}>
+          <Field label="가맹점주" mb={4}>
+            <Input
+              name="franchiseRep"
+              value={franchise.franchiseRep}
+              onChange={handleChange}
+              placeholder="가맹점주"
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="전화번호" mb={4}>
+            <Input
+              name="franchiseTel"
+              value={franchise.franchiseTel}
+              onChange={handleChange}
+              placeholder="전화번호"
+              readOnly={isReadOnly}
+            />
+          </Field>
         </Box>
-        <Box mb={4}>
-          <Text>가맹점명</Text>
-          <Input
-            name="franchiseName"
-            value={franchise.franchiseName}
-            onChange={handleChange}
-            placeholder="가맹점명"
-            readOnly={isReadOnly}
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>가맹점주</Text>
-          <Input
-            name="franchiseRep"
-            value={franchise.franchiseRep}
-            onChange={handleChange}
-            placeholder="가맹점주"
-            readOnly={isReadOnly}
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>전화번호</Text>
-          <Input
-            name="franchiseTel"
-            value={franchise.franchiseTel}
-            onChange={handleChange}
-            placeholder="전화번호"
-            readOnly={isReadOnly}
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>사업자 번호</Text>
+        <Field label="사업자 번호" mb={4}>
           <Input
             name="franchiseNo"
             value={franchise.franchiseNo}
@@ -157,9 +157,8 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             placeholder="사업자 번호"
             readOnly={isReadOnly}
           />
-        </Box>
-        <Box mb={4}>
-          <Text>주소</Text>
+        </Field>
+        <Field label="주소" mb={4}>
           <Input
             name="franchiseAddress"
             value={franchise.franchiseAddress}
@@ -167,9 +166,8 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             placeholder="주소"
             readOnly={isReadOnly}
           />
-        </Box>
-        <Box mb={4}>
-          <Text>상세 주소</Text>
+        </Field>
+        <Field label="상세 주소" mb={4}>
           <Input
             name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
@@ -177,9 +175,8 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             placeholder="상세 주소"
             readOnly={isReadOnly}
           />
-        </Box>
-        <Box mb={4}>
-          <Text>우편 번호</Text>
+        </Field>
+        <Field label="우편번호" mb={4}>
           <Input
             name="franchisePost"
             value={franchise.franchisePost}
@@ -187,29 +184,28 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             placeholder="우편 번호"
             readOnly={isReadOnly}
           />
+        </Field>
+        <Box display="flex" gap={4}>
+          <Field label="광역시도" mb={4}>
+            <Input
+              name="franchiseState"
+              value={franchise.franchiseState}
+              onChange={handleChange}
+              placeholder="광역시도"
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="시군" mb={4}>
+            <Input
+              name="franchiseCity"
+              value={franchise.franchiseCity}
+              onChange={handleChange}
+              placeholder="시군"
+              readOnly={isReadOnly}
+            />
+          </Field>
         </Box>
-        <Box mb={4}>
-          <Text>광역시도</Text>
-          <Input
-            name="franchiseState"
-            value={franchise.franchiseState}
-            onChange={handleChange}
-            placeholder="광역시도"
-            readOnly={isReadOnly}
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>시군</Text>
-          <Input
-            name="franchiseCity"
-            value={franchise.franchiseCity}
-            onChange={handleChange}
-            placeholder="시군"
-            readOnly={isReadOnly}
-          />
-        </Box>
-        <Box mb={4}>
-          <Text>비고</Text>
+        <Field label="비고" mb={4}>
           <Input
             name="franchiseNote"
             value={franchise.franchiseNote}
@@ -217,7 +213,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
             placeholder="비고"
             readOnly={isReadOnly}
           />
-        </Box>
+        </Field>
         <Box display="flex" justifyContent="space-between" mt={4}>
           {isReadOnly ? (
             <>
