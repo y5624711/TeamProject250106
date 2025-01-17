@@ -11,26 +11,14 @@ function WarehouseDetail({ warehouseKey }) {
     setIsEditing(!isEditing);
   }
 
-  function handleSaveClick() {
-    setIsEditing(!isEditing);
-  }
-
-  function handleCancelClick() {
-    setIsEditing(!isEditing);
-  }
-
   return (
     <Box>
       {isEditing ? (
-        <Box>
-          <WarehouseEdit warehouseKey={warehouseKey} />
-          <Box>
-            <HStack>
-              <Button onClick={handleSaveClick}>저장</Button>
-              <Button onClick={handleCancelClick}>취소</Button>
-            </HStack>
-          </Box>
-        </Box>
+        <WarehouseEdit
+          warehouseKey={warehouseKey}
+          setIsEditing={setIsEditing}
+          isEditing={isEditing}
+        />
       ) : (
         <Box>
           <WarehouseView warehouseKey={warehouseKey} />

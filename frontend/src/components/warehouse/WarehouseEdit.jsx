@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, HStack, Input } from "@chakra-ui/react";
+import { Button } from "../ui/button.jsx";
 
-function WarehouseEdit({ warehouseKey }) {
+function WarehouseEdit({ warehouseKey, setIsEditing, isEditing }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
+
+  function handleSaveClick() {
+    setIsEditing(!isEditing);
+  }
+
+  function handleCancelClick() {
+    setIsEditing(!isEditing);
+  }
 
   useEffect(() => {
     if (warehouseKey) {
@@ -143,6 +152,12 @@ function WarehouseEdit({ warehouseKey }) {
         />
       </Box>
       <br />
+      <Box>
+        <HStack>
+          <Button onClick={handleSaveClick}>저장</Button>
+          <Button onClick={handleCancelClick}>취소</Button>
+        </HStack>
+      </Box>
     </Box>
   );
 }
