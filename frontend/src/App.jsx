@@ -6,6 +6,8 @@ import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
 import { CommonCodeItem } from "./page/commonCode/CommonCodeItem.jsx";
+import { BusinessAndEmployeeList } from "./page/businessAndDepartment/BusinessAndEmployeeList.jsx";
+import { ItemCommonCode } from "./page/commonCode/ItemCommonCode.jsx";
 import Customer from "./page/customer/Customer.jsx";
 import { Franchise } from "./page/franchise/Franchise.jsx";
 import { Employee } from "./page/employee/Employee.jsx";
@@ -35,16 +37,16 @@ const router = createBrowserRouter([
       { path: "commonCode/system/list", element: <CommonList /> },
       { path: "commonCode/system/add", element: <CommonAdd /> },
       {
+        path: "commonCode/item",
+        element: <ItemCommonCode />,
+      },
+      {
         path: "employee",
         element: <Employee />,
       },
       {
         path: "item",
         element: <Item />,
-      },
-      {
-        path: "commonCode/item",
-        element: <CommonCodeItem />,
       },
       {
         path: "customer",

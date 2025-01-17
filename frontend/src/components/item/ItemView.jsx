@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
+import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
+import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function ItemView({ itemKey }) {
-  const [itemList, setItemList] = useState([]);
+export function ItemView({ itemKey, setItemList, setSearchParams, setChange }) {
+  const [item, setItem] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedItem, setEditedItem] = useState({
-    itemCommonCode: "",
-    customerName: "",
     size: "",
     unit: "",
     inputPrice: "",
@@ -16,34 +18,27 @@ export function ItemView({ itemKey }) {
     itemActive: false,
     itemNote: "",
   });
-  const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
+  const [isValid, setIsValid] = useState(false);
 
-  // 물품 상세 정보를 가져오기
+  // 수정 상태에서 품목 정보 변경 시 수정 상태 해제
+  useEffect(() => {
+    setIsEditing(false);
+  }, [itemKey]);
+
+  // 품목 상세 정보를 가져오기
   useEffect(() => {
     if (itemKey) {
       axios
         .get(`/api/item/view/${itemKey}`)
         .then((res) => {
-          setItemList(res.data);
-          setEditedItem(res.data[0]); // 첫 번째 물품 정보로 상태 설정
+          setItem(res.data);
+          setEditedItem(res.data[0]); // 첫 번째 품목 정보로 상태 설정
         })
         .catch((error) => {
-          console.error("물품 상세 정보 요청 중 오류 발생: ", error);
+          console.error("품목 상세 정보 요청 중 오류 발생: ", error);
         });
     }
   }, [itemKey]);
-
-  // 물품 구분 코드 가져오기
-  useEffect(() => {
-    axios
-      .get("/api/item/commonCode")
-      .then((res) => {
-        setItemCommonCodeList(res.data);
-      })
-      .catch((error) => {
-        console.error("데이터 로딩 중 오류 발생: ", error);
-      });
-  }, []);
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
@@ -59,100 +54,198 @@ export function ItemView({ itemKey }) {
     setIsEditing(true);
   };
 
-  // 수정된 물품 데이터 서버로 전송
+  // 수정된 품목 데이터 서버로 전송
   const handleSubmitClick = () => {
     axios
       .put(`/api/item/edit/${itemKey}`, editedItem)
-      .then((res) => {
-        console.log("수정 완료: ", res.data);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
         setIsEditing(false);
+        // 수정된 항목을 부모 컴포넌트에 전달하여 상태를 갱신
+        setItemList((prevItems) =>
+          prevItems.map((item) =>
+            item.itemKey === itemKey ? { ...item, ...editedItem } : item,
+          ),
+        );
+        // 수정 시에 정렬된 리스트를 불러오기 위해 변경 상태 전달
+        setChange((prev) => !prev);
+
+        setSearchParams((prev) => new URLSearchParams(prev));
+        // 품목 수정 후, item를 직접 업데이트하여 view에 바로 반영되도록 함
+        setItem((prevList) =>
+          prevList.map((item) =>
+            item.itemKey === itemKey ? { ...item, ...editedItem } : item,
+          ),
+        );
       })
-      .catch((error) => {
-        console.error("물품 수정 요청 중 오류 발생: ", error);
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({ description: message.text, type: message.type });
       });
   };
 
-  // 물품 삭제 시 사용여부 false
-  const handleDeleteClick = () => {
+  // 품목 삭제 시 사용여부 false
+  const handleDeleteConfirm = () => {
     axios
       .put(`/api/item/delete/${itemKey}`)
-      .then((res) => {
-        console.log("삭제 완료: ", res.data);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        // 삭제 후 부모 컴포넌트로 삭제된 항목을 반영
+        setItemList((prevItems) =>
+          prevItems.filter((item) => item.itemKey !== itemKey),
+        );
+        setIsDialogOpen(false);
       })
-      .catch((error) => {
-        console.error("물품 삭제 요청 중 오류 발생: ", error);
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({ description: message.text, type: message.type });
       });
   };
+
+  // 버튼 활성화를 위한 유효성 검사
+  useEffect(() => {
+    setIsValid(
+      editedItem.itemCommonCode &&
+        editedItem.customerName &&
+        editedItem.inputPrice &&
+        editedItem.outputPrice,
+    );
+  }, [
+    editedItem.itemCommonCode,
+    editedItem.customerName,
+    editedItem.inputPrice,
+    editedItem.outputPrice,
+  ]);
 
   return (
     <Box>
-      <Text>물품 조회 > 물품 상세 {itemKey}</Text>
       <HStack>
-        {itemList.map((item) => (
+        {item.map((item) => (
           <Box key={item.itemKey}>
             <Box>
               {isEditing ? (
                 <>
-                  <Input readOnly value={item.itemCommonName} />
-                  <Input readOnly value={item.customerName} />
-                  <Input
-                    name="size"
-                    placeholder="규격"
-                    value={editedItem.size}
-                    onChange={handleChange}
-                  />
-                  <Input
-                    name="unit"
-                    placeholder="단위"
-                    value={editedItem.unit}
-                    onChange={handleChange}
-                  />
-                  <NumberInputRoot>
-                    <NumberInputField
-                      name="inputPrice"
-                      placeholder="입고가"
-                      value={editedItem.inputPrice}
+                  <Field
+                    label={"품목"}
+                    required
+                    helperText="품목 수정은 불가능합니다."
+                  >
+                    <Input readOnly value={item.itemCommonName} />
+                  </Field>
+                  <Field label={"담당업체"} required>
+                    <Input readOnly value={item.customerName} />
+                  </Field>
+                  <Field label={"규격"}>
+                    <Input
+                      name="size"
+                      placeholder="규격"
+                      value={editedItem.size}
                       onChange={handleChange}
                     />
-                  </NumberInputRoot>
-                  <NumberInputRoot>
-                    <NumberInputField
-                      name="outputPrice"
-                      placeholder="출고가"
-                      value={editedItem.outputPrice}
+                  </Field>
+                  <Field label={"단위"}>
+                    <Input
+                      name="unit"
+                      placeholder="단위"
+                      value={editedItem.unit}
                       onChange={handleChange}
                     />
-                  </NumberInputRoot>
-                  <Input
-                    name="itemNote"
-                    placeholder="비고"
-                    value={editedItem.itemNote}
-                    onChange={handleChange}
-                  />
+                  </Field>
+                  <Field label={"입고가"} required>
+                    <NumberInputRoot>
+                      <NumberInputField
+                        name="inputPrice"
+                        placeholder="입고가"
+                        value={editedItem.inputPrice}
+                        onChange={handleChange}
+                      />
+                    </NumberInputRoot>
+                  </Field>
+                  <Field label={"출고가"} required>
+                    <NumberInputRoot>
+                      <NumberInputField
+                        name="outputPrice"
+                        placeholder="출고가"
+                        value={editedItem.outputPrice}
+                        onChange={handleChange}
+                      />
+                    </NumberInputRoot>
+                  </Field>
+                  <Field label={"비고"}>
+                    <Input
+                      name="itemNote"
+                      placeholder="비고"
+                      value={editedItem.itemNote}
+                      onChange={handleChange}
+                    />
+                  </Field>
                 </>
               ) : (
                 <>
-                  <Box>{item.itemCommonName}</Box>
-                  <Box>{item.customerName}</Box>
-                  <Box>{item.size}</Box>
-                  <Box>{item.unit}</Box>
-                  <Box>{item.inputPrice}</Box>
-                  <Box>{item.outputPrice}</Box>
-                  <Box>{item.itemActive ? "사용" : "미사용"}</Box>
-                  <Box>{item.itemNote}</Box>
+                  <Field label={"품목"}>
+                    <Input readOnly value={item.itemCommonName} />
+                  </Field>
+                  <Field label={"담당업체"}>
+                    <Input readOnly value={item.customerName} />
+                  </Field>
+                  <Field label={"규격"}>
+                    <Input readOnly value={item.size} />
+                  </Field>
+                  <Field label={"단위"}>
+                    <Input readOnly value={item.unit} />
+                  </Field>
+                  <Field label={"입고가"}>
+                    <Input readOnly value={item.inputPrice} />
+                  </Field>
+                  <Field label={"출고가"}>
+                    <Input readOnly value={item.outputPrice} />
+                  </Field>
+                  <Field label={"사용여부"}>
+                    <Input
+                      readOnly
+                      value={item.itemActive ? "사용" : "미사용"}
+                    />
+                  </Field>
+                  <Field label={"비고"}>
+                    <Input readOnly value={item.itemNote} />
+                  </Field>
                 </>
               )}
             </Box>
           </Box>
         ))}
       </HStack>
+      <Box>
+        {isEditing ? (
+          <HStack>
+            <Button onClick={handleSubmitClick} disabled={!isValid}>
+              저장
+            </Button>
+            <Button onClick={() => setIsEditing(false)}>취소</Button>
+          </HStack>
+        ) : (
+          <HStack>
+            <Button onClick={handleEditClick}>수정</Button>
+            <Button onClick={() => setIsDialogOpen(true)}>삭제</Button>
+          </HStack>
+        )}
+      </Box>
 
-      <Button onClick={handleDeleteClick}>삭제</Button>
-      {isEditing ? (
-        <Button onClick={handleSubmitClick}>수정 저장</Button>
-      ) : (
-        <Button onClick={handleEditClick}>수정</Button>
-      )}
+      <DialogConfirmation
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title="삭제 확인"
+        body="정말로 이 항목을 삭제하시겠습니까?"
+      />
     </Box>
   );
 }

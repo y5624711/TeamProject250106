@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Box, Input, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import axios from "axios";
+import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
 
-export function ItemAdd() {
+export function ItemAdd({ onCancel, onAdd, setItemKey, setChange }) {
   const [itemCommonCode, setItemCommonCode] = useState("");
+  const [itemCommonName, setItemCommonName] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [size, setSize] = useState("");
@@ -14,8 +29,9 @@ export function ItemAdd() {
   const [outputPrice, setOutputPrice] = useState("");
   const [itemNote, setItemNote] = useState("");
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
+  const [isValid, setIsValid] = useState(false);
 
-  // 물품 구분 코드 가져오기
+  // 품목 구분 코드 가져오기
   useEffect(() => {
     axios
       .get("/api/item/commonCode")
@@ -27,7 +43,7 @@ export function ItemAdd() {
       });
   }, []);
 
-  // 물품 선택 시 협력업체 이름 가져오기
+  // 품목 선택 시 협력업체 이름 가져오기
   useEffect(() => {
     if (itemCommonCode) {
       axios
@@ -48,7 +64,7 @@ export function ItemAdd() {
     }
   }, [itemCommonCode]);
 
-  // 물품 등록하기
+  // 품목 등록하기
   const handleAddClick = () => {
     const itemData = {
       itemCommonCode,
@@ -62,73 +78,117 @@ export function ItemAdd() {
 
     axios
       .post("/api/item/add", itemData)
-      .then((res) => {
-        const message = res.data.message;
-        console.log(message);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        onAdd(itemData);
+        setItemKey(data.data.itemKey);
+        setChange((prev) => !prev);
       })
       .catch((e) => {
         const message = e.response.data.message;
-        console.log(message);
+        toaster.create({ description: message.text, type: message.type });
       });
   };
 
+  const itemCommonCodes = createListCollection({
+    items: itemCommonCodeList.map((itemCode) => {
+      return {
+        label: itemCode.item_common_name,
+        value: itemCode.item_common_code,
+      };
+    }),
+  });
+
+  // 버튼 활성화를 위한 유효성 검사
+  useEffect(() => {
+    setIsValid(itemCommonCode && customerName && inputPrice && outputPrice);
+  }, [itemCommonCode, customerName, inputPrice, outputPrice]);
+
   return (
     <Box>
-      <Text>물품 등록 </Text>
+      <Button onClick={onCancel}>취소</Button>
       <Stack>
-        <select
-          value={itemCommonCode}
-          onChange={(e) => setItemCommonCode(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "8px",
-            borderRadius: "6px",
-            border: "1px solid #E2E8F0",
+        <SelectRoot
+          onValueChange={(e) => {
+            setItemCommonName(e.value);
+            const selectedItem = itemCommonCodeList.find(
+              (item) => item.item_common_name == e.value,
+            );
+            console.log("내부", selectedItem);
+            if (selectedItem) {
+              setItemCommonCode(selectedItem.item_common_code); // 선택된 품목 코드 설정
+            }
           }}
         >
-          <option value="">품목 구분</option>
-          {itemCommonCodeList.map((code) => (
-            <option key={code.item_common_code} value={code.item_common_code}>
-              {code.item_common_name}
-            </option>
-          ))}
-        </select>
+          <SelectLabel>
+            품목{" "}
+            <Text as="span" color="red.500">
+              *
+            </Text>
+          </SelectLabel>
+          <SelectTrigger>
+            <SelectValueText>
+              {itemCommonName != "" ? itemCommonName : "품목 선택"}
+            </SelectValueText>
+          </SelectTrigger>
+          <SelectContent>
+            {itemCommonCodes.items.map((item) => (
+              <SelectItem item={item.label} key={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
 
-        <Input
-          placeholder="담당업체"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-        />
-        <Input
-          placeholder="규격"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-        />
-        <Input
-          placeholder="단위"
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-        />
-        <NumberInputRoot>
-          <NumberInputField
-            placeholder="입고가"
-            value={inputPrice}
-            onChange={(e) => setInputPrice(e.target.value)}
+        <Field label={"담당업체"} required>
+          <Input readOnly placeholder="담당업체" value={customerName} />
+        </Field>
+        <Field label={"규격"}>
+          <Input
+            placeholder="규격"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
           />
-        </NumberInputRoot>
-        <NumberInputRoot>
-          <NumberInputField
-            placeholder="출고가"
-            value={outputPrice}
-            onChange={(e) => setOutputPrice(e.target.value)}
+        </Field>
+        <Field label={"단위"}>
+          <Input
+            placeholder="단위"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
           />
-        </NumberInputRoot>
-        <Input
-          placeholder="비고"
-          value={itemNote}
-          onChange={(e) => setItemNote(e.target.value)}
-        />
-        <Button onClick={handleAddClick}>등록</Button>
+        </Field>
+        <Field label={"입고가"} required>
+          <NumberInputRoot>
+            <NumberInputField
+              placeholder="입고가"
+              value={inputPrice}
+              onChange={(e) => setInputPrice(e.target.value)}
+            />
+          </NumberInputRoot>
+        </Field>
+        <Field label={"출고가"} required>
+          <NumberInputRoot>
+            <NumberInputField
+              placeholder="출고가"
+              value={outputPrice}
+              onChange={(e) => setOutputPrice(e.target.value)}
+            />
+          </NumberInputRoot>
+        </Field>
+        <Field label={"비고"}>
+          <Input
+            placeholder="비고"
+            value={itemNote}
+            onChange={(e) => setItemNote(e.target.value)}
+          />
+        </Field>
+        <Button onClick={handleAddClick} disabled={!isValid}>
+          등록
+        </Button>
       </Stack>
     </Box>
   );

@@ -1,35 +1,31 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
-import { Pagination } from "../tool/Pagination.jsx";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
-import { SearchBar } from "../tool/SearchBar.jsx";
 import { Sort } from "../tool/Sort.jsx";
+import { Pagination } from "../tool/Pagination.jsx";
+import { SearchBar } from "../tool/SearchBar.jsx";
 
-export function ItemList({
-  itemList,
+export function ItemCommonCodeList({
+  itemCommonCodeList,
+  setItemCommonCodeKey,
   count,
   searchParams,
   setSearchParams,
-  setItemKey,
 }) {
   // 검색 옵션
   const itemSearchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "품목명", value: "itemName" },
-      { label: "담당 업체", value: "customerName" },
-      { label: "입고가", value: "inputPrice" },
-      { label: "출고가", value: "outputPrice" },
+      { label: "품목코드", value: "itemCommonCode" },
+      { label: "품목명", value: "itemCommonName" },
     ],
   });
 
   // 정렬 헤더
   const sortOptions = [
-    { key: "itemKey", label: "#" },
+    { key: "itemCommonCodeKey", label: "#" },
+    { key: "itemCommonCode", label: "품목코드" },
     { key: "itemCommonName", label: "품목명" },
-    { key: "customerName", label: "담당업체" },
-    { key: "inputPrice", label: "입고가" },
-    { key: "outputPrice", label: "출고가" },
   ];
 
   return (
@@ -54,17 +50,15 @@ export function ItemList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {itemList?.map((item, index) => (
+            {itemCommonCodeList?.map((item, index) => (
               <Table.Row
-                key={item.itemKey}
-                onClick={() => setItemKey(item.itemKey)}
+                key={item.itemCommonCodeKey}
+                onClick={() => setItemCommonCodeKey(item.itemCommonCodeKey)}
                 style={{ cursor: "pointer" }}
               >
-                <Table.Cell textAlign="center"> {index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell>{item.itemCommonCode}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
-                <Table.Cell>{item.customerName}</Table.Cell>
-                <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
-                <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
