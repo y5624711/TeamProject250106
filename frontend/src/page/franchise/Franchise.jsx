@@ -150,6 +150,7 @@ export function Franchise() {
               count={count}
               pageSize={10}
               page={page}
+              variant="solid"
             >
               <HStack>
                 <PaginationPrevTrigger />
