@@ -27,13 +27,7 @@ public class ItemController {
                     "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
             ));
         }
-
-        // 중복 체크
-        if (service.duplicate(item.getItemCommonCode())) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 등록된 품목입니다.")
-            ));
-        }
+        
 
         if (service.editItem(itemKey, item)) {
             return ResponseEntity.ok(Map.of("message",

@@ -27,13 +27,6 @@ public class CommonController {
             ));
         }
 
-        // 중복 체크
-        if (service.duplicateItemCommonCode(itemCommonCode.getItemCommonCode(), itemCommonCode.getItemCommonName())) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 등록된 품목 공통 코드입니다.")
-            ));
-        }
-
         if (service.editItemCommonCode(itemCommonCodeKey, itemCommonCode)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",
