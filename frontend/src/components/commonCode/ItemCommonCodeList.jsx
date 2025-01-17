@@ -28,7 +28,12 @@ export function ItemCommonCodeList({
         <Table.Root>
           <Table.Header>
             <Table.Row>
-              <Sort sortOptions={sortOptions} />
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
             </Table.Row>
           </Table.Header>
           <Table.Body>

@@ -26,16 +26,32 @@ public interface CommonMapper {
             <script>
                 SELECT *
                 FROM TB_ITEMCOMM
-              <where>
-                    <if test=" active == 1">
+                <trim prefix="WHERE" prefixOverrides="AND">
+                    <if test="active == 1">
                         item_common_code_active = 1
                     </if>
-            </where>
-                ORDER BY item_common_code_key
+                </trim>
+            
+                <trim prefix="ORDER BY">
+                    <choose>
+                        <when test="sort != null and sort != ''">
+                            <choose>
+                                <when test="sort == 'itemCommonCodeKey'">item_common_code_key</when>
+                                <when test="sort == 'itemCommonCode'">item_common_code</when>
+                                <when test="sort == 'itemCommonName'">item_common_name</when>
+                                <otherwise>item_common_code_key</otherwise>
+                            </choose>
+                            ${order}
+                        </when>
+                        <otherwise>
+                            item_common_code_key ASC
+                        </otherwise>
+                    </choose>
+                </trim>
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active);
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active, String sort, String order);
 
     @Select("""
             <script>
