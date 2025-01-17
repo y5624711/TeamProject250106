@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Center, Table } from "@chakra-ui/react";
-import { SearchBar } from "../tool/SearchBar.jsx";
 import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
 import { Sort } from "../tool/Sort.jsx";
 import { Pagination } from "../tool/Pagination.jsx";
@@ -8,6 +7,9 @@ import { Pagination } from "../tool/Pagination.jsx";
 export function ItemCommonCodeList({
   itemCommonCodeList,
   setItemCommonCodeKey,
+  count,
+  searchParams,
+  setSearchParams,
 }) {
   // 정렬 헤더
   const sortOptions = [
@@ -18,7 +20,7 @@ export function ItemCommonCodeList({
 
   return (
     <Box>
-      <SearchBar />
+      {/*<SearchBar />*/}
       <ActiveSwitch />
       <Box>
         <Table.Root>
@@ -42,7 +44,15 @@ export function ItemCommonCodeList({
           </Table.Body>
         </Table.Root>
         <Center>
-          <Pagination />
+          <Pagination
+            count={count}
+            pageSize={10}
+            onPageChange={(newPage) => {
+              const nextSearchParam = new URLSearchParams(searchParams);
+              nextSearchParam.set("page", newPage);
+              setSearchParams(nextSearchParam);
+            }}
+          />
         </Center>
       </Box>
     </Box>

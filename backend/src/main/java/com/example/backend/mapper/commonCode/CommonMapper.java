@@ -26,8 +26,15 @@ public interface CommonMapper {
             SELECT *
             FROM TB_ITEMCOMM
             ORDER BY item_common_code_key
+            LIMIT #{offset}, 10
             """)
-    List<ItemCommonCode> getItemCommonCodeList();
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_ITEMCOMM
+            """)
+    Integer countAll();
 
     @Select("""
             SELECT COUNT(*)

@@ -13,14 +13,18 @@ export function ItemCommonCode() {
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
   const [itemCommonCodeKey, setItemCommonCodeKey] = useState(1);
   const [change, setChange] = useState(false);
+  const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
 
   // 품목 공통 코드 목록 가져오기
   useEffect(() => {
     axios
-      .get(`/api/commonCode/item/list`)
+      .get(`/api/commonCode/item/list`, {
+        params: searchParams,
+      })
       .then((res) => {
-        setItemCommonCodeList(res.data || []);
+        setItemCommonCodeList(res.data.list || []);
+        setCount(res.data.count);
         setItemCommonCodeKey(res.data[0].itemCommonCodeKey);
       })
       .catch((error) => {
@@ -44,7 +48,7 @@ export function ItemCommonCode() {
         <Stack>
           공통코드 관리 > 품목 코드
           <ItemCommonCodeList
-            // count={count}
+            count={count}
             itemCommonCodeList={itemCommonCodeList}
             searchParams={searchParams}
             setSearchParams={setSearchParams}

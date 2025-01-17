@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -32,10 +33,11 @@ public class CommonService {
         return cnt == 1;
     }
 
-
     // 품목 공통 코드 조회
-    public List<ItemCommonCode> getItemCommonCodeList() {
-        return mapper.getItemCommonCodeList();
+    public Map<String, Object> getItemCommonCodeList(Integer page) {
+        Integer offset = (page - 1) * 10;
+        return Map.of("list", mapper.getItemCommonCodeList(offset),
+                "count", mapper.countAll());
     }
 
     // 품목 공통 코드 정보 입력됐는지 확인
