@@ -1,6 +1,7 @@
 package com.example.backend.mapper.department;
 
 import com.example.backend.dto.department.Department;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -72,4 +73,30 @@ public interface DepartmentMapper {
             WHERE department_key = #{departmentKey}
             """)
     int updateDepartment(Department department);
+
+    @Select("""
+            <script>
+            SELECT COALESCE(MAX(CAST(SUBSTRING(department_code,4)AS UNSIGNED )),0) AS maxNumber
+            FROM TB_DEPARTMST
+            WHERE department_code LIKE CONCAT(#{departmentCommonCode},'%')
+            AND department_code REGEXP '[A-Za-z]+[0-9]+$'
+            </script>
+            """)
+    Integer viewMaxDepartmentNo(String departmentCommonCode);
+
+    @Insert("""
+            INSERT INTO TB_DEPARTMST(department_common_code,
+                                     department_code,
+                                     department_name,
+                                     department_tel,
+                                     department_fax,
+                                     department_note)
+            VALUES(#{departmentCommonCode},
+                   #{departmentCode},
+                   #{departmentName},
+                   #{departmentTel},
+                   #{departmentFax},
+                   #{departmentNote})
+            """)
+    int addDepartment(Department department);
 }

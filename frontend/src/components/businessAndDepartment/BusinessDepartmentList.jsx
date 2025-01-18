@@ -6,9 +6,9 @@ import { Checkbox } from "../ui/checkbox.jsx";
 import { BusinessSearchAndFilter } from "./BusinessSearchAndFilter.jsx";
 import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
-import { Button } from "../ui/button.jsx";
 import { DepartmentViewAndUpdateDialog } from "./DepartmentViewAndUpdateDialog.jsx";
 import { toaster } from "../ui/toaster.jsx";
+import { DepartmentAdd } from "./DepartmentAdd.jsx";
 
 export function BusinessDepartmentList() {
   const [departmentList, setDepartmentList] = useState([]);
@@ -17,6 +17,7 @@ export function BusinessDepartmentList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState({ column: "", order: "desc" });
   const [search, setSearch] = useState({ type: "number", keyword: "" });
+  const [addCheck, setAddCheck] = useState(false);
 
   // 다이얼로그
   const [department, setDepartment] = useState(null);
@@ -52,7 +53,7 @@ export function BusinessDepartmentList() {
     return () => {
       controller.abort();
     };
-  }, [searchParams, sort]);
+  }, [searchParams, sort, addCheck]);
 
   // 검색창
   useEffect(() => {
@@ -115,6 +116,7 @@ export function BusinessDepartmentList() {
       .then((res) => res.data)
       .then((data) => {
         // console.log(departmentList);
+        setAddCheck(!addCheck);
         const message = data.message;
         toaster.create({
           type: message.type,
@@ -122,20 +124,6 @@ export function BusinessDepartmentList() {
         });
         setIsEditing(false);
         setIsOpen(false);
-
-        // 이전 값 바로 리스트에 반영
-        // 서버에서 리스트 다시 가져오기
-        axios
-          .get("/api/department/list", {
-            params: {
-              ...Object.fromEntries(searchParams),
-              sortColum: sort.column,
-              sortOrder: sort.order,
-            },
-          })
-          .then((res) => {
-            setDepartmentList(res.data.list); // 업데이트된 리스트 반영
-          });
       })
       .catch((e) => {
         const message = e.data.message;
@@ -144,6 +132,10 @@ export function BusinessDepartmentList() {
           description: message.text,
         });
       });
+  };
+
+  const handleAddCheck = () => {
+    setAddCheck(!addCheck);
   };
 
   if (loading) {
@@ -170,7 +162,7 @@ export function BusinessDepartmentList() {
               searchParams={searchParams}
               setSearchParams={setSearchParams}
             />
-            <Button>부서추가</Button>
+            <DepartmentAdd saved={handleAddCheck} />
           </HStack>
         </Stack>
       </Center>

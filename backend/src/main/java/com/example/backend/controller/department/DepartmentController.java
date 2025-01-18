@@ -28,6 +28,23 @@ public class DepartmentController {
 
     }
 
+    @PostMapping("add")
+    private ResponseEntity<Map<String, Object>> addDepartment(@RequestBody Department department) {
+        if (service.validateDepartment(department)) {
+            if (service.addDepartment(department)) {
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success", "text", "수정 되었습니다.")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
+            }
+        } else {
+            return ResponseEntity.ok().body(
+                    Map.of("message",
+                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+        }
+    }
+
     @PutMapping("update")
     private ResponseEntity<Map<String, Object>> updateDepartment(@RequestBody Department department) {
         if (service.validateDepartment(department)) {
