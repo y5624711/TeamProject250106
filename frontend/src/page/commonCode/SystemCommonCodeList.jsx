@@ -2,6 +2,7 @@ import { Box, createListCollection, Table } from "@chakra-ui/react";
 import { Checkbox } from "../../components/ui/checkbox.jsx";
 import React from "react";
 import { SearchBar } from "../../components/tool/SearchBar.jsx";
+import { Sort } from "../../components/tool/Sort.jsx";
 
 export function SystemCommonCodeList({
   commonCodeList,
@@ -36,10 +37,12 @@ export function SystemCommonCodeList({
         <Table.Root>
           <Table.Header>
             <Table.Row whiteSpace={"nowrap"}>
-              <Table.ColumnHeader>#</Table.ColumnHeader>
-              <Table.ColumnHeader>공통코드</Table.ColumnHeader>
-              <Table.ColumnHeader>코드명</Table.ColumnHeader>
-              <Table.ColumnHeader>사용여부</Table.ColumnHeader>
+              <Sort
+                sortOptions={sortOption}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
             </Table.Row>
           </Table.Header>
 

@@ -9,11 +9,58 @@ import java.util.List;
 @Mapper
 public interface CommonMapper {
     @Select("""
+            <script>
             SELECT *
             FROM TB_SYSCOMM
-            ORDER BY common_code_key
+            WHERE
+                <if test="active == false">
+                    common_code_active = 1
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND(<trim prefixOverrides="OR">
+                    <if test="searchType == 'number'"  >
+                        common_code LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="searchType == 'name'"  >
+                        OR common_code_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>)
+            ORDER BY ${sort} ${order}
+            LIMIT #{offset},10
+            </script>
             """)
-    List<CommonCode> selectAll();
+    List<CommonCode> getSysCommonCodeList(int offset,
+                                          String type,
+                                          String keyword,
+                                          String sort,
+                                          String order,
+                                          Integer active);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_SYSCOMM
+            WHERE
+                <if test="active == false">
+                    common_code_active = 1
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND(<trim prefixOverrides="OR">
+                    <if test="searchType == 'number'"  >
+                        common_code LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="searchType == 'name'"  >
+                        OR common_code_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>)
+            </script>
+            """)
+    Integer countAllSysCommonCode(Integer active, String type, String keyword);
+
 
     @Insert("""
             INSERT INTO TB_SYSCOMM
@@ -106,12 +153,6 @@ public interface CommonMapper {
             """)
     int countByCodeOrName(String itemCommonCode, String itemCommonName);
 
-//    @Select("""
-//            SELECT item_common_name
-//            FROM TB_ITEMCOMM
-//            """)
-//    List<String> getItemCommonName();
-
     @Insert("""
             INSERT INTO TB_ITEMCOMM
             (item_common_code_key, item_common_code, item_common_name, item_common_code_note)
@@ -142,4 +183,6 @@ public interface CommonMapper {
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
     int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
+
+
 }

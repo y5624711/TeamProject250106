@@ -16,10 +16,6 @@ import java.util.Map;
 public class CommonService {
     final CommonMapper mapper;
 
-    public List<CommonCode> selectAllList() {
-        return mapper.selectAll();
-    }
-
     //값이 입력되었는지 체크
     public boolean validate(CommonCode commonCode) {
         boolean common_code = !commonCode.getCommonCode().trim().isEmpty();
@@ -27,6 +23,20 @@ public class CommonService {
 
         return common_code && common_name;
     }
+
+    public Map<String, Object> selectSystemCommonCodeList(Integer page,
+                                                          String type,
+                                                          String keyword,
+                                                          String sort,
+                                                          String order,
+                                                          Integer active) {
+        int offset = (page - 1) * 10;
+
+
+        return Map.of("list", mapper.getSysCommonCodeList(offset, type, keyword, sort, order, active),
+                "count", mapper.countAllSysCommonCode(active, type, keyword));
+    }
+
 
     public boolean addCommonCode(CommonCode commonCode) {
         int cnt = mapper.insertCommonCode(commonCode);

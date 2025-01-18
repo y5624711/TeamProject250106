@@ -106,8 +106,14 @@ public class CommonController {
     }
 
     @GetMapping("system/list")
-    private List<CommonCode> list() {
-        return service.selectAllList();
+    private Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "type", defaultValue = "number") String type,
+                                     @RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                     @RequestParam(value = "sort", defaultValue = "common_code_key") String sort,
+                                     @RequestParam(value = "order", defaultValue = "desc") String order,
+                                     @RequestParam(value = "active", defaultValue = "false") Integer active) {
+        
+        return service.selectSystemCommonCodeList(page, type, keyword, sort, order, active);
     }
 
     @PostMapping("system/add")
