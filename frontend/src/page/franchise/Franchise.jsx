@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  HStack,
-  Spinner,
-} from "@chakra-ui/react";
+import { Box, Button, Center, Heading, HStack } from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -26,7 +19,7 @@ function Dial(props) {
 }
 
 // Dial 컴포넌트에 전달될 prop 유형 정의
-Dial.propTypes = {children: PropTypes.node}; // children prop은 React 요소를 포함할 수 있는 node 타입이어야 함
+Dial.propTypes = { children: PropTypes.node }; // children prop은 React 요소를 포함할 수 있는 node 타입이어야 함
 
 export function Franchise() {
   // 뷰 모드 관련 상태
@@ -103,6 +96,20 @@ export function Franchise() {
     setSearchParams(nextSearchParam);
   };
 
+  // 삭제 내역 체크박스 상태 바꾸고, 그에 따라 URL의 'active' 파라미터 업데이트
+  const toggleCheckedActive = () => {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    if (nextValue) {
+      nextSearchParams.set("active", "true");
+    } else {
+      nextSearchParams.set("active", "false");
+    }
+    setSearchParams(nextSearchParams);
+  };
+
   // 페이지네이션
   const pageParam = searchParams.get("page") ?? "1";
   const page = Number(pageParam);
@@ -159,6 +166,7 @@ export function Franchise() {
           setSearch={setSearch}
           checkedActive={checkedActive}
           setCheckedActive={setCheckedActive}
+          toggleCheckedActive={toggleCheckedActive}
           handlePageChange={handlePageChange}
           handleSearchClick={handleSearchClick}
           handleSortChange={handleSortChange}

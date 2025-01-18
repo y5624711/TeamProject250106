@@ -22,7 +22,7 @@ export function FranchiseList({
   setSearch,
   handleSearchClick,
   checkedActive,
-  setCheckedActive,
+  toggleCheckedActive,
   onFranchiseClick,
   standard,
   setStandard,
@@ -110,13 +110,7 @@ export function FranchiseList({
           검색
         </Button>
       </Box>
-      <Checkbox
-        mt={3}
-        checked={checkedActive}
-        onChange={() => {
-          setCheckedActive(!checkedActive); // 상태 업데이트
-        }}
-      >
+      <Checkbox mt={3} checked={checkedActive} onChange={toggleCheckedActive}>
         삭제 내역 포함 보기
       </Checkbox>
       <Table.Root interactive>
