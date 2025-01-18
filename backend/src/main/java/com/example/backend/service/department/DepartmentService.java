@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -27,9 +26,6 @@ public class DepartmentService {
         if (searchType.isEmpty()) searchType = "number";
         if (keyword.isEmpty()) keyword = "";
 
-
-        List<Department> list = mapper.listDepartmentSelect(offset, searchType, keyword, active, sortColum, sortOrder);
-        System.out.println(" list= " + list);
 
         return Map.of("list", mapper.listDepartmentSelect(offset, searchType, keyword, active, sortColum, sortOrder),
                 "count", mapper.departmentCountAll(searchType, keyword, active));

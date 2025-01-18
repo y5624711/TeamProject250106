@@ -7,7 +7,8 @@ import { BusinessSearchAndFilter } from "./BusinessSearchAndFilter.jsx";
 import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
 import { Button } from "../ui/button.jsx";
-import { CustomDialogRoot } from "./CustomDialogRoot.jsx";
+import { DepartmentViewAndUpdateDialog } from "./DepartmentViewAndUpdateDialog.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 export function BusinessDepartmentList() {
   const [departmentList, setDepartmentList] = useState([]);
@@ -39,6 +40,7 @@ export function BusinessDepartmentList() {
       })
       .then((res) => res.data)
       .then((data) => {
+        console.log(data.list);
         setDepartmentList(data.list);
         setCount(data.count);
       })
@@ -112,12 +114,35 @@ export function BusinessDepartmentList() {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log("잘됨");
-        console.log("잘되는값", department);
+        // console.log(departmentList);
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setIsEditing(false);
+        setIsOpen(false);
+
+        // 이전 값 바로 리스트에 반영
+        // 서버에서 리스트 다시 가져오기
+        axios
+          .get("/api/department/list", {
+            params: {
+              ...Object.fromEntries(searchParams),
+              sortColum: sort.column,
+              sortOrder: sort.order,
+            },
+          })
+          .then((res) => {
+            setDepartmentList(res.data.list); // 업데이트된 리스트 반영
+          });
       })
       .catch((e) => {
-        console.log("안되는값", department);
-        console.log("안됨");
+        const message = e.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
       });
   };
 
@@ -165,7 +190,7 @@ export function BusinessDepartmentList() {
         handlePageChange={handlePageChange}
       />
 
-      <CustomDialogRoot
+      <DepartmentViewAndUpdateDialog
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         department={department}

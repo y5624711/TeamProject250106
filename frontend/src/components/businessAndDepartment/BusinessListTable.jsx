@@ -1,6 +1,7 @@
 import { Box, HStack, Table } from "@chakra-ui/react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import React from "react";
+import { Checkbox } from "../ui/checkbox.jsx";
 
 export function BusinessListTable({
   department,
@@ -24,6 +25,13 @@ export function BusinessListTable({
               <HStack>
                 부서명
                 {sort.column === "department_name" &&
+                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => handleSort("department_active")}>
+              <HStack>
+                사용여부
+                {sort.column === "department_active" &&
                   (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
@@ -53,6 +61,9 @@ export function BusinessListTable({
             >
               <Table.Cell>{list.departmentCode}</Table.Cell>
               <Table.Cell>{list.departmentName}</Table.Cell>
+              <Table.Cell>
+                <Checkbox checked={list.departmentActive} />
+              </Table.Cell>
               <Table.Cell>{list.departmentTel}</Table.Cell>
               <Table.Cell>{list.departmentFax}</Table.Cell>
             </Table.Row>

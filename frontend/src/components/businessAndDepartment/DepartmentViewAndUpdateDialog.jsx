@@ -13,7 +13,7 @@ import { Field } from "../ui/field.jsx";
 import { HStack, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
 
-export function CustomDialogRoot({
+export function DepartmentViewAndUpdateDialog({
   isOpen,
   setIsOpen,
   department,
@@ -23,17 +23,16 @@ export function CustomDialogRoot({
   toggleEditing,
   handleUpdateClick,
 }) {
-  const isValid = () => {
-    console.log(department);
-    return (
-      department.businessCode?.trim() &&
-      department.businessName?.trim() &&
-      department.businessTel?.trim()
+  let disable = false;
+  if (department !== null) {
+    disable = !(
+      department.departmentName.trim().length > 0 &&
+      department.departmentName.trim().length > 0 &&
+      department.departmentTel.trim().length > 0
     );
-  };
+  }
 
   const handleUpdate = () => {
-    console.log(department);
     handleUpdateClick();
   };
 
@@ -55,7 +54,7 @@ export function CustomDialogRoot({
               onChange={(e) =>
                 setDepartmentData((prev) => ({
                   ...prev,
-                  departmentActive: e.target.checked, // e.target.checked로 상태 읽기
+                  departmentActive: e.target.checked,
                 }))
               }
               readOnly={!isEditing}
@@ -132,8 +131,12 @@ export function CustomDialogRoot({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={handleUpdate}>저장</Button>
-          <Button onClick={toggleEditing}>수정</Button>
+          {isEditing && (
+            <Button disabled={disable} onClick={handleUpdate}>
+              저장
+            </Button>
+          )}
+          {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
         </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {
