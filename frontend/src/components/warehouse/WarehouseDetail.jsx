@@ -31,7 +31,15 @@ export function WarehouseDetail({ isOpen, onClose, warehouseKey }) {
     <DialogRoot open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{warehouseKey}번 창고</DialogTitle>
+          <DialogTitle>
+            <Box>
+              {isEditing ? (
+                <Box>{warehouseKey}번 창고 수정하기</Box>
+              ) : (
+                <Box>{warehouseKey}번 창고 상세보기</Box>
+              )}
+            </Box>
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Box>
