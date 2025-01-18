@@ -1,10 +1,7 @@
 package com.example.backend.mapper.warehouse;
 
 import com.example.backend.dto.warehouse.Warehouse;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -74,4 +71,10 @@ public interface WarehouseMapper {
             WHERE warehouse_key=#{warehouseKey}
             """)
     int edit(Warehouse warehouse);
+
+    @Delete("""
+            DELETE FROM TB_WHMST
+            WHERE warehouse_key=#{warehouseKey}
+            """)
+    int delete(Integer warehouseKey);
 }

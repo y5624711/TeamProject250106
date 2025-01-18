@@ -34,4 +34,9 @@ public class WarehouseController {
     public void edit(@RequestBody Warehouse warehouse) {
         service.edit(warehouse);
     }
+
+    @DeleteMapping("delete/{warehouseKey}")
+    public void delete(@PathVariable Integer warehouseKey) {
+        service.delete(warehouseKey);
+    }
 }

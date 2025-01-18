@@ -33,4 +33,8 @@ public class WarehouseService {
     public void edit(Warehouse warehouse) {
         mapper.edit(warehouse);
     }
+
+    public void delete(Integer warehouseKey) {
+        mapper.delete(warehouseKey);
+    }
 }

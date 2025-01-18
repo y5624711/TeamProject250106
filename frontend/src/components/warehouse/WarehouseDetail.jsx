@@ -3,12 +3,17 @@ import { Box, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
 import WarehouseEdit from "./WarehouseEdit.jsx";
 import { Button } from "../ui/button.jsx";
+import axios from "axios";
 
 function WarehouseDetail({ warehouseKey }) {
   const [isEditing, setIsEditing] = useState(false);
 
   function handleEditClick() {
     setIsEditing(!isEditing);
+  }
+
+  function handleDeleteClick() {
+    axios.delete(`/api/warehouse/delete/${warehouseKey}`);
   }
 
   return (
@@ -25,7 +30,7 @@ function WarehouseDetail({ warehouseKey }) {
           <Box>
             <HStack>
               <Button onClick={handleEditClick}>수정</Button>
-              <Button>삭제</Button>
+              <Button onClick={handleDeleteClick}>삭제</Button>
             </HStack>
           </Box>
         </Box>
