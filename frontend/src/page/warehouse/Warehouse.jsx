@@ -6,11 +6,11 @@ import { SideBar } from "../../components/tool/SideBar.jsx";
 import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
 import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import WarehouseAdd from "../../components/warehouse/WarehouseAdd.jsx";
 import WarehouseDetail from "../../components/warehouse/WarehouseDetail.jsx";
+import { WarehouseAdd } from "../../components/warehouse/WarehouseAdd.jsx";
 
 function Warehouse(props) {
-  const [value, setValue] = useState([]);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
@@ -44,7 +44,20 @@ function Warehouse(props) {
       <HStack align="flex-start">
         <SideBar />
         <Stack>
-          창고 관리
+          <HStack>
+            <Box>창고 관리</Box>
+            <Box>
+              <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
+                새 창고 등록
+              </Button>
+            </Box>
+            <WarehouseAdd
+              isOpen={isAddDialogOpen}
+              onClose={() => setIsAddDialogOpen(false)}
+              onConfirm={() => setIsAddDialogOpen(false)}
+              title="새 창고 등록"
+            />
+          </HStack>
           {/*검색 jsx*/}
           <WarehouseSearch
             warehouseOptionList={warehouseOptionList}
