@@ -180,17 +180,17 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   };
 
   return (
-    <Box border={"1px solid black"}>
-      <Button
-        onClick={() => {
-          formDataClear();
-          // 등록 화면
-          handleSelectedItem(-1);
-        }}
-      >
-        {" "}
-        등록
-      </Button>
+    <Box>
+      {/*<Button*/}
+      {/*  onClick={() => {*/}
+      {/*    formDataClear();*/}
+      {/*    // 등록 화면*/}
+      {/*    handleSelectedItem(-1);*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  {" "}*/}
+      {/*  등록*/}
+      {/*</Button>*/}
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
       <Stack spacing={4}>
         <SelectRoot

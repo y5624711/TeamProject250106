@@ -27,7 +27,7 @@ import {
 import { FaArrowDown } from "react-icons/fa6";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 
-export function EmployeeList({ onSelect, updateList, viewKey }) {
+export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   const [count, setCount] = useState(1);
@@ -92,6 +92,7 @@ export function EmployeeList({ onSelect, updateList, viewKey }) {
       return newParams;
     });
   };
+
   //  페이지 버튼 클릭시
   function handlePageChange(e) {
     setPage(e.page);
@@ -133,6 +134,9 @@ export function EmployeeList({ onSelect, updateList, viewKey }) {
       newParams.order = orderName;
       return newParams; // 새로운 객체를 반환
     });
+  };
+  const handleModalControl = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -422,7 +426,14 @@ export function EmployeeList({ onSelect, updateList, viewKey }) {
         </HStack>
       </PaginationRoot>
 
-      <EmployeeAddDialog isModalOpen={isModalOpen} />
+      <EmployeeAddDialog
+        isModalOpen={isModalOpen}
+        modalChange={handleModalControl}
+        viewKey={viewKey}
+        onChange={onChange}
+        onSelect={onSelect}
+      />
+      {/*<EmployeeView />*/}
     </Box>
   );
 }

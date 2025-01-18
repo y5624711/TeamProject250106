@@ -7,16 +7,18 @@ import { SideBar } from "../../components/tool/SideBar.jsx";
 
 export function Employee() {
   const [selectedEmployeeNo, setSelectedEmployeeNo] = useState(-1);
-  const [addCheck, setAddChecck] = useState(false);
+  const [addCheck, setAddCheck] = useState(false);
 
   useEffect(() => {}, [selectedEmployeeNo, addCheck]);
 
+  //  클릭리스트 키값 기억하는 버튼
   const handleSelectedNo = (selectedEmployeeNo) => {
     setSelectedEmployeeNo(selectedEmployeeNo);
   };
 
+  // 추가시 화면 리렌더용
   const handleAddCheck = () => {
-    setAddChecck(!addCheck);
+    setAddCheck(!addCheck);
   };
 
   return (
@@ -26,10 +28,9 @@ export function Employee() {
         onSelect={handleSelectedNo}
         updateList={addCheck}
         viewKey={selectedEmployeeNo}
+        onChange={handleAddCheck}
       />
-      {/*viewKey={selectedEmployeeNo}*/}
-      {/*onChange={handleAddCheck}*/}
-      {/*onSelect={handleSelectedNo}*/}
+      {/* 혹시몰라 남겨놈*/}
       {/*<EmployeeAdd*/}
       {/*  viewKey={selectedEmployeeNo}*/}
       {/*  onChange={handleAddCheck}*/}

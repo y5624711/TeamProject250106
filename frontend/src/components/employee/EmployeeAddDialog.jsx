@@ -11,9 +11,20 @@ import {
 } from "../ui/dialog.jsx";
 import { Button } from "@chakra-ui/react";
 import { EmployeeAdd } from "./EmployeeAdd.jsx";
-import React from "react";
+import React, { useEffect } from "react";
 
-export function EmployeeAddDialog({ isModalOpen }) {
+export function EmployeeAddDialog({
+  isModalOpen,
+  viewKey,
+  onChange,
+  onSelect,
+  modalChange,
+}) {
+  const changeModalAdd = () => {
+    onChange();
+    modalChange();
+  };
+
   // root에 화면을 띄우는 거구나
   return (
     <DialogRoot open={isModalOpen}>
@@ -26,17 +37,12 @@ export function EmployeeAddDialog({ isModalOpen }) {
         </DialogHeader>
         <DialogBody>
           <EmployeeAdd
-            viewKey={selectedEmployeeNo}
-            onChange={handleAddCheck}
-            onSelect={handleSelectedNo}
+            viewKey={-1}
+            onChange={changeModalAdd}
+            onSelect={onSelect}
           />
         </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button> 취소</Button>
-          </DialogActionTrigger>
-          <Button>save</Button>
-        </DialogFooter>
+        <DialogFooter></DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
