@@ -41,7 +41,7 @@ export function ItemList({
     : sortOptions;
 
   return (
-    <Box>
+    <Box px={10}>
       <SearchBar
         itemSearchOptions={itemSearchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}

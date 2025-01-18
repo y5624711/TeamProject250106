@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Stack } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { ItemList } from "../../components/item/ItemList.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -45,10 +45,12 @@ export function Item() {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <SideBar />
-        <Stack>
-          기준정보 관리 > 품목 관리
+        <Stack flex={1}>
+          <Text fontSize="xl" mx={10} my={3}>
+            기준정보 관리 > 품목 관리
+          </Text>
           <ItemList
             count={count}
             itemList={itemList}
@@ -57,6 +59,15 @@ export function Item() {
             setItemKey={setItemKey}
             onRowClick={handleRowClick}
           />
+          <Button
+            onClick={() => setAddDialogOpen(true)}
+            size="lg"
+            position="absolute"
+            bottom="100px"
+            right="100px"
+          >
+            물품 등록
+          </Button>
         </Stack>
         <ItemView
           itemKey={itemKey}
@@ -65,7 +76,6 @@ export function Item() {
           setChange={setChange}
           setItemKey={setItemKey}
         />
-        <Button onClick={() => setAddDialogOpen(true)}>물품 등록</Button>
         <ItemAdd
           isOpen={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}

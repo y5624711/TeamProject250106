@@ -32,7 +32,7 @@ export function ActiveSwitch({ onActiveChange }) {
   };
 
   return (
-    <Switch checked={!active} onChange={handleSwitchChange}>
+    <Switch my={5} checked={!active} onChange={handleSwitchChange}>
       전체 조회
     </Switch>
   );

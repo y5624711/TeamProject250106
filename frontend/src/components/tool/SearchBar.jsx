@@ -53,7 +53,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
   };
 
   return (
-    <HStack>
+    <HStack justifyContent="center">
       <SelectRoot
         collection={itemSearchOptions}
         width="150px"
@@ -83,7 +83,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
 
       <Input
         placeholder="검색어를 입력해 주세요"
-        width="320px"
+        width="50%"
         value={search.keyword}
         onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         onKeyDown={(e) => {
