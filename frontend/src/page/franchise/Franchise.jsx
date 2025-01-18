@@ -13,19 +13,26 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
-import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
-import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
-import { useSearchParams } from "react-router-dom";
-import axios from "axios";
-import {FranchiseDialog} from "../../components/franchise/FranchiseDialog.jsx";
+import { FranchiseDialog } from "../../components/franchise/FranchiseDialog.jsx";
+import * as PropTypes from "prop-types";
+
+// Dial 컴포넌트 정의
+function Dial(props) {
+  return null;
+}
+
+// Dial 컴포넌트에 전달될 prop 유형 정의
+Dial.propTypes = {children: PropTypes.node}; // children prop은 React 요소를 포함할 수 있는 node 타입이어야 함
 
 export function Franchise() {
   // 뷰 모드 관련 상태
   const [viewMode, setViewMode] = useState("view");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // 검색 및 필터링 관련 상태
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog state for FranchiseAdd
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // Dialog state for Add Franchise
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
     type: "all",
@@ -111,20 +118,29 @@ export function Franchise() {
   const handleSortChange = (sortField) => {
     const nextOrder = standard.order === "ASC" ? "DESC" : "ASC";
     setStandard({ sort: sortField, order: nextOrder });
-
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sortField);
     nextSearchParams.set("order", nextOrder);
     setSearchParams(nextSearchParams);
   };
 
-  // 클릭된 가맹점의 상세 정보 표시
-  function handleFranchiseClick(franchiseKey) {
-    setFranchiseKey(franchiseKey);
+  // 가맹점 클릭 시 상세 보기
+  const handleFranchiseClick = (key) => {
+    setFranchiseKey(key);
     setIsDialogOpen(true);
-  }
+  };
 
-  // 모달 닫기 핸들러
+  // 추가 버튼 클릭 시 add 다이얼로그
+  const handleAddFranchiseClick = () => {
+    setIsAddDialogOpen(true);
+  };
+
+  // add 다이얼로그 닫기
+  const handleAddDialogClose = () => {
+    setIsAddDialogOpen(false);
+  };
+
+  // 상세 보기 다이얼로그 닫기
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
@@ -150,12 +166,13 @@ export function Franchise() {
           setStandard={setStandard}
           onFranchiseClick={handleFranchiseClick}
         />
+        {/* 페이지네이션 */}
         <Center>
           <PaginationRoot
             onPageChange={handlePageChange}
             count={count}
             pageSize={10}
-            page={page}
+            page={Number(searchParams.get("page") || 1)}
             variant="solid"
           >
             <HStack>
@@ -165,10 +182,17 @@ export function Franchise() {
             </HStack>
           </PaginationRoot>
         </Center>
+        {/* 추가 버튼 */}
+        <Button onClick={handleAddFranchiseClick} mb={4}>
+          추가
+        </Button>
+        {/* 다이얼로그 */}
         <FranchiseDialog
-          isOpen={isDialogOpen}
+          isOpen={isDialogOpen || isAddDialogOpen}
           onClose={handleDialogClose}
           franchiseKey={franchiseKey}
+          isAddDialogOpen={isAddDialogOpen}
+          onAddDialogClose={handleAddDialogClose}
         />
       </Box>
     </Box>
