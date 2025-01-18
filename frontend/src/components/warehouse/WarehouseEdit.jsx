@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, HStack, Input } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
+import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
 function WarehouseEdit({ warehouseKey, setIsEditing, isEditing }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function handleSaveClick() {
     axios.put(`/api/warehouse/edit`, {
@@ -169,10 +171,17 @@ function WarehouseEdit({ warehouseKey, setIsEditing, isEditing }) {
       <br />
       <Box>
         <HStack>
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button onClick={() => setIsDialogOpen(true)}>저장</Button>
           <Button onClick={handleCancelClick}>취소</Button>
         </HStack>
       </Box>
+      <DialogConfirmation
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleSaveClick}
+        title="수정 확인"
+        body="변경 내용을 저장하시겠습니까?"
+      />
     </Box>
   );
 }
