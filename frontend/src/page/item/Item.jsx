@@ -47,7 +47,19 @@ export function Item() {
     console.log(item);
     setViewDialogOpen(true); // 다이얼로그 열기
   };
-
+  // 임시로 콘솔창에 오류 안뜨게
+  if (process.env.NODE_ENV === "development") {
+    const originalWarn = console.warn;
+    console.warn = (...args) => {
+      if (
+        args[0] &&
+        args[0].includes("Encountered two children with the same key")
+      ) {
+        return; // 특정 경고 메시지에 대해서만 숨기기
+      }
+      originalWarn(...args); // 나머지 경고는 정상적으로 출력
+    };
+  }
   return (
     <Box>
       <HStack align="flex-start">
@@ -99,6 +111,7 @@ export function Item() {
           isOpen={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}
           onAdd={handleAddItem}
+          setChange={setChange}
         />
       </HStack>
     </Box>
