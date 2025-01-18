@@ -175,22 +175,9 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         onChange();
       });
   };
-  const handleSelectedItem = (no) => {
-    onSelect(no);
-  };
 
   return (
     <Box>
-      {/*<Button*/}
-      {/*  onClick={() => {*/}
-      {/*    formDataClear();*/}
-      {/*    // 등록 화면*/}
-      {/*    handleSelectedItem(-1);*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  {" "}*/}
-      {/*  등록*/}
-      {/*</Button>*/}
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
       <Stack spacing={4}>
         <SelectRoot
@@ -253,6 +240,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
         <Input
           name="note"
+          readOnly
           placeholder={"비고"}
           value={formData.note}
           onChange={handleInputChange}

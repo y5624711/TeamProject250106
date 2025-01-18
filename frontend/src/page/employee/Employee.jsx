@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import { EmployeeAdd } from "../../components/employee/EmployeeAdd.jsx";
-import { AccountSideBar } from "../../components/employee/AccountSideBar.jsx";
 import React, { useEffect, useState } from "react";
 import { EmployeeList } from "../../components/employee/EmployeeList.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";

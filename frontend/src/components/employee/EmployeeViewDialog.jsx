@@ -1,5 +1,4 @@
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -11,16 +10,16 @@ import {
 } from "../ui/dialog.jsx";
 import { Button } from "@chakra-ui/react";
 import { EmployeeAdd } from "./EmployeeAdd.jsx";
-import React, { useEffect } from "react";
+import React from "react";
 
-export function EmployeeAddDialog({
+export function EmployeeViewDialog({
   isModalOpen,
   viewKey,
   onChange,
   onSelect,
   modalChange,
 }) {
-  const changeModalAdd = () => {
+  const changeModalView = () => {
     onChange();
     modalChange();
   };
@@ -37,13 +36,17 @@ export function EmployeeAddDialog({
         </DialogHeader>
         <DialogBody>
           <EmployeeAdd
-            viewKey={-1}
-            onChange={changeModalAdd}
+            viewKey={viewKey}
+            onChange={changeModalView}
             onSelect={onSelect}
           />
         </DialogBody>
         <DialogFooter></DialogFooter>
-        <DialogCloseTrigger onClick={() => modalChange()} />
+        <DialogCloseTrigger
+          onClick={() => {
+            modalChange();
+          }}
+        />
       </DialogContent>
     </DialogRoot>
   );

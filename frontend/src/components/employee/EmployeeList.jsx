@@ -26,6 +26,9 @@ import {
 } from "../ui/pagination.jsx";
 import { FaArrowDown } from "react-icons/fa6";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
+import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
+
+EmployeeViewDialog.propTypes = {};
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
@@ -42,6 +45,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const [type, setType] = useState(searchParams.get("type") || "all");
   const [order, setOrder] = useState(searchParams.get("order") || "desc");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isviewModalOpen, setIsviewModalOpen] = useState(false);
+
   const updateQuery = () => {
     setSearchParams({
       page: page,
@@ -139,6 +144,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleviewModalControl = () => {
+    setIsviewModalOpen(!isviewModalOpen);
+  };
   return (
     <Box h={"100vh"}>
       <Heading>
@@ -371,7 +379,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           {memberList.map((item, index) => (
             <Table.Row
               key={item.employeeKey}
-              onClick={() => handleSelectedItem(item.employeeKey)}
+              onClick={() => {
+                handleSelectedItem(item.employeeKey);
+                handleviewModalControl();
+              }}
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
@@ -433,7 +444,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         onChange={onChange}
         onSelect={onSelect}
       />
-      {/*<EmployeeView />*/}
+      <EmployeeViewDialog
+        isModalOpen={isviewModalOpen}
+        modalChange={handleviewModalControl}
+        viewKey={viewKey}
+        onChange={onChange}
+        onSelect={onSelect}
+      />
     </Box>
   );
 }
