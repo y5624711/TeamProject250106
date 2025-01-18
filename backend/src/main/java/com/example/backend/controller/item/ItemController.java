@@ -73,6 +73,7 @@ public class ItemController {
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order
     ) {
+        // type, keyword, sort, order 을 db의 컬럼명으로 변경
         return service.getItemList(page, active, type, keyword, sort, order);
     }
 

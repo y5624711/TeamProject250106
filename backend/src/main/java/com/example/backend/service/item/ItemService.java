@@ -48,12 +48,28 @@ public class ItemService {
         return mapper.getCustomerName(itemCommonCode);
     }
 
+
     // 품목 리스트 가져오기
     public Map<String, Object> getItemList(Integer page, Boolean active, String type, String keyword, String sort, String order) {
         // LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
+        type = toSnakeCase(type);
+        keyword = toSnakeCase(keyword);
+        sort = toSnakeCase(sort);
+        order = toSnakeCase(order);
+
         return Map.of("list", mapper.getItemList(offset, active, type, keyword, sort, order),
                 "count", mapper.countAll(active, type, keyword));
+    }
+
+    // camelCase를 snake_case로 변환하는 로직
+    private String toSnakeCase(String camelCase) {
+        if (camelCase == null || camelCase.isEmpty()) {
+            return camelCase; // null 이거나 빈 문자열은 그대로 반환
+        }
+        return camelCase
+                .replaceAll("([a-z])([A-Z])", "$1_$2") // 소문자 뒤 대문자에 언더스코어 추가
+                .toLowerCase(); // 전체를 소문자로 변환
     }
 
     // 품목 1개 정보 가져오기
