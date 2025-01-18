@@ -27,9 +27,6 @@ export function EmployeeViewDialog({
   // root에 화면을 띄우는 거구나
   return (
     <DialogRoot open={isModalOpen}>
-      <DialogTrigger asChild>
-        <Button variant={"outline"}> Open</Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>제목</DialogTitle>
