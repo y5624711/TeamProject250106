@@ -1,6 +1,6 @@
 import {
   createListCollection,
-  Flex,
+  HStack,
   Input,
   SelectContent,
   SelectItem,
@@ -44,7 +44,7 @@ export function BusinessSearchAndFilter({
   }
 
   return (
-    <Flex>
+    <HStack>
       {/*셀렉트 &&검색창*/}
       <SelectRoot
         collection={optionList}
@@ -54,11 +54,18 @@ export function BusinessSearchAndFilter({
         }}
         size="sm"
         width="200px"
+        position="relative"
       >
         <SelectTrigger>
           <SelectValueText />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+          style={{
+            width: "100px",
+            top: "40px",
+            position: "absolute",
+          }}
+        >
           {optionList.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}
@@ -75,6 +82,6 @@ export function BusinessSearchAndFilter({
         }
       />
       <Button onClick={handleSearchClick}>검색</Button>
-    </Flex>
+    </HStack>
   );
 }

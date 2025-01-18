@@ -36,7 +36,7 @@ function CustomerList({
 }) {
   const totalPages = Math.ceil(count / 10);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  // console.log("list", customerList);
+  // console.log("commonCodeList", customerList);
   // console.log(customerKey);
   // console.log(checkedActive);
 

@@ -59,12 +59,12 @@ export function SideBar() {
           <SidebarItem path="/warehouse/management">창고 관리</SidebarItem>
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
           <SidebarItem onClick={toggleCommonCodeMenu}>
-            {isCommonCodeOpen ? "공통 코드   ▼" : "공통 코드   ▲"}
+            {isCommonCodeOpen ? "공통코드 관리   ▼" : "공통코드 관리"}
           </SidebarItem>
           {isCommonCodeOpen && (
             <>
-              <SidebarItem path="/commonCode/item">품목 코드</SidebarItem>
               <SidebarItem path="/commonCode/system">업무 코드</SidebarItem>
+              <SidebarItem path="/commonCode/item">품목 코드</SidebarItem>
             </>
           )}
         </Stack>
