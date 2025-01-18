@@ -12,6 +12,7 @@ export function ItemList({
   searchParams,
   setSearchParams,
   setItemKey,
+  onRowClick,
 }) {
   // 검색 옵션
   const itemSearchOptions = createListCollection({
@@ -64,8 +65,9 @@ export function ItemList({
             {itemList?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
-                onClick={() => setItemKey(item.itemKey)}
+                onClick={() => onRowClick(item.itemKey)}
                 style={{ cursor: "pointer" }}
+                _hover={{ backgroundColor: "gray.100" }}
               >
                 <Table.Cell textAlign="center"> {index + 1}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>

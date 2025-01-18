@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button.jsx";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { ItemAdd } from "../../components/item/ItemAdd.jsx";
+import { ItemView } from "../../components/item/ItemView.jsx";
 
 export function Item() {
   const [selectedPage, setSelectedPage] = useState("view");
@@ -14,7 +15,8 @@ export function Item() {
   const [change, setChange] = useState(false);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -37,7 +39,13 @@ export function Item() {
 
   const handleAddItem = (newItem) => {
     setItemList((prevItems) => [newItem, ...prevItems]);
-    setIsDialogOpen(false);
+    setAddDialogOpen(false);
+  };
+
+  const handleRowClick = (item) => {
+    // setSelectedItem(item); // 선택된 아이템 설정
+    console.log(item);
+    setViewDialogOpen(true); // 다이얼로그 열기
   };
 
   return (
@@ -52,8 +60,17 @@ export function Item() {
             searchParams={searchParams}
             setSearchParams={setSearchParams}
             setItemKey={setItemKey}
+            onRowClick={handleRowClick}
           />
         </Stack>
+        <ItemView
+          itemKey={itemKey}
+          setItemList={setItemList}
+          setSearchParams={setSearchParams}
+          setChange={setChange}
+          isOpen={viewDialogOpen}
+          onClose={() => setViewDialogOpen(false)}
+        />
         <Stack>
           {/*{selectedPage === "view" && (*/}
           {/*  <Button onClick={() => handleSelectPage("add")}>추가</Button>*/}
@@ -77,10 +94,10 @@ export function Item() {
           {/*  />*/}
           {/*)}*/}
         </Stack>
-        <Button onClick={() => setIsDialogOpen(true)}>물품 등록</Button>
+        <Button onClick={() => setAddDialogOpen(true)}>물품 등록</Button>
         <ItemAdd
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
+          isOpen={addDialogOpen}
+          onClose={() => setAddDialogOpen(false)}
           onAdd={handleAddItem}
         />
       </HStack>
