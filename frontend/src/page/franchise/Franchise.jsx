@@ -142,14 +142,10 @@ export function Franchise() {
     setIsAddDialogOpen(true);
   };
 
-  // add 다이얼로그 닫기
-  const handleAddDialogClose = () => {
-    setIsAddDialogOpen(false);
-  };
-
-  // 상세 보기 다이얼로그 닫기
+  // 다이얼로그 닫기
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+    setIsAddDialogOpen(false);
   };
 
   return (
@@ -200,7 +196,6 @@ export function Franchise() {
           onClose={handleDialogClose}
           franchiseKey={franchiseKey}
           isAddDialogOpen={isAddDialogOpen}
-          onAddDialogClose={handleAddDialogClose}
         />
       </Box>
     </Box>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 
-export function FranchiseAdd({ onCancel }) {
+export function FranchiseAdd() {
   const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
   const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -153,9 +153,9 @@ export function FranchiseAdd({ onCancel }) {
           />
         </Field>
         <Button onClick={handleSaveClick}>등록</Button>
-        <Button onClick={onCancel} ml={4}>
-          취소
-        </Button>
+        {/*<Button onClick={onCancel} ml={4}>*/}
+        {/*  취소*/}
+        {/*</Button>*/}
       </Box>
     </Box>
   );

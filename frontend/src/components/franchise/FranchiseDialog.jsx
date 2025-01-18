@@ -10,7 +10,12 @@ import React, { useEffect } from "react";
 import { FranchiseView } from "./FranchiseView.jsx";
 import { FranchiseAdd } from "./FranchiseAdd.jsx";
 
-export function FranchiseDialog({ isOpen, onClose, franchiseKey, isAddDialogOpen, onAddDialogClose }) {
+export function FranchiseDialog({
+  isOpen,
+  onClose,
+  franchiseKey,
+  isAddDialogOpen,
+}) {
   useEffect(() => {
     if (franchiseKey) {
     }
@@ -20,11 +25,13 @@ export function FranchiseDialog({ isOpen, onClose, franchiseKey, isAddDialogOpen
     <DialogRoot open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isAddDialogOpen ? "가맹점 추가" : "가맹점 상세 정보"}</DialogTitle>
+          <DialogTitle>
+            {isAddDialogOpen ? "가맹점 추가" : "가맹점 상세 정보"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           {isAddDialogOpen ? (
-            <FranchiseAdd onCancel={onAddDialogClose} />
+            <FranchiseAdd onClose={onClose} />
           ) : franchiseKey ? (
             <FranchiseView franchiseKey={franchiseKey} />
           ) : (
