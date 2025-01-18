@@ -19,10 +19,12 @@ import { FranchiseView } from "../../components/franchise/FranchiseView.jsx";
 import { FranchiseAdd } from "../../components/franchise/FranchiseAdd.jsx";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import {FranchiseDialog} from "../../components/franchise/FranchiseDialog.jsx";
 
 export function Franchise() {
   // 뷰 모드 관련 상태
   const [viewMode, setViewMode] = useState("view");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   // 검색 및 필터링 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
@@ -119,68 +121,55 @@ export function Franchise() {
   // 클릭된 가맹점의 상세 정보 표시
   function handleFranchiseClick(franchiseKey) {
     setFranchiseKey(franchiseKey);
-    setViewMode("view");
+    setIsDialogOpen(true);
   }
+
+  // 모달 닫기 핸들러
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
 
   return (
     <Box display={"flex"} h={"100vh"}>
       <SideBar />
-      <Box flex={"1"} display={"flex"} p={4}>
-        <Box flex={"1"} pr={4}>
-          <Heading size="md" mb={4}>
-            가맹점 관리
-          </Heading>
-          <FranchiseList
-            franchiseList={franchiseList}
+      <Box flex={"1"} p={4}>
+        <Heading size="md" mb={4}>
+          가맹점 관리
+        </Heading>
+        <FranchiseList
+          franchiseList={franchiseList}
+          count={count}
+          search={search}
+          setSearch={setSearch}
+          checkedActive={checkedActive}
+          setCheckedActive={setCheckedActive}
+          handlePageChange={handlePageChange}
+          handleSearchClick={handleSearchClick}
+          handleSortChange={handleSortChange}
+          standard={standard}
+          setStandard={setStandard}
+          onFranchiseClick={handleFranchiseClick}
+        />
+        <Center>
+          <PaginationRoot
+            onPageChange={handlePageChange}
             count={count}
-            search={search}
-            setSearch={setSearch}
-            checkedActive={checkedActive}
-            setCheckedActive={setCheckedActive}
-            handlePageChange={handlePageChange}
-            handleSearchClick={handleSearchClick}
-            handleSortChange={handleSortChange}
-            standard={standard}
-            setStandard={setStandard}
-            onFranchiseClick={handleFranchiseClick}
-          />
-          <Center>
-            <PaginationRoot
-              onPageChange={handlePageChange}
-              count={count}
-              pageSize={10}
-              page={page}
-              variant="solid"
-            >
-              <HStack>
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </HStack>
-            </PaginationRoot>
-          </Center>
-        </Box>
-        <Box flex={"1"} pl={4}>
-          <Button colorScheme="teal" onClick={() => setViewMode("add")} mb={4}>
-            추가
-          </Button>
-          {/* 로딩 상태에 따른 조건부 렌더링 */}
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <>
-              {/* viewMode에 따라 조건부 렌더링 */}
-              {viewMode === "add" ? (
-                <FranchiseAdd onCancel={() => setViewMode("view")} />
-              ) : (
-                <FranchiseView
-                  franchiseKey={franchiseKey}
-                  setViewMode={setViewMode}
-                />
-              )}
-            </>
-          )}
-        </Box>
+            pageSize={10}
+            page={page}
+            variant="solid"
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
+        <FranchiseDialog
+          isOpen={isDialogOpen}
+          onClose={handleDialogClose}
+          franchiseKey={franchiseKey}
+        />
       </Box>
     </Box>
   );
