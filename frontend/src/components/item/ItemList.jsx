@@ -11,7 +11,6 @@ export function ItemList({
   count,
   searchParams,
   setSearchParams,
-  setItemKey,
   onRowClick,
 }) {
   // 검색 옵션
@@ -20,6 +19,8 @@ export function ItemList({
       { label: "전체", value: "all" },
       { label: "품목명", value: "itemName" },
       { label: "담당 업체", value: "customerName" },
+      { label: "규격", value: "size" },
+      { label: "단위", value: "unit" },
       { label: "입고가", value: "inputPrice" },
       { label: "출고가", value: "outputPrice" },
     ],
@@ -30,6 +31,8 @@ export function ItemList({
     { key: "itemKey", label: "#" },
     { key: "itemCommonName", label: "품목명" },
     { key: "customerName", label: "담당업체" },
+    { key: "size", label: "규격" },
+    { key: "unit", label: "단위" },
     { key: "inputPrice", label: "입고가" },
     { key: "outputPrice", label: "출고가" },
   ];
@@ -70,10 +73,14 @@ export function ItemList({
                 _hover={{ backgroundColor: "gray.100" }}
               >
                 <Table.Cell textAlign="center"> {index + 1}</Table.Cell>
-                <Table.Cell>{item.itemCommonName}</Table.Cell>
-                <Table.Cell>{item.customerName}</Table.Cell>
-                <Table.Cell textAlign="end">{item.inputPrice}</Table.Cell>
-                <Table.Cell textAlign="end">{item.outputPrice}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.itemCommonName}
+                </Table.Cell>
+                <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
+                <Table.Cell textAlign="center">{item.size}</Table.Cell>
+                <Table.Cell textAlign="center">{item.unit}</Table.Cell>
+                <Table.Cell textAlign="center">{item.inputPrice}</Table.Cell>
+                <Table.Cell textAlign="center">{item.outputPrice}</Table.Cell>
                 {active && (
                   <Table.Cell textAlign="center">
                     <Checkbox checked={item.itemActive} />

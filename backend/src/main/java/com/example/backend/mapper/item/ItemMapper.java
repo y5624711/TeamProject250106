@@ -27,12 +27,9 @@ public interface ItemMapper {
     @Select("""
             <script>
                 SELECT\s
-                    i.item_key,
+                    i.*,
                     ic.item_common_name,
-                    c.customer_name,
-                    i.input_price,
-                    i.output_price,
-                    i.item_active
+                    c.customer_name
                 FROM TB_ITEMMST i\s
                 LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
                 LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
