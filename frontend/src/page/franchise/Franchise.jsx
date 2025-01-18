@@ -24,8 +24,8 @@ Dial.propTypes = { children: PropTypes.node }; // children prop은 React 요소�
 export function Franchise() {
   // 뷰 모드 관련 상태
   const [viewMode, setViewMode] = useState("view");
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog state for FranchiseAdd
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // Dialog state for Add Franchise
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
     type: "all",

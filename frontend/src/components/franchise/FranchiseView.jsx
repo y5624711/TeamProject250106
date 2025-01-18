@@ -8,6 +8,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(true);
 
+  // 입력값이 변경될 때마다 상태를 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFranchise((prevFranchise) => ({
@@ -16,13 +17,17 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     }));
   };
 
+  // 수정
   const handleEditClick = () => {
     setIsReadOnly(false); // 수정 모드 활성화
   };
 
+  // 취소
   const handleCancelClick = () => {
     setIsReadOnly(true); // 수정 모드 취소
   };
+
+  // 저장
   const handleSaveClick = () => {
     axios
       .put(`/api/franchise/edit/${franchiseKey}`, franchise)
@@ -43,6 +48,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
       });
   };
 
+  // 삭제
   const handleDeleteClick = () => {
     if (window.confirm("정말로 이 가맹점을 삭제하시겠습니까?")) {
       axios
@@ -65,6 +71,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
     }
   };
 
+  // 특정 가맹점 조회
   useEffect(() => {
     const franchiseData = () => {
       axios

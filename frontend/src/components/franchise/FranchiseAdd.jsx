@@ -19,6 +19,7 @@ export function FranchiseAdd({ onCancel }) {
   const [franchiseCity, setFranchiseCity] = useState("");
   const [franchiseNote, setFranchiseNote] = useState("");
 
+  // 가맹점 등록하기
   const handleSaveClick = () => {
     axios
       .post("/api/franchise/add", {
@@ -43,9 +44,9 @@ export function FranchiseAdd({ onCancel }) {
           description: message.text,
         });
 
-        // 가맹점 추가 후 부모 컴포넌트에 가맹점 리스트 업데이트
+        // 가맹점 추가 후, 부모 컴포넌트에 새로운 가맹점 정보를 전달
         if (res.data && res.data.franchiseKey) {
-          setFranchiseList(res.data); // 새로운 가맹점을 부모에 전달
+          setFranchiseList(res.data); // 새로운 가맹점 정보를 리스트에 추가
         }
       })
       .catch((e) => {
