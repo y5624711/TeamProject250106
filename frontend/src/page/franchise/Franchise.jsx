@@ -34,7 +34,7 @@ export function Franchise() {
   const [checkedActive, setCheckedActive] = useState(false);
   const [standard, setStandard] = useState({
     sort: "franchise_key",
-    order: "ASC",
+    order: "DESC",
   });
   // 데이터 및 페이지 관련 상태
   const [franchiseList, setFranchiseList] = useState([]);
