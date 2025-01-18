@@ -9,7 +9,6 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -20,27 +19,15 @@ import { Checkbox } from "../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import {
-  PaginationItem,
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../ui/pagination.jsx";
-import log from "eslint-plugin-react/lib/util/log.js";
 import { FaArrowDown } from "react-icons/fa6";
-import {
-  DialogActionTrigger,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog.jsx";
+import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 
-export function EmployeeList({ onSelect, updateList }) {
+export function EmployeeList({ onSelect, updateList, viewKey }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   const [count, setCount] = useState(1);
@@ -54,7 +41,7 @@ export function EmployeeList({ onSelect, updateList }) {
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
   const [type, setType] = useState(searchParams.get("type") || "all");
   const [order, setOrder] = useState(searchParams.get("order") || "desc");
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const updateQuery = () => {
     setSearchParams({
       page: page,
@@ -159,7 +146,13 @@ export function EmployeeList({ onSelect, updateList }) {
         >
           자세히보기
         </Button>
-        <Button>추가버튼</Button>
+        <Button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          추가버튼
+        </Button>
       </Heading>
       <HStack
         style={{
@@ -428,6 +421,8 @@ export function EmployeeList({ onSelect, updateList }) {
           </PaginationNextTrigger>
         </HStack>
       </PaginationRoot>
+
+      <EmployeeAddDialog isModalOpen={isModalOpen} />
     </Box>
   );
 }

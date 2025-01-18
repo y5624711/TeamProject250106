@@ -22,14 +22,19 @@ export function Employee() {
   return (
     <Box display={"flex"}>
       <SideBar />
-
-      <EmployeeList onSelect={handleSelectedNo} updateList={addCheck} />
-
-      <EmployeeAdd
-        viewKey={selectedEmployeeNo}
-        onChange={handleAddCheck}
+      <EmployeeList
         onSelect={handleSelectedNo}
+        updateList={addCheck}
+        viewKey={selectedEmployeeNo}
       />
+      {/*viewKey={selectedEmployeeNo}*/}
+      {/*onChange={handleAddCheck}*/}
+      {/*onSelect={handleSelectedNo}*/}
+      {/*<EmployeeAdd*/}
+      {/*  viewKey={selectedEmployeeNo}*/}
+      {/*  onChange={handleAddCheck}*/}
+      {/*  onSelect={handleSelectedNo}*/}
+      {/*/>*/}
     </Box>
   );
 }
