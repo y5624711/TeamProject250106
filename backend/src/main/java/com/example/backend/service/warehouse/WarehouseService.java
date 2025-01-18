@@ -29,5 +29,8 @@ public class WarehouseService {
         mapper.add(warehouse);
     }
 
-    
+
+    public void edit(Warehouse warehouse) {
+        mapper.edit(warehouse);
+    }
 }

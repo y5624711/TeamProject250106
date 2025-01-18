@@ -7,6 +7,21 @@ function WarehouseEdit({ warehouseKey, setIsEditing, isEditing }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   function handleSaveClick() {
+    axios.put(`/api/warehouse/edit`, {
+      warehouseKey,
+      warehouseCode: warehouseDetail.warehouseCode,
+      warehouseName: warehouseDetail.warehouseName,
+      customerCode: warehouseDetail.customerCode,
+      warehouseAddress: warehouseDetail.warehouseAddress,
+      warehouseAddressDetail: warehouseDetail.warehouseAddressDetail,
+      warehousePost: warehouseDetail.warehousePost,
+      warehouseState: warehouseDetail.warehouseState,
+      warehouseCity: warehouseDetail.warehouseCity,
+      customerEmployeeNo: warehouseDetail.customerEmployeeNo,
+      warehouseTel: warehouseDetail.warehouseTel,
+      warehouseActive: warehouseDetail.warehouseActive,
+      warehouseNote: warehouseDetail.warehouseNote,
+    });
     setIsEditing(!isEditing);
   }
 

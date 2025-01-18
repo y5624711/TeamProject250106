@@ -4,6 +4,7 @@ import com.example.backend.dto.warehouse.Warehouse;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -66,4 +67,11 @@ public interface WarehouseMapper {
             VALUES(#{warehouseCode}, #{warehouseName}, #{customerCode}, #{warehouseAddress}, #{warehouseAddressDetail}, #{warehousePost}, #{warehouseState}, #{warehouseCity}, #{customerEmployeeNo}, #{warehouseTel}, #{warehouseActive}, #{warehouseNote})
             """)
     int add(Warehouse warehouse);
+
+    @Update("""
+            UPDATE TB_WHMST
+            SET warehouse_code=#{warehouseCode}, warehouse_name=#{warehouseName}, customer_code=#{customerCode}, warehouse_address=#{warehouseAddress}, warehouse_address_detail=#{warehouseAddressDetail}, warehouse_post=#{warehousePost},warehouse_state=#{warehouseState},warehouse_city=#{warehouseCity},customer_employee_no=#{customerEmployeeNo}, warehouse_tel=#{warehouseTel}, warehouse_active=#{warehouseActive}, warehouse_note=#{warehouseNote}
+            WHERE warehouse_key=#{warehouseKey}
+            """)
+    int edit(Warehouse warehouse);
 }

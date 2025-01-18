@@ -28,6 +28,10 @@ public class WarehouseController {
     @PostMapping("add")
     public void add(@RequestBody Warehouse warehouse) {
         service.add(warehouse);
-        System.out.println(warehouse);
+    }
+
+    @PutMapping("edit")
+    public void edit(@RequestBody Warehouse warehouse) {
+        service.edit(warehouse);
     }
 }
