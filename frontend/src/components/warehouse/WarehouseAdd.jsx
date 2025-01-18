@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   DialogActionTrigger,
   DialogBody,
+  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -127,6 +128,7 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
           </Box>
         </DialogBody>
         <DialogFooter>
+          <DialogCloseTrigger onClick={onClose} />
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={onClose}>
               취소

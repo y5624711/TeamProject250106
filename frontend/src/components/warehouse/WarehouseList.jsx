@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Stack, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { WarehouseDetail } from "./WarehouseDetail.jsx";
 
-function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
+function WarehouseList({ warehouseList, countWarehouse }) {
   const navigate = useNavigate();
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
 
   return (
     <Box>
@@ -26,7 +29,8 @@ function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
                 <Table.Row
                   key={warehouse.warehouseKey}
                   onDoubleClick={() => {
-                    onShowDetail(warehouse.warehouseKey);
+                    setIsDetailDialogOpen(true);
+                    setSelectedWarehouseKey(warehouse.warehouseKey);
                   }}
                 >
                   <Table.Cell>{warehouse.warehouseKey}</Table.Cell>
@@ -43,6 +47,11 @@ function WarehouseList({ warehouseList, onShowDetail, countWarehouse }) {
             </Table.Body>
           </Table.Root>
         </Box>
+        <WarehouseDetail
+          warehouseKey={selectedWarehouseKey}
+          isOpen={isDetailDialogOpen}
+          onClose={() => setIsDetailDialogOpen(false)}
+        />
       </Stack>
     </Box>
   );

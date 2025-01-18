@@ -6,7 +6,6 @@ import { SideBar } from "../../components/tool/SideBar.jsx";
 import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
 import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import WarehouseDetail from "../../components/warehouse/WarehouseDetail.jsx";
 import { WarehouseAdd } from "../../components/warehouse/WarehouseAdd.jsx";
 
 function Warehouse(props) {
@@ -15,8 +14,6 @@ function Warehouse(props) {
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
-  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
-  const [isAdding, setIsAdding] = useState(false);
   const navigate = useNavigate();
 
   // 창고 정보 가져오기
@@ -35,10 +32,6 @@ function Warehouse(props) {
     navigate(`/warehouse/list?${searchQuery.toString()}`);
   }
 
-  const handleShowDetail = (warehouseKey) => {
-    setSelectedWarehouseKey(warehouseKey);
-  };
-
   return (
     <Box>
       <HStack align="flex-start">
@@ -51,6 +44,7 @@ function Warehouse(props) {
                 새 창고 등록
               </Button>
             </Box>
+            {/*등록 jsx*/}
             <WarehouseAdd
               isOpen={isAddDialogOpen}
               onClose={() => setIsAddDialogOpen(false)}
@@ -69,24 +63,7 @@ function Warehouse(props) {
           <WarehouseList
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
-            onShowDetail={handleShowDetail}
           />
-        </Stack>
-        <Stack>
-          <Button
-            width="85px"
-            onClick={() => {
-              setIsAdding((prev) => !prev);
-              setSelectedWarehouseKey(null);
-            }}
-          >
-            {isAdding ? "닫기" : "창고 추가"}
-          </Button>
-          {isAdding ? (
-            <WarehouseAdd />
-          ) : (
-            <WarehouseDetail warehouseKey={selectedWarehouseKey} />
-          )}
         </Stack>
       </HStack>
     </Box>
