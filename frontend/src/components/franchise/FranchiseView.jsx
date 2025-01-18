@@ -7,6 +7,7 @@ import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
 export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
+  const [originalData, setOriginalData] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -26,6 +27,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
 
   // 취소
   const handleCancelClick = () => {
+    setFranchise(originalData); // 취소 시 초기값으로 되돌림
     setIsReadOnly(true); // 수정 모드 취소
   };
 
@@ -40,6 +42,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
           description: message.text,
         });
         setIsReadOnly(true); // 저장 후 읽기 모드로 전환
+        setOriginalData(franchise); // 저장 후 초기값 갱신
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -86,6 +89,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         .get(`/api/franchise/view/${franchiseKey}`)
         .then((response) => {
           setFranchise(response.data);
+          setOriginalData(response.data);
         })
         .catch((error) => {
           console.error("가맹점 데이터를 가져오는 데 실패했습니다:", error);
