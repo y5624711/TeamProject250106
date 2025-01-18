@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Input, Spinner } from "@chakra-ui/react";
-import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
+import axios from "axios";
+import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
 export function FranchiseView({ franchiseKey, setViewMode }) {
   const [franchise, setFranchise] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // 입력값이 변경될 때마다 상태를 업데이트
   const handleChange = (e) => {
@@ -48,27 +50,33 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
       });
   };
 
-  // 삭제
+  // 삭제 버튼 클릭
   const handleDeleteClick = () => {
-    if (window.confirm("정말로 이 가맹점을 삭제하시겠습니까?")) {
-      axios
-        .put(`/api/franchise/delete/${franchiseKey}`)
-        .then((res) => {
-          const message = res.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
-          setViewMode("list");
-        })
-        .catch((e) => {
-          const message = e.response.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
+    setIsDialogOpen(true); // 다이얼로그 열기
+  };
+
+  // 삭제 확인
+  const handleDeleteConfirm = () => {
+    axios
+      .put(`/api/franchise/delete/${franchiseKey}`)
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    }
+        setViewMode("list");
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(() => {
+        setIsDialogOpen(false); // 다이얼로그 닫기
+      });
   };
 
   // 특정 가맹점 조회
@@ -243,6 +251,14 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
           )}
         </Box>
       </Box>
+      {/* DialogConfirmation */}
+      <DialogConfirmation
+        isOpen={isDialogOpen}
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setIsDialogOpen(false)}
+        title="삭제 확인"
+        body="정말로 이 가맹점을 삭제하시겠습니까?"
+      />
     </Box>
   );
 }
