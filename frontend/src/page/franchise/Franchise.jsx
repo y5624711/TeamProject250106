@@ -43,6 +43,18 @@ export function Franchise() {
   const [franchiseKey, setFranchiseKey] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 새로운 가맹점 정보 추가
+  const handleSave = (newFranchise) => {
+    if (newFranchise?.franchiseKey) {
+      console.log("새로 추가된 가맹점:", newFranchise);
+
+      // 이전 리스트와 새로운 가맹점 정보를 업데이트
+      setFranchiseList((prevList) => [newFranchise, ...prevList]);
+    } else {
+      console.error("잘못된 가맹점 정보가 전달되었습니다:", newFranchise);
+    }
+  };
+
   // 가맹점 리스트 가져오기
   useEffect(() => {
     setIsLoading(true);
@@ -197,6 +209,7 @@ export function Franchise() {
           onClose={handleDialogClose}
           franchiseKey={franchiseKey}
           isAddDialogOpen={isAddDialogOpen}
+          onSave={handleSave}
         />
       </Box>
     </Box>

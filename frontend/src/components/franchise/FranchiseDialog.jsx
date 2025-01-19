@@ -15,6 +15,7 @@ export function FranchiseDialog({
   onClose,
   franchiseKey,
   isAddDialogOpen,
+  onSave,
 }) {
   useEffect(() => {
     if (franchiseKey) {
@@ -31,7 +32,7 @@ export function FranchiseDialog({
         </DialogHeader>
         <DialogBody>
           {isAddDialogOpen ? (
-            <FranchiseAdd onClose={onClose} />
+            <FranchiseAdd onClose={onClose} onSave={onSave} />
           ) : franchiseKey ? (
             <FranchiseView franchiseKey={franchiseKey} />
           ) : (

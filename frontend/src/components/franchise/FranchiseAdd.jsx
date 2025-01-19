@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 
-export function FranchiseAdd() {
+export function FranchiseAdd({ onSave }) {
   const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
   const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -44,9 +44,22 @@ export function FranchiseAdd() {
           description: message.text,
         });
 
-        // 가맹점 추가 후, 부모 컴포넌트에 새로운 가맹점 정보를 전달
         if (res.data && res.data.franchiseKey) {
-          setFranchiseList(res.data); // 새로운 가맹점 정보를 리스트에 추가
+          onSave({
+            franchiseKey: res.data.franchiseKey,
+            businessEmployeeNo,
+            businessEmployeeName,
+            franchiseName,
+            franchiseRep,
+            franchiseNo,
+            franchiseTel,
+            franchiseAddress,
+            franchiseAddressDetail,
+            franchisePost,
+            franchiseState,
+            franchiseCity,
+            franchiseNote,
+          });
         }
       })
       .catch((e) => {
