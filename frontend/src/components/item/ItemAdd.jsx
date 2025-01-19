@@ -27,7 +27,7 @@ import { NumberInputField, NumberInputRoot } from "../ui/number-input.jsx";
 import { toaster } from "../ui/toaster.jsx";
 
 export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
-  const initailItemData = {
+  const initialItemData = {
     itemCommonCode: "",
     itemCommonName: "",
     customerName: "",
@@ -40,11 +40,12 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   };
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
   const [isValid, setIsValid] = useState(false);
-  const [itemData, setItemData] = useState(initailItemData);
+  const [itemData, setItemData] = useState(initialItemData);
 
   // 창이 닫히면 입력 내용 초기화
   const handleClose = () => {
-    setItemData(initailItemData);
+    setItemData(initialItemData);
+    onClose();
   };
 
   const handleInputChange = (field) => (e) => {
@@ -62,7 +63,6 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
 
   // 품목 선택 시 협력업체 이름 가져오기
   useEffect(() => {
-    console.log(itemData);
     if (itemData.itemCommonCode) {
       axios
         .get(`/api/item/customer/${itemData.itemCommonCode}`)
@@ -87,6 +87,14 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
 
   // 품목 등록하기
   const handleAddClick = () => {
+    if (!isValid) {
+      toaster.create({
+        description: "모든 필수 입력값을 입력해 주세요.",
+        type: "error",
+      });
+      return;
+    }
+
     axios
       .post("/api/item/add", itemData)
       .then((res) => res.data)
@@ -100,7 +108,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
         handleClose();
       })
       .catch((e) => {
-        const message = e.response.data.message;
+        const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
   };
@@ -112,13 +120,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   }, [itemData]);
 
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={() => {
-        onClose();
-        setItemData(initailItemData); // 창 닫히면 초기화
-      }}
-    >
+    <DialogRoot open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>물품 등록</DialogTitle>
