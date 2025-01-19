@@ -29,7 +29,7 @@ public class CommonService {
                                                           String keyword,
                                                           String sort,
                                                           String order,
-                                                          Integer active) {
+                                                          Boolean active) {
         int offset = (page - 1) * 10;
 
 

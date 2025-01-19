@@ -1,7 +1,7 @@
-import { Box, HStack, Table } from "@chakra-ui/react";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import { Box, Table } from "@chakra-ui/react";
 import React from "react";
 import { Checkbox } from "../ui/checkbox.jsx";
+import { SortableColumnHeader } from "../tool/SortableColumnHeader.jsx";
 
 export function BusinessListTable({
   department,
@@ -9,46 +9,29 @@ export function BusinessListTable({
   handleSort,
   openDialog,
 }) {
+  // 컬럼 배열 정의
+  const columnsList = [
+    { key: "department_code", label: "부서번호" },
+    { key: "department_name", label: "부서명" },
+    { key: "department_active", label: "사용여부" },
+    { key: "department_tel", label: "전화번호" },
+    { key: "department_fax", label: "팩스번호" },
+  ];
+
   return (
     <Box>
       <Table.Root variant={"outline"} interactive>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
-            <Table.ColumnHeader onClick={() => handleSort("department_code")}>
-              <HStack>
-                부서번호
-                {sort.column === "department_code" &&
-                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_name")}>
-              <HStack>
-                부서명
-                {sort.column === "department_name" &&
-                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_active")}>
-              <HStack>
-                사용여부
-                {sort.column === "department_active" &&
-                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_tel")}>
-              <HStack>
-                전화번호
-                {sort.column === "department_tel" &&
-                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_fax")}>
-              <HStack>
-                팩스번호
-                {sort.column === "department_fax" &&
-                  (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
-              </HStack>
-            </Table.ColumnHeader>
+            {columnsList.map((col) => (
+              <SortableColumnHeader
+                key={col.key}
+                columnKey={col.key}
+                label={col.label}
+                sort={sort}
+                handleSort={handleSort}
+              />
+            ))}
           </Table.Row>
         </Table.Header>
 

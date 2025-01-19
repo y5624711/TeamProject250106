@@ -20,10 +20,10 @@ public interface CommonMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="searchType == 'number'"  >
+                    <if test="type == 'number'"  >
                         common_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="searchType == 'name'"  >
+                    <if test="type == 'name'"  >
                         OR common_code_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
@@ -36,7 +36,7 @@ public interface CommonMapper {
                                           String keyword,
                                           String sort,
                                           String order,
-                                          Integer active);
+                                          Boolean active);
 
     @Select("""
             <script>
@@ -50,16 +50,16 @@ public interface CommonMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="searchType == 'number'"  >
+                    <if test="type == 'number'"  >
                         common_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="searchType == 'name'"  >
+                    <if test="type == 'name'"  >
                         OR common_code_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
             </script>
             """)
-    Integer countAllSysCommonCode(Integer active, String type, String keyword);
+    Integer countAllSysCommonCode(Boolean active, String type, String keyword);
 
 
     @Insert("""

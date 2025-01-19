@@ -111,8 +111,15 @@ public class CommonController {
                                      @RequestParam(value = "keyword", defaultValue = "") String keyword,
                                      @RequestParam(value = "sort", defaultValue = "common_code_key") String sort,
                                      @RequestParam(value = "order", defaultValue = "desc") String order,
-                                     @RequestParam(value = "active", defaultValue = "false") Integer active) {
-        
+                                     @RequestParam(value = "active", defaultValue = "true") Boolean active) {
+        System.out.println("page = " + page);
+        System.out.println("type = " + type);
+        System.out.println("keyword = " + keyword);
+        System.out.println("sort = " + sort);
+        System.out.println("order = " + order);
+        System.out.println("active = " + active);
+        System.out.println("page = " + page);
+
         return service.selectSystemCommonCodeList(page, type, keyword, sort, order, active);
     }
 
