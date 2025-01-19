@@ -132,4 +132,22 @@ public class CommonController {
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
         }
     }
+
+    @PutMapping("system/updateSys")
+    private ResponseEntity<Map<String, Object>> updateDepartment(@RequestBody CommonCode commonCode) {
+        System.out.println("commonCode = " + commonCode);
+        if (service.validateSysCode(commonCode)) {
+            if (service.updateSysCode(commonCode)) {
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success", "text", "수정 되었습니다.")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
+            }
+        } else {
+            return ResponseEntity.ok().body(
+                    Map.of("message",
+                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+        }
+    }
 }

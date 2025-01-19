@@ -3,7 +3,12 @@ import { Checkbox } from "../ui/checkbox.jsx";
 import React from "react";
 import { SortableColumnHeader } from "../tool/SortableColumnHeader.jsx";
 
-export function SystemCommonCodeList({ commonCodeList, sort, setSort }) {
+export function SystemCommonCodeList({
+  commonCodeList,
+  sort,
+  setSort,
+  openDialog,
+}) {
   // 컬럼 배열 정의
   const columnsList = [
     { key: "common_code_key", label: "#" },
@@ -39,7 +44,11 @@ export function SystemCommonCodeList({ commonCodeList, sort, setSort }) {
 
           <Table.Body>
             {commonCodeList.map((list, index) => (
-              <Table.Row key={list.commonCodeKey || index}>
+              <Table.Row
+                key={list.commonCodeKey || index}
+                _hover={{ cursor: "pointer" }}
+                onClick={() => openDialog(list)}
+              >
                 <Table.Cell>{list.commonCodeKey}</Table.Cell>
                 <Table.Cell>{list.commonCode}</Table.Cell>
                 <Table.Cell>{list.commonCodeName}</Table.Cell>

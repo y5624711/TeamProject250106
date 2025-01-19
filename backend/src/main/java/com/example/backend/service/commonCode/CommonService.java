@@ -92,4 +92,16 @@ public class CommonService {
         int cnt = mapper.editItemCommonCode(itemCommonCodeKey, itemCommonCode);
         return cnt == 1;
     }
+
+    public boolean validateSysCode(CommonCode commonCode) {
+        Boolean name = !commonCode.getCommonCodeName().trim().isEmpty();
+        Boolean code = !commonCode.getCommonCode().trim().isEmpty();
+
+        return name && code;
+    }
+
+    public boolean updateSysCode(CommonCode commonCode) {
+        int cnt = mapper.updateSysCode(commonCode);
+        return cnt == 1;
+    }
 }

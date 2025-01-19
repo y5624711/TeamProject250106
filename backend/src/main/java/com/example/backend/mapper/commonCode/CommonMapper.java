@@ -69,6 +69,15 @@ public interface CommonMapper {
             """)
     int insertCommonCode(CommonCode commonCode);
 
+    @Update("""
+            UPDATE TB_SYSCOMM
+            SET common_code_name = #{commonCodeName},
+                common_code_active = #{commonCodeActive},
+                common_code_note = #{commonCodeNote}
+            WHERE common_code_key = #{commonCodeKey}
+            """)
+    int updateSysCode(CommonCode commonCode);
+
     @Select("""
             <script>
                 SELECT *

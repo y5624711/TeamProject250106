@@ -12,7 +12,8 @@ import {
 } from "../../components/ui/pagination.jsx";
 import { Checkbox } from "../../components/ui/checkbox.jsx";
 import { SysCommonCodeSearchAndFilter } from "../../components/commonCode/SysCommonCodeSearchAndFilter.jsx";
-import { Button } from "../../components/ui/button.jsx";
+import { SysCommonCodeViewDialog } from "../../components/commonCode/SysCommonCodeViewDialog.jsx";
+import { SysCommonCodeAdd } from "../../components/commonCode/SysCommonCodeAdd.jsx";
 
 function SystemCommonCode() {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,15 @@ function SystemCommonCode() {
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
+  // 모달
+  const [sysCommonCode, setSysCommonCode] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // 저장체크
+  const [addCheck, setAddCheck] = useState(false);
+
+  // 리스트 불러오기
   useEffect(() => {
     axios
       .get("/api/commonCode/system/list", {
@@ -46,7 +56,7 @@ function SystemCommonCode() {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchParams, sort]);
+  }, [searchParams, sort, addCheck]);
 
   // 검색창
   useEffect(() => {
@@ -72,8 +82,9 @@ function SystemCommonCode() {
     setSearchParams(nextSearchParam);
   }
 
+  // 사용여부 체크
   const active = searchParams.get("active") === "true";
-
+  // 사용여부 체크
   const toggleCheckActive = () => {
     const nextValue = !active;
     // setActive(nextValue);
@@ -83,14 +94,23 @@ function SystemCommonCode() {
     setSearchParams(nextSearchParams);
   };
 
+  // 리스트 클릭시  다이얼로그 오픈
+  function handleOpenDialog(data) {
+    console.log(data);
+    setSysCommonCode(data);
+    setIsOpen(true);
+  }
+
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <Flex>
       <SideBar />
       <Stack w={"80%"} mx={"auto"} pt={5}>
         <Box w={"40%"} mx={"auto"}>
+          {/*체크박스*/}
           <Checkbox
             size={"lg"}
             variant={"subtle"}
@@ -99,16 +119,22 @@ function SystemCommonCode() {
           >
             삭제된 공통코드 포함
           </Checkbox>
-          <HStack>
+
+          {/*검색*/}
+          <HStack gap={5}>
             <SysCommonCodeSearchAndFilter
               search={search}
               setSearch={setSearch}
               searchParams={searchParams}
               setSearchParams={setSearchParams}
             />
-            <Button>추가</Button>
+
+            {/*공통코드 추가 모달*/}
+            <SysCommonCodeAdd setAddCheck={setAddCheck} addCheck={addCheck} />
           </HStack>
         </Box>
+
+        {/*리스트*/}
         <SystemCommonCodeList
           search={search}
           setSearch={setSearch}
@@ -118,7 +144,10 @@ function SystemCommonCode() {
           count={count}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
+          openDialog={handleOpenDialog}
         />
+
+        {/*페이지네이션*/}
         <Center>
           <PaginationRoot
             count={count}
@@ -133,6 +162,18 @@ function SystemCommonCode() {
           </PaginationRoot>
         </Center>
       </Stack>
+
+      <SysCommonCodeViewDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        toggleEditing={() => setIsEditing(!isEditing)}
+        sysCommonCode={sysCommonCode}
+        setSysCommonCode={setSysCommonCode}
+        addCheck={addCheck}
+        setAddCheck={setAddCheck}
+      />
     </Flex>
   );
 }
