@@ -36,7 +36,7 @@ public interface FranchiseMapper {
                 FROM TB_FRNCHSMST
                 WHERE <if test="active == false">franchise_active = TRUE</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
                       <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
-                <if test="keyword != null and keyword.trim() != ''">
+                      <if test="keyword != null and keyword.trim() != ''">
                     AND (
                         <trim prefixOverrides="OR">
                             <if test="type=='all' or type=='franchiseName'">
@@ -66,7 +66,19 @@ public interface FranchiseMapper {
                         </trim>
                     )
                 </if>
-                ORDER BY ${sort} ${order}
+            ORDER BY\s
+                    <choose>
+                        <when test="sort == 'franchise_name'">franchise_name</when>
+                        <when test="sort == 'franchise_rep'">franchise_rep</when>
+                        <when test="sort == 'franchise_no'">franchise_no</when>
+                        <when test="sort == 'franchise_tel'">franchise_tel</when>
+                        <when test="sort == 'franchise_state'">franchise_state</when>
+                        <when test="sort == 'franchise_city'">franchise_city</when>
+                        <when test="sort == 'business_employee_no'">business_employee_no</when>
+                        <when test="sort == 'business_employee_name'">business_employee_name</when>
+                        <otherwise>franchise_key</otherwise> <!-- 기본값 -->
+                    </choose>\s
+                    ${order}
                 LIMIT #{offset}, 10
             </script>
             """)
