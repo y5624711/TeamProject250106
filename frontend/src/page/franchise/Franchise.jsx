@@ -89,6 +89,7 @@ export function Franchise() {
     if (search.keyword.trim().length > 0) {
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("keyword", search.keyword);
+      nextSearchParam.set("page", 1);
     } else {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
