@@ -121,11 +121,6 @@ export function FranchiseList({
               {standard.sort === "franchiseKey" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
-              사업자 번호{" "}
-              {standard.sort === "franchiseNo" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseName")}>
               가맹점명{" "}
               {standard.sort === "franchiseName" &&
@@ -134,6 +129,11 @@ export function FranchiseList({
             <TableColumnHeader onClick={() => HeaderClick("franchiseRep")}>
               가맹점주{" "}
               {standard.sort === "franchiseRep" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
+              사업자 번호{" "}
+              {standard.sort === "franchiseNo" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseTel")}>
@@ -176,9 +176,9 @@ export function FranchiseList({
                 style={{ cursor: "pointer" }}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
                 <Table.Cell>{franchise.franchiseName}</Table.Cell>
                 <Table.Cell>{franchise.franchiseRep}</Table.Cell>
+                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
                 <Table.Cell>{franchise.franchiseTel}</Table.Cell>
                 <Table.Cell>{franchise.franchiseState}</Table.Cell>
                 <Table.Cell>{franchise.franchiseCity}</Table.Cell>
