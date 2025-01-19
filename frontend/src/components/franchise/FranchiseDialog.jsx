@@ -16,6 +16,7 @@ export function FranchiseDialog({
   franchiseKey,
   isAddDialogOpen,
   onSave,
+  onDelete,
 }) {
   useEffect(() => {
     if (franchiseKey) {
@@ -34,7 +35,12 @@ export function FranchiseDialog({
           {isAddDialogOpen ? (
             <FranchiseAdd onClose={onClose} onSave={onSave} />
           ) : franchiseKey ? (
-            <FranchiseView franchiseKey={franchiseKey} onSave={onSave} />
+            <FranchiseView
+              franchiseKey={franchiseKey}
+              onClose={onClose}
+              onSave={onSave}
+              onDelete={onDelete}
+            />
           ) : (
             "선택된 가맹점이 없습니다."
           )}

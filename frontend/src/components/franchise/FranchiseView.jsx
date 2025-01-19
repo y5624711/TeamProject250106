@@ -5,7 +5,13 @@ import { Field } from "../ui/field.jsx";
 import axios from "axios";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function FranchiseView({ franchiseKey, setViewMode, onSave }) {
+export function FranchiseView({
+  franchiseKey,
+  setViewMode,
+  onClose,
+  onSave,
+  onDelete,
+}) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(true);
@@ -79,7 +85,8 @@ export function FranchiseView({ franchiseKey, setViewMode, onSave }) {
         });
       })
       .finally(() => {
-        setIsDialogOpen(false); // 다이얼로그 닫기
+        onDelete(franchiseKey); // 삭제 처리
+        onClose();
       });
   };
 

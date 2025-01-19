@@ -68,6 +68,13 @@ export function Franchise() {
     }
   };
 
+  const handleDelete = (franchiseKey) => {
+    setFranchiseList((prevList) => {
+      // 해당 franchiseKey를 가진 가맹점을 리스트에서 제거
+      return prevList.filter((item) => item.franchiseKey !== franchiseKey);
+    });
+  };
+
   // 가맹점 리스트 가져오기
   useEffect(() => {
     setIsLoading(true);
@@ -223,6 +230,7 @@ export function Franchise() {
           franchiseKey={franchiseKey}
           isAddDialogOpen={isAddDialogOpen}
           onSave={handleSave}
+          onDelete={handleDelete}
         />
       </Box>
     </Box>
