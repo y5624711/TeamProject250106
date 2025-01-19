@@ -5,7 +5,7 @@ import { Field } from "../ui/field.jsx";
 import axios from "axios";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function FranchiseView({ franchiseKey, setViewMode }) {
+export function FranchiseView({ franchiseKey, setViewMode, onSave }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(true);
@@ -43,6 +43,7 @@ export function FranchiseView({ franchiseKey, setViewMode }) {
         });
         setIsReadOnly(true); // 저장 후 읽기 모드로 전환
         setOriginalData(franchise); // 저장 후 초기값 갱신
+        onSave(franchise); // 부모 컴포넌트로 수정된 데이터 전달
       })
       .catch((e) => {
         const message = e.response.data.message;

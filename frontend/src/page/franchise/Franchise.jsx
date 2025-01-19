@@ -43,13 +43,26 @@ export function Franchise() {
   const [franchiseKey, setFranchiseKey] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 새로운 가맹점 정보 추가
+  // 새로운 가맹점 정보 추가 또는 수정
   const handleSave = (newFranchise) => {
     if (newFranchise?.franchiseKey) {
-      console.log("새로 추가된 가맹점:", newFranchise);
+      console.log("가맹점 수정 또는 추가:", newFranchise);
 
-      // 이전 리스트와 새로운 가맹점 정보를 업데이트
-      setFranchiseList((prevList) => [newFranchise, ...prevList]);
+      setFranchiseList((prevList) => {
+        // 가맹점 수정 처리
+        const index = prevList.findIndex(
+          (item) => item.franchiseKey === newFranchise.franchiseKey,
+        );
+        // 만약 해당 가맹점이 리스트에 존재하면 -> (index !== -1)
+        if (index !== -1) {
+          // 수정된 가맹점 정보로 업데이트
+          const updatedList = [...prevList];
+          updatedList[index] = newFranchise;
+          return updatedList;
+        }
+        // 추가된 가맹점 정보 처리
+        return [newFranchise, ...prevList];
+      });
     } else {
       console.error("잘못된 가맹점 정보가 전달되었습니다:", newFranchise);
     }

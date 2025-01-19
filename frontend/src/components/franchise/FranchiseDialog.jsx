@@ -34,7 +34,7 @@ export function FranchiseDialog({
           {isAddDialogOpen ? (
             <FranchiseAdd onClose={onClose} onSave={onSave} />
           ) : franchiseKey ? (
-            <FranchiseView franchiseKey={franchiseKey} />
+            <FranchiseView franchiseKey={franchiseKey} onSave={onSave} />
           ) : (
             "선택된 가맹점이 없습니다."
           )}
