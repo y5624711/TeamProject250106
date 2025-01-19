@@ -26,36 +26,79 @@ public interface ItemMapper {
 
     @Select("""
             <script>
-                       SELECT\s
-                           i.*,
-                           ic.item_common_name,
-                           c.customer_name
-                       FROM TB_ITEMMST i
-                       LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-                       LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-                        <trim prefix="WHERE" prefixOverrides="AND">
-                                       <if test="active == false">
-                                           i.item_active = TRUE
-                                       </if>
-                                       <if test="active == true">
-                                           1=1
-                                       </if>
-                                       <if test="type != 'all' and type != null and keyword != null and keyword != ''">
-                                           AND `${type}` LIKE CONCAT('%', #{keyword}, '%')
-                                       </if>
-                                   </trim>
-                       <choose>
-                           <when test="sort != null and sort != ''">
-                               ORDER BY `${sort}` ${order}
-                           </when>
-                           <otherwise>
-                               ORDER BY i.item_key ASC
-                           </otherwise>
-                       </choose>
-                       LIMIT #{offset}, 10
-                   </script>
+                    SELECT 
+                        i.*,
+                        ic.item_common_name,
+                        c.customer_name
+                    FROM TB_ITEMMST i
+                    LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                    LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+                    <trim prefix="WHERE" prefixOverrides="AND">
+                        <if test="active == false">
+                            i.item_active = TRUE
+                        </if>
+                        <if test="active == true">
+                            1=1
+                        </if>
+                        <if test="keyword != null and keyword != ''">
+                            <if test="type == 'all'">
+                                AND (
+                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR i.unit LIKE CONCAT('%', #{keyword}, '%')
+                                    OR i.size LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </if>
+                            <if test="type != 'all' and type != null">
+                                AND `${type}` LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </if>
+                    </trim>
+                    <choose>
+                        <when test="sort != null and sort != ''">
+                            ORDER BY `${sort}` ${order}
+                        </when>
+                        <otherwise>
+                            ORDER BY i.item_key ASC
+                        </otherwise>
+                    </choose>
+                    LIMIT #{offset}, 10
+                </script>
             """)
     List<Item> getItemList(Integer offset, Boolean active, String type, String keyword, String sort, String order);
+
+    @Select("""
+                <script>
+                    SELECT COUNT(*)
+                    FROM TB_ITEMMST i
+                    LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                    LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+                    <trim prefix="WHERE" prefixOverrides="AND">
+                        <if test="active == false">
+                            i.item_active = TRUE
+                        </if>
+                        <if test="active == true">
+                            1=1
+                        </if>
+                        <if test="keyword != null and keyword != ''">
+                            <if test="type == 'all'">
+                                AND (
+                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </if>
+                            <if test="type != 'all' and type != null">
+                                AND `${type}` LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </if>
+                    </trim>
+                </script>
+            """)
+    Integer countAll(Boolean active, String type, String keyword);
 
 
     @Select("""
@@ -96,49 +139,5 @@ public interface ItemMapper {
             FROM TB_ITEMMST
             """)
     List<String> getUsedItemCommonCode();
-
-    @Select("""
-            <script>
-                SELECT COUNT(*)
-                    FROM TB_ITEMMST i
-                    LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-                    LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-                   <trim prefix="WHERE" prefixOverrides="AND">
-                    <if test="active == false">
-                        i.item_active = TRUE
-                    </if>
-                    <if test="active == true">
-                        1=1
-                    </if>
-                   \s
-                    <if test="keyword != null and keyword != ''">
-                        <choose>
-                            <when test="type == 'all'">
-                                AND (
-                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                                )
-                            </when>
-                            <when test="type == 'itemName'">
-                                AND ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                            <when test="type == 'customerName'">
-                                AND c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                            <when test="type == 'inputPrice'">
-                                AND CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                            <when test="type == 'outputPrice'">
-                                AND CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                        </choose>
-                    </if>
-                </trim>
-            
-            </script>
-            """)
-    Integer countAll(Boolean active, String type, String keyword);
 
 }
