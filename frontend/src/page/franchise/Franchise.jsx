@@ -53,6 +53,7 @@ export function Franchise() {
         const index = prevList.findIndex(
           (item) => item.franchiseKey === newFranchise.franchiseKey,
         );
+
         // 만약 해당 가맹점이 리스트에 존재하면 -> (index !== -1)
         if (index !== -1) {
           // 수정된 가맹점 정보로 업데이트
@@ -60,8 +61,23 @@ export function Franchise() {
           updatedList[index] = newFranchise;
           return updatedList;
         }
+
         // 추가된 가맹점 정보 처리
-        return [newFranchise, ...prevList];
+        const updatedList = [newFranchise, ...prevList];
+
+        // 1페이지는 최대 10개만 보이게 하고, 추가된 항목은 2페이지로 넘김
+        if (updatedList.length > 10) {
+          const remainingData = updatedList.slice(10); // 2페이지로 넘길 데이터 (11번째 이후)
+          const pageOneData = updatedList.slice(0, 10); // 1페이지 데이터
+
+          setFranchiseList(pageOneData); // 1페이지 데이터 업데이트
+
+          // 2페이지 데이터 처리
+          console.log("넘길 데이터 (2페이지로):", remainingData);
+
+          return pageOneData; // 1페이지에 10개만 남기고 반환
+        }
+        return updatedList; // 10개 이하일 경우 그대로 반환
       });
     } else {
       console.error("잘못된 가맹점 정보가 전달되었습니다:", newFranchise);
