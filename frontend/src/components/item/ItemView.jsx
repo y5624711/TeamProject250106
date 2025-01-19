@@ -19,7 +19,6 @@ import { Button } from "../ui/button.jsx";
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isValid, setIsValid] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState({
     size: "",
@@ -59,6 +58,12 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
     }));
   };
 
+  const isValid =
+    editedItem.itemCommonCode &&
+    editedItem.customerName &&
+    editedItem.inputPrice &&
+    editedItem.outputPrice;
+
   // 수정된 품목 데이터 서버로 전송
   const handleSaveClick = () => {
     axios
@@ -93,18 +98,12 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
         });
         setChange((prev) => !prev);
         handleClose();
-        onClose();
       })
       .catch((e) => {
         const message = e.response.data.message;
         toaster.create({ description: message.text, type: message.type });
       });
   };
-
-  // 버튼 활성화를 위한 유효성 검사
-  useEffect(() => {
-    setIsValid(editedItem.inputPrice && editedItem.outputPrice);
-  }, [editedItem.inputPrice, editedItem.outputPrice]);
 
   return (
     <Box>

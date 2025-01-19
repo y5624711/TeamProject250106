@@ -1,44 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, Input } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
 import axios from "axios";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 import { toaster } from "../ui/toaster.jsx";
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+} from "../ui/dialog.jsx";
 
 export function ItemCommonCodeView({
   itemCommonCodeKey,
-  setItemCommonCodeList,
-  setSearchParams,
+  isOpen,
+  onClose,
   setChange,
+  setItemCommonCodeKey,
 }) {
   const [itemCommonCode, setItemCommonCode] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editedItemCommonCode, setEditedItemCommonCode] = useState({
     itemCommonCode: "",
     itemCommonName: "",
     itemCommonCodeNote: "",
   });
-  const [isValid, setIsValid] = useState(false);
-
-  // 수정 상태에서 품목 공통 코드 변경 시 수정 상태 해제, 버
-  useEffect(() => {
-    setIsEditing(false);
-  }, [itemCommonCodeKey]);
-
-  // 품목 코드와 품목명이 조건에 맞는지 확인
-  useEffect(() => {
-    if (isEditing) {
-      setIsValid(
-        /^[A-Z]{3}$/.test(editedItemCommonCode.itemCommonCode) &&
-          editedItemCommonCode.itemCommonName.trim() !== "",
-      );
-    }
-  }, [
-    editedItemCommonCode.itemCommonCode,
-    editedItemCommonCode.itemCommonName,
-    isEditing, // 수정 상태일 때만 유효성 검사
-  ]);
 
   // 품목 공통 코드 상세 정보 가져오기
   useEffect(() => {
@@ -55,6 +45,12 @@ export function ItemCommonCodeView({
     }
   }, [itemCommonCodeKey]);
 
+  // 창이 닫히면 수정 상태 취소
+  const handleClose = () => {
+    setIsEditing(false);
+    onClose();
+  };
+
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,13 +60,19 @@ export function ItemCommonCodeView({
     }));
   };
 
-  // 수정 버튼 클릭 시
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
+  const isValid =
+    /^[A-Z]{3}$/.test(editedItemCommonCode.itemCommonCode) &&
+    editedItemCommonCode.itemCommonName.trim() !== "";
 
   // 수정된 품목 공통 코드 데이터 서버로 전송
-  const handleSubmitClick = () => {
+  const handleSaveClick = () => {
+    if (!isValid) {
+      toaster.create({
+        description: "품목 코드는 대문자 3자리로 입력해야 합니다.",
+        type: "error",
+      });
+      return;
+    }
     axios
       .put(
         `/api/commonCode/item/edit/${itemCommonCodeKey}`,
@@ -82,27 +84,10 @@ export function ItemCommonCodeView({
           description: data.message.text,
           type: data.message.type,
         });
+        setItemCommonCode([{ ...editedItemCommonCode }]);
         setIsEditing(false);
-        // 수정된 항목을 부모 컴포넌트에 전달하여 리스트 상태를 갱신
-        setItemCommonCodeList((prevItems) =>
-          prevItems.map((itemCommonCode) =>
-            itemCommonCode.itemCommonCodeKey === itemCommonCodeKey
-              ? { ...itemCommonCode, ...editedItemCommonCode }
-              : itemCommonCode,
-          ),
-        );
-        // 수정 시에 정렬된 리스트를 불러오기 위해 변경 상태 전달
+        setItemCommonCodeKey(itemCommonCodeKey);
         setChange((prev) => !prev);
-
-        setSearchParams((prev) => new URLSearchParams(prev));
-        // 품목 공통 코드 수정 후, itemCommonCode를 직접 업데이트하여 view에 바로 반영되도록 함
-        setItemCommonCode((prevList) =>
-          prevList.map((itemCommonCode) =>
-            itemCommonCode.itemCommonCodeKey === itemCommonCodeKey
-              ? { ...itemCommonCode, ...editedItemCommonCode }
-              : itemCommonCode,
-          ),
-        );
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -120,13 +105,8 @@ export function ItemCommonCodeView({
           description: data.message.text,
           type: data.message.type,
         });
-        setItemCommonCodeList((prevItems) =>
-          prevItems.filter(
-            (itemCommonCode) =>
-              itemCommonCode.itemCommonCodeKey !== itemCommonCodeKey,
-          ),
-        );
-        setIsDialogOpen(false);
+        setChange((prev) => !prev);
+        handleClose();
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -134,91 +114,113 @@ export function ItemCommonCodeView({
       });
   };
 
+  // 품목 코드와 품목명이 조건에 맞는지 확인
+
   return (
     <Box>
-      <HStack>
-        {itemCommonCode.map((itemCommonCode) => (
-          <Box key={itemCommonCode.itemCommonCodeKey}>
+      <DialogRoot open={isOpen} onOpenChange={handleClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>물품 코드 정보</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
             <Box>
-              {isEditing ? (
-                <>
-                  <Field
-                    label={"품목코드"}
-                    required
-                    helperText="품목 코드는 영문 대문자 3자리로 입력하세요."
-                  >
-                    <Input
-                      name="itemCommonCode"
-                      placeholder="품목코드"
-                      value={editedItemCommonCode.itemCommonCode}
-                      onChange={handleChange}
-                    />
-                  </Field>
-                  <Field label={"품목명"} required>
-                    <Input
-                      name="itemCommonName"
-                      placeholder="품목명"
-                      value={editedItemCommonCode.itemCommonName}
-                      onChange={handleChange}
-                    />
-                  </Field>
-                  <Field label={"비고"}>
-                    <Input
-                      name="itemCommonCodeNote"
-                      placeholder="비고"
-                      value={editedItemCommonCode.itemCommonCodeNote}
-                      onChange={handleChange}
-                    />
-                  </Field>
-                </>
-              ) : (
-                <>
-                  <Field label={"품목코드"}>
-                    <Input readOnly value={itemCommonCode.itemCommonCode} />
-                  </Field>
-                  <Field label={"품목명"}>
-                    <Input readOnly value={itemCommonCode.itemCommonName} />
-                  </Field>
-                  <Field label={"비고"}>
-                    <Input readOnly value={itemCommonCode.itemCommonCodeNote} />
-                  </Field>
-                  <Field label={"사용 여부"}>
-                    <Input
-                      readOnly
-                      value={
-                        itemCommonCode.itemCommonCodeActive ? "사용" : "미사용"
-                      }
-                    />
-                  </Field>
-                </>
-              )}
+              {itemCommonCode.map((item) => (
+                <Box>
+                  {isEditing ? (
+                    <>
+                      <Text fontSize={"xs"} mt={-5}>
+                        품목 코드는 대문자 3자리로 입력해야 합니다.
+                      </Text>
+                      <Field label={"물품 코드"} required>
+                        <Input
+                          name="itemCommonCode"
+                          placeholder="물품 코드"
+                          value={editedItemCommonCode.itemCommonCode}
+                          onChange={handleChange}
+                          maxLength={3}
+                        />
+                      </Field>
+                      <Field label={"물품명"} required>
+                        <Input
+                          name="itemCommonName"
+                          placeholder="물품명"
+                          value={editedItemCommonCode.itemCommonName}
+                          onChange={handleChange}
+                        />
+                      </Field>
+                      <Field label={"비고"}>
+                        <Input
+                          name="itemCommonCodeNote"
+                          placeholder="비고"
+                          value={editedItemCommonCode.itemCommonCodeNote}
+                          onChange={handleChange}
+                        />
+                      </Field>
+                    </>
+                  ) : (
+                    <>
+                      <Field label={"품목 코드"}>
+                        <Input readOnly value={item.itemCommonCode} />
+                      </Field>
+                      <Field label={"품목명"}>
+                        <Input readOnly value={item.itemCommonName} />
+                      </Field>
+                      <Field label={"사용여부"}>
+                        <Input
+                          readOnly
+                          value={item.itemCommonCodeActive ? "사용" : "미사용"}
+                        />
+                      </Field>
+                      <Field label={"비고"}>
+                        <Input readOnly value={item.itemCommonCodeNote} />
+                      </Field>
+                    </>
+                  )}
+                </Box>
+              ))}
             </Box>
-          </Box>
-        ))}
-      </HStack>
-
-      <Box>
-        {isEditing ? (
-          <HStack>
-            <Button onClick={handleSubmitClick} disabled={!isValid}>
-              저장
-            </Button>
-            <Button onClick={() => setIsEditing(false)}>취소</Button>
-          </HStack>
-        ) : (
-          <HStack>
-            <Button onClick={handleEditClick}>수정</Button>
-            <Button onClick={() => setIsDialogOpen(true)}>삭제</Button>
-          </HStack>
-        )}
-      </Box>
+          </DialogBody>
+          <DialogFooter>
+            {isEditing ? (
+              <HStack>
+                <Button
+                  onClick={handleSaveClick}
+                  disabled={!isValid}
+                  colorPalette={"blue"}
+                >
+                  저장
+                </Button>
+                <Button onClick={() => setIsEditing(false)}> 수정 취소</Button>
+              </HStack>
+            ) : (
+              <HStack>
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  colorPalette={"blue"}
+                >
+                  수정
+                </Button>
+                <Button
+                  onClick={() => setIsDialogOpen(true)}
+                  colorPalette={"red"}
+                >
+                  삭제
+                </Button>
+              </HStack>
+            )}
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </DialogContent>
+      </DialogRoot>
+      <HStack></HStack>
 
       <DialogConfirmation
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleDeleteConfirm}
         title="삭제 확인"
-        body="정말로 이 항목을 삭제하시겠습니까?"
+        body="해당 품목을 삭제하시겠습니까?"
       />
     </Box>
   );

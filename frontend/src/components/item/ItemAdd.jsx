@@ -39,7 +39,6 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
     itemNote: "",
   };
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
-  const [isValid, setIsValid] = useState(false);
   const [itemData, setItemData] = useState(initialItemData);
 
   // 창이 닫히면 입력 내용 초기화
@@ -85,6 +84,13 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
     }
   }, [itemData.itemCommonCode]);
 
+  // 유효성 검증을 계산된 값으로 정의
+  const isValid =
+    itemData.itemCommonCode &&
+    itemData.customerName &&
+    itemData.inputPrice &&
+    itemData.outputPrice;
+
   // 품목 등록하기
   const handleAddClick = () => {
     if (!isValid) {
@@ -112,12 +118,6 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
         toaster.create({ description: message.text, type: message.type });
       });
   };
-
-  // 버튼 활성화를 위한 유효성 검사
-  useEffect(() => {
-    const { itemCommonCode, customerName, inputPrice, outputPrice } = itemData;
-    setIsValid(!!(itemCommonCode && customerName && inputPrice && outputPrice));
-  }, [itemData]);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose}>

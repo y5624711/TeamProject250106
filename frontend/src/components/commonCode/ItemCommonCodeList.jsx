@@ -8,10 +8,10 @@ import { Checkbox } from "../ui/checkbox.jsx";
 
 export function ItemCommonCodeList({
   itemCommonCodeList,
-  setItemCommonCodeKey,
   count,
   searchParams,
   setSearchParams,
+  onRowClick,
 }) {
   // 검색 옵션
   const itemSearchOptions = createListCollection({
@@ -36,7 +36,7 @@ export function ItemCommonCodeList({
     : sortOptions;
 
   return (
-    <Box>
+    <Box px={10}>
       <SearchBar
         itemSearchOptions={itemSearchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -60,12 +60,17 @@ export function ItemCommonCodeList({
             {itemCommonCodeList?.map((item, index) => (
               <Table.Row
                 key={item.itemCommonCodeKey}
-                onClick={() => setItemCommonCodeKey(item.itemCommonCodeKey)}
+                onClick={() => onRowClick(item.itemCommonCodeKey)}
                 style={{ cursor: "pointer" }}
+                _hover={{ backgroundColor: "gray.100" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                <Table.Cell>{item.itemCommonCode}</Table.Cell>
-                <Table.Cell>{item.itemCommonName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.itemCommonCode}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.itemCommonName}
+                </Table.Cell>
                 {active && (
                   <Table.Cell textAlign="center">
                     <Checkbox checked={item.itemCommonCodeActive} />

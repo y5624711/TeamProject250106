@@ -16,7 +16,7 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
-    @GetMapping("/system/list")
+    //@GetMapping("/system/list")
     // 품목 공통 코드 수정하기
     @PutMapping("item/edit/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> editItemCommonCode(@PathVariable int itemCommonCodeKey, @RequestBody ItemCommonCode itemCommonCode) {

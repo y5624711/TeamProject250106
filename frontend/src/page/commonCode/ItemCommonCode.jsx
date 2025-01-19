@@ -6,6 +6,7 @@ import { SideBar } from "../../components/tool/SideBar.jsx";
 import { ItemCommonCodeList } from "../../components/commonCode/ItemCommonCodeList.jsx";
 import { ItemCommonCodeAdd } from "../../components/commonCode/ItemCommonCodeAdd.jsx";
 import { useSearchParams } from "react-router-dom";
+import { ItemCommonCodeView } from "../../components/commonCode/ItemCommonCodeView.jsx";
 
 export function ItemCommonCode() {
   const [itemCommonCodeKey, setItemCommonCodeKey] = useState(1);
@@ -14,6 +15,7 @@ export function ItemCommonCode() {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
   // 품목 공통 코드 목록 가져오기
   useEffect(() => {
@@ -36,6 +38,12 @@ export function ItemCommonCode() {
     setAddDialogOpen(false);
   };
 
+  // 물품 선택 시 해당 물품 보여주기
+  const handleRowClick = (item) => {
+    setItemCommonCodeKey(item);
+    setViewDialogOpen(true);
+  };
+
   return (
     <Box>
       <HStack align="flex-start" w="100%">
@@ -50,6 +58,7 @@ export function ItemCommonCode() {
             searchParams={searchParams}
             setSearchParams={setSearchParams}
             setItemCommonCodeKey={setItemCommonCodeKey}
+            onRowClick={handleRowClick}
           />
           <Button
             onClick={() => setAddDialogOpen(true)}
@@ -61,12 +70,13 @@ export function ItemCommonCode() {
             물품 코드 등록
           </Button>
         </Stack>
-        {/*<ItemCommonCodeView*/}
-        {/*  itemCommonCodeKey={itemCommonCodeKey}*/}
-        {/*  setItemCommonCodeList={setItemCommonCodeList}*/}
-        {/*  setSearchParams={setSearchParams}*/}
-        {/*  setChange={setChange}*/}
-        {/*/>*/}
+        <ItemCommonCodeView
+          itemCommonCodeKey={itemCommonCodeKey}
+          setItemCommonCodeKey={setItemCommonCodeKey}
+          isOpen={viewDialogOpen}
+          onClose={() => setViewDialogOpen(false)}
+          setChange={setChange}
+        />
         <ItemCommonCodeAdd
           isOpen={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}
