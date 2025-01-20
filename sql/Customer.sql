@@ -3,10 +3,10 @@ CREATE TABLE TB_CUSTMST
     customer_key             INT PRIMARY KEY AUTO_INCREMENT,
     item_code                VARCHAR(5),
     customer_code            VARCHAR(13) NOT NULL,
-    customer_name            VARCHAR(30) NOT NULL,
+    customer_name            VARCHAR(30) NOT NULL UNIQUE,
     customer_rep             VARCHAR(5)  NOT NULL,
-    customer_no              VARCHAR(13) NOT NULL,
-    customer_tel             VARCHAR(15) NOT NULL,
+    customer_no              VARCHAR(13) NOT NULL UNIQUE,
+    customer_tel             VARCHAR(15) NOT NULL UNIQUE,
     customer_fax             VARCHAR(15),
     customer_address         VARCHAR(50) NOT NULL,
     customer_address_details VARCHAR(50),
@@ -16,7 +16,7 @@ CREATE TABLE TB_CUSTMST
 );
 
 
-# DROP TABLE TB_CUSTMST;
+DROP TABLE TB_CUSTMST;
 
 
 INSERT INTO TB_CUSTMST
