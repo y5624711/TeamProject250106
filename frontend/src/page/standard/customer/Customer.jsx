@@ -4,7 +4,7 @@ import axios from "axios";
 import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
 import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
 
@@ -269,7 +269,7 @@ function Customer() {
 
   return (
     <Flex>
-      <SideBar />
+      <StandardSideBar />
       <Stack w={"80%"} mx={"auto"}>
         <Heading>협력업체 관리</Heading>
 

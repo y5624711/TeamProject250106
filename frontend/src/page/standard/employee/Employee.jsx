@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { EmployeeList } from "../../../components/standard/employee/EmployeeList.jsx";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 
 export function Employee() {
   const [selectedEmployeeNo, setSelectedEmployeeNo] = useState(-1);
@@ -21,7 +21,7 @@ export function Employee() {
 
   return (
     <Box display={"flex"}>
-      <SideBar />
+      <StandardSideBar />
       <EmployeeList
         onSelect={handleSelectedNo}
         updateList={addCheck}

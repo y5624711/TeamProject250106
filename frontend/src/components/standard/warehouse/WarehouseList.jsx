@@ -8,7 +8,7 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
-} from "../ui/pagination.jsx";
+} from "../../ui/pagination.jsx";
 
 function WarehouseList({
   warehouseList,

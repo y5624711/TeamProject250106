@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import WarehouseList from "../../../components/standard/warehouse/WarehouseList.jsx";
 import WarehouseSearch from "../../../components/standard/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { WarehouseAdd } from "../../../components/standard/warehouse/WarehouseAdd.jsx";
-import { Checkbox } from "../../components/ui/checkbox.jsx";
+import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -61,7 +61,7 @@ function Warehouse(props) {
   return (
     <Box>
       <HStack align="flex-start">
-        <SideBar />
+        <StandardSideBar />
         <Stack>
           <HStack>
             <Box>창고 관리</Box>

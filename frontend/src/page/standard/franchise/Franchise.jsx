@@ -8,7 +8,7 @@ import {
 } from "../../../components/ui/pagination.jsx";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { FranchiseList } from "../../../components/standard/franchise/FranchiseList.jsx";
 import { FranchiseDialog } from "../../../components/standard/franchise/FranchiseDialog.jsx";
 
@@ -213,7 +213,7 @@ export function Franchise() {
 
   return (
     <Box display={"flex"} h={"100vh"}>
-      <SideBar />
+      <StandardSideBar />
       <Box flex={"1"} p={4}>
         <Heading size="md" mb={4}>
           가맹점 관리

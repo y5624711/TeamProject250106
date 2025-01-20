@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../../../components/ui/button.jsx";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { ItemCommonCodeList } from "../../../components/standard/commonCode/ItemCommonCodeList.jsx";
 import { ItemCommonCodeAdd } from "../../../components/standard/commonCode/ItemCommonCodeAdd.jsx";
 import { useSearchParams } from "react-router-dom";
@@ -47,7 +47,7 @@ export function ItemCommonCode() {
   return (
     <Box>
       <HStack align="flex-start" w="100%">
-        <SideBar />
+        <StandardSideBar />
         <Stack flex={1}>
           <Text fontSize="xl" mx={10} my={3}>
             공통코드 관리 > 품목 코드

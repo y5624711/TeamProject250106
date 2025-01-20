@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import { ItemList } from "../../../components/standard/item/ItemList.jsx";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -46,7 +46,7 @@ export function Item() {
   return (
     <Box>
       <HStack align="flex-start" w="100%">
-        <SideBar />
+        <StandardSideBar />
         <Stack flex={1}>
           <Text fontSize="xl" mx={10} my={3}>
             기준정보 관리 > 품목 관리

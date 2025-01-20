@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, HStack, Stack } from "@chakra-ui/react";
-import { SideBar2 } from "../../../components/tool/SideBar2.jsx";
+import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { InstallList } from "../../../components/state/install/InstallList.jsx";
 import { InstallRequest } from "../../../components/state/install/InstallRequest.jsx";
@@ -13,7 +13,7 @@ export function Install() {
   return (
     <Box>
       <HStack align="flex-start" w="100%">
-        <SideBar2 />
+        <StateSideBar />
         <Stack flex={1}>
           <InstallList />
           <Button

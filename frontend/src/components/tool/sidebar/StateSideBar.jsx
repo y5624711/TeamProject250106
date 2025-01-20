@@ -21,7 +21,7 @@ function SidebarItem({ children, path, ...rest }) {
   );
 }
 
-export function SideBar2() {
+export function StateSideBar() {
   return (
     <Flex>
       <Box

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { SideBar } from "../../components/tool/SideBar.jsx";
-import { Box, HStack, Stack } from "@chakra-ui/react";
-import LocationSearch from "../../components/standard/location/LocationSearch.jsx";
-import { Button } from "../../components/ui/button.jsx";
-import LocationAdd from "../../components/standard/location/LocationAdd.jsx";
+import { Box, Button, HStack, Stack } from "@chakra-ui/react";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
+import LocationAdd from "../../../components/location/LocationAdd.jsx";
+import LocationSearch from "../../../components/location/LocationSearch.jsx";
 
 function Location(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -11,7 +10,7 @@ function Location(props) {
   return (
     <Box>
       <HStack align="flex-start">
-        <SideBar />
+        <StandardSideBar />
         <Stack>
           <HStack>
             로케이션 관리

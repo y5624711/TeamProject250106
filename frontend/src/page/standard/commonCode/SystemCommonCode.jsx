@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Center, Flex, HStack, Spinner, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { SystemCommonCodeList } from "../../../components/standard/commonCode/SystemCommonCodeList.jsx";
-import { SideBar } from "../../../components/tool/SideBar.jsx";
+import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import {
   PaginationItems,
@@ -107,7 +107,7 @@ function SystemCommonCode() {
 
   return (
     <Flex>
-      <SideBar />
+      <StandardSideBar />
       <Stack w={"80%"} mx={"auto"} pt={5}>
         <Box w={"40%"} mx={"auto"}>
           {/*체크박스*/}

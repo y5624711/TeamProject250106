@@ -22,14 +22,14 @@ function SidebarItem({ children, path, ...rest }) {
   );
 }
 
-export function SideBar() {
+export function StandardSideBar() {
   const [isCommonCodeOpen, setIsCommonCodeOpen] = useState(false);
   const toggleCommonCodeMenu = () => {
     setIsCommonCodeOpen((prev) => !prev); // 공통 코드 클릭 시 하위 메뉴 토글
   };
   return (
     <Flex>
-      {/*SideBar 영역*/}
+      {/*StandardSideBar 영역*/}
       <Box
         w="300px"
         pb="4"
