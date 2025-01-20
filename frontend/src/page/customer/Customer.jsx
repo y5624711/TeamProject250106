@@ -13,6 +13,8 @@ function Customer() {
   const [selectedPage, setSelectedPage] = useState("view");
   const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
@@ -26,53 +28,45 @@ function Customer() {
   });
   const [standard, setStandard] = useState({ sort: "", order: "ASC" });
 
-  // 고객 목록 불러오기 함수
-  // 초기 데이터 불러오기
-  const fetchInitialCustomerList = () => {
-    axios
-      .get(`/api/customer/list`, {
-        params: {
-          sort: "",
-          order: "ASC",
-          page: "1",
-          type: "all",
-          keyword: "",
-          active: "true",
-        },
-      })
-      .then((res) => {
-        const { count, customerList } = res.data;
-        setCustomerList(customerList);
-        setCount(count);
-        console.log("initial");
-        // 초기 customerKey 설정
-        if (customerList.length > 0) {
-          setCustomerKey(customerList[0].customerKey);
-        }
-      })
-      .catch((error) => {
-        console.error("초기 고객 목록 불러오기 오류:", error);
-      });
-  };
-  // console.log("p", customerList);
-  // console.log("key", customerKey);
-
-  // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
-  useEffect(() => {
-    const keyFromURL = searchParams.get("customerKey");
-    if (keyFromURL) {
-      setCustomerKey(keyFromURL);
-    }
-    fetchUpdatedCustomerList();
-  }, [searchParams]);
-
-  // customerKey 변경 시 URL 쿼리 파라미터 업데이트
-  // const handleCustomerKeyChange = (key) => {
-  //   setCustomerKey(key);
-  //   const nextSearchParams = new URLSearchParams(searchParams);
-  //   nextSearchParams.set("customerKey", key);
-  //   setSearchParams(nextSearchParams);
+  // // 고객 목록 불러오기 함수
+  // // 초기 데이터 불러오기
+  // const fetchInitialCustomerList = () => {
+  //   axios
+  //     .get(`/api/customer/list`, {
+  //       params: {
+  //         sort: "",
+  //         order: "ASC",
+  //         page: "1",
+  //         type: "all",
+  //         keyword: "",
+  //         active: "true",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       const { count, customerList } = res.data;
+  //       setCustomerList(customerList);
+  //       setCount(count);
+  //       console.log("initial");
+  //       // 초기 customerKey 설정
+  //       if (customerList.length > 0) {
+  //         setCustomerKey(customerList[0].customerKey);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("초기 고객 목록 불러오기 오류:", error);
+  //     });
   // };
+  // // console.log("p", customerList);
+  // // console.log("key", customerKey);
+  //
+  // // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
+  // useEffect(() => {
+  //   const keyFromURL = searchParams.get("customerKey");
+  //   if (keyFromURL) {
+  //     setCustomerKey(keyFromURL);
+  //   }
+  //   fetchUpdatedCustomerList();
+  // }, [searchParams]);
 
   // 리스트 행 클릭 시 동작
   const handleRowClick = (key) => {
@@ -91,6 +85,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setAddDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -113,6 +108,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setViewDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -133,6 +129,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setViewDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -141,10 +138,6 @@ function Customer() {
           description: data.message.text,
         });
       });
-  };
-
-  const handleSelectPage = (page) => {
-    setSelectedPage(page);
   };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
@@ -276,6 +269,10 @@ function Customer() {
 
   // console.log("p", standard);
 
+  // const handleAddCustomer = (newCustomer) => {
+  //   setAddDialogOpen(false);
+  // };
+
   return (
     <Box>
       <HStack align={"flex-start"}>
@@ -306,22 +303,22 @@ function Customer() {
         </Stack>
         <Stack>
           {selectedPage === "view" && (
-            <Button onClick={() => handleSelectPage("add")}>추가</Button>
+            <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+              협력업체 등록
+            </Button>
           )}
 
-          {/* 조건부 렌더링 */}
-          {selectedPage === "add" ? (
-            <CustomerAdd
-              onSave={handleSaveClick}
-              onCancel={() => handleSelectPage("view")}
-            />
-          ) : (
-            <CustomerView
-              customerKey={customerKey}
-              onDelete={handleDeleteClick}
-              onEdit={handleEditClick}
-            />
-          )}
+          <CustomerAdd
+            isOpen={addDialogOpen}
+            onCancel={() => setAddDialogOpen(false)}
+            onSave={handleSaveClick}
+          />
+          <CustomerView
+            customerKey={customerKey}
+            onDelete={handleDeleteClick}
+            onEdit={handleEditClick}
+            onCancel={() => setAddDialogOpen(false)}
+          />
         </Stack>
       </HStack>
     </Box>
