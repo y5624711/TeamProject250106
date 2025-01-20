@@ -121,4 +121,10 @@ public interface CustomerMapper {
             </script>
             """)
     Integer countCustomerList(Boolean active, String type, String keyword);
+
+    @Select("""
+            select customer_code,customer_name
+            from TB_CUSTMST
+""")
+    List<Customer> customerCodeNames();
 }

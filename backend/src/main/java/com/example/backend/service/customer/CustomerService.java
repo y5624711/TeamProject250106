@@ -53,4 +53,8 @@ public class CustomerService {
     public List<CommonCode> itemCodeList() {
         return mapper.itemCodeList();
     }
+
+    public List<Customer> customerCodeNames() {
+        return mapper.customerCodeNames();
+    }
 }

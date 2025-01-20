@@ -87,4 +87,10 @@ public class CustomerController {
     private List<CommonCode> itemCodeList() {
         return service.itemCodeList();
     }
+
+    @GetMapping("codenames")
+    public List<Customer> customerCodeNames() {
+
+        return  service.customerCodeNames();
+    }
 }

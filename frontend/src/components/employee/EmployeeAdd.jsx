@@ -1,7 +1,6 @@
 import {
   Box,
   createListCollection,
-  createToaster,
   Heading,
   Input,
   SelectContent,
@@ -15,8 +14,10 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
+import { CustomerSelect } from "./CustomerSelect.jsx";
+import { EmployeeSelect } from "./EmployeeSelect.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -44,9 +45,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   }, []);
 
   const getCommonCode = () => {
-    axios.get("api/commonCode/list").then((res) => {
-      console.log(res.data);
-    });
+    axios.get("api/commonCode/list").then((res) => {});
   };
 
   // 상세 정보 조회
@@ -167,7 +166,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           toaster.create({
             type: error.response.data.message.type,
             description: error.response.data.message.text,
-            쳐,
           });
         });
     }
@@ -198,6 +196,49 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     fetchEmployeeData(); // 원래 데이터로 복원
   };
 
+  //공통코드 뭐 선택했는지에 따라 다르게 보여주는 컴포넌트
+  const abc = (formData) => {
+    const checkCommonCode = formData.selectedCommonCode.value[0];
+    console.log("체크 공통코드", checkCommonCode);
+    const frameworks = createListCollection({
+      items: [
+        { label: "협력업체", value: "CUS" },
+        { label: "직원", value: "EMP" },
+      ],
+    });
+
+    if (checkCommonCode === "CUS") {
+      axios.get("api/customer/codenames").then((res) => {
+        console.log("협력업체 코드 와 이름", res.data);
+      });
+    } else {
+      axios.get("api/department/codenames").then((res) => {
+        console.log("부서 코드와 이름 ", res.data);
+      });
+    }
+
+    return (
+      <>
+        {checkCommonCode === "CUS" ? (
+          <CustomerSelect
+            frameworks={frameworks}
+            formData={formData}
+            handleeSelectChange={handleSelectChange}
+          />
+        ) : (
+          <EmployeeSelect
+            frameworks={frameworks}
+            formData={formData}
+            handleeSelectChange={handleSelectChange}
+          />
+        )}
+      </>
+    );
+  };
+
+  const isCommonCodeSelectedCheck =
+    viewKey === -1 && formData.selectedCommonCode !== null;
+
   return (
     <Box>
       <Heading>{viewKey === -1 ? "회원 등록" : "회원 정보"}</Heading>
@@ -206,7 +247,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           collection={frameworks}
           value={formData.selectedCommonCode}
           onValueChange={handleSelectChange}
-          disabled={viewKey !== -1}
+          defaultValue={viewKey !== -1 ? [formData.selectedCommonCode] : ""}
+          readOnly={viewKey !== -1}
         >
           <SelectLabel>상위 구분 코드</SelectLabel>
           <SelectTrigger>
@@ -220,57 +262,67 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             ))}
           </SelectContent>
         </SelectRoot>
+        {isCommonCodeSelectedCheck && abc(formData)}
 
-        <Input
-          name="workPlace"
-          placeholder={"소속 코드 / 소속 명"}
-          value={formData.workPlace}
-          onChange={handleInputChange}
-          readOnly={viewKey !== -1}
-        />
-
-        <Input
-          name="name"
-          placeholder={"직원명"}
-          value={formData.name}
-          onChange={handleInputChange}
-          readOnly={viewKey !== -1 && !isEditMode}
-        />
-
-        {viewKey !== -1 && (
+        <Field label={"소속코드"} required>
           <Input
-            name="employeeNo"
-            placeholder={"사번"}
-            value={formData.employeeNo}
+            name="workPlace"
+            placeholder={"소속 코드 / 소속 명"}
+            value={formData.workPlace}
             onChange={handleInputChange}
             readOnly={viewKey !== -1}
           />
-        )}
-
-        <Input
-          name="tel"
-          placeholder={"전화번호"}
-          value={formData.tel}
-          onChange={handleInputChange}
-          readOnly={viewKey !== -1 && !isEditMode}
-        />
-
-        <Input
-          name="note"
-          placeholder={"비고"}
-          value={formData.note}
-          onChange={handleInputChange}
-          readOnly={viewKey !== -1 && !isEditMode}
-        />
-
-        {viewKey !== -1 && (
+        </Field>
+        <Field label={"직원명"} required>
           <Input
-            name="password"
-            placeholder={"비밀번호"}
-            value={formData.password}
+            name="name"
+            placeholder={"직원명"}
+            value={formData.name}
             onChange={handleInputChange}
             readOnly={viewKey !== -1 && !isEditMode}
           />
+        </Field>
+        {viewKey !== -1 && (
+          <Field label={"사번"}>
+            <Input
+              name="employeeNo"
+              placeholder={"사번"}
+              value={formData.employeeNo}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+        )}
+
+        <Field label={"전화 번호"}>
+          <Input
+            name="tel"
+            placeholder={"전화번호"}
+            value={formData.tel}
+            onChange={handleInputChange}
+            readOnly={viewKey !== -1 && !isEditMode}
+          />
+        </Field>
+
+        <Field label={"비고"}>
+          <Input
+            name="note"
+            placeholder={"비고"}
+            value={formData.note}
+            onChange={handleInputChange}
+            readOnly={viewKey !== -1 && !isEditMode}
+          />
+        </Field>
+        {viewKey !== -1 && (
+          <Field label={"비밀번호"}>
+            <Input
+              name="password"
+              placeholder={"비밀번호"}
+              value={formData.password}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1 && !isEditMode}
+            />
+          </Field>
         )}
       </Stack>
 

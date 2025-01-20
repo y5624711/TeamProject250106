@@ -20,4 +20,9 @@ public class DepartmentController {
     public List<Department> list() {
         return service.list();
     }
+
+    @GetMapping("codenames")
+    public List<Department> getCodeNames(){
+        return service.getCodeNames();
+    }
 }

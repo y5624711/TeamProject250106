@@ -13,4 +13,10 @@ public interface DepartmentMapper {
             FROM department
             """)
     List<Department> listUp();
+
+    @Select("""
+        select department_code, department_name
+        from  TB_DEPARTMST
+""")
+    List<Department> getCodeNames();
 }

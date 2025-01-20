@@ -16,4 +16,8 @@ public class DepartmentService {
     public List<Department> list() {
         return mapper.listUp();
     }
+
+    public List<Department> getCodeNames() {
+        return  mapper.getCodeNames();
+    }
 }
