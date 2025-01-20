@@ -29,6 +29,7 @@ export function Sort({ sortOptions, onSortChange }) {
     <>
       {sortOptions.map((sort) => (
         <Table.ColumnHeader
+          textAlign="center"
           key={sort.key}
           onClick={() => handleSort(sort.key)}
           style={{ cursor: "pointer" }}

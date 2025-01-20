@@ -42,6 +42,13 @@ public class CommonController {
     @PutMapping("item/delete/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> deleteItemCommonCode(
             @PathVariable int itemCommonCodeKey) {
+        // 이미 삭제된 품목 공통 코드인지 검증
+        if (service.deletedItemCommonCode(itemCommonCodeKey)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 삭제된 품목 공통 코드 입니다.")
+            ));
+        }
+
         if (service.deleteItemCommonCode(itemCommonCodeKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
@@ -97,7 +104,7 @@ public class CommonController {
     @GetMapping("item/list")
     public Map<String, Object> getItemCommonCodeList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "active", defaultValue = "1") Integer active,
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "type", defaultValue = "all") String type,

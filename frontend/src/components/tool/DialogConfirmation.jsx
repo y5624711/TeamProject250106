@@ -39,7 +39,7 @@ export function DialogConfirmation({
               onClose();
             }}
           >
-            확인
+            삭제
           </Button>
         </DialogFooter>
       </DialogContent>

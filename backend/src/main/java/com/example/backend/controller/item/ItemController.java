@@ -27,7 +27,7 @@ public class ItemController {
                     "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
             ));
         }
-        
+
 
         if (service.editItem(itemKey, item)) {
             return ResponseEntity.ok(Map.of("message",
@@ -45,6 +45,13 @@ public class ItemController {
     @PutMapping("/delete/{itemKey}")
     public ResponseEntity<Map<String, Object>> deleteItem(
             @PathVariable int itemKey) {
+        // 이미 삭제된 품목인지 검증
+        if (service.deletedItem(itemKey)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 삭제된 품목입니다.")
+            ));
+        }
+
         if (service.deleteItem(itemKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
@@ -67,12 +74,13 @@ public class ItemController {
     @GetMapping("list")
     public Map<String, Object> getItemlist(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "active", defaultValue = "1") Integer active,
+            @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order
     ) {
+        // type, keyword, sort, order 을 db의 컬럼명으로 변경
         return service.getItemList(page, active, type, keyword, sort, order);
     }
 

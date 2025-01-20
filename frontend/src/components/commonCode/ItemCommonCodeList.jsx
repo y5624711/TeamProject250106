@@ -1,16 +1,16 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
-import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
-import { Sort } from "../tool/Sort.jsx";
-import { Pagination } from "../tool/Pagination.jsx";
-import { SearchBar } from "../tool/SearchBar.jsx";
+import { ActiveSwitch } from "../tool/list/ActiveSwitch.jsx";
+import { Sort } from "../tool/list/Sort.jsx";
+import { Pagination } from "../tool/list/Pagination.jsx";
+import { SearchBar } from "../tool/list/SearchBar.jsx";
 
 export function ItemCommonCodeList({
   itemCommonCodeList,
-  setItemCommonCodeKey,
   count,
   searchParams,
   setSearchParams,
+  onRowClick,
 }) {
   // 검색 옵션
   const itemSearchOptions = createListCollection({
@@ -29,7 +29,7 @@ export function ItemCommonCodeList({
   ];
 
   return (
-    <Box>
+    <Box px={10}>
       <SearchBar
         itemSearchOptions={itemSearchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -53,12 +53,20 @@ export function ItemCommonCodeList({
             {itemCommonCodeList?.map((item, index) => (
               <Table.Row
                 key={item.itemCommonCodeKey}
-                onClick={() => setItemCommonCodeKey(item.itemCommonCodeKey)}
-                style={{ cursor: "pointer" }}
+                onClick={() => onRowClick(item.itemCommonCodeKey)}
+                style={{
+                  cursor: "pointer",
+                }}
+                bg={item.itemCommonCodeActive ? "white" : "gray.100"}
+                _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                <Table.Cell>{item.itemCommonCode}</Table.Cell>
-                <Table.Cell>{item.itemCommonName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.itemCommonCode}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.itemCommonName}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Center, HStack } from "@chakra-ui/react";
+
+import { useSearchParams } from "react-router-dom";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
-} from "../ui/pagination.jsx";
-import { useSearchParams } from "react-router-dom";
+} from "../../ui/pagination.jsx";
 
 export function Pagination({ count, pageSize, onPageChange }) {
   const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ export function Pagination({ count, pageSize, onPageChange }) {
   };
 
   return (
-    <Center>
+    <Center position="absolute" bottom="100px">
       <PaginationRoot
         onPageChange={(e) => handlePageChange(e.page)}
         count={count}

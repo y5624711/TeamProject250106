@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@chakra-ui/react";
-import { Button } from "../ui/button.jsx";
+import { Button } from "../../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 
 export function SearchBar({ onSearchChange, itemSearchOptions }) {
@@ -35,7 +35,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
       nextSearchParam.delete("keyword");
     }
     // 검색해도 active, sort, order 값 유지
-    const active = searchParams.get("active") ?? "1";
+    const active = searchParams.get("active") ?? "false";
     nextSearchParam.set("active", active);
 
     const sort = searchParams.get("sort") ?? "";
@@ -53,7 +53,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
   };
 
   return (
-    <HStack>
+    <HStack justifyContent="center">
       <SelectRoot
         collection={itemSearchOptions}
         width="150px"
@@ -83,7 +83,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
 
       <Input
         placeholder="검색어를 입력해 주세요"
-        width="320px"
+        width="50%"
         value={search.keyword}
         onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         onKeyDown={(e) => {

@@ -14,6 +14,7 @@ import { LoginPage } from "./page/login/LoginPage.jsx";
 import Warehouse from "./page/warehouse/Warehouse.jsx";
 import Location from "./page/location/Location.jsx";
 import SystemCommonCode from "./page/commonCode/SystemCommonCode.jsx";
+import { Install } from "./page/install/Install.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "location",
         element: <Location />,
+      },
+      {
+        path: "install",
+        element: <Install />,
       },
     ],
   },

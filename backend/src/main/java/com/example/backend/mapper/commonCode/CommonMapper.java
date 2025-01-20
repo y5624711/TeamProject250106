@@ -92,86 +92,65 @@ public interface CommonMapper {
     int reUseSysCode(Integer commonCodeKey);
 
     @Select("""
-            <script>
-                SELECT *
-                FROM TB_ITEMCOMM
-                <trim prefix="WHERE" prefixOverrides="AND">
-                    <if test="active == 1">
-                        item_common_code_active = 1
+                <script>
+                    SELECT *
+                    FROM TB_ITEMCOMM
+                    WHERE 1=1
+                    <if test="active == false">
+                        AND item_common_code_active = TRUE
                     </if>
-                    <if test="keyword != null and keyword != ''">
-                        <choose>
-                            <when test="type == 'all'">
-                                AND (
-                                    item_common_code LIKE CONCAT('%', #{keyword}, '%')
-                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                )
-                            </when>
-                            <when test="type == 'itemCommonCode'">
-                                AND item_common_code LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                            <when test="type == 'itemCommonName'">
-                                AND item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                        </choose>
+                    <if test="keyword != null and keyword.trim() != ''">
+                        <if test="type == 'all'">
+                            AND (
+                                item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                                OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            )
+                        </if>
+                        <if test="type != 'all'">
+                            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
                     </if>
-                </trim>
-            
-                <trim prefix="ORDER BY">
                     <choose>
                         <when test="sort != null and sort != ''">
-                            <choose>
-                                <when test="sort == 'itemCommonCodeKey'">item_common_code_key</when>
-                                <when test="sort == 'itemCommonCode'">item_common_code</when>
-                                <when test="sort == 'itemCommonName'">item_common_name</when>
-                                <otherwise>item_common_code_key</otherwise>
-                            </choose>
-                            ${order}
+                            ORDER BY `${sort}` ${order}
                         </when>
                         <otherwise>
-                            item_common_code_key ASC
+                        ORDER BY item_common_code_key DESC
                         </otherwise>
                     </choose>
-                </trim>
-                LIMIT #{offset}, 10
-            </script>
+                    LIMIT #{offset}, 10
+                </script>
             """)
-    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Integer active, String sort, String order, String type, String keyword);
+    List<ItemCommonCode> getItemCommonCodeList(Integer offset, Boolean active, String sort, String order, String type, String keyword);
 
     @Select("""
             <script>
                 SELECT COUNT(*)
                 FROM TB_ITEMCOMM
-                <where>
-                    <if test="active == 1">
-                        item_common_code_active = 1
+                WHERE 1=1
+                <if test="active == false">
+                    AND item_common_code_active = TRUE
+                </if>
+                <if test="keyword != null and keyword.trim() != ''">
+                    <if test="type == 'all'">
+                        AND (
+                            item_common_code LIKE CONCAT('%', #{keyword}, '%')
+                            OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                        )
                     </if>
-                    <if test="keyword != null and keyword != ''">
-                        <choose>
-                            <when test="type == 'all'">
-                                AND (
-                                    item_common_code LIKE CONCAT('%', #{keyword}, '%')
-                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                )
-                            </when>
-                            <when test="type == 'itemCommonCode'">
-                                AND item_common_code LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                            <when test="type == 'itemCommonName'">
-                                AND item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                            </when>
-                        </choose>
+                    <if test="type != 'all'">
+                        AND ${type} LIKE CONCAT('%', #{keyword}, '%')
                     </if>
-                </where>
+                </if>
             </script>
             """)
-    Integer countAll(Integer active, String type, String keyword);
+    Integer countAll(Boolean active, String type, String keyword);
 
     @Select("""
             SELECT COUNT(*)
             FROM TB_ITEMCOMM
-            WHERE item_common_code = #{itemCommonCode}
-               OR item_common_name = #{itemCommonName}
+            WHERE item_common_code_active = false
+                 AND (item_common_code = #{itemCommonCode} OR item_common_name = #{itemCommonName})
             """)
     int countByCodeOrName(String itemCommonCode, String itemCommonName);
 
@@ -205,6 +184,13 @@ public interface CommonMapper {
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
     int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
+
+    @Select("""
+            SELECT item_common_code_key
+            FROM TB_ITEMCOMM
+            WHERE item_common_code_active = false
+            """)
+    List<Integer> deletedItemCommonCode();
 
 
     @Select("""

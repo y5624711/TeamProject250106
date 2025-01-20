@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch } from "../ui/switch.jsx";
+import { Switch } from "../../ui/switch.jsx";
 import { useSearchParams } from "react-router-dom";
 
 export function ActiveSwitch({ onActiveChange }) {
@@ -11,7 +11,7 @@ export function ActiveSwitch({ onActiveChange }) {
   useEffect(() => {
     const checkActive = searchParams.get("active");
     if (checkActive) {
-      setActive(checkActive === "1");
+      setActive(checkActive === "false");
     } else {
       setActive(!checkActive);
     }
@@ -26,13 +26,13 @@ export function ActiveSwitch({ onActiveChange }) {
 
     // URL 파라미터 갱신
     const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", newActive ? "1" : "0");
-    nextSearchParams.set("page", "1"); // 페이지를 첫 페이지로 리셋
-    setSearchParams(nextSearchParams); // URL에 반영
+    nextSearchParams.set("active", newActive ? "false" : "true");
+    nextSearchParams.set("page", "1");
+    setSearchParams(nextSearchParams);
   };
 
   return (
-    <Switch checked={!active} onChange={handleSwitchChange}>
+    <Switch my={5} checked={!active} onChange={handleSwitchChange}>
       전체 조회
     </Switch>
   );
