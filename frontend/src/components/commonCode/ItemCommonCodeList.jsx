@@ -32,7 +32,7 @@ export function ItemCommonCodeList({
   // active가 true인 경우 사용 여부 컬럼 추가
   const active = searchParams.get("active") === "true";
   const dynamicSortOptions = active
-    ? [...sortOptions, { key: "isActive", label: "사용 여부" }]
+    ? [...sortOptions, { key: "itemCommonCodeActive", label: "사용 여부" }]
     : sortOptions;
 
   return (

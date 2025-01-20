@@ -36,9 +36,24 @@ public class CommonService {
     // 품목 공통 코드 조회
     public Map<String, Object> getItemCommonCodeList(Integer page, Boolean active, String sort, String order, String type, String keyword) {
         Integer offset = (page - 1) * 10;
+        type = toSnakeCase(type);
+        keyword = toSnakeCase(keyword);
+        sort = toSnakeCase(sort);
+        order = toSnakeCase(order);
         return Map.of("list", mapper.getItemCommonCodeList(offset, active, sort, order, type, keyword),
                 "count", mapper.countAll(active, type, keyword));
     }
+
+    // camelCase를 snake_case로 변환하는 로직
+    private String toSnakeCase(String camelCase) {
+        if (camelCase == null || camelCase.isEmpty()) {
+            return camelCase; // null 이거나 빈 문자열은 그대로 반환
+        }
+        return camelCase
+                .replaceAll("([a-z])([A-Z])", "$1_$2") // 소문자 뒤 대문자에 언더스코어 추가
+                .toLowerCase(); // 전체를 소문자로 변환
+    }
+
 
     // 품목 공통 코드 정보 입력됐는지 확인
     public boolean validateItemCommonCode(ItemCommonCode itemCommonCode) {
