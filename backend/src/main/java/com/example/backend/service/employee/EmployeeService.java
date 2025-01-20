@@ -25,6 +25,7 @@ public class EmployeeService {
 
         String insertEmployeeNo = employee.getEmployeeCommonCode()+newNumber;
          employee.setEmployeeNo(insertEmployeeNo);
+
            int cnt= mapper.addEmployee(employee);
 
            return cnt==1;
@@ -37,9 +38,9 @@ public class EmployeeService {
 
 
         int offset= (page-1) *10 ;
-//        int offset= (page-1) *10 +1;
-        System.out.println("count = " + count);
 
+        // emp 이면  business 테이블 조회 , >
+        // cus 이면  customer 테이블 조회
          List<Employee> employeeList= mapper.getAllEmployees(offset ,isActiveVisible,keyword,type ,convertedSort,order);
 
          EmployeeResponse employeeResponse = new EmployeeResponse();

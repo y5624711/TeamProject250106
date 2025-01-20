@@ -73,4 +73,8 @@ public class CustomerService {
                         customer.getCustomerPost() == null || customer.getCustomerAddress() == null
         );
     }
+
+    public List<Customer> customerCodeNames() {
+        return mapper.customerCodeNames();
+    }
 }

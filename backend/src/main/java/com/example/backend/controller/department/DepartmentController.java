@@ -90,4 +90,9 @@ public class DepartmentController {
                     Map.of("type", "error", "text", "오류가 발생했습니다.")));
         }
     }
+
+    @GetMapping("codenames")
+    public List<Department> getCodeNames(){
+        return service.getCodeNames();
+    }
 }

@@ -76,4 +76,8 @@ public class DepartmentService {
         String name = department.getDepartmentName().trim();
         return mapper.checkSameName(name) == 0;
     }
+
+    public List<Department> getCodeNames() {
+        return  mapper.getCodeNames();
+    }
 }

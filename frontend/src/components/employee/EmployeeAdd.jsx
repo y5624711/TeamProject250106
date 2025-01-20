@@ -1,7 +1,6 @@
 import {
   Box,
   createListCollection,
-  createToaster,
   Heading,
   Input,
   SelectContent,
@@ -15,21 +14,26 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster.jsx";
+import { Field } from "../ui/field.jsx";
+import * as PropTypes from "prop-types";
+import { SelectViewComp } from "./SelectViewComp.jsx";
+
+SelectViewComp.propTypes = {
+  formdata: PropTypes.shape({
+    note: PropTypes.string,
+    password: PropTypes.string,
+    selectedCommonCode: PropTypes.string,
+    name: PropTypes.string,
+    tel: PropTypes.string,
+    employeeNo: PropTypes.string,
+    departMent: PropTypes.string,
+    workPlace: PropTypes.string,
+  }),
+};
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
-  //   공통코드 가져오는 뭐시기
-  useEffect(() => {
-    getCommonCode();
-  }, []);
-
-  const getCommonCode = () => {
-    axios.get("api/commonCode/list").then((res) => {
-      console.log(res.data);
-    });
-  };
-
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     employeeNo: "",
     password: "",
@@ -41,43 +45,67 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     departMent: "",
   });
 
-  // 이거 백으로 가져와야 하나  흠 ,
   const frameworks = createListCollection({
     items: [
-      { label: "협력업체", value: "PAR" },
+      { label: "협력업체", value: "CUS" },
       { label: "직원", value: "EMP" },
     ],
   });
 
-  //  viewKey 값이 변동 되었을경우  출력을 위해 서버에서 받아오는 코드
+  // 공통 코드 조회
   useEffect(() => {
-    //등록화면이 아닐때
+    getCommonCode();
+  }, []);
+
+  const getCommonCode = () => {
+    axios.get("api/commonCode/list").then((res) => {});
+  };
+
+  // 상세 정보 조회
+  useEffect(() => {
     if (viewKey !== -1) {
-      axios
-        .get("api/employee/view", {
-          params: { viewKey },
-        })
-        .then((res) => {
-          setFormData({
-            employeeNo: res.data.employeeNo || "",
-            selectedCommonCode: res.data.employeeCommonCode || "",
-            password: res.data.employeePassword || "",
-            tel: res.data.employeeTel || "",
-            workPlace: res.data.employeeWorkPlaceCode || "",
-            department: res.data.department || "",
-            note: res.data.employeeNote || "",
-            name: res.data.employeeName || "",
-          });
-        });
+      fetchEmployeeData();
+      setIsEditMode(false);
     }
   }, [viewKey]);
 
-  //인풋창 입력시 , 해당 내용 formdata에 적용되도록
+  const fetchEmployeeData = () => {
+    axios
+      .get("api/employee/view", {
+        params: { viewKey },
+      })
+      .then((res) => {
+        setFormData({
+          employeeNo: res.data.employeeNo || "",
+          selectedCommonCode: res.data.employeeCommonCode || "",
+          password: res.data.employeePassword || "",
+          tel: res.data.employeeTel || "",
+          workPlace: res.data.employeeWorkPlaceCode || "",
+          note: res.data.employeeNote || "",
+          name: res.data.employeeName || "",
+        });
+      });
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      selectedCommonCode: value,
+    }));
+    console.log("formData", formData);
+  };
+  const handleWorkPlaceChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      workPlace: value,
     }));
   };
 
@@ -94,31 +122,15 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     });
   };
 
-  //  클릭 버튼 시
   const handleSubmit = () => {
-    // 수정 일때와 , 추가 일때의 경로 매핑
-    const url = viewKey === -1 ? "/api/employee/add" : "/api/employee/update";
-    const method = viewKey === -1 ? "post" : "put";
-    // selectedCommonCode.join(""),
-    var data;
+    // 수정일 때
+    if (viewKey !== -1) {
+      if (!isEditMode) {
+        setIsEditMode(true);
+        return;
+      }
 
-    if (viewKey === -1) {
-      // 등록 데이터 폼
-      console.log(formData.selectedCommonCode);
-      console.log(formData.employeeNo);
-      data = {
-        employeeCommonCode: formData.selectedCommonCode.join(""),
-        employeeWorkPlaceCode: formData.workPlace,
-        employeeName: formData.name,
-        employeeTel: formData.tel,
-        employeeNote: formData.note,
-        employeeDepartment: formData.department,
-        employeeNo: "",
-      };
-    } else {
-      // 수정 데이터 폼
-      data = {
-        // 공통 코드  , 소속 코드 , 사번 , 이름 , 전화 번호 , 비고 , 부서 , 비번
+      const data = {
         employeeKey: viewKey,
         employeeCommonCode: formData.selectedCommonCode,
         employeeWorkPlaceCode: formData.workPlace,
@@ -129,31 +141,59 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeDepartment: formData.department,
         employeePassword: formData.password,
       };
+
+      axios
+        .put("/api/employee/update", data)
+        .then((res) => {
+          toaster.create({
+            type: res.data.message.type,
+            description: res.data.message.text,
+          });
+          setIsEditMode(false);
+          onChange();
+        })
+        .catch((error) => {
+          console.error("수정 중 오류 발생:", error);
+          toaster.create({
+            type: error.response.data.message.type,
+            description: error.response.data.message.text,
+          });
+        });
+    } else {
+      // 등록일 때
+      const data = {
+        employeeCommonCode: formData.selectedCommonCode.value.join(""),
+        employeeWorkPlaceCode: formData.workPlace.value?.[0],
+        employeeName: formData.name,
+        employeeTel: formData.tel,
+        employeeNote: formData.note,
+        employeeDepartment: formData.department,
+        employeeNo: "",
+      };
+
+      axios
+        .post("/api/employee/add", data)
+        .then((res) => {
+          formDataClear();
+          toaster.create({
+            type: res.data.message.type,
+            description: res.data.message.text,
+          });
+          onChange();
+        })
+        .catch((error) => {
+          console.error("등록 중 오류 발생:", error);
+          toaster.create({
+            type: error.response.data.message.type,
+            description: error.response.data.message.text,
+          });
+        });
     }
-
-    axios[method](url, data)
-      .then((res) => {
-        formDataClear();
-
-        toaster.create({
-          type: res.data.message.type,
-          description: res.data.message.text,
-        });
-      })
-      .catch((error) => {
-        console.error("전송중 오류 발생:", error);
-        toaster.create({
-          type: error.response.data.message.type,
-          description: error.response.data.message.text,
-        });
-      })
-      .finally(() => {
-        onChange();
-      });
   };
 
+  console.log("값 변경 확인", formData.workPlace);
+
   const handleDelete = () => {
-    console.log("실행");
     axios
       .put("api/employee/delete", { employeeKey: viewKey })
       .then((res) => {
@@ -162,47 +202,35 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           type: res.data.message.type,
           description: res.data.message.text,
         });
+        onChange();
       })
       .catch((error) => {
         console.error("삭제 실패:", error);
-        console.log(error);
         toaster.create({
           type: error.response.data.message.type,
           description: error.response.data.message.text,
         });
-      })
-      .finally(() => {
-        onChange();
       });
   };
-  const handleSelectedItem = (no) => {
-    onSelect(no);
+
+  const handleCancel = () => {
+    setIsEditMode(false);
+    fetchEmployeeData(); // 원래 데이터로 복원
   };
 
+  const isCommonCodeSelectedCheck =
+    viewKey === -1 && typeof formData.selectedCommonCode === "object";
+
   return (
-    <Box border={"1px solid black"}>
-      <Button
-        onClick={() => {
-          formDataClear();
-          // 등록 화면
-          handleSelectedItem(-1);
-        }}
-      >
-        {" "}
-        등록
-      </Button>
-      <Heading>{viewKey === -1 ? "회원 등록" : "회원 수정"}</Heading>
+    <Box>
+      <Heading>{viewKey === -1 ? "회원 등록" : "회원 정보"}</Heading>
       <Stack spacing={4}>
         <SelectRoot
           collection={frameworks}
-          value={
-            viewKey === -1
-              ? formData.selectedCommonCode
-              : [formData.selectedCommonCode]
-          }
-          onValueChange={(e) =>
-            setFormData({ ...formData, selectedCommonCode: e.value })
-          }
+          value={formData.selectedCommonCode}
+          onValueChange={handleSelectChange}
+          defaultValue={viewKey !== -1 ? [formData.selectedCommonCode] : ""}
+          readOnly={viewKey !== -1}
         >
           <SelectLabel>상위 구분 코드</SelectLabel>
           <SelectTrigger>
@@ -217,69 +245,94 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </SelectContent>
         </SelectRoot>
 
-        <Input
-          name="workPlace"
-          placeholder={"소속 코드 / 소속 명"}
-          value={formData.workPlace}
-          onChange={handleInputChange}
-        />
-
-        {/* 혹시 모르니까 남겨둠 */}
-        {/*<Input*/}
-        {/*  name="department"*/}
-        {/*  placeholder={"부서 코드 / 부서 명"}*/}
-        {/*  value={formData.department}*/}
-        {/*  onChange={handleInputChange}*/}
-        {/*/>*/}
-        <Input
-          name="name"
-          placeholder={"직원명"}
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        {viewKey === -1 || (
-          <Input
-            name="employeeNo"
-            placeholder={"사번"}
-            value={formData.employeeNo}
-            onChange={handleInputChange}
+        {isCommonCodeSelectedCheck && (
+          <SelectViewComp
+            formData={formData}
+            handleSelectChange={handleWorkPlaceChange}
           />
         )}
-        <Input
-          name="tel"
-          placeholder={"전화번호"}
-          value={formData.tel}
-          onChange={handleInputChange}
-        />
-        <Input
-          name="note"
-          placeholder={"비고"}
-          value={formData.note}
-          onChange={handleInputChange}
-        />
+
         {viewKey !== -1 && (
+          <Field label={"소속코드"} required>
+            <Input
+              name="workPlace"
+              placeholder={"소속 코드 / 소속 명"}
+              value={formData.workPlace}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+        )}
+        <Field label={"직원명"} required>
           <Input
-            name="password"
-            placeholder={"비밀번호"}
-            value={formData.password}
+            name="name"
+            placeholder={"직원명"}
+            value={formData.name}
             onChange={handleInputChange}
+            readOnly={viewKey !== -1 && !isEditMode}
           />
+        </Field>
+        {viewKey !== -1 && (
+          <Field label={"사번"}>
+            <Input
+              name="employeeNo"
+              placeholder={"사번"}
+              value={formData.employeeNo}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+        )}
+
+        <Field label={"전화 번호"}>
+          <Input
+            name="tel"
+            placeholder={"전화번호"}
+            value={formData.tel}
+            onChange={handleInputChange}
+            readOnly={viewKey !== -1 && !isEditMode}
+          />
+        </Field>
+
+        <Field label={"비고"}>
+          <Input
+            name="note"
+            placeholder={"비고"}
+            value={formData.note}
+            onChange={handleInputChange}
+            readOnly={viewKey !== -1 && !isEditMode}
+          />
+        </Field>
+        {viewKey !== -1 && (
+          <Field label={"비밀번호"}>
+            <Input
+              name="password"
+              placeholder={"비밀번호"}
+              value={formData.password}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1 && !isEditMode}
+            />
+          </Field>
         )}
       </Stack>
-      <Button onClick={handleSubmit}>
-        {viewKey === -1 ? "회원 등록" : "회원 수정"}
-      </Button>
-      {/*view 화면 일때만 보여주기*/}
-      {viewKey !== -1 && (
-        <Button
-          onClick={() => {
-            handleDelete();
-          }}
-        >
-          {" "}
-          회원 삭제
+
+      <Box mt={4}>
+        <Button onClick={handleSubmit}>
+          {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
         </Button>
-      )}
+
+        {viewKey !== -1 && isEditMode && (
+          <Button onClick={handleCancel} ml={2}>
+            취소
+          </Button>
+        )}
+
+        {viewKey !== -1 && (
+          <Button onClick={handleDelete} ml={2}>
+            회원 삭제
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }
