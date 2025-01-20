@@ -65,4 +65,12 @@ public class CustomerService {
 //        System.out.println("itemcodelist" + mapper.itemCodeList());
         return mapper.itemCodeList();
     }
+
+    public boolean emptyCustomer(Customer customer) {
+        return !(
+                customer.getCustomerName() == null || customer.getCustomerRep() == null ||
+                        customer.getCustomerNo() == null || customer.getCustomerTel() == null ||
+                        customer.getCustomerPost() == null || customer.getCustomerAddress() == null
+        );
+    }
 }
