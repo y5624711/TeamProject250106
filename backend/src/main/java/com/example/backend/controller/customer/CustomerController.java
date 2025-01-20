@@ -19,6 +19,13 @@ public class CustomerController {
     //협력사 등록
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer) {
+        //협력사 입력란 빈칸 검증
+        if (!service.emptyCustomer(customer)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
+            ));
+        }
+
         if (service.addCustomer(customer)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../components/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 import CustomerView from "../../components/customer/CustomerView.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
@@ -10,9 +10,10 @@ import { toaster } from "../../components/ui/toaster.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
-  const [selectedPage, setSelectedPage] = useState("view");
   const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
@@ -26,7 +27,6 @@ function Customer() {
   });
   const [standard, setStandard] = useState({ sort: "", order: "ASC" });
 
-  // 고객 목록 불러오기 함수
   // 초기 데이터 불러오기
   const fetchInitialCustomerList = () => {
     axios
@@ -66,18 +66,10 @@ function Customer() {
     fetchUpdatedCustomerList();
   }, [searchParams]);
 
-  // customerKey 변경 시 URL 쿼리 파라미터 업데이트
-  // const handleCustomerKeyChange = (key) => {
-  //   setCustomerKey(key);
-  //   const nextSearchParams = new URLSearchParams(searchParams);
-  //   nextSearchParams.set("customerKey", key);
-  //   setSearchParams(nextSearchParams);
-  // };
-
   // 리스트 행 클릭 시 동작
   const handleRowClick = (key) => {
     setCustomerKey(key);
-    setSelectedPage("view");
+    setViewDialogOpen(true);
   };
 
   //협력사 등록
@@ -91,6 +83,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setAddDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -113,6 +106,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setViewDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -133,6 +127,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
+        setViewDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -141,10 +136,6 @@ function Customer() {
           description: data.message.text,
         });
       });
-  };
-
-  const handleSelectPage = (page) => {
-    setSelectedPage(page);
   };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
@@ -277,54 +268,51 @@ function Customer() {
   // console.log("p", standard);
 
   return (
-    <Box>
-      <HStack align={"flex-start"}>
-        <Stack>
-          <SideBar />
-        </Stack>
-        <Stack>
-          <Heading>협력사 조회</Heading>
+    <Flex>
+      <SideBar />
+      <Stack w={"80%"} mx={"auto"}>
+        <Heading>협력업체 관리</Heading>
 
-          <CustomerList
-            customerList={customerList}
-            standard={standard}
-            onHeader={handleStandard}
-            customerKey={customerKey}
-            setCustomerKey={setCustomerKey}
-            currentPage={currentPage}
-            count={count}
-            onRowClick={handleRowClick}
-            handlePageChange={handlePageChange}
-            setSearchParams={setSearchParams}
-            checkedActive={checkedActive}
-            toggleCheckedActive={toggleCheckedActive}
-            search={search}
-            setSearch={setSearch}
-            handleSearchClick={handleSearchClick}
-            handleSearchTypeChange={handleSearchTypeChange}
-          />
-        </Stack>
-        <Stack>
-          {selectedPage === "view" && (
-            <Button onClick={() => handleSelectPage("add")}>추가</Button>
-          )}
-
-          {/* 조건부 렌더링 */}
-          {selectedPage === "add" ? (
-            <CustomerAdd
-              onSave={handleSaveClick}
-              onCancel={() => handleSelectPage("view")}
-            />
-          ) : (
-            <CustomerView
-              customerKey={customerKey}
-              onDelete={handleDeleteClick}
-              onEdit={handleEditClick}
-            />
-          )}
-        </Stack>
-      </HStack>
-    </Box>
+        <CustomerList
+          customerList={customerList}
+          standard={standard}
+          onHeader={handleStandard}
+          customerKey={customerKey}
+          setCustomerKey={setCustomerKey}
+          currentPage={currentPage}
+          count={count}
+          onRowClick={handleRowClick}
+          handlePageChange={handlePageChange}
+          setSearchParams={setSearchParams}
+          checkedActive={checkedActive}
+          toggleCheckedActive={toggleCheckedActive}
+          search={search}
+          setSearch={setSearch}
+          handleSearchClick={handleSearchClick}
+          handleSearchTypeChange={handleSearchTypeChange}
+        />
+        <Flex justify="flex-end">
+          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+            협력업체 등록
+          </Button>
+        </Flex>
+      </Stack>
+      {/*Dialog*/}
+      <div>
+        <CustomerAdd
+          isOpen={addDialogOpen}
+          onCancel={() => setAddDialogOpen(false)}
+          onSave={handleSaveClick}
+        />
+        <CustomerView
+          isOpen={viewDialogOpen}
+          customerKey={customerKey}
+          onDelete={handleDeleteClick}
+          onEdit={handleEditClick}
+          onCancel={() => setViewDialogOpen(false)}
+        />
+      </div>
+    </Flex>
   );
 }
 

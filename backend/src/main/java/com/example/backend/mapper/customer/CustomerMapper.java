@@ -26,7 +26,7 @@ public interface CustomerMapper {
 
     @Select("""
             <script>
-            SELECT customer_key, customer_name, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_active 
+            SELECT customer_key, customer_name, customer_no, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_tel, customer_active 
             FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
             WHERE 
                 <if test="active == false">
@@ -41,11 +41,17 @@ public interface CustomerMapper {
                         <if test="type=='all' or type=='customerName'">
                             customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
+                        <if test="type=='all' or type=='customerNo'">
+                            OR customer_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                                
                         <if test="type=='all' or type=='itemName'">
                             OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='customerRep'">
                             OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='customerTel'">
+                            OR customer_tel LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                     </trim>
                 )    
@@ -57,8 +63,9 @@ public interface CustomerMapper {
     List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
     @Select("""
-            SELECT *
-            FROM TB_CUSTMST
+            SELECT *, item_common_name AS itemName 
+            FROM TB_CUSTMST 
+            LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
             WHERE customer_key = #{customerKey}
             """)
     Customer viewCustomer(String customerKey);
@@ -109,16 +116,32 @@ public interface CustomerMapper {
                                 <if test="type=='all' or type=='customerName'">
                                     customer_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
+                                <if test="type=='all' or type=='customerNo'">
+                                    OR customer_no LIKE CONCAT('%', #{keyword}, '%')
+                                </if>           
                                 <if test="type=='all' or type=='itemName'">
                                     OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
                                 <if test="type=='all' or type=='customerRep'">
                                     OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
+                                <if test="type=='all' or type=='customerTel'">
+                                    OR customer_tel LIKE CONCAT('%', #{keyword}, '%')
+                                </if>       
                             </trim>
                         )    
                 </if>
             </script>
             """)
     Integer countCustomerList(Boolean active, String type, String keyword);
+
+    @Select("""
+                <script>
+               SELECT COALESCE(MAX(CAST(SUBSTRING(customer_code, 4) AS UNSIGNED)), 0) AS maxNumber
+                FROM TB_CUSTMST
+                WHERE customer_code LIKE CONCAT(#{cus}, '%')
+                AND customer_code REGEXP '^[A-Za-z]+[0-9]+$'
+                </script>
+            """)
+    Integer viewMaxCustomerCode(String cus);
 }
