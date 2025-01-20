@@ -245,7 +245,7 @@ function Customer() {
   // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
   function handlePageChange(e) {
     const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("page", e.page);
+    nextSearchParams.set("page", e);
     setSearchParams(nextSearchParams);
   }
 

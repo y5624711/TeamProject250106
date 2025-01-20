@@ -16,6 +16,7 @@ import { Checkbox } from "../../ui/checkbox.jsx";
 import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import { Pagination } from "../../tool/list/Pagination.jsx";
 
 function CustomerList({
   customerList,
@@ -226,11 +227,18 @@ function CustomerList({
 
       {/*pagination*/}
       <Center>
-        {pages.map((page) => (
-          <Button key={page} onClick={() => handlePageChange({ page })}>
-            {page}
-          </Button>
-        ))}
+        <Pagination
+          count={count}
+          pageSize={10}
+          onPageChange={(newPage) => {
+            handlePageChange(newPage);
+          }}
+        />
+        {/*{pages.map((page) => (*/}
+        {/*  <Button key={page} onClick={() => handlePageChange({ page })}>*/}
+        {/*    {page}*/}
+        {/*  </Button>*/}
+        {/*))}*/}
       </Center>
     </div>
   );
