@@ -2,7 +2,25 @@ package com.example.backend.dto.state.install;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class Install {
+    private Integer installRequestKey;
+    private String itemCommonCode;
+    private String franchiseCode;
+    private String businessEmployeeNo;
+    private String customerCode;
+    private Integer installRequestAmount;
+    private LocalDateTime installRequestDate;
+    private Boolean installRequestConsent;
+    private String installRequestNote;
+
+    private String itemCommonName;
+    private String franchiseName;
+    private String franchiseAddress;
+    private String departmentName;
+    private String employeeName;
+    private String customerName;
 
 }
