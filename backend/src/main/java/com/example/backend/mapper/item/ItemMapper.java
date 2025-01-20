@@ -137,6 +137,7 @@ public interface ItemMapper {
     @Select("""
             SELECT item_common_code
             FROM TB_ITEMMST
+            WHERE item_active = false
             """)
     List<String> getUsedItemCommonCode();
 

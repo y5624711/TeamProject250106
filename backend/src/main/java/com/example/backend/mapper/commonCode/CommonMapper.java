@@ -80,8 +80,8 @@ public interface CommonMapper {
     @Select("""
             SELECT COUNT(*)
             FROM TB_ITEMCOMM
-            WHERE item_common_code = #{itemCommonCode}
-               OR item_common_name = #{itemCommonName}
+            WHERE item_common_code_active = false
+                 AND (item_common_code = #{itemCommonCode} OR item_common_name = #{itemCommonName})
             """)
     int countByCodeOrName(String itemCommonCode, String itemCommonName);
 
