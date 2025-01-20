@@ -3,18 +3,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
-import { Item } from "./page/item/Item.jsx";
+import { Item } from "./page/standard/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { ItemCommonCode } from "./page/commonCode/ItemCommonCode.jsx";
-import Customer from "./page/customer/Customer.jsx";
-import { Franchise } from "./page/franchise/Franchise.jsx";
-import { Employee } from "./page/employee/Employee.jsx";
-import { BusinessAndDepartment } from "./page/businessAndDepartment/BusinessAndDepartment.jsx";
+import { ItemCommonCode } from "./page/standard/commonCode/ItemCommonCode.jsx";
+import Customer from "./page/standard/customer/Customer.jsx";
+import { Franchise } from "./page/standard/franchise/Franchise.jsx";
+import { Employee } from "./page/standard/employee/Employee.jsx";
+import { BusinessAndDepartment } from "./page/standard/businessAndDepartment/BusinessAndDepartment.jsx";
 import { LoginPage } from "./page/login/LoginPage.jsx";
-import Warehouse from "./page/warehouse/Warehouse.jsx";
-import Location from "./page/location/Location.jsx";
-import SystemCommonCode from "./page/commonCode/SystemCommonCode.jsx";
-import { Install } from "./page/install/Install.jsx";
+import Warehouse from "./page/standard/warehouse/Warehouse.jsx";
+import Location from "./page/standard/location/Location.jsx";
+import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
+import { Install } from "./page/state/install/Install.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
