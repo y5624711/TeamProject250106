@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../../components/standard/customer/CustomerList.jsx";
 import axios from "axios";
-import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
 import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -268,7 +268,7 @@ function Customer() {
   // console.log("p", standard);
 
   return (
-    <Flex>
+    <Box display={"flex"} h={"100vh"}>
       <StandardSideBar />
       <Stack w={"80%"} mx={"auto"}>
         <Heading>협력업체 관리</Heading>
@@ -312,7 +312,7 @@ function Customer() {
           onCancel={() => setViewDialogOpen(false)}
         />
       </div>
-    </Flex>
+    </Box>
   );
 }
 
