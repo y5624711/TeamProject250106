@@ -33,10 +33,7 @@ export function SysCommonCodeAdd({ setAddCheck, addCheck }) {
   };
 
   const handleSaveClick = () => {
-    if (
-      commonCodeName.trim().length >= 3 &&
-      commonCodeName.trim().length <= 5
-    ) {
+    if (commonCodeName.trim().length <= 5) {
       axios
         .post("/api/commonCode/system/add", {
           commonCode: commonCode,
@@ -71,11 +68,11 @@ export function SysCommonCodeAdd({ setAddCheck, addCheck }) {
   return (
     <DialogRoot open={isOpen} size={"md"}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>공통코드 추가</Button>
+        <Button onClick={() => setIsOpen(true)}>업무 공통코드 추가</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>부서 추가</DialogTitle>
+          <DialogTitle>업무 공통코드 추가</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack>
@@ -83,7 +80,7 @@ export function SysCommonCodeAdd({ setAddCheck, addCheck }) {
               * 표시된 부분은 반드시 입력해 주세요
             </Text>
             <HStack>
-              <Text>공통코드</Text>
+              <Text>업무 공통코드</Text>
               <Text as="span" color="red.500">
                 *
               </Text>
@@ -91,12 +88,12 @@ export function SysCommonCodeAdd({ setAddCheck, addCheck }) {
             <Input
               value={commonCode}
               onChange={(e) => setCommonCode(e.target.value)}
-              placeholder={"업무 프로세스만 추가 가능합니다 (3~5글자)"}
+              placeholder={"사용하게될 공통코드를 입력하세요. (최대 5글자)"}
             />
             <Flex gap={3}>
               <Stack w={"100%"}>
                 <HStack>
-                  <Text>이름</Text>
+                  <Text>업무 공통코드 이름</Text>
                   <Text as="span" color="red.500">
                     *
                   </Text>

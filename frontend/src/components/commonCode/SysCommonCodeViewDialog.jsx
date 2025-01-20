@@ -73,7 +73,7 @@ export function SysCommonCodeViewDialog({
     <DialogRoot size={"lg"} open={isOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>부서 상세 정보</DialogTitle>
+          <DialogTitle>업무공통코드 상세정보</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={2}>
@@ -88,7 +88,7 @@ export function SysCommonCodeViewDialog({
               }
               readOnly={!isEditing}
             >
-              부서 사용여부
+              코드 사용여부
             </Checkbox>
             <HStack>
               <Field label={"부서코드"}>
