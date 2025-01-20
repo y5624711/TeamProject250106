@@ -20,9 +20,16 @@ public class CustomerController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer) {
         //협력사 입력란 빈칸 검증
-        if (!service.emptyCustomer(customer)) {
+        if (!service.checkEmptyCustomer(customer)) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
+            ));
+        }
+
+        //중복 여부 확인
+        if (service.checkDuplicateCustomer(customer)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "중복된 정보가 존재합니다.")
             ));
         }
 

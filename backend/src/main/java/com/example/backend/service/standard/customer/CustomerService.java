@@ -66,7 +66,7 @@ public class CustomerService {
         return mapper.itemCodeList();
     }
 
-    public boolean emptyCustomer(Customer customer) {
+    public boolean checkEmptyCustomer(Customer customer) {
         return !(
                 customer.getCustomerName() == null || customer.getCustomerRep() == null ||
                         customer.getCustomerNo() == null || customer.getCustomerTel() == null ||
@@ -76,5 +76,18 @@ public class CustomerService {
 
     public List<Customer> customerCodeNames() {
         return mapper.customerCodeNames();
+    }
+
+    public boolean checkDuplicateCustomer(Customer customer) {
+        Boolean result = false;
+        List<String> itemList = mapper.getUsedItemCode();
+        List<String> customerNameList = mapper.getUsedCustomerName();
+        List<String> customerNoList = mapper.getUsedCustomerNo();
+        List<String> customerTelList = mapper.getUsedCustomerTel();
+
+        result = itemList.contains(customer.getItemCode()) || customerNameList.contains(customer.getCustomerName()) ||
+                customerNoList.contains(customer.getCustomerNo()) || customerTelList.contains(customer.getCustomerTel());
+        System.out.println("중복 확인 최종" + result);
+        return result;
     }
 }
