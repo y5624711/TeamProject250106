@@ -18,6 +18,7 @@ public class WarehouseService {
         Integer pageList = (page - 1) * 10;
         List<Warehouse> list = mapper.list(searchType, searchKeyword, pageList);
         Integer countWarehouse = mapper.countAllWarehouse(searchType, searchKeyword);
+        System.out.println(countWarehouse);
 
         return Map.of("list", list, "count", countWarehouse);
     }
