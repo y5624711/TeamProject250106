@@ -76,7 +76,7 @@ function Warehouse(props) {
               setUseColumn(!useColumn);
             }}
           >
-            삭제 내역 포함하기
+            전체 조회
           </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList

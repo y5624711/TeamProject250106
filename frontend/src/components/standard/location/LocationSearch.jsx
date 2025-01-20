@@ -9,7 +9,7 @@ import {
   SelectValueText,
   Stack,
 } from "@chakra-ui/react";
-import { Button } from "../ui/button.jsx";
+import { Button } from "../../ui/button.jsx";
 
 function LocationSearch({
   locationOptionList,

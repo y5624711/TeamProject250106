@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,9 +7,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
-import LocationAdd from "../../../components/location/LocationAdd.jsx";
-import LocationSearch from "../../../components/location/LocationSearch.jsx";
-import { useNavigate } from "react-router-dom";
+import LocationAdd from "../../../components/standard/location/LocationAdd.jsx";
+import LocationSearch from "../../../components/standard/location/LocationSearch.jsx";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import LocationList from "../../../components/standard/location/LocationList.jsx";
+import axios from "axios";
+import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Location(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -18,6 +21,22 @@ function Location(props) {
     keyword: "",
   });
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [countLocation, setCountLocation] = useState("");
+  const [locationList, setLocationList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
+  const [useColumn, setUseColumn] = useState(false);
+
+  // 로케이션 정보 가져오기
+  useEffect(() => {
+    axios.get(`/api/location/list?${searchParams.toString()}`).then((res) => {
+      setLocationList(res.data.list);
+      setCountLocation(res.data.count);
+    });
+    window.scrollTo(0, 0);
+  }, [searchParams]);
 
   function handleSearchClick() {
     const searchInfo = {
@@ -26,6 +45,16 @@ function Location(props) {
     };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(`/location/list?${searchQuery.toString()}`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      `/location/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+    );
   }
 
   return (
@@ -39,6 +68,20 @@ function Location(props) {
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
+          />
+          <Checkbox
+            onCheckedChange={() => {
+              setUseColumn(!useColumn);
+            }}
+          >
+            전체 조회
+          </Checkbox>
+          <LocationList
+            countLocation={countLocation}
+            locationList={locationList}
+            useColumn={useColumn}
+            currentPage={currentPage}
+            handlePageChangeClick={handlePageChangeClick}
           />
           <Box>
             <Button width="120px" onClick={() => setIsAddDialogOpen(true)}>
@@ -63,7 +106,7 @@ const locationOptionList = createListCollection({
     { label: "전체", value: "all" },
     { label: "창고명", value: "warehouseName" },
     { label: "행", value: "row" },
-    { label: "열", value: "column" },
+    { label: "열", value: "col" },
     { label: "단", value: "shelf" },
     { label: "품목명", value: "itemName" },
   ],
