@@ -13,7 +13,6 @@ function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [useColumn, setUseColumn] = useState(false);
   const [search, setSearch] = useState({
-    active: useColumn,
     type: "all",
     keyword: "",
   });
@@ -21,6 +20,9 @@ function Warehouse(props) {
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
 
   // 창고 정보 가져오기
   useEffect(() => {
@@ -31,10 +33,14 @@ function Warehouse(props) {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, [searchParams]);
+
   // 검색 버튼
   function handleSearchClick() {
     const searchInfo = {
-      active: search.active,
       type: search.type,
       keyword: search.keyword,
     };
@@ -42,7 +48,15 @@ function Warehouse(props) {
     navigate(`/warehouse/list?${searchQuery.toString()}`);
   }
 
-  console.log(useColumn);
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      `/warehouse/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+    );
+  }
 
   return (
     <Box>
@@ -74,8 +88,6 @@ function Warehouse(props) {
           <Checkbox
             onCheckedChange={() => {
               setUseColumn(!useColumn);
-              setSearch({ ...search, active: useColumn });
-              handleSearchClick();
             }}
           >
             삭제 내역 포함하기
@@ -85,6 +97,8 @@ function Warehouse(props) {
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
             useColumn={useColumn}
+            currentPage={currentPage}
+            handlePageChangeClick={handlePageChangeClick}
           />
         </Stack>
       </HStack>

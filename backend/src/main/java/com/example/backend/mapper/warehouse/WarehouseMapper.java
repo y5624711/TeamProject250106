@@ -47,14 +47,11 @@ public interface WarehouseMapper {
                                                      </otherwise>
                                                  </choose>
                                              </if>
-                                            <if test="!searchActive">
-                                                AND warehouse_active=1
-                                            </if>
-            
                                     ORDER BY warehouse_name DESC
+                        LIMIT #{pageList},10    
                                     </script>
             """)
-    List<Warehouse> list(String searchType, String searchKeyword, boolean searchActive);
+    List<Warehouse> list(String searchType, String searchKeyword, Integer pageList);
 
     @Select("""
             SELECT *
@@ -81,4 +78,48 @@ public interface WarehouseMapper {
             WHERE warehouse_key=#{warehouseKey}
             """)
     int delete(Integer warehouseKey);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+                                    FROM TB_WHMST
+                                    WHERE 
+                                                        <if test="searchType == 'all'">
+                                                            warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                                                         OR customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                                                         OR customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                                                         OR warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
+                                                         OR warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
+                                                         OR warehouse_active LIKE CONCAT('%',#{searchKeyword},'%')
+                                                        </if>
+                                                        <if test="searchType != 'all'">
+                                                             <choose>
+                                                                 <when test="searchType == 'warehouseName'">
+                                                                     warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <when test="searchType == 'customer'">
+                                                                     customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <when test="searchType == 'customerEmployee'">
+                                                                     customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <when test="searchType == 'warehouseState'">
+                                                                     warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <when test="searchType == 'warehouseCity'">
+                                                                     warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <when test="searchType == 'warehouseActive'">
+                                                                     warehouse_active LIKE CONCAT('%', #{searchKeyword}, '%')
+                                                                 </when>
+                                                                 <otherwise>
+                                                                     1 = 0 
+                                                                 </otherwise>
+                                                             </choose>
+                                                         </if>
+                                                ORDER BY warehouse_name DESC
+                                                </script>
+            
+            """)
+    Integer countAllWarehouse(String searchType, String searchKeyword);
 }
