@@ -43,7 +43,7 @@ function WarehouseSearch({
         <Box>
           <Input
             placeholder="키워드를 입력해주세요"
-            width="400px"
+            width="700px"
             onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
             onKeyDown={(e) => {
               if (e.key === "Enter") {

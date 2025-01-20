@@ -14,8 +14,9 @@ public class WarehouseService {
 
     final WarehouseMapper mapper;
 
-    public Map<String, Object> list(String searchType, String searchKeyword) {
-        List<Warehouse> list = mapper.list(searchType, searchKeyword);
+    public Map<String, Object> list(String searchType, String searchKeyword, boolean searchActive) {
+        System.out.println(searchActive);
+        List<Warehouse> list = mapper.list(searchType, searchKeyword, searchActive);
         Integer count = list.size();
 
         return Map.of("list", list, "count", count);

@@ -15,7 +15,7 @@ import { Box, Center, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
 import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 
-export function WarehouseDetail({ isOpen, onClose, warehouseKey }) {
+export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export function WarehouseDetail({ isOpen, onClose, warehouseKey }) {
   }
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -76,7 +76,7 @@ export function WarehouseDetail({ isOpen, onClose, warehouseKey }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={onClose} />
+          <DialogCloseTrigger onClick={onClosed} />
         </DialogFooter>
       </DialogContent>
     </DialogRoot>

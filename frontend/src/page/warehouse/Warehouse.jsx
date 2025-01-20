@@ -7,10 +7,16 @@ import WarehouseList from "../../components/warehouse/WarehouseList.jsx";
 import WarehouseSearch from "../../components/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { WarehouseAdd } from "../../components/warehouse/WarehouseAdd.jsx";
+import { Checkbox } from "../../components/ui/checkbox.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
+  const [useColumn, setUseColumn] = useState(false);
+  const [search, setSearch] = useState({
+    active: useColumn,
+    type: "all",
+    keyword: "",
+  });
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
@@ -27,10 +33,16 @@ function Warehouse(props) {
 
   // 검색 버튼
   function handleSearchClick() {
-    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchInfo = {
+      active: search.active,
+      type: search.type,
+      keyword: search.keyword,
+    };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(`/warehouse/list?${searchQuery.toString()}`);
   }
+
+  console.log(useColumn);
 
   return (
     <Box>
@@ -59,10 +71,20 @@ function Warehouse(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
+          <Checkbox
+            onCheckedChange={() => {
+              setUseColumn(!useColumn);
+              setSearch({ ...search, active: useColumn });
+              handleSearchClick();
+            }}
+          >
+            삭제 내역 포함하기
+          </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
+            useColumn={useColumn}
           />
         </Stack>
       </HStack>
