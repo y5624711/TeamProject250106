@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
 
-export function FranchiseAdd({ onSave }) {
+export function FranchiseAdd({ onClose, onSave }) {
   const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
   const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -60,6 +60,7 @@ export function FranchiseAdd({ onSave }) {
             franchiseNote,
           });
         }
+        onClose();
       })
       .catch((e) => {
         const message = e.response.data.message;
