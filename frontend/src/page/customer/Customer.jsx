@@ -10,7 +10,6 @@ import { toaster } from "../../components/ui/toaster.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
-  const [selectedPage, setSelectedPage] = useState("view");
   const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -28,50 +27,49 @@ function Customer() {
   });
   const [standard, setStandard] = useState({ sort: "", order: "ASC" });
 
-  // // 고객 목록 불러오기 함수
-  // // 초기 데이터 불러오기
-  // const fetchInitialCustomerList = () => {
-  //   axios
-  //     .get(`/api/customer/list`, {
-  //       params: {
-  //         sort: "",
-  //         order: "ASC",
-  //         page: "1",
-  //         type: "all",
-  //         keyword: "",
-  //         active: "true",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       const { count, customerList } = res.data;
-  //       setCustomerList(customerList);
-  //       setCount(count);
-  //       console.log("initial");
-  //       // 초기 customerKey 설정
-  //       if (customerList.length > 0) {
-  //         setCustomerKey(customerList[0].customerKey);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("초기 고객 목록 불러오기 오류:", error);
-  //     });
-  // };
-  // // console.log("p", customerList);
-  // // console.log("key", customerKey);
-  //
-  // // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
-  // useEffect(() => {
-  //   const keyFromURL = searchParams.get("customerKey");
-  //   if (keyFromURL) {
-  //     setCustomerKey(keyFromURL);
-  //   }
-  //   fetchUpdatedCustomerList();
-  // }, [searchParams]);
+  // 초기 데이터 불러오기
+  const fetchInitialCustomerList = () => {
+    axios
+      .get(`/api/customer/list`, {
+        params: {
+          sort: "",
+          order: "ASC",
+          page: "1",
+          type: "all",
+          keyword: "",
+          active: "true",
+        },
+      })
+      .then((res) => {
+        const { count, customerList } = res.data;
+        setCustomerList(customerList);
+        setCount(count);
+        console.log("initial");
+        // 초기 customerKey 설정
+        if (customerList.length > 0) {
+          setCustomerKey(customerList[0].customerKey);
+        }
+      })
+      .catch((error) => {
+        console.error("초기 고객 목록 불러오기 오류:", error);
+      });
+  };
+  // console.log("p", customerList);
+  // console.log("key", customerKey);
+
+  // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
+  useEffect(() => {
+    const keyFromURL = searchParams.get("customerKey");
+    if (keyFromURL) {
+      setCustomerKey(keyFromURL);
+    }
+    fetchUpdatedCustomerList();
+  }, [searchParams]);
 
   // 리스트 행 클릭 시 동작
   const handleRowClick = (key) => {
     setCustomerKey(key);
-    setSelectedPage("view");
+    setViewDialogOpen(true);
   };
 
   //협력사 등록
@@ -300,26 +298,25 @@ function Customer() {
             handleSearchClick={handleSearchClick}
             handleSearchTypeChange={handleSearchTypeChange}
           />
+          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+            협력업체 등록
+          </Button>
         </Stack>
-        <Stack>
-          {selectedPage === "view" && (
-            <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
-              협력업체 등록
-            </Button>
-          )}
-
+        {/*Dialog*/}
+        <div>
           <CustomerAdd
             isOpen={addDialogOpen}
             onCancel={() => setAddDialogOpen(false)}
             onSave={handleSaveClick}
           />
           <CustomerView
+            isOpen={viewDialogOpen}
             customerKey={customerKey}
             onDelete={handleDeleteClick}
             onEdit={handleEditClick}
-            onCancel={() => setAddDialogOpen(false)}
+            onCancel={() => setViewDialogOpen(false)}
           />
-        </Stack>
+        </div>
       </HStack>
     </Box>
   );
