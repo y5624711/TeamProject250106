@@ -26,6 +26,12 @@ export function SysCommonCodeSearchAndFilter({
     ],
   });
 
+  const handlePressKey = (e) => {
+    if (e.key === "Enter") {
+      handleSearchClick();
+    }
+  };
+
   function handleSearchClick() {
     if (search.keyword.trim().length > 0) {
       // 검색
@@ -82,6 +88,7 @@ export function SysCommonCodeSearchAndFilter({
         onChange={(e) =>
           setSearch({ ...search, keyword: e.target.value.trim() })
         }
+        onKeyDown={handlePressKey}
       />
       <Button onClick={handleSearchClick}>검색</Button>
     </HStack>

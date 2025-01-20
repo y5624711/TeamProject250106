@@ -24,6 +24,11 @@ export function BusinessSearchAndFilter({
       { label: "부서명", value: "name" },
     ],
   });
+  const handlePressKey = (e) => {
+    if (e.key === "Enter") {
+      handleSearchClick();
+    }
+  };
 
   function handleSearchClick() {
     if (search.keyword.trim().length > 0) {
@@ -81,6 +86,7 @@ export function BusinessSearchAndFilter({
         onChange={(e) =>
           setSearch({ ...search, keyword: e.target.value.trim() })
         }
+        onKeyDown={handlePressKey}
       />
       <Button onClick={handleSearchClick}>검색</Button>
     </HStack>
