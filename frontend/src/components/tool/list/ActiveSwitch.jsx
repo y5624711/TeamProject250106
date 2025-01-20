@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Switch } from "../../ui/switch.jsx";
 import { useSearchParams } from "react-router-dom";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
 export function ActiveSwitch({ onActiveChange }) {
   const [searchParams, setSearchParams] = useSearchParams("");
@@ -32,8 +32,8 @@ export function ActiveSwitch({ onActiveChange }) {
   };
 
   return (
-    <Switch my={5} checked={!active} onChange={handleSwitchChange}>
+    <Checkbox my={5} checked={!active} onChange={handleSwitchChange}>
       전체 조회
-    </Switch>
+    </Checkbox>
   );
 }
