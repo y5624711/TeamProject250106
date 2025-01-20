@@ -21,7 +21,6 @@ public class FranchiseService {
         boolean businessEmployeeNoValid = franchise.getBusinessEmployeeNo() != null && !franchise.getBusinessEmployeeNo().trim().isEmpty();
         boolean businessEmployeeNameValid = franchise.getBusinessEmployeeName() != null && !franchise.getBusinessEmployeeName().trim().isEmpty();
         boolean franchiseNameValid = franchise.getFranchiseName() != null && !franchise.getFranchiseName().trim().isEmpty();
-        boolean franchiseCodeValid = franchise.getFranchiseCode() != null && !franchise.getFranchiseCode().trim().isEmpty();
         boolean franchiseRepValid = franchise.getFranchiseRep() != null && !franchise.getFranchiseRep().trim().isEmpty();
         boolean franchiseNoValid = franchise.getFranchiseNo() != null && !franchise.getFranchiseNo().trim().isEmpty();
         boolean franchiseTelValid = franchise.getFranchiseTel() != null && !franchise.getFranchiseTel().trim().isEmpty();
@@ -30,12 +29,29 @@ public class FranchiseService {
         boolean franchiseStateValid = franchise.getFranchiseState() != null && !franchise.getFranchiseState().trim().isEmpty();
         boolean franchiseCityValid = franchise.getFranchiseCity() != null && !franchise.getFranchiseCity().trim().isEmpty();
 
-        return businessEmployeeNoValid && businessEmployeeNameValid && franchiseNameValid && franchiseCodeValid && franchiseRepValid
+        return businessEmployeeNoValid && businessEmployeeNameValid && franchiseNameValid && franchiseRepValid
                && franchiseNoValid && franchiseTelValid && franchiseAddressValid && franchisePostValid && franchiseStateValid && franchiseCityValid;
+    }
+
+    // 중복 체크
+    public int duplicateFranchise(Franchise franchise) {
+        return mapper.duplicateFranchise(franchise);
     }
 
     // 가맹점 등록하기
     public boolean addFranchise(Franchise franchise) {
+        // 기존 가맹점 코드에서 최대 번호를 조회
+        Long maxNo = mapper.viewMaxFranchiseCode(franchise.getFranchiseCode());
+
+        // 최대 번호가 없으면 1, 있으면 1을 더한 값을 10자리 형식으로 생성
+        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+
+        // 기존 가맹점 코드와 새로운 번호를 합쳐서 새로운 가맹점 코드 생성
+        String insertFranchiseCode = "FRN" + newNumber;
+
+        // 새로운 가맹점 코드를 Franchise 객체에 설정
+        franchise.setFranchiseCode(insertFranchiseCode);
+
         int cnt = mapper.addFranchise(franchise);
         return cnt == 1;
     }

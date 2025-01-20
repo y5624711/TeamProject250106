@@ -22,7 +22,7 @@ export function FranchiseList({
   setSearch,
   handleSearchClick,
   checkedActive,
-  setCheckedActive,
+  toggleCheckedActive,
   onFranchiseClick,
   standard,
   setStandard,
@@ -30,11 +30,13 @@ export function FranchiseList({
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
+      { label: "사업자 번호", value: "franchiseNo" },
       { label: "가맹점명", value: "franchiseName" },
       { label: "가맹점주", value: "franchiseRep" },
       { label: "광역시도", value: "franchiseState" },
       { label: "시군", value: "franchiseCity" },
-      { label: "본사 직원 이름", value: "businessEmployeeName" },
+      { label: "직원 사번", value: "businessEmployeeNo" },
+      { label: "직원 이름", value: "businessEmployeeName" },
     ],
   });
 
@@ -79,7 +81,12 @@ export function FranchiseList({
           <SelectTrigger>
             <SelectValueText />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent
+            style={{
+              width: "150px",
+              position: "absolute",
+            }}
+          >
             {FranchiseOptionList.items.map((option) => (
               <SelectItem item={option} key={option.value}>
                 {option.label}
@@ -103,13 +110,7 @@ export function FranchiseList({
           검색
         </Button>
       </Box>
-      <Checkbox
-        mt={3}
-        checked={checkedActive}
-        onChange={() => {
-          setCheckedActive(!checkedActive); // 상태 업데이트
-        }}
-      >
+      <Checkbox mt={3} checked={checkedActive} onChange={toggleCheckedActive}>
         삭제 내역 포함 보기
       </Checkbox>
       <Table.Root interactive>
@@ -130,6 +131,16 @@ export function FranchiseList({
               {standard.sort === "franchiseRep" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
+              사업자 번호{" "}
+              {standard.sort === "franchiseNo" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
+            <TableColumnHeader onClick={() => HeaderClick("franchiseTel")}>
+              전화번호{" "}
+              {standard.sort === "franchiseTel" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
             <TableColumnHeader onClick={() => HeaderClick("franchiseState")}>
               광역시도{" "}
               {standard.sort === "franchiseState" &&
@@ -141,9 +152,16 @@ export function FranchiseList({
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
             <TableColumnHeader
+              onClick={() => HeaderClick("businessEmployeeNo")}
+            >
+              직원 사번{" "}
+              {standard.sort === "businessEmployeeNo" &&
+                (standard.order === "asc" ? "↑" : "↓")}
+            </TableColumnHeader>
+            <TableColumnHeader
               onClick={() => HeaderClick("businessEmployeeName")}
             >
-              본사 직원 이름{" "}
+              직원 이름{" "}
               {standard.sort === "businessEmployeeName" &&
                 (standard.order === "asc" ? "↑" : "↓")}
             </TableColumnHeader>
@@ -155,19 +173,25 @@ export function FranchiseList({
               <Table.Row
                 key={index}
                 onClick={() => onFranchiseClick(franchise.franchiseKey)}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: franchise.franchiseActive === false ? "#EAEAEA" : "white",
+                }}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell>{franchise.franchiseName}</Table.Cell>
                 <Table.Cell>{franchise.franchiseRep}</Table.Cell>
+                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
+                <Table.Cell>{franchise.franchiseTel}</Table.Cell>
                 <Table.Cell>{franchise.franchiseState}</Table.Cell>
                 <Table.Cell>{franchise.franchiseCity}</Table.Cell>
+                <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
                 <Table.Cell>{franchise.businessEmployeeName}</Table.Cell>
               </Table.Row>
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan="6">데이터가 없습니다.</Table.Cell>
+              <Table.Cell colSpan="9">데이터가 없습니다.</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
