@@ -88,24 +88,6 @@ export function DepartmentViewAndUpdateDialog({
       });
   }
 
-  function handleReUseClick() {
-    axios
-      .put("/api/department/reUseDepartment", {
-        departmentKey: department.departmentKey,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        const message = data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        setIsOpen(false);
-        setIsEditing(false);
-        setAddCheck(!addCheck);
-      });
-  }
-
   if (!department) {
     return;
   }
@@ -195,25 +177,25 @@ export function DepartmentViewAndUpdateDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {isEditing && (
+          {isEditing && department.departmentActive && (
             <>
-              {department.departmentActive ? (
-                <DeleteDialog
-                  isOpenDelete={isOpenDelete}
-                  setIsOpenDelete={setIsOpenDelete}
-                  handleDeleteClick={handleDeleteClick}
-                />
-              ) : (
-                <Button colorPalette={"green"} onClick={handleReUseClick}>
-                  재사용
-                </Button>
-              )}
-              <Button disabled={disable} onClick={handleUpdate}>
-                저장
-              </Button>
+              {
+                <>
+                  <DeleteDialog
+                    isOpenDelete={isOpenDelete}
+                    setIsOpenDelete={setIsOpenDelete}
+                    handleDeleteClick={handleDeleteClick}
+                  />
+                  <Button disabled={disable} onClick={handleUpdate}>
+                    저장
+                  </Button>
+                </>
+              }
             </>
           )}
-          {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
+          {!isEditing && department.departmentActive && (
+            <Button onClick={toggleEditing}>수정</Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {

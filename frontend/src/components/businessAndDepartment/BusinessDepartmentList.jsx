@@ -90,14 +90,12 @@ export function BusinessDepartmentList() {
   }
 
   function handleSort(column) {
-    console.log(column);
     const order =
       sort.column === column && sort.order === "asc" ? "desc" : "asc";
     setSort({ column, order });
   }
 
   function handleOpenDialog(data) {
-    console.log(data);
     setDepartment(data);
     setIsOpen(true);
   }

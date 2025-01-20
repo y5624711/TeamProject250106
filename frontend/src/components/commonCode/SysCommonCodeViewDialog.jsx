@@ -167,29 +167,29 @@ export function SysCommonCodeViewDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {isEditing && (
+          {isEditing && sysCommonCode.commonCodeActive && (
             <>
-              {sysCommonCode.commonCodeActive ? (
-                <DeleteDialog
-                  isOpenDelete={isOpenDelete}
-                  setIsOpenDelete={setIsOpenDelete}
-                  handleDeleteClick={handleDeleteClick}
-                />
-              ) : (
-                <Button colorPalette={"green"} onClick={handleReUseClick}>
-                  재사용
-                </Button>
-              )}
-              <Button
-                disabled={disable}
-                colorPalette={"blue"}
-                onClick={handleUpdate}
-              >
-                저장
-              </Button>
+              {
+                <>
+                  <DeleteDialog
+                    isOpenDelete={isOpenDelete}
+                    setIsOpenDelete={setIsOpenDelete}
+                    handleDeleteClick={handleDeleteClick}
+                  />
+                  <Button
+                    disabled={disable}
+                    colorPalette={"blue"}
+                    onClick={handleUpdate}
+                  >
+                    저장
+                  </Button>
+                </>
+              }
             </>
           )}
-          {!isEditing && <Button onClick={toggleEditing}>정보수정</Button>}
+          {!isEditing && sysCommonCode.commonCodeActive && (
+            <Button onClick={toggleEditing}>수정</Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {
