@@ -233,12 +233,14 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                 >
                   수정
                 </Button>
-                <Button
-                  onClick={() => setIsDialogOpen(true)}
-                  colorPalette={"red"}
-                >
-                  삭제
-                </Button>
+                {item[0]?.itemActive && (
+                  <Button
+                    onClick={() => setIsDialogOpen(true)}
+                    colorPalette={"red"}
+                  >
+                    삭제
+                  </Button>
+                )}
               </HStack>
             )}
           </DialogFooter>

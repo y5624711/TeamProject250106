@@ -45,6 +45,13 @@ public class ItemController {
     @PutMapping("/delete/{itemKey}")
     public ResponseEntity<Map<String, Object>> deleteItem(
             @PathVariable int itemKey) {
+        // 이미 삭제된 품목인지 검증
+        if (service.deletedItem(itemKey)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 삭제된 품목입니다.")
+            ));
+        }
+
         if (service.deleteItem(itemKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",

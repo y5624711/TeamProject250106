@@ -140,4 +140,10 @@ public interface ItemMapper {
             """)
     List<String> getUsedItemCommonCode();
 
+    @Select("""
+            SELECT item_key
+            FROM TB_ITEMMST
+            WHERE item_active = false
+            """)
+    List<Integer> deletedItem();
 }

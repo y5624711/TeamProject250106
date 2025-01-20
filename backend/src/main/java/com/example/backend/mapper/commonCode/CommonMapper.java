@@ -115,4 +115,11 @@ public interface CommonMapper {
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
     int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
+
+    @Select("""
+            SELECT item_common_code_key
+            FROM TB_ITEMCOMM
+            WHERE item_common_code_active = false
+            """)
+    List<Integer> deletedItemCommonCode();
 }

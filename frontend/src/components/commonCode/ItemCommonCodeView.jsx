@@ -114,14 +114,12 @@ export function ItemCommonCodeView({
       });
   };
 
-  // 품목 코드와 품목명이 조건에 맞는지 확인
-
   return (
     <Box>
       <DialogRoot open={isOpen} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>물품 코드 정보</DialogTitle>
+            <DialogTitle>품목 코드 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Box>
@@ -201,12 +199,14 @@ export function ItemCommonCodeView({
                 >
                   수정
                 </Button>
-                <Button
-                  onClick={() => setIsDialogOpen(true)}
-                  colorPalette={"red"}
-                >
-                  삭제
-                </Button>
+                {itemCommonCode[0]?.itemCommonCodeActive && (
+                  <Button
+                    onClick={() => setIsDialogOpen(true)}
+                    colorPalette={"red"}
+                  >
+                    삭제
+                  </Button>
+                )}
               </HStack>
             )}
           </DialogFooter>

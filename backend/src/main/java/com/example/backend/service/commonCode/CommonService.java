@@ -86,6 +86,12 @@ public class CommonService {
         return mapper.getItemCommonCodeView(itemCommonCodeKey);
     }
 
+    // 삭제된 품목 공통 코드인지 확인
+    public boolean deletedItemCommonCode(int itemCommonCodeKey) {
+        List<Integer> deletedItemCommonCodeList = mapper.deletedItemCommonCode();
+        return deletedItemCommonCodeList.contains(itemCommonCodeKey);
+    }
+
     // 품목 공통 코드 삭제하기
     public boolean deleteItemCommonCode(int itemCommonCodeKey) {
         int cnt = mapper.deleteItemCommonCode(itemCommonCodeKey);
@@ -97,4 +103,5 @@ public class CommonService {
         int cnt = mapper.editItemCommonCode(itemCommonCodeKey, itemCommonCode);
         return cnt == 1;
     }
+
 }

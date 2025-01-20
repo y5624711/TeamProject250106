@@ -34,7 +34,6 @@ public class ItemService {
     // 품목 추가하기
     public boolean addItem(Item item) {
         int cnt = mapper.addItem(item);
-
         return cnt == 1;
     }
 
@@ -76,6 +75,13 @@ public class ItemService {
     public List<Item> getItemView(int itemKey) {
         return mapper.getItemView(itemKey);
     }
+
+    // 이미 삭제된 품목인지 검증
+    public boolean deletedItem(int itemKey) {
+        List<Integer> deletedItemList = mapper.deletedItem();
+        return deletedItemList.contains(itemKey);
+    }
+
 
     // 품목 삭제하기
     public boolean deleteItem(int itemKey) {
