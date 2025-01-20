@@ -250,9 +250,11 @@ export function Franchise() {
           </PaginationRoot>
         </Center>
         {/* 추가 버튼 */}
-        <Button onClick={handleAddFranchiseClick} mb={4}>
-          추가
-        </Button>
+        <Box display="flex" justifyContent="flex-end" mb={4}>
+          <Button onClick={handleAddFranchiseClick}>
+            추가
+          </Button>
+        </Box>
         {/* 다이얼로그 */}
         <FranchiseDialog
           isOpen={isDialogOpen || isAddDialogOpen}
