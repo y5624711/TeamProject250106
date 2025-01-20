@@ -59,10 +59,13 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   };
 
   const isValid =
-    editedItem.itemCommonCode &&
-    editedItem.customerName &&
-    editedItem.inputPrice &&
-    editedItem.outputPrice;
+    item.length > 0 &&
+    item[0].itemCommonName != null &&
+    item[0].customerName != null &&
+    editedItem.inputPrice != null &&
+    editedItem.outputPrice != null &&
+    editedItem.inputPrice !== "" &&
+    editedItem.outputPrice !== "";
 
   // 수정된 품목 데이터 서버로 전송
   const handleSaveClick = () => {
@@ -131,7 +134,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                         <Input readOnly value={item.itemCommonName} />
                       </Field>
                       <Field label={"담당업체"} required>
-                        <Input readOnly value={item.customerName} />
+                        <Input readOnly value={item.customerName || ""} />
                       </Field>
                       <Field label={"규격"}>
                         <Input
@@ -227,12 +230,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
               </HStack>
             ) : (
               <HStack>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  colorPalette={"blue"}
-                >
-                  수정
-                </Button>
+                <Button onClick={() => setIsEditing(true)}>수정</Button>
                 {item[0]?.itemActive && (
                   <Button
                     onClick={() => setIsDialogOpen(true)}

@@ -193,12 +193,7 @@ export function ItemCommonCodeView({
               </HStack>
             ) : (
               <HStack>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  colorPalette={"blue"}
-                >
-                  수정
-                </Button>
+                <Button onClick={() => setIsEditing(true)}>수정</Button>
                 {itemCommonCode[0]?.itemCommonCodeActive && (
                   <Button
                     onClick={() => setIsDialogOpen(true)}
