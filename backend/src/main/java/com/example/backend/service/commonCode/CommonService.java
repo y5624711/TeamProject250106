@@ -16,10 +16,6 @@ import java.util.Map;
 public class CommonService {
     final CommonMapper mapper;
 
-    public List<CommonCode> selectAllList() {
-        return mapper.selectAll();
-    }
-
     //값이 입력되었는지 체크
     public boolean validate(CommonCode commonCode) {
         boolean common_code = !commonCode.getCommonCode().trim().isEmpty();
@@ -27,6 +23,20 @@ public class CommonService {
 
         return common_code && common_name;
     }
+
+    public Map<String, Object> selectSystemCommonCodeList(Integer page,
+                                                          String type,
+                                                          String keyword,
+                                                          String sort,
+                                                          String order,
+                                                          Boolean active) {
+        int offset = (page - 1) * 10;
+
+
+        return Map.of("list", mapper.getSysCommonCodeList(offset, type, keyword, sort, order, active),
+                "count", mapper.countAllSysCommonCode(active, type, keyword));
+    }
+
 
     public boolean addCommonCode(CommonCode commonCode) {
         int cnt = mapper.insertCommonCode(commonCode);
@@ -81,5 +91,33 @@ public class CommonService {
     public boolean editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode) {
         int cnt = mapper.editItemCommonCode(itemCommonCodeKey, itemCommonCode);
         return cnt == 1;
+    }
+
+    public boolean validateSysCode(CommonCode commonCode) {
+        Boolean name = !commonCode.getCommonCodeName().trim().isEmpty();
+        Boolean code = !commonCode.getCommonCode().trim().isEmpty();
+
+        return name && code;
+    }
+
+    public boolean updateSysCode(CommonCode commonCode) {
+        int cnt = mapper.updateSysCode(commonCode);
+        return cnt == 1;
+    }
+
+    public boolean deleteSysCommonCode(Integer commonCodeKey) {
+        int cnt = mapper.deleteSysCode(commonCodeKey);
+        return cnt == 1;
+    }
+
+    public boolean reUseSysCommonCode(Integer commonCodeKey) {
+        int cnt = mapper.reUseSysCode(commonCodeKey);
+        return cnt == 1;
+    }
+
+    public boolean checkSameName(CommonCode commonCode) {
+        int cnt = mapper.checkSameName(commonCode.getCommonCode(), commonCode.getCommonCodeName());
+
+        return cnt == 0;
     }
 }

@@ -16,8 +16,6 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
-    @GetMapping("/system/list")
-    // 품목 공통 코드 수정하기
     @PutMapping("item/edit/{itemCommonCodeKey}")
     public ResponseEntity<Map<String, Object>> editItemCommonCode(@PathVariable int itemCommonCodeKey, @RequestBody ItemCommonCode itemCommonCode) {
 
@@ -107,25 +105,84 @@ public class CommonController {
         return service.getItemCommonCodeList(page, active, sort, order, type, keyword);
     }
 
-    @GetMapping("list")
-    private List<CommonCode> list() {
-        return service.selectAllList();
+    @GetMapping("system/list")
+    private Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "type", defaultValue = "all") String type,
+                                     @RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                     @RequestParam(value = "sort", defaultValue = "common_code_key") String sort,
+                                     @RequestParam(value = "order", defaultValue = "desc") String order,
+                                     @RequestParam(value = "active", defaultValue = "false") Boolean active) {
+
+        return service.selectSystemCommonCodeList(page, type, keyword, sort, order, active);
     }
 
-    @PostMapping("/system/add")
+    @PostMapping("system/add")
     private ResponseEntity<Map<String, Object>> addCommon(@RequestBody CommonCode commonCode) {
         if (service.validate(commonCode)) {
-            if (service.addCommonCode(commonCode)) {
-                return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "코드가 등록 되었습니다.")));
+            if (service.checkSameName(commonCode)) {
+                if (service.addCommonCode(commonCode)) {
+                    return ResponseEntity.ok().body(Map.of("message",
+                            Map.of("type", "success", "text", "코드가 등록 되었습니다.")));
+                } else {
+                    return ResponseEntity.internalServerError().body(Map.of("message",
+                            Map.of("type", "error", "text", "코드가 등록 되지 않았습니다.")));
+                }
+
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "error", "text", "코드가 등록 되지 않았습니다.")));
+                return ResponseEntity.internalServerError().body(
+                        Map.of("message",
+                                Map.of("type", "warning", "text", "중복되는 코드가 있습니다.")));
             }
         } else {
-            return ResponseEntity.badRequest().body(
+            return ResponseEntity.internalServerError().body(
                     Map.of("message",
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+        }
+    }
+
+    @PutMapping("system/updateSys")
+    private ResponseEntity<Map<String, Object>> updateSysCommonCode(@RequestBody CommonCode commonCode) {
+        System.out.println("commonCode = " + commonCode);
+        if (service.validateSysCode(commonCode)) {
+            if (service.checkSameName(commonCode)) {
+                System.out.println("승인됨");
+                if (service.updateSysCode(commonCode)) {
+                    return ResponseEntity.ok().body(Map.of("message",
+                            Map.of("type", "success", "text", "수정 되었습니다.")));
+                } else {
+                    return ResponseEntity.internalServerError().body(Map.of("message",
+                            Map.of("type", "error", "text", "수정 되지 않았습니다.")));
+                }
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type", "error", "text", "중복되는 코드가 있습니다.")));
+            }
+        } else {
+            return ResponseEntity.internalServerError().body(
+                    Map.of("message",
+                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+        }
+    }
+
+    @PutMapping("system/deleteSys")
+    private ResponseEntity<Map<String, Object>> deleteSysCommonCode(@RequestBody CommonCode commonCode) {
+        if (service.deleteSysCommonCode(commonCode.getCommonCodeKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "삭제 되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "삭제 되지 않았습니다.")));
+        }
+    }
+
+    @PutMapping("system/reUseSys")
+    private ResponseEntity<Map<String, Object>> reUseSysCommonCode(@RequestBody CommonCode commonCode) {
+        if (service.reUseSysCommonCode(commonCode.getCommonCodeKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "해당 코드를 다시 사용합니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "오류가 발생했습니다.")));
         }
     }
 }

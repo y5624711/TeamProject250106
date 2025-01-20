@@ -9,21 +9,23 @@ import {
   SelectValueText,
 } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
+import React from "react";
 
-export function BusinessSearchAndFilter({
+export function SysCommonCodeSearchAndFilter({
   search,
   setSearch,
   searchParams,
   setSearchParams,
 }) {
-  /*검색타입*/
-  const optionList = createListCollection({
+  // 검색 옵션
+  const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "부서번호", value: "number" },
-      { label: "부서명", value: "name" },
+      { label: "공통코드", value: "number" },
+      { label: "코드명", value: "name" },
     ],
   });
+
   const handlePressKey = (e) => {
     if (e.key === "Enter") {
       handleSearchClick();
@@ -34,16 +36,16 @@ export function BusinessSearchAndFilter({
     if (search.keyword.trim().length > 0) {
       // 검색
       const nextSearchParam = new URLSearchParams(searchParams);
-      nextSearchParam.set("st", search.type);
-      nextSearchParam.set("sk", search.keyword);
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
       nextSearchParam.set("page", 1);
 
       setSearchParams(nextSearchParam);
     } else {
       // 검색 안함
       const nextSearchParam = new URLSearchParams(searchParams);
-      nextSearchParam.delete("st");
-      nextSearchParam.delete("sk");
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
 
       setSearchParams(nextSearchParam);
     }
@@ -53,7 +55,7 @@ export function BusinessSearchAndFilter({
     <HStack>
       {/*셀렉트 &&검색창*/}
       <SelectRoot
-        collection={optionList}
+        collection={searchOptions}
         value={[search.type]}
         onValueChange={(sel) => {
           setSearch({ ...search, type: sel.value[0] });
@@ -72,7 +74,7 @@ export function BusinessSearchAndFilter({
             position: "absolute",
           }}
         >
-          {optionList.items.map((option) => (
+          {searchOptions.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}
             </SelectItem>

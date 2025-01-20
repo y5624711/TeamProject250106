@@ -1,12 +1,10 @@
-package com.example.backend.service.businessAndDepartment;
+package com.example.backend.service.business;
 
 import com.example.backend.dto.business.Business;
-import com.example.backend.mapper.businessAndDepartment.BusinessMapper;
+import com.example.backend.mapper.business.BusinessMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 @Service
 @Transactional
@@ -17,21 +15,6 @@ public class BusinessService {
 
     public Business businessInfo() {
         return mapper.businessSelect();
-    }
-
-    public Map<String, Object> businessDepartmentList(Integer page,
-                                                      String searchType,
-                                                      String keyword,
-                                                      Boolean active,
-                                                      String sortColum,
-                                                      String sortOrder) {
-        int offset = (page - 1) * 10;
-
-        if (searchType.isEmpty()) searchType = "number";
-        if (keyword.isEmpty()) keyword = "";
-
-        return Map.of("list", mapper.listDepartmentSelect(offset, searchType, keyword, active, sortColum, sortOrder),
-                "count", mapper.departmentCountAll(searchType, keyword, active));
     }
 
 

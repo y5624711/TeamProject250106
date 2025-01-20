@@ -9,11 +9,58 @@ import java.util.List;
 @Mapper
 public interface CommonMapper {
     @Select("""
+            <script>
             SELECT *
             FROM TB_SYSCOMM
-            ORDER BY common_code_key
+            WHERE
+                <if test="active == false">
+                    common_code_active = 1
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND(<trim prefixOverrides="OR">
+                    <if test="type == 'all' or type == 'number'"  >
+                        common_code LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 'all' or type == 'name'"  >
+                        OR common_code_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>)
+            ORDER BY ${sort} ${order}
+            LIMIT #{offset},10
+            </script>
             """)
-    List<CommonCode> selectAll();
+    List<CommonCode> getSysCommonCodeList(int offset,
+                                          String type,
+                                          String keyword,
+                                          String sort,
+                                          String order,
+                                          Boolean active);
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_SYSCOMM
+            WHERE
+                <if test="active == false">
+                    common_code_active = 1
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND(<trim prefixOverrides="OR">
+                   <if test="type == 'all' or type == 'number'"  >
+                        common_code LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 'all' or type == 'name'"  >
+                        OR common_code_name LIKE CONCAT('%',#{keyword},'%')
+                    </if>
+                </trim>)
+            </script>
+            """)
+    Integer countAllSysCommonCode(Boolean active, String type, String keyword);
+
 
     @Insert("""
             INSERT INTO TB_SYSCOMM
@@ -21,6 +68,28 @@ public interface CommonMapper {
             VALUES (#{commonCode},#{commonCodeName},#{commonCodeNote})
             """)
     int insertCommonCode(CommonCode commonCode);
+
+    @Update("""
+            UPDATE TB_SYSCOMM
+            SET common_code_name = #{commonCodeName},
+                common_code_note = #{commonCodeNote}
+            WHERE common_code_key = #{commonCodeKey}
+            """)
+    int updateSysCode(CommonCode commonCode);
+
+    @Update("""
+            UPDATE TB_SYSCOMM
+            SET common_code_active = false
+            WHERE common_code_key=#{commonCodeKey}
+            """)
+    int deleteSysCode(Integer commonCodeKey);
+
+    @Update("""
+            UPDATE TB_SYSCOMM
+            SET common_code_active=true
+            WHERE common_code_key=#{commonCodeKey}
+            """)
+    int reUseSysCode(Integer commonCodeKey);
 
     @Select("""
             <script>
@@ -106,12 +175,6 @@ public interface CommonMapper {
             """)
     int countByCodeOrName(String itemCommonCode, String itemCommonName);
 
-//    @Select("""
-//            SELECT item_common_name
-//            FROM TB_ITEMCOMM
-//            """)
-//    List<String> getItemCommonName();
-
     @Insert("""
             INSERT INTO TB_ITEMCOMM
             (item_common_code_key, item_common_code, item_common_name, item_common_code_note)
@@ -142,4 +205,22 @@ public interface CommonMapper {
             WHERE item_common_code_key = #{itemCommonCodeKey}
             """)
     int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
+
+
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_SYSCOMM
+            <where>
+                common_code_active = true
+                <if test="commonCode != null and commonCode != ''">
+                    AND common_code = #{commonCode}
+                </if>
+                <if test="commonCodeName != null and commonCodeName != ''">
+                 AND common_code_name = #{commonCodeName}
+                </if>
+            </where>
+            </script>
+            """)
+    int checkSameName(String commonCode, String commonCodeName);
 }
