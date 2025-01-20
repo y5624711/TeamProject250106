@@ -7,6 +7,7 @@ import CustomerView from "../../../components/standard/customer/CustomerView.jsx
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
+import CustomerEdit from "../../../components/standard/customer/CustomerEdit.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
@@ -14,6 +15,7 @@ function Customer() {
   const [count, setCount] = useState(0);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
@@ -94,7 +96,14 @@ function Customer() {
       });
   };
 
-  //수정 버튼
+  const handleEditRequest = () => {
+    if (customerKey) {
+      setViewDialogOpen(false);
+      setEditDialogOpen(true);
+    }
+  };
+
+  //수정 저장 버튼
   const handleEditClick = (customerData) => {
     // console.log(customer);
     axios
@@ -106,7 +115,7 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
-        setViewDialogOpen(false);
+        setEditDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -308,8 +317,14 @@ function Customer() {
           isOpen={viewDialogOpen}
           customerKey={customerKey}
           onDelete={handleDeleteClick}
-          onEdit={handleEditClick}
+          onEdit={handleEditRequest}
           onCancel={() => setViewDialogOpen(false)}
+        />
+        <CustomerEdit
+          isOpen={editDialogOpen}
+          customerKey={customerKey}
+          onEdit={handleEditClick}
+          onCancel={() => setEditDialogOpen(false)}
         />
       </div>
     </Box>
