@@ -99,7 +99,19 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onCancel}>
-      <DialogContent>
+      <DialogContent
+        maxW="600px" // 최대 너비 설정
+        margin="auto" // 중앙 정렬
+        style={{
+          position: "absolute", // absolute로 변경하여 중앙에 고정되도록 설정
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // 정확히 중앙에 위치하도록 transform 사용
+          zIndex: 9999, // 다른 콘텐츠 위에 표시
+          maxHeight: "90vh", // 최대 높이 설정 (스크롤이 생기도록)
+          overflowY: "auto", // 내용이 많을 경우 스크롤
+        }}
+      >
         <DialogHeader>
           <DialogTitle>협력 업체 등록</DialogTitle>
         </DialogHeader>

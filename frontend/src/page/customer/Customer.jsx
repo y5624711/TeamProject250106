@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../components/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../components/customer/CustomerAdd.jsx";
 import CustomerView from "../../components/customer/CustomerView.jsx";
 import { SideBar } from "../../components/tool/SideBar.jsx";
@@ -272,53 +272,49 @@ function Customer() {
   // };
 
   return (
-    <Box>
-      <HStack align={"flex-start"}>
-        <Stack>
-          <SideBar />
-        </Stack>
-        <Stack>
-          <Heading>협력사 조회</Heading>
+    <Flex>
+      <SideBar />
+      <Stack w={"80%"} mx={"auto"}>
+        <Heading>협력업체 관리</Heading>
 
-          <CustomerList
-            customerList={customerList}
-            standard={standard}
-            onHeader={handleStandard}
-            customerKey={customerKey}
-            setCustomerKey={setCustomerKey}
-            currentPage={currentPage}
-            count={count}
-            onRowClick={handleRowClick}
-            handlePageChange={handlePageChange}
-            setSearchParams={setSearchParams}
-            checkedActive={checkedActive}
-            toggleCheckedActive={toggleCheckedActive}
-            search={search}
-            setSearch={setSearch}
-            handleSearchClick={handleSearchClick}
-            handleSearchTypeChange={handleSearchTypeChange}
-          />
-          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
-            협력업체 등록
-          </Button>
-        </Stack>
-        {/*Dialog*/}
-        <div>
-          <CustomerAdd
-            isOpen={addDialogOpen}
-            onCancel={() => setAddDialogOpen(false)}
-            onSave={handleSaveClick}
-          />
-          <CustomerView
-            isOpen={viewDialogOpen}
-            customerKey={customerKey}
-            onDelete={handleDeleteClick}
-            onEdit={handleEditClick}
-            onCancel={() => setViewDialogOpen(false)}
-          />
-        </div>
-      </HStack>
-    </Box>
+        <CustomerList
+          customerList={customerList}
+          standard={standard}
+          onHeader={handleStandard}
+          customerKey={customerKey}
+          setCustomerKey={setCustomerKey}
+          currentPage={currentPage}
+          count={count}
+          onRowClick={handleRowClick}
+          handlePageChange={handlePageChange}
+          setSearchParams={setSearchParams}
+          checkedActive={checkedActive}
+          toggleCheckedActive={toggleCheckedActive}
+          search={search}
+          setSearch={setSearch}
+          handleSearchClick={handleSearchClick}
+          handleSearchTypeChange={handleSearchTypeChange}
+        />
+        <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+          협력업체 등록
+        </Button>
+      </Stack>
+      {/*Dialog*/}
+      <div>
+        <CustomerAdd
+          isOpen={addDialogOpen}
+          onCancel={() => setAddDialogOpen(false)}
+          onSave={handleSaveClick}
+        />
+        <CustomerView
+          isOpen={viewDialogOpen}
+          customerKey={customerKey}
+          onDelete={handleDeleteClick}
+          onEdit={handleEditClick}
+          onCancel={() => setViewDialogOpen(false)}
+        />
+      </div>
+    </Flex>
   );
 }
 
