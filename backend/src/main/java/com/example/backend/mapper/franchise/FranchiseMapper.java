@@ -13,7 +13,7 @@ public interface FranchiseMapper {
             <script>
             SELECT COALESCE(MAX(CAST(SUBSTRING(franchise_code, 4) AS UNSIGNED)), 0) AS maxNumber
             FROM TB_FRNCHSMST
-            WHERE franchise_code LIKE CONCAT(#{franchiseCode}, '%')
+            WHERE franchise_code LIKE 'FRN%'
             AND franchise_code REGEXP '^[A-Za-z]+[0-9]+$'
             </script>
             """)

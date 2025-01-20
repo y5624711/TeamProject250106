@@ -25,7 +25,6 @@ export function FranchiseAdd({ onSave }) {
       .post("/api/franchise/add", {
         businessEmployeeNo,
         businessEmployeeName,
-        franchiseCode,
         franchiseName,
         franchiseRep,
         franchiseNo,

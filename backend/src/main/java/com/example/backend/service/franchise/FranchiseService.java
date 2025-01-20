@@ -42,7 +42,7 @@ public class FranchiseService {
         String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
 
         // 기존 가맹점 코드와 새로운 번호를 합쳐서 새로운 가맹점 코드 생성
-        String insertFranchiseCode = franchise.getFranchiseCode() + newNumber;
+        String insertFranchiseCode = "FRN" + newNumber;
 
         // 새로운 가맹점 코드를 Franchise 객체에 설정
         franchise.setFranchiseCode(insertFranchiseCode);
