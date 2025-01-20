@@ -24,7 +24,6 @@ export function EmployeeViewDialog({
     modalChange();
   };
 
-  // root에 화면을 띄우는 거구나
   return (
     <DialogRoot open={isModalOpen}>
       <DialogContent>

@@ -175,12 +175,20 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           <SelectRoot
             collection={frameworks}
             value={type}
+            width="150px"
+            position="relative"
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
               <SelectValueText placeholder={"선택해 주세요"} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent
+              style={{
+                width: "150px",
+                top: "40px",
+                position: "absolute",
+              }}
+            >
               {frameworks.items.map((code) => (
                 <SelectItem item={code} key={code.value}>
                   {code.label}
