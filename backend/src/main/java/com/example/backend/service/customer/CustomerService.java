@@ -27,7 +27,7 @@ public class CustomerService {
         String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
 
         String newCustomerCode = cus + newNumber;
-        System.out.println(newCustomerCode);
+//        System.out.println(newCustomerCode);
         customer.setCustomerCode(newCustomerCode);
 
         int count = mapper.addCustomer(customer);
@@ -36,9 +36,8 @@ public class CustomerService {
 
     public Map<String, Object> getCustomerList(Boolean active, Integer page, String type, String keyword, String sort, String order) {
         int offset = (page - 1) * 10;
-        System.out.println("2 ");
-        System.out.println("sort: " + sort);
-        System.out.println("order: " + order);
+//        System.out.println("sort: " + sort);
+//        System.out.println("order: " + order);
         //검색
         List<Customer> customerList = mapper.getCustomerList(active, offset, type, keyword, sort, order);
 //        System.out.println(customerList);
@@ -63,6 +62,7 @@ public class CustomerService {
     }
 
     public List<CommonCode> itemCodeList() {
+//        System.out.println("itemcodelist" + mapper.itemCodeList());
         return mapper.itemCodeList();
     }
 }
