@@ -58,7 +58,7 @@ export function BusinessView() {
   }
 
   return (
-    <Box border={"1px solid black"}>
+    <Box>
       <Stack>
         <BusinessInfo
           business={business} // 현재 상태 전달

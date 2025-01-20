@@ -20,10 +20,10 @@ public interface CommonMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="type == 'number'"  >
+                    <if test="type == 'all' or type == 'number'"  >
                         common_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="type == 'name'"  >
+                    <if test="type == 'all' or type == 'name'"  >
                         OR common_code_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
@@ -50,10 +50,10 @@ public interface CommonMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="type == 'number'"  >
+                   <if test="type == 'all' or type == 'number'"  >
                         common_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="type == 'name'"  >
+                    <if test="type == 'all' or type == 'name'"  >
                         OR common_code_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)

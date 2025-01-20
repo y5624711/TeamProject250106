@@ -23,7 +23,7 @@ function SystemCommonCode() {
     column: "common_code_key",
     order: "desc",
   });
-  const [search, setSearch] = useState({ type: "number", keyword: "" });
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [searchParams, setSearchParams] = useSearchParams();
 
   //페이지 번호얻기
@@ -65,7 +65,7 @@ function SystemCommonCode() {
     if (searchParams.get("type")) {
       nextSearch.type = searchParams.get("type");
     } else {
-      nextSearch.type = "number";
+      nextSearch.type = "all";
     }
     if (searchParams.get("keyword")) {
       nextSearch.keyword = searchParams.get("keyword");

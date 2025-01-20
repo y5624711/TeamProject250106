@@ -23,7 +23,7 @@ public class DepartmentService {
                                                       String sortOrder) {
         int offset = (page - 1) * 10;
 
-        if (searchType.isEmpty()) searchType = "number";
+        if (searchType.isEmpty()) searchType = "all";
         if (keyword.isEmpty()) keyword = "";
 
 

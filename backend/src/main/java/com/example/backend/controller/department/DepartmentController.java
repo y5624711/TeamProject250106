@@ -18,14 +18,14 @@ public class DepartmentController {
     @GetMapping("list")
     private Map<String, Object> list(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "st", defaultValue = "number") String searchType,
+            @RequestParam(value = "st", defaultValue = "all") String searchType,
             @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
             @RequestParam(value = "active", defaultValue = "false") Boolean active,
             @RequestParam(value = "sortColum", defaultValue = "department_code") String sortColum,
             @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
 
+        System.out.println("searchType = " + searchType);
         return service.businessDepartmentList(page, searchType, searchKeyword, active, sortColum, sortOrder);
-
     }
 
     @PostMapping("add")

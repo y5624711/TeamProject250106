@@ -20,6 +20,7 @@ export function SysCommonCodeSearchAndFilter({
   // 검색 옵션
   const searchOptions = createListCollection({
     items: [
+      { label: "전체", value: "all" },
       { label: "공통코드", value: "number" },
       { label: "코드명", value: "name" },
     ],

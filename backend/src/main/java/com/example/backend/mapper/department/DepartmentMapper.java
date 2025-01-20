@@ -22,10 +22,10 @@ public interface DepartmentMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="searchType == 'number'"  >
+                    <if test="searchType == 'all' or searchType == 'number'"  >
                         department_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="searchType == 'name'"  >
+                    <if test="searchType == 'all' or searchType == 'name'"  >
                         OR department_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)
@@ -52,10 +52,10 @@ public interface DepartmentMapper {
                     1=1
                 </if>
                 AND(<trim prefixOverrides="OR">
-                    <if test="searchType == 'number'"  >
+                    <if test="searchType == 'all' or searchType == 'number'"  >
                         department_code LIKE CONCAT('%',#{keyword},'%')
                     </if>
-                    <if test="searchType == 'name'"  >
+                    <if test="searchType == 'all' or searchType == 'name'"  >
                         OR department_name LIKE CONCAT('%',#{keyword},'%')
                     </if>
                 </trim>)

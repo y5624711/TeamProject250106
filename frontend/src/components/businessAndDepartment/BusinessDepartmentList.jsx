@@ -15,7 +15,7 @@ export function BusinessDepartmentList() {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [sort, setSort] = useState({ column: "", order: "desc" });
-  const [search, setSearch] = useState({ type: "number", keyword: "" });
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [addCheck, setAddCheck] = useState(false);
 
   // 다이얼로그
@@ -61,7 +61,7 @@ export function BusinessDepartmentList() {
     if (searchParams.get("st")) {
       nextSearch.type = searchParams.get("st");
     } else {
-      nextSearch.type = "number";
+      nextSearch.type = "all";
     }
     if (searchParams.get("sk")) {
       nextSearch.keyword = searchParams.get("sk");
