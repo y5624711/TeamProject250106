@@ -173,7 +173,10 @@ export function FranchiseList({
               <Table.Row
                 key={index}
                 onClick={() => onFranchiseClick(franchise.franchiseKey)}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: franchise.franchiseActive === false ? "#EAEAEA" : "white",
+                }}
               >
                 <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell>{franchise.franchiseName}</Table.Cell>
