@@ -11,15 +11,6 @@ import { useSearchParams } from "react-router-dom";
 import { SideBar } from "../../components/tool/SideBar.jsx";
 import { FranchiseList } from "../../components/franchise/FranchiseList.jsx";
 import { FranchiseDialog } from "../../components/franchise/FranchiseDialog.jsx";
-import * as PropTypes from "prop-types";
-
-// Dial 컴포넌트 정의
-function Dial(props) {
-  return null;
-}
-
-// Dial 컴포넌트에 전달될 prop 유형 정의
-Dial.propTypes = { children: PropTypes.node }; // children prop은 React 요소를 포함할 수 있는 node 타입이어야 함
 
 export function Franchise() {
   // 뷰 모드 관련 상태
@@ -62,21 +53,22 @@ export function Franchise() {
           return updatedList;
         }
 
-        // 추가된 가맹점 정보 처리
+        // 가맹점이 리스트에 없는 경우 (추가)
         const updatedList = [newFranchise, ...prevList];
 
         // 1페이지는 최대 10개만 보이게 하고, 추가된 항목은 2페이지로 넘김
         if (updatedList.length > 10) {
-          const remainingData = updatedList.slice(10); // 2페이지로 넘길 데이터 (11번째 이후)
-          const pageOneData = updatedList.slice(0, 10); // 1페이지 데이터
+          const secondPageData = updatedList.slice(10); // 2페이지로 넘길 데이터 (11번째 이후)
+          const firstPageData = updatedList.slice(0, 10); // 1페이지 데이터
 
-          setFranchiseList(pageOneData); // 1페이지 데이터 업데이트
+          setFranchiseList(firstPageData); // 1페이지 데이터 업데이트
 
           // 2페이지 데이터 처리
-          console.log("넘길 데이터 (2페이지로):", remainingData);
+          console.log("넘길 데이터 (2페이지로):", secondPageData);
 
-          return pageOneData; // 1페이지에 10개만 남기고 반환
+          return firstPageData; // 1페이지에 10개만 남기고 반환
         }
+
         return updatedList; // 10개 이하일 경우 그대로 반환
       });
     } else {
