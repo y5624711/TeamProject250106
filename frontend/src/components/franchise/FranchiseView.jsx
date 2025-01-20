@@ -247,9 +247,11 @@ export function FranchiseView({
               <Button onClick={handleEditClick} colorScheme="blue">
                 수정
               </Button>
-              <Button onClick={handleDeleteClick} colorScheme="red">
-                삭제
-              </Button>
+              {franchise.franchiseActive && (
+                <Button onClick={handleDeleteClick} colorScheme="red">
+                  삭제
+                </Button>
+                )}
             </>
           ) : (
             <>
