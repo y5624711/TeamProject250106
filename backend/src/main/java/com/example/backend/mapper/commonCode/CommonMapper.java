@@ -46,7 +46,7 @@ public interface CommonMapper {
                             ORDER BY `${sort}` ${order}
                         </when>
                         <otherwise>
-                        ORDER BY item_common_code_key ASC
+                        ORDER BY item_common_code_key DESC
                         </otherwise>
                     </choose>
                     LIMIT #{offset}, 10

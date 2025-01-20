@@ -61,7 +61,7 @@ public interface ItemMapper {
                             ORDER BY `${sort}` ${order}
                         </when>
                         <otherwise>
-                            ORDER BY i.item_key ASC
+                            ORDER BY i.item_key DESC
                         </otherwise>
                     </choose>
                     LIMIT #{offset}, 10
