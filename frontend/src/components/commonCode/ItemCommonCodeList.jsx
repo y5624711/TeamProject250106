@@ -1,10 +1,9 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
-import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
-import { Sort } from "../tool/Sort.jsx";
-import { Pagination } from "../tool/Pagination.jsx";
-import { SearchBar } from "../tool/SearchBar.jsx";
-import { Checkbox } from "../ui/checkbox.jsx";
+import { ActiveSwitch } from "../tool/list/ActiveSwitch.jsx";
+import { Sort } from "../tool/list/Sort.jsx";
+import { Pagination } from "../tool/list/Pagination.jsx";
+import { SearchBar } from "../tool/list/SearchBar.jsx";
 
 export function ItemCommonCodeList({
   itemCommonCodeList,
@@ -29,12 +28,6 @@ export function ItemCommonCodeList({
     { key: "itemCommonName", label: "품목명" },
   ];
 
-  // active가 true인 경우 사용 여부 컬럼 추가
-  const active = searchParams.get("active") === "true";
-  const dynamicSortOptions = active
-    ? [...sortOptions, { key: "itemCommonCodeActive", label: "사용 여부" }]
-    : sortOptions;
-
   return (
     <Box px={10}>
       <SearchBar
@@ -49,7 +42,7 @@ export function ItemCommonCodeList({
           <Table.Header>
             <Table.Row>
               <Sort
-                sortOptions={dynamicSortOptions}
+                sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
@@ -61,8 +54,11 @@ export function ItemCommonCodeList({
               <Table.Row
                 key={item.itemCommonCodeKey}
                 onClick={() => onRowClick(item.itemCommonCodeKey)}
-                style={{ cursor: "pointer" }}
-                _hover={{ backgroundColor: "gray.100" }}
+                style={{
+                  cursor: "pointer",
+                }}
+                bg={item.itemCommonCodeActive ? "white" : "gray.100"}
+                _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">
@@ -71,11 +67,6 @@ export function ItemCommonCodeList({
                 <Table.Cell textAlign="center">
                   {item.itemCommonName}
                 </Table.Cell>
-                {active && (
-                  <Table.Cell textAlign="center">
-                    <Checkbox checked={item.itemCommonCodeActive} />
-                  </Table.Cell>
-                )}
               </Table.Row>
             ))}
           </Table.Body>

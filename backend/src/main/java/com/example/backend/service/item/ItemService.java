@@ -89,8 +89,6 @@ public class ItemService {
                 return "i.input_price";
             case "output_price":
                 return "i.output_price";
-            case "item_active":
-                return "i.item_active";
             default:
                 throw new IllegalArgumentException("Invalid type: " + type);
         }

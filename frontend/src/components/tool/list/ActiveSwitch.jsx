@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch } from "../ui/switch.jsx";
+import { Switch } from "../../ui/switch.jsx";
 import { useSearchParams } from "react-router-dom";
 
 export function ActiveSwitch({ onActiveChange }) {

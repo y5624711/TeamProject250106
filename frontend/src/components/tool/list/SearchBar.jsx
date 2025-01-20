@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@chakra-ui/react";
-import { Button } from "../ui/button.jsx";
+import { Button } from "../../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 
 export function SearchBar({ onSearchChange, itemSearchOptions }) {

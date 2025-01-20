@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
-import { Pagination } from "../tool/Pagination.jsx";
-import { ActiveSwitch } from "../tool/ActiveSwitch.jsx";
-import { SearchBar } from "../tool/SearchBar.jsx";
-import { Sort } from "../tool/Sort.jsx";
-import { Checkbox } from "../ui/checkbox.jsx";
+
+import { Pagination } from "../tool/list/Pagination.jsx";
+import { ActiveSwitch } from "../tool/list/ActiveSwitch.jsx";
+import { SearchBar } from "../tool/list/SearchBar.jsx";
+import { Sort } from "../tool/list/Sort.jsx";
 
 export function ItemList({
   itemList,
@@ -37,12 +37,6 @@ export function ItemList({
     { key: "outputPrice", label: "출고가" },
   ];
 
-  // active가 true인 경우 사용 여부 컬럼 추가
-  const active = searchParams.get("active") === "true";
-  const dynamicSortOptions = active
-    ? [...sortOptions, { key: "itemActive", label: "사용 여부" }]
-    : sortOptions;
-
   return (
     <Box px={10}>
       <SearchBar
@@ -57,7 +51,7 @@ export function ItemList({
           <Table.Header>
             <Table.Row>
               <Sort
-                sortOptions={dynamicSortOptions}
+                sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
@@ -69,8 +63,11 @@ export function ItemList({
               <Table.Row
                 key={item.itemKey}
                 onClick={() => onRowClick(item.itemKey)}
-                style={{ cursor: "pointer" }}
-                _hover={{ backgroundColor: "gray.100" }}
+                style={{
+                  cursor: "pointer",
+                }}
+                bg={item.itemActive ? "white" : "gray.100"}
+                _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center"> {index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">
@@ -81,11 +78,6 @@ export function ItemList({
                 <Table.Cell textAlign="center">{item.unit}</Table.Cell>
                 <Table.Cell textAlign="center">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="center">{item.outputPrice}</Table.Cell>
-                {active && (
-                  <Table.Cell textAlign="center">
-                    <Checkbox checked={item.itemActive} />
-                  </Table.Cell>
-                )}
               </Table.Row>
             ))}
           </Table.Body>
