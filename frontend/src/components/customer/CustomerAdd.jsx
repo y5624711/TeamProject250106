@@ -23,7 +23,7 @@ import { Field } from "../ui/field.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
-  const [customerCode, setCustomerCode] = useState("");
+  // const [customerCode, setCustomerCode] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [itemName, setItemName] = useState("");
   const [itemCodeList, setItemCodeList] = useState([]);
@@ -45,7 +45,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
 
   const resetState = () => {
     setCustomerName("");
-    setCustomerCode("");
+    // setCustomerCode("");
     setItemCode("");
     setItemName("");
     setCustomerRep("");
@@ -60,7 +60,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
 
   const handleSaveClick = () => {
     const customerData = {
-      customerCode,
+      // customerCode,
       customerName,
       customerRep,
       itemCode,
@@ -119,13 +119,13 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
-            <Field label={"협력 업체 코드(차후 자동생성)"}>
-              <Input
-                required
-                value={customerCode}
-                onChange={(e) => setCustomerCode(e.target.value)}
-              />
-            </Field>
+            {/*<Field label={"협력 업체 코드(차후 자동생성)"}>*/}
+            {/*  <Input*/}
+            {/*    required*/}
+            {/*    value={customerCode}*/}
+            {/*    onChange={(e) => setCustomerCode(e.target.value)}*/}
+            {/*  />*/}
+            {/*</Field>*/}
             <Field label={"협력 업체"}>
               <Input
                 required

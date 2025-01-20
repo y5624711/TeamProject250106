@@ -134,4 +134,14 @@ public interface CustomerMapper {
             </script>
             """)
     Integer countCustomerList(Boolean active, String type, String keyword);
+
+    @Select("""
+                <script>
+               SELECT COALESCE(MAX(CAST(SUBSTRING(customer_code, 4) AS UNSIGNED)), 0) AS maxNumber
+                FROM TB_CUSTMST
+                WHERE customer_code LIKE CONCAT(#{cus}, '%')
+                AND customer_code REGEXP '^[A-Za-z]+[0-9]+$'
+                </script>
+            """)
+    Integer viewMaxCustomerCode(String cus);
 }
