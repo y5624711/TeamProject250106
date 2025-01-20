@@ -90,4 +90,12 @@ public class CustomerService {
         System.out.println("중복 확인 최종" + result);
         return result;
     }
+
+    public boolean checkDeletedCustomer(String customerKey) {
+        List<String> deletedCustomerKey = mapper.getDeletedCustomer();
+        System.out.println("key" + customerKey);
+        System.out.println("목록" + deletedCustomerKey);
+        System.out.println("결과" + deletedCustomerKey.contains(customerKey));
+        return deletedCustomerKey.contains(customerKey);
+    }
 }

@@ -178,4 +178,11 @@ public interface CustomerMapper {
             WHERE customer_active=true
             """)
     List<String> getUsedCustomerTel();
+
+    @Select("""
+            SELECT customer_key
+            FROM TB_CUSTMST
+            WHERE customer_active=false
+            """)
+    List<String> getDeletedCustomer();
 }

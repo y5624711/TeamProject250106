@@ -69,8 +69,15 @@ public class CustomerController {
     //협력사 삭제
     @PutMapping("delete/{customerKey}")
     public ResponseEntity<Map<String, Object>> deleteCustomer(
-            @PathVariable("customerKey") String customerCode) {
-        if (service.deleteCustomer(customerCode)) {
+            @PathVariable("customerKey") String customerKey) {
+        //삭제된 협력사인지 조회
+        if (service.checkDeletedCustomer(customerKey)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 삭제된 정보입니다.")
+            ));
+        }
+
+        if (service.deleteCustomer(customerKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."삭제되었습니다.")));
