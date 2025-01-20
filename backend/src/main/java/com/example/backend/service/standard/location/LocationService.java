@@ -24,4 +24,12 @@ public class LocationService {
     public void add(Location location) {
         mapper.add(location);
     }
+
+    public Location view(Integer locationKey) {
+        return mapper.view(locationKey);
+    }
+
+    public void edit(Location location) {
+        mapper.edit(location);
+    }
 }

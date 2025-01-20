@@ -4,6 +4,7 @@ import com.example.backend.dto.standard.location.Location;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -101,4 +102,18 @@ public interface LocationMapper {
                                     </script>
             """)
     Integer countAllLocation(String searchType, String searchKeyword);
+
+    @Select("""
+            SELECT *
+            FROM TB_LOCMST
+            WHERE location_key=#{locationKey}
+            """)
+    Location view(Integer locationKey);
+
+    @Update("""
+                    UPDATE TB_LOCMST
+                    SET warehouse_code=#{warehouseCode}, row=#{row}, col=#{col}, shelf=#{shelf}, item_common_code=#{itemCommonCode}, location_note=#{locationNote}
+            WHERE location_key=#{locationKey}
+            """)
+    int edit(Location location);
 }

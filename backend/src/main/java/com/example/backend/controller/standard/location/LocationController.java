@@ -25,4 +25,15 @@ public class LocationController {
     public void add(@RequestBody Location location) {
         service.add(location);
     }
+
+    @GetMapping("view/{locationKey}")
+    public Location view(@PathVariable Integer locationKey) {
+        return service.view(locationKey);
+    }
+
+    @PutMapping("edit")
+    public void edit(@RequestBody Location location) {
+        service.edit(location);
+    }
+
 }

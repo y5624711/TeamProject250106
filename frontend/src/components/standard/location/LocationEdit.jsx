@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box, HStack, Input } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
+import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
 
 function LocationEdit({ locationKey, setIsEditing, isEditing }) {
   const [locationDetail, setLocationDetail] = useState([]);
@@ -111,7 +111,7 @@ function LocationEdit({ locationKey, setIsEditing, isEditing }) {
           <Button onClick={handleCancelClick}>취소</Button>
         </HStack>
       </Box>
-      <DialogConfirmation
+      <DialogEditConfirmation
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleSaveClick}
