@@ -63,8 +63,9 @@ public interface CustomerMapper {
     List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
     @Select("""
-            SELECT *
-            FROM TB_CUSTMST
+            SELECT *, item_common_name AS itemName 
+            FROM TB_CUSTMST 
+            LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
             WHERE customer_key = #{customerKey}
             """)
     Customer viewCustomer(String customerKey);

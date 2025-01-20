@@ -147,7 +147,7 @@ function CustomerList({
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
               <HStack align={"flex-start"}>
-                <Stack>취급 물품</Stack>
+                <Stack>취급 품목</Stack>
                 <Stack>
                   {standard.sort === "item_common_name" &&
                     (standard.order === "asc" ? (

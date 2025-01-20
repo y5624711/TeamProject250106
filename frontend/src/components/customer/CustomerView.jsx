@@ -15,7 +15,7 @@ import {
 
 function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
 
   //정보 불러오기
   useEffect(() => {
@@ -26,6 +26,8 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
         .catch((error) => console.error("오류 발생", error));
     }
   }, [customerKey]);
+
+  // console.log(customer);
 
   if (!customer) {
     return <p>로딩 중이거나 고객 정보가 없습니다.</p>;
@@ -40,7 +42,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
   };
 
   const handleClose = () => {
-    setIsEditing(false);
+    // setIsEditing(false);
     onCancel();
   };
 
@@ -75,8 +77,8 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                 onChange={handleInputChange}
               />
             </Field>
-            <Field label={"품목 코드"}>
-              <Input readOnly name="itemCode" value={customer.itemCode} />
+            <Field label={"취급 품목"}>
+              <Input readOnly name="itemName" value={customer.itemName} />
             </Field>
             <Field label={"사업자 번호"}>
               <Input

@@ -80,22 +80,24 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     resetState();
     onCancel();
   };
+  // console.log("itemCodeList", itemCodeList);
 
   const myItems = createListCollection({
     items: itemCodeList.map((itemCode) => {
       return {
-        label: itemCode.common_code_name,
-        value: itemCode.common_code,
+        label: itemCode.commonCodeName,
+        value: itemCode.commonCode,
       };
     }),
   });
+  // console.log("myItems", myItems);
 
-  const type = createListCollection({
-    items: [
-      { label: "업체명", value: "customerName" },
-      { label: "취급 물품", value: "itemName" },
-    ],
-  });
+  // const type = createListCollection({
+  //   items: [
+  //     { label: "업체명", value: "customerName" },
+  //     { label: "취급 물품", value: "itemName" },
+  //   ],
+  // });
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onCancel}>
@@ -141,11 +143,11 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               onValueChange={(e) => {
                 setItemName(e.value);
                 const selectedItem = itemCodeList.find(
-                  (item) => item.common_code_name == e.value,
+                  (item) => item.commonCodeName == e.value,
                 );
                 // console.log("내부", selectedItem);
                 if (selectedItem) {
-                  setItemCode(selectedItem.common_code); // 선택된 품목 코드 설정
+                  setItemCode(selectedItem.commonCode); // 선택된 품목 코드 설정
                 }
               }}
             >

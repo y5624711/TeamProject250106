@@ -267,10 +267,6 @@ function Customer() {
 
   // console.log("p", standard);
 
-  // const handleAddCustomer = (newCustomer) => {
-  //   setAddDialogOpen(false);
-  // };
-
   return (
     <Flex>
       <SideBar />
@@ -295,9 +291,11 @@ function Customer() {
           handleSearchClick={handleSearchClick}
           handleSearchTypeChange={handleSearchTypeChange}
         />
-        <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
-          협력업체 등록
-        </Button>
+        <Flex justify="flex-end">
+          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+            협력업체 등록
+          </Button>
+        </Flex>
       </Stack>
       {/*Dialog*/}
       <div>
