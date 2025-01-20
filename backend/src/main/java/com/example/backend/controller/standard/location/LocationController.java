@@ -16,8 +16,9 @@ public class LocationController {
     final LocationService service;
 
     @GetMapping("list")
-    public Map<String, Object> list() {
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "type", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(searchType, searchKeyword);
     }
 
     @PostMapping("add")

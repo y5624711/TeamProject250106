@@ -14,9 +14,9 @@ public class LocationService {
 
     final LocationMapper mapper;
 
-    public Map<String, Object> list() {
-        List<Location> list = mapper.list();
-        Integer countLocation = mapper.countAllLocation();
+    public Map<String, Object> list(String searchType, String searchKeyword) {
+        List<Location> list = mapper.list(searchType, searchKeyword);
+        Integer countLocation = mapper.countAllLocation(searchType, searchKeyword);
 
         return Map.of("list", list, "count", countLocation);
     }

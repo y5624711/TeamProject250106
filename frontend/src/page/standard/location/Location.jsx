@@ -12,7 +12,6 @@ import LocationSearch from "../../../components/standard/location/LocationSearch
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
-import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Location(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -27,7 +26,6 @@ function Location(props) {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
-  const [useColumn, setUseColumn] = useState(false);
 
   // 로케이션 정보 가져오기
   useEffect(() => {
@@ -69,17 +67,9 @@ function Location(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Checkbox
-            onCheckedChange={() => {
-              setUseColumn(!useColumn);
-            }}
-          >
-            전체 조회
-          </Checkbox>
           <LocationList
             countLocation={countLocation}
             locationList={locationList}
-            useColumn={useColumn}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
           />

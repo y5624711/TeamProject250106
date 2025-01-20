@@ -13,7 +13,6 @@ import LocationListPage from "./LocationListPage.jsx";
 function LocationList({
   locationList,
   countLocation,
-  useColumn,
   currentPage,
   handlePageChangeClick,
 }) {
@@ -30,21 +29,17 @@ function LocationList({
               <Table.Row>
                 <Table.ColumnHeader width="100px">#</Table.ColumnHeader>
                 <Table.ColumnHeader width="200px">창고명</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">담당 업체</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">업체 직원</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">광역 시도</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">시군</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">전화번호</Table.ColumnHeader>
-                {useColumn ? (
-                  <Table.ColumnHeader>사용 여부</Table.ColumnHeader>
-                ) : null}
+                <Table.ColumnHeader width="150px">행</Table.ColumnHeader>
+                <Table.ColumnHeader width="200px">열</Table.ColumnHeader>
+                <Table.ColumnHeader width="150px">단</Table.ColumnHeader>
+                <Table.ColumnHeader width="150px">품목명</Table.ColumnHeader>
+                <Table.ColumnHeader width="200px">비고</Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {locationList.map((location) => (
                 <LocationListPage
                   location={location}
-                  useColumn={useColumn}
                   setSelectedLocationKey={setSelectedLocationKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
