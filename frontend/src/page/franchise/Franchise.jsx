@@ -76,11 +76,34 @@ export function Franchise() {
     }
   };
 
+  // 가맹점 삭제
   const handleDelete = (franchiseKey) => {
+    // 해당 franchiseKey를 가진 가맹점을 리스트에서 제거
     setFranchiseList((prevList) => {
-      // 해당 franchiseKey를 가진 가맹점을 리스트에서 제거
       return prevList.filter((item) => item.franchiseKey !== franchiseKey);
     });
+
+    // 현재 페이지 번호 가져오기
+    const currentPage = Number(searchParams.get("page") || 1);
+
+    // 삭제 후 데이터 재조회: 현재 페이지의 가맹점 리스트 업데이트
+    axios
+      .get("/api/franchise/list", {
+        params: {
+          active: checkedActive,
+          page: currentPage,
+          type: searchParams.get("type") || "all",
+          keyword: searchParams.get("keyword") || "",
+          sort: searchParams.get("sort") || standard.sort,
+          order: searchParams.get("order") || standard.order,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        setCount(data.count);
+        setFranchiseList(data.franchiseList);
+        setIsLoading(false);
+      });
   };
 
   // 가맹점 리스트 가져오기
@@ -102,7 +125,6 @@ export function Franchise() {
       .then((data) => {
         setCount(data.count);
         setFranchiseList(data.franchiseList);
-        setFranchiseKey(data.franchiseList[0]?.franchiseKey);
         setIsLoading(false);
       });
   }, [searchParams, standard, checkedActive]);
@@ -152,7 +174,7 @@ export function Franchise() {
   };
 
   // 페이지네이션
-  const pageParam = searchParams.get("page") ?? "1";
+  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
   // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
@@ -217,7 +239,7 @@ export function Franchise() {
             onPageChange={handlePageChange}
             count={count}
             pageSize={10}
-            page={Number(searchParams.get("page") || 1)}
+            // page={Number(searchParams.get("page") || 1)}
             variant="solid"
           >
             <HStack>
