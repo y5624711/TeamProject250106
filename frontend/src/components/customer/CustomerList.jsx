@@ -201,6 +201,8 @@ function CustomerList({
               onClick={() => {
                 onRowClick(customer.customerKey);
               }}
+              _hover={{ cursor: "pointer" }}
+              bg={customer.customerActive ? "white" : "gray.200"}
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{customer.customerName}</Table.Cell>
