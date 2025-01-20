@@ -1,38 +1,47 @@
 import { Box, Table } from "@chakra-ui/react";
+import React from "react";
+import { SortableColumnHeader } from "../tool/SortableColumnHeader.jsx";
 
-export function BusinessListTable({ department, sort, handleSort }) {
+export function BusinessListTable({
+  department,
+  sort,
+  handleSort,
+  openDialog,
+}) {
+  // 컬럼 배열 정의
+  const columnsList = [
+    { key: "department_code", label: "부서번호" },
+    { key: "department_name", label: "부서명" },
+    { key: "department_tel", label: "전화번호" },
+    { key: "department_fax", label: "팩스번호" },
+  ];
+
   return (
     <Box>
       <Table.Root variant={"outline"}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
-            <Table.ColumnHeader onClick={() => handleSort("department_code")}>
-              부서번호
-              {sort.column === "department_code" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_name")}>
-              부서명
-              {sort.column === "department_name" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_tel")}>
-              전화번호
-              {sort.column === "department_tel" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => handleSort("department_fax")}>
-              팩스번호
-              {sort.column === "department_fax" &&
-                (sort.order === "asc" ? "↑" : "↓")}
-            </Table.ColumnHeader>
+            {columnsList.map((col) => (
+              <SortableColumnHeader
+                key={col.key}
+                columnKey={col.key}
+                label={col.label}
+                sort={sort}
+                handleSort={handleSort}
+              />
+            ))}
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           {department.map((list, index) => (
-            <Table.Row key={list.departmentKey || index}>
-              <Table.Cell>{list.departmentCode}</Table.Cell>
+            <Table.Row
+              key={list.departmentKey || index}
+              _hover={{ cursor: "pointer" }}
+              onClick={() => openDialog(list)}
+              bg={list.departmentActive ? "white" : "gray.200"}
+            >
+              <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{list.departmentName}</Table.Cell>
               <Table.Cell>{list.departmentTel}</Table.Cell>
               <Table.Cell>{list.departmentFax}</Table.Cell>
