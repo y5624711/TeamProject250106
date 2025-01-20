@@ -8,6 +8,28 @@ import java.util.List;
 @Mapper
 public interface FranchiseMapper {
 
+    // 중복 체크
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_FRNCHSMST
+            WHERE franchise_code = #{franchiseCode}
+            OR franchise_name = #{franchiseName}
+            OR franchise_no = #{franchiseNo}
+            OR franchise_tel = #{franchiseTel}
+           """)
+    int duplicateFranchise(Franchise franchise);
+
+    // 가맹점 코드 생성하기
+    @Select("""
+            <script>
+            SELECT COALESCE(MAX(CAST(SUBSTRING(franchise_code, 4) AS UNSIGNED)), 0) AS maxNumber
+            FROM TB_FRNCHSMST
+            WHERE franchise_code LIKE 'FRN%'
+            AND franchise_code REGEXP '^[A-Za-z]+[0-9]+$'
+            </script>
+            """)
+    Long viewMaxFranchiseCode(String franchiseCode);
+
     // 가맹점 등록하기
     @Insert("""
             INSERT INTO TB_FRNCHSMST 
@@ -18,28 +40,27 @@ public interface FranchiseMapper {
     @Options(keyProperty = "franchiseKey", useGeneratedKeys = true)
     int addFranchise(Franchise franchise);
 
-    // 가맹점 리스트 조회
-    @Select("""
-            SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, business_employee_name
-            FROM TB_FRNCHSMST
-            """)
-    List<Franchise> list();
-
-    // 페이징을 위한 메서드 (현재 페이지에 맞는 데이터 가져오기)
+    // 가맹점 리스트 불러오기
     @Select("""
             <script>
-                SELECT franchise_key, franchise_name, franchise_rep, franchise_state, franchise_city, franchise_active, business_employee_name
+                SELECT franchise_key, franchise_name, franchise_rep, franchise_no, franchise_tel, franchise_state, franchise_city, franchise_active, business_employee_no, business_employee_name
                 FROM TB_FRNCHSMST
                 WHERE <if test="active == false">franchise_active = TRUE</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
                       <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
-                <if test="keyword != null and keyword.trim() != ''">
+                      <if test="keyword != null and keyword.trim() != ''">
                     AND (
                         <trim prefixOverrides="OR">
                             <if test="type=='all' or type=='franchiseName'">
-                                franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                                  franchise_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseRep'">
                                OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                             <if test="type=='all' or type=='franchiseNo'">
+                               OR franchise_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseTel'">
+                               OR franchise_tel LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
                                OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
@@ -47,13 +68,28 @@ public interface FranchiseMapper {
                             <if test="type=='all' or type=='franchiseCity'">
                                OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
                             </if>
+                            <if test="type=='all' or type=='businessEmployeeNo'">
+                               OR business_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
                             <if test="type=='all' or type=='businessEmployeeName'">
                                OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                         </trim>
                     )
                 </if>
-                ORDER BY ${sort} ${order}
+            ORDER BY\s
+                    <choose>
+                        <when test="sort == 'franchise_name'">franchise_name</when>
+                        <when test="sort == 'franchise_rep'">franchise_rep</when>
+                        <when test="sort == 'franchise_no'">franchise_no</when>
+                        <when test="sort == 'franchise_tel'">franchise_tel</when>
+                        <when test="sort == 'franchise_state'">franchise_state</when>
+                        <when test="sort == 'franchise_city'">franchise_city</when>
+                        <when test="sort == 'business_employee_no'">business_employee_no</when>
+                        <when test="sort == 'business_employee_name'">business_employee_name</when>
+                        <otherwise>franchise_key</otherwise> <!-- 기본값 -->
+                    </choose>\s
+                    ${order}
                 LIMIT #{offset}, 10
             </script>
             """)
@@ -70,16 +106,25 @@ public interface FranchiseMapper {
                     AND (
                         <trim prefixOverrides="OR">
                             <if test="type=='all' or type=='franchiseName'">
-                                franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                                  franchise_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseRep'">
                                OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                             <if test="type=='all' or type=='franchiseNo'">
+                               OR franchise_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='franchiseTel'">
+                               OR franchise_tel LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
                                OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseCity'">
                                OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='businessEmployeeNo'">
+                               OR business_employee_no LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='businessEmployeeName'">
                                OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
