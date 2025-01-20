@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
 import { Field } from "../ui/field.jsx";
 import {
@@ -17,7 +17,7 @@ import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
 function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   //정보 불러오기
   useEffect(() => {
@@ -135,15 +135,27 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
             </Stack>
           </DialogBody>
           <DialogFooter>
-            <DialogActionTrigger asChild>
-              <Button variant="outline" onClick={handleClose}>
-                취소
-              </Button>
-            </DialogActionTrigger>
-            <Button onClick={() => onEdit(customer)}>수정</Button>
-            <Button onClick={setIsDialogOpen} colorPalette={"red"}>
-              삭제
-            </Button>
+            {customer.customerActive ? (
+              <HStack>
+                <DialogActionTrigger asChild>
+                  <Button variant="outline" onClick={handleClose}>
+                    취소
+                  </Button>
+                </DialogActionTrigger>
+                <Button onClick={() => onEdit(customer)}>수정</Button>
+                <Button onClick={setIsDialogOpen} colorPalette={"red"}>
+                  삭제
+                </Button>
+              </HStack>
+            ) : (
+              <HStack>
+                <DialogActionTrigger asChild>
+                  <Button variant="outline" onClick={handleClose}>
+                    목록으로
+                  </Button>
+                </DialogActionTrigger>
+              </HStack>
+            )}
           </DialogFooter>
         </DialogContent>
       </DialogRoot>
