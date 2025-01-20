@@ -72,7 +72,7 @@ public class ItemService {
     // type 값에 따라 해당하는 SQL 필드명으로 변경
     private String resolveType(String type) {
         if (type == null || type.isEmpty() || type.equals("all")) {
-            return "all";
+            return null;
         }
         switch (type) {
             case "item_key":

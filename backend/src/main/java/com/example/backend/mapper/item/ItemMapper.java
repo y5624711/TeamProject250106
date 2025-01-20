@@ -40,19 +40,21 @@ public interface ItemMapper {
                 </if>
             
                 <if test="keyword != null and keyword.trim() != ''">
-                    <if test="type == 'all'">
-                        AND (
-                            ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                            OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                            OR i.unit LIKE CONCAT('%', #{keyword}, '%')
-                            OR i.size LIKE CONCAT('%', #{keyword}, '%')
-                            OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                            OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                        )
-                    </if>
-                    <if test="type != 'all' and type != null">
-                        AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-                    </if>
+                    <choose>
+                        <when test="type == null">
+                            AND (
+                                ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR i.unit LIKE CONCAT('%', #{keyword}, '%')
+                                OR i.size LIKE CONCAT('%', #{keyword}, '%')
+                                OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            )
+                        </when>
+                        <otherwise>
+                            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                        </otherwise>
+                    </choose>
                 </if>
             
                 <if test="sort != null and sort != ''">
@@ -79,19 +81,21 @@ public interface ItemMapper {
                     </if>
             
                     <if test="keyword != null and keyword.trim() != ''">
-                        <if test="type == 'all'">
-                            AND (
-                                ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                                OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                OR i.unit LIKE CONCAT('%', #{keyword}, '%')
-                                OR i.size LIKE CONCAT('%', #{keyword}, '%')
-                                OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                                OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                            )
-                        </if>
-                        <if test="type != 'all' and type != null">
-                            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
+                        <choose>
+                            <when test="type == null">
+                                AND (
+                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR i.unit LIKE CONCAT('%', #{keyword}, '%')
+                                    OR i.size LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                    OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </when>
+                            <otherwise>
+                                AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                            </otherwise>
+                        </choose>
                     </if>
                 </script>
             """)
