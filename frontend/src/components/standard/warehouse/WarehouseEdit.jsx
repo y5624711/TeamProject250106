@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, HStack, Input } from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
+import { Button } from "../ui/button.jsx";
+import { DialogConfirmation } from "../tool/DialogConfirmation.jsx";
+import { useNavigate } from "react-router-dom";
 
 function WarehouseEdit({ warehouseKey, setIsEditing, isEditing }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   function handleSaveClick() {
     axios.put(`/api/warehouse/edit`, {

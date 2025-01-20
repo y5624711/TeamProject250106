@@ -6,17 +6,15 @@ function WarehouseView({ warehouseKey }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
-    if (warehouseKey) {
-      axios
-        .get(`/api/warehouse/view/${warehouseKey}`)
-        .then((res) => {
-          setWarehouseDetail(res.data);
-        })
-        .catch((error) => {
-          console.error("창고 상세 정보 요청 중 오류 발생: ", error);
-        });
-    }
-  }, [warehouseKey]);
+    axios
+      .get(`/api/warehouse/view/${warehouseKey}`)
+      .then((res) => {
+        setWarehouseDetail(res.data);
+      })
+      .catch((error) => {
+        console.error("창고 상세 정보 요청 중 오류 발생: ", error);
+      });
+  }, []);
   return (
     <Box width="350px">
       <Box>

@@ -14,11 +14,13 @@ public class WarehouseService {
 
     final WarehouseMapper mapper;
 
-    public Map<String, Object> list(String searchType, String searchKeyword) {
-        List<Warehouse> list = mapper.list(searchType, searchKeyword);
-        Integer count = list.size();
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page) {
+        Integer pageList = (page - 1) * 10;
+        List<Warehouse> list = mapper.list(searchType, searchKeyword, pageList);
+        Integer countWarehouse = mapper.countAllWarehouse(searchType, searchKeyword);
+        System.out.println(countWarehouse);
 
-        return Map.of("list", list, "count", count);
+        return Map.of("list", list, "count", countWarehouse);
     }
 
     public Warehouse view(Integer warehouseKey) {

@@ -7,14 +7,22 @@ import WarehouseList from "../../../components/standard/warehouse/WarehouseList.
 import WarehouseSearch from "../../../components/standard/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { WarehouseAdd } from "../../../components/standard/warehouse/WarehouseAdd.jsx";
+import { Checkbox } from "../../components/ui/checkbox.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
+  const [useColumn, setUseColumn] = useState(false);
+  const [search, setSearch] = useState({
+    type: "all",
+    keyword: "",
+  });
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams] = useSearchParams();
   const [countWarehouse, setCountWarehouse] = useState("");
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
 
   // 창고 정보 가져오기
   useEffect(() => {
@@ -25,11 +33,29 @@ function Warehouse(props) {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, [searchParams]);
+
   // 검색 버튼
   function handleSearchClick() {
-    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+    };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(`/warehouse/list?${searchQuery.toString()}`);
+  }
+
+  function handlePageChangeClick(e) {
+    const pageNumber = { page: e.page };
+    const pageQuery = new URLSearchParams(pageNumber);
+    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchQuery = new URLSearchParams(searchInfo);
+    navigate(
+      `/warehouse/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+    );
   }
 
   return (
@@ -59,10 +85,20 @@ function Warehouse(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
+          <Checkbox
+            onCheckedChange={() => {
+              setUseColumn(!useColumn);
+            }}
+          >
+            삭제 내역 포함하기
+          </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
+            useColumn={useColumn}
+            currentPage={currentPage}
+            handlePageChangeClick={handlePageChangeClick}
           />
         </Stack>
       </HStack>
