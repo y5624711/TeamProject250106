@@ -1,5 +1,4 @@
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -7,9 +6,8 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog.jsx";
-import { HStack, Stack, Text, Textarea } from "@chakra-ui/react";
+import { HStack, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
 import { Field } from "../ui/field.jsx";
 import { CustomInput } from "../businessAndDepartment/CustomInput.jsx";
@@ -17,41 +15,7 @@ import { Button } from "../ui/button.jsx";
 import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
-
-function SysCommonCodeDelete({
-  isOpenDelete,
-  setIsOpenDelete,
-  handleDeleteClick,
-}) {
-  return (
-    <DialogRoot open={isOpenDelete}>
-      <DialogTrigger asChild>
-        <Button colorPalette={"red"} onClick={() => setIsOpenDelete(true)}>
-          삭제
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>삭제 요청</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <Text>이 코드를 삭제 하시겠습니까?</Text>
-        </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline" onClick={() => setIsOpenDelete(false)}>
-              취소
-            </Button>
-          </DialogActionTrigger>
-          <Button colorPalette={"red"} onClick={handleDeleteClick}>
-            삭제
-          </Button>
-        </DialogFooter>
-        <DialogCloseTrigger onClick={() => setIsOpenDelete(false)} />
-      </DialogContent>
-    </DialogRoot>
-  );
-}
+import { DeleteDialog } from "./DeleteDialog.jsx";
 
 export function SysCommonCodeViewDialog({
   isOpen,
@@ -108,12 +72,13 @@ export function SysCommonCodeViewDialog({
           description: message.text,
         });
         setIsOpen(false);
+        setIsEditing(false);
         setIsOpenDelete(false);
         setAddCheck(!addCheck);
       });
   }
 
-  function handleReUseButton() {
+  function handleReUseClick() {
     axios
       .put("/api/commonCode/system/reUseSys", {
         commonCodeKey: sysCommonCode.commonCodeKey,
@@ -126,6 +91,7 @@ export function SysCommonCodeViewDialog({
           description: message.text,
         });
         setIsOpen(false);
+        setIsEditing(false);
         setAddCheck(!addCheck);
       });
   }
@@ -201,27 +167,27 @@ export function SysCommonCodeViewDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {sysCommonCode.commonCodeActive ? (
-            <SysCommonCodeDelete
-              sysCommonCode={sysCommonCode}
-              isOpenDelete={isOpenDelete}
-              setIsOpenDelete={setIsOpenDelete}
-              handleDeleteClick={handleDeleteClick}
-            />
-          ) : (
-            <Button colorPalette={"green"} onClick={handleReUseButton}>
-              재사용
-            </Button>
-          )}
-
           {isEditing && (
-            <Button
-              disabled={disable}
-              colorPalette={"blue"}
-              onClick={handleUpdate}
-            >
-              저장
-            </Button>
+            <>
+              {sysCommonCode.commonCodeActive ? (
+                <DeleteDialog
+                  isOpenDelete={isOpenDelete}
+                  setIsOpenDelete={setIsOpenDelete}
+                  handleDeleteClick={handleDeleteClick}
+                />
+              ) : (
+                <Button colorPalette={"green"} onClick={handleReUseClick}>
+                  재사용
+                </Button>
+              )}
+              <Button
+                disabled={disable}
+                colorPalette={"blue"}
+                onClick={handleUpdate}
+              >
+                저장
+              </Button>
+            </>
           )}
           {!isEditing && <Button onClick={toggleEditing}>정보수정</Button>}
         </DialogFooter>

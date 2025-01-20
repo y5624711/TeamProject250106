@@ -61,4 +61,26 @@ public class DepartmentController {
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
         }
     }
+
+    @PutMapping("delete")
+    private ResponseEntity<Map<String, Object>> deleteDepartment(@RequestBody Department department) {
+        if (service.deleteDepartment(department.getDepartmentKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "삭제 되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "삭제 되지 않았습니다.")));
+        }
+    }
+
+    @PutMapping("reUseDepartment")
+    private ResponseEntity<Map<String, Object>> reUseDepartment(@RequestBody Department department) {
+        if (service.reUseDepartment(department.getDepartmentKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "해당 부서를 다시 사용합니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "오류가 발생했습니다.")));
+        }
+    }
 }

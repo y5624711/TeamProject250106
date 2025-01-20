@@ -68,7 +68,6 @@ public interface DepartmentMapper {
             SET department_name = #{departmentName},
                 department_tel = #{departmentTel},
                 department_fax = #{departmentFax},
-                department_active = #{departmentActive},
                 department_note = #{departmentNote}
             WHERE department_key = #{departmentKey}
             """)
@@ -99,4 +98,18 @@ public interface DepartmentMapper {
                    #{departmentNote})
             """)
     int addDepartment(Department department);
+
+    @Update("""
+            UPDATE TB_DEPARTMST
+            SET department_active = false
+            WHERE department_key = #{departmentKey}
+            """)
+    int deleteDepartment(Integer departmentKey);
+
+    @Update("""
+            UPDATE TB_DEPARTMST
+            SET department_active = true
+            WHERE department_key = #{departmentKey}
+            """)
+    int reUseDepartment(Integer departmentKey);
 }

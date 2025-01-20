@@ -61,4 +61,14 @@ public class DepartmentService {
 
         return cnt == 1;
     }
+
+    public boolean deleteDepartment(Integer departmentKey) {
+        int cnt = mapper.deleteDepartment(departmentKey);
+        return cnt == 1;
+    }
+
+    public boolean reUseDepartment(Integer departmentKey) {
+        int cnt = mapper.reUseDepartment(departmentKey);
+        return cnt == 1;
+    }
 }

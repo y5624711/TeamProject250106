@@ -12,6 +12,10 @@ import { CustomInput } from "./CustomInput.jsx";
 import { Field } from "../ui/field.jsx";
 import { HStack, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../ui/checkbox.jsx";
+import axios from "axios";
+import { toaster } from "../ui/toaster.jsx";
+import React, { useState } from "react";
+import { DeleteDialog } from "../commonCode/DeleteDialog.jsx";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
@@ -21,8 +25,11 @@ export function DepartmentViewAndUpdateDialog({
   isEditing,
   setIsEditing,
   toggleEditing,
-  handleUpdateClick,
+  setAddCheck,
+  addCheck,
 }) {
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+
   let disable = false;
   if (department !== null) {
     disable = !(
@@ -33,8 +40,71 @@ export function DepartmentViewAndUpdateDialog({
   }
 
   const handleUpdate = () => {
-    handleUpdateClick();
+    axios
+      .put("/api/department/update", {
+        departmentKey: department.departmentKey,
+        departmentName: department.departmentName,
+        departmentTel: department.departmentTel,
+        departmentFax: department.departmentFax,
+        departmentNot: department.departmentNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log(departmentList);
+        setAddCheck(!addCheck);
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setIsEditing(false);
+        setIsOpen(false);
+      })
+      .catch((e) => {
+        const message = e.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
+
+  function handleDeleteClick() {
+    axios
+      .put("/api/department/delete", {
+        departmentKey: department.departmentKey,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setIsOpen(false);
+        setIsEditing(false);
+        setIsOpenDelete(false);
+        setAddCheck(!addCheck);
+      });
+  }
+
+  function handleReUseClick() {
+    axios
+      .put("/api/department/reUseDepartment", {
+        departmentKey: department.departmentKey,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setIsOpen(false);
+        setIsEditing(false);
+        setAddCheck(!addCheck);
+      });
+  }
 
   if (!department) {
     return;
@@ -51,13 +121,7 @@ export function DepartmentViewAndUpdateDialog({
             <Checkbox
               size={"lg"}
               defaultChecked={department.departmentActive}
-              onChange={(e) =>
-                setDepartmentData((prev) => ({
-                  ...prev,
-                  departmentActive: e.target.checked,
-                }))
-              }
-              readOnly={!isEditing}
+              readOnly
             >
               부서 사용여부
             </Checkbox>
@@ -71,7 +135,7 @@ export function DepartmentViewAndUpdateDialog({
                       departmentCode: e.target.value,
                     }))
                   }
-                  readOnly={true}
+                  readOnly
                 />
               </Field>
             </HStack>
@@ -132,9 +196,22 @@ export function DepartmentViewAndUpdateDialog({
         </DialogBody>
         <DialogFooter>
           {isEditing && (
-            <Button disabled={disable} onClick={handleUpdate}>
-              저장
-            </Button>
+            <>
+              {department.departmentActive ? (
+                <DeleteDialog
+                  isOpenDelete={isOpenDelete}
+                  setIsOpenDelete={setIsOpenDelete}
+                  handleDeleteClick={handleDeleteClick}
+                />
+              ) : (
+                <Button colorPalette={"green"} onClick={handleReUseClick}>
+                  재사용
+                </Button>
+              )}
+              <Button disabled={disable} onClick={handleUpdate}>
+                저장
+              </Button>
+            </>
           )}
           {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
         </DialogFooter>

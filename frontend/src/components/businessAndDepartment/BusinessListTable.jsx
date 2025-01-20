@@ -1,6 +1,5 @@
 import { Box, Table } from "@chakra-ui/react";
 import React from "react";
-import { Checkbox } from "../ui/checkbox.jsx";
 import { SortableColumnHeader } from "../tool/SortableColumnHeader.jsx";
 
 export function BusinessListTable({
@@ -13,14 +12,13 @@ export function BusinessListTable({
   const columnsList = [
     { key: "department_code", label: "부서번호" },
     { key: "department_name", label: "부서명" },
-    { key: "department_active", label: "사용여부" },
     { key: "department_tel", label: "전화번호" },
     { key: "department_fax", label: "팩스번호" },
   ];
 
   return (
     <Box>
-      <Table.Root variant={"outline"} interactive>
+      <Table.Root variant={"outline"}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"}>
             {columnsList.map((col) => (
@@ -41,12 +39,10 @@ export function BusinessListTable({
               key={list.departmentKey || index}
               _hover={{ cursor: "pointer" }}
               onClick={() => openDialog(list)}
+              bg={list.departmentActive ? "white" : "gray.200"}
             >
               <Table.Cell>{list.departmentCode}</Table.Cell>
               <Table.Cell>{list.departmentName}</Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={list.departmentActive} />
-              </Table.Cell>
               <Table.Cell>{list.departmentTel}</Table.Cell>
               <Table.Cell>{list.departmentFax}</Table.Cell>
             </Table.Row>

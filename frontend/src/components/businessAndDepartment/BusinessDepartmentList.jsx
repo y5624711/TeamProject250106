@@ -7,7 +7,6 @@ import { BusinessSearchAndFilter } from "./BusinessSearchAndFilter.jsx";
 import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
 import { DepartmentViewAndUpdateDialog } from "./DepartmentViewAndUpdateDialog.jsx";
-import { toaster } from "../ui/toaster.jsx";
 import { DepartmentAdd } from "./DepartmentAdd.jsx";
 
 export function BusinessDepartmentList() {
@@ -103,37 +102,6 @@ export function BusinessDepartmentList() {
     setIsOpen(true);
   }
 
-  const handleUpdateDepartment = () => {
-    axios
-      .put("/api/department/update", {
-        departmentKey: department.departmentKey,
-        departmentName: department.departmentName,
-        departmentTel: department.departmentTel,
-        departmentFax: department.departmentFax,
-        departmentActive: department.departmentActive,
-        departmentNot: department.departmentNote,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        // console.log(departmentList);
-        setAddCheck(!addCheck);
-        const message = data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        setIsEditing(false);
-        setIsOpen(false);
-      })
-      .catch((e) => {
-        const message = e.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-      });
-  };
-
   const handleAddCheck = () => {
     setAddCheck(!addCheck);
   };
@@ -190,7 +158,8 @@ export function BusinessDepartmentList() {
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         toggleEditing={() => setIsEditing(!isEditing)}
-        handleUpdateClick={handleUpdateDepartment}
+        setAddCheck={setAddCheck}
+        addCheck={addCheck}
       />
     </Box>
   );

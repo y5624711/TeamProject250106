@@ -166,11 +166,10 @@ public class CommonController {
     private ResponseEntity<Map<String, Object>> reUseSysCommonCode(@RequestBody CommonCode commonCode) {
         if (service.reUseSysCommonCode(commonCode.getCommonCodeKey())) {
             return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "코드를 다시 사용합니다.")));
+                    Map.of("type", "success", "text", "해당 코드를 다시 사용합니다.")));
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
                     Map.of("type", "error", "text", "오류가 발생했습니다.")));
         }
     }
-
 }
