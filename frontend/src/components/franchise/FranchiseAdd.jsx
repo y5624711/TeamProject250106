@@ -43,6 +43,11 @@ export function FranchiseAdd({ onClose, onSave }) {
           description: message.text,
         });
 
+        // 중복 체크 후, 메시지 띄우되 입력 창은 닫지 않기
+        if (res.data.message.type === "warning") {
+          return;
+        }
+
         if (res.data && res.data.franchiseKey) {
           onSave({
             franchiseKey: res.data.franchiseKey,

@@ -20,6 +20,13 @@ public class FranchiseController {
     // 가맹점 등록하기
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise) {
+        // 중복 체크
+        int duplicateCount = service.duplicateFranchise(franchise);
+        if (duplicateCount > 0) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "warning", "text", "중복된 항목이 존재합니다.")
+            ));
+        }
         if (service.validate(franchise)) {
             if (service.addFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of(

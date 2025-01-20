@@ -8,6 +8,17 @@ import java.util.List;
 @Mapper
 public interface FranchiseMapper {
 
+    // 중복 체크
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_FRNCHSMST
+            WHERE franchise_code = #{franchiseCode}
+            OR franchise_name = #{franchiseName}
+            OR franchise_no = #{franchiseNo}
+            OR franchise_tel = #{franchiseTel}
+           """)
+    int duplicateFranchise(Franchise franchise);
+
     // 가맹점 코드 생성하기
     @Select("""
             <script>

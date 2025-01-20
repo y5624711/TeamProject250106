@@ -33,6 +33,11 @@ public class FranchiseService {
                && franchiseNoValid && franchiseTelValid && franchiseAddressValid && franchisePostValid && franchiseStateValid && franchiseCityValid;
     }
 
+    // 중복 체크
+    public int duplicateFranchise(Franchise franchise) {
+        return mapper.duplicateFranchise(franchise);
+    }
+
     // 가맹점 등록하기
     public boolean addFranchise(Franchise franchise) {
         // 기존 가맹점 코드에서 최대 번호를 조회
