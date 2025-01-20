@@ -48,7 +48,7 @@ export function SystemCommonCodeList({
                 onClick={() => openDialog(list)}
                 bg={list.commonCodeActive ? "white" : "gray.200"}
               >
-                <Table.Cell>{list.commonCodeKey}</Table.Cell>
+                <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell>{list.commonCode}</Table.Cell>
                 <Table.Cell>{list.commonCodeName}</Table.Cell>
               </Table.Row>

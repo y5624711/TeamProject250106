@@ -79,7 +79,7 @@ public interface CommonMapper {
 
     @Update("""
             UPDATE TB_SYSCOMM
-            SET common_code_active=false
+            SET common_code_active = false
             WHERE common_code_key=#{commonCodeKey}
             """)
     int deleteSysCode(Integer commonCodeKey);
@@ -207,4 +207,20 @@ public interface CommonMapper {
     int editItemCommonCode(int itemCommonCodeKey, ItemCommonCode itemCommonCode);
 
 
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_SYSCOMM
+            <where>
+                common_code_active = true
+                <if test="commonCode != null and commonCode != ''">
+                    AND common_code = #{commonCode}
+                </if>
+                <if test="commonCodeName != null and commonCodeName != ''">
+                 AND common_code_name = #{commonCodeName}
+                </if>
+            </where>
+            </script>
+            """)
+    int checkSameName(String commonCode, String commonCodeName);
 }

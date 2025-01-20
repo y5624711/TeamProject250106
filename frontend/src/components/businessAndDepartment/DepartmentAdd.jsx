@@ -49,14 +49,17 @@ export function DepartmentAdd({ saved }) {
           type: message.type,
           description: message.text,
         });
+        setIsOpen(false);
         resetValue();
       })
       .catch((e) => {
-        const message = e.data.message;
+        console.log("호출됨");
+        const message = e.response.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
+        setIsOpen(true);
       })
       .finally(() => {
         saved();

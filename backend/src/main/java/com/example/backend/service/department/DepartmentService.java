@@ -71,4 +71,9 @@ public class DepartmentService {
         int cnt = mapper.reUseDepartment(departmentKey);
         return cnt == 1;
     }
+
+    public boolean checkSameNameCheck(Department department) {
+        String name = department.getDepartmentName().trim();
+        return mapper.checkSameName(name) == 0;
+    }
 }

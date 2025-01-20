@@ -101,7 +101,8 @@ public interface DepartmentMapper {
 
     @Update("""
             UPDATE TB_DEPARTMST
-            SET department_active = false
+            SET department_active = false,
+                department_code = ''
             WHERE department_key = #{departmentKey}
             """)
     int deleteDepartment(Integer departmentKey);
@@ -112,4 +113,12 @@ public interface DepartmentMapper {
             WHERE department_key = #{departmentKey}
             """)
     int reUseDepartment(Integer departmentKey);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_DEPARTMST
+            WHERE department_name = #{departmentName}
+            AND department_active = '1';
+            """)
+    int checkSameName(String departmentName);
 }

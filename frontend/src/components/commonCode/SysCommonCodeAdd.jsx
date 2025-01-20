@@ -51,7 +51,7 @@ export function SysCommonCodeAdd({ setAddCheck, addCheck }) {
           handleCloseButton();
         })
         .catch((e) => {
-          const message = e.data.message;
+          const message = e.response.data.message;
           toaster.create({
             type: message.type,
             description: message.text,

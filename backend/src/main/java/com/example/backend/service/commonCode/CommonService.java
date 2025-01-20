@@ -114,4 +114,10 @@ public class CommonService {
         int cnt = mapper.reUseSysCode(commonCodeKey);
         return cnt == 1;
     }
+
+    public boolean checkSameName(CommonCode commonCode) {
+        int cnt = mapper.checkSameName(commonCode.getCommonCode(), commonCode.getCommonCodeName());
+
+        return cnt == 0;
+    }
 }

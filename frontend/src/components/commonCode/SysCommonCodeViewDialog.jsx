@@ -78,24 +78,6 @@ export function SysCommonCodeViewDialog({
       });
   }
 
-  function handleReUseClick() {
-    axios
-      .put("/api/commonCode/system/reUseSys", {
-        commonCodeKey: sysCommonCode.commonCodeKey,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        const message = data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        setIsOpen(false);
-        setIsEditing(false);
-        setAddCheck(!addCheck);
-      });
-  }
-
   let disable = false;
   if (sysCommonCode !== null) {
     disable = !(

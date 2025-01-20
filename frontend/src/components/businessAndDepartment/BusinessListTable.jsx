@@ -41,7 +41,7 @@ export function BusinessListTable({
               onClick={() => openDialog(list)}
               bg={list.departmentActive ? "white" : "gray.200"}
             >
-              <Table.Cell>{list.departmentCode}</Table.Cell>
+              <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{list.departmentName}</Table.Cell>
               <Table.Cell>{list.departmentTel}</Table.Cell>
               <Table.Cell>{list.departmentFax}</Table.Cell>
