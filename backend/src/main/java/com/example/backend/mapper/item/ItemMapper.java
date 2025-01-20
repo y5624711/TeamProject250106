@@ -25,46 +25,45 @@ public interface ItemMapper {
     List<Map<String, String>> getItemCommonCode();
 
     @Select("""
-             <script>
-                 SELECT 
-                     i.*,
-                     ic.item_common_name,
-                     c.customer_name
-                 FROM TB_ITEMMST i
-                 LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-                 LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-                 WHERE 1=1
+            <script>
+                SELECT\s
+                    i.*,
+                    ic.item_common_name,
+                    c.customer_name
+                FROM TB_ITEMMST i
+                LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+                WHERE 1=1
             
-                 <if test="active == false">
-                     AND i.item_active = TRUE
-                 </if>
+                <if test="active == false">
+                    AND i.item_active = TRUE
+                </if>
             
-                 <if test="keyword != null and keyword.trim() != ''">
-                     <if test="type == 'all'">
-                         AND (
-                             ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
-                             OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                             OR i.unit LIKE CONCAT('%', #{keyword}, '%')
-                             OR i.size LIKE CONCAT('%', #{keyword}, '%')
-                             OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                             OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
-                         )
-                     </if>
-                     <if test="type != 'all' and type != null">
-                         AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-                     </if>
-                 </if>
+                <if test="keyword != null and keyword.trim() != ''">
+                    <if test="type == 'all'">
+                        AND (
+                            ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR i.unit LIKE CONCAT('%', #{keyword}, '%')
+                            OR i.size LIKE CONCAT('%', #{keyword}, '%')
+                            OR CAST(i.input_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                            OR CAST(i.output_price AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </if>
+                    <if test="type != 'all' and type != null">
+                        AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </if>
             
-                 <choose>
-                     <when test="sort != null and sort != ''">
-                         ORDER BY ${sort} ${order}
-                     </when>
-                     <otherwise>
-                         ORDER BY i.item_key DESC
-                     </otherwise>
-                 </choose>
-                 LIMIT #{offset}, 10
-             </script>
+                <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+                </if>
+                <if test="sort == null">
+                    ORDER BY i.item_key DESC
+                </if>
+            
+                LIMIT #{offset}, 10
+            </script>
             """)
     List<Item> getItemList(Integer offset, Boolean active, String type, String keyword, String sort, String order);
 

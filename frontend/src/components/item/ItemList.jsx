@@ -17,7 +17,7 @@ export function ItemList({
   const itemSearchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "품목명", value: "itemName" },
+      { label: "품목명", value: "itemCommonName" },
       { label: "담당 업체", value: "customerName" },
       { label: "규격", value: "size" },
       { label: "단위", value: "unit" },
