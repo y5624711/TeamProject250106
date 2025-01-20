@@ -134,7 +134,7 @@ public class CommonController {
     }
 
     @PutMapping("system/updateSys")
-    private ResponseEntity<Map<String, Object>> updateDepartment(@RequestBody CommonCode commonCode) {
+    private ResponseEntity<Map<String, Object>> updateSysCommonCode(@RequestBody CommonCode commonCode) {
         System.out.println("commonCode = " + commonCode);
         if (service.validateSysCode(commonCode)) {
             if (service.updateSysCode(commonCode)) {
@@ -150,4 +150,27 @@ public class CommonController {
                             Map.of("type", "warning", "text", "내용을 입력해 주세요")));
         }
     }
+
+    @PutMapping("system/deleteSys")
+    private ResponseEntity<Map<String, Object>> deleteSysCommonCode(@RequestBody CommonCode commonCode) {
+        if (service.deleteSysCommonCode(commonCode.getCommonCodeKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "삭제 되었습니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "삭제 되지 않았습니다.")));
+        }
+    }
+
+    @PutMapping("system/reUseSys")
+    private ResponseEntity<Map<String, Object>> reUseSysCommonCode(@RequestBody CommonCode commonCode) {
+        if (service.reUseSysCommonCode(commonCode.getCommonCodeKey())) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "코드를 다시 사용합니다.")));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "오류가 발생했습니다.")));
+        }
+    }
+
 }

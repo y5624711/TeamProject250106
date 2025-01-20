@@ -104,4 +104,14 @@ public class CommonService {
         int cnt = mapper.updateSysCode(commonCode);
         return cnt == 1;
     }
+
+    public boolean deleteSysCommonCode(Integer commonCodeKey) {
+        int cnt = mapper.deleteSysCode(commonCodeKey);
+        return cnt == 1;
+    }
+
+    public boolean reUseSysCommonCode(Integer commonCodeKey) {
+        int cnt = mapper.reUseSysCode(commonCodeKey);
+        return cnt == 1;
+    }
 }
