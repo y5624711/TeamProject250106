@@ -44,8 +44,10 @@ function CustomerList({
     items: [
       { label: "전체", value: "all" },
       { label: "업체명", value: "customerName" },
+      { label: "사업자번호", value: "customerNo" },
       { label: "취급 물품", value: "itemName" },
       { label: "대표자", value: "customerRep" },
+      { label: "전화번호", value: "customerTel" },
     ],
   });
 
@@ -130,6 +132,19 @@ function CustomerList({
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("customer_no")}>
+              <HStack align={"flex-start"}>
+                <Stack>사업자번호</Stack>
+                <Stack>
+                  {standard.sort === "customer_no" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
               <HStack align={"flex-start"}>
                 <Stack>취급 물품</Stack>
@@ -148,6 +163,19 @@ function CustomerList({
                 <Stack>대표</Stack>
                 <Stack>
                   {standard.sort === "customer_rep" &&
+                    (standard.order === "asc" ? (
+                      <FaCaretUp />
+                    ) : (
+                      <FaCaretDown />
+                    ))}
+                </Stack>
+              </HStack>
+            </Table.ColumnHeader>
+            <Table.ColumnHeader onClick={() => onHeader("customer_tel")}>
+              <HStack align={"flex-start"}>
+                <Stack>전화번호</Stack>
+                <Stack>
+                  {standard.sort === "customer_tel" &&
                     (standard.order === "asc" ? (
                       <FaCaretUp />
                     ) : (
@@ -176,8 +204,10 @@ function CustomerList({
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{customer.customerName}</Table.Cell>
+              <Table.Cell>{customer.customerNo}</Table.Cell>
               <Table.Cell>{customer.itemName}</Table.Cell>
               <Table.Cell>{customer.customerRep}</Table.Cell>
+              <Table.Cell>{customer.customerTel}</Table.Cell>
               {/*<Table.Cell>*/}
               {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
               {/*</Table.Cell>*/}
