@@ -52,10 +52,8 @@ public class ItemService {
     public Map<String, Object> getItemList(Integer page, Boolean active, String type, String keyword, String sort, String order) {
         // LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
-        type = toSnakeCase(type);
-        keyword = toSnakeCase(keyword);
-        sort = toSnakeCase(sort);
-        order = toSnakeCase(order);
+        type = resolveType(toSnakeCase(type));
+        sort = resolveType(toSnakeCase(sort));
 
         return Map.of("list", mapper.getItemList(offset, active, type, keyword, sort, order),
                 "count", mapper.countAll(active, type, keyword));
@@ -69,6 +67,33 @@ public class ItemService {
         return camelCase
                 .replaceAll("([a-z])([A-Z])", "$1_$2") // 소문자 뒤 대문자에 언더스코어 추가
                 .toLowerCase(); // 전체를 소문자로 변환
+    }
+
+    // type 값에 따라 해당하는 SQL 필드명으로 변경
+    private String resolveType(String type) {
+        if (type == null || type.isEmpty() || type.equals("all")) {
+            return "all";
+        }
+        switch (type) {
+            case "item_key":
+                return "i.item_key";
+            case "unit":
+                return "i.unit";
+            case "size":
+                return "i.size";
+            case "item_common_name":
+                return "ic.item_common_name";
+            case "customer_name":
+                return "c.customer_name";
+            case "input_price":
+                return "i.input_price";
+            case "output_price":
+                return "i.output_price";
+            case "item_active":
+                return "i.item_active";
+            default:
+                throw new IllegalArgumentException("Invalid type: " + type);
+        }
     }
 
     // 품목 1개 정보 가져오기

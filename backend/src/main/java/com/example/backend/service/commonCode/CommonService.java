@@ -37,9 +37,7 @@ public class CommonService {
     public Map<String, Object> getItemCommonCodeList(Integer page, Boolean active, String sort, String order, String type, String keyword) {
         Integer offset = (page - 1) * 10;
         type = toSnakeCase(type);
-        keyword = toSnakeCase(keyword);
         sort = toSnakeCase(sort);
-        order = toSnakeCase(order);
         return Map.of("list", mapper.getItemCommonCodeList(offset, active, sort, order, type, keyword),
                 "count", mapper.countAll(active, type, keyword));
     }
