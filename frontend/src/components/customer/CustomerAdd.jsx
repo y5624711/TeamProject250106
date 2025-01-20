@@ -20,6 +20,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Field } from "../ui/field.jsx";
+import { toaster } from "../ui/toaster.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
@@ -59,6 +60,13 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   };
 
   const handleSaveClick = () => {
+    if (!isValid) {
+      toaster.create({
+        description: "모든 필수 입력값을 입력해 주세요.",
+        type: "error",
+      });
+      return;
+    }
     const customerData = {
       // customerCode,
       customerName,
@@ -98,6 +106,15 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   //     { label: "취급 물품", value: "itemName" },
   //   ],
   // });
+
+  const isValid =
+    customerName &&
+    customerRep &&
+    itemCode &&
+    customerNo &&
+    customerTel &&
+    customerPost &&
+    customerAddress;
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onCancel}>
@@ -215,7 +232,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button onClick={handleSaveClick}>등록</Button>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
