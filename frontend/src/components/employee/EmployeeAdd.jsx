@@ -16,8 +16,21 @@ import { Button } from "../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
 import { Field } from "../ui/field.jsx";
-import { CustomerSelect } from "./CustomerSelect.jsx";
-import { EmployeeSelect } from "./EmployeeSelect.jsx";
+import * as PropTypes from "prop-types";
+import { SelectViewComp } from "./SelectViewComp.jsx";
+
+SelectViewComp.propTypes = {
+  formdata: PropTypes.shape({
+    note: PropTypes.string,
+    password: PropTypes.string,
+    selectedCommonCode: PropTypes.string,
+    name: PropTypes.string,
+    tel: PropTypes.string,
+    employeeNo: PropTypes.string,
+    departMent: PropTypes.string,
+    workPlace: PropTypes.string,
+  }),
+};
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -87,6 +100,13 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       ...prev,
       selectedCommonCode: value,
     }));
+    console.log("formData", formData);
+  };
+  const handleWorkPlaceChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      workPlace: value,
+    }));
   };
 
   const formDataClear = () => {
@@ -143,7 +163,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       // 등록일 때
       const data = {
         employeeCommonCode: formData.selectedCommonCode.value.join(""),
-        employeeWorkPlaceCode: formData.workPlace,
+        employeeWorkPlaceCode: formData.workPlace.value?.[0],
         employeeName: formData.name,
         employeeTel: formData.tel,
         employeeNote: formData.note,
@@ -171,6 +191,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     }
   };
 
+  console.log("값 변경 확인", formData.workPlace);
+
   const handleDelete = () => {
     axios
       .put("api/employee/delete", { employeeKey: viewKey })
@@ -196,48 +218,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     fetchEmployeeData(); // 원래 데이터로 복원
   };
 
-  //공통코드 뭐 선택했는지에 따라 다르게 보여주는 컴포넌트
-  const abc = (formData) => {
-    const checkCommonCode = formData.selectedCommonCode.value[0];
-    console.log("체크 공통코드", checkCommonCode);
-    const frameworks = createListCollection({
-      items: [
-        { label: "협력업체", value: "CUS" },
-        { label: "직원", value: "EMP" },
-      ],
-    });
-
-    if (checkCommonCode === "CUS") {
-      axios.get("api/customer/codenames").then((res) => {
-        console.log("협력업체 코드 와 이름", res.data);
-      });
-    } else {
-      axios.get("api/department/codenames").then((res) => {
-        console.log("부서 코드와 이름 ", res.data);
-      });
-    }
-
-    return (
-      <>
-        {checkCommonCode === "CUS" ? (
-          <CustomerSelect
-            frameworks={frameworks}
-            formData={formData}
-            handleeSelectChange={handleSelectChange}
-          />
-        ) : (
-          <EmployeeSelect
-            frameworks={frameworks}
-            formData={formData}
-            handleeSelectChange={handleSelectChange}
-          />
-        )}
-      </>
-    );
-  };
-
   const isCommonCodeSelectedCheck =
-    viewKey === -1 && formData.selectedCommonCode !== null;
+    viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
   return (
     <Box>
@@ -262,17 +244,25 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             ))}
           </SelectContent>
         </SelectRoot>
-        {isCommonCodeSelectedCheck && abc(formData)}
 
-        <Field label={"소속코드"} required>
-          <Input
-            name="workPlace"
-            placeholder={"소속 코드 / 소속 명"}
-            value={formData.workPlace}
-            onChange={handleInputChange}
-            readOnly={viewKey !== -1}
+        {isCommonCodeSelectedCheck && (
+          <SelectViewComp
+            formData={formData}
+            handleSelectChange={handleWorkPlaceChange}
           />
-        </Field>
+        )}
+
+        {viewKey !== -1 && (
+          <Field label={"소속코드"} required>
+            <Input
+              name="workPlace"
+              placeholder={"소속 코드 / 소속 명"}
+              value={formData.workPlace}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+        )}
         <Field label={"직원명"} required>
           <Input
             name="name"

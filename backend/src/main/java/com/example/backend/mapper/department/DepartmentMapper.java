@@ -10,7 +10,7 @@ import java.util.List;
 public interface DepartmentMapper {
     @Select("""
             SELECT department_id departmentId, common_code commonCode, name
-            FROM department
+            FROM TB_DEPARTMST
             """)
     List<Department> listUp();
 
