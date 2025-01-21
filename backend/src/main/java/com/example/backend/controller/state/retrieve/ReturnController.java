@@ -23,14 +23,21 @@ public class ReturnController {
     @GetMapping("serialNo/{serialNo}")
     public List<Return> getSerialNo(@PathVariable String serialNo) {
 //        System.out.println("controller" + serialNo);
-        return service.getRequestInfo(serialNo);
+        return service.getStandardInfo(serialNo);
     }
 
     //반품 요청
     @PostMapping("request")
     public void requestReturn(@RequestBody Return requestInfo) {
-        System.out.println("request: " + requestInfo);
+//        System.out.println("request: " + requestInfo);
         service.addRequest(requestInfo);
+    }
+
+    //반품 요청 정보 불러오기
+    @GetMapping("approve/{returnRequestKey}")
+    public List<Return> getRequest(@PathVariable String returnRequestKey) {
+//        System.out.println("키값: " + returnRequestKey);
+        return service.getRequestInfo(returnRequestKey);
     }
 
 

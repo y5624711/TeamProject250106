@@ -15,5 +15,5 @@ VALUES ('REF', '00000000000000000005');
 
 INSERT INTO TB_EMPMST
 (employee_common_code, employee_workplace_code, employee_no, employee_name, employee_tel)
-VALUES ('BIZ', 'BIZ0000000001', 'EMPBIZ0000001', '김철수', '01044512312');
+VALUES ('CUS', 'CUS0000000003', 'CUSEMP0000003', '김승은', '21321');
 

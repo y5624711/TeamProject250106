@@ -18,14 +18,14 @@ public class ReturnService {
 
     //반환 관리 리스트
     public List<Return> returnList() {
-        System.out.println("리스트: " + mapper.getReturnList());
+//        System.out.println("리스트: " + mapper.getReturnList());
         return mapper.getReturnList();
     }
 
     //시리얼 번호로 정보 조회
-    public List<Return> getRequestInfo(String serialNo) {
+    public List<Return> getStandardInfo(String serialNo) {
 //        System.out.println("service: " + mapper.getRequestInfo(serialNo));
-        return mapper.getRequestInfo(serialNo);
+        return mapper.getStandardInfo(serialNo);
     }
 
     public void addRequest(Return requestInfo) {
@@ -35,5 +35,10 @@ public class ReturnService {
         requestInfo.setFranchiseCode(franchiseCode);
 
         mapper.addRequest(requestInfo);
+    }
+
+    public List<Return> getRequestInfo(String returnRequestKey) {
+        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
+        return mapper.getRequestInfo(returnRequestKey);
     }
 }

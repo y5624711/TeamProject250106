@@ -18,7 +18,7 @@ public class Return {
     String businessEmployeeName;
     String customerCode;
     String customerName;
-    String customerConfigurerKey;
+    String customerConfigurerNo;
     String customerConfigurerName;
     String customerEmployeeNo;
     String customerEmployeeName;
