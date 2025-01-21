@@ -13,7 +13,7 @@ export function ItemCommonCodeList({
   onRowClick,
 }) {
   // 검색 옵션
-  const itemSearchOptions = createListCollection({
+  const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
       { label: "품목코드", value: "itemCommonCode" },
@@ -31,7 +31,7 @@ export function ItemCommonCodeList({
   return (
     <Box px={10}>
       <SearchBar
-        itemSearchOptions={itemSearchOptions}
+        searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
       <ActiveSwitch
