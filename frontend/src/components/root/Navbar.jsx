@@ -31,7 +31,7 @@ export function Navbar() {
 
   return (
     <Box>
-      <Flex gap={5} pt={5} w={"80%"} mx={"auto"}>
+      <Flex gap={5} pt={5} w={"95%"} mx={"auto"}>
         <Heading>Choongang System</Heading>
         <Spacer />
         <Text>유저 아이디</Text>

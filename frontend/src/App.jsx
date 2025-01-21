@@ -75,7 +75,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/auth",
+    path: "/login",
     element: <LoginPage />,
   },
 ]);
