@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   createListCollection,
+  Flex,
   Heading,
   HStack,
   Input,
@@ -150,17 +151,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   };
 
   return (
-    <Box h={"100vh"}>
-      <Heading>
-        인사관리
-        <Button
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          추가버튼
-        </Button>
-      </Heading>
+    <Box h={"100vh"} p={10}>
+      <Heading>인사관리</Heading>
       <HStack
         style={{
           alignItems: "flex-start",
@@ -427,25 +419,35 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <PaginationRoot
-        onPageChange={handlePageChange}
-        count={count}
-        pageSize={10}
-        page={page}
-        defaultPage={page}
-        variant={"solid"}
-      >
-        <HStack>
-          <PaginationPrevTrigger>
-            <FaArrowLeft />
-          </PaginationPrevTrigger>
-          <PaginationItems />
-          <PaginationNextTrigger>
-            <FaArrowRight />
-          </PaginationNextTrigger>
+      <Flex justify="center">
+        <HStack gap={30}>
+          <Box>
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={count}
+              pageSize={10}
+              page={page}
+              defaultPage={page}
+              variant={"solid"}
+            >
+              <PaginationPrevTrigger>
+                <FaArrowLeft />
+              </PaginationPrevTrigger>
+              <PaginationItems />
+              <PaginationNextTrigger>
+                <FaArrowRight />
+              </PaginationNextTrigger>
+            </PaginationRoot>
+          </Box>
+          <Button
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            추가버튼
+          </Button>
         </HStack>
-      </PaginationRoot>
-
+      </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}
         modalChange={handleModalControl}
