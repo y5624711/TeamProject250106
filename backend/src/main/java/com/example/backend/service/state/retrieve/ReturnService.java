@@ -1,6 +1,7 @@
 package com.example.backend.service.state.retrieve;
 
 import com.example.backend.dto.state.retrieve.Return;
+import com.example.backend.mapper.standard.franchise.FranchiseMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReturnService {
     final ReturnMapper mapper;
+    final FranchiseMapper franchiseMapper;
 
     //반환 관리 리스트
     public List<Return> returnList() {
-//        System.out.println("총 리스트" + mapper.getReturnList());
+        System.out.println("총 리스트" + mapper.getReturnList());
         return mapper.getReturnList();
     }
 
@@ -24,5 +26,14 @@ public class ReturnService {
     public List<Return> getRequestInfo(String serialNo) {
 //        System.out.println("service: " + mapper.getRequestInfo(serialNo));
         return mapper.getRequestInfo(serialNo);
+    }
+
+    public void addRequest(Return requestInfo) {
+        //프랜차이즈 이름-> 코드
+        String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
+//        System.out.println("프랜차이즈 이름, 코드: " + requestInfo.getFranchiseName() + franchiseCode);
+        requestInfo.setFranchiseCode(franchiseCode);
+
+        mapper.addRequest(requestInfo);
     }
 }

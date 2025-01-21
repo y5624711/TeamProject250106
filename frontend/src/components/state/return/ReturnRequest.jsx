@@ -51,7 +51,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     }
   }, [serialNo]);
 
-  console.log("requestData", requestData);
+  // console.log("requestData", requestData);
 
   //반품 요청
   const handleRequestButtonClick = () => {

@@ -17,6 +17,8 @@ import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 
 function ReturnList({ returnList }) {
+  console.log(returnList);
+
   return (
     <Box>
       {/*검색창*/}
@@ -68,7 +70,7 @@ function ReturnList({ returnList }) {
               <Table.Cell>{data.serialNo}</Table.Cell>
               <Table.Cell>{data.returnNo}</Table.Cell>
               <Table.Cell>{data.businessEmployeeNo}</Table.Cell>
-              <Table.Cell>{data.businessEmployeeNo}</Table.Cell>
+              <Table.Cell>{data.businessEmployeeName}</Table.Cell>
               <Table.Cell>{data.customerName}</Table.Cell>
               <Table.Cell>{data.customerEmployeeNo}</Table.Cell>
               <Table.Cell>{data.customerEmployeeNo}</Table.Cell>

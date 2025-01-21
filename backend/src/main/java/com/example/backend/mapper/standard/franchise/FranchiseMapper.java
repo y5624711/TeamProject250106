@@ -161,4 +161,12 @@ public interface FranchiseMapper {
             WHERE franchise_key = #{franchiseKey}
             """)
     int deleteFranchise(int franchiseKey);
+
+    // 가맹정 이름으로 코드 조회 (jm)
+    @Select("""
+            SELECT franchise_code
+            FROM TB_FRNCHSMST
+            WHERE franchise_name = #{franchiseName}
+            """)
+    String getFranchiseCode(String franchiseName);
 }

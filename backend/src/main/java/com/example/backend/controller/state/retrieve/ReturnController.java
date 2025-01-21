@@ -26,9 +26,11 @@ public class ReturnController {
         return service.getRequestInfo(serialNo);
     }
 
-    //반환 요청
+    //반품 요청
     @PostMapping("request")
-    public void requestReturn() {
+    public void requestReturn(@RequestBody Return requestInfo) {
+        System.out.println("request: " + requestInfo);
+        service.addRequest(requestInfo);
     }
 
 

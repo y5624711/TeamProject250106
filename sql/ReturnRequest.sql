@@ -17,3 +17,7 @@ DROP TABLE TB_RTN_REQ;
 INSERT INTO TB_RTN_REQ
 (serial_no, franchise_code, business_employee_no, customer_code, return_consent)
 VALUES ('00000000000000000004', 'FRN0000000001', 'BIZEMP0000002', 'CUS0000000003', true);
+
+SELECT rr.franchise_code, rr.serial_no, rr.business_employee_no, rr.customer_code, return_consent, employee_name
+FROM TB_RTN_REQ rr
+         LEFT JOIN TB_EMPMST em ON em.employee_no = rr.business_employee_no;

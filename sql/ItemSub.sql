@@ -12,3 +12,8 @@ CREATE TABLE TB_ITEMSUB
 INSERT INTO TB_ITEMSUB
     (item_common_code, serial_no)
 VALUES ('REF', '00000000000000000005');
+
+INSERT INTO TB_EMPMST
+(employee_common_code, employee_workplace_code, employee_no, employee_name, employee_tel)
+VALUES ('BIZ', 'BIZ0000000001', 'EMPBIZ0000001', '김철수', '01044512312');
+

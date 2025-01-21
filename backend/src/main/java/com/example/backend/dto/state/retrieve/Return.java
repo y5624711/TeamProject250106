@@ -9,6 +9,7 @@ public class Return {
     Integer returnRequestKey;
     Integer returnApproveKey;
     String serialNo;
+    String itemCommonCode;
     String itemCommonName;
     String returnNo;
     String franchiseCode;
