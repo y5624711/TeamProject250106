@@ -18,6 +18,12 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 요청 테이블에서 요청 가져오기
+    @GetMapping("list/request")
+    public List<Install> getInstallRequest() {
+        return service.getInstallRequest();
+    }
+
     // 설치 가능한 품목명, 품목 코드 가져오기
     @GetMapping("commonCode")
     public List<Map<String, String>> getInstallItemList() {

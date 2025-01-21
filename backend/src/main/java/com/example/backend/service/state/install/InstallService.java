@@ -30,4 +30,9 @@ public class InstallService {
     public List<Map<String, String>> getInstallItemList() {
         return mapper.getInstallItemList();
     }
+
+    // 설치 요청 테이블에서 요청 가져오기
+    public List<Install> getInstallRequest() {
+        return mapper.getInstallRequest();
+    }
 }
