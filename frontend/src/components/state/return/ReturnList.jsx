@@ -16,7 +16,7 @@ import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 
-function ReturnList(props) {
+function ReturnList({ returnList }) {
   return (
     <Box>
       {/*검색창*/}
@@ -58,9 +58,20 @@ function ReturnList(props) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
+          {returnList.map((each) => (
+            <Table.Row>
+              <Table.Cell>#</Table.Cell>
+              <Table.Cell>{each.franchiseCode}</Table.Cell>
+              <Table.Cell>{each.serialNo}</Table.Cell>
+              <Table.Cell>{each.businessEmployeeNo}</Table.Cell>
+              <Table.Cell>{each.businessEmployeeNo}</Table.Cell>
+              <Table.Cell>{each.customerCode}</Table.Cell>
+              <Table.Cell>{each.customerEmployeeNo}</Table.Cell>
+              <Table.Cell>{each.customerEmployeeNo}</Table.Cell>
+              <Table.Cell>{each.returnDate}</Table.Cell>
+              <Table.Cell>{each.returnConsent}</Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table.Root>
 

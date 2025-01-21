@@ -15,5 +15,5 @@ CREATE TABLE TB_RTN_REQ
 DROP TABLE TB_RTN_REQ;
 
 INSERT INTO TB_RTN_REQ
-    (serial_no, franchise_code, business_employee_no, customer_code)
-VALUES ('00000000000000000001', 'FRN0000000001', 'BIZEMP0000002', 'CUS0000000002');
+(serial_no, franchise_code, business_employee_no, customer_code, return_consent)
+VALUES ('00000000000000000004', 'FRN0000000001', 'BIZEMP0000002', 'CUS0000000003', true);
