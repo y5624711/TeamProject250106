@@ -53,16 +53,16 @@ export function InstkConfirmModal() {
                 <Input readOnly />
               </Field>
             </HStack>
-            <Field label={"요청자(본사)"} orientation="horizontal">
+            <Field label={"구매 요청자 "} orientation="horizontal">
               <Input readOnl />
             </Field>
-            <Field label={"승인자(협력업체)"} orientation="horizontal">
+            <Field label={"구매 승인자"} orientation="horizontal">
               <Input readOnly />
             </Field>
             <Field label={"창고 주소(코드)"} orientation="horizontal">
               <Input readOnly />
             </Field>
-            <Field label={"승인자"} orientation="horizontal">
+            <Field label={"가입고 승인자"} orientation="horizontal">
               <Input readOnly />
             </Field>
             <Field label={"비고"} orientation="horizontal">
@@ -72,9 +72,9 @@ export function InstkConfirmModal() {
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button variant="outline">취소</Button>
+            <Button variant="outline">입고 승인</Button>
           </DialogActionTrigger>
-          <Button>설치 완료</Button>
+          <Button>입고 반려</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

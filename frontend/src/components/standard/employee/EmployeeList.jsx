@@ -61,7 +61,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   useEffect(() => {
     // 전체 직원 리스트 불러오기
     axios
-      .get("/api/employee/list", {
+      .get("api/employee/list", {
         params: {
           page: page,
           isActiveVisible: isActiveVisible,

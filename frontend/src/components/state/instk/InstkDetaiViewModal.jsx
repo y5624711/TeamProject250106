@@ -70,7 +70,7 @@ export function InstkDetaiViewModal() {
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          <Button>설치 완료</Button>
+          <Button> 완료</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

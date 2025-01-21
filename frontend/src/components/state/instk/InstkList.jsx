@@ -1,9 +1,19 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
+import axios from "axios";
 
 export function InstkList() {
+  const [instkList, setInstkList] = useState([]);
+  useEffect(() => {
+    axios.get("api/instk/list").then((res) => {
+      setInstkList(res.data);
+    });
+  }, []);
+
+  console.log(instkList, "instklist");
+
   return (
     <Box>
       <Heading>구매/설치관리 >가입고 관리</Heading>
@@ -22,15 +32,19 @@ export function InstkList() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell>a.index</Table.Cell>
-            <Table.Cell>a.</Table.Cell>
-            <Table.Cell>3</Table.Cell>
-            <Table.Cell>4</Table.Cell>
-            <Table.Cell>5</Table.Cell>
-            <Table.Cell>6</Table.Cell>
-            <Table.Cell>7</Table.Cell>
-          </Table.Row>
+          {instkList.map((item) => {
+            return (
+              <Table.Row>
+                <Table.Cell>{item.inputKey}</Table.Cell>
+                <Table.Cell>{item.inputCommonCode}</Table.Cell>
+                <Table.Cell>{item.inputNo}</Table.Cell>
+                <Table.Cell>{"품목명"}</Table.Cell>
+                <Table.Cell>{"협력업체"}</Table.Cell>
+                <Table.Cell>{"날짜"}</Table.Cell>
+                <Table.Cell>{item.inputConsent}</Table.Cell>
+              </Table.Row>
+            );
+          })}
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
