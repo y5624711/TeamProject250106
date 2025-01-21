@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Input, Spinner, Stack, Text } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { Button } from "../../components/ui/button.jsx";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
@@ -35,6 +35,10 @@ export function LoginPage() {
           description: message.text,
         });
       });
+  }
+
+  if (authentication) {
+    <Spinner />;
   }
 
   return (

@@ -17,7 +17,6 @@ function AuthenticationProvider({ children }) {
     }
     if (name) {
       setUserName(name); // name 상태 업데이트
-      console.log(name);
     }
   }, []);
 
@@ -61,6 +60,7 @@ function AuthenticationProvider({ children }) {
 
   if (userToken.scope) {
     isAdmin = userToken.scope.split(" ").includes("EMP");
+    console.log(userToken.scope);
   }
 
   return (

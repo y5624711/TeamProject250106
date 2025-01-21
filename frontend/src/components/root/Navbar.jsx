@@ -34,7 +34,9 @@ export function Navbar() {
   return (
     <Box>
       <Flex gap={5} pt={5} w={"95%"} mx={"auto"}>
-        <Heading>Choongang System</Heading>
+        <Heading _hover={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+          Choongang System
+        </Heading>
         <Spacer />
         {isAuthenticated && <NavItem>{name}님 환영합니다</NavItem>}
 

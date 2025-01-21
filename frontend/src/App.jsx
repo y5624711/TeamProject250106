@@ -16,6 +16,8 @@ import Location from "./page/standard/location/Location.jsx";
 import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
+import { ProtectedRoute } from "./components/tool/ProtectedRoute.jsx";
+import { GuestRoute } from "./components/tool/GuestRoute.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -32,7 +34,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <Main /> },
+      { index: true, element: <ProtectedRoute element={<Main />} /> },
       { path: "business", element: <BusinessAndDepartment /> },
       { path: "commonCode/system", element: <SystemCommonCode /> },
       {
@@ -75,7 +77,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <GuestRoute element={<LoginPage />} />,
   },
 ]);
 
