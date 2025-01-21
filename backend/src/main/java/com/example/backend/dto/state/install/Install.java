@@ -20,7 +20,9 @@ public class Install {
     private String franchiseName;
     private String franchiseAddress;
     private String departmentName;
-    private String employeeName;
+    private String businessEmployeeName;
     private String customerName;
+    private String warehouseName;
+    private String currentState;
 
 }

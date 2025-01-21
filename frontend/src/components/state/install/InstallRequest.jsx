@@ -38,11 +38,6 @@ export function InstallRequest({ isOpen, onClose }) {
   const [installItemList, setInstallItemList] = useState([]);
   const [installRequest, setInstallRequest] = useState(initialInstallRequest);
 
-  useEffect(() => {
-    console.log(installItemList);
-    console.log(installRequest);
-  }, [installRequest]);
-
   // 요청 창 닫히면 초기화
   const handleClose = () => {
     setInstallRequest(initialInstallRequest);
