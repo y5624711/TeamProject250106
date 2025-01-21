@@ -29,10 +29,13 @@ function ReturnApprove({
 
   //요청 정보 가져오기
   useEffect(() => {
-    axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-      console.log("호출", res.data);
-      setApproveData(res.data[0]);
-    });
+    if (returnRequestKey) {
+      setApproveData(initialApproveData);
+      axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
+        console.log("호출", res.data);
+        setApproveData(res.data[0]);
+      });
+    }
   }, [returnRequestKey]);
 
   //정보 기입
@@ -47,7 +50,9 @@ function ReturnApprove({
     <DialogRoot open={isOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>반품 승인 여부</DialogTitle>
+          <DialogTitle>
+            {approveData.returnConsent ? "반품 승인 상세" : "반품 승인 여부"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Field orientation="horizontal" label="시리얼 번호">
@@ -132,8 +137,14 @@ function ReturnApprove({
           )}
         </DialogBody>
         <DialogFooter>
-          <Button onClick={onClose}>취소</Button>
-          <Button>승인</Button>
+          {approveData.returnConsent ? (
+            <Button onClick={onClose}>목록으로</Button>
+          ) : (
+            <Box>
+              <Button onClick={onClose}>취소</Button>
+              <Button>승인</Button>
+            </Box>
+          )}
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
