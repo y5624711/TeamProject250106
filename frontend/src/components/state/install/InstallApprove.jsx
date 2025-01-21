@@ -50,7 +50,7 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
       installRequestAmount: installRequest[0]?.installRequestAmount,
       customerInstallerNo,
       customerEmployeeNo: "CUS0000000010", // 협력업체 직원 사번 (로그인된 사용자)
-      installScheduleDate,
+      installScheduleDate: new Date(installScheduleDate),
       installApproveNote: installRequest[0]?.installRequestNote || "", // 비고
     };
 
@@ -145,7 +145,7 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
                 <HStack>
                   {/*로그인 한 사용자의 사번, 이름 - customer*/}
                   <Field label={"승인자 사번"} orientation="horizontal">
-                    <Input value={"CUS0000000010"} readOnly />
+                    <Input value={"CUS000000006"} readOnly />
                   </Field>
                   <Field label={"승인자"} orientation="horizontal">
                     <Input value={"직원명"} readOnly />

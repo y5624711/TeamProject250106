@@ -16,21 +16,21 @@ export function Install() {
 
   useEffect(() => {
     const fetchRequestList = axios.get("/api/install/list/request");
-    // const fetchApproveList = axios.get("/api/install/list/approve");
+    const fetchApproveList = axios.get("/api/install/list/approve");
 
-    Promise.all([fetchRequestList])
+    Promise.all([fetchRequestList, fetchApproveList])
       .then(([requestRes, approveRes]) => {
         const requestList = requestRes.data.map((item) => ({
           ...item,
           state: "요청",
         }));
-        // const approveList = approveRes.data.map((item) => ({
-        //   ...item,
-        //   state: "승인",
-        // }));
+        const approveList = approveRes.data.map((item) => ({
+          ...item,
+          state: "승인",
+        }));
 
         // 두 리스트를 합쳐서 설정
-        setInstallList([...requestList]);
+        setInstallList([...requestList, ...approveList]);
       })
       .catch((error) => {
         console.error("데이터 요청 중 오류 발생: ", error);

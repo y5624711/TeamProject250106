@@ -5,7 +5,7 @@ CREATE TABLE TB_INSTL_APPR
     customer_employee_no  VARCHAR(13) NOT NULL,
     customer_installer_no VARCHAR(13) NOT NULL,
     output_no             VARCHAR(13) NOT NULL,
-    install_schedule_date DATE DEFAULT CURRENT_DATE,
-    install_approve_date  DATE,
+    install_schedule_date DATE,
+    install_approve_date  DATE DEFAULT CURRENT_DATE,
     install_approve_note  VARCHAR(50)
 );

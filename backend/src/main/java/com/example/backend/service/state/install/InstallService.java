@@ -87,4 +87,9 @@ public class InstallService {
             return false;
         }
     }
+
+    // 설치 승인 테이블에서 요청 리스트 가져오기
+    public List<Install> getInstallApproveList() {
+        return mapper.getInstallApproveList();
+    }
 }

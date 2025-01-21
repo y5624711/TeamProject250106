@@ -35,6 +35,11 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM TB_INSTL_APPR ia
+                WHERE ia.install_request_key = i.install_request_key
+            )
             """)
     List<Install> getInstallRequestList();
 
@@ -44,7 +49,6 @@ public interface InstallMapper {
             FROM TB_INSTL_REQ i
             LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
             LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-            LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
             WHERE i.install_request_key = #{installKey}
@@ -106,4 +110,19 @@ public interface InstallMapper {
             WHERE serial_no = #{serialNo}
             """)
     int updateItemSubActive(String serialNo);
+
+    // 설치 승인 리스트 출력
+    @Select("""
+             SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, ir.business_employee_no, e1.employee_name as business_employee_name,
+            ia.customer_employee_no, e2.employee_name as customer_employee_name, e3.employee_name as customer_installer_name, w.warehouse_name, ia.install_approve_date
+             FROM TB_INSTL_APPR ia
+             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
+             LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+             LEFT JOIN TB_ITEMCOMM ic ON ir.item_common_code = ic.item_common_code
+             LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
+             LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
+             LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+             LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+            """)
+    List<Install> getInstallApproveList();
 }

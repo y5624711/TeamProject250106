@@ -18,6 +18,12 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 승인 테이블에서 요청 리스트 가져오기
+    @GetMapping("list/approve")
+    public List<Install> getInstallApproveList() {
+        return service.getInstallApproveList();
+    }
+
     // 설치 승인
     @PostMapping("approve")
     public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {

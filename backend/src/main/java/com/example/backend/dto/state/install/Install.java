@@ -26,12 +26,14 @@ public class Install {
     private String customerEmployeeNo;
     private String customerInstallerNo;
     private String customerInstallerName;
-    private String installScheduleDate;
+    private LocalDateTime installScheduleDate;
     private String outputNo;
     private Integer installApproveKey;
     private String installApproveNote;
 
     private Integer installSubKey;
     private String serialNo;
+    private LocalDateTime installApproveDate;
+    private String customerEmployeeName;
 
 }
