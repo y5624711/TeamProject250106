@@ -18,6 +18,31 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 승인
+    @PostMapping("approve")
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
+        System.out.println(install);
+        System.out.println(install.getInstallRequestKey());
+        System.out.println(install);
+        if (service.installApprove(install)) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success",
+                            "text", "설치 승인되었습니다."),
+                    "data", install
+            ));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")
+            ));
+        }
+    }
+
+    // 설치 기사 사번으로 이름 가져오기
+    @GetMapping("{customerInstallerNo}")
+    public String getCustomerInstaller(@PathVariable String customerInstallerNo) {
+        return service.getCustomerInstaller(customerInstallerNo);
+    }
+
     // 설치 요청에 대한 정보 가져오기
     @GetMapping("/request/{installKey}")
     public List<Install> getInstallRequestView(@PathVariable int installKey) {

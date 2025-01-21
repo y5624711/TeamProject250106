@@ -40,4 +40,51 @@ public class InstallService {
     public List<Install> getInstallRequestView(int installKey) {
         return mapper.getInstallRequestView(installKey);
     }
+
+    // 설치 기사 사번으로 이름 가져오기
+    public String getCustomerInstaller(String customerInstallerNo) {
+        return mapper.getCustomerInstaller(customerInstallerNo);
+    }
+
+    // 설치 승인
+    public boolean installApprove(Install install) {
+        try {
+            // 출고 번호 등록
+            String outputCode = "OUT";
+            // 0 또는 숫자 조회
+            Integer maxNo = mapper.viewMaxOutputNo(outputCode);
+            //  부족한 자리수 만큼  0 채우기
+            String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+            install.setOutputNo(outputCode + newNumber);
+
+            // 설치 승인 테이블에 추가
+            int approve = mapper.installApprove(install);
+            if (approve <= 0) {
+                throw new IllegalStateException("설치 승인 데이터 삽입 실패");
+            }
+
+            // 요청 수량 가져오기
+            int num = install.getInstallRequestAmount();
+            // 설치 요청에서 수량만큼 시리얼 번호 가져오기
+            List<String> serialList = mapper.getSerials(install.getItemCommonCode(), num);
+            if (serialList.size() < num) {
+                throw new IllegalArgumentException("시리얼 번호 수량이 부족합니다." + "num: " + num + ", serial: " + serialList);
+            }
+
+            // 가져온 시리얼 번호 리스트를 TB_INSTL_SUB에 삽입
+            for (String serial : serialList) {
+                install.setSerialNo(serial);
+                mapper.addSerialToApprove(install);
+                // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 0으로 업데이트
+                int updatedRows = mapper.updateItemSubActive(serial);
+                if (updatedRows <= 0) {
+                    throw new IllegalStateException("시리얼 번호 활성 상태 업데이트 실패: " + serial);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("설치 승인 처리 중 오류 발생: " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -2,7 +2,6 @@ CREATE TABLE TB_INSTL_APPR
 (
     install_approve_key   INT PRIMARY KEY AUTO_INCREMENT,
     install_request_key   INT         NOT NULL,
-    serial_no             VARCHAR(20) NOT NULL,
     customer_employee_no  VARCHAR(13) NOT NULL,
     customer_installer_no VARCHAR(13) NOT NULL,
     output_no             VARCHAR(13) NOT NULL,

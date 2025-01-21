@@ -23,7 +23,15 @@ public class Install {
     private String customerName;
     private String warehouseName;
     private String warehouseAddress;
-    private String currentState;
     private String customerEmployeeNo;
+    private String customerInstallerNo;
+    private String customerInstallerName;
+    private String installScheduleDate;
+    private String outputNo;
+    private Integer installApproveKey;
+    private String installApproveNote;
+
+    private Integer installSubKey;
+    private String serialNo;
 
 }
