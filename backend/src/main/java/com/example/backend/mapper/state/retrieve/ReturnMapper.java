@@ -12,7 +12,7 @@ public interface ReturnMapper {
 
 
     @Select("""
-            SELECT rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
+            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
                    rr.business_employee_no, employee_name AS businessEmployeeName, rr.customer_code, customer_name, ra.customer_employee_no,
                    return_date, return_consent
             FROM TB_RTN_REQ rr

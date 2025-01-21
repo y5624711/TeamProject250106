@@ -16,8 +16,8 @@ import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 
-function ReturnList({ returnList }) {
-  console.log(returnList);
+function ReturnList({ returnList, onRowClick }) {
+  // console.log(returnList);
 
   return (
     <Box>
@@ -63,7 +63,12 @@ function ReturnList({ returnList }) {
         </Table.Header>
         <Table.Body>
           {returnList.map((data) => (
-            <Table.Row>
+            <Table.Row
+              key={data.returnRequestKey}
+              onDoubleClick={() => {
+                onRowClick(data.returnRequestKey);
+              }}
+            >
               <Table.Cell>#</Table.Cell>
               <Table.Cell>{data.franchiseName}</Table.Cell>
               <Table.Cell>{data.itemCommonName}</Table.Cell>

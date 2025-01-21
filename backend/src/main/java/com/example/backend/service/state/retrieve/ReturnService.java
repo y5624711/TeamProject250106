@@ -18,7 +18,7 @@ public class ReturnService {
 
     //반환 관리 리스트
     public List<Return> returnList() {
-        System.out.println("총 리스트" + mapper.getReturnList());
+        System.out.println("리스트: " + mapper.getReturnList());
         return mapper.getReturnList();
     }
 
