@@ -27,6 +27,7 @@ import {
 import { FaArrowDown } from "react-icons/fa6";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
+import { Switch } from "../../ui/switch.jsx";
 
 EmployeeViewDialog.propTypes = {};
 
@@ -148,19 +149,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
-  console.log(memberList);
-
   return (
     <Box h={"100vh"}>
       <Heading>
         인사관리
-        <Button
-          onClick={() => {
-            handleVisible();
-          }}
-        >
-          자세히보기
-        </Button>
         <Button
           onClick={() => {
             setIsModalOpen(true);
@@ -209,6 +201,12 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         />
         <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
+      <Switch
+        checked={isActiveVisible}
+        onCheckedChange={() => {
+          handleVisible();
+        }}
+      />
       <Table.Root>
         <Table.Header>
           <Table.Row>
