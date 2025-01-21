@@ -4,11 +4,14 @@ import { Button } from "../../components/ui/button.jsx";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Field } from "../../components/ui/field.jsx";
+import { useNavigate } from "react-router-dom";
 
 export function LoginPage() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const authentication = useContext(AuthenticationContext);
+  const navigate = useNavigate();
 
   function handleLoginClick() {
     axios
@@ -22,6 +25,7 @@ export function LoginPage() {
           type: data.message.type,
           description: data.message.text,
         });
+        navigate("/");
         authentication.login(data.token, data.name);
       })
       .catch((e) => {
@@ -45,31 +49,40 @@ export function LoginPage() {
         <Text pb={5} fontSize={"30px"} fontWeight={"bold"}>
           Choongang System
         </Text>
-        <Stack
+        <Box
           w="500px"
           h="400px"
           border="1px solid black"
-          p={8}
           bg="white"
-          gap={10}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center" // 가운데 정렬
         >
-          <Text fontSize={"25px"}>로그인</Text>
-          <Flex whiteSpace={"nowrap"} gap={10}>
-            <Text w={"50px"}>아이디</Text>
-            <Input value={id} onChange={(e) => setId(e.target.value)} />
-          </Flex>
+          <Stack gap={10} w={"300px"}>
+            <Field
+              label={"로그인"}
+              whiteSpace={"nowrap"}
+              orientation="horizontal"
+            >
+              <Input value={id} onChange={(e) => setId(e.target.value)} />
+            </Field>
 
-          <Flex whiteSpace={"nowrap"} gap={10}>
-            <Text w={"50px"}>비밀번호</Text>
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Flex>
-          <Button w={"50%"} mx={"auto"} onClick={handleLoginClick}>
-            로그인
-          </Button>
-        </Stack>
+            <Field
+              label={"비밀번호"}
+              whiteSpace={"nowrap"}
+              orientation="horizontal"
+            >
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Field>
+            <Button w={"50%"} mx={"auto"} onClick={handleLoginClick}>
+              로그인
+            </Button>
+          </Stack>
+        </Box>
       </Box>
     </Flex>
   );
