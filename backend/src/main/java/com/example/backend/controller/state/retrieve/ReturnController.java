@@ -22,7 +22,7 @@ public class ReturnController {
     //시리얼 번호를 통해 정보 불러오기
     @GetMapping("serialNo/{serialNo}")
     public List<Return> getSerialNo(@PathVariable String serialNo) {
-        System.out.println("controller" + serialNo);
+//        System.out.println("controller" + serialNo);
         return service.getRequestInfo(serialNo);
     }
 

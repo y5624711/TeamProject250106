@@ -22,7 +22,7 @@ public class ReturnService {
 
     //시리얼 번호로 정보 조회
     public List<Return> getRequestInfo(String serialNo) {
-        System.out.println("service: " + mapper.getRequestInfo(serialNo));
+//        System.out.println("service: " + mapper.getRequestInfo(serialNo));
         return mapper.getRequestInfo(serialNo);
     }
 }

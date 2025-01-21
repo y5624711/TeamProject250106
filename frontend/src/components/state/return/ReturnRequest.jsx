@@ -33,13 +33,13 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     setRequestData((prev) => ({ ...prev, [field]: value }));
   };
 
-  console.log("serial no1", requestData.serialNo);
-  console.log("serial no2", serialNo);
+  // console.log("serial no1", requestData.serialNo);
+  // console.log("serial no2", serialNo);
   //시리얼 번호로 정보 불러오기
   useEffect(() => {
     if (serialNo) {
       axios.get(`api/return/serialNo/${serialNo}`).then((res) => {
-        console.log("호출정보", res.data);
+        // console.log("호출정보", res.data);
         setRequestData((prev) => ({
           ...prev,
           itemCommonName: res.data[0].itemCommonName || "등록되지 않음",
@@ -85,18 +85,24 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             <Input readOnly value={requestData.itemCommonName} />
           </Field>
           <Field orientation="horizontal" label="가맹점명">
-            <Input value={requestData.franchiseName} placeholder="000점" />
+            <Input
+              value={requestData.franchiseName}
+              placeholder="000점"
+              onChange={handleInput("franchiseName")}
+            />
           </Field>
           <Field orientation="horizontal" label="신청자 사번">
             <Input
               value={requestData.businessEmployeeNo}
               placeholder="0000000000000"
+              onChange={handleInput("businessEmployeeNo")}
             />
           </Field>
           <Field orientation="horizontal" label="신청자 명">
             <Input
               value={requestData.businessEmployeeName}
               placeholder="홍길동"
+              onChange={handleInput("businessEmployeeName")}
             />
           </Field>
           <Field orientation="horizontal" label="회수 업체">
@@ -110,6 +116,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             <Textarea
               value={requestData.returnRequestNote}
               placeholder="최대 50자"
+              onChange={handleInput("businessEmployeeName")}
             />
           </Field>
         </DialogBody>
