@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import ReturnList from "../../../components/state/return/ReturnList.jsx";
 import axios from "axios";
+import { Button } from "../../../components/ui/button.jsx";
+import ReturnRequest from "../../../components/state/return/ReturnRequest.jsx";
 
 function Return(props) {
   const [returnList, setReturnList] = useState([]);
+  const [requestDialogOpen, setRequestDialogOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -14,7 +17,11 @@ function Return(props) {
       .then((data) => setReturnList(data));
   }, []);
 
-  console.log("list", returnList);
+  const handleRequestClick = () => {
+    axios.post("/api/return/request", returnData);
+  };
+
+  // console.log("list", returnList);
 
   return (
     <Box display="flex" height="100vh">
@@ -24,7 +31,14 @@ function Return(props) {
           구매/설치 관리 {">"} 반품/회수 관리
         </Text>
         <ReturnList returnList={returnList} />
+        <Flex justify="flex-end">
+          <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>
+        </Flex>
       </Stack>
+      <ReturnRequest
+        isOpen={requestDialogOpen}
+        onClose={() => setRequestDialogOpen(false)}
+      />
     </Box>
   );
 }
