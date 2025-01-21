@@ -150,4 +150,39 @@ public interface CustomerMapper {
                         from TB_CUSTMST
             """)
     List<Customer> customerCodeNames();
+
+    @Select("""
+            SELECT item_code
+            FROM TB_CUSTMST
+            WHERE customer_active=true
+            """)
+    List<String> getUsedItemCode();
+
+    @Select("""
+            SELECT customer_name
+            FROM TB_CUSTMST
+            WHERE customer_active=true
+            """)
+    List<String> getUsedCustomerName();
+
+    @Select("""
+            SELECT customer_no
+            FROM TB_CUSTMST
+            WHERE customer_active=true
+            """)
+    List<String> getUsedCustomerNo();
+
+    @Select("""
+            SELECT customer_tel
+            FROM TB_CUSTMST
+            WHERE customer_active=true
+            """)
+    List<String> getUsedCustomerTel();
+
+    @Select("""
+            SELECT customer_key
+            FROM TB_CUSTMST
+            WHERE customer_active=false
+            """)
+    List<String> getDeletedCustomer();
 }
