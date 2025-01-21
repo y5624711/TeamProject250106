@@ -64,6 +64,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
       });
   };
 
+  const handleCancel = () => {
+    setRequestData(initialRequestData);
+    onClose();
+  };
+
   return (
     <DialogRoot open={isOpen}>
       <DialogContent>
@@ -82,12 +87,16 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             </Button>
           </Field>
           <Field orientation="horizontal" label="품목명">
-            <Input readOnly value={requestData.itemCommonName} />
+            <Input
+              readOnly
+              value={requestData.itemCommonName}
+              placeholder={"OOOO"}
+            />
           </Field>
           <Field orientation="horizontal" label="가맹점명">
             <Input
               value={requestData.franchiseName}
-              placeholder="000점"
+              placeholder="OOO점"
               onChange={handleInput("franchiseName")}
             />
           </Field>
@@ -121,7 +130,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           </Field>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={onClose}>취소</Button>
+          <Button onClick={handleCancel}>취소</Button>
           <Button onClick={handleRequestButtonClick}>요청</Button>
         </DialogFooter>
       </DialogContent>
