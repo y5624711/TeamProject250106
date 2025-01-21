@@ -10,7 +10,9 @@ import axios from "axios";
 
 export function Install() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
+  const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [installList, setInstallList] = useState([]);
+  const [installKey, setInstallKey] = useState(null);
 
   useEffect(() => {
     const fetchRequestList = axios.get("/api/install/list/request");
@@ -35,12 +37,17 @@ export function Install() {
       });
   }, []);
 
+  const handleRowClick = (key) => {
+    setInstallKey(key);
+    setApproveDialogOpen(true);
+  };
+
   return (
     <Box>
       <HStack align="flex-start" w="100%">
         <StateSideBar />
         <Stack flex={1}>
-          <InstallList installList={installList} />
+          <InstallList installList={installList} onRowClick={handleRowClick} />
           <Button
             onClick={() => setRequestDialogOpen(true)}
             size="lg"
@@ -55,7 +62,11 @@ export function Install() {
           isOpen={requestDialogOpen}
           onClose={() => setRequestDialogOpen(false)}
         />
-        <InstallApprove />
+        <InstallApprove
+          installKey={installKey}
+          isOpen={approveDialogOpen}
+          onClose={() => setApproveDialogOpen(false)}
+        />
         <InstallConfiguration />
       </HStack>
     </Box>

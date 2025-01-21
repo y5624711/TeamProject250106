@@ -32,7 +32,12 @@ public class InstallService {
     }
 
     // 설치 요청 테이블에서 요청 가져오기
-    public List<Install> getInstallRequest() {
-        return mapper.getInstallRequest();
+    public List<Install> getInstallRequestList() {
+        return mapper.getInstallRequestList();
+    }
+
+    // 설치 요청에 대한 정보 가져오기
+    public List<Install> getInstallRequestView(int installKey) {
+        return mapper.getInstallRequestView(installKey);
     }
 }

@@ -18,10 +18,16 @@ public class InstallController {
 
     final InstallService service;
 
-    // 설치 요청 테이블에서 요청 가져오기
+    // 설치 요청에 대한 정보 가져오기
+    @GetMapping("/request/{installKey}")
+    public List<Install> getInstallRequestView(@PathVariable int installKey) {
+        return service.getInstallRequestView(installKey);
+    }
+
+    // 설치 요청 테이블에서 요청 리스트 가져오기
     @GetMapping("list/request")
-    public List<Install> getInstallRequest() {
-        return service.getInstallRequest();
+    public List<Install> getInstallRequestList() {
+        return service.getInstallRequestList();
     }
 
     // 설치 가능한 품목명, 품목 코드 가져오기

@@ -5,7 +5,7 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 
-export function InstallList({ installList }) {
+export function InstallList({ installList, onRowClick }) {
   const sortInstallOptions = [
     { key: "installKey", label: "#" },
     { key: "customerName", label: "가맹점" },
@@ -18,7 +18,6 @@ export function InstallList({ installList }) {
     { key: "installDate", label: "날짜" },
     { key: "currentState", label: "상태 현황" },
   ];
-  console.log(installList);
 
   return (
     <Box px={10}>
@@ -34,7 +33,7 @@ export function InstallList({ installList }) {
           <Table.Body>
             {installList?.map((install, index) => (
               <Table.Row
-                // onClick={() => onRowClick(install.installKey)}
+                onClick={() => onRowClick(install.installRequestKey)}
                 style={{
                   cursor: "pointer",
                 }}

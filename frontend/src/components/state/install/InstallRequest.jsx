@@ -58,7 +58,7 @@ export function InstallRequest({ isOpen, onClose }) {
   }, []);
 
   // 설치 요청하기
-  const handleRequsetClick = () => {
+  const handleRequestClick = () => {
     axios
       .post("/api/install/request", installRequest)
       .then((res) => res.data)
@@ -132,7 +132,7 @@ export function InstallRequest({ isOpen, onClose }) {
               onChange={handleInputChange("installRequestAmount")}
             />
           </Field>
-          <Field label="가맹점 줏소">
+          <Field label="가맹점 주소">
             <Input
               placeholder="가맹점 주소"
               value={installRequest.franchiseAddress}
@@ -140,11 +140,11 @@ export function InstallRequest({ isOpen, onClose }) {
             />
           </Field>
           <HStack>
-            <Field label="부서">
+            <Field label="신청자 사번">
               <Input
-                placeholder="부서"
-                value={installRequest.departmentName}
-                onChange={handleInputChange("departmentName")}
+                placeholder="신청자 사번"
+                value={installRequest.employeeNo}
+                onChange={handleInputChange("employeeNo")}
               />
             </Field>
             <Field label="신청자">
@@ -176,7 +176,7 @@ export function InstallRequest({ isOpen, onClose }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequsetClick}>출고 요청</Button>
+          <Button onClick={handleRequestClick}>출고 요청</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

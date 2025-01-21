@@ -31,13 +31,26 @@ public interface InstallMapper {
 
     // 설치 요청 리스트 출력
     @Select("""
-            SELECT f.franchise_name, ic.item_common_name, c.customer_name, i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, i.install_request_date
+            SELECT i.install_request_key, f.franchise_name, ic.item_common_name, c.customer_name, i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, i.install_request_date
             FROM TB_INSTL_REQ i
             LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
             LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
-            LEFT JOIN TB_WHMST w ON c.customer_code = c.customer_code
+            LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
             """)
-    List<Install> getInstallRequest();
+    List<Install> getInstallRequestList();
+
+    // 설치 요청에 대한 정보 가져오기
+    @Select("""
+            SELECT f.franchise_name, ic.item_common_name, i.install_request_amount, f.franchise_address, i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note
+            FROM TB_INSTL_REQ i
+            LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
+            LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+            LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
+            LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
+            WHERE i.install_request_key = #{installKey}
+            """)
+    List<Install> getInstallRequestView(int installKey);
 }

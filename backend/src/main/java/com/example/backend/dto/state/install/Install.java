@@ -19,10 +19,11 @@ public class Install {
     private String itemCommonName;
     private String franchiseName;
     private String franchiseAddress;
-    private String departmentName;
     private String businessEmployeeName;
     private String customerName;
     private String warehouseName;
+    private String warehouseAddress;
     private String currentState;
+    private String customerEmployeeNo;
 
 }
