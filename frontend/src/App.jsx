@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import AuthenticationContext from "./context/AuthenticationProvider.jsx";
 import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
@@ -14,6 +14,7 @@ import { LoginPage } from "./page/login/LoginPage.jsx";
 import Warehouse from "./page/standard/warehouse/Warehouse.jsx";
 import Location from "./page/standard/location/Location.jsx";
 import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
+import { Purchase } from "./page/state/purchase/Purchase.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
 
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "location/*",
         element: <Location />,
+      },
+      {
+        path: "purchase",
+        element: <Purchase />,
       },
       {
         path: "install",
