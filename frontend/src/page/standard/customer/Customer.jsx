@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../../components/standard/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
 import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -279,16 +279,15 @@ function Customer() {
   return (
     <Box display={"flex"} h={"100vh"}>
       <StandardSideBar />
-      <Stack w={"80%"} mx={"auto"}>
-        <Heading>협력업체 관리</Heading>
+      <Stack w={"100%"} mx={"auto"}>
+        <Text fontSize="xl" mx={10} my={3}>
+          기준정보 관리 {">"} 협력업체 관리
+        </Text>
 
         <CustomerList
           customerList={customerList}
           standard={standard}
           onHeader={handleStandard}
-          customerKey={customerKey}
-          setCustomerKey={setCustomerKey}
-          currentPage={currentPage}
           count={count}
           onRowClick={handleRowClick}
           handlePageChange={handlePageChange}
@@ -301,7 +300,13 @@ function Customer() {
           handleSearchTypeChange={handleSearchTypeChange}
         />
         <Flex justify="flex-end">
-          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+          <Button
+            onClick={() => setAddDialogOpen(true)}
+            size={"lg"}
+            position="absolute"
+            bottom="100px"
+            right="100px"
+          >
             협력업체 등록
           </Button>
         </Flex>

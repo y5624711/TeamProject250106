@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Box,
   Center,
   createListCollection,
   HStack,
@@ -22,9 +23,6 @@ function CustomerList({
   customerList,
   standard,
   onHeader,
-  customerKey,
-  setCustomerKey,
-  currentPage,
   count,
   handlePageChange,
   onRowClick,
@@ -56,10 +54,10 @@ function CustomerList({
   // console.log(standard.order);
 
   return (
-    <div>
+    <Box px={10}>
       <Center>
         {/* 검색창 */}
-        <HStack w={"70%"}>
+        <HStack w={"70%"} my={3}>
           <SelectRoot
             collection={optionList}
             width={"150px"}
@@ -103,7 +101,7 @@ function CustomerList({
       </Center>
 
       {/* 체크박스 필터 */}
-      <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
+      <Checkbox checked={checkedActive} onChange={toggleCheckedActive} my={3}>
         전체 조회
       </Checkbox>
 
@@ -240,7 +238,7 @@ function CustomerList({
         {/*  </Button>*/}
         {/*))}*/}
       </Center>
-    </div>
+    </Box>
   );
 }
 
