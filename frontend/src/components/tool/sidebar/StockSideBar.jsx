@@ -26,7 +26,7 @@ export function StockSideBar() {
     <Flex>
       {/*StandardSideBar 영역*/}
       <Box
-        w="300px"
+        w="220px"
         pb="4"
         bg="gray.100"
         h={"100vh"} // <  화면 길이 계산해서 100%
@@ -40,8 +40,8 @@ export function StockSideBar() {
           justifyContent="center" // 가로 방향 가운데 정렬
           alignItems="center" // 세로 방향 가운데 정렬
         >
-          <Text fontWeight="bold" color={"white"} fontSize={"25px"}>
-            기준정보 관리
+          <Text fontWeight="bold" color={"white"} fontSize={"22px"}>
+            물류 관리
           </Text>
         </Box>
 

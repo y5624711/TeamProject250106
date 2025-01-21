@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { WarehouseDetail } from "./WarehouseDetail.jsx";
 import WarehouseListPage from "./WarehouseListPage.jsx";
 import {
@@ -17,7 +16,6 @@ function WarehouseList({
   currentPage,
   handlePageChangeClick,
 }) {
-  const navigate = useNavigate();
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
 
