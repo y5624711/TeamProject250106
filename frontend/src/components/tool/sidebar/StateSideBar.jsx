@@ -48,7 +48,7 @@ export function StateSideBar() {
           <SidebarItem>구매 관리</SidebarItem>
           <SidebarItem>입고 관리</SidebarItem>
           <SidebarItem path="/install">설치 관리</SidebarItem>
-          <SidebarItem>반품/회수 관리</SidebarItem>
+          <SidebarItem path="/return">반품/회수 관리</SidebarItem>
         </Stack>
       </Box>
     </Flex>
