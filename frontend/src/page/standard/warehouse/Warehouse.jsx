@@ -63,21 +63,7 @@ function Warehouse(props) {
       <HStack align="flex-start">
         <StandardSideBar />
         <Stack>
-          <HStack>
-            <Box>창고 관리</Box>
-            <Box>
-              <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
-                새 창고 등록
-              </Button>
-            </Box>
-            {/*등록 jsx*/}
-            <WarehouseAdd
-              isOpen={isAddDialogOpen}
-              onClose={() => setIsAddDialogOpen(false)}
-              onConfirm={() => setIsAddDialogOpen(false)}
-              title="새 창고 등록"
-            />
-          </HStack>
+          <Box>창고 관리</Box>
           {/*검색 jsx*/}
           <WarehouseSearch
             warehouseOptionList={warehouseOptionList}
@@ -90,7 +76,7 @@ function Warehouse(props) {
               setUseColumn(!useColumn);
             }}
           >
-            삭제 내역 포함하기
+            전체 조회
           </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
@@ -99,6 +85,18 @@ function Warehouse(props) {
             useColumn={useColumn}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
+          />
+          <Box>
+            <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
+              새 창고 등록
+            </Button>
+          </Box>
+          {/*등록 jsx*/}
+          <WarehouseAdd
+            isOpen={isAddDialogOpen}
+            onClose={() => setIsAddDialogOpen(false)}
+            onConfirm={() => setIsAddDialogOpen(false)}
+            title="새 창고 등록"
           />
         </Stack>
       </HStack>

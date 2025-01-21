@@ -18,7 +18,6 @@ public class WarehouseController {
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
-        System.out.println(page);
         return service.list(searchType, searchKeyword, page);
     }
 

@@ -20,9 +20,16 @@ public class CustomerController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer) {
         //협력사 입력란 빈칸 검증
-        if (!service.emptyCustomer(customer)) {
+        if (!service.checkEmptyCustomer(customer)) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
+            ));
+        }
+
+        //중복 여부 확인
+        if (service.checkDuplicateCustomer(customer)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "중복된 정보가 존재합니다.")
             ));
         }
 
@@ -62,8 +69,15 @@ public class CustomerController {
     //협력사 삭제
     @PutMapping("delete/{customerKey}")
     public ResponseEntity<Map<String, Object>> deleteCustomer(
-            @PathVariable("customerKey") String customerCode) {
-        if (service.deleteCustomer(customerCode)) {
+            @PathVariable("customerKey") String customerKey) {
+        //삭제된 협력사인지 조회
+        if (service.checkDeletedCustomer(customerKey)) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "이미 삭제된 정보입니다.")
+            ));
+        }
+
+        if (service.deleteCustomer(customerKey)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."삭제되었습니다.")));

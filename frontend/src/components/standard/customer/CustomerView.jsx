@@ -17,7 +17,7 @@ import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
 function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  // const [isDeleted, setIsDeleted] = useState(false);
 
   //정보 불러오기
   useEffect(() => {
@@ -63,16 +63,18 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
           </DialogHeader>
           <DialogBody>
             <Stack gap={5}>
-              <Field label={"업체 코드"}>
-                <Input readOnly value={customer.customerCode} />
-              </Field>
-              <Field label={"업체명"}>
-                <Input
-                  name="customerName"
-                  value={customer.customerName}
-                  onChange={handleInputChange}
-                />
-              </Field>
+              <Box display={"flex"} gap={3}>
+                <Field label={"업체 코드"}>
+                  <Input readOnly value={customer.customerCode} />
+                </Field>
+                <Field label={"업체명"}>
+                  <Input
+                    name="customerName"
+                    value={customer.customerName}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+              </Box>
               <Field label={"대표자"}>
                 <Input
                   name="customerRep"
@@ -90,20 +92,22 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label={"전화 번호"}>
-                <Input
-                  name="customerTel"
-                  value={customer.customerTel}
-                  onChange={handleInputChange}
-                />
-              </Field>
-              <Field label={"팩스 번호"}>
-                <Input
-                  name="customerFax"
-                  value={customer.customerFax}
-                  onChange={handleInputChange}
-                />
-              </Field>
+              <Box display={"flex"} gap={3}>
+                <Field label={"전화 번호"}>
+                  <Input
+                    name="customerTel"
+                    value={customer.customerTel}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field label={"팩스 번호"}>
+                  <Input
+                    name="customerFax"
+                    value={customer.customerFax}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+              </Box>
               <Field label={"우편 번호"}>
                 <Input
                   name={"customerPost"}
