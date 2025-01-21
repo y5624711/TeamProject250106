@@ -16,7 +16,13 @@ public class ReturnService {
 
     //반환 관리 리스트
     public List<Return> returnList() {
-        System.out.println("총 리스트" + mapper.getReturnList());
+//        System.out.println("총 리스트" + mapper.getReturnList());
         return mapper.getReturnList();
+    }
+
+    //시리얼 번호로 정보 조회
+    public List<Return> getRequestInfo(String serialNo) {
+        System.out.println("service: " + mapper.getRequestInfo(serialNo));
+        return mapper.getRequestInfo(serialNo);
     }
 }

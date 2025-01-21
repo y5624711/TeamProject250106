@@ -10,6 +10,7 @@ function Return(props) {
   const [returnList, setReturnList] = useState([]);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
 
+  //목록 불러오기
   useEffect(() => {
     axios
       .get("/api/return/list")
@@ -17,8 +18,9 @@ function Return(props) {
       .then((data) => setReturnList(data));
   }, []);
 
-  const handleRequestClick = () => {
-    axios.post("/api/return/request", returnData);
+  const handleRequestClick = (newRequest) => {
+    setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
+    setRequestDialogOpen(false);
   };
 
   // console.log("list", returnList);
@@ -38,6 +40,7 @@ function Return(props) {
       <ReturnRequest
         isOpen={requestDialogOpen}
         onClose={() => setRequestDialogOpen(false)}
+        onRequest={handleRequestClick}
       />
     </Box>
   );
