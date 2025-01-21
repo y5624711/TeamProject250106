@@ -38,8 +38,8 @@ export function InstkList() {
                 <Table.Cell>{item.inputKey}</Table.Cell>
                 <Table.Cell>{item.inputCommonCode}</Table.Cell>
                 <Table.Cell>{item.inputNo}</Table.Cell>
-                <Table.Cell>{"품목명"}</Table.Cell>
-                <Table.Cell>{"협력업체"}</Table.Cell>
+                <Table.Cell>{item.itemCommonName}</Table.Cell>
+                <Table.Cell>{item.customerName}</Table.Cell>
                 <Table.Cell>{"날짜"}</Table.Cell>
                 <Table.Cell>{item.inputConsent}</Table.Cell>
               </Table.Row>
