@@ -36,14 +36,18 @@ export function Navbar() {
       <Flex gap={5} pt={5} w={"95%"} mx={"auto"}>
         <Heading>Choongang System</Heading>
         <Spacer />
-        <NavItem>{name}님</NavItem>
-        <NavItem
-          onClick={() => {
-            logout();
-          }}
-        >
-          로그아웃
-        </NavItem>
+        {isAuthenticated && <NavItem>{name}님 환영합니다</NavItem>}
+
+        {isAuthenticated && (
+          <NavItem
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+          >
+            로그아웃
+          </NavItem>
+        )}
       </Flex>
       <Flex bgColor={"lightSlateGray"} width="100%" justify="center" gap={10}>
         <NavItem path="/business">기준정보 관리</NavItem>

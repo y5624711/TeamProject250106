@@ -33,7 +33,9 @@ public class LoginService {
                         .issuer("self")
                         .subject(employee.getEmployeeNo())
                         .issuedAt(Instant.now())
-                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
+//                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7)) 7일 후 만료
+//                        .expiresAt(Instant.now().plusSeconds(60)) /*1분후 만료*/
+                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24))
                         .claim("scope", authString)
                         .build();
 
