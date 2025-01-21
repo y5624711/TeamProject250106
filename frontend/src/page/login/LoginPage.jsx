@@ -20,7 +20,7 @@ export function LoginPage() {
     if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated]);
 
   function handleLoginClick() {
     axios
