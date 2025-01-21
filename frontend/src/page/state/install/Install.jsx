@@ -11,8 +11,10 @@ import axios from "axios";
 export function Install() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
+  const [configurationDialogOpen, setConfigurationDialogOpen] = useState(false);
   const [installList, setInstallList] = useState([]);
   const [installKey, setInstallKey] = useState(null);
+  const [selectedInstall, setSelectedInstall] = useState(null); // 선택된 설치 정보
 
   useEffect(() => {
     const fetchRequestList = axios.get("/api/install/list/request");
@@ -36,10 +38,16 @@ export function Install() {
         console.error("데이터 요청 중 오류 발생: ", error);
       });
   }, []);
+  console.log(installList);
 
   const handleRowClick = (key) => {
-    setInstallKey(key);
-    setApproveDialogOpen(true);
+    setSelectedInstall(key);
+
+    if (key.state === "요청") {
+      setApproveDialogOpen(true);
+    } else if (key.state === "승인") {
+      setConfigurationDialogOpen(true);
+    }
   };
 
   return (
@@ -63,11 +71,15 @@ export function Install() {
           onClose={() => setRequestDialogOpen(false)}
         />
         <InstallApprove
-          installKey={installKey}
+          installKey={selectedInstall?.installRequestKey}
           isOpen={approveDialogOpen}
           onClose={() => setApproveDialogOpen(false)}
         />
-        <InstallConfiguration />
+        <InstallConfiguration
+          installKey={selectedInstall?.installApproveKey}
+          isOpen={configurationDialogOpen}
+          onClose={() => setConfigurationDialogOpen(false)}
+        />
       </HStack>
     </Box>
   );

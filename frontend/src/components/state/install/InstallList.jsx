@@ -34,7 +34,7 @@ export function InstallList({ installList, onRowClick }) {
           <Table.Body>
             {installList?.map((install, index) => (
               <Table.Row
-                onClick={() => onRowClick(install.installRequestKey)}
+                onClick={() => onRowClick(install)}
                 style={{
                   cursor: "pointer",
                 }}

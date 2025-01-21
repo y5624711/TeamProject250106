@@ -14,9 +14,14 @@ import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import { HStack, Input } from "@chakra-ui/react";
 
-export function InstallConfiguration() {
+export function InstallConfiguration({ installKey, isOpen, onClose }) {
   return (
-    <DialogRoot>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={() => {
+        onClose();
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           설치 확인
