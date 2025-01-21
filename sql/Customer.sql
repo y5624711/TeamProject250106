@@ -18,6 +18,7 @@ CREATE TABLE TB_CUSTMST
 
 DROP TABLE TB_CUSTMST;
 
+DESC TB_CUSTMST;
 
 INSERT INTO TB_CUSTMST
 (customer_name, customer_code, item_code, customer_rep, customer_no,
