@@ -9,12 +9,18 @@ public class Return {
     Integer returnRequestKey;
     Integer returnApproveKey;
     String serialNo;
+    String itemCommonName;
     String returnNo;
     String franchiseCode;
+    String franchiseName;
     String businessEmployeeNo;
+    String businessEmployeeName;
     String customerCode;
+    String customerName;
     String customerConfigurerKey;
+    String customerConfigurerName;
     String customerEmployeeNo;
+    String customerEmployeeName;
     LocalDate returnRequestDate;
     LocalDate returnDate;
     String returnConsent;

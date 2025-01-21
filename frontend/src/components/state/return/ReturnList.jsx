@@ -48,6 +48,8 @@ function ReturnList({ returnList }) {
             </Table.ColumnHeader>
             <Table.ColumnHeader>가맹점명</Table.ColumnHeader>
             <Table.ColumnHeader>품명</Table.ColumnHeader>
+            <Table.ColumnHeader>시리얼번호</Table.ColumnHeader>
+            <Table.ColumnHeader>반환번호</Table.ColumnHeader>
             <Table.ColumnHeader>요청자(사번)</Table.ColumnHeader>
             <Table.ColumnHeader>요청자(명)</Table.ColumnHeader>
             <Table.ColumnHeader>협력업체</Table.ColumnHeader>
@@ -61,15 +63,23 @@ function ReturnList({ returnList }) {
           {returnList.map((each) => (
             <Table.Row>
               <Table.Cell>#</Table.Cell>
-              <Table.Cell>{each.franchiseCode}</Table.Cell>
+              <Table.Cell>{each.franchiseName}</Table.Cell>
+              <Table.Cell>{each.itemCommonName}</Table.Cell>
               <Table.Cell>{each.serialNo}</Table.Cell>
+              <Table.Cell>{each.returnNo}</Table.Cell>
               <Table.Cell>{each.businessEmployeeNo}</Table.Cell>
               <Table.Cell>{each.businessEmployeeNo}</Table.Cell>
-              <Table.Cell>{each.customerCode}</Table.Cell>
+              <Table.Cell>{each.customerName}</Table.Cell>
               <Table.Cell>{each.customerEmployeeNo}</Table.Cell>
               <Table.Cell>{each.customerEmployeeNo}</Table.Cell>
               <Table.Cell>{each.returnDate}</Table.Cell>
-              <Table.Cell>{each.returnConsent}</Table.Cell>
+              <Table.Cell>
+                {each.returnConsent == 1
+                  ? "승인"
+                  : each.returnConsent == 0
+                    ? "기각"
+                    : "대기"}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
