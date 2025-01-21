@@ -2,17 +2,21 @@ import React from "react";
 import {
   DialogActionTrigger,
   DialogBody,
-  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogRoot,
   DialogTitle,
-} from "../ui/dialog.jsx";
-import { Box, Input } from "@chakra-ui/react";
-import { Button } from "../ui/button.jsx";
+} from "../ui/dialog";
+import { Button } from "../ui/button";
 
-function LocationAdd({ isOpen, onConfirm, onClose, title }) {
+export function DialogEditConfirmation({
+  isOpen,
+  onConfirm,
+  onClose,
+  title,
+  body,
+}) {
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -20,21 +24,9 @@ function LocationAdd({ isOpen, onConfirm, onClose, title }) {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Box>
-            창고명
-            <Input type={"text"} />
-            행
-            <Input type={"text"} />
-            열
-            <Input type={"text"} />
-            단
-            <Input type={"text"} />
-            물품
-            <Input type={"text"} />
-          </Box>
+          <p>{body}</p>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={onClose} />
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={onClose}>
               취소
@@ -43,8 +35,8 @@ function LocationAdd({ isOpen, onConfirm, onClose, title }) {
           <Button
             variant="solid"
             onClick={() => {
-              // handleSaveClick();
               onConfirm();
+              onClose();
             }}
           >
             저장
@@ -54,5 +46,3 @@ function LocationAdd({ isOpen, onConfirm, onClose, title }) {
     </DialogRoot>
   );
 }
-
-export default LocationAdd;
