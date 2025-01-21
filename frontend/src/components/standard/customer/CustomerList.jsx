@@ -67,14 +67,13 @@ function CustomerList({
               setSearch({ ...search, type: oc.value[0] });
             }}
             size="md"
-            width="130px"
           >
             <SelectTrigger>
               <SelectValueText />
             </SelectTrigger>
             <SelectContent
               style={{
-                width: "130px",
+                width: "150px",
                 top: "40px",
                 position: "absolute",
               }}
@@ -224,7 +223,7 @@ function CustomerList({
       </Table.Root>
 
       {/*pagination*/}
-      <Center>
+      <Center my={3}>
         <Pagination
           count={count}
           pageSize={10}

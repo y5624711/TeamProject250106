@@ -300,13 +300,7 @@ function Customer() {
           handleSearchTypeChange={handleSearchTypeChange}
         />
         <Flex justify="flex-end">
-          <Button
-            onClick={() => setAddDialogOpen(true)}
-            size={"lg"}
-            position="absolute"
-            bottom="100px"
-            right="100px"
-          >
+          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
             협력업체 등록
           </Button>
         </Flex>
