@@ -22,9 +22,10 @@ public class EmployeeService {
         Integer maxNo = mapper.viewMaxEmployeeNo(employee.getEmployeeCommonCode());
 
         //  부족한 자리수 만큼  0 채우기
-        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+        String newNumber = String.format("%07d", (maxNo == null) ? 1 : maxNo + 1);
 
-        String insertEmployeeNo = employee.getEmployeeCommonCode() + newNumber;
+        String workPlace= employee.getEmployeeWorkPlaceCode().substring(0,3);
+        String insertEmployeeNo = workPlace+"EMP" + newNumber;
         employee.setEmployeeNo(insertEmployeeNo);
 
         int cnt = mapper.addEmployee(employee);
