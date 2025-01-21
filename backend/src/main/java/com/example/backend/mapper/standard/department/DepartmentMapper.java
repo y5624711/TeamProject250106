@@ -127,6 +127,7 @@ public interface DepartmentMapper {
     @Select("""
                     select department_code, department_name
                     from  TB_DEPARTMST
+                    where department_active='1'
             """)
     List<Department> getCodeNames();
 }

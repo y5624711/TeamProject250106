@@ -148,6 +148,7 @@ public interface CustomerMapper {
     @Select("""
                         select customer_code,customer_name
                         from TB_CUSTMST
+                        where customer_active = TRUE
             """)
     List<Customer> customerCodeNames();
 }

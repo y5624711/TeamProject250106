@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 
 export function CustomerSelect({ frameworks, formData, handleSelectChange }) {
-  console.log("handle", handleSelectChange);
   return (
     <SelectRoot
       collection={frameworks}

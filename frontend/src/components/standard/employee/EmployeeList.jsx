@@ -147,6 +147,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const handleviewModalControl = () => {
     setIsviewModalOpen(!isviewModalOpen);
   };
+
+  console.log(memberList);
+
   return (
     <Box h={"100vh"}>
       <Heading>
