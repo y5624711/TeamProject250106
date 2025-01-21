@@ -24,16 +24,58 @@ function LocationList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root interactive>
+          <Table.Root interactive showColumnBorder>
             <Table.Header>
               <Table.Row>
-                <Table.ColumnHeader width="100px">#</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">창고명</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">행</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">열</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">단</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">품목명</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">비고</Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="100px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  #
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  창고명
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  행
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  열
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  단
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  품목명
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  비고
+                </Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
             <Table.Body>

@@ -6,19 +6,17 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
-import StorageRetrievalDetail from "./StorageRetrievalDetail.jsx";
-import StorageRetrievalListPage from "./StorageRetrievalListPage.jsx";
+import StocktakingListPage from "./StocktakingListPage.jsx";
+import StocktakingDetail from "./StocktakingDetail.jsx";
 
-function StorageRetrievalList({
-  storageRetrievalList,
-  countStorageRetrieval,
+function StocktakingList({
+  stocktakingList,
   handlePageChangeClick,
+  countStocktaking,
   currentPage,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const [selectedStorageRetrieval, setSelectedStorageRetrieval] =
-    useState(null);
-
+  const [selectedStocktaking, setSelectedStocktaking] = useState(null);
   return (
     <Box>
       <Stack>
@@ -38,14 +36,7 @@ function StorageRetrievalList({
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  입출 구분
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  시리얼 번호
+                  창고명
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="200px"
@@ -59,23 +50,15 @@ function StorageRetrievalList({
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  창고명
+                  전산 수량
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  가맹점명
+                  실제 수량
                 </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  본사 직원
-                </Table.ColumnHeader>
-
                 <Table.ColumnHeader
                   width="200px"
                   textAlign="center"
@@ -83,7 +66,13 @@ function StorageRetrievalList({
                 >
                   협력업체 직원
                 </Table.ColumnHeader>
-
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  전화번호
+                </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="150px"
                   textAlign="center"
@@ -94,10 +83,10 @@ function StorageRetrievalList({
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {storageRetrievalList.map((storageRetrieval) => (
-                <StorageRetrievalListPage
-                  storageRetrieval={storageRetrieval}
-                  setSelectedStorageRetrieval={setSelectedStorageRetrieval}
+              {stocktakingList.map((stocktaking) => (
+                <StocktakingListPage
+                  stocktaking={stocktaking}
+                  setSelectedStocktaking={setSelectedStocktaking}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
               ))}
@@ -107,7 +96,7 @@ function StorageRetrievalList({
         <Center>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
-            count={countStorageRetrieval}
+            count={countStocktaking}
             pageSize={10}
             // page={page}
             siblingCount={2}
@@ -120,8 +109,8 @@ function StorageRetrievalList({
             </HStack>
           </PaginationRoot>
         </Center>
-        <StorageRetrievalDetail
-          storageRetrieval={selectedStorageRetrieval}
+        <StocktakingDetail
+          stocktaking={selectedStocktaking}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
         />
@@ -130,4 +119,4 @@ function StorageRetrievalList({
   );
 }
 
-export default StorageRetrievalList;
+export default StocktakingList;

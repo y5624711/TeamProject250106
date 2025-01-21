@@ -16,7 +16,7 @@ import Location from "./page/standard/location/Location.jsx";
 import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
-import StockTaking from "./page/stock/StockTaking.jsx";
+import Stocktaking from "./page/stock/Stocktaking.jsx";
 import StorageRetrieval from "./page/stock/StorageRetrieval.jsx";
 import WarehouseStatus from "./page/stock/WarehouseStatus.jsx";
 
@@ -75,8 +75,8 @@ const router = createBrowserRouter([
         element: <Return />,
       },
       {
-        path: "stockTaking/*",
-        element: <StockTaking />,
+        path: "stocktaking/*",
+        element: <Stocktaking />,
       },
       {
         path: "storageRetrieval/*",

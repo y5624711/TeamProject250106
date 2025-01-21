@@ -62,7 +62,7 @@ function Warehouse(props) {
     <Box>
       <HStack align="flex-start">
         <StandardSideBar />
-        <Stack>
+        <Stack margin="10pt">
           <Box>창고 관리</Box>
           {/*검색 jsx*/}
           <WarehouseSearch

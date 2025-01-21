@@ -59,7 +59,7 @@ function Location(props) {
     <Box>
       <HStack align="flex-start">
         <StandardSideBar />
-        <Stack>
+        <Stack margin="10pt">
           로케이션 관리
           <LocationSearch
             locationOptionList={locationOptionList}

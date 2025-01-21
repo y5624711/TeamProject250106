@@ -23,18 +23,62 @@ function WarehouseList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root interactive>
+          <Table.Root showColumnBorder interactive>
             <Table.Header>
               <Table.Row>
-                <Table.ColumnHeader width="100px">#</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">창고명</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">담당 업체</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">업체 직원</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">광역 시도</Table.ColumnHeader>
-                <Table.ColumnHeader width="150px">시군</Table.ColumnHeader>
-                <Table.ColumnHeader width="200px">전화번호</Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="100px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  #
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  창고명
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  담당 업체
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  업체 직원
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  광역 시도
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  시군
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  전화번호
+                </Table.ColumnHeader>
                 {useColumn ? (
-                  <Table.ColumnHeader>사용 여부</Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign="center" verticalAlign="middle">
+                    사용 여부
+                  </Table.ColumnHeader>
                 ) : null}
               </Table.Row>
             </Table.Header>
