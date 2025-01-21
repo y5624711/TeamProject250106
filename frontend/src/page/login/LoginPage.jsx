@@ -22,7 +22,7 @@ export function LoginPage() {
           type: data.message.type,
           description: data.message.text,
         });
-        authentication.login(data.token);
+        authentication.login(data.token, data.name);
       })
       .catch((e) => {
         const message = e.response.data.message;

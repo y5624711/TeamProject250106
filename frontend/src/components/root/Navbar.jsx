@@ -25,7 +25,9 @@ function NavItem({ children, path, ...rest }) {
 }
 
 export function Navbar() {
-  const { id, isAuthenticated, logout } = useContext(AuthenticationContext);
+  const { id, isAuthenticated, logout, name } = useContext(
+    AuthenticationContext,
+  );
 
   const navigate = useNavigate();
 
@@ -34,8 +36,14 @@ export function Navbar() {
       <Flex gap={5} pt={5} w={"95%"} mx={"auto"}>
         <Heading>Choongang System</Heading>
         <Spacer />
-        <Text>유저 아이디</Text>
-        <Text>로그아웃</Text>
+        <NavItem>{name}님</NavItem>
+        <NavItem
+          onClick={() => {
+            logout();
+          }}
+        >
+          로그아웃
+        </NavItem>
       </Flex>
       <Flex bgColor={"lightSlateGray"} width="100%" justify="center" gap={10}>
         <NavItem path="/business">기준정보 관리</NavItem>

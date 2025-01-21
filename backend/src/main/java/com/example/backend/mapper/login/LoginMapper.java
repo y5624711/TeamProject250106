@@ -21,4 +21,11 @@ public interface LoginMapper {
             WHERE employee_no = #{employeeNo}
             """)
     List<String> selectAuthByCommonCode(String employeeNo);
+
+    @Select("""
+            SELECT employee_name
+            FROM TB_EMPMST
+            WHERE employee_no = #{employeeNo}
+            """)
+    String selectByIdSearchName(String employeeNo);
 }
