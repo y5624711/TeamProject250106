@@ -6,6 +6,7 @@ export const AuthenticationContext = createContext("");
 function AuthenticationProvider({ children }) {
   const [userToken, setUserToken] = useState({});
   const [userName, setUserName] = useState("");
+  const [isInitialized, setIsInitialized] = useState(false);
   const isAuthenticated = Date.now() < userToken.exp * 1000;
 
   useEffect(() => {
@@ -18,24 +19,30 @@ function AuthenticationProvider({ children }) {
     if (name) {
       setUserName(name); // name 상태 업데이트
     }
+    setIsInitialized(true); // 초기화 완료
   }, []);
 
   // 토큰 만료 시 자동 로그아웃 (하루로 설정 해놓음)
   useEffect(() => {
     if (userToken?.exp) {
-      const remainingTime = userToken.exp * 1000 - Date.now();
-      console.log(`토큰 만료까지 남은 시간: ${remainingTime / 1000}초`);
+      const currentTime = Date.now();
+      const expirationTime = userToken.exp * 1000;
+      const remainingTime = expirationTime - currentTime;
+
       if (remainingTime > 0) {
+        console.log(`토큰 만료까지 남은 시간: ${remainingTime / 1000}초`);
+
         const timeout = setTimeout(() => {
           logout();
         }, remainingTime);
 
-        return () => clearTimeout(timeout); // 컴포넌트 언마운트 시 타이머 정리
+        return () => clearTimeout(timeout); // 이전 타이머 정리
       } else {
-        logout(); // 만료 시간이 이미 지난 경우 즉시 로그아웃
+        console.log("토큰이 이미 만료되었습니다. 로그아웃 처리합니다.");
+        logout();
       }
     }
-  }, [userToken]);
+  }, [userToken, isInitialized]);
 
   function login(token, name) {
     localStorage.setItem("token", token);
@@ -48,6 +55,7 @@ function AuthenticationProvider({ children }) {
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("name"); // name도 삭제
+    setIsInitialized(false);
     setUserToken({});
     setUserName("");
   }
@@ -73,6 +81,7 @@ function AuthenticationProvider({ children }) {
         isAuthenticated,
         isAdmin,
         hasAccess,
+        isInitialized: isInitialized,
       }}
     >
       {children}

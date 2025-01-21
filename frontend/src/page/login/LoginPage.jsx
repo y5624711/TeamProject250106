@@ -1,17 +1,26 @@
-import { Box, Flex, Input, Spinner, Stack, Text } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import { Box, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button.jsx";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate } from "react-router-dom";
+import { LoginCheck } from "../main/LoginCheck.jsx";
 
 export function LoginPage() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const authentication = useContext(AuthenticationContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  // isAuthenticated가 true인 경우 메인 페이지로 리다이렉트
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   function handleLoginClick() {
     axios
@@ -37,10 +46,6 @@ export function LoginPage() {
       });
   }
 
-  if (authentication) {
-    <Spinner />;
-  }
-
   return (
     <Flex
       w="100vw"
@@ -49,6 +54,7 @@ export function LoginPage() {
       alignItems="center"
       bg="gray.100" // 배경색 추가 (선택 사항)
     >
+      <LoginCheck />
       <Box textAlign="center">
         <Text pb={5} fontSize={"30px"} fontWeight={"bold"}>
           Choongang System
