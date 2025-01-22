@@ -35,7 +35,7 @@ export function ItemCommonCodeView({
   useEffect(() => {
     if (itemCommonCodeKey) {
       axios
-        .get(`/api/commonCode/item/view/${itemCommonCodeKey}`)
+        .get(`/api/commonCode/view/${itemCommonCodeKey}`)
         .then((res) => {
           setItemCommonCode(res.data);
           setEditedItemCommonCode(res.data[0]);
@@ -75,10 +75,7 @@ export function ItemCommonCodeView({
       return;
     }
     axios
-      .put(
-        `/api/commonCode/item/edit/${itemCommonCodeKey}`,
-        editedItemCommonCode,
-      )
+      .put(`/api/commonCode/edit/${itemCommonCodeKey}`, editedItemCommonCode)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -99,7 +96,7 @@ export function ItemCommonCodeView({
   // 품목 공통 코드 삭제 시 사용여부 false
   const handleDeleteConfirm = () => {
     axios
-      .put(`/api/commonCode/item/delete/${itemCommonCodeKey}`)
+      .put(`/api/commonCode/delete/${itemCommonCodeKey}`)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({

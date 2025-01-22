@@ -20,7 +20,7 @@ export function ItemCommonCode() {
   // 품목 공통 코드 목록 가져오기
   useEffect(() => {
     axios
-      .get(`/api/commonCode/item/list`, {
+      .get(`/api/commonCode/list`, {
         params: searchParams,
       })
       .then((res) => {

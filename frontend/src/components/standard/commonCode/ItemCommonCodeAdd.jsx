@@ -69,7 +69,7 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
       return;
     }
     axios
-      .post("/api/commonCode/item/add", itemCodeData)
+      .post("/api/commonCode/add", itemCodeData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
