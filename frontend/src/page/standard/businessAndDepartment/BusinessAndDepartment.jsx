@@ -7,7 +7,7 @@ export function BusinessAndDepartment() {
   return (
     <Flex>
       <StandardSideBar />
-      <Stack w={"80%"} mx={"auto"}>
+      <Stack mx={"auto"} pl={"40px"} pr={"40px"} w={"100%"}>
         <BusinessView />
         <BusinessDepartmentList />
       </Stack>

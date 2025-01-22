@@ -151,19 +151,14 @@ public class CommonController {
     private ResponseEntity<Map<String, Object>> updateSysCommonCode(@RequestBody CommonCode commonCode) {
         System.out.println("commonCode = " + commonCode);
         if (service.validateSysCode(commonCode)) {
-            if (service.checkSameName(commonCode)) {
-                System.out.println("승인됨");
-                if (service.updateSysCode(commonCode)) {
-                    return ResponseEntity.ok().body(Map.of("message",
-                            Map.of("type", "success", "text", "수정 되었습니다.")));
-                } else {
-                    return ResponseEntity.internalServerError().body(Map.of("message",
-                            Map.of("type", "error", "text", "수정 되지 않았습니다.")));
-                }
+            if (service.updateSysCode(commonCode)) {
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success", "text", "수정 되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "error", "text", "중복되는 코드가 있습니다.")));
+                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
             }
+
         } else {
             return ResponseEntity.internalServerError().body(
                     Map.of("message",

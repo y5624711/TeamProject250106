@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Spinner } from "@chakra-ui/react";
 

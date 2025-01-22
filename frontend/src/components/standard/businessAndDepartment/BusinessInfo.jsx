@@ -39,7 +39,9 @@ export function BusinessInfo({
         <Flex>
           <Heading>사업장 정보</Heading>
           <Spacer />
-          {isEditing && <Heading color={"red"}>수정중</Heading>}
+          <Box pt={3}>
+            <Button onClick={handleSave}>저장</Button>
+          </Box>
         </Flex>
         <Stack>
           <HStack gap={5}>
@@ -52,7 +54,6 @@ export function BusinessInfo({
                     businessName: e.target.value,
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
             <Field label={"대표"}>
@@ -64,7 +65,6 @@ export function BusinessInfo({
                     businessNo: e.target.value, // businessName 업데이트
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
             <Field label={"사업자번호"}>
@@ -76,7 +76,6 @@ export function BusinessInfo({
                     businessNo: e.target.value, // businessName 업데이트
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
           </HStack>
@@ -90,7 +89,6 @@ export function BusinessInfo({
                     businessTel: e.target.value, // businessName 업데이트
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
             <Field label={"팩스번호"}>
@@ -102,7 +100,6 @@ export function BusinessInfo({
                     businessFax: e.target.value, // businessName 업데이트
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
           </HStack>
@@ -115,14 +112,9 @@ export function BusinessInfo({
                   businessAddress: e.target.value, // businessName 업데이트
                 }))
               }
-              readOnly={!isEditing}
             />
           </Field>
         </Stack>
-        <Box pt={3}>
-          {!isEditing && <Button onClick={toggleEditing}>수정</Button>}
-          {isEditing && <Button onClick={handleSave}>저장</Button>}
-        </Box>
       </Box>
     </Box>
   );

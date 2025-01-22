@@ -6,7 +6,7 @@ import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate } from "react-router-dom";
-import { LoginCheck } from "../main/LoginCheck.jsx";
+import { LoginCheck } from "../../components/tool/login/LoginCheck.jsx";
 
 export function LoginPage() {
   const [id, setId] = useState("");

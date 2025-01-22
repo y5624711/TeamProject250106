@@ -19,12 +19,9 @@ import { DeleteDialog } from "../commonCode/DeleteDialog.jsx";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
-  setIsOpen,
+  onCancel,
   department,
   setDepartmentData,
-  isEditing,
-  setIsEditing,
-  toggleEditing,
   setAddCheck,
   addCheck,
 }) {
@@ -46,7 +43,7 @@ export function DepartmentViewAndUpdateDialog({
         departmentName: department.departmentName,
         departmentTel: department.departmentTel,
         departmentFax: department.departmentFax,
-        departmentNot: department.departmentNote,
+        departmentNote: department.departmentNote,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -57,8 +54,7 @@ export function DepartmentViewAndUpdateDialog({
           type: message.type,
           description: message.text,
         });
-        setIsEditing(false);
-        setIsOpen(false);
+        onCancel();
       })
       .catch((e) => {
         const message = e.data.message;
@@ -81,8 +77,7 @@ export function DepartmentViewAndUpdateDialog({
           type: message.type,
           description: message.text,
         });
-        setIsOpen(false);
-        setIsEditing(false);
+        onCancel();
         setIsOpenDelete(false);
         setAddCheck(!addCheck);
       });
@@ -93,7 +88,13 @@ export function DepartmentViewAndUpdateDialog({
   }
 
   return (
-    <DialogRoot size={"lg"} open={isOpen}>
+    <DialogRoot
+      size={"lg"}
+      open={isOpen}
+      onOpenChange={() => {
+        onCancel();
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>부서 상세 정보</DialogTitle>
@@ -131,7 +132,6 @@ export function DepartmentViewAndUpdateDialog({
                     departmentName: e.target.value,
                   }))
                 }
-                readOnly={!isEditing}
               />
             </Field>
 
@@ -145,7 +145,6 @@ export function DepartmentViewAndUpdateDialog({
                       departmentTel: e.target.value,
                     }))
                   }
-                  readOnly={!isEditing}
                 />
               </Field>
               <Field label={"팩스"}>
@@ -157,7 +156,6 @@ export function DepartmentViewAndUpdateDialog({
                       departmentFax: e.target.value,
                     }))
                   }
-                  readOnly={!isEditing}
                 />
               </Field>
             </HStack>
@@ -171,36 +169,32 @@ export function DepartmentViewAndUpdateDialog({
                     departmentNote: e.target.value,
                   }));
                 }}
-                readOnly={!isEditing}
               />
             </Field>
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {isEditing && department.departmentActive && (
+          {department.departmentActive && (
             <>
               {
                 <>
+                  <Button>취소</Button>
                   <DeleteDialog
                     isOpenDelete={isOpenDelete}
                     setIsOpenDelete={setIsOpenDelete}
                     handleDeleteClick={handleDeleteClick}
                   />
                   <Button disabled={disable} onClick={handleUpdate}>
-                    저장
+                    확인
                   </Button>
                 </>
               }
             </>
           )}
-          {!isEditing && department.departmentActive && (
-            <Button onClick={toggleEditing}>수정</Button>
-          )}
         </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {
-            setIsOpen(false);
-            setIsEditing(false);
+            onCancel();
           }}
         />
       </DialogContent>
