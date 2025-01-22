@@ -158,7 +158,7 @@ public interface EmployeeMapper {
 
     @Select("""
                 <script>
-               SELECT COALESCE(MAX(CAST(SUBSTRING(employee_no, 4) AS UNSIGNED)), 0) AS maxNumber
+               SELECT COALESCE(MAX(CAST(SUBSTRING(employee_no, 7) AS UNSIGNED)), 0) AS maxNumber
                 FROM TB_EMPMST
                 WHERE employee_no LIKE CONCAT(#{employeeCommonCode}, '%')
                 AND employee_no REGEXP '^[A-Za-z]+[0-9]+$'

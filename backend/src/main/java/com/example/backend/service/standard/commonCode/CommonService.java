@@ -37,10 +37,19 @@ public class CommonService {
 
     // 품목 공통 코드 정보 입력됐는지 확인
     public boolean validateCommonCode(CommonCode commonCode) {
-        // 품목 코드가 null이 아니고, 공백이 아니며, 영문 대문자 3자리로 되어있는지 검증
-        boolean isValidCommonCode = commonCode.getCommonCode() != null &&
-                !commonCode.getCommonCode().trim().isEmpty() &&
-                commonCode.getCommonCode().matches("^[A-Z]{3}$");
+        // 공통 코드 유형(SYSTEM/ITEM)에 따른 코드 길이 제한 검증
+        boolean isValidCommonCode = false;
+        if ("ITEM".equals(commonCode.getCommonCodeType())) {
+            // ITEM일 경우 대문자 3자리 검증
+            isValidCommonCode = commonCode.getCommonCode() != null &&
+                    !commonCode.getCommonCode().trim().isEmpty() &&
+                    commonCode.getCommonCode().matches("^[A-Z]{3}$");
+        } else if ("SYSTEM".equals(commonCode.getCommonCodeType())) {
+            // SYSTEM일 경우 대문자 3~5자리 검증
+            isValidCommonCode = commonCode.getCommonCode() != null &&
+                    !commonCode.getCommonCode().trim().isEmpty() &&
+                    commonCode.getCommonCode().matches("^[A-Z]{3,5}$");
+        }
 
         // 품목명도 null이 아니고, 공백이 아닌지 확인
         boolean isValidCommonName = commonCode.getCommonCodeName() != null &&

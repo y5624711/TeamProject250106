@@ -74,7 +74,7 @@ export function CommonCode() {
         </Stack>
         <CommonCodeView
           commonCodeKey={commonCodeKey}
-          setItemCommonCodeKey={setCommonCodeKey}
+          setCommonCodeKey={setCommonCodeKey}
           isOpen={viewDialogOpen}
           onClose={() => setViewDialogOpen(false)}
           setChange={setChange}
@@ -83,7 +83,6 @@ export function CommonCode() {
           isOpen={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}
           onAdd={handleAddCommonCode}
-          setItemCommonCodeKey={setCommonCodeKey}
           setChange={setChange}
         />
       </HStack>

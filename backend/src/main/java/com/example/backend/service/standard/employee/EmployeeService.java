@@ -17,15 +17,15 @@ public class EmployeeService {
     final EmployeeMapper mapper;
 
     public boolean addEmployee(Employee employee) {
-
+        String workPlace = employee.getEmployeeWorkPlaceCode().substring(0, 3);
         // 0 또는 숫자 조회
-        Integer maxNo = mapper.viewMaxEmployeeNo(employee.getEmployeeCommonCode());
+        Integer maxNo = mapper.viewMaxEmployeeNo(workPlace);
 
         //  부족한 자리수 만큼  0 채우기
         String newNumber = String.format("%07d", (maxNo == null) ? 1 : maxNo + 1);
 
-        String workPlace= employee.getEmployeeWorkPlaceCode().substring(0,3);
-        String insertEmployeeNo = workPlace+"EMP" + newNumber;
+
+        String insertEmployeeNo = workPlace + "EMP" + newNumber;
         employee.setEmployeeNo(insertEmployeeNo);
 
         int cnt = mapper.addEmployee(employee);

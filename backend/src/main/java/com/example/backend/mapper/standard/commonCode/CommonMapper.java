@@ -67,14 +67,14 @@ public interface CommonMapper {
             SELECT COUNT(*)
             FROM TB_SYSCOMM
             WHERE common_code_active = false
-                 AND (common_code = #{commonCode} OR common_code_name = #{commonName})
+                 AND (common_code = #{commonCode} OR common_code_name = #{commCodeName})
             """)
-    int countByCodeOrName(String commonCode, String commonName);
+    int countByCodeOrName(String commonCode, String commCodeName);
 
     @Insert("""
             INSERT INTO TB_SYSCOMM
             (common_code_key, common_code, common_code_name, common_code_note,common_code_type)
-            VALUES (#{commonCodeKey}, #{commonCode}, #{commonName}, #{commonCodeNote}, #{commonCodeType})
+            VALUES (#{commonCodeKey}, #{commonCode}, #{commonCodeName}, #{commonCodeNote}, #{commonCodeType})
             """)
     @Options(keyProperty = "commonCodeKey", useGeneratedKeys = true)
     int addCommonCode(CommonCode commonCode);

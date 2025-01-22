@@ -114,6 +114,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             selectOptions={selectOptions}
             onChange={handleCodeTypeChange}
           />
+
           <Stack w={"90%"} gap={5} pt={"5"}>
             <Field label="코드" orientation="horizontal">
               <Input
