@@ -139,7 +139,8 @@ public interface InstallMapper {
             ir.business_employee_no, e1.employee_name as business_employee_name,
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
-            GROUP_CONCAT(ts.serial_no) AS serial_numbers
+            GROUP_CONCAT(ts.serial_no) AS serial_numbers,
+            GROUP_CONCAT(ts.serial_note) AS serial_notes
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
             LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code

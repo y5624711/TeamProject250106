@@ -30,6 +30,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
   const [installData, setInstallData] = useState(null);
   const [selectedSerial, setSelectedSerial] = useState("");
   const [serialNote, setSerialNote] = useState("");
+  const [serialNotes, setSerialNotes] = useState({}); // 시리얼 번호별 비고 저장
 
   // 설치 승인 정보와 시리얼 번호 정보를 병렬로 가져오기
   useEffect(() => {
@@ -39,6 +40,18 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
         .then((res) => {
           const data = res.data || [];
           setInstallData(data);
+
+          // 시리얼 번호별 비고 설정
+          const notes = {};
+          if (data.serialNumbers && data.serialNotes) {
+            const serialList = data.serialNumbers.split(",");
+            const noteList = data.serialNotes.split(",");
+            // 시리얼 번호와 비고를 매핑
+            serialList.forEach((serial, index) => {
+              notes[serial] = noteList[index] || ""; // 비고가 없으면 빈 문자열로 설정
+            });
+          }
+          setSerialNotes(notes);
         })
         .catch((error) => {
           console.error("설치 요청 정보 오류 발생: ", error);
@@ -85,6 +98,12 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
   // installData의 serialNumbers를 split하여 serialList로 설정
   const serialList = installData?.serialNumbers?.split(",") || [];
 
+  // 시리얼 선택 시 비고 업데이트
+  const handleSerialChange = (serial) => {
+    setSelectedSerial(serial);
+    setSerialNote(serialNotes[serial] || ""); // 선택된 시리얼의 비고 불러오기
+  };
+
   // installData가 null 또는 undefined일 때 렌더링을 막기 위한 처리
   if (!installData) {
     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
@@ -113,11 +132,13 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
             <HStack>
               <Field label={"출고 번호"} orientation="horizontal">
                 <Input value={installData.outputNo} readOnly />
+                <Input value={installData.outputNo} readOnly />
               </Field>
               <Field label={"시리얼 번호"} orientation="horizontal">
                 <SelectRoot
                   onValueChange={(e) => {
-                    setSelectedSerial(e.value[0]);
+                    handleSerialChange(e.value[0]);
+                    // setSelectedSerial(e.value[0]);
                   }}
                 >
                   <SelectTrigger>
@@ -159,7 +180,10 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
               <Input value={installData.installApproveNote} readOnly />
             </Field>
             <Field label={"시리얼 비고"} orientation="horizontal">
-              <Input onChange={(e) => setSerialNote(e.target.value)} />
+              <Input
+                value={serialNote}
+                onChange={(e) => setSerialNote(e.target.value)}
+              />
             </Field>
           </Stack>
         </DialogBody>
@@ -167,7 +191,9 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          <Button onClick={handleConfigurationClick}>설치 완료</Button>
+          {installData.state === "설치 승인" && (
+            <Button onClick={handleConfigurationClick}>설치 완료</Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

@@ -55,7 +55,7 @@ export function Install() {
 
     if (key.state === "요청 대기") {
       setApproveDialogOpen(true);
-    } else if (key.state === "설치 대기") {
+    } else if (key.state === "설치 대기" || key.state === "설치 승인") {
       setConfigurationDialogOpen(true);
     }
   };

@@ -37,6 +37,7 @@ public class Install {
     private String customerEmployeeName;
     private String serialNote;
     private String serialNumbers;
+    private String serialNotes;
     private Integer installConfigurationKey;
     private Boolean installConfiguration;
     private String warehouseCode;
