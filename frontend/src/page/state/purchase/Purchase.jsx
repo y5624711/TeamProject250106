@@ -49,7 +49,7 @@ export function Purchase() {
     <Box display="flex" h="100vh">
       <StateSideBar />
       <Box flex="1" p={4}>
-        <Heading size="md" p={2} mb={3}>
+        <Heading size="xl" p={2} mb={3}>
           구매 / 설치 관리 {">"} 구매 관리
         </Heading>
         {/* 구매 관리 리스트 */}
