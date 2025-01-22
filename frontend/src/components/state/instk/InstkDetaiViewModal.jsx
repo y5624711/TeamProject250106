@@ -16,7 +16,7 @@ import React from "react";
 
 export function InstkDetaiViewModal() {
   return (
-    <DialogRoot size={"lg"}>
+    <DialogRoot size={"md"}>
       <DialogTrigger asChild>
         <Button variant="outline" size="md">
           입고 상세 확인

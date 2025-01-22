@@ -30,7 +30,7 @@ export function InstkList() {
   console.log(isApproveModalOpen, "모달");
   return (
     <Box>
-      <Heading>구매/설치관리 >가입고 관리</Heading>
+      <Heading>구매/설치관리 >입고 관리</Heading>
       <Box> 검색 화면 </Box>
       <Table.Root>
         <Table.Header>

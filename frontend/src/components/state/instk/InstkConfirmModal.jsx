@@ -1,5 +1,5 @@
 import { Box, HStack, Input, Stack } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -14,15 +14,20 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
+  const { id } = useContext(AuthenticationContext);
+
+  console.log(id);
+
   useEffect(() => {
     axios.get("api/insk/detailView");
   }, []);
   console.log("instk", instk);
 
   return (
-    <DialogRoot size={"lg"} open={isModalOpen}>
+    <DialogRoot size={"md"} open={isModalOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>가입고 승인 관리</DialogTitle>
@@ -66,7 +71,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
               <Input value={"직접기입?"} />
             </Field>
             <Field label={"가입고 승인자"} orientation="horizontal">
-              <Input value={"나"} readOnly />
+              <Input value={localStorage.getItem("name")} readOnly />
             </Field>
             <Field label={"비고"} orientation="horizontal">
               <Input value={"가입고 비고 작성"} />
