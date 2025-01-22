@@ -28,14 +28,15 @@ public interface InstallMapper {
 
     // 설치 요청 리스트 출력
     @Select("""
-            SELECT i.install_request_key, f.franchise_name, ic.item_common_name, c.customer_name, i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, i.install_request_date
-            FROM TB_INSTL_REQ i
-            LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
-            LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
-            LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
-            LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
-            LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
-            WHERE i.install_request_consent IS NULL OR i.install_request_consent = 0
+             SELECT i.install_request_key, f.franchise_name, ic.item_common_name, c.customer_name, i.business_employee_no,
+            e.employee_name as business_employee_name, w.warehouse_name, i.install_request_date, i.install_request_consent as consent
+             FROM TB_INSTL_REQ i
+             LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
+             LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
+             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
+             WHERE i.install_request_consent IS NULL OR i.install_request_consent = 0
             """)
     List<Install> getInstallRequestList();
 
@@ -119,7 +120,8 @@ public interface InstallMapper {
     // 설치 승인 리스트 출력
     @Select("""
             SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, ir.business_employee_no, e1.employee_name as business_employee_name,
-            ia.customer_employee_no, e2.employee_name as customer_employee_name, e3.employee_name as customer_installer_name, w.warehouse_name, ia.install_approve_date
+            ia.customer_employee_no, e2.employee_name as customer_employee_name, e3.employee_name as customer_installer_name, w.warehouse_name, ia.install_approve_date,
+            ia.install_approve_consent as consent
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
             LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
@@ -159,14 +161,13 @@ public interface InstallMapper {
             """)
     int addSerialNote(String serialNo, String serialNote);
 
-    // 설치(검수)테이블에 추가
-    @Insert("""
-            INSERT INTO TB_INSTL_CONF
-            (output_no, install_configuration)
-            VALUES (#{outputNo}, true)
+    // 승인 테이블에 상태 true로 변경
+    @Update("""
+            UPDATE TB_INSTL_APPR
+            SET install_approve_consent = true
+            WHERE output_no = #{outputNo}
             """)
-    @Options(keyProperty = "installConfigurationKey", useGeneratedKeys = true)
-    int addConfiguration(Install install);
+    int updateApproveConsent(String outputNo);
 
     // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
     @Select("""

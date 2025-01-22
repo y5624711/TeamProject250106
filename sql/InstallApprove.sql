@@ -9,3 +9,6 @@ CREATE TABLE TB_INSTL_APPR
     install_approve_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     install_approve_note  VARCHAR(50)
 );
+
+ALTER TABLE TB_INSTL_APPR
+    ADD install_approve_consent BOOLEAN;

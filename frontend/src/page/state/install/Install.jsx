@@ -24,11 +24,21 @@ export function Install() {
       .then(([requestRes, approveRes]) => {
         const requestList = requestRes.data.map((item) => ({
           ...item,
-          state: "요청",
+          state:
+            item.consent === true
+              ? "요청 승인"
+              : item.consent === false
+                ? "요청 반려"
+                : "요청 대기",
         }));
         const approveList = approveRes.data.map((item) => ({
           ...item,
-          state: "승인",
+          state:
+            item.consent === true
+              ? "설치 승인"
+              : item.consent === false
+                ? "설치 반려"
+                : "설치 대기",
         }));
 
         // 두 리스트를 합쳐서 설정
@@ -43,9 +53,9 @@ export function Install() {
   const handleRowClick = (key) => {
     setSelectedInstall(key);
 
-    if (key.state === "요청") {
+    if (key.state === "요청 대기") {
       setApproveDialogOpen(true);
-    } else if (key.state === "승인") {
+    } else if (key.state === "설치 대기") {
       setConfigurationDialogOpen(true);
     }
   };

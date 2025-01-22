@@ -19,6 +19,7 @@ export function InstallList({ installList, onRowClick }) {
     { key: "currentState", label: "상태 현황" },
   ];
 
+  console.log(installList);
   return (
     <Box px={10}>
       <SearchBar />
@@ -60,13 +61,9 @@ export function InstallList({ installList, onRowClick }) {
                   {install.warehouseName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {
-                    install.state === "요청"
-                      ? install.installRequestDate?.split("T")[0] // 요청 상태일 때 요청 날짜 표시
-                      : install.state === "승인"
-                        ? install.installApproveDate?.split("T")[0] // 승인 상태일 때 승인 날짜 표시
-                        : "N/A" // 그 외 상태일 때 표시할 값
-                  }
+                  {install.installRequestKey != null
+                    ? install.installRequestDate?.split("T")[0]
+                    : install.installApproveDate?.split("T")[0]}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.state}</Table.Cell>
               </Table.Row>

@@ -41,4 +41,5 @@ public class Install {
     private Boolean installConfiguration;
     private String warehouseCode;
     private String inoutHistoryNote;
+    private Boolean consent;
 }

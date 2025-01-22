@@ -60,7 +60,7 @@ public class InstallController {
     }
 
 
-    // 설치 승인 테이블에서 요청 리스트 가져오기
+    // 설치 승인 테이블에서 리스트 가져오기
     @GetMapping("list/approve")
     public List<Install> getInstallApproveList() {
         return service.getInstallApproveList();
@@ -94,7 +94,7 @@ public class InstallController {
         return service.getInstallRequestView(installKey);
     }
 
-    // 설치 요청 테이블에서 요청 리스트 가져오기
+    // 설치 요청 테이블에서 리스트 가져오기
     @GetMapping("list/request")
     public List<Install> getInstallRequestList() {
         return service.getInstallRequestList();

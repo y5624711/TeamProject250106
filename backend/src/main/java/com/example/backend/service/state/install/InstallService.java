@@ -119,11 +119,10 @@ public class InstallService {
                 }
             }
 
-            System.out.println(install.getOutputNo());
-            // 설치(검수)테이블에 추가
-            int configuration = mapper.addConfiguration(install);
-            if (configuration <= 0) {
-                throw new IllegalStateException("설치(검수) 테이블에 추가 오류: " + configuration);
+            // 승인 테이블에 상태 true로 변경
+            int approveConsent = mapper.updateApproveConsent(install.getOutputNo());
+            if (approveConsent <= 0) {
+                throw new IllegalStateException("승인 상태 변경 오류: " + approveConsent);
             }
             return true;
         } catch (Exception e) {
