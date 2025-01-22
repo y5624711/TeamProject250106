@@ -13,6 +13,7 @@ import { BusinessAndDepartment } from "./page/standard/businessAndDepartment/Bus
 import { LoginPage } from "./page/login/LoginPage.jsx";
 import Warehouse from "./page/standard/warehouse/Warehouse.jsx";
 import Location from "./page/standard/location/Location.jsx";
+import { Purchase } from "./page/state/purchase/Purchase.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
 import { Instk } from "./page/state/instk/Instk.jsx";
@@ -32,8 +33,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <Main /> },
-      { path: "business", element: <BusinessAndDepartment /> },
+      {
+        index: true,
+        element: <Main /> },
+      {
+        path: "business",
+        element: <BusinessAndDepartment /> },
       {
         path: "commonCode/item",
         element: <ItemCommonCode />,
@@ -61,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "location/*",
         element: <Location />,
+      },
+      {
+        path: "purchase",
+        element: <Purchase />,
       },
       {
         path: "install",

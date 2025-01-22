@@ -25,7 +25,7 @@ export function StateSideBar() {
   return (
     <Flex>
       <Box
-        w={"300px"}
+        w="230px"
         pb="4"
         bg="gray.100"
         h={"100vh"}
@@ -44,9 +44,9 @@ export function StateSideBar() {
           </Text>
         </Box>
 
-        <Stack spacing="2" mt="4">
-          <SidebarItem path={"/purchase"}>구매 관리</SidebarItem>
-          <SidebarItem path={"/instk"}>입고 관리</SidebarItem>
+        <Stack spacing="2" mt="4" alignItems="center">
+          <SidebarItem path="/purchase">구매 관리</SidebarItem>
+          <SidebarItem>입고 관리</SidebarItem>
           <SidebarItem path="/install">설치 관리</SidebarItem>
           <SidebarItem path="/return">반품/회수 관리</SidebarItem>
         </Stack>
