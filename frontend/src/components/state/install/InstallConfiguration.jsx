@@ -108,7 +108,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
   if (!installData) {
     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
   }
-  console.log(serialList);
+  console.log(installData);
   return (
     <DialogRoot
       open={isOpen}
@@ -138,7 +138,6 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
                 <SelectRoot
                   onValueChange={(e) => {
                     handleSerialChange(e.value[0]);
-                    // setSelectedSerial(e.value[0]);
                   }}
                 >
                   <SelectTrigger>
@@ -191,7 +190,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          {installData.state === "설치 승인" && (
+          {!installData.consent && (
             <Button onClick={handleConfigurationClick}>설치 완료</Button>
           )}
         </DialogFooter>
