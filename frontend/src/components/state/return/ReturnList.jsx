@@ -46,11 +46,11 @@ function ReturnList({ returnList, onRowClick, setSearchParams }) {
       {/*  onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}*/}
       {/*/>*/}
       <Center>
-        <HStack alignItems={"flex-start"} w={"70%"} my={3}>
+        <HStack alignItems={"flex-start"} w={"80%"} my={3}>
           <SelectRoot
             collection={returnSearchKeywords}
             postition={"relative"}
-            width={"150px"}
+            width={"200px"}
           >
             <SelectTrigger>
               <SelectValueText placeholder={"선택"} />
@@ -78,7 +78,7 @@ function ReturnList({ returnList, onRowClick, setSearchParams }) {
       </RadioGroup>
 
       {/*리스트*/}
-      <Table.Root interactive>
+      <Table.Root interactive my={3}>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader onClick={() => onHeader("customer_key")}>
@@ -133,7 +133,7 @@ function ReturnList({ returnList, onRowClick, setSearchParams }) {
       </Table.Root>
 
       {/*페이지*/}
-      <Pagination />
+      <Pagination my={3} />
     </Box>
   );
 }

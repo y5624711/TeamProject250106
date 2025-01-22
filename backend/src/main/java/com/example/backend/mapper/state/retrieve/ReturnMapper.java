@@ -85,9 +85,9 @@ public interface ReturnMapper {
 
     //입출 내역 생기면 franchise도 불러올 수 있음
     @Select("""
-            SELECT item_common_name, its.item_common_code, customer_name, customer_code
+            SELECT common_code_name itemCommonName, its.item_common_code, customer_name, customer_code
             FROM TB_ITEMSUB its
-            LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_CUSTMST c ON c.item_code = its.item_common_code
             WHERE serial_no=#{serialNo}
             """)
