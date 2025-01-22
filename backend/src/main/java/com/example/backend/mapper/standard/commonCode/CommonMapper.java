@@ -156,8 +156,8 @@ public interface CommonMapper {
 
     @Insert("""
             INSERT INTO TB_ITEMCOMM
-            (item_common_code_key, item_common_code, item_common_name, item_common_code_note)
-            VALUES (#{itemCommonCodeKey}, #{itemCommonCode}, #{itemCommonName}, #{itemCommonCodeNote})
+            (item_common_code_key, item_common_code, item_common_name, item_common_code_note,common_code_type)
+            VALUES (#{itemCommonCodeKey}, #{itemCommonCode}, #{itemCommonName}, #{itemCommonCodeNote}, #{commonCodeType})
             """)
     @Options(keyProperty = "itemCommonCodeKey", useGeneratedKeys = true)
     int addItemCommonCode(ItemCommonCode itemCommonCode);

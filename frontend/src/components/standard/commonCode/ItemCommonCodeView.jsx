@@ -28,6 +28,7 @@ export function ItemCommonCodeView({
     itemCommonCode: "",
     itemCommonName: "",
     itemCommonCodeNote: "",
+    commonCodeType: "",
   });
 
   // 품목 공통 코드 상세 정보 가져오기
@@ -124,7 +125,7 @@ export function ItemCommonCodeView({
           <DialogBody>
             <Box>
               {itemCommonCode.map((item) => (
-                <Box>
+                <Box key={item.itemCommonCodeKey}>
                   {isEditing ? (
                     <>
                       <Text fontSize={"xs"} mt={-5}>

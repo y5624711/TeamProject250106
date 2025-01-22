@@ -52,7 +52,7 @@ export function ItemCommonCodeList({
           <Table.Body>
             {itemCommonCodeList?.map((item, index) => (
               <Table.Row
-                key={item.itemCommonCodeKey}
+                key={item.itemCommonCodeKey ? item.itemCommonCodeKey : index}
                 onClick={() => onRowClick(item.itemCommonCodeKey)}
                 style={{
                   cursor: "pointer",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
-import { Input, Text } from "@chakra-ui/react";
+import { createListCollection, Input, Text } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import axios from "axios";
@@ -14,18 +14,29 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
+import { SelectCode } from "./SelectCode.jsx";
 
 export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
+  const selectOptions = createListCollection({
+    items: [
+      { label: "시스템코드", value: "system" },
+      { label: "물품코드", value: "item" },
+    ],
+  });
+
   const initialItemCodeData = {
     itemCommonCode: "",
     itemCommonName: "",
     itemCommonCodeNote: "",
+    commonCodeType: "",
   };
   const [itemCodeData, setItemCodeData] = useState(initialItemCodeData);
+  const [checkCodeSelect, setCheckCodeSelect] = useState(false);
 
   // 창이 닫히면 입력 내용 초기화
   const handleClose = () => {
     setItemCodeData(initialItemCodeData);
+    setCheckCodeSelect(false);
     onClose();
   };
 
@@ -35,9 +46,18 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     setItemCodeData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // SelectCode에서 선택된 값을 반영하는 함수
+  const handleCodeTypeChange = (value) => {
+    // 배열이 아닌 단일 값으로 처리
+    const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
+    setItemCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
+    setCheckCodeSelect(true);
+  };
+
   const isValid =
     /^[A-Z]{3}$/.test(itemCodeData.itemCommonCode) &&
-    itemCodeData.itemCommonName.trim() !== "";
+    itemCodeData.itemCommonName.trim() !== "" &&
+    checkCodeSelect;
 
   // 품목 공통 코드 등록하기
   const handleAddClick = () => {
@@ -76,6 +96,13 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           <Text fontSize={"xs"} mt={-5}>
             품목 코드는 대문자 3자리로 입력해야 합니다.
           </Text>
+
+          {/*코드 종류 선택*/}
+          <SelectCode
+            selectOptions={selectOptions}
+            onChange={handleCodeTypeChange}
+          />
+
           <Field label="품목 코드">
             <Input
               placeholder="품목 코드"
