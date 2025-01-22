@@ -23,6 +23,7 @@ import {
   SelectValueText,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { toaster } from "../../ui/toaster.jsx";
 
 export function InstallConfiguration({ installKey, isOpen, onClose }) {
   const [installData, setInstallData] = useState(null);
@@ -53,6 +54,37 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
   if (!installData) {
     return null;
   }
+
+  const handleConfigurationClick = () => {
+    if (!selectedSerial) {
+      toaster.create({
+        description: "설치 완료된 시리얼 번호를 지정해주세요.",
+        type: "error",
+      });
+      return;
+    }
+
+    // 설치 확인 요청
+    const configurationData = {
+      outputNo,
+      serialNo: selectedSerial,
+      serialNote,
+    };
+    axios
+      .post("/api/install/configuration", configurationData)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        onClose();
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
+  };
 
   console.log(selectedSerial);
   return (
@@ -140,7 +172,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          <Button>설치 완료</Button>
+          <Button onClick={handleConfigurationClick}>설치 완료</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

@@ -92,7 +92,7 @@ public interface InstallMapper {
 
     // 가져온 시리얼 번호 리스트를 TB_INSTL_SUB에 삽입
     @Insert("""
-            Insert INTO TB_INSTL_SUB
+            INSERT INTO TB_INSTL_SUB
             (output_no, serial_no)
             VALUES ( #{outputNo}, #{serialNo})
             """)
@@ -159,4 +159,29 @@ public interface InstallMapper {
             WHERE output_no = #{outputNo}
             """)
     List<String> selectSerialNoByOutputNo(String outputNo);
+
+    // 해당 시리얼 번호의 비고 내용 추가
+    @Update("""
+            UPDATE TB_INSTL_SUB
+            SET serial_note = #{serialNote}
+            WHERE serial_no = #{serialNo}
+            """)
+    int addSerialNote(String serialNo, String serialNote);
+
+    // 설치(검수)테이블에 추가
+    @Insert("""
+            INSERT INTO TB_INSTAL_CONF
+            (output_no, install_configuration)
+            VALUES (#{outputNo}, 1)
+            """)
+    @Options(keyProperty = "installConfigurationKey", useGeneratedKeys = true)
+    int addConfiguration(String outputNo);
+
+    // 품목 입출력 테이블에 데이터 추가
+    @Insert("""
+            INSERT INTO TB_INOUT_HIS
+            (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, lacation_key, inout_history_date, count_currnet, inout_hisory_note)
+            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, {businessEmployeeNo}, #{franchiseCode}, #{lacationKey}, #{inoutHistoryDate}, #{inoutHistoryNote}, #{countCurrent}, #{inoutHistoryNote})
+            """)
+    int addOutHistory(String serialNo);
 }

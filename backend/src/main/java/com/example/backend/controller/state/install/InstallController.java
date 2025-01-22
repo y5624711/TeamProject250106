@@ -18,6 +18,29 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 확인
+    @PostMapping("configuration")
+    public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
+        // 설치 확인 작업
+        if (service.installConfiguration(install)) {
+            // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
+            if (service.addOutHistory(install)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success", "text", "설치 확인 및 품목 입출력 테이블에 추가되었습니다."),
+                        "data", install
+                ));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "품목 입출력 테이블에 추가 실패하였습니다.")
+                ));
+            }
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "설치 확인이 실패하였습니다.")
+            ));
+        }
+    }
+
     // 설치된 시리얼 번호 가져오기
     @GetMapping("/serial/{installKey}")
     public List<String> getSerialList(@PathVariable int installKey) {
@@ -39,9 +62,6 @@ public class InstallController {
     // 설치 승인
     @PostMapping("approve")
     public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
-        System.out.println(install);
-        System.out.println(install.getInstallRequestKey());
-        System.out.println(install);
         if (service.installApprove(install)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",

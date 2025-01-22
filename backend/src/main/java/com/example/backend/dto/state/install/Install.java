@@ -35,5 +35,5 @@ public class Install {
     private String serialNo;
     private LocalDateTime installApproveDate;
     private String customerEmployeeName;
-
+    private String serialNote;
 }
