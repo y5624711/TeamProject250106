@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ReturnMapper {
 
-
+    //반품 관리 리스트
     @Select("""
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
@@ -41,6 +41,7 @@ public interface ReturnMapper {
             """)
     List<Return> getStandardInfo(String serialNo);
 
+    //요청 저장
     @Insert("""
             INSERT INTO TB_RTN_REQ
             (serial_no, franchise_code, business_employee_no, customer_code, return_consent, return_request_note) 
@@ -48,6 +49,7 @@ public interface ReturnMapper {
             """)
     int addRequest(Return requestInfo);
 
+    //요청/승인 내용 (1개) 반환
     @Select("""
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
@@ -83,6 +85,7 @@ public interface ReturnMapper {
             """)
     int addApprove(Return approveInfo);
 
+    //발주 최대값 조회
     @Select("""
             <script>
                 SELECT COALESCE(MAX(CAST(return_no AS UNSIGNED)), 0) AS maxReturnNo

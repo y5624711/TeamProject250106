@@ -28,6 +28,7 @@ public class ReturnService {
         return mapper.getStandardInfo(serialNo);
     }
 
+    //반품 요청 정보 저장
     public void addRequest(Return requestInfo) {
         //프랜차이즈 이름-> 코드
         String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
@@ -37,6 +38,7 @@ public class ReturnService {
         mapper.addRequest(requestInfo);
     }
 
+    //요청 정보 조회 (1개)
     public List<Return> getRequestInfo(String returnRequestKey) {
 //        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
         return mapper.getRequestInfo(returnRequestKey);
