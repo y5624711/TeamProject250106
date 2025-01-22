@@ -25,8 +25,8 @@ import { SelectCode } from "./SelectCode.jsx";
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템코드", value: "system" },
-      { label: "물품코드", value: "item" },
+      { label: "시스템코드", value: "SYSTEM" },
+      { label: "물품코드", value: "ITEM" },
     ],
   });
 
@@ -38,11 +38,13 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   };
   const [codeData, setCodeData] = useState(initialCodeData);
   const [checkCodeSelect, setCheckCodeSelect] = useState(false);
+  const [codeType, setCodeType] = useState("");
 
   // 창이 닫히면 입력 내용 초기화
   const handleClose = () => {
     setCodeData(initialCodeData);
     setCheckCodeSelect(false);
+    setCodeType("");
     onClose();
   };
 
@@ -57,11 +59,14 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     // 배열이 아닌 단일 값으로 처리
     const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
     setCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
+    setCodeType(stringValue);
     setCheckCodeSelect(true);
   };
 
   const isValid =
-    /^[A-Z]{3}$/.test(codeData.commonCode) &&
+    (codeType === "ITEM"
+      ? /^[A-Z]{3}$/.test(codeData.commonCode)
+      : /^[A-Z]{3,5}$/.test(codeData.commonCode)) &&
     codeData.commonCodeName.trim() !== "" &&
     checkCodeSelect;
 
@@ -100,7 +105,8 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5}>
-            시스템코드는 3~5글자, 품목 코드는 대문자 3자리로 입력해야 합니다.
+            시스템코드는 대문자 3~5자리, 품목 코드는 대문자 3자리로 입력해야
+            합니다.
           </Text>
 
           {/*코드 종류 선택*/}
@@ -114,7 +120,13 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
                 placeholder="코드"
                 value={codeData.commonCode}
                 onChange={handleInputChange("commonCode")}
-                maxLength={3}
+                maxLength={
+                  codeType === "ITEM"
+                    ? 3
+                    : codeType === "SYSTEM"
+                      ? 5
+                      : undefined
+                }
               />
             </Field>
             <Field label="코드명" orientation="horizontal">

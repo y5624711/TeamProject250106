@@ -24,6 +24,7 @@ export function CommonCodeList({
   // 정렬 헤더
   const sortOptions = [
     { key: "commonCodeKey", label: "#" },
+    { key: "commonCodeType", label: "코드구분" },
     { key: "commonCode", label: "코드" },
     { key: "commonCodeName", label: "코드명" },
   ];
@@ -61,6 +62,9 @@ export function CommonCodeList({
                 _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.commonCodeType}
+                </Table.Cell>
                 <Table.Cell textAlign="center">{item.commonCode}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.commonCodeName}
