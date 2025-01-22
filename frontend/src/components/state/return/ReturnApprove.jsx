@@ -15,6 +15,7 @@ import axios from "axios";
 function ReturnApprove({
   isOpen,
   onClose,
+  onApprove,
   returnRequestKey,
   setReturnRequestKey,
 }) {
@@ -23,6 +24,7 @@ function ReturnApprove({
     customerEmployeeName: "",
     customerConfigurerNo: "",
     customerConfigurerName: "",
+    returnDate: null,
     returnApproveNote: "",
   };
   const [approveData, setApproveData] = useState(initialApproveData);
@@ -44,7 +46,18 @@ function ReturnApprove({
     setApproveData((prev) => ({ ...prev, [field]: value }));
   };
 
-  console.log("셋팅", approveData);
+  //반품 승인 정보 전달
+  const handleApproveButtonClick = () => {
+    axios
+      .post(`api/return/approve`, approveData)
+      .then((res) => res.data)
+      .then((data) => {
+        onApprove(approveData);
+        setApproveData(initialApproveData);
+      });
+  };
+
+  // console.log("셋팅", approveData);
 
   return (
     <DialogRoot open={isOpen}>
@@ -73,6 +86,13 @@ function ReturnApprove({
           <Field orientation="horizontal" label="회수 업체">
             <Input readOnly value={approveData.customerName} />
           </Field>
+          <Field orientation="horizontal" label="요청 날짜">
+            <input
+              readOnly
+              type={"date"}
+              value={approveData.returnRequestDate}
+            />
+          </Field>
           <Field orientation="horizontal" label="요청 비고">
             {<Input readOnly value={"내용 없음"} /> || (
               <Textarea readOnly value={approveData.returnRequestNote} />
@@ -91,6 +111,14 @@ function ReturnApprove({
               </Field>
               <Field orientation="horizontal" label="검수기사 명">
                 <Input readOnly value={approveData.customerConfigurerName} />
+              </Field>
+              <Field orientation="horizontal" label="회수 날짜">
+                {<Input readOnly value={"미정"} /> || (
+                  <Input readOnly value={approveData.approveData.returnDate} />
+                )}
+              </Field>
+              <Field orientation="horizontal" label="승인 날짜">
+                <Input readOnly value={approveData.returnApproveDate} />
               </Field>
               <Field orientation="horizontal" label="비고">
                 <Textarea readOnly value={approveData.returnApproveNote} />
@@ -126,6 +154,12 @@ function ReturnApprove({
                   onChange={handleApproveInput("customerConfigurerName")}
                 />
               </Field>
+              <Field orientation="horizontal" label="반품 날짜">
+                <Input
+                  value={approveData.returnDate}
+                  onChange={handleApproveInput("returnApproveDate")}
+                />
+              </Field>
               <Field orientation="horizontal" label="비고">
                 <Textarea
                   value={approveData.returnApproveNote}
@@ -142,7 +176,7 @@ function ReturnApprove({
           ) : (
             <Box>
               <Button onClick={onClose}>취소</Button>
-              <Button>승인</Button>
+              <Button onClick={handleApproveButtonClick}>승인</Button>
             </Box>
           )}
         </DialogFooter>

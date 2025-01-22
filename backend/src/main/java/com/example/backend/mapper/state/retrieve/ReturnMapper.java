@@ -4,6 +4,7 @@ import com.example.backend.dto.state.retrieve.Return;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public interface ReturnMapper {
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
-                   return_date, return_consent, return_request_note
+                   return_request_date, return_approve_date,return_date, return_consent, return_request_note
             FROM TB_RTN_REQ rr
             LEFT JOIN TB_RTN_APPR ra
             ON ra.return_request_key = rr.return_request_key
@@ -61,4 +62,20 @@ public interface ReturnMapper {
             WHERE rr.return_request_key = #{returnRequestKey}
             """)
     List<Return> getRequestInfo(String returnRequestKey);
+
+    //return consent 승인으로 변경
+    @Update("""
+            UPDATE TB_RTN_REQ
+            SET return_consent=true
+            WHERE return_request_key=#{returnRequestKey}
+            """)
+    int changeConsent(Integer returnRequestKey);
+
+    //승인 정보 테이블에 추가
+    @Insert("""
+            INSERT INTO TB_RTN_APPR
+            (return_request_key, customer_configurer_no, customer_employee_no, return_no, return_date, return_approve_note) 
+            VALUES (#{returnRequestKey}, #{customerConfigurerNo}, #{customerEmployeeNo}, #{returnNo}, #{returnDate} #{returnApproveNote})
+            """)
+    int addApprove(Return approveInfo);
 }

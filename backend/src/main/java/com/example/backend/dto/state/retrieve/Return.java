@@ -23,6 +23,7 @@ public class Return {
     String customerEmployeeNo;
     String customerEmployeeName;
     LocalDate returnRequestDate;
+    LocalDate returnApproveDate;
     LocalDate returnDate;
     String returnConsent;
     String returnRequestNote;

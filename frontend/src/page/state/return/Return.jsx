@@ -25,6 +25,7 @@ function Return(props) {
   const handleRequestClick = (newRequest) => {
     setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
     setRequestDialogOpen(false);
+    setApproveDialogOpen(false);
   };
 
   //테이블 행 클릭
@@ -58,6 +59,7 @@ function Return(props) {
         setReturnRequestKey={setReturnRequestKey}
         isOpen={approveDialogOpen}
         onClose={() => setApproveDialogOpen(false)}
+        onApprove={handleRequestClick}
       />
     </Box>
   );

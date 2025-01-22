@@ -38,7 +38,19 @@ public class ReturnService {
     }
 
     public List<Return> getRequestInfo(String returnRequestKey) {
-        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
+//        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
         return mapper.getRequestInfo(returnRequestKey);
+    }
+
+    //반품 요청 승인
+    public void addApprove(Return approveInfo) {
+        //1. 요청의 승인여부 변경
+        mapper.changeConsent(approveInfo.getReturnRequestKey());
+
+        //2. 발주 번호 생성
+
+        //3. 요청 내용 테이블에 추가
+        mapper.addApprove(approveInfo);
+
     }
 }

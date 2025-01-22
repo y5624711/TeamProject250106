@@ -7,16 +7,20 @@ CREATE TABLE TB_RTN_APPR
     customer_configurer_no VARCHAR(13) NOT NULL,
     customer_employee_no   VARCHAR(13) NOT NULL,
     return_no              VARCHAR(13) NOT NULL,
-    return_date            DATE DEFAULT CURRENT_DATE,
+    return_approve_date    DATE DEFAULT CURRENT_DATE,
+    return_date            DATE,
     return_approve_note    VARCHAR(50)
 );
 
+# DROP TABLE TB_RTN_APPR;
+
 INSERT INTO TB_RTN_APPR
 (return_request_key, customer_configurer_no, customer_employee_no, return_no)
-VALUES (3, 'CUSEMP0000004', 'CUSEMP0000009', '0000000000006');
+VALUES (3, 'CUSEMP0000020', 'CUSEMP0000021', '0000000000003');
 
-UPDATE TB_RTN_REQ
-SET return_consent = true
+UPDATE TB_RTN_APPR
+SET customer_employee_no='CUSEMP0000003'
+    AND customer_configurer_no = 'CUSEMP0000002'
 WHERE return_request_key = 1;
 
 SELECT rr.franchise_code,
