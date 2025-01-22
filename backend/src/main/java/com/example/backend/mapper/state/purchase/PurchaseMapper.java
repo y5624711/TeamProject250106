@@ -33,19 +33,35 @@ public interface PurchaseMapper {
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent
             FROM TB_PURCH_REQ pr
-            LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key -- TB_PURCH_REQ와 TB_PURCH_APPR 테이블 먼저 조인
-            LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no -- 신청자 사번과 이름 매칭
-            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no -- 승인자 사번과 이름 매칭
-            LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code -- 협력업체 코드와 이름 매칭
-            LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code -- item_common_code를 기준으로 TB_ITEMCOMM 테이블 조인
+            LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
+            LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
+            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
+            LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
+            LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
             """)
     List<Purchase> purchaseList();
 
     // 구매 승인 팝업 보기
     @Select("""
-            SELECT *
-            FROM TB_PURCH_REQ
-            WHERE purchase_request_key = #{purchaseRequestKey}
+            SELECT
+                pr.purchase_request_key AS purchaseRequestKey,
+                pr.employee_no AS employeeNo,
+                emp1.employee_name AS employeeName,
+                cus.customer_name AS customerName,
+                pa.customer_employee_no AS customerEmployeeNo,
+                emp2.employee_name AS customerEmployeeName,
+                ic.item_common_name AS itemCommonName,
+                pr.purchase_request_date AS purchaseRequestDate,
+                pr.purchase_request_note AS purchaseRequestNote,
+                pr.amount AS amount,
+                pr.purchase_consent AS purchaseConsent
+            FROM TB_PURCH_REQ pr
+            LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
+            LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
+            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no 
+            LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
+            LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
+            WHERE pr.purchase_request_key = #{purchaseRequestKey}
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);
 }

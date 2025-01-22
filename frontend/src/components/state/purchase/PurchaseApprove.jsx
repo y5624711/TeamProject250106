@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Button, Spinner } from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Input, Spinner } from "@chakra-ui/react";
+import { Field } from "../../ui/field.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 
 export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
-  const [purchase, setPurchase] = useState(null); // 구매 데이터 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const { id, name } = useContext(AuthenticationContext);
+  const [purchase, setPurchase] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 구매 승인 데이터 조회
+  // 구매 승인 팝업 보기
   useEffect(() => {
     const purchaseData = () => {
       axios
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((response) => {
-          console.log("구매 데이터:", response.data); // 서버 응답 확인
+          console.log("구매 데이터:", response.data);
           setPurchase(response.data);
           setLoading(false);
         })
@@ -27,18 +30,15 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   }, [purchaseRequestKey]);
 
   const handleApprove = () => {
-    // 승인 처리 로직 추가
     console.log("구매 승인:", purchase);
     onClose();
   };
 
   const handleReject = () => {
-    // 반려 처리 로직 추가
     console.log("구매 반려:", purchase);
     onClose();
   };
 
-  // 구매 데이터가 로딩 중이면 Spinner 표시
   if (loading) {
     return <Spinner />;
   }
@@ -48,20 +48,63 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   }
 
   return (
-    <div>
-      <p>구매 요청 키: {purchase.purchaseRequestKey}</p>
-      <p>상품명: {purchase.productName}</p>
-      <p>금액: {purchase.amount}</p>
-
-      {/* 추가적인 구매 정보가 있으면 여기에 표시 */}
-      <div>
-        <h3>구매 정보</h3>
-        <p>구매자: {purchase.buyerName}</p>
-        <p>구매일자: {purchase.purchaseDate}</p>
-      </div>
-
-      <Button onClick={handleApprove}>승인</Button>
-      <Button onClick={handleReject}>반려</Button>
-    </div>
+    <Box>
+      <Box display="flex" gap={4}>
+        <Field label="직원 사번" orientation="horizontal" mb={7}>
+          <Input value={purchase.employeeNo} placeholder="직원 사번" readOnly />
+        </Field>
+        <Field label="직원 이름" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase.employeeName}
+            placeholder="직원 이름"
+            readOnly
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="승인자 사번" orientation="horizontal" mb={7}>
+          <Input value={id} placeholder="승인자 사번" readOnly />
+        </Field>
+        <Field label="승인자 이름" orientation="horizontal" mb={7}>
+          <Input value={name} placeholder="승인자 이름" readOnly />
+        </Field>
+      </Box>
+      <Field label="품목" orientation="horizontal" mb={7}>
+        <Input value={purchase.itemCommonName} placeholder="품목" readOnly />
+      </Field>
+      <Field label="담당 업체" orientation="horizontal" mb={7}>
+        <Input value={purchase.customerName} placeholder="담당 업체" readOnly />
+      </Field>
+      <Box display="flex" gap={4}>
+        <Field label="수량" orientation="horizontal" mb={7}>
+          <Input value={purchase.amount} placeholder="수량" readOnly />
+        </Field>
+        <Field label="가격" orientation="horizontal" mb={7}>
+          <Input value={purchase.intPrice} placeholder="가격" readOnly />
+        </Field>
+      </Box>
+      <Field label="요청 날짜" orientation="horizontal" mb={7}>
+        <Input
+          value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
+          placeholder="요청 날짜"
+          readOnly
+        />
+      </Field>
+      <Field label="비고" orientation="horizontal" mb={7}>
+        <Input
+          value={purchase.purchaseRequestNote}
+          placeholder="비고"
+          readOnly
+        />
+      </Field>
+      <Box display="flex" gap={4} mt={6}>
+        <Button onClick={handleApprove} colorScheme="blue">
+          승인
+        </Button>
+        <Button onClick={handleReject} colorScheme="red">
+          반려
+        </Button>
+      </Box>
+    </Box>
   );
 }
