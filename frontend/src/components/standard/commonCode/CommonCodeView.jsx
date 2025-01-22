@@ -3,8 +3,10 @@ import {
   Box,
   Button,
   createListCollection,
+  Flex,
   HStack,
   Input,
+  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
@@ -20,6 +22,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { SelectViewCode } from "./SelectViewCode.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
 export function CommonCodeView({
   commonCodeKey,
@@ -35,6 +38,7 @@ export function CommonCodeView({
     commonCodeName: "",
     commonCodeNote: "",
     commonCodeType: "",
+    commonCodeActive: false,
   });
   const [codeData, setCodeData] = useState(editedCommonCode);
   const [checkCodeSelect, setCheckCodeSelect] = useState(false);
@@ -75,18 +79,22 @@ export function CommonCodeView({
     }));
   };
 
+  console.log(editedCommonCode);
+
   // SelectCode에서 선택된 값을 반영하는 함수
   const handleCodeTypeChange = (value) => {
     // 배열이 아닌 단일 값으로 처리
     const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
-    setCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
-    setCodeType(stringValue);
+    setEditedCommonCode((prev) => ({ ...prev, commonCodeType: stringValue }));
     setCheckCodeSelect(true);
   };
 
   const isValid =
-    /^[A-Z]{3}$/.test(editedCommonCode.commonCode) &&
-    editedCommonCode.commonCodeName.trim() !== "";
+    (editedCommonCode.commonCodeType === "ITEM" &&
+      /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
+    (editedCommonCode.commonCodeType === "SYSTEM" &&
+      /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
+      editedCommonCode.commonCodeName.trim() !== "");
 
   // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSaveClick = () => {
@@ -148,35 +156,50 @@ export function CommonCodeView({
                   품목 코드는 대문자 3자리로 입력해야 합니다.
                 </Text>
 
-                {/*코드 종류 선택*/}
-                <SelectViewCode
-                  selectOptions={selectOptions}
-                  onChange={handleCodeTypeChange}
-                  value={editedCommonCode.commonCodeType || ""}
-                />
+                <Flex>
+                  {/*코드 종류 선택*/}
+                  <SelectViewCode
+                    selectOptions={selectOptions}
+                    onChange={handleCodeTypeChange}
+                    value={editedCommonCode.commonCodeType || ""}
+                  />
+                  <Spacer />
+                  <Checkbox
+                    size={"lg"}
+                    checked={editedCommonCode.commonCodeActive}
+                    onChange={(e) =>
+                      setEditedCommonCode((prev) => ({
+                        ...prev,
+                        commonCodeActive: e.target.checked,
+                      }))
+                    }
+                  >
+                    사용여부
+                  </Checkbox>
+                </Flex>
 
                 <Field label={"물품 코드"} required>
                   <Input
-                    name="itemCommonCode"
+                    name="commonCode"
                     placeholder="물품 코드"
-                    value={editedCommonCode.commonCode}
+                    value={editedCommonCode.commonCode || ""}
                     onChange={handleChange}
                     maxLength={3}
                   />
                 </Field>
                 <Field label={"물품명"} required>
                   <Input
-                    name="itemCommonName"
+                    name="commonCodeName"
                     placeholder="물품명"
-                    value={editedCommonCode.commonCodeName}
+                    value={editedCommonCode.commonCodeName || ""}
                     onChange={handleChange}
                   />
                 </Field>
                 <Field label={"비고"}>
                   <Input
-                    name="itemCommonCodeNote"
+                    name="commonCodeNote"
                     placeholder="비고"
-                    value={editedCommonCode.commonCodeNote}
+                    value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
                   />
                 </Field>
@@ -198,7 +221,6 @@ export function CommonCodeView({
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
-      <HStack></HStack>
 
       {/*<DialogConfirmation*/}
       {/*  isOpen={isDialogOpen}*/}

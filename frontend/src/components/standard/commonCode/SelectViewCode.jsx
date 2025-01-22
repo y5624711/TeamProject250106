@@ -24,11 +24,12 @@ export function SelectViewCode({ selectOptions, onChange, value }) {
       pt={"10px"}
       pb={"10px"}
       onValueChange={handleSelect}
-      value={value}
     >
       <SelectLabel>코드 종류 선택</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder="Select Code" />
+        <SelectValueText
+          placeholder={value === "SYSTEM" ? "시스템코드" : "물품코드"}
+        />
       </SelectTrigger>
       <SelectContent
         style={{

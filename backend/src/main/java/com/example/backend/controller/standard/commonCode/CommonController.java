@@ -18,6 +18,7 @@ public class CommonController {
     @PutMapping("edit/{commonCodeKey}")
     public ResponseEntity<Map<String, Object>> editCommonCode(@PathVariable int commonCodeKey, @RequestBody CommonCode commonCode) {
 
+        System.out.println("commonCode = " + commonCode);
         // 품목 공통 코드 입력 검증
         if (!service.validateCommonCode(commonCode)) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -76,25 +77,21 @@ public class CommonController {
                     "message", Map.of("type", "error", "text", "품목 공통 코드 정보가 입력되지 않았습니다.")
             ));
         }
-        System.out.println("1번");
         // 중복 체크
         if (service.duplicateCommonCode(commonCode.getCommonCode(), commonCode.getCommonCodeName())) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "이미 등록된 품목 공통 코드입니다.")
             ));
         }
-        System.out.println("2번");
         // 품목 공통 코드 등록
         System.out.println(commonCode);
         if (service.addCommonCode(commonCode)) {
-            System.out.println("3번");
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
                             "text", commonCode.getCommonCodeKey() + "번 품목 공통 코드가 등록되었습니다."),
                     "data", commonCode
             ));
         } else {
-            System.out.println("4번");
             return ResponseEntity.internalServerError().body(Map.of(
                     "message", Map.of("type", "error", "text", "품목 공통 코드 등록이 실패하였습니다.")
             ));

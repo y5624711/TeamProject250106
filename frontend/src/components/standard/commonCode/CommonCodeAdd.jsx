@@ -119,7 +119,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             <Field label="코드" orientation="horizontal">
               <Input
                 placeholder="코드"
-                value={codeData.commonCode}
+                value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
                 maxLength={
                   codeType === "ITEM"
@@ -133,7 +133,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             <Field label="코드명" orientation="horizontal">
               <Input
                 placeholder="코드명"
-                value={codeData.commonCodeName}
+                value={codeData.commonCodeName || ""}
                 onChange={handleInputChange("commonCodeName")}
               />
             </Field>
@@ -141,7 +141,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
               <Textarea
                 resize={"none"}
                 placeholder="비고"
-                value={codeData.commonCodeNote}
+                value={codeData.commonCodeNote || ""}
                 onChange={handleInputChange("commonCodeNote")}
               />
             </Field>

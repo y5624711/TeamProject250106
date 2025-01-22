@@ -97,7 +97,9 @@ public interface CommonMapper {
             UPDATE TB_SYSCOMM
             SET common_code = #{commonCode.commonCode},
             common_code_name = #{commonCode.commonCodeName},
-            common_code_note = #{commonCode.commonCodeNote}
+            common_code_active = #{commonCode.commonCodeActive},
+            common_code_note = #{commonCode.commonCodeNote},
+            common_code_type = #{commonCode.commonCodeType}
             WHERE common_code_key = #{commonCodeKey}
             """)
     int editCommonCode(int commonCodeKey, CommonCode commonCode);

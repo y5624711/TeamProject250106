@@ -50,7 +50,7 @@ export function BusinessSearchAndFilter({
   }
 
   return (
-    <HStack>
+    <HStack justifyContent="center">
       {/*셀렉트 &&검색창*/}
       <SelectRoot
         collection={optionList}
@@ -58,8 +58,7 @@ export function BusinessSearchAndFilter({
         onValueChange={(sel) => {
           setSearch({ ...search, type: sel.value[0] });
         }}
-        size="sm"
-        width="200px"
+        width="100px"
         position="relative"
       >
         <SelectTrigger>
@@ -82,6 +81,7 @@ export function BusinessSearchAndFilter({
 
       {/*검색창*/}
       <Input
+        w={"50%"}
         value={search.keyword}
         onChange={(e) =>
           setSearch({ ...search, keyword: e.target.value.trim() })
