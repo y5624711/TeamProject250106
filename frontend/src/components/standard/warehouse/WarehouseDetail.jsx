@@ -12,11 +12,9 @@ import { Button } from "../../ui/button.jsx";
 import WarehouseEdit from "./WarehouseEdit.jsx";
 import { Box, Center, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
 
 export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function handleEditClick() {
     setIsEditing(!isEditing);
@@ -29,9 +27,9 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           <DialogTitle>
             <Box>
               {isEditing ? (
-                <Box>{warehouseKey}번 창고 수정하기</Box>
+                <Box>{warehouseKey}번 창고 수정</Box>
               ) : (
-                <Box>{warehouseKey}번 창고 상세보기</Box>
+                <Box>{warehouseKey}번 창고 상세</Box>
               )}
             </Box>
           </DialogTitle>
@@ -53,19 +51,10 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
                   <Center>
                     <HStack>
                       <Button onClick={handleEditClick}>수정</Button>
-                      <Button onClick={() => setIsDialogOpen(true)}>
-                        삭제
-                      </Button>
+                      <Button onClick={onClosed}>닫기</Button>
                     </HStack>
                   </Center>
                 </Box>
-                <DialogConfirmation
-                  isOpen={isDialogOpen}
-                  onClose={() => setIsDialogOpen(false)}
-                  onConfirm={handleDeleteClick}
-                  title="삭제 확인"
-                  body="정말로 이 항목을 삭제하시겠습니까?"
-                />
               </Box>
             )}
           </Box>
