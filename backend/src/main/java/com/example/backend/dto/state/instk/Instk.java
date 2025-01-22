@@ -12,6 +12,8 @@ public class Instk {
     private String inputNote;
     private String itemCommonName;
     private String customerName;
+    private String itemAmount;
+    private String requestDate;
 
 
 }

@@ -20,7 +20,15 @@ SELECT
     BI.input_consent,
     BI.input_note, 
     IT.item_common_name AS item_common_name, 
-    CT.customer_name as customer_name
+    CT.customer_name as customer_name,
+    CASE 
+        WHEN BI.input_common_code ='INSTK' THEN PRQ.amount 
+       ELSE 0
+       END AS item_amount ,
+    CASE
+        WHEN BI.input_common_code='INSTK' AND BI.input_consent=false  THEN PRQ.purchase_request_date 
+        ELSE NULL
+        END AS request_date
             FROM TB_BUYIN BI  
     LEFT JOIN TB_PURCH_APPR PR
      ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no

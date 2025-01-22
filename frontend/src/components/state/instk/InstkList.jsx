@@ -8,6 +8,7 @@ export function InstkList() {
   const [instkList, setInstkList] = useState([]);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   useEffect(() => {
     axios.get("api/instk/list").then((res) => {
       setInstkList(res.data);
@@ -26,12 +27,11 @@ export function InstkList() {
   const handleSelectModal = (checkState) => {
     checkState === true ? handleDetailViewModal() : handleApproveModal();
   };
-
+  console.log(isApproveModalOpen, "모달");
   return (
     <Box>
       <Heading>구매/설치관리 >가입고 관리</Heading>
       <Box> 검색 화면 </Box>
-
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -47,9 +47,14 @@ export function InstkList() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {instkList.map((item) => {
+          {instkList.map((item, index) => {
             return (
-              <Table.Row>
+              <Table.Row
+                onClick={() => {
+                  handleSelectModal(item.inputConsent);
+                  setSelectedIndex(index);
+                }}
+              >
                 <Table.Cell>{item.inputKey}</Table.Cell>
                 <Table.Cell>{item.inputCommonCode}</Table.Cell>
                 <Table.Cell>{item.inputNo}</Table.Cell>
@@ -68,7 +73,13 @@ export function InstkList() {
         <Table.Footer></Table.Footer>
       </Table.Root>
 
-      <InstkConfirmModal isModalOpen={isApproveModalOpen} />
+      {isApproveModalOpen && (
+        <InstkConfirmModal
+          isModalOpen={isApproveModalOpen}
+          setChangeModal={handleApproveModal}
+          instk={instkList[selectedIndex]}
+        />
+      )}
       <InstkDetaiViewModal />
     </Box>
   );
