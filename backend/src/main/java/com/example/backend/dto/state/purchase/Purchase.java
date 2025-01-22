@@ -2,7 +2,7 @@ package com.example.backend.dto.state.purchase;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class Purchase {
@@ -10,18 +10,19 @@ public class Purchase {
     private String employeeNo;
     private String employeeName;
     private String itemCommonCode;
+    private String itemCommonName;
     private String customerCode;
+    private String customerName;
     private Integer amount;
-    private LocalDateTime purchaseRequestDate;
+    private LocalDate purchaseRequestDate;
     private Boolean purchaseConsent;
     private String purchaseRequestNote;
 
     private Integer purchaseApproveKey;
     private String customerEmployeeNo;
+    private String customerEmployeeName;
     private String warehouseCode;
     private String purchaseNo;
-    private LocalDateTime purchaseApproveDate;
+    private LocalDate purchaseApproveDate;
     private String purchaseApproveNote;
-
-    private String customerName;
 }

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,8 +33,8 @@ public class PurchaseService {
         return cnt == 1;
     }
 
-//    // 구매 관리 리스트
-//    public List<Purchase> purchaseList() {
-//        return mapper.purchaseList();
-//    }
+    // 구매 관리 리스트
+    public List<Purchase> purchaseList() {
+        return mapper.purchaseList();
+    }
 }
