@@ -4,6 +4,7 @@ import com.example.backend.dto.state.install.Install;
 import com.example.backend.service.state.install.InstallService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class InstallController {
     // 설치 확인
     @PostMapping("configuration")
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
-        // 설치 확인 작업
+        // 비고 추가, 검수 테이블에 추가
         if (service.installConfiguration(install)) {
             // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
             if (service.addOutHistory(install)) {
@@ -42,16 +43,28 @@ public class InstallController {
     }
 
     // 설치된 시리얼 번호 가져오기
-    @GetMapping("/serial/{installKey}")
-    public List<String> getSerialList(@PathVariable int installKey) {
-        return service.getSerialList(installKey);
-    }
+//    @GetMapping("/serial/{installKey}")
+//    public List<String> getSerialList(@PathVariable int installKey) {
+//        return service.getSerialList(installKey);
+//    }
 
     // 설치 승인에 대한 정보 가져오기
     @GetMapping("/approve/{installKey}")
-    public List<Install> getInstallApproveView(@PathVariable int installKey) {
-        return service.getInstallApproveView(installKey);
+    public ResponseEntity<?> getInstallApproveView(@PathVariable int installKey) {
+        try {
+            Install install = service.getInstallApproveView(installKey);
+            if (install != null) {
+                return ResponseEntity.ok(install);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("message", "설치 데이터를 찾을 수 없습니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "설치 데이터를 가져오는 중 오류가 발생했습니다.", "error", e.getMessage()));
+        }
     }
+    
 
     // 설치 승인 테이블에서 요청 리스트 가져오기
     @GetMapping("list/approve")

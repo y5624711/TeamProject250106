@@ -101,19 +101,11 @@ public class InstallService {
     }
 
     // 설치 승인에 대한 정보 가져오기
-    public List<Install> getInstallApproveView(int installKey) {
-        return mapper.getInstallApproveView();
+    public Install getInstallApproveView(int installKey) {
+        Install install = mapper.getInstallApproveView(installKey);
+        return install;
     }
-
-    // 설치된 시리얼 번호 가져오기
-    public List<String> getSerialList(int installKey) {
-        // 발주 번호 가져오기
-        String outputNo = mapper.selectOutputNo(installKey);
-
-        // 발주 번호에 해당하는 시리얼 번호 가져오기
-        return mapper.selectSerialNoByOutputNo(outputNo);
-    }
-
+    
     // 설치 확인
     public boolean installConfiguration(Install install) {
         try {
@@ -139,6 +131,12 @@ public class InstallService {
 
     // 품목 입출력 테이블에 데이터 추가
     public boolean addOutHistory(Install install) {
+        // ㅊ
+        // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
+
+        // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+
+        // 품목 입출 내역에 추가
         int outHistory = mapper.addOutHistory(install.getSerialNo());
         return outHistory == 1;
     }

@@ -3,6 +3,9 @@ package com.example.backend.dto.state.install;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 public class Install {
@@ -36,4 +39,10 @@ public class Install {
     private LocalDateTime installApproveDate;
     private String customerEmployeeName;
     private String serialNote;
+    private String serialNumbers;
+
+    // 시리얼 번호를 리스트로 변환
+    public List<String> getSerialNumberList() {
+        return serialNumbers == null ? Collections.emptyList() : Arrays.asList(serialNumbers.split(","));
+    }
 }

@@ -85,6 +85,7 @@ public interface InstallMapper {
             FROM TB_ITEMSUB
             WHERE item_common_code = #{itemCommonCode}
               AND item_sub_active = 1
+              AND current_common_code='warehouse'
             ORDER BY item_sub_key DESC
             LIMIT #{num}
             """)
@@ -132,33 +133,23 @@ public interface InstallMapper {
 
     // 설치 승인에 대한 정보 가져오기
     @Select("""
-            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, f.franchise_address, ir.business_employee_no, e1.employee_name as business_employee_name,
-            ia.customer_employee_no, e2.employee_name as customer_employee_name, ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note
-             FROM TB_INSTL_APPR ia
-             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
-             LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
-             LEFT JOIN TB_ITEMCOMM ic ON ir.item_common_code = ic.item_common_code
-             LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
-             LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
-             LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, f.franchise_address, 
+            ir.business_employee_no, e1.employee_name as business_employee_name,
+            ia.customer_employee_no, e2.employee_name as customer_employee_name,  
+            ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
+            GROUP_CONCAT(ts.serial_no) AS serial_numbers
+            FROM TB_INSTL_APPR ia
+            LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
+            LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+            LEFT JOIN TB_ITEMCOMM ic ON ir.item_common_code = ic.item_common_code
+            LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
+            LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
+            LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+            LEFT JOIN TB_INSTL_SUB ts ON ia.output_no = ts.output_no
+            WHERE ia.install_approve_key = #{installKey}
+            GROUP BY ia.install_approve_key
             """)
-    List<Install> getInstallApproveView();
-
-    // 설치 승인에 대한 정보 가져오기
-    @Select("""
-            SELECT output_no
-            FROM TB_INSTL_APPR
-            WHERE install_approve_key = #{installKey}
-            """)
-    String selectOutputNo(int installKey);
-
-    // 설치된 시리얼 번호 가져오기
-    @Select("""
-            SELECT serial_no
-            FROM TB_INSTL_SUB
-            WHERE output_no = #{outputNo}
-            """)
-    List<String> selectSerialNoByOutputNo(String outputNo);
+    Install getInstallApproveView(int installKey);
 
     // 해당 시리얼 번호의 비고 내용 추가
     @Update("""
