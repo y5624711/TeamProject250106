@@ -1,0 +1,74 @@
+package com.example.backend.service.state.retrieve;
+
+import com.example.backend.dto.state.retrieve.Return;
+import com.example.backend.mapper.standard.franchise.FranchiseMapper;
+import com.example.backend.mapper.state.retrieve.ReturnMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class ReturnService {
+    final ReturnMapper mapper;
+    final FranchiseMapper franchiseMapper;
+
+    //반환 관리 리스트
+    public Map<String, Object> returnList(Integer page, Boolean returnConsent, String type, String keyword, String sort, String order) {
+//        System.out.println("리스트: " + mapper.getReturnList());
+        Integer offset = (page - 1) * 10;
+
+        //리스트
+        List<Return> returnList = mapper.getReturnList(returnConsent, offset, type, keyword, sort, order);
+
+        //총 수
+        Integer count = mapper.countAll(returnConsent, type, keyword);
+
+
+        return Map.of("returnList", returnList, "count", count);
+    }
+
+    //시리얼 번호로 정보 조회
+    public List<Return> getStandardInfo(String serialNo) {
+//        System.out.println("service: " + mapper.getRequestInfo(serialNo));
+        return mapper.getStandardInfo(serialNo);
+    }
+
+    //반품 요청 정보 저장
+    public void addRequest(Return requestInfo) {
+        //프랜차이즈 이름-> 코드
+        String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
+//        System.out.println("프랜차이즈 이름, 코드: " + requestInfo.getFranchiseName() + franchiseCode);
+        requestInfo.setFranchiseCode(franchiseCode);
+
+        mapper.addRequest(requestInfo);
+    }
+
+    //요청 정보 조회 (1개)
+    public List<Return> getRequestInfo(String returnRequestKey) {
+//        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
+        return mapper.getRequestInfo(returnRequestKey);
+    }
+
+    //반품 요청 승인
+    public boolean addApprove(Return approveInfo) {
+        //1. 요청의 승인여부 변경
+        mapper.changeConsent(approveInfo.getReturnRequestKey());
+
+        //2. 발주 번호 생성
+        //2-1 기존 발주번호 중 최대값 조회
+        Integer max = mapper.viewMaxReturnNo();
+        //2-2 최대에서 1을 더하고 부족한 자리만큼 0을 채움
+        String newNo = String.format("%013d", (max == null) ? 1 : max + 1);
+        approveInfo.setReturnNo(newNo);
+
+        //3. 요청 내용 테이블에 추가
+        int cnt = mapper.addApprove(approveInfo);
+
+        return cnt == 1;
+    }
+}
