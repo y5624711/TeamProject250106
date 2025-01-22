@@ -1,33 +1,32 @@
 import React, { useState } from "react";
 import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
-import { WarehouseDetail } from "./WarehouseDetail.jsx";
-import WarehouseListPage from "./WarehouseListPage.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
+import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
+import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 
-function WarehouseList({
-  warehouseList,
-  countWarehouse,
-  useColumn,
-  currentPage,
+function InoutHistoryList({
   handlePageChangeClick,
+  currentPage,
+  countInoutHistory,
+  inoutHistoryList,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
+  const [selectedInoutHistory, setSelectedInoutHistory] = useState(null);
 
   return (
     <Box>
       <Stack>
         <Box>
-          <Table.Root showColumnBorder interactive>
+          <Table.Root interactive showColumnBorder>
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeader
-                  width="100px"
+                  width="80px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
@@ -38,56 +37,66 @@ function WarehouseList({
                   textAlign="center"
                   verticalAlign="middle"
                 >
+                  입출 구분
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  시리얼 번호
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  품목명
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  width="200px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
                   창고명
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                  width="150px"
+                  width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  담당 업체
+                  가맹점명
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  업체 직원
+                  본사 직원
                 </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  광역 시도
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  시군
-                </Table.ColumnHeader>
+
                 <Table.ColumnHeader
                   width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  전화번호
+                  협력업체 직원
                 </Table.ColumnHeader>
-                {useColumn ? (
-                  <Table.ColumnHeader textAlign="center" verticalAlign="middle">
-                    사용 여부
-                  </Table.ColumnHeader>
-                ) : null}
+
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  날짜
+                </Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {warehouseList.map((warehouse) => (
-                <WarehouseListPage
-                  warehouse={warehouse}
-                  useColumn={useColumn}
-                  setSelectedWarehouseKey={setSelectedWarehouseKey}
+              {inoutHistoryList.map((inoutHistory) => (
+                <InoutHistoryListPage
+                  inoutHistory={inoutHistory}
+                  setSelectedInoutHistory={setSelectedInoutHistory}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
               ))}
@@ -97,7 +106,7 @@ function WarehouseList({
         <Center>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
-            count={countWarehouse}
+            count={countInoutHistory}
             pageSize={10}
             // page={page}
             siblingCount={2}
@@ -110,8 +119,8 @@ function WarehouseList({
             </HStack>
           </PaginationRoot>
         </Center>
-        <WarehouseDetail
-          warehouseKey={selectedWarehouseKey}
+        <InoutHistoryDetail
+          inoutHistoryKey={selectedInoutHistory}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
         />
@@ -120,4 +129,4 @@ function WarehouseList({
   );
 }
 
-export default WarehouseList;
+export default InoutHistoryList;

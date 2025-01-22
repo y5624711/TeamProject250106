@@ -16,13 +16,27 @@ function WarehouseListPage({
           setSelectedLocationKey(location.locationKey);
         }}
       >
-        <Table.Cell>{location.locationKey}</Table.Cell>
-        <Table.Cell>{location.warehouseCode}</Table.Cell>
-        <Table.Cell>{location.row}</Table.Cell>
-        <Table.Cell>{location.col}</Table.Cell>
-        <Table.Cell>{location.shelf}</Table.Cell>
-        <Table.Cell>{location.itemCommonCode}</Table.Cell>
-        <Table.Cell>{location.locationNote}</Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.locationKey}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.warehouseCode}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.row}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.col}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.shelf}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.itemCommonCode}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {location.locationNote}
+        </Table.Cell>
       </Table.Row>
     </>
   );

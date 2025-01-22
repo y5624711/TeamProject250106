@@ -1,33 +1,31 @@
 import React, { useState } from "react";
 import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
-import { WarehouseDetail } from "./WarehouseDetail.jsx";
-import WarehouseListPage from "./WarehouseListPage.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
+import StocktakingListPage from "./StocktakingListPage.jsx";
+import StocktakingDetail from "./StocktakingDetail.jsx";
 
-function WarehouseList({
-  warehouseList,
-  countWarehouse,
-  useColumn,
-  currentPage,
+function StocktakingList({
+  stocktakingList,
   handlePageChangeClick,
+  countStocktaking,
+  currentPage,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
-
+  const [selectedStocktaking, setSelectedStocktaking] = useState(null);
   return (
     <Box>
       <Stack>
         <Box>
-          <Table.Root showColumnBorder interactive>
+          <Table.Root interactive showColumnBorder>
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeader
-                  width="100px"
+                  width="80px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
@@ -41,32 +39,32 @@ function WarehouseList({
                   창고명
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                  width="150px"
+                  width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  담당 업체
+                  품목명
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  업체 직원
+                  전산 수량
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                  width="150px"
+                  width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  광역 시도
+                  실제 수량
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                  width="150px"
+                  width="200px"
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  시군
+                  협력업체 직원
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="200px"
@@ -75,19 +73,20 @@ function WarehouseList({
                 >
                   전화번호
                 </Table.ColumnHeader>
-                {useColumn ? (
-                  <Table.ColumnHeader textAlign="center" verticalAlign="middle">
-                    사용 여부
-                  </Table.ColumnHeader>
-                ) : null}
+                <Table.ColumnHeader
+                  width="150px"
+                  textAlign="center"
+                  verticalAlign="middle"
+                >
+                  날짜
+                </Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {warehouseList.map((warehouse) => (
-                <WarehouseListPage
-                  warehouse={warehouse}
-                  useColumn={useColumn}
-                  setSelectedWarehouseKey={setSelectedWarehouseKey}
+              {stocktakingList.map((stocktaking) => (
+                <StocktakingListPage
+                  stocktaking={stocktaking}
+                  setSelectedStocktaking={setSelectedStocktaking}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
               ))}
@@ -97,7 +96,7 @@ function WarehouseList({
         <Center>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
-            count={countWarehouse}
+            count={countStocktaking}
             pageSize={10}
             // page={page}
             siblingCount={2}
@@ -110,8 +109,8 @@ function WarehouseList({
             </HStack>
           </PaginationRoot>
         </Center>
-        <WarehouseDetail
-          warehouseKey={selectedWarehouseKey}
+        <StocktakingDetail
+          stocktaking={selectedStocktaking}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
         />
@@ -120,4 +119,4 @@ function WarehouseList({
   );
 }
 
-export default WarehouseList;
+export default StocktakingList;

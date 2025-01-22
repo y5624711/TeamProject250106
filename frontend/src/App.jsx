@@ -17,6 +17,9 @@ import { Purchase } from "./page/state/purchase/Purchase.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
 import { Instk } from "./page/state/instk/Instk.jsx";
+import Stocktaking from "./page/stock/stocktaking/Stocktaking.jsx";
+import InoutHistory from "./page/stock/inoutHistory/InoutHistory.jsx";
+import WarehouseStatus from "./page/stock/warehouseStatus/WarehouseStatus.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -82,6 +85,18 @@ const router = createBrowserRouter([
       {
         path: "instk",
         element: <Instk />,
+      },
+      {
+        path: "stocktaking/*",
+        element: <Stocktaking />,
+      },
+      {
+        path: "inoutHistory/*",
+        element: <InoutHistory />,
+      },
+      {
+        path: "warehouseStatus/*",
+        element: <WarehouseStatus />,
       },
     ],
   },

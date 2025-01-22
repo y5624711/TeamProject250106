@@ -19,15 +19,29 @@ function WarehouseListPage({
             setSelectedWarehouseKey(warehouse.warehouseKey);
           }}
         >
-          <Table.Cell>{warehouse.warehouseKey}</Table.Cell>
-          <Table.Cell>{warehouse.warehouseName}</Table.Cell>
-          <Table.Cell>{warehouse.customerCode}</Table.Cell>
-          <Table.Cell>{warehouse.customerEmployeeNo}</Table.Cell>
-          <Table.Cell>{warehouse.warehouseState}</Table.Cell>
-          <Table.Cell>{warehouse.warehouseCity}</Table.Cell>
-          <Table.Cell>{warehouse.warehouseTel}</Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.warehouseKey}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.warehouseName}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.customerCode}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.customerEmployeeNo}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.warehouseState}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.warehouseCity}
+          </Table.Cell>
+          <Table.Cell textAlign="center" verticalAlign="middle">
+            {warehouse.warehouseTel}
+          </Table.Cell>
           {useColumn ? (
-            <Table.Cell>
+            <Table.Cell textAlign="center" verticalAlign="middle">
               {warehouse.warehouseActive ? (
                 <MdCheckBox size="25px" />
               ) : (
@@ -47,15 +61,29 @@ function WarehouseListPage({
                 setSelectedWarehouseKey(warehouse.warehouseKey);
               }}
             >
-              <Table.Cell>{warehouse.warehouseKey}</Table.Cell>
-              <Table.Cell>{warehouse.warehouseName}</Table.Cell>
-              <Table.Cell>{warehouse.customerCode}</Table.Cell>
-              <Table.Cell>{warehouse.customerEmployeeNo}</Table.Cell>
-              <Table.Cell>{warehouse.warehouseState}</Table.Cell>
-              <Table.Cell>{warehouse.warehouseCity}</Table.Cell>
-              <Table.Cell>{warehouse.warehouseTel}</Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.warehouseKey}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.warehouseName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.customerCode}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.customerEmployeeNo}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.warehouseState}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.warehouseCity}
+              </Table.Cell>
+              <Table.Cell textAlign="center" verticalAlign="middle">
+                {warehouse.warehouseTel}
+              </Table.Cell>
               {useColumn ? (
-                <Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
                   {warehouse.warehouseActive ? (
                     <MdCheckBox size="25px" />
                   ) : (
