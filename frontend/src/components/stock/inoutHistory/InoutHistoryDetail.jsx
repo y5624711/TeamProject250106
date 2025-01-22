@@ -23,6 +23,7 @@ function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
+          {/*팝업창 내부 내용*/}
           <InoutHistoryView inoutHistoryKey={inoutHistoryKey} />
         </DialogBody>
         <DialogFooter>

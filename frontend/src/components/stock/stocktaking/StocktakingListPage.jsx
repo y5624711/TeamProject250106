@@ -10,19 +10,22 @@ function StocktakingListPage({
     <>
       <Table.Row
         style={{ height: "50px" }}
-        key={stocktaking.inoutHistoryKey}
+        key={stocktaking.stocktakingKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);
-          setSelectedStorageRetrieval(storageRetrieval.inoutHistoryKey);
+          setSelectedStocktaking(stocktaking.stocktakingKey);
         }}
       >
-        <Table.Cell>{storageRetrieval.inoutHistoryKey}</Table.Cell>
-        <Table.Cell>{storageRetrieval}</Table.Cell>
-        <Table.Cell>{location.row}</Table.Cell>
-        <Table.Cell>{location.col}</Table.Cell>
-        <Table.Cell>{location.shelf}</Table.Cell>
-        <Table.Cell>{location.itemCommonCode}</Table.Cell>
-        <Table.Cell>{location.locationNote}</Table.Cell>
+        {/* TODO: stocktakingKey 대신 index 주기 */}
+
+        <Table.Cell>{stocktaking.stocktakingKey}</Table.Cell>
+        <Table.Cell>{stocktaking.warehouseName}</Table.Cell>
+        <Table.Cell>{stocktaking.itemName}</Table.Cell>
+        <Table.Cell>{stocktaking.countCurrent}</Table.Cell>
+        <Table.Cell>{stocktaking.countConfiguration}</Table.Cell>
+        <Table.Cell>{stocktaking.customerEmployeeName}</Table.Cell>
+        <Table.Cell>{stocktaking.employeeTel}</Table.Cell>
+        <Table.Cell>{stocktaking.stocktakingDate}</Table.Cell>
       </Table.Row>
     </>
   );
