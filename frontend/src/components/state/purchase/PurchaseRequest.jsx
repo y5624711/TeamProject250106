@@ -10,16 +10,15 @@ import {
   SelectValueText,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function PurchaseRequest({ onSave, onClose }) {
-  const [employeeNo, setEmployeeNo] = useState("");
-  const [employeeName, setEmployeeName] = useState("");
+  const { id, name } = useContext(AuthenticationContext);
   const [itemCommonCode, setItemCommonCode] = useState("");
-  const [customerCode, setCustomerCode] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [amount, setAmount] = useState("");
   const [inputPrice, setInputPrice] = useState("");
@@ -70,8 +69,8 @@ export function PurchaseRequest({ onSave, onClose }) {
   const handleSaveClick = () => {
     axios
       .post("/api/purchase/request", {
-        employeeNo,
-        employeeName,
+        employeeNo: id,
+        employeeName: name,
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
         amount,
@@ -90,8 +89,8 @@ export function PurchaseRequest({ onSave, onClose }) {
         if (res.data && res.data.purchaseRequestKey) {
           onSave({
             purchaseRequestKey: res.data.purchaseRequestKey,
-            employeeNo,
-            employeeName,
+            employeeNo: id,
+            employeeName: name,
             itemCommonCode: itemData.itemCommonCode,
             customerCode: itemData.customerCode,
             amount,
@@ -113,8 +112,6 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   const handleCancelClick = () => {
     // 취소 버튼 클릭 시 입력된 값 초기화
-    setEmployeeNo("");
-    setEmployeeName("");
     setItemCommonCode("");
     setCustomerName("");
     setAmount("");
@@ -128,18 +125,10 @@ export function PurchaseRequest({ onSave, onClose }) {
     <Box>
       <Box display="flex" gap={4}>
         <Field label="직원 사번" orientation="horizontal" required mb={7}>
-          <Input
-            value={employeeNo}
-            onChange={(e) => setEmployeeNo(e.target.value)}
-            placeholder="직원 사번"
-          />
+          <Input value={id} placeholder="직원 사번" />
         </Field>
         <Field label="직원 이름" orientation="horizontal" required mb={7}>
-          <Input
-            value={employeeName}
-            onChange={(e) => setEmployeeName(e.target.value)}
-            placeholder="직원 이름"
-          />
+          <Input value={name} placeholder="직원 이름" />
         </Field>
       </Box>
       <SelectRoot

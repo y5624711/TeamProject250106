@@ -15,16 +15,14 @@ public class PurchaseService {
 
     final PurchaseMapper mapper;
 
-    // 필드 유효성 확인
+    // 필드 유효성 확인 (사번, 이름은 로그인 정보를 가져오기 때문에 굳이 확인할 필요 없어서 뺌)
     public boolean validate(Purchase purchase) {
-        boolean employeeNoValid = purchase.getEmployeeNo() != null && !purchase.getEmployeeNo().trim().isEmpty();
-        boolean employeeNameValid = purchase.getEmployeeName() != null && !purchase.getEmployeeName().trim().isEmpty();
         boolean itemCommonCodeValid = purchase.getItemCommonCode() != null && !purchase.getItemCommonCode().trim().isEmpty();
         boolean customerCodeValid = purchase.getCustomerCode() != null && !purchase.getCustomerCode().trim().isEmpty();
         boolean amountValid = purchase.getAmount() != null && purchase.getAmount() > 0;
         boolean purchaseRequestDateValid = purchase.getPurchaseRequestDate() != null;
 
-        return employeeNoValid && employeeNameValid && itemCommonCodeValid && customerCodeValid && amountValid && purchaseRequestDateValid;
+        return itemCommonCodeValid && customerCodeValid && amountValid && purchaseRequestDateValid;
     }
 
     // 구매 요청
