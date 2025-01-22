@@ -6,13 +6,26 @@ import axios from "axios";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   useEffect(() => {
     axios.get("api/instk/list").then((res) => {
       setInstkList(res.data);
     });
-  }, []);
+  }, [isApproveModalOpen]);
 
   console.log(instkList, "instklist");
+
+  const handleApproveModal = () => {
+    setIsApproveModalOpen(!isApproveModalOpen);
+  };
+  const handleDetailViewModal = () => {
+    setIsDetailViewModalOpen(!isDetailViewModalOpen);
+  };
+  // 상태 현황에 따라 다른 모달 띄울 함수
+  const handleSelectModal = (checkState) => {
+    checkState === true ? handleDetailViewModal() : handleApproveModal();
+  };
 
   return (
     <Box>
@@ -55,7 +68,7 @@ export function InstkList() {
         <Table.Footer></Table.Footer>
       </Table.Root>
 
-      <InstkConfirmModal />
+      <InstkConfirmModal isModalOpen={isApproveModalOpen} />
       <InstkDetaiViewModal />
     </Box>
   );

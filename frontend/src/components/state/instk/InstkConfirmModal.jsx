@@ -14,14 +14,10 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 
-export function InstkConfirmModal() {
+export function InstkConfirmModal({ isModalOpen }) {
   return (
-    <DialogRoot size={"lg"}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="md">
-          입고 승인 여부
-        </Button>
-      </DialogTrigger>
+    <DialogRoot size={"lg"} open={isModalOpen}>
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>가입고 승인 관리</DialogTitle>
