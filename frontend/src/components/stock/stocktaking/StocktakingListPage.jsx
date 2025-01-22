@@ -18,14 +18,30 @@ function StocktakingListPage({
       >
         {/* TODO: stocktakingKey 대신 index 주기 */}
 
-        <Table.Cell>{stocktaking.stocktakingKey}</Table.Cell>
-        <Table.Cell>{stocktaking.warehouseName}</Table.Cell>
-        <Table.Cell>{stocktaking.itemName}</Table.Cell>
-        <Table.Cell>{stocktaking.countCurrent}</Table.Cell>
-        <Table.Cell>{stocktaking.countConfiguration}</Table.Cell>
-        <Table.Cell>{stocktaking.customerEmployeeName}</Table.Cell>
-        <Table.Cell>{stocktaking.employeeTel}</Table.Cell>
-        <Table.Cell>{stocktaking.stocktakingDate}</Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.stocktakingKey}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.warehouseName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.itemName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.countCurrent}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.countConfiguration}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.customerEmployeeName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.employeeTel}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.stocktakingDate}
+        </Table.Cell>
       </Table.Row>
     </>
   );

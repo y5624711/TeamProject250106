@@ -10,7 +10,7 @@ CREATE TABLE TB_INOUT_HIS
     business_employee_no VARCHAR(13) NOT NULL,
     franchise_code       VARCHAR(13) NULL,
     location_key         INT         NULL,
-    inout_history_date   DATE        NULL DEFAULT NOW(),
+    inout_history_date   DATETIME    NULL DEFAULT NOW(),
     count_current        INT         NULL,
     inout_history_note   VARCHAR(50) NULL
 );
