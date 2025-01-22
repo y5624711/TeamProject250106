@@ -3,6 +3,7 @@ package com.example.backend.service.state.install;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.mapper.state.install.InstallMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 public class InstallService {
 
     final InstallMapper mapper;
+    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
     // 설치 요청
     public boolean installRequest(Install install) {
@@ -105,20 +107,21 @@ public class InstallService {
         Install install = mapper.getInstallApproveView(installKey);
         return install;
     }
-    
+
     // 설치 확인
     public boolean installConfiguration(Install install) {
         try {
             // 해당 시리얼 번호의 비고 내용 추가
-            if (install.getSerialNo() == null || install.getSerialNo().trim().isEmpty()) {
+            if (install.getSerialNo() != null || !install.getSerialNo().trim().isEmpty()) {
                 int serialNote = mapper.addSerialNote(install.getSerialNo(), install.getSerialNote());
                 if (serialNote <= 0) {
                     throw new IllegalStateException("해당 시리얼 번호에 대한 비고 처리 오류: " + serialNote);
                 }
             }
 
+            System.out.println(install.getOutputNo());
             // 설치(검수)테이블에 추가
-            int configuration = mapper.addConfiguration(install.getOutputNo());
+            int configuration = mapper.addConfiguration(install);
             if (configuration <= 0) {
                 throw new IllegalStateException("설치(검수) 테이블에 추가 오류: " + configuration);
             }
@@ -131,13 +134,31 @@ public class InstallService {
 
     // 품목 입출력 테이블에 데이터 추가
     public boolean addOutHistory(Install install) {
-        // ㅊ
-        // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
+        try {
+            // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
+            String warehouseCode = mapper.getWarehouseCode(install.getSerialNo());
+            if (warehouseCode == null || warehouseCode.trim().isEmpty()) {
+                throw new IllegalStateException("입고된 기록을 찾을 수 없습니다.");
+            }
+            install.setWarehouseCode(warehouseCode);
 
-        // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+            // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+            int updateResult = mapper.updateSerialCurrent(install.getSerialNo());
+            if (updateResult != 1) {
+                throw new IllegalStateException("시리얼 번호 상세 업데이트 실패");
+            }
 
-        // 품목 입출 내역에 추가
-        int outHistory = mapper.addOutHistory(install.getSerialNo());
-        return outHistory == 1;
+            // 품목 입출 내역에 추가
+            int outHistoryResult = mapper.addOutHistory(install);
+            if (outHistoryResult != 1) {
+                throw new IllegalStateException("품목 입출 내역 추가 실패");
+            }
+
+            return true;
+        } catch (Exception e) {
+            // 로깅 추가
+            System.out.println("입출고 내역 처리 중 오류 발생: " + e.getMessage());
+            return false;
+        }
     }
 }

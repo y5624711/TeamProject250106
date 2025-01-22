@@ -85,7 +85,7 @@ public interface InstallMapper {
             FROM TB_ITEMSUB
             WHERE item_common_code = #{itemCommonCode}
               AND item_sub_active = 1
-              AND current_common_code='warehouse'
+              AND current_common_code='WH'
             ORDER BY item_sub_key DESC
             LIMIT #{num}
             """)
@@ -133,7 +133,7 @@ public interface InstallMapper {
 
     // 설치 승인에 대한 정보 가져오기
     @Select("""
-            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, f.franchise_address, 
+            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, f.franchise_code, f.franchise_address, 
             ir.business_employee_no, e1.employee_name as business_employee_name,
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
@@ -161,18 +161,34 @@ public interface InstallMapper {
 
     // 설치(검수)테이블에 추가
     @Insert("""
-            INSERT INTO TB_INSTAL_CONF
+            INSERT INTO TB_INSTL_CONF
             (output_no, install_configuration)
-            VALUES (#{outputNo}, 1)
+            VALUES (#{outputNo}, true)
             """)
     @Options(keyProperty = "installConfigurationKey", useGeneratedKeys = true)
-    int addConfiguration(String outputNo);
+    int addConfiguration(Install install);
+
+    // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
+    @Select("""
+            SELECT warehouse_code
+            FROM TB_INOUT_HIS
+            WHERE serial_no = #{serialNo}
+            """)
+    String getWarehouseCode(String serialNo);
+
+    // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+    @Update("""
+            UPDATE TB_ITEMSUB
+            SET current_common_code = 'FRN'
+            WHERE serial_no = #{serialNo}
+            """)
+    int updateSerialCurrent(String serialNo);
 
     // 품목 입출력 테이블에 데이터 추가
     @Insert("""
             INSERT INTO TB_INOUT_HIS
-            (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, lacation_key, inout_history_date, count_currnet, inout_hisory_note)
-            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, {businessEmployeeNo}, #{franchiseCode}, #{lacationKey}, #{inoutHistoryDate}, #{inoutHistoryNote}, #{countCurrent}, #{inoutHistoryNote})
+            (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, location_key, inout_history_note)
+            VALUES (#{serialNo}, #{warehouseCode}, 'OUT', #{customerEmployeeNo}, #{businessEmployeeNo}, #{franchiseCode}, NULL,  #{inoutHistoryNote})
             """)
-    int addOutHistory(String serialNo);
+    int addOutHistory(Install install);
 }

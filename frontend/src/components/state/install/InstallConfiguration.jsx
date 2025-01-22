@@ -64,7 +64,8 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
       // 협력일체 직원(승인자), 본사 직원(신청자), 가맹점 코드,
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
-      franchiseName: installData.franchiseName,
+      franchiseCode: installData.franchiseCode,
+      inoutHistory: "",
     };
     axios
       .post("/api/install/configuration", configurationData)

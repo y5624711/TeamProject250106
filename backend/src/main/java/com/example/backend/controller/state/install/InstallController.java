@@ -42,12 +42,6 @@ public class InstallController {
         }
     }
 
-    // 설치된 시리얼 번호 가져오기
-//    @GetMapping("/serial/{installKey}")
-//    public List<String> getSerialList(@PathVariable int installKey) {
-//        return service.getSerialList(installKey);
-//    }
-
     // 설치 승인에 대한 정보 가져오기
     @GetMapping("/approve/{installKey}")
     public ResponseEntity<?> getInstallApproveView(@PathVariable int installKey) {
@@ -64,7 +58,7 @@ public class InstallController {
                     .body(Map.of("message", "설치 데이터를 가져오는 중 오류가 발생했습니다.", "error", e.getMessage()));
         }
     }
-    
+
 
     // 설치 승인 테이블에서 요청 리스트 가져오기
     @GetMapping("list/approve")
