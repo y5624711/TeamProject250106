@@ -17,3 +17,5 @@ INSERT INTO TB_EMPMST
 (employee_common_code, employee_workplace_code, employee_no, employee_name, employee_tel)
 VALUES ('CUS', 'CUS0000000005', 'CUSEMP0000023', '김몽룡', '01044657885');
 
+ALTER TABLE TB_ITEMSUB
+    ADD current_common_code VARCHAR(10) AFTER serial_no;
