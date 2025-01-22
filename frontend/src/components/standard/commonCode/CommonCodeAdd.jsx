@@ -22,7 +22,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { SelectCode } from "./SelectCode.jsx";
 
-export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
+export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
     items: [
       { label: "시스템코드", value: "system" },
@@ -30,18 +30,18 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     ],
   });
 
-  const initialItemCodeData = {
-    itemCommonCode: "",
-    itemCommonName: "",
-    itemCommonCodeNote: "",
+  const initialCodeData = {
+    commonCode: "",
+    commonCodeName: "",
+    commonCodeNote: "",
     commonCodeType: "",
   };
-  const [itemCodeData, setItemCodeData] = useState(initialItemCodeData);
+  const [codeData, setCodeData] = useState(initialCodeData);
   const [checkCodeSelect, setCheckCodeSelect] = useState(false);
 
   // 창이 닫히면 입력 내용 초기화
   const handleClose = () => {
-    setItemCodeData(initialItemCodeData);
+    setCodeData(initialCodeData);
     setCheckCodeSelect(false);
     onClose();
   };
@@ -49,20 +49,20 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   // input 입력 받기
   const handleInputChange = (field) => (e) => {
     const value = e.target ? e.target.value : e.value;
-    setItemCodeData((prev) => ({ ...prev, [field]: value }));
+    setCodeData((prev) => ({ ...prev, [field]: value }));
   };
 
   // SelectCode에서 선택된 값을 반영하는 함수
   const handleCodeTypeChange = (value) => {
     // 배열이 아닌 단일 값으로 처리
     const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
-    setItemCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
+    setCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
     setCheckCodeSelect(true);
   };
 
   const isValid =
-    /^[A-Z]{3}$/.test(itemCodeData.itemCommonCode) &&
-    itemCodeData.itemCommonName.trim() !== "" &&
+    /^[A-Z]{3}$/.test(codeData.commonCode) &&
+    codeData.commonCodeName.trim() !== "" &&
     checkCodeSelect;
 
   // 품목 공통 코드 등록하기
@@ -75,14 +75,14 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
       return;
     }
     axios
-      .post("/api/commonCode/add", itemCodeData)
+      .post("/api/commonCode/add", codeData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           description: data.message.text,
           type: data.message.type,
         });
-        onAdd(itemCodeData);
+        onAdd(codeData);
         setChange((prev) => !prev);
         handleClose();
       })
@@ -100,7 +100,7 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5}>
-            품목 코드는 대문자 3자리로 입력해야 합니다.
+            시스템코드는 3~5글자, 품목 코드는 대문자 3자리로 입력해야 합니다.
           </Text>
 
           {/*코드 종류 선택*/}
@@ -112,24 +112,24 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             <Field label="코드" orientation="horizontal">
               <Input
                 placeholder="코드"
-                value={itemCodeData.itemCommonCode}
-                onChange={handleInputChange("itemCommonCode")}
+                value={codeData.commonCode}
+                onChange={handleInputChange("commonCode")}
                 maxLength={3}
               />
             </Field>
             <Field label="코드명" orientation="horizontal">
               <Input
                 placeholder="코드명"
-                value={itemCodeData.itemCommonName}
-                onChange={handleInputChange("itemCommonName")}
+                value={codeData.commonCodeName}
+                onChange={handleInputChange("commonCodeName")}
               />
             </Field>
             <Field label="비고" orientation="horizontal">
               <Textarea
                 resize={"none"}
                 placeholder="비고"
-                value={itemCodeData.itemCommonCodeNote}
-                onChange={handleInputChange("itemCommonCodeNote")}
+                value={codeData.commonCodeNote}
+                onChange={handleInputChange("commonCodeNote")}
               />
             </Field>
           </Stack>

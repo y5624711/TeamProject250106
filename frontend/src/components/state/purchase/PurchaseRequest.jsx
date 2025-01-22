@@ -41,9 +41,9 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   // 품목 선택 시 협력업체 이름 가져오기
   useEffect(() => {
-    // itemCommonCode 값이 변경될 때 실행
+    // commonCode 값이 변경될 때 실행
     if (itemData.itemCommonCode) {
-      console.log("itemCommonCode 변경됨:", itemData.itemCommonCode);
+      console.log("commonCode 변경됨:", itemData.itemCommonCode);
       axios
         .get(`/api/item/customer/${itemData.itemCommonCode}`)
         .then((res) => {
@@ -149,8 +149,8 @@ export function PurchaseRequest({ onSave, onClose }) {
           );
           setItemData((prev) => ({
             ...prev,
-            itemCommonName: selectedItem?.item_common_name,
-            itemCommonCode: selectedItem?.item_common_code || "",
+            commonCodeName: selectedItem?.item_common_name,
+            commonCode: selectedItem?.item_common_code || "",
           }));
         }}
       >

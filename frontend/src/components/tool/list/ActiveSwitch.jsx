@@ -33,7 +33,7 @@ export function ActiveSwitch({ onActiveChange }) {
 
   return (
     <Checkbox my={5} checked={!active} onChange={handleSwitchChange}>
-      전체 조회
+      삭제된 정보 포함
     </Checkbox>
   );
 }

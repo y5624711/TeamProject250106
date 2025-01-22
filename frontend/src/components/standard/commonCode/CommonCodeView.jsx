@@ -14,37 +14,37 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 
-export function ItemCommonCodeView({
-  itemCommonCodeKey,
+export function CommonCodeView({
+  commonCodeKey,
   isOpen,
   onClose,
   setChange,
   setItemCommonCodeKey,
 }) {
-  const [itemCommonCode, setItemCommonCode] = useState([]);
+  const [commonCode, setCommonCode] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedItemCommonCode, setEditedItemCommonCode] = useState({
-    itemCommonCode: "",
-    itemCommonName: "",
-    itemCommonCodeNote: "",
+  const [editedCommonCode, setEditedCommonCode] = useState({
+    commonCode: "",
+    commonCodeName: "",
+    commonCodeNote: "",
     commonCodeType: "",
   });
 
   // 품목 공통 코드 상세 정보 가져오기
   useEffect(() => {
-    if (itemCommonCodeKey) {
+    if (commonCodeKey) {
       axios
-        .get(`/api/commonCode/view/${itemCommonCodeKey}`)
+        .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
-          setItemCommonCode(res.data);
-          setEditedItemCommonCode(res.data[0]);
+          setCommonCode(res.data);
+          setEditedCommonCode(res.data[0]);
         })
         .catch((error) => {
           console.error("품목 공통 코드 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [itemCommonCodeKey]);
+  }, [commonCodeKey]);
 
   // 창이 닫히면 수정 상태 취소
   const handleClose = () => {
@@ -55,15 +55,15 @@ export function ItemCommonCodeView({
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedItemCommonCode((prevItem) => ({
+    setEditedCommonCode((prevItem) => ({
       ...prevItem,
       [name]: value,
     }));
   };
 
   const isValid =
-    /^[A-Z]{3}$/.test(editedItemCommonCode.itemCommonCode) &&
-    editedItemCommonCode.itemCommonName.trim() !== "";
+    /^[A-Z]{3}$/.test(editedCommonCode.commonCode) &&
+    editedCommonCode.commonCodeName.trim() !== "";
 
   // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSaveClick = () => {
@@ -75,16 +75,16 @@ export function ItemCommonCodeView({
       return;
     }
     axios
-      .put(`/api/commonCode/edit/${itemCommonCodeKey}`, editedItemCommonCode)
+      .put(`/api/commonCode/edit/${commonCodeKey}`, editedCommonCode)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           description: data.message.text,
           type: data.message.type,
         });
-        setItemCommonCode([{ ...editedItemCommonCode }]);
+        setCommonCode([{ ...editedCommonCode }]);
         setIsEditing(false);
-        setItemCommonCodeKey(itemCommonCodeKey);
+        setItemCommonCodeKey(commonCodeKey);
         setChange((prev) => !prev);
       })
       .catch((e) => {
@@ -96,7 +96,7 @@ export function ItemCommonCodeView({
   // 품목 공통 코드 삭제 시 사용여부 false
   const handleDeleteConfirm = () => {
     axios
-      .put(`/api/commonCode/delete/${itemCommonCodeKey}`)
+      .put(`/api/commonCode/delete/${commonCodeKey}`)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -121,8 +121,8 @@ export function ItemCommonCodeView({
           </DialogHeader>
           <DialogBody>
             <Box>
-              {itemCommonCode.map((item) => (
-                <Box key={item.itemCommonCodeKey}>
+              {commonCode.map((item) => (
+                <Box key={item.commonCodeKey}>
                   {isEditing ? (
                     <>
                       <Text fontSize={"xs"} mt={-5}>
@@ -132,7 +132,7 @@ export function ItemCommonCodeView({
                         <Input
                           name="itemCommonCode"
                           placeholder="물품 코드"
-                          value={editedItemCommonCode.itemCommonCode}
+                          value={editedCommonCode.commonCode}
                           onChange={handleChange}
                           maxLength={3}
                         />
@@ -141,7 +141,7 @@ export function ItemCommonCodeView({
                         <Input
                           name="itemCommonName"
                           placeholder="물품명"
-                          value={editedItemCommonCode.itemCommonName}
+                          value={editedCommonCode.commonCodeName}
                           onChange={handleChange}
                         />
                       </Field>
@@ -149,7 +149,7 @@ export function ItemCommonCodeView({
                         <Input
                           name="itemCommonCodeNote"
                           placeholder="비고"
-                          value={editedItemCommonCode.itemCommonCodeNote}
+                          value={editedCommonCode.commonCodeNote}
                           onChange={handleChange}
                         />
                       </Field>
@@ -157,19 +157,19 @@ export function ItemCommonCodeView({
                   ) : (
                     <>
                       <Field label={"품목 코드"}>
-                        <Input readOnly value={item.itemCommonCode} />
+                        <Input readOnly value={item.commonCode} />
                       </Field>
                       <Field label={"품목명"}>
-                        <Input readOnly value={item.itemCommonName} />
+                        <Input readOnly value={item.commonCodeName} />
                       </Field>
                       <Field label={"사용여부"}>
                         <Input
                           readOnly
-                          value={item.itemCommonCodeActive ? "사용" : "미사용"}
+                          value={item.commonCodeActive ? "사용" : "미사용"}
                         />
                       </Field>
                       <Field label={"비고"}>
-                        <Input readOnly value={item.itemCommonCodeNote} />
+                        <Input readOnly value={item.commonCodeNote} />
                       </Field>
                     </>
                   )}
@@ -192,7 +192,7 @@ export function ItemCommonCodeView({
             ) : (
               <HStack>
                 <Button onClick={() => setIsEditing(true)}>수정</Button>
-                {itemCommonCode[0]?.itemCommonCodeActive && (
+                {commonCode[0]?.itemCommonCodeActive && (
                   <Button
                     onClick={() => setIsDialogOpen(true)}
                     colorPalette={"red"}

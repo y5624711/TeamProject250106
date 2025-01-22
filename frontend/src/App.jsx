@@ -5,7 +5,7 @@ import React from "react";
 import { RootLayout } from "./page/root/RootLayout.jsx";
 import { Item } from "./page/standard/item/Item.jsx";
 import { Main } from "./page/main/Main.jsx";
-import { ItemCommonCode } from "./page/standard/commonCode/ItemCommonCode.jsx";
+import { CommonCode } from "./page/standard/commonCode/CommonCode.jsx";
 import Customer from "./page/standard/customer/Customer.jsx";
 import { Franchise } from "./page/standard/franchise/Franchise.jsx";
 import { Employee } from "./page/standard/employee/Employee.jsx";
@@ -38,13 +38,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Main /> },
+        element: <Main />,
+      },
       {
         path: "business",
-        element: <BusinessAndDepartment /> },
+        element: <BusinessAndDepartment />,
+      },
       {
         path: "commonCode/item",
-        element: <ItemCommonCode />,
+        element: <CommonCode />,
       },
       {
         path: "employee",
