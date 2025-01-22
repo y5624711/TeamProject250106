@@ -55,6 +55,7 @@ public interface PurchaseMapper {
                 pr.purchase_request_note AS purchaseRequestNote,
                 pr.amount AS amount,
                 pr.purchase_consent AS purchaseConsent,
+                wh.warehouse_code AS warehouseCode,
                 wh.warehouse_name AS warehouseName
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
@@ -66,4 +67,19 @@ public interface PurchaseMapper {
             WHERE pr.purchase_request_key = #{purchaseRequestKey}
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);
+
+    // 구매 승인
+    @Insert("""
+            INSERT INTO TB_PURCH_APPR
+            (purchase_request_key, customer_employee_no, warehouse_code, purchase_no, purchase_approve_date, purchase_approve_note)
+            VALUES (#{purchaseRequestKey}, #{customerEmployeeNo}, #{warehouseCode}, #{purchaseNo}, NOW(), #{purchaseApproveNote})
+            """)
+    int purchaseApprove(Purchase purchase);
+
+    // 기존 발주 번호에서 최대 번호 조회
+    @Select("""
+            SELECT MAX(CAST(purchase_no AS UNSIGNED))
+            FROM TB_PURCH_APPR
+            """)
+    Long viewMaxPurchaseNo();
 }

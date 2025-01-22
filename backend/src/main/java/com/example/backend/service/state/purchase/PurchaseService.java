@@ -40,4 +40,19 @@ public class PurchaseService {
     public Purchase viewPurchaseApprove(int purchaseRequestKey) {
         return mapper.viewPurchaseApprove(purchaseRequestKey);
     }
+
+    // 구매 승인
+    public boolean purchaseApprove(Purchase purchase) {
+        // 기존 발주 번호에서 최대 번호를 조회
+        Long maxNo = mapper.viewMaxPurchaseNo();
+
+        // 최대 번호가 없으면 1, 있으면 1을 더한 값을 10자리 형식으로 생성
+        String newNumber = String.format("%013d", (maxNo == null) ? 1 : maxNo + 1);
+
+        // 생성된 새로운 발주 번호를 purchase 객체에 설정
+        purchase.setPurchaseNo(newNumber);
+
+        int cnt = mapper.purchaseApprove(purchase);
+        return cnt == 1;
+    }
 }

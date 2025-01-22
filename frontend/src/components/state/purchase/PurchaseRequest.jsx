@@ -4,11 +4,9 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Text,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { Field } from "../../ui/field.jsx";
@@ -131,40 +129,41 @@ export function PurchaseRequest({ onSave, onClose }) {
           <Input value={name} placeholder="직원 이름" />
         </Field>
       </Box>
-      <SelectRoot
-        onValueChange={(e) => {
-          const selectedItem = itemCommonCodeList.find(
-            (item) => item.item_common_name === e.value[0],
-          );
-          setItemData((prev) => ({
-            ...prev,
-            itemCommonName: selectedItem?.item_common_name,
-            itemCommonCode: selectedItem?.item_common_code || "",
-          }));
-        }}
-      >
-        <SelectLabel>
-          품목{" "}
-          <Text as="span" color="red.500">
-            *
-          </Text>
-        </SelectLabel>
-        <SelectTrigger>
-          <SelectValueText>
-            {itemData.itemCommonName || "품목 선택"}
-          </SelectValueText>
-        </SelectTrigger>
-        <SelectContent>
-          {itemCommonCodeList.map((item) => (
-            <SelectItem
-              key={item.item_common_code}
-              item={item.item_common_name}
-            >
-              {item.item_common_name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectRoot>
+      <Field label="품목" orientation="horizontal" required mb={7}>
+        <SelectRoot
+          onValueChange={(e) => {
+            const selectedItem = itemCommonCodeList.find(
+              (item) => item.item_common_name === e.value[0],
+            );
+            setItemData((prev) => ({
+              ...prev,
+              itemCommonName: selectedItem?.item_common_name,
+              itemCommonCode: selectedItem?.item_common_code || "",
+            }));
+          }}
+        >
+          <SelectTrigger>
+            <SelectValueText>
+              {itemData.itemCommonName || "품목 선택"}
+            </SelectValueText>
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              width: "200px",
+              position: "absolute",
+            }}
+          >
+            {itemCommonCodeList.map((item) => (
+              <SelectItem
+                key={item.item_common_code}
+                item={item.item_common_name}
+              >
+                {item.item_common_name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Field>
       <Field label="담당 업체" orientation="horizontal" required mb={7}>
         <Input
           value={itemData.customerName}
@@ -206,11 +205,11 @@ export function PurchaseRequest({ onSave, onClose }) {
           placeholder="비고"
         />
       </Field>
-      <Box display="flex" gap={4}>
-        <Button onClick={handleSaveClick}>구매 요청</Button>
-        <Button onClick={handleCancelClick} colorScheme="gray">
+      <Box display="flex" gap={4} justifyContent="flex-end">
+        <Button variant="outline" onClick={handleCancelClick}>
           취소
         </Button>
+        <Button onClick={handleSaveClick}>구매 요청</Button>
       </Box>
     </Box>
   );
