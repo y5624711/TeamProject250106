@@ -54,13 +54,15 @@ public interface PurchaseMapper {
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_request_note AS purchaseRequestNote,
                 pr.amount AS amount,
-                pr.purchase_consent AS purchaseConsent
+                pr.purchase_consent AS purchaseConsent,
+                wh.warehouse_name AS warehouseName
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
-            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no 
+            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
+            LEFT JOIN TB_WHMST wh ON cus.customer_code = wh.customer_code
             WHERE pr.purchase_request_key = #{purchaseRequestKey}
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);

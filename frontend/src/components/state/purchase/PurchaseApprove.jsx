@@ -72,9 +72,22 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       <Field label="품목" orientation="horizontal" mb={7}>
         <Input value={purchase.itemCommonName} placeholder="품목" readOnly />
       </Field>
-      <Field label="담당 업체" orientation="horizontal" mb={7}>
-        <Input value={purchase.customerName} placeholder="담당 업체" readOnly />
-      </Field>
+      <Box display="flex" gap={4}>
+        <Field label="담당 업체" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase.customerName}
+            placeholder="담당 업체"
+            readOnly
+          />
+        </Field>
+        <Field label="창고" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase?.warehouseName || "창고 정보 없음"}
+            placeholder="창고"
+            readOnly
+          />
+        </Field>
+      </Box>
       <Box display="flex" gap={4}>
         <Field label="수량" orientation="horizontal" mb={7}>
           <Input value={purchase.amount} placeholder="수량" readOnly />
