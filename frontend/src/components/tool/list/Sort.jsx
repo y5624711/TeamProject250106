@@ -1,6 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { Table } from "@chakra-ui/react";
+import { HStack, Table } from "@chakra-ui/react";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 // 정렬 컴포넌트
 export function Sort({ sortOptions, onSortChange }) {
@@ -34,12 +35,18 @@ export function Sort({ sortOptions, onSortChange }) {
           onClick={() => handleSort(sort.key)}
           style={{ cursor: "pointer" }}
         >
-          {sort.label}
-          {searchParams.get("sort") === sort.key
-            ? searchParams.get("order") === "asc"
-              ? "▲"
-              : "▼"
-            : ""}
+          <HStack justify="center" align="center" width="100%">
+            {sort.label}
+            {searchParams.get("sort") === sort.key ? (
+              searchParams.get("order") === "asc" ? (
+                <FaCaretUp />
+              ) : (
+                <FaCaretDown />
+              )
+            ) : (
+              ""
+            )}
+          </HStack>
         </Table.ColumnHeader>
       ))}
     </>

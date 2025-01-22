@@ -11,7 +11,7 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { useSearchParams } from "react-router-dom";
 
-export function SearchBar({ onSearchChange, itemSearchOptions }) {
+export function SearchBar({ onSearchChange, searchOptions }) {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [search, setSearch] = useState({
     type: "all",
@@ -55,7 +55,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
   return (
     <HStack justifyContent="center">
       <SelectRoot
-        collection={itemSearchOptions}
+        collection={searchOptions}
         width="150px"
         position="relative"
         value={[search.type]}
@@ -73,7 +73,7 @@ export function SearchBar({ onSearchChange, itemSearchOptions }) {
             position: "absolute",
           }}
         >
-          {itemSearchOptions.items.map((option) => (
+          {searchOptions?.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}
             </SelectItem>
