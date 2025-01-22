@@ -16,9 +16,9 @@ import Location from "./page/standard/location/Location.jsx";
 import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
-import Stocktaking from "./page/stock/Stocktaking.jsx";
-import StorageRetrieval from "./page/stock/StorageRetrieval.jsx";
-import WarehouseStatus from "./page/stock/WarehouseStatus.jsx";
+import Stocktaking from "./page/stock/stocktaking/Stocktaking.jsx";
+import InoutHistory from "./page/stock/inoutHistory/InoutHistory.jsx";
+import WarehouseStatus from "./page/stock/warehouseStatus/WarehouseStatus.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -79,8 +79,8 @@ const router = createBrowserRouter([
         element: <Stocktaking />,
       },
       {
-        path: "storageRetrieval/*",
-        element: <StorageRetrieval />,
+        path: "inoutHistory/*",
+        element: <InoutHistory />,
       },
       {
         path: "warehouseStatus/*",

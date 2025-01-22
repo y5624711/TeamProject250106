@@ -11,10 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 
-function StorageRetrievalSearch({
+function InoutHistorySearch({
   setSearch,
   search,
-  storageRetrievalOptionList,
+  inoutHistoryOptionList,
   handleSearchClick,
 }) {
   return (
@@ -22,7 +22,7 @@ function StorageRetrievalSearch({
       <Stack justify={"top"} direction={"row"}>
         <Box>
           <SelectRoot
-            collection={storageRetrievalOptionList}
+            collection={inoutHistoryOptionList}
             defaultValue={["all"]}
             width="150px"
             onValueChange={(oc) => setSearch({ ...search, type: oc.value })}
@@ -31,7 +31,7 @@ function StorageRetrievalSearch({
               <SelectValueText />
             </SelectTrigger>
             <SelectContent>
-              {storageRetrievalOptionList.items.map((option) => (
+              {inoutHistoryOptionList.items.map((option) => (
                 <SelectItem item={option} key={option.value}>
                   {option.label}
                 </SelectItem>
@@ -60,4 +60,4 @@ function StorageRetrievalSearch({
   );
 }
 
-export default StorageRetrievalSearch;
+export default InoutHistorySearch;

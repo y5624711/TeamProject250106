@@ -40,7 +40,7 @@ export function Navbar() {
       <Flex bgColor={"lightSlateGray"} width="100%" justify="center" gap={10}>
         <NavItem path="/business">기준정보 관리</NavItem>
         <NavItem>구매/설치 관리</NavItem>
-        <NavItem path="/storageRetrieval">물류 관리</NavItem>
+        <NavItem path="/inoutHistory">물류 관리</NavItem>
       </Flex>
     </Box>
   );

@@ -46,7 +46,7 @@ export function StockSideBar() {
         </Box>
 
         <Stack spacing="2" mt="4">
-          <SidebarItem path="/storageRetrieval">물품입출내역</SidebarItem>
+          <SidebarItem path="/inoutHistory">물품입출내역</SidebarItem>
           <SidebarItem path="/stocktaking">재고 실사</SidebarItem>
           <SidebarItem path="/warehouseStatus">위치별 재고 현황</SidebarItem>
         </Stack>

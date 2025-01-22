@@ -6,18 +6,17 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
-import StorageRetrievalDetail from "./StorageRetrievalDetail.jsx";
-import StorageRetrievalListPage from "./StorageRetrievalListPage.jsx";
+import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
+import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 
-function StorageRetrievalList({
-  storageRetrievalList,
-  countStorageRetrieval,
+function InoutHistoryList({
   handlePageChangeClick,
   currentPage,
+  countInoutHistory,
+  inoutHistoryList,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
-  const [selectedStorageRetrieval, setSelectedStorageRetrieval] =
-    useState(null);
+  const [selectedInoutHistory, setSelectedInoutHistory] = useState(null);
 
   return (
     <Box>
@@ -94,10 +93,10 @@ function StorageRetrievalList({
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {storageRetrievalList.map((storageRetrieval) => (
-                <StorageRetrievalListPage
-                  storageRetrieval={storageRetrieval}
-                  setSelectedStorageRetrieval={setSelectedStorageRetrieval}
+              {inoutHistoryList.map((inoutHistory) => (
+                <InoutHistoryListPage
+                  inoutHistory={inoutHistory}
+                  setSelectedInoutHistory={setSelectedInoutHistory}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
               ))}
@@ -107,7 +106,7 @@ function StorageRetrievalList({
         <Center>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
-            count={countStorageRetrieval}
+            count={countInoutHistory}
             pageSize={10}
             // page={page}
             siblingCount={2}
@@ -120,8 +119,8 @@ function StorageRetrievalList({
             </HStack>
           </PaginationRoot>
         </Center>
-        <StorageRetrievalDetail
-          storageRetrieval={selectedStorageRetrieval}
+        <InoutHistoryDetail
+          inoutHistoryKey={selectedInoutHistory}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
         />
@@ -130,4 +129,4 @@ function StorageRetrievalList({
   );
 }
 
-export default StorageRetrievalList;
+export default InoutHistoryList;

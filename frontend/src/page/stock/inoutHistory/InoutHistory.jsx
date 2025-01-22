@@ -1,31 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { StockSideBar } from "../../components/tool/sidebar/StockSideBar.jsx";
+import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
+import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHistorySearch.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import StocktakingSearch from "../../components/stock/stocktaking/StocktakingSearch.jsx";
-import StocktakingList from "../../components/stock/stocktaking/StocktakingList.jsx";
+import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
+import { Radio, RadioGroup } from "../../../components/ui/radio.jsx";
 
-function Stocktaking(props) {
+function InoutHistory(props) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
   });
   const navigate = useNavigate();
+  const [inoutHistoryList, setInoutHistoryList] = useState([]);
+  const [countInoutHistory, setCountInoutHistory] = useState("");
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
-  const [stocktakingList, setStocktakingList] = useState([]);
-  const [countStocktaking, setCountStocktaking] = useState("");
+  const [value, setValue] = useState("inout");
 
-  // 재고실사 정보 가져오기
+  // 물품입출내역 정보 가져오기
   useEffect(() => {
     axios
-      .get(`/api/stocktaking/list?${searchParams.toString()}`)
+      .get(`/api/inoutHistory/list?${searchParams.toString()}`)
       .then((res) => {
-        setStocktakingList(res.data.list);
-        setCountStocktaking(res.data.count);
+        setInoutHistoryList(res.data.list);
+        setCountInoutHistory(res.data.count);
       });
     window.scrollTo(0, 0);
   }, [searchParams]);
@@ -42,7 +44,7 @@ function Stocktaking(props) {
       keyword: search.keyword,
     };
     const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/stocktaking/list?${searchQuery.toString()}`);
+    navigate(`/inoutHistory/list?${searchQuery.toString()}`);
   }
 
   function handlePageChangeClick(e) {
@@ -51,7 +53,7 @@ function Stocktaking(props) {
     const searchInfo = { type: search.type, keyword: search.keyword };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(
-      `/stocktaking/list?${searchQuery.toString()}&${pageQuery.toString()}`,
+      `/inoutHistory/list?${searchQuery.toString()}&${pageQuery.toString()}`,
     );
   }
 
@@ -60,18 +62,26 @@ function Stocktaking(props) {
       <HStack align="flex-start">
         <StockSideBar />
         <Stack margin="10pt">
-          <Box>물류 관리 > 재고 실사</Box>
+          <Box>물류 관리 > 물품입출내역</Box>
           {/* 검색 jsx */}
-          <StocktakingSearch
-            stocktakingOptionList={stocktakingOptionList}
+          <InoutHistorySearch
+            inoutHistoryOptionList={inoutHistoryOptionList}
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
           />
+          <RadioGroup value={value} onValueChange={(e) => setValue(e.value)}>
+            {/*TODO: Radio 기능 넣기*/}
+            <HStack gap="6">
+              <Radio value="inout">전체 내역</Radio>
+              <Radio value="storage">입고 내역</Radio>
+              <Radio value="retrieval">출고 내역</Radio>
+            </HStack>
+          </RadioGroup>
           {/*리스트 jsx*/}
-          <StocktakingList
-            countStocktaking={countStocktaking}
-            stocktakingList={stocktakingList}
+          <InoutHistoryList
+            countInoutHistory={countInoutHistory}
+            inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
           />
@@ -81,7 +91,7 @@ function Stocktaking(props) {
   );
 }
 
-const stocktakingOptionList = createListCollection({
+const inoutHistoryOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
     { label: "시리얼 번호", value: "serialNumber" },
@@ -96,4 +106,4 @@ const stocktakingOptionList = createListCollection({
   ],
 });
 
-export default Stocktaking;
+export default InoutHistory;

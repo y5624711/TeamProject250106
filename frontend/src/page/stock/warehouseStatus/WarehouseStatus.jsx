@@ -1,5 +1,5 @@
 import React from "react";
-import { StockSideBar } from "../../components/tool/sidebar/StockSideBar.jsx";
+import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import { Box, HStack, Stack } from "@chakra-ui/react";
 
 function WarehouseStatus(props) {

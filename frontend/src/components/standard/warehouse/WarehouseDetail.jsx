@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import axios from "axios";
 import WarehouseEdit from "./WarehouseEdit.jsx";
 import { Box, Center, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
@@ -21,10 +20,6 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
 
   function handleEditClick() {
     setIsEditing(!isEditing);
-  }
-
-  function handleDeleteClick() {
-    axios.delete(`/api/warehouse/delete/${warehouseKey}`);
   }
 
   return (
