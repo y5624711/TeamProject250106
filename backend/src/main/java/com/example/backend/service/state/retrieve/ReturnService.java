@@ -45,7 +45,7 @@ public class ReturnService {
     }
 
     //반품 요청 승인
-    public void addApprove(Return approveInfo) {
+    public boolean addApprove(Return approveInfo) {
         //1. 요청의 승인여부 변경
         mapper.changeConsent(approveInfo.getReturnRequestKey());
 
@@ -57,7 +57,8 @@ public class ReturnService {
         approveInfo.setReturnNo(newNo);
 
         //3. 요청 내용 테이블에 추가
-        mapper.addApprove(approveInfo);
+        int cnt = mapper.addApprove(approveInfo);
 
+        return cnt == 1;
     }
 }

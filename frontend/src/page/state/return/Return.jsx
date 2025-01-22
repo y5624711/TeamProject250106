@@ -25,7 +25,6 @@ function Return(props) {
   const handleRequestClick = (newRequest) => {
     setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
     setRequestDialogOpen(false);
-    setApproveDialogOpen(false);
   };
 
   //테이블 행 클릭

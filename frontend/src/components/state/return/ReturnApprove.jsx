@@ -11,6 +11,7 @@ import { Button } from "../../ui/button.jsx";
 import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
+import { toaster } from "../../ui/toaster.jsx";
 
 function ReturnApprove({
   isOpen,
@@ -40,7 +41,7 @@ function ReturnApprove({
     }
   }, [returnRequestKey]);
 
-  //정보 기입
+  //정보 기입 (변화 적용)
   const handleApproveInput = (field) => (e) => {
     const value = e.target ? e.target.value : e.value;
     setApproveData((prev) => ({ ...prev, [field]: value }));
@@ -52,8 +53,19 @@ function ReturnApprove({
       .post(`api/return/approve`, approveData)
       .then((res) => res.data)
       .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
         onApprove(approveData);
         setApproveData(initialApproveData);
+        onClose();
+      })
+      .catch((e) => {
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
       });
   };
 

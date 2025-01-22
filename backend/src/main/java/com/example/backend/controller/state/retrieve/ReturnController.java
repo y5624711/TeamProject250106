@@ -3,9 +3,11 @@ package com.example.backend.controller.state.retrieve;
 import com.example.backend.dto.state.retrieve.Return;
 import com.example.backend.service.state.retrieve.ReturnService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,8 +45,17 @@ public class ReturnController {
 
     //반환 승인
     @PostMapping("approve")
-    public void approveReturn(@RequestBody Return approveInfo) {
+    public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo) {
 //        System.out.println("controller: " + approveInfo);
-        service.addApprove(approveInfo);
+        if (service.addApprove(approveInfo)) {
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "승인하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "문제가 발생하였습니다.")));
+        }
     }
 }
