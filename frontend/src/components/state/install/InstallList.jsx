@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Center, Table } from "@chakra-ui/react";
+import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
@@ -19,10 +19,26 @@ export function InstallList({ installList, onRowClick }) {
     { key: "currentState", label: "상태 현황" },
   ];
 
+  // 검색 옵션
+  const searchOptions = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "가맹점", value: "franchiseName" },
+      { label: "품목명", value: "itemCommonName" },
+      { label: "출고번호", value: "outputNo" },
+      { label: "신청자명", value: "businessEmployeeName" },
+      { label: "승인자명", value: "customerEmployeeName" },
+      { label: "설치기사", value: "customerInstallerName" },
+      { label: "창고", value: "warehouseName" },
+      { label: "날짜", value: "outputPrice" },
+      { label: "상태 현황", value: "state" },
+    ],
+  });
+
   console.log(installList);
   return (
-    <Box px={10}>
-      <SearchBar />
+    <Box>
+      <SearchBar searchOptions={searchOptions} />
       <ActiveSwitch />
       <Box>
         <Table.Root>

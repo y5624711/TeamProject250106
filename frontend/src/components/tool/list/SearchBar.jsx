@@ -83,7 +83,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
 
       <Input
         placeholder="검색어를 입력해 주세요"
-        width="50%"
+        width="70%"
         value={search.keyword}
         onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         onKeyDown={(e) => {

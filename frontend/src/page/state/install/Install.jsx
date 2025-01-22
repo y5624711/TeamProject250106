@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Stack } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { InstallList } from "../../../components/state/install/InstallList.jsx";
 import { InstallRequest } from "../../../components/state/install/InstallRequest.jsx";
 import { InstallApprove } from "../../../components/state/install/InstallApprove.jsx";
-import { InstallConfiguration } from "../../../components/state/install/InstallConfiguration.jsx";
 import axios from "axios";
+import { InstallConfiguration } from "../../../components/state/install/InstallConfiguration.jsx";
 
 export function Install() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
@@ -64,13 +64,16 @@ export function Install() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StateSideBar />
-        <Stack flex={1}>
+        <Stack flex={1} p={4}>
+          <Heading size={"xl"} p={2} mb={3}>
+            구매 / 설치 관리 {">"} 설치 관리
+          </Heading>
           <InstallList installList={installList} onRowClick={handleRowClick} />
           <Button
             onClick={() => setRequestDialogOpen(true)}
             size="lg"
-            position="absolute"
-            bottom="100px"
+            position="fixed"
+            bottom="60px"
             right="100px"
           >
             출고 요청

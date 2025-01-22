@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -15,7 +15,6 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -24,8 +23,10 @@ import {
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function InstallRequest({ isOpen, onClose }) {
+  const { id, name } = useContext(AuthenticationContext);
   const initialInstallRequest = {
     franchiseName: "",
     itemCommonName: "",
@@ -83,7 +84,7 @@ export function InstallRequest({ isOpen, onClose }) {
           <DialogTitle>출고 요청</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={4}>
+          <Stack gap={5}>
             <Field label="가맹점명" orientation="horizontal">
               <Input
                 placeholder="가맹점명"
@@ -91,42 +92,48 @@ export function InstallRequest({ isOpen, onClose }) {
                 onChange={handleInputChange("franchiseName")}
               />
             </Field>
-            <SelectRoot
-              onValueChange={(e) => {
-                const selectedItem = installItemList.find(
-                  (item) => item.item_common_name === e.value[0],
-                );
-                if (selectedItem) {
-                  setInstallRequest((prev) => ({
-                    ...prev,
-                    itemCommonCode: selectedItem.item_common_code || "",
-                    itemCommonName: selectedItem.item_common_name || "",
-                    customerName: selectedItem.customer_name || "",
-                    customerCode: selectedItem.customer_code || "",
-                  }));
-                }
-              }}
-            >
-              <SelectLabel>품목</SelectLabel>
-
-              <SelectTrigger>
-                <SelectValueText>
-                  {installRequest.itemCommonName || "품목 선택"}
-                </SelectValueText>
-              </SelectTrigger>
-              <SelectContent>
-                {installItemList
-                  .filter((item) => item.item_common_name) // 빈 데이터 필터링
-                  .map((item) => (
-                    <SelectItem
-                      key={item.item_common_code}
-                      item={item.item_common_name} // item을 value로 변경
-                    >
-                      {item.item_common_name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </SelectRoot>
+            <Field label="품목" orientation="horizontal">
+              <SelectRoot
+                onValueChange={(e) => {
+                  const selectedItem = installItemList.find(
+                    (item) => item.item_common_name === e.value[0],
+                  );
+                  if (selectedItem) {
+                    setInstallRequest((prev) => ({
+                      ...prev,
+                      itemCommonCode: selectedItem.item_common_code || "",
+                      itemCommonName: selectedItem.item_common_name || "",
+                      customerName: selectedItem.customer_name || "",
+                      customerCode: selectedItem.customer_code || "",
+                    }));
+                  }
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValueText>
+                    {installRequest.itemCommonName || "품목 선택"}
+                  </SelectValueText>
+                </SelectTrigger>
+                <SelectContent
+                  style={{
+                    width: "85%",
+                    top: "40px",
+                    position: "absolute",
+                  }}
+                >
+                  {installItemList
+                    .filter((item) => item.item_common_name) // 빈 데이터 필터링
+                    .map((item) => (
+                      <SelectItem
+                        key={item.item_common_code}
+                        item={item.item_common_name} // item을 value로 변경
+                      >
+                        {item.item_common_name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </SelectRoot>
+            </Field>
             <Field label="수량" orientation="horizontal">
               <Input
                 placeholder="수량"
@@ -143,18 +150,10 @@ export function InstallRequest({ isOpen, onClose }) {
             </Field>
             <HStack>
               <Field label="신청자 사번" orientation="horizontal">
-                <Input
-                  placeholder="신청자 사번"
-                  value={installRequest.employeeNo}
-                  onChange={handleInputChange("employeeNo")}
-                />
+                <Input placeholder="신청자 사번" value={id} />
               </Field>
               <Field label="신청자" orientation="horizontal">
-                <Input
-                  placeholder="신청자"
-                  value={installRequest.employeeName}
-                  onChange={handleInputChange("employeeName")}
-                />
+                <Input placeholder="신청자" value={name} />
               </Field>
             </HStack>
             <Field label="협력업체" orientation="horizontal">

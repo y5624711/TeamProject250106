@@ -8,12 +8,10 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import {
-  Box,
   HStack,
   Input,
   SelectContent,
@@ -21,13 +19,14 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Stack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function InstallConfiguration({ installKey, isOpen, onClose }) {
-  const { id } = useContext(AuthenticationContext);
+  const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [selectedSerial, setSelectedSerial] = useState("");
   const [serialNote, setSerialNote] = useState("");
@@ -65,7 +64,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
-      inoutHistory: "",
+      inoutHistoryNote: "",
     };
     axios
       .post("/api/install/configuration", configurationData)
@@ -99,17 +98,12 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
       }}
       size="lg"
     >
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          설치 확인
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>설치 확인</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Box>
+          <Stack gap={5}>
             <Field label={"가맹점명"} orientation="horizontal">
               <Input value={installData.franchiseName} readOnly />
             </Field>
@@ -167,7 +161,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
             <Field label={"시리얼 비고"} orientation="horizontal">
               <Input onChange={(e) => setSerialNote(e.target.value)} />
             </Field>
-          </Box>
+          </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -10,12 +10,14 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { Box, HStack, Input } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { withMask } from "use-mask-input";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function InstallApprove({ installKey, isOpen, onClose }) {
+  const { id, name } = useContext(AuthenticationContext);
   const [installRequest, setInstallRequest] = useState();
   const [installScheduleDate, setInstallScheduleDate] = useState(""); // 설치 예정 날짜
   const [customerInstallerNo, setCustomerInstallerNo] = useState(""); // 설치 기사
@@ -119,16 +121,18 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
         <DialogBody>
           <Box>
             {installRequest?.map((req) => (
-              <Box>
+              <Stack gap={4}>
                 <Field label={"가맹점명"} orientation="horizontal">
                   <Input value={req.franchiseName} readOnly />
                 </Field>
-                <Field label={"품목명"} orientation="horizontal">
-                  <Input value={req.itemCommonName} readOnly />
-                </Field>
-                <Field label={"수량"} orientation="horizontal">
-                  <Input value={req.installRequestAmount} readOnly />
-                </Field>
+                <HStack>
+                  <Field label={"품목명"} orientation="horizontal">
+                    <Input value={req.itemCommonName} readOnly />
+                  </Field>
+                  <Field label={"수량"} orientation="horizontal">
+                    <Input value={req.installRequestAmount} readOnly />
+                  </Field>
+                </HStack>
                 <Field label={"가맹점 주소"} orientation="horizontal">
                   <Input value={req.franchiseAddress} readOnly />
                 </Field>
@@ -143,10 +147,10 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
                 <HStack>
                   {/*로그인 한 사용자의 사번, 이름 - customer*/}
                   <Field label={"승인자 사번"} orientation="horizontal">
-                    <Input value={"CUS000000006"} readOnly />
+                    <Input value={id} readOnly />
                   </Field>
                   <Field label={"승인자"} orientation="horizontal">
-                    <Input value={"직원명"} readOnly />
+                    <Input value={name} readOnly />
                   </Field>
                 </HStack>
                 <HStack>
@@ -188,7 +192,7 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
                     onChange={(e) => setInstallApproveNote(e.target.value)}
                   />
                 </Field>
-              </Box>
+              </Stack>
             ))}
           </Box>
         </DialogBody>
