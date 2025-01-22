@@ -1,41 +1,64 @@
 import React from "react";
 import {
   Box,
-  Center,
+  createListCollection,
   HStack,
-  Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Stack,
   Table,
 } from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
+import { SearchBar } from "../../tool/list/SearchBar.jsx";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
-function ReturnList({ returnList, onRowClick }) {
+function ReturnList({ returnList, onRowClick, setSearchParams }) {
+  //검색 keyword
+  const returnSearchKeywords = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "가맹점명", value: "franchiseName" },
+      { label: "시리얼번호", value: "serialNo" },
+      { label: "반품번호", value: "returnNo" },
+      { label: "협력업체명", value: "customerName" },
+      { label: "요청자명", value: "businessEmployeeName" },
+      { label: "요청자사번", value: "businessEmployeeNo" },
+      { label: "승인자명", value: "customerEmployeeName" },
+      { label: "승인자사번", value: "customerEmployeeNo" },
+      { label: "검수자명", value: "customerConfigurerName" },
+      { label: "검수자사번", value: "customerConfigurerNo" },
+    ],
+  });
+
   // console.log(returnList);
 
   return (
     <Box>
       {/*검색창*/}
-      <Center>
-        <HStack>
-          <SelectRoot>
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem></SelectItem>
-            </SelectContent>
-          </SelectRoot>
-          <Input placeholder="검색어를 입력해 주세요" type="text" />
-          <Button>검색</Button>
+      <SearchBar
+        itemSearchOptions={returnSearchKeywords}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
+      {/*<Center>*/}
+      {/*  <HStack>*/}
+      {/*    <SelectRoot>*/}
+      {/*      <SelectTrigger>*/}
+      {/*        <SelectValueText />*/}
+      {/*      </SelectTrigger>*/}
+      {/*      <SelectContent>*/}
+      {/*        <SelectItem></SelectItem>*/}
+      {/*      </SelectContent>*/}
+      {/*    </SelectRoot>*/}
+      {/*    <Input placeholder="검색어를 입력해 주세요" type="text" />*/}
+      {/*    <Button>검색</Button>*/}
+      {/*  </HStack>*/}
+      {/*</Center>*/}
+      <RadioGroup defaultValue="all">
+        <HStack gap="6">
+          <Radio value="request">요청 상태 조회</Radio>
+          <Radio value="approve">승인 상태 조회</Radio>
+          <Radio value="all">전체 조회</Radio>
         </HStack>
-      </Center>
+      </RadioGroup>
 
       {/*리스트*/}
       <Table.Root interactive>

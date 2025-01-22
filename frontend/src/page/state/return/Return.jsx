@@ -6,17 +6,19 @@ import axios from "axios";
 import { Button } from "../../../components/ui/button.jsx";
 import ReturnRequest from "../../../components/state/return/ReturnRequest.jsx";
 import ReturnApprove from "../../../components/state/return/ReturnApprove.jsx";
+import { useSearchParams } from "react-router-dom";
 
 function Return(props) {
   const [returnList, setReturnList] = useState([]);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [returnRequestKey, setReturnRequestKey] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams("");
 
   //목록 불러오기
   useEffect(() => {
     axios
-      .get("/api/return/list")
+      .get("/api/return/list", { params: searchParams })
       .then((res) => res.data)
       .then((data) => setReturnList(data));
   }, []);
@@ -43,7 +45,11 @@ function Return(props) {
         <Text fontSize="xl" mx={10} my={3}>
           구매/설치 관리 {">"} 반품/회수 관리
         </Text>
-        <ReturnList returnList={returnList} onRowClick={handleRowClick} />
+        <ReturnList
+          returnList={returnList}
+          onRowClick={handleRowClick}
+          setSearchParams={setSearchParams}
+        />
         <Flex justify="flex-end">
           <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>
         </Flex>

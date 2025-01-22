@@ -17,8 +17,15 @@ public class ReturnController {
 
     //반환/회수 관리 테이블
     @GetMapping("list")
-    public List<Return> returnList() {
-        return service.returnList();
+    public Map<String, Object> returnList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "returnConsent", defaultValue = "false") Boolean returnConsent,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
+            @RequestParam(value = "order", defaultValue = "DESC") String order
+    ) {
+        return service.returnList(page, returnConsent, type, keyword, sort, order);
     }
 
     //시리얼 번호를 통해 정보 불러오기

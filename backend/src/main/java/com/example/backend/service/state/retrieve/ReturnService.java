@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,9 +18,18 @@ public class ReturnService {
     final FranchiseMapper franchiseMapper;
 
     //반환 관리 리스트
-    public List<Return> returnList() {
+    public Map<String, Object> returnList(Integer page, Boolean returnConsent, String type, String keyword, String sort, String order) {
 //        System.out.println("리스트: " + mapper.getReturnList());
-        return mapper.getReturnList();
+        Integer offset = (page - 1) * 10;
+
+        //리스트
+        List<Return> returnList = mapper.getReturnList(returnConsent, offset, type, keyword, sort, order);
+
+        //총 수
+        Integer count = mapper.countAll(returnConsent, type, keyword);
+
+
+        return Map.of("returnList", returnList, "count", count);
     }
 
     //시리얼 번호로 정보 조회

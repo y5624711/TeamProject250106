@@ -11,7 +11,7 @@ CREATE TABLE TB_ITEMSUB
 
 INSERT INTO TB_ITEMSUB
     (item_common_code, serial_no)
-VALUES ('WAR', '00000000000000000011');
+VALUES ('WAR', '00000000000000000012');
 
 INSERT INTO TB_EMPMST
 (employee_common_code, employee_workplace_code, employee_no, employee_name, employee_tel)

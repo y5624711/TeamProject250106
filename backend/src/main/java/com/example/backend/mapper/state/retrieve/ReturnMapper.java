@@ -13,6 +13,7 @@ public interface ReturnMapper {
 
     //반품 관리 리스트
     @Select("""
+            <script>  
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
                    customer_employee_no, emce.employee_name customerEmployeeName, customer_configurer_no, emcc.employee_name customerConfigurerName,
@@ -27,9 +28,54 @@ public interface ReturnMapper {
             LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
             LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
             LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
+            WHERE
+            <if test="returnConsent == null">
+                1=1
+            </if>
+            <if test="returnConsent == true">
+                return_consent = TRUE
+            </if>
+            <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='franchiseName'">
+                            franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='serialNo'">
+                            OR serial_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                                
+                        <if test="type=='all' or type=='returnNo'">
+                            OR return_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='customerName'">
+                            OR customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='businessEmployeeNo'">
+                            OR business_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='businessEmployeeName'">
+                            OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeNo'">
+                            OR customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR customer_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerConfigurerNo'">
+                            OR customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerConfigurerName'">
+                            OR customer_configurer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>             
+                    </trim>
+                )    
+            </if>
             ORDER BY COALESCE(return_approve_date, return_request_date) DESC
+            LIMIT #{offset}, 10    
+            </script>      
             """)
-    List<Return> getReturnList();
+    List<Return> getReturnList(Boolean returnConsent, Integer offset, String type, String keyword, String sort, String order);
 
     //입출 내역 생기면 franchise도 불러올 수 있음
     @Select("""
@@ -93,4 +139,6 @@ public interface ReturnMapper {
             </script>
             """)
     Integer viewMaxReturnNo();
+
+    int countAll(Boolean returnConsent, String type, String keyword);
 }
