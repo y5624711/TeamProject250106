@@ -35,11 +35,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM TB_INSTL_APPR ia
-                WHERE ia.install_request_key = i.install_request_key
-            )
+            WHERE i.install_request_consent IS NULL OR i.install_request_consent = 0
             """)
     List<Install> getInstallRequestList();
 
@@ -111,6 +107,14 @@ public interface InstallMapper {
             """)
     int updateItemSubActive(String serialNo);
 
+    // 요청 테이블의 승인 여부 false 처리
+    @Update("""
+            UPDATE TB_INSTL_REQ
+            SET install_request_consent = 1
+            WHERE install_request_key = #{installRequestKey}
+            """)
+    int updateRequestConsent(Integer installRequestKey);
+    
     // 설치 승인 리스트 출력
     @Select("""
              SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, ir.business_employee_no, e1.employee_name as business_employee_name,
@@ -125,4 +129,5 @@ public interface InstallMapper {
              LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
             """)
     List<Install> getInstallApproveList();
+
 }

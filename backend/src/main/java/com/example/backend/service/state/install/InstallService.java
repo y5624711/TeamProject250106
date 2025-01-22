@@ -81,7 +81,14 @@ public class InstallService {
                     throw new IllegalStateException("시리얼 번호 활성 상태 업데이트 실패: " + serial);
                 }
             }
+
+            // 요청 테이블의 승인 여부 false 처리
+            int updateRequestConsent = mapper.updateRequestConsent(install.getInstallRequestKey());
+            if (updateRequestConsent <= 0) {
+                throw new IllegalStateException("승인 여부 변경 실패");
+            }
             return true;
+            
         } catch (Exception e) {
             System.out.println("설치 승인 처리 중 오류 발생: " + e.getMessage());
             return false;

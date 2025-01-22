@@ -6,7 +6,7 @@ CREATE TABLE TB_INSTL_REQ
     business_employee_no    VARCHAR(13) NOT NULL,
     customer_code           VARCHAR(13) NOT NULL,
     install_request_amount  INT         NOT NULL,
-    install_request_date    DATE    DEFAULT CURRENT_DATE,
-    install_request_consent BOOLEAN DEFAULT true,
+    install_request_date    DATE DEFAULT CURRENT_DATE,
+    install_request_consent BOOLEAN,
     install_request_note    VARCHAR(50)
 );
