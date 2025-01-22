@@ -51,7 +51,7 @@ SELECT rr.return_request_key,
        f.franchise_name,
        ra.return_no,
        rr.serial_no,
-       item_common_name,
+       itc.common_code_name itemCommonName,
        rr.business_employee_no,
        emb.employee_name AS businessEmployeeName,
        rr.customer_code,
@@ -69,9 +69,9 @@ FROM TB_RTN_REQ rr
          LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
          LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
          LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
-         LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+         LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
          LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
          LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
          LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
-WHERE rr.serial_no LIKE CONCAT('%', '0', '%')
-          AND return_consent IS NOT true || false;
+WHERE common_code_name LIKE CONCAT('%', '장', '%')
+  AND (1 = 1 || return_consent IS NOT true || return_consent IS NOT false);

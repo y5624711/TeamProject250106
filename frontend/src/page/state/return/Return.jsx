@@ -15,24 +15,44 @@ function Return(props) {
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
-  const [page, setPage] = useState(searchParams.get("page") || 1);
-  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-  const [type, setType] = useState(searchParams.get("type") || "all");
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [type, setType] = useState("all");
+  const [state, setState] = useState("all");
   const [sort, setSort] = useState(searchParams.get("sort") || "all");
   const [order, setOrder] = useState(searchParams.get("order") || "desc");
-  const [state, setState] = useState(searchParams.get("sort") || "all");
+
+  // 검색 파라미터 기본값 설정
+  const initialParams = {
+    page: searchParams.get("page") || 1,
+    type: searchParams.get("type") || "all",
+    keyword: searchParams.get("keyword") || "",
+    state: searchParams.get("state") || "all",
+  };
+
+  const [filters, setFilters] = useState(initialParams);
 
   //목록 불러오기
   useEffect(() => {
     axios
-      .get("/api/return/list", { params: searchParams })
+      .get("/api/return/list", { params: filters })
       .then((res) => res.data)
       .then((data) => {
-        console.log("반환", data);
+        // console.log("반환", data);
         setReturnList(data.returnList);
         setCount(data.count);
       });
-  }, []);
+  }, [filters]);
+
+  // 필터 값 변경 핸들러
+  const handleFilterChange = (key, value) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    // URL 업데이트
+    const nextSearchParams = new URLSearchParams(updatedFilters);
+    setSearchParams(nextSearchParams);
+    console.log("return filters", updatedFilters);
+  };
 
   //요청창 작성 후 버튼 클릭
   const handleRequestClick = (newRequest) => {
@@ -53,13 +73,17 @@ function Return(props) {
     <Box display="flex" height="100vh">
       <StateSideBar />
       <Stack w={"80%"} mx={"auto"}>
-        <Text fontSize="xl" mx={10} my={3}>
+        <Text fontSize="xl" my={5}>
           구매/설치 관리 {">"} 반품/회수 관리
         </Text>
         <ReturnList
           returnList={returnList}
           onRowClick={handleRowClick}
           setSearchParams={setSearchParams}
+          count={count}
+          filters={filters}
+          setFilters={setFilters}
+          handleFilterChange={handleFilterChange}
         />
         <Flex justify="flex-end">
           <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>
