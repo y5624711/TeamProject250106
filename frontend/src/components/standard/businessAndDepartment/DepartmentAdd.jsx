@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -15,8 +14,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function DepartmentAdd({ saved }) {
-  const [isOpen, setIsOpen] = useState(false);
+export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   const [departmentName, setDepartmentName] = useState("");
   const [departmentTel, setDepartmentTel] = useState("");
   const [departmentFax, setDepartmentFax] = useState("");
@@ -30,7 +28,7 @@ export function DepartmentAdd({ saved }) {
   }
 
   const handleCloseButton = () => {
-    setIsOpen(false);
+    onCancel();
     resetValue();
   };
 
@@ -49,7 +47,7 @@ export function DepartmentAdd({ saved }) {
           type: message.type,
           description: message.text,
         });
-        setIsOpen(false);
+        onCancel();
         resetValue();
       })
       .catch((e) => {
@@ -59,7 +57,6 @@ export function DepartmentAdd({ saved }) {
           type: message.type,
           description: message.text,
         });
-        setIsOpen(true);
       })
       .finally(() => {
         saved();
@@ -67,10 +64,14 @@ export function DepartmentAdd({ saved }) {
   }
 
   return (
-    <DialogRoot open={isOpen} size={"lg"}>
-      <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>부서 추가</Button>
-      </DialogTrigger>
+    <DialogRoot
+      open={isOpen}
+      size={"lg"}
+      onOpenChange={() => {
+        onCancel();
+        resetValue();
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>부서 추가</DialogTitle>

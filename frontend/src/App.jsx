@@ -13,7 +13,6 @@ import { BusinessAndDepartment } from "./page/standard/businessAndDepartment/Bus
 import { LoginPage } from "./page/login/LoginPage.jsx";
 import Warehouse from "./page/standard/warehouse/Warehouse.jsx";
 import Location from "./page/standard/location/Location.jsx";
-import SystemCommonCode from "./page/standard/commonCode/SystemCommonCode.jsx";
 import { Install } from "./page/state/install/Install.jsx";
 import Return from "./page/state/return/Return.jsx";
 import { Instk } from "./page/state/instk/Instk.jsx";
@@ -35,7 +34,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Main /> },
       { path: "business", element: <BusinessAndDepartment /> },
-      { path: "commonCode/system", element: <SystemCommonCode /> },
       {
         path: "commonCode/item",
         element: <ItemCommonCode />,
@@ -78,9 +76,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
-    path: "/auth",
+    path: "/login",
     element: <LoginPage />,
   },
 ]);

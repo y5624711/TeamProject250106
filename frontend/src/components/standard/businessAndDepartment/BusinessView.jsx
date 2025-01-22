@@ -6,7 +6,6 @@ import { toaster } from "../../ui/toaster.jsx";
 
 export function BusinessView() {
   const [business, setBusiness] = useState(null); // 초기값을 객체로 설정
-
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 

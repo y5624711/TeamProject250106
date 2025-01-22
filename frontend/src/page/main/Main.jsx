@@ -1,3 +1,5 @@
+import { Box } from "@chakra-ui/react";
+
 export function Main() {
-  return <div>메인페이지</div>;
+  return <Box></Box>;
 }

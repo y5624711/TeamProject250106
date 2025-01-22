@@ -24,8 +24,8 @@ export function ItemCommonCodeList({
   // 정렬 헤더
   const sortOptions = [
     { key: "itemCommonCodeKey", label: "#" },
-    { key: "itemCommonCode", label: "품목코드" },
-    { key: "itemCommonName", label: "품목명" },
+    { key: "itemCommonCode", label: "코드" },
+    { key: "itemCommonName", label: "코드명" },
   ];
 
   return (
@@ -39,7 +39,7 @@ export function ItemCommonCodeList({
       />
       <Box>
         <Table.Root>
-          <Table.Header>
+          <Table.Header style={{ backgroundColor: "blue", color: "white" }}>
             <Table.Row>
               <Sort
                 sortOptions={sortOptions}
@@ -52,7 +52,7 @@ export function ItemCommonCodeList({
           <Table.Body>
             {itemCommonCodeList?.map((item, index) => (
               <Table.Row
-                key={item.itemCommonCodeKey}
+                key={item.itemCommonCodeKey ? item.itemCommonCodeKey : index}
                 onClick={() => onRowClick(item.itemCommonCodeKey)}
                 style={{
                   cursor: "pointer",
@@ -71,7 +71,7 @@ export function ItemCommonCodeList({
             ))}
           </Table.Body>
         </Table.Root>
-        <Center>
+        <Center pt={5}>
           <Pagination
             count={count}
             pageSize={10}

@@ -9,4 +9,5 @@ public class ItemCommonCode {
     private String itemCommonName;
     private Boolean itemCommonCodeActive;
     private String itemCommonCodeNote;
+    private String commonCodeType;
 }

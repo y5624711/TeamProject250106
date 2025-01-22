@@ -1,5 +1,5 @@
-import { Box, Center, HStack, Spinner, Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Center, Flex, Spinner } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { Checkbox } from "../../ui/checkbox.jsx";
@@ -8,6 +8,7 @@ import { BusinessListTable } from "./BusinessListTable.jsx";
 import { BusinessPageNation } from "./BusinessPageNation.jsx";
 import { DepartmentViewAndUpdateDialog } from "./DepartmentViewAndUpdateDialog.jsx";
 import { DepartmentAdd } from "./DepartmentAdd.jsx";
+import { Button } from "../../ui/button.jsx";
 
 export function BusinessDepartmentList() {
   const [departmentList, setDepartmentList] = useState([]);
@@ -21,7 +22,7 @@ export function BusinessDepartmentList() {
   // 다이얼로그
   const [department, setDepartment] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   //페이지 번호얻기
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
@@ -40,9 +41,9 @@ export function BusinessDepartmentList() {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log(data.list);
         setDepartmentList(data.list);
         setCount(data.count);
+        setIsOpen(false);
       })
       .catch((error) => {
         console.log(error);
@@ -111,26 +112,28 @@ export function BusinessDepartmentList() {
   return (
     <Box>
       <Center>
-        <Stack>
-          <Checkbox
-            variant={"subtle"}
-            checked={active}
-            onCheckedChange={toggleCheckActive}
-          >
-            삭제된 부서 포함하기
-          </Checkbox>
-
-          <HStack>
-            {/*검색창&필터*/}
-            <BusinessSearchAndFilter
-              search={search}
-              setSearch={setSearch}
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
-            />
-            <DepartmentAdd saved={handleAddCheck} />
-          </HStack>
-        </Stack>
+        <Checkbox
+          variant={"subtle"}
+          checked={active}
+          onCheckedChange={toggleCheckActive}
+          whiteSpace={"nowrap"}
+          float={"left"}
+        >
+          삭제된 부서 포함하기
+        </Checkbox>
+        <Flex
+          w={"100%"}
+          justifyContent="center" // 수평 중앙 정렬
+          alignItems="center" // 수직 중앙 정렬
+        >
+          {/*검색창&필터*/}
+          <BusinessSearchAndFilter
+            search={search}
+            setSearch={setSearch}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
+        </Flex>
       </Center>
 
       {/*리스트*/}
@@ -148,16 +151,26 @@ export function BusinessDepartmentList() {
         handlePageChange={handlePageChange}
       />
 
+      <Button float={"right"} onClick={() => setIsAddOpen(true)}>
+        부서 추가
+      </Button>
+
+      <DepartmentAdd
+        saved={handleAddCheck}
+        isOpen={isAddOpen}
+        setIsOpen={setIsAddOpen}
+        onCancel={() => setIsAddOpen(false)}
+      />
+
       <DepartmentViewAndUpdateDialog
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        onCancel={() => setIsOpen(false)}
         department={department}
         setDepartmentData={setDepartment}
-        isEditing={isEditing}
-        setIsEditing={setIsEditing}
-        toggleEditing={() => setIsEditing(!isEditing)}
         setAddCheck={setAddCheck}
         addCheck={addCheck}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
       />
     </Box>
   );

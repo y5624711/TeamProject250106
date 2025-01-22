@@ -78,6 +78,11 @@ public class DepartmentService {
         return mapper.checkSameName(name) == 0;
     }
 
+    public boolean checkUpdateSameNameCheck(Department department) {
+        String name = department.getDepartmentName().trim();
+        return mapper.checkSameName(name) <= 1;
+    }
+
     public List<Department> getCodeNames() {
         return mapper.getCodeNames();
     }
