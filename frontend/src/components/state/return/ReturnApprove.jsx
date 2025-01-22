@@ -24,7 +24,7 @@ function ReturnApprove({
     customerEmployeeName: "",
     customerConfigurerNo: "",
     customerConfigurerName: "",
-    returnDate: null,
+    returnDate: "",
     returnApproveNote: "",
   };
   const [approveData, setApproveData] = useState(initialApproveData);
@@ -34,7 +34,7 @@ function ReturnApprove({
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        console.log("호출", res.data);
+        // console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
@@ -57,7 +57,7 @@ function ReturnApprove({
       });
   };
 
-  // console.log("셋팅", approveData);
+  console.log("셋팅", approveData);
 
   return (
     <DialogRoot open={isOpen}>
@@ -87,7 +87,7 @@ function ReturnApprove({
             <Input readOnly value={approveData.customerName} />
           </Field>
           <Field orientation="horizontal" label="요청 날짜">
-            <input
+            <Input
               readOnly
               type={"date"}
               value={approveData.returnRequestDate}
@@ -106,16 +106,14 @@ function ReturnApprove({
               <Field orientation="horizontal" label="승인자 명">
                 <Input readOnly value={approveData.customerEmployeeName} />
               </Field>
-              <Field orientation="horizontal" label="검수기사 사번">
+              <Field orientation="horizontal" label="검수자 사번">
                 <Input readOnly value={approveData.customerConfigurerNo} />
               </Field>
-              <Field orientation="horizontal" label="검수기사 명">
+              <Field orientation="horizontal" label="검수자 명">
                 <Input readOnly value={approveData.customerConfigurerName} />
               </Field>
               <Field orientation="horizontal" label="회수 날짜">
-                {<Input readOnly value={"미정"} /> || (
-                  <Input readOnly value={approveData.approveData.returnDate} />
-                )}
+                <Input readOnly value={"미정" || approveData.returnDate} />
               </Field>
               <Field orientation="horizontal" label="승인 날짜">
                 <Input readOnly value={approveData.returnApproveDate} />
@@ -154,10 +152,11 @@ function ReturnApprove({
                   onChange={handleApproveInput("customerConfigurerName")}
                 />
               </Field>
-              <Field orientation="horizontal" label="반품 날짜">
+              <Field orientation="horizontal" label="회수 날짜">
                 <Input
-                  value={approveData.returnDate}
-                  onChange={handleApproveInput("returnApproveDate")}
+                  type="date" // 사용자가 달력으로 날짜 선택 가능
+                  value={approveData.returnDate || ""}
+                  onChange={handleApproveInput("returnDate")}
                 />
               </Field>
               <Field orientation="horizontal" label="비고">

@@ -75,7 +75,15 @@ public interface ReturnMapper {
     @Insert("""
             INSERT INTO TB_RTN_APPR
             (return_request_key, customer_configurer_no, customer_employee_no, return_no, return_date, return_approve_note) 
-            VALUES (#{returnRequestKey}, #{customerConfigurerNo}, #{customerEmployeeNo}, #{returnNo}, #{returnDate} #{returnApproveNote})
+            VALUES (#{returnRequestKey}, #{customerConfigurerNo}, #{customerEmployeeNo}, #{returnNo}, #{returnDate}, #{returnApproveNote})
             """)
     int addApprove(Return approveInfo);
+
+    @Select("""
+            <script>
+                SELECT COALESCE(MAX(CAST(return_no AS UNSIGNED)), 0) AS maxReturnNo
+                FROM TB_RTN_APPR
+            </script>
+            """)
+    Integer viewMaxReturnNo();
 }

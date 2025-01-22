@@ -48,6 +48,11 @@ public class ReturnService {
         mapper.changeConsent(approveInfo.getReturnRequestKey());
 
         //2. 발주 번호 생성
+        //2-1 기존 발주번호 중 최대값 조회
+        Integer max = mapper.viewMaxReturnNo();
+        //2-2 최대에서 1을 더하고 부족한 자리만큼 0을 채움
+        String newNo = String.format("%013d", (max == null) ? 1 : max + 1);
+        approveInfo.setReturnNo(newNo);
 
         //3. 요청 내용 테이블에 추가
         mapper.addApprove(approveInfo);
