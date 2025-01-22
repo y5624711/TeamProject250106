@@ -38,4 +38,10 @@ public class PurchaseController {
     public List<Purchase> list() {
         return service.purchaseList();
     }
+
+    // 구매 승인 팝업 보기
+    @GetMapping("approve/{purchaseRequestKey}")
+    public Purchase viewPurchaseApprove(@PathVariable int purchaseRequestKey) {
+        return service.viewPurchaseApprove(purchaseRequestKey);
+    }
 }

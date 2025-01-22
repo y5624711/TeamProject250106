@@ -37,4 +37,9 @@ public class PurchaseService {
     public List<Purchase> purchaseList() {
         return mapper.purchaseList();
     }
+
+    // 구매 승인 팝업 보기
+    public Purchase viewPurchaseApprove(int purchaseRequestKey) {
+        return mapper.viewPurchaseApprove(purchaseRequestKey);
+    }
 }

@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export function PurchaseList({ purchaseList = [] }) {
+export function PurchaseList({ purchaseList, onViewClick }) {
   return (
     <Table.Root interactive>
       <TableHeader>
@@ -25,7 +25,11 @@ export function PurchaseList({ purchaseList = [] }) {
       <Table.Body>
         {purchaseList && purchaseList.length > 0 ? (
           purchaseList.map((purchase, index) => (
-            <Table.Row key={index} style={{ cursor: "pointer" }}>
+            <Table.Row
+              key={index}
+              onClick={() => onViewClick(purchase.purchaseRequestKey)}
+              style={{ cursor: "pointer" }}
+            >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell>{purchase.employeeNo}</Table.Cell>
               <Table.Cell>{purchase.employeeName}</Table.Cell>

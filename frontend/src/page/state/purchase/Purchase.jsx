@@ -7,7 +7,9 @@ import axios from "axios";
 
 export function Purchase() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // 구매 요청 다이얼로그를 열기 위한 상태
   const [purchaseList, setPurchaseList] = useState([]);
+  const [purchaseRequestKey, setPurchaseRequestKey] = useState(null);
 
   // 구매 관리 리스트 가져오기
   useEffect(() => {
@@ -24,12 +26,23 @@ export function Purchase() {
 
   // 구매 요청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
-    setIsDialogOpen(true);
+    console.log("구매 요청 버튼 클릭");
+    setIsAddDialogOpen(true); // 구매 요청 다이얼로그 열기
+    setIsDialogOpen(true); // 다이얼로그 열기
+  };
+
+  // 구매 승인 다이얼로그 열기
+  const handleViewClick = (key) => {
+    console.log("구매 승인 클릭, 구매 요청 키:", key);
+    setPurchaseRequestKey(key); // 선택된 구매 요청 키 설정
+    setIsAddDialogOpen(false); // 구매 승인 다이얼로그 열기
+    setIsDialogOpen(true); // 다이얼로그 열기
   };
 
   // 다이얼로그 닫기
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+    console.log("다이얼로그 닫기");
   };
 
   return (
@@ -40,15 +53,23 @@ export function Purchase() {
           구매 / 설치 관리 {">"} 구매 관리
         </Heading>
         {/* 구매 관리 리스트 */}
-        <PurchaseList purchaseList={purchaseList} />
+        <PurchaseList
+          purchaseList={purchaseList}
+          onViewClick={handleViewClick} // 승인 클릭 시 다이얼로그 열기
+        />
         {/* 구매 요청 버튼 */}
         <Box display="flex" justifyContent="flex-end" mb={4}>
           <Button mt={3} onClick={handlePurchaseRequestClick}>
             구매 요청
           </Button>
         </Box>
-        {/* 구매 요청 다이얼로그 */}
-        <PurchaseDialog isOpen={isDialogOpen} onClose={handleDialogClose} />
+        {/* 구매 다이얼로그 */}
+        <PurchaseDialog
+          isOpen={isDialogOpen}
+          onClose={handleDialogClose}
+          isAddDialogOpen={isAddDialogOpen} // 구매 요청 여부 전달
+          purchaseRequestKey={purchaseRequestKey}
+        />
       </Box>
     </Box>
   );

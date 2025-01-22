@@ -40,4 +40,12 @@ public interface PurchaseMapper {
             LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code -- item_common_code를 기준으로 TB_ITEMCOMM 테이블 조인
             """)
     List<Purchase> purchaseList();
+
+    // 구매 승인 팝업 보기
+    @Select("""
+            SELECT *
+            FROM TB_PURCH_REQ
+            WHERE purchase_request_key = #{purchaseRequestKey}
+            """)
+    Purchase viewPurchaseApprove(int purchaseRequestKey);
 }
