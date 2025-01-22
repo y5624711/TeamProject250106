@@ -26,6 +26,7 @@ export function CommonCode() {
       .then((res) => {
         setCommonCodeList(res.data.list || []);
         setCount(res.data.count);
+        setCommonCodeKey(null);
       })
       .catch((error) => {
         console.error("품목 공통 코드 목록 요청 중 오류 발생: ", error);
@@ -59,7 +60,6 @@ export function CommonCode() {
               commonCodeList={commonCodeList}
               searchParams={searchParams}
               setSearchParams={setSearchParams}
-              setItemCommonCodeKey={setCommonCodeKey}
               onRowClick={handleRowClick}
             />
             <Button

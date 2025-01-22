@@ -54,7 +54,10 @@ export function CommonCodeList({
             {commonCodeList?.map((item, index) => (
               <Table.Row
                 key={item.commonCodeKey ? item.commonCodeKey : index}
-                onClick={() => onRowClick(item.commonCodeKey)}
+                onClick={() => {
+                  console.log("클릭");
+                  onRowClick(item.commonCodeKey);
+                }}
                 style={{
                   cursor: "pointer",
                 }}

@@ -32,6 +32,7 @@ export function CommonCodeView({
   setCommonCodeKey,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editCommonCode, setEditCommonCode] = useState(null);
 
   const [editedCommonCode, setEditedCommonCode] = useState({
     commonCode: "",
@@ -40,9 +41,6 @@ export function CommonCodeView({
     commonCodeType: "",
     commonCodeActive: false,
   });
-  const [codeData, setCodeData] = useState(editedCommonCode);
-  const [checkCodeSelect, setCheckCodeSelect] = useState(false);
-  const [codeType, setCodeType] = useState("");
 
   const selectOptions = createListCollection({
     items: [
@@ -57,6 +55,7 @@ export function CommonCodeView({
       axios
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
+          setEditCommonCode(res.data);
           setEditedCommonCode(res.data[0]);
         })
         .catch((error) => {
@@ -68,6 +67,8 @@ export function CommonCodeView({
   // 창이 닫히면 수정 상태 취소
   const handleClose = () => {
     onClose();
+    setEditedCommonCode(null);
+    setCommonCodeKey(null);
   };
 
   // 폼 입력 값 변경 처리
@@ -79,20 +80,19 @@ export function CommonCodeView({
     }));
   };
 
-  console.log(editedCommonCode);
-
   // SelectCode에서 선택된 값을 반영하는 함수
   const handleCodeTypeChange = (value) => {
     // 배열이 아닌 단일 값으로 처리
     const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
     setEditedCommonCode((prev) => ({ ...prev, commonCodeType: stringValue }));
-    setCheckCodeSelect(true);
   };
 
   const isValid =
-    (editedCommonCode.commonCodeType === "ITEM" &&
+    (editedCommonCode != null &&
+      editedCommonCode.commonCodeType === "ITEM" &&
       /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
-    (editedCommonCode.commonCodeType === "SYSTEM" &&
+    (editedCommonCode != null &&
+      editedCommonCode.commonCodeType === "SYSTEM" &&
       /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
       editedCommonCode.commonCodeName.trim() !== "");
 
@@ -141,6 +141,12 @@ export function CommonCodeView({
         toaster.create({ description: message.text, type: message.type });
       });
   };
+
+  console.log(editCommonCode);
+
+  if (!editedCommonCode) {
+    return;
+  }
 
   return (
     <Box>
