@@ -1,7 +1,7 @@
 CREATE TABLE TB_PURCH_REQ
 (
     purchase_request_key  INT AUTO_INCREMENT PRIMARY KEY,
-    business_employee_no  VARCHAR(13) NOT NULL,
+    employee_no           VARCHAR(13) NOT NULL,
     item_common_code      VARCHAR(5)  NOT NULL,
     customer_code         VARCHAR(13) NOT NULL,
     amount                INT         NOT NULL,

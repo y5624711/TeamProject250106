@@ -16,8 +16,8 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
 export function PurchaseRequest({ onSave, onClose }) {
-  const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
-  const [businessEmployeeName, setBusinessEmployeeName] = useState("");
+  const [employeeNo, setEmployeeNo] = useState("");
+  const [employeeName, setEmployeeName] = useState("");
   const [itemCommonCode, setItemCommonCode] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [customerName, setCustomerName] = useState("");
@@ -70,8 +70,8 @@ export function PurchaseRequest({ onSave, onClose }) {
   const handleSaveClick = () => {
     axios
       .post("/api/purchase/request", {
-        businessEmployeeNo,
-        businessEmployeeName,
+        employeeNo,
+        employeeName,
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
         amount,
@@ -90,8 +90,8 @@ export function PurchaseRequest({ onSave, onClose }) {
         if (res.data && res.data.purchaseRequestKey) {
           onSave({
             purchaseRequestKey: res.data.purchaseRequestKey,
-            businessEmployeeNo,
-            businessEmployeeName,
+            employeeNo,
+            employeeName,
             itemCommonCode: itemData.itemCommonCode,
             customerCode: itemData.customerCode,
             amount,
@@ -113,8 +113,8 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   const handleCancelClick = () => {
     // 취소 버튼 클릭 시 입력된 값 초기화
-    setBusinessEmployeeNo("");
-    setBusinessEmployeeName("");
+    setEmployeeNo("");
+    setEmployeeName("");
     setItemCommonCode("");
     setCustomerName("");
     setAmount("");
@@ -129,15 +129,15 @@ export function PurchaseRequest({ onSave, onClose }) {
       <Box display="flex" gap={4}>
         <Field label="직원 사번" orientation="horizontal" required mb={7}>
           <Input
-            value={businessEmployeeNo}
-            onChange={(e) => setBusinessEmployeeNo(e.target.value)}
+            value={employeeNo}
+            onChange={(e) => setEmployeeNo(e.target.value)}
             placeholder="직원 사번"
           />
         </Field>
         <Field label="직원 이름" orientation="horizontal" required mb={7}>
           <Input
-            value={businessEmployeeName}
-            onChange={(e) => setBusinessEmployeeName(e.target.value)}
+            value={employeeName}
+            onChange={(e) => setEmployeeName(e.target.value)}
             placeholder="직원 이름"
           />
         </Field>

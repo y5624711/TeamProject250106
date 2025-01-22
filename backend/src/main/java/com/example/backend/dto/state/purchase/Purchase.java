@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 @Data
 public class Purchase {
     private Integer purchaseRequestKey;
-    private String businessEmployeeNo;
+    private String employeeNo;
+    private String employeeName;
     private String itemCommonCode;
     private String customerCode;
     private Integer amount;
-    private Integer inputPrice;
     private LocalDateTime purchaseRequestDate;
     private Boolean purchaseConsent;
     private String purchaseRequestNote;
@@ -23,6 +23,5 @@ public class Purchase {
     private LocalDateTime purchaseApproveDate;
     private String purchaseApproveNote;
 
-    private String businessEmployeeName;
     private String customerName;
 }
