@@ -57,7 +57,7 @@ export function CommonCodeList({
                 style={{
                   cursor: "pointer",
                 }}
-                bg={item.itemCommonCodeActive ? "white" : "gray.100"}
+                bg={item.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
