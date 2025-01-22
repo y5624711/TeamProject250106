@@ -6,7 +6,6 @@ import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Field } from "../../components/ui/field.jsx";
 import { useNavigate } from "react-router-dom";
-import { LoginCheck } from "../../components/tool/login/LoginCheck.jsx";
 
 export function LoginPage() {
   const [id, setId] = useState("");
@@ -54,7 +53,6 @@ export function LoginPage() {
       alignItems="center"
       bg="gray.100" // 배경색 추가 (선택 사항)
     >
-      <LoginCheck />
       <Box textAlign="center">
         <Text pb={5} fontSize={"30px"} fontWeight={"bold"}>
           Choongang System

@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
-import { createListCollection, Input, Text } from "@chakra-ui/react";
+import {
+  createListCollection,
+  Input,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import axios from "axios";
@@ -102,29 +108,31 @@ export function ItemCommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             selectOptions={selectOptions}
             onChange={handleCodeTypeChange}
           />
-
-          <Field label="품목 코드">
-            <Input
-              placeholder="품목 코드"
-              value={itemCodeData.itemCommonCode}
-              onChange={handleInputChange("itemCommonCode")}
-              maxLength={3}
-            />
-          </Field>
-          <Field label="품목명">
-            <Input
-              placeholder="품목명"
-              value={itemCodeData.itemCommonName}
-              onChange={handleInputChange("itemCommonName")}
-            />
-          </Field>
-          <Field label="비고">
-            <Input
-              placeholder="비고"
-              value={itemCodeData.itemCommonCodeNote}
-              onChange={handleInputChange("itemCommonCodeNote")}
-            />
-          </Field>
+          <Stack w={"90%"} gap={5} pt={"5"}>
+            <Field label="코드" orientation="horizontal">
+              <Input
+                placeholder="코드"
+                value={itemCodeData.itemCommonCode}
+                onChange={handleInputChange("itemCommonCode")}
+                maxLength={3}
+              />
+            </Field>
+            <Field label="코드명" orientation="horizontal">
+              <Input
+                placeholder="코드명"
+                value={itemCodeData.itemCommonName}
+                onChange={handleInputChange("itemCommonName")}
+              />
+            </Field>
+            <Field label="비고" orientation="horizontal">
+              <Textarea
+                resize={"none"}
+                placeholder="비고"
+                value={itemCodeData.itemCommonCodeNote}
+                onChange={handleInputChange("itemCommonCodeNote")}
+              />
+            </Field>
+          </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>

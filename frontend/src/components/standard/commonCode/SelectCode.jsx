@@ -27,7 +27,7 @@ export function SelectCode({ selectOptions, onChange }) {
     >
       <SelectLabel>코드 종류 선택</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder="Select code" />
+        <SelectValueText placeholder="Select Code" />
       </SelectTrigger>
       <SelectContent
         style={{

@@ -50,25 +50,27 @@ export function ItemCommonCode() {
         <StandardSideBar />
         <Stack flex={1}>
           <Text fontSize="xl" mx={10} my={3}>
-            공통코드 관리 > 품목 코드
+            공통코드 관리
           </Text>
-          <ItemCommonCodeList
-            count={count}
-            itemCommonCodeList={itemCommonCodeList}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-            setItemCommonCodeKey={setItemCommonCodeKey}
-            onRowClick={handleRowClick}
-          />
-          <Button
-            onClick={() => setAddDialogOpen(true)}
-            size="lg"
-            position="absolute"
-            bottom="100px"
-            right="100px"
-          >
-            물품 코드 등록
-          </Button>
+          <Box position="relative">
+            {/* ItemCommonCodeList 감싸는 컨테이너 */}
+            <ItemCommonCodeList
+              count={count}
+              itemCommonCodeList={itemCommonCodeList}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+              setItemCommonCodeKey={setItemCommonCodeKey}
+              onRowClick={handleRowClick}
+            />
+            <Button
+              onClick={() => setAddDialogOpen(true)}
+              size="lg"
+              position="absolute"
+              right="10px"
+            >
+              코드 등록
+            </Button>
+          </Box>
         </Stack>
         <ItemCommonCodeView
           itemCommonCodeKey={itemCommonCodeKey}
