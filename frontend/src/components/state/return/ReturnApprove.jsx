@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, Input, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -183,12 +183,17 @@ function ReturnApprove({
         </DialogBody>
         <DialogFooter>
           {approveData.returnConsent ? (
-            <Button onClick={onClose}>목록으로</Button>
+            <Button onClick={onClose} variant="outline">
+              목록으로
+            </Button>
           ) : (
-            <Box>
-              <Button onClick={onClose}>취소</Button>
+            <HStack>
+              <Button onClick={onClose} variant="outline">
+                취소
+              </Button>
               <Button onClick={handleApproveButtonClick}>승인</Button>
-            </Box>
+              <Button>반려</Button>
+            </HStack>
           )}
         </DialogFooter>
       </DialogContent>

@@ -130,7 +130,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           </Field>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={handleCancel}>취소</Button>
+          <Button onClick={handleCancel} variant="outline">
+            취소
+          </Button>
           <Button onClick={handleRequestButtonClick}>요청</Button>
         </DialogFooter>
       </DialogContent>
