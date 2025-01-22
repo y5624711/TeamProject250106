@@ -19,7 +19,7 @@ function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>{inoutHistoryKey} 입출 상세</Box>
+            <Box>입출 내역 상세</Box>
           </DialogTitle>
         </DialogHeader>
         <DialogBody>

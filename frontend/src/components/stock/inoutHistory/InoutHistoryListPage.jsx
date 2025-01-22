@@ -21,7 +21,7 @@ function InoutHistoryListPage({
           {inoutHistory.inoutHistoryKey}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.inoutCommonCode}
+          {inoutHistory.inoutCommonCode === "in" ? "입고" : "출고"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.serialNo}
@@ -33,7 +33,7 @@ function InoutHistoryListPage({
           {inoutHistory.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.franchiseName}
+          {inoutHistory.franchiseName ? inoutHistory.franchiseName : "-"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.businessEmployeeName}

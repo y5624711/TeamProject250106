@@ -30,12 +30,12 @@ function StockTakingView({ stocktakingKey }) {
         <Input value={stocktakingDetail.itemName} readOnly />
         품목 코드
         <Input value={stocktakingDetail.itemCode} readOnly />
-        재고 실사 번호
-        <Input value={stocktakingDetail.stocktakingKey} readOnly />
-        재고 실사 번호
-        <Input value={stocktakingDetail.stocktakingKey} readOnly />
-        재고 실사 번호
-        <Input value={stocktakingDetail.stocktakingKey} readOnly />
+        로케이션
+        <Input value={stocktakingDetail.location} readOnly />
+        전산 수량
+        <Input value={stocktakingDetail.stocktakingKey} />
+        실제 수량
+        <Input value={stocktakingDetail.stocktakingKey} />
       </Stack>
     </Box>
   );

@@ -20,12 +20,21 @@ function InoutHistoryView({ inoutHistoryKey }) {
     <Box>
       입출번호
       <Input value={inoutHistoryDetail.inoutHistoryKey} readOnly />
+      {inoutHistoryDetail.inoutCommonCode === "in" ? (
+        <Box>
+          입출 구분
+          <Input value="입고" readOnly />
+        </Box>
+      ) : (
+        <Box>
+          입출 구분
+          <Input value="출고" readOnly />
+        </Box>
+      )}
       시리얼
       <Input value={inoutHistoryDetail.serialNo} readOnly />
       창고 코드
       <Input value={inoutHistoryDetail.warehouseCode} readOnly />
-      입출 구분 코드
-      <Input value={inoutHistoryDetail.inoutCommonCode} readOnly />
       본사직원 사번
       <Input value={inoutHistoryDetail.businessEmployeeNo} readOnly />
       협력업체 직원 사번
@@ -36,8 +45,6 @@ function InoutHistoryView({ inoutHistoryKey }) {
       <Input value={inoutHistoryDetail.locationKey} readOnly />
       날짜
       <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
-      수량
-      <Input value={inoutHistoryDetail.countCurrent} readOnly />
       비고
       <Input value={inoutHistoryDetail.inoutHistoryNote} readOnly />
     </Box>
