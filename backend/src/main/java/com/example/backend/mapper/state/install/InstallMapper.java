@@ -110,7 +110,7 @@ public interface InstallMapper {
     // 요청 테이블의 승인 여부 false 처리
     @Update("""
             UPDATE TB_INSTL_REQ
-            SET install_request_consent = 1
+            SET install_request_consent = true
             WHERE install_request_key = #{installRequestKey}
             """)
     int updateRequestConsent(Integer installRequestKey);
