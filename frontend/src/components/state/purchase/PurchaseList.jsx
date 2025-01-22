@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export function PurchaseList({ purchaseList = [] }) {
+export function PurchaseList({ purchaseList, onViewClick }) {
   return (
     <Table.Root interactive>
       <TableHeader>
@@ -27,19 +27,19 @@ export function PurchaseList({ purchaseList = [] }) {
           purchaseList.map((purchase, index) => (
             <Table.Row
               key={index}
-              onClick={() => onPurchaseClick(purchase.purchaseRequestKey)} // 구매 요청 키 클릭 시
+              onClick={() => onViewClick(purchase.purchaseRequestKey)}
               style={{ cursor: "pointer" }}
             >
               <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell>{purchase.businessEmployeeNo}</Table.Cell>
-              <Table.Cell>{purchase.applicantName}</Table.Cell>
-              <Table.Cell>{purchase.supplierName}</Table.Cell>
-              <Table.Cell>{purchase.approverEmployeeNo}</Table.Cell>
-              <Table.Cell>{purchase.approverName}</Table.Cell>
-              <Table.Cell>{purchase.itemCommonCode}</Table.Cell>
+              <Table.Cell>{purchase.employeeNo}</Table.Cell>
+              <Table.Cell>{purchase.employeeName}</Table.Cell>
+              <Table.Cell>{purchase.customerName}</Table.Cell>
+              <Table.Cell>{purchase.customerEmployeeNo}</Table.Cell>
+              <Table.Cell>{purchase.customerEmployeeName}</Table.Cell>
+              <Table.Cell>{purchase.itemCommonName}</Table.Cell>
               <Table.Cell>{purchase.purchaseRequestDate}</Table.Cell>
               <Table.Cell>
-                {purchase.purchaseConsent ? "승인" : "대기"}
+                {purchase.purchaseConsent ? "승인" : "요청"}
               </Table.Cell>
             </Table.Row>
           ))

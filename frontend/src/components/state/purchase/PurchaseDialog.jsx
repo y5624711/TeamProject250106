@@ -8,9 +8,17 @@ import {
 } from "../../ui/dialog.jsx";
 import React, { useEffect } from "react";
 import { PurchaseRequest } from "./PurchaseRequest.jsx";
+import { PurchaseApprove } from "./PurchaseApprove.jsx";
 
-export function PurchaseDialog({ isOpen, onClose, onSave }) {
-  useEffect(() => {}, [isOpen]);
+export function PurchaseDialog({
+  isOpen,
+  onClose,
+  isAddDialogOpen,
+  purchaseRequestKey,
+}) {
+  useEffect(() => {
+    console.log("PurchaseDialog 열림 상태:", isOpen);
+  }, [isOpen]);
 
   return (
     <DialogRoot
@@ -23,10 +31,21 @@ export function PurchaseDialog({ isOpen, onClose, onSave }) {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>구매 요청</DialogTitle>
+          <DialogTitle>
+            {isAddDialogOpen ? "구매 요청" : "구매 승인"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <PurchaseRequest onClose={onClose} onSave={onSave} />
+          {isAddDialogOpen ? (
+            <PurchaseRequest onClose={onClose} /> // 구매 요청 컴포넌트 렌더링
+          ) : purchaseRequestKey ? (
+            <PurchaseApprove
+              purchaseRequestKey={purchaseRequestKey}
+              onClose={onClose}
+            /> // 구매 승인 컴포넌트 렌더링
+          ) : (
+            "구매 요청이 없습니다."
+          )}
         </DialogBody>
         <DialogCloseTrigger />
       </DialogContent>
