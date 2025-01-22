@@ -28,6 +28,8 @@ export function InstkList() {
             <Table.ColumnHeader>품목 명</Table.ColumnHeader>
             <Table.ColumnHeader>협력 업체</Table.ColumnHeader>
             <Table.ColumnHeader>날짜</Table.ColumnHeader>
+            <Table.ColumnHeader>신청자</Table.ColumnHeader>
+            <Table.ColumnHeader>승인자</Table.ColumnHeader>
             <Table.ColumnHeader>상태 현황</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -41,7 +43,11 @@ export function InstkList() {
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
                 <Table.Cell>{item.customerName}</Table.Cell>
                 <Table.Cell>{"날짜"}</Table.Cell>
-                <Table.Cell>{item.inputConsent}</Table.Cell>
+                <Table.Cell>{"신청자"}</Table.Cell>
+                <Table.Cell>{"승인자"}</Table.Cell>
+                <Table.Cell>
+                  {item.inputConsent === true ? "승인" : "대기"}
+                </Table.Cell>
               </Table.Row>
             );
           })}

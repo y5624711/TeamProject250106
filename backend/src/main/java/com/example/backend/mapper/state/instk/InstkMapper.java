@@ -21,17 +21,16 @@ SELECT
     BI.input_note, 
     IT.item_common_name AS item_common_name, 
     CT.customer_name as customer_name
-            FROM TB_BUYIN BI  \s
-    LEFT JOIN TB_PURCH_APPR PR\s
+            FROM TB_BUYIN BI  
+    LEFT JOIN TB_PURCH_APPR PR
      ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
-                                                                LEFT JOIN TB_RTN_APPR RN
-                                                                    ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
-                                                                LEFT JOIN TB_EMPMST EM\s
-                                                                    ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
-                                                                    OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-                                    
-                                                                LEFT JOIN TB_CUSTMST CT ON CT.customer_code = EM.employee_workplace_code
-                                                                LEFT JOIN TB_ITEMCOMM IT ON IT.item_common_code = CT.item_code
+     LEFT JOIN TB_RTN_APPR RN
+        ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
+      LEFT JOIN TB_EMPMST EM
+        ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
+        OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)                       
+     LEFT JOIN TB_CUSTMST CT ON (CT.customer_code = EM.employee_workplace_code)
+     LEFT JOIN TB_ITEMCOMM IT ON IT.item_common_code = CT.item_code
                                                                 
 
 """)
