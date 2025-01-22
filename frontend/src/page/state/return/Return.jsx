@@ -15,22 +15,15 @@ function Return(props) {
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
-  const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState("");
-  const [type, setType] = useState("all");
-  const [state, setState] = useState("all");
   const [sort, setSort] = useState(searchParams.get("sort") || "all");
   const [order, setOrder] = useState(searchParams.get("order") || "desc");
 
-  // 검색 파라미터 기본값 설정
-  const initialParams = {
+  const [filters, setFilters] = useState({
     page: searchParams.get("page") || 1,
     type: searchParams.get("type") || "all",
     keyword: searchParams.get("keyword") || "",
     state: searchParams.get("state") || "all",
-  };
-
-  const [filters, setFilters] = useState(initialParams);
+  });
 
   //목록 불러오기
   useEffect(() => {
@@ -48,10 +41,12 @@ function Return(props) {
   const handleFilterChange = (key, value) => {
     const updatedFilters = { ...filters, [key]: value };
     setFilters(updatedFilters);
-    // URL 업데이트
-    const nextSearchParams = new URLSearchParams(updatedFilters);
-    setSearchParams(nextSearchParams);
-    console.log("return filters", updatedFilters);
+    setSearchParams(updatedFilters); // URL 갱신
+  };
+
+  // 페이지 변경 핸들러
+  const handlePageChange = (newPage) => {
+    handleFilterChange("page", newPage);
   };
 
   //요청창 작성 후 버튼 클릭
@@ -65,6 +60,24 @@ function Return(props) {
     // console.log(requestKey);
     setReturnRequestKey(requestKey);
     setApproveDialogOpen(true);
+  };
+
+  // 검색 초기화 버튼 클릭 핸들러
+  const handleResetClick = () => {
+    setFilters({
+      page: 1,
+      type: "all",
+      keyword: "",
+      state: "all",
+    });
+
+    const nextSearchParam = new URLSearchParams();
+    nextSearchParam.set("page", "1");
+    nextSearchParam.set("type", "all");
+    nextSearchParam.set("keyword", "");
+    nextSearchParam.set("state", "all");
+
+    setSearchParams(nextSearchParam);
   };
 
   // console.log("list", returnList);
@@ -84,6 +97,8 @@ function Return(props) {
           filters={filters}
           setFilters={setFilters}
           handleFilterChange={handleFilterChange}
+          handlePageChange={handlePageChange}
+          handleResetClick={handleResetClick}
         />
         <Flex justify="flex-end">
           <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>

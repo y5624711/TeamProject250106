@@ -17,6 +17,7 @@ import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Button } from "../../ui/button.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 function ReturnList({
   returnList,
@@ -26,6 +27,8 @@ function ReturnList({
   filters,
   handleFilterChange,
   setFilters,
+  handlePageChange,
+  handleResetClick,
 }) {
   // 검색 keyword와 type 상태 관리
   const [localKeyword, setLocalKeyword] = useState(filters.keyword || "");
@@ -59,12 +62,12 @@ function ReturnList({
     };
     setFilters(updatedFilters);
     setSearchParams(new URLSearchParams(updatedFilters)); // URL 반영
-    console.log("Updated filters after search:", updatedFilters); // 디버깅 로그
+    // console.log("Updated filters after search:", updatedFilters); // 디버깅 로그
   };
 
   // console.log("list", returnList);
   // console.log("count", count);
-  console.log("local filters", filters);
+  // console.log("local filters", filters);
   // console.log("state", filters.state);
 
   return (
@@ -100,7 +103,16 @@ function ReturnList({
             onChange={(e) => setLocalKeyword(e.target.value)}
             placeholder="검색어를 입력해 주세요"
           />
-          <Button onClick={handleSearchClick}>검색</Button>
+          <Box
+            onClick={handleResetClick}
+            transform="translateX(-170%) translateY(30%)"
+            style={{ cursor: "pointer" }}
+          >
+            <BsArrowCounterclockwise size="25px" />
+          </Box>
+          <Button onClick={handleSearchClick} transform="translateX(-55%) ">
+            검색
+          </Button>
         </HStack>
       </Center>
 
@@ -178,11 +190,7 @@ function ReturnList({
         my={3}
         count={count}
         pageSize={10}
-        onPageChange={(newPage) => {
-          const nextSearchParam = new URLSearchParams(filters);
-          nextSearchParam.set("page", newPage);
-          setSearchParams(nextSearchParam);
-        }}
+        onPageChange={handlePageChange}
       />
     </Box>
   );
