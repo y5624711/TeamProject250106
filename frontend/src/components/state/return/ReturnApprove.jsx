@@ -69,7 +69,7 @@ function ReturnApprove({
       });
   };
 
-  console.log("셋팅", approveData);
+  // console.log("셋팅", approveData);
 
   return (
     <DialogRoot open={isOpen}>

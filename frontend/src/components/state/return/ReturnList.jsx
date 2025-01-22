@@ -1,15 +1,22 @@
 import React from "react";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   Stack,
   Table,
 } from "@chakra-ui/react";
 import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { Button } from "../../ui/button.jsx";
 
 function ReturnList({ returnList, onRowClick, setSearchParams }) {
   //검색 keyword
@@ -29,34 +36,44 @@ function ReturnList({ returnList, onRowClick, setSearchParams }) {
     ],
   });
 
-  // console.log(returnList);
+  // console.log("list", returnList);
 
   return (
     <Box>
       {/*검색창*/}
-      <SearchBar
-        itemSearchOptions={returnSearchKeywords}
-        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
-      />
-      {/*<Center>*/}
-      {/*  <HStack>*/}
-      {/*    <SelectRoot>*/}
-      {/*      <SelectTrigger>*/}
-      {/*        <SelectValueText />*/}
-      {/*      </SelectTrigger>*/}
-      {/*      <SelectContent>*/}
-      {/*        <SelectItem></SelectItem>*/}
-      {/*      </SelectContent>*/}
-      {/*    </SelectRoot>*/}
-      {/*    <Input placeholder="검색어를 입력해 주세요" type="text" />*/}
-      {/*    <Button>검색</Button>*/}
-      {/*  </HStack>*/}
-      {/*</Center>*/}
-      <RadioGroup defaultValue="all">
+      {/*<SearchBar*/}
+      {/*  itemSearchOptions={returnSearchKeywords}*/}
+      {/*  onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}*/}
+      {/*/>*/}
+      <Center>
+        <HStack alignItems={"flex-start"} w={"70%"} my={3}>
+          <SelectRoot
+            collection={returnSearchKeywords}
+            postition={"relative"}
+            width={"150px"}
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder={"선택"} />
+            </SelectTrigger>
+            <SelectContent>
+              {returnSearchKeywords.items.map((e) => (
+                <SelectItem item={e} key={e.value}>
+                  {e.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+          <Input placeholder="검색어를 입력해 주세요" type="text" />
+          <Button>검색</Button>
+        </HStack>
+      </Center>
+
+      <RadioGroup defaultValue="all" my={3}>
         <HStack gap="6">
+          <Radio value="all">전체 조회</Radio>
           <Radio value="request">요청 상태 조회</Radio>
           <Radio value="approve">승인 상태 조회</Radio>
-          <Radio value="all">전체 조회</Radio>
+          <Radio value="disapprove">반려 상태 조회</Radio>
         </HStack>
       </RadioGroup>
 

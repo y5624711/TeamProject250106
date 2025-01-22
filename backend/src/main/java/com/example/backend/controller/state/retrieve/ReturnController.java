@@ -25,12 +25,12 @@ public class ReturnController {
             @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
-        System.out.println("page:" + page);
-        System.out.println("state:" + state);
-        System.out.println("type:" + type);
-        System.out.println("keyword:" + keyword);
-        System.out.println("sort:" + sort);
-        System.out.println("order:" + order);
+//        System.out.println("page:" + page);
+//        System.out.println("state:" + state);
+//        System.out.println("type:" + type);
+//        System.out.println("keyword:" + keyword);
+//        System.out.println("sort:" + sort);
+//        System.out.println("order:" + order);
 
         return service.returnList(page, state, type, keyword, sort, order);
     }

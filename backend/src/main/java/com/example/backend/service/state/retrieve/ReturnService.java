@@ -24,7 +24,7 @@ public class ReturnService {
 
         //리스트
         List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order);
-        System.out.println("returnList" + returnList);
+//        System.out.println("returnList" + returnList);
 
         //총 수
         Integer count = mapper.countAll(state, type, keyword);

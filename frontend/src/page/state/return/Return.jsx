@@ -14,13 +14,24 @@ function Return(props) {
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
+  const [count, setCount] = useState(1);
+  const [page, setPage] = useState(searchParams.get("page") || 1);
+  const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
+  const [type, setType] = useState(searchParams.get("type") || "all");
+  const [sort, setSort] = useState(searchParams.get("sort") || "all");
+  const [order, setOrder] = useState(searchParams.get("order") || "desc");
+  const [state, setState] = useState(searchParams.get("sort") || "all");
 
   //목록 불러오기
   useEffect(() => {
     axios
       .get("/api/return/list", { params: searchParams })
       .then((res) => res.data)
-      .then((data) => setReturnList(data));
+      .then((data) => {
+        console.log("반환", data);
+        setReturnList(data.returnList);
+        setCount(data.count);
+      });
   }, []);
 
   //요청창 작성 후 버튼 클릭
@@ -41,7 +52,7 @@ function Return(props) {
   return (
     <Box display="flex" height="100vh">
       <StateSideBar />
-      <Stack w={"100%"} mx={"auto"}>
+      <Stack w={"80%"} mx={"auto"}>
         <Text fontSize="xl" mx={10} my={3}>
           구매/설치 관리 {">"} 반품/회수 관리
         </Text>

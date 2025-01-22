@@ -77,7 +77,7 @@ public interface ReturnMapper {
                     </trim>
                 )    
             </if>
-            ORDER BY COALESCE(return_approve_date, return_request_date) DESC
+            ORDER BY ${sort} ${order}
             LIMIT #{offset}, 10    
             </script>      
             """)
