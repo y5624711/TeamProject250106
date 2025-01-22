@@ -44,7 +44,7 @@ public class ReturnController {
     //반환 승인 1. 요청: 승인 여부 변경 2. 승인 테이블에 추가
     @PostMapping("approve")
     public void approveReturn(@RequestBody Return approveInfo) {
-        System.out.println("controller: " + approveInfo);
+//        System.out.println("controller: " + approveInfo);
         service.addApprove(approveInfo);
     }
 }

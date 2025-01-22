@@ -138,14 +138,14 @@ function ReturnApprove({
                   onChange={handleApproveInput("customerEmployeeName")}
                 />
               </Field>
-              <Field orientation="horizontal" label="검수기사 사번">
+              <Field orientation="horizontal" label="검수자 사번">
                 <Input
                   value={approveData.customerConfigurerNo}
                   placeholder="0000000000000"
                   onChange={handleApproveInput("customerConfigurerNo")}
                 />
               </Field>
-              <Field orientation="horizontal" label="검수기사 명">
+              <Field orientation="horizontal" label="검수자 명">
                 <Input
                   value={approveData.customerConfigurerName}
                   placeholder="홍길동"

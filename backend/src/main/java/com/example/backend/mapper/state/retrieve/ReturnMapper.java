@@ -14,8 +14,9 @@ public interface ReturnMapper {
 
     @Select("""
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
-                   rr.business_employee_no, employee_name AS businessEmployeeName, rr.customer_code, customer_name, ra.customer_employee_no,
-                   return_date, return_consent
+                   rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
+                   customer_employee_no, emce.employee_name customerEmployeeName, customer_configurer_no, emcc.employee_name customerConfigurerName,
+                   return_request_date, return_approve_date, return_consent
             FROM TB_RTN_REQ rr
             LEFT JOIN TB_RTN_APPR ra
             ON ra.return_request_key = rr.return_request_key
@@ -23,7 +24,10 @@ public interface ReturnMapper {
             LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
             LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
             LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
-            LEFT JOIN TB_EMPMST em ON em.employee_no = rr.business_employee_no
+            LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
+            LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
+            LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
+            ORDER BY COALESCE(return_approve_date, return_request_date) DESC
             """)
     List<Return> getReturnList();
 
