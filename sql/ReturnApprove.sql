@@ -7,12 +7,15 @@ CREATE TABLE TB_RTN_APPR
     customer_configurer_no VARCHAR(13) NOT NULL,
     customer_employee_no   VARCHAR(13) NOT NULL,
     return_no              VARCHAR(13) NOT NULL,
-    return_approve_date    DATE DEFAULT CURRENT_DATE,
+    return_approve_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_date            DATE,
     return_approve_note    VARCHAR(50)
 );
 
 # DROP TABLE TB_RTN_APPR;
+
+ALTER TABLE TB_RTN_APPR
+    MODIFY COLUMN return_approve_date DATETIME DEFAULT CURRENT_TIMESTAMP;
 
 INSERT INTO TB_RTN_APPR
 (return_request_key, customer_configurer_no, customer_employee_no, return_no)

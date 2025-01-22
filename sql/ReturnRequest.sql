@@ -7,12 +7,15 @@ CREATE TABLE TB_RTN_REQ
     franchise_code       VARCHAR(13) NOT NULL,
     business_employee_no VARCHAR(13) NOT NULL,
     customer_code        VARCHAR(13) NOT NULL,
-    return_request_date  DATE DEFAULT CURRENT_DATE,
+    return_request_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_consent       BOOLEAN,
     return_request_note  VARCHAR(50)
 );
 
 DROP TABLE TB_RTN_REQ;
+
+ALTER TABLE TB_RTN_REQ
+    MODIFY COLUMN return_request_date DATETIME DEFAULT CURRENT_TIMESTAMP;
 
 INSERT INTO TB_RTN_REQ
 (serial_no, franchise_code, business_employee_no, customer_code, return_consent)
