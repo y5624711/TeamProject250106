@@ -114,11 +114,26 @@ public interface InstallMapper {
             WHERE install_request_key = #{installRequestKey}
             """)
     int updateRequestConsent(Integer installRequestKey);
-    
+
     // 설치 승인 리스트 출력
     @Select("""
-             SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, ir.business_employee_no, e1.employee_name as business_employee_name,
+            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, ir.business_employee_no, e1.employee_name as business_employee_name,
             ia.customer_employee_no, e2.employee_name as customer_employee_name, e3.employee_name as customer_installer_name, w.warehouse_name, ia.install_approve_date
+            FROM TB_INSTL_APPR ia
+            LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
+            LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+            LEFT JOIN TB_ITEMCOMM ic ON ir.item_common_code = ic.item_common_code
+            LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
+            LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
+            LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+            LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+            """)
+    List<Install> getInstallApproveList();
+
+    // 설치 승인에 대한 정보 가져오기
+    @Select("""
+            SELECT ia.install_approve_key, f.franchise_name, ic.item_common_name, ia.output_no, f.franchise_address, ir.business_employee_no, e1.employee_name as business_employee_name,
+            ia.customer_employee_no, e2.employee_name as customer_employee_name, ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note
              FROM TB_INSTL_APPR ia
              LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
              LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
@@ -126,8 +141,22 @@ public interface InstallMapper {
              LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
              LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
              LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
-             LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
             """)
-    List<Install> getInstallApproveList();
+    List<Install> getInstallApproveView();
 
+    // 설치 승인에 대한 정보 가져오기
+    @Select("""
+            SELECT output_no
+            FROM TB_INSTL_APPR
+            WHERE install_approve_key = #{installKey}
+            """)
+    String selectOutputNo(int installKey);
+
+    // 설치된 시리얼 번호 가져오기
+    @Select("""
+            SELECT serial_no
+            FROM TB_INSTL_SUB
+            WHERE output_no = #{outputNo}
+            """)
+    List<String> selectSerialNoByOutputNo(String outputNo);
 }

@@ -18,6 +18,18 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치된 시리얼 번호 가져오기
+    @GetMapping("/serial/{installKey}")
+    public List<String> getSerialList(@PathVariable int installKey) {
+        return service.getSerialList(installKey);
+    }
+
+    // 설치 승인에 대한 정보 가져오기
+    @GetMapping("/approve/{installKey}")
+    public List<Install> getInstallApproveView(@PathVariable int installKey) {
+        return service.getInstallApproveView(installKey);
+    }
+
     // 설치 승인 테이블에서 요청 리스트 가져오기
     @GetMapping("list/approve")
     public List<Install> getInstallApproveList() {

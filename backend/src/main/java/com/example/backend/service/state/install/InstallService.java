@@ -88,7 +88,7 @@ public class InstallService {
                 throw new IllegalStateException("승인 여부 변경 실패");
             }
             return true;
-            
+
         } catch (Exception e) {
             System.out.println("설치 승인 처리 중 오류 발생: " + e.getMessage());
             return false;
@@ -98,5 +98,19 @@ public class InstallService {
     // 설치 승인 테이블에서 요청 리스트 가져오기
     public List<Install> getInstallApproveList() {
         return mapper.getInstallApproveList();
+    }
+
+    // 설치 승인에 대한 정보 가져오기
+    public List<Install> getInstallApproveView(int installKey) {
+        return mapper.getInstallApproveView();
+    }
+
+    // 설치된 시리얼 번호 가져오기
+    public List<String> getSerialList(int installKey) {
+        // 발주 번호 가져오기
+        String outputNo = mapper.selectOutputNo(installKey);
+
+        // 발주 번호에 해당하는 시리얼 번호 가져오기
+        return mapper.selectSerialNoByOutputNo(outputNo);
     }
 }

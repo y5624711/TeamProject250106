@@ -18,7 +18,6 @@ export function InstallList({ installList, onRowClick }) {
     { key: "installDate", label: "날짜" },
     { key: "currentState", label: "상태 현황" },
   ];
-  console.log(installList);
 
   return (
     <Box px={10}>

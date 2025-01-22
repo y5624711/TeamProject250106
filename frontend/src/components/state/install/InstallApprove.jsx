@@ -30,7 +30,7 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
           setInstallRequest(res.data || []);
         })
         .catch((error) => {
-          console.error("품목 요청 정보 오류 발생: ", error);
+          console.error("설치 요청 정보 오류 발생: ", error);
         });
     }
   }, [installKey]);
@@ -53,8 +53,6 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
       installScheduleDate: new Date(installScheduleDate),
       installApproveNote: installRequest[0]?.installRequestNote || "", // 비고
     };
-
-    console.log(approveData);
     axios
       .post("/api/install/approve", approveData)
       .then((res) => res.data)
