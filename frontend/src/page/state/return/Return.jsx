@@ -25,6 +25,11 @@ function Return(props) {
     state: searchParams.get("state") || "all",
   });
 
+  // const page = searchParams.get("page") || 1;
+  // const type = searchParams.get("type") || "all";
+  // const keyword = searchParams.get("keyword") || "";
+  // const state = searchParams.get("state") || "all";
+
   //목록 불러오기
   useEffect(() => {
     axios
