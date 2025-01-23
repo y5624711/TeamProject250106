@@ -9,6 +9,7 @@ import java.util.List;
 public class Instk {
     private int inputKey;
     private String inputCommonCode;
+    private String inputCommonCodeName;
     private String inputNo;
     private String businessEmployeeNo;
     private boolean inputConsent;

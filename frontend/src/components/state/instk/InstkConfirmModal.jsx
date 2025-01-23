@@ -1,4 +1,4 @@
-import { Box, HStack, Input, Stack } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
@@ -66,85 +66,86 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   };
 
   return (
-    <DialogRoot size={"md"} open={isModalOpen}>
+    <DialogRoot size={"lg"} open={isModalOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>가입고 승인 관리</DialogTitle>
+          <DialogTitle>입고 승인</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={3}>
             <HStack>
-              <Field orientation="horizontal" label={"입고 구분 코드"}>
-                <Input value={instk.inputCommonCode} />
-              </Field>
-
               <Field orientation="horizontal" label={"입고 구분"}>
-                <Input
-                  value={instk.inputCommonCode === "RETRN" ? "반품" : "회수"}
-                />
+                <Input value={instk.inputCommonCodeName} />
               </Field>
-            </HStack>
-            <HStack>
-              <Field orientation="horizontal" label={"품목"}>
-                <Input readOnly value={instk.itemCommonCode} />
-              </Field>
-              <Field orientation="horizontal" label={"품목 명"}>
-                <Input readOnly value={instk.itemCommonName} />
-              </Field>
-            </HStack>
-            <HStack>
               <Field label={"주문 번호"} orientation="horizontal">
                 <Input value={instk.inputNo} />
+              </Field>
+            </HStack>
+
+            <HStack>
+              <Field orientation="horizontal" label={"품목 명"}>
+                <Input readOnly value={instk.itemCommonName} />
               </Field>
               <Field label={"수량"} orientation="horizontal">
                 <Input readOnly value={instk.itemAmount} />
               </Field>
             </HStack>
+
             <HStack>
-              <Field label={" 요청자 사번 "} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeNo} />
+              <Field label={"주문 승인자"} orientation="horizontal">
+                <Input value={instk.requestApprovalEmployeeName} />
               </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={instk.requestApprovalEmployeeNo} />
+              </Field>
+            </HStack>
+            <HStack>
               <Field label={"구매 요청자 "} orientation="horizontal">
                 <Input readOnly value={instk.requestEmployeeName} />
               </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeNo} />
+              </Field>
+            </HStack>
+
+            <HStack>
+              <Field label={"창고 주소"} orientation="horizontal">
+                <Input value={"경기도 개성시"} />
+              </Field>
+              <Field label={"담당 업체"} orientation="horizontal">
+                <Input value={"면발천국"} />
+              </Field>
             </HStack>
             <HStack>
-              <Field label={" 승인자 사번 "} orientation="horizontal">
-                <Input readOnly value={instk.requestApprovalEmployeeNo} />
+              <Field label={"입고 승인자"} orientation="horizontal">
+                <Input value={localStorage.getItem("name")} readOnly />
               </Field>
-
-              <Field label={"요청 승인자"} orientation="horizontal">
-                <Input value={instk.requestApprovalEmployeeName} />
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={localStorage.getItem("name")} readOnly />
               </Field>
             </HStack>
-            <Field label={"창고 주소(코드)"} orientation="horizontal">
-              <Input value={"WH5438332"} />
-            </Field>
-            <Field label={"가입고 승인자"} orientation="horizontal">
-              <Input value={localStorage.getItem("name")} readOnly />
-            </Field>
             <Field label={"비고"} orientation="horizontal">
-              <Input value={"가입고 비고 작성"} />
+              <Textarea value={""} placeholder={"최대50자"} />
             </Field>
           </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
             <Button
-              variant="outline"
               onClick={() => {
                 handleApprovalClick();
               }}
             >
-              입고 승인
+              승인
             </Button>
           </DialogActionTrigger>
           <Button
+            variant="outline"
             onClick={() => {
               setChangeModal();
             }}
           >
-            입고 반려
+            반려
           </Button>
         </DialogFooter>
         <DialogCloseTrigger
@@ -153,6 +154,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           }}
         />
       </DialogContent>
+      z
     </DialogRoot>
   );
 }

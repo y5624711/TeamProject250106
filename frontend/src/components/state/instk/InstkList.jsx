@@ -3,6 +3,7 @@ import {
   Center,
   createListCollection,
   Heading,
+  HStack,
   Table,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
@@ -41,8 +43,8 @@ export function InstkList() {
       { label: "전체", value: "all" },
       { label: "입고 구분", value: "itemCommonName" },
       { label: "발주 번호", value: "customerName" },
-      { label: "품목 명", value: "size" },
-      { label: "협력 업체", value: "unit" },
+      { label: "품목", value: "size" },
+      { label: "담당 업체", value: "unit" },
       { label: "날짜", value: "inputPrice" },
       { label: "신청자", value: "outputPrice" },
       { label: "승인자", value: "outputPrice" },
@@ -51,54 +53,80 @@ export function InstkList() {
   });
 
   return (
-    <Box p={5}>
-      <Heading>구매/설치관리 >입고 관리</Heading>
-      <Box m={3}>
-        <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
+    <Box>
+      <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
+      <RadioGroup defaultValue="1" my={3}>
+        <HStack gap={6}>
+          <Radio value="1">전체 조회</Radio>
+          <Radio value="2">요청 상태 조회</Radio>
+          <Radio value="3">승인 상태 조회</Radio>
+          <Radio value="4">반려 상태 조회</Radio>
+        </HStack>
+      </RadioGroup>
+      <Box>
+        <Table.Root>
+          <Table.Header>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+              <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">
+                입고 구분
+              </Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">
+                발주 번호
+              </Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">
+                협력 업체
+              </Table.ColumnHeader>
+
+              <Table.ColumnHeader textAlign="center">신청자</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {instkList.map((item, index) => {
+              return (
+                <Table.Row
+                  onClick={() => {
+                    handleSelectModal(item.inputConsent);
+                    setSelectedIndex(index);
+                  }}
+                  textAlign="center"
+                  key={index}
+                >
+                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.inputCommonCodeName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{item.inputNo}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.itemCommonName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.customerName}
+                  </Table.Cell>
+
+                  <Table.Cell textAlign="center">
+                    {item.requestEmployeeName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.inputStockEmployeeName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.inputStockDate || item.requestDate}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {item.inputConsent === true ? "승인" : "대기"}
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
+          </Table.Body>
+          <Table.Footer></Table.Footer>
+        </Table.Root>
       </Box>
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader>#</Table.ColumnHeader>
-            <Table.ColumnHeader>입고 구분</Table.ColumnHeader>
-            <Table.ColumnHeader>발주 번호</Table.ColumnHeader>
-            <Table.ColumnHeader>품목 명</Table.ColumnHeader>
-            <Table.ColumnHeader>협력 업체</Table.ColumnHeader>
-            <Table.ColumnHeader>날짜</Table.ColumnHeader>
-            <Table.ColumnHeader>신청자</Table.ColumnHeader>
-            <Table.ColumnHeader>승인자</Table.ColumnHeader>
-            <Table.ColumnHeader>상태 현황</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {instkList.map((item, index) => {
-            return (
-              <Table.Row
-                key={index}
-                onClick={() => {
-                  handleSelectModal(item.inputConsent);
-                  setSelectedIndex(index);
-                }}
-              >
-                <Table.Cell>{item.index}</Table.Cell>
-                <Table.Cell>{item.inputCommonCode}</Table.Cell>
-                <Table.Cell>{item.inputNo}</Table.Cell>
-                <Table.Cell>{item.itemCommonName}</Table.Cell>
-                <Table.Cell>{item.customerName}</Table.Cell>
-                <Table.Cell>
-                  {item.inputStockDate || item.requestDate}
-                </Table.Cell>
-                <Table.Cell>{item.requestEmployeeName}</Table.Cell>
-                <Table.Cell>{item.inputStockEmployeeName}</Table.Cell>
-                <Table.Cell>
-                  {item.inputConsent === true ? "승인" : "대기"}
-                </Table.Cell>
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-        <Table.Footer></Table.Footer>
-      </Table.Root>
       <Center m={3}>
         <Pagination
           count={30}
@@ -110,7 +138,6 @@ export function InstkList() {
           }}
         />
       </Center>
-
       {isApproveModalOpen && (
         <InstkConfirmModal
           isModalOpen={isApproveModalOpen}
@@ -118,6 +145,7 @@ export function InstkList() {
           instk={instkList[selectedIndex]}
         />
       )}
+
       {isDetailViewModalOpen && (
         <InstkDetaiViewModal
           isModalOpen={isDetailViewModalOpen}
