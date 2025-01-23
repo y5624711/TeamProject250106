@@ -34,6 +34,7 @@ public class CustomerService {
         return count == 1;
     }
 
+    //협력사 목록
     public Map<String, Object> getCustomerList(Boolean active, Integer page, String type, String keyword, String sort, String order) {
         int offset = (page - 1) * 10;
 //        System.out.println("sort: " + sort);
@@ -47,25 +48,30 @@ public class CustomerService {
         return Map.of("customerList", customerList, "count", count);
     }
 
+    //협력사 정보 불러오기
     public Customer viewCustomer(String customerKey) {
         return mapper.viewCustomer(customerKey);
     }
 
+    //협력사 사용여부 = false
     public Boolean deleteCustomer(String customerKey) {
         int count = mapper.deleteCustomer(customerKey);
         return count == 1;
     }
 
+    //협력사 정보 수정
     public Boolean editCustomer(Customer customer) {
         int cnt = mapper.editCustomer(customer);
         return cnt >= 1;
     }
 
+    //품목 목록
     public List<CommonCode> itemCodeList() {
 //        System.out.println("itemcodelist" + mapper.itemCodeList());
         return mapper.itemCodeList();
     }
 
+    //협력사 작성창 빈칸 확인
     public boolean checkEmptyCustomer(Customer customer) {
         return !(
                 customer.getCustomerName() == null || customer.getCustomerRep() == null ||
@@ -78,6 +84,7 @@ public class CustomerService {
         return mapper.customerCodeNames();
     }
 
+    //협력사 작성 시 중복 확인
     public boolean checkDuplicateCustomer(Customer customer) {
         Boolean result = false;
         List<String> itemList = mapper.getUsedItemCode();
@@ -91,11 +98,12 @@ public class CustomerService {
         return result;
     }
 
+    //삭제된 협력사인지 조회
     public boolean checkDeletedCustomer(String customerKey) {
         List<String> deletedCustomerKey = mapper.getDeletedCustomer();
-        System.out.println("key" + customerKey);
-        System.out.println("목록" + deletedCustomerKey);
-        System.out.println("결과" + deletedCustomerKey.contains(customerKey));
+//        System.out.println("key" + customerKey);
+//        System.out.println("목록" + deletedCustomerKey);
+//        System.out.println("결과" + deletedCustomerKey.contains(customerKey));
         return deletedCustomerKey.contains(customerKey);
     }
 }
