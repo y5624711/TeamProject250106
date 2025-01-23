@@ -15,6 +15,7 @@ import {
   Input,
   NativeSelectField,
   NativeSelectRoot,
+  Separator,
   Stack,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
@@ -36,61 +37,71 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
   }, []);
 
   return (
-    <DialogRoot size={"md"} open={isModalOpen}>
+    <DialogRoot size={"lg"} open={isModalOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>입고 상세 확인</DialogTitle>
+          <DialogTitle>입고 상세</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={3}>
+          <Stack gap={15}>
             <HStack>
-              <Field orientation="horizontal" label={"입고 구분 코드"}>
-                <Input value={instk.inputCommonCode} />
-              </Field>
               <Field orientation="horizontal" label={"입고 구분 명"}>
-                <Input
-                  value={
-                    instk.inputCommonCode === "RETRN"
-                      ? "회수 입고"
-                      : "구매 입고"
-                  }
-                />
+                <Input value={instk.inputCommonCodeName} />
+              </Field>
+              <Field orientation="horizontal" label={"주문 번호"}>
+                <Input readOnly value={instk.inputNo} />
               </Field>
             </HStack>
             <HStack>
-              <Field orientation="horizontal" label={"품목 코드"}>
-                <Input readOnly value={instk.itemCommonCode} />
-              </Field>
               <Field orientation="horizontal" label={"품목 명"}>
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
+              <Field label={"시리얼 번호"} orientation="horizontal">
+                {/*<NativeSelectRoot>*/}
+                {/*  <NativeSelectField*/}
+                {/*    items={["Option 1", "Option 2", "Option 3"]}*/}
+                {/*  />*/}
+                {/*</NativeSelectRoot>*/}
+                <Input readOnly value={"1"} />
+              </Field>
             </HStack>
 
-            <Field label={"시리얼 번호"} orientation="horizontal">
-              {/*<NativeSelectRoot>*/}
-              {/*  <NativeSelectField*/}
-              {/*    items={["Option 1", "Option 2", "Option 3"]}*/}
-              {/*  />*/}
-              {/*</NativeSelectRoot>*/}
-              <Input readOnly value={"ss"} />
-            </Field>
-            <Field label={"구매 요청자"} orientation="horizontal">
-              <Input readOnly value={instk.requestEmployeeName} />
-            </Field>
+            <HStack>
+              <Field label={"주문 신청자"} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeName} />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeNo} />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={"담당 업체"} orientation="horizontal">
+                <Input readOnly value={"담당 업체"} />
+              </Field>
+              <Field label={"창고"} orientation="horizontal">
+                <Input readOnly value={"창고"} />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={"주문 승인자"} orientation="horizontal">
+                <Input readOnly value={"김용수"} />
+                {/*<Input readOnl value={instk.inputStockEmployeeName} />*/}
+              </Field>
 
-            <Field label={"입고 승인자"} orientation="horizontal">
-              <Input readOnl value={instk.inputStockEmployeeName} />
-            </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={"CUSEMP0000010"} />
+                <Input readOnl value={instk.inputStockEmployeeNo} />
+              </Field>
+            </HStack>
 
-            <Field label={"창고 주소(코드)"} orientation="horizontal">
-              <Input readOnly value={"WH5438332"} />
-            </Field>
             <Field label={"창고 + 로케이션"} orientation="horizontal">
               <Input readOnly value={"창고 +로케이션"} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">
-              <Input readOnly value={instk.inputStockDate} />
+              <Input readOnly value={"2025-01-23"} />
+              {/*<Input readOnly value={instk.inputStockDate} />*/}
             </Field>
+            <Separator />
             <Field label={"비고"} orientation="horizontal">
               <Input readOnly value={""} />
             </Field>
