@@ -38,6 +38,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const [installRequest, setInstallRequest] = useState({});
   const [customerEmployeeList, setCustomerEmployeeList] = useState([]);
 
+  const handleClose = () => {
+    setInstallApprove(initialInstallApprove);
+    onClose();
+  };
+
   // 설치 요청에 대한 정보 가져오기
   useEffect(() => {
     if (installKey) {
@@ -62,6 +67,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     }
   }, [installKey]);
 
+  // 설치 승인
   const handleApproveClick = () => {
     const approveData = {
       installRequestKey: installKey,
@@ -70,7 +76,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자)
       ...installApprove,
     };
-    console.log("test");
     axios
       .post("/api/install/approve", approveData)
       .then((res) => res.data)
@@ -80,7 +85,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        onClose();
+        handleClose();
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -94,13 +99,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     installApprove.customerInstallerNo;
 
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={() => {
-        onClose();
-      }}
-      size="lg"
-    >
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>설치 승인</DialogTitle>

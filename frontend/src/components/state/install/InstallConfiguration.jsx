@@ -38,6 +38,13 @@ export function InstallConfiguration({
   const [serialNote, setSerialNote] = useState("");
   const [serialNotes, setSerialNotes] = useState({}); // 시리얼 번호별 비고 저장
 
+  const handleClose = () => {
+    setSelectedSerial("");
+    setSerialNote("");
+    setSerialNotes("");
+    onClose();
+  };
+
   // 설치 승인 정보와 시리얼 번호 정보를 병렬로 가져오기
   useEffect(() => {
     if (installKey) {
@@ -94,6 +101,7 @@ export function InstallConfiguration({
           type: data.message.type,
         });
         setChange((prev) => !prev);
+        handleClose();
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -116,13 +124,7 @@ export function InstallConfiguration({
   }
   console.log(installData);
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={() => {
-        onClose();
-      }}
-      size="lg"
-    >
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>설치 완료</DialogTitle>
@@ -154,6 +156,9 @@ export function InstallConfiguration({
                 <Input value={installData.customerInstallerNo} readOnly />
               </Field>
             </HStack>
+            <Field label={"승인 날짜"} orientation="horizontal">
+              <Input value={installData.installRequestDate} readOnly />
+            </Field>
             <Field label={"승인 비고"} orientation="horizontal">
               <Input value={installData.installApproveNote} readOnly />
             </Field>
