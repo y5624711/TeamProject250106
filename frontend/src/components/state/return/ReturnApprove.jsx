@@ -70,6 +70,26 @@ function ReturnApprove({
       });
   };
 
+  //반려 전달
+  const handleDisapproveButton = () => {
+    axios
+      .put(`api/return/disapprove/${returnRequestKey}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
+  };
+
   // console.log("셋팅", approveData);
 
   return (
@@ -210,8 +230,8 @@ function ReturnApprove({
               <Button onClick={onClose} variant="outline">
                 취소
               </Button>
+              <Button onClick={handleDisapproveButton}>반려</Button>
               <Button onClick={handleApproveButtonClick}>승인</Button>
-              <Button>반려</Button>
             </HStack>
           )}
           <DialogCloseTrigger />

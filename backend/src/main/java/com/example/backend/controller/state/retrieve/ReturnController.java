@@ -72,4 +72,20 @@ public class ReturnController {
                                     "text", "문제가 발생하였습니다.")));
         }
     }
+
+    //반품 반려
+    @PutMapping("disapprove/{returnRequestKey}")
+    public ResponseEntity<Map<String, Object>> disapproveReturn(@PathVariable String returnRequestKey) {
+        if (service.disapproveReturn(returnRequestKey)) {
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "warning",
+                            "text", "반려하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "문제가 발생하였습니다.")));
+        }
+    }
+
 }

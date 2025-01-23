@@ -72,4 +72,10 @@ public class ReturnService {
 
         return cnt == 1;
     }
+
+    //반품 반려
+    public boolean disapproveReturn(String returnRequestKey) {
+        //return_consent = false
+        return mapper.disapproveReturn(returnRequestKey) == 1;
+    }
 }

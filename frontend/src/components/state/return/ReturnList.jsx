@@ -177,7 +177,7 @@ function ReturnList({
                 {data.returnConsent == 1
                   ? "승인"
                   : data.returnConsent == 0
-                    ? "기각"
+                    ? "반려"
                     : "대기"}
               </Table.Cell>
             </Table.Row>

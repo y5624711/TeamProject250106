@@ -106,7 +106,7 @@ public interface ReturnMapper {
 
     //요청/승인 내용 (1개) 반환
     @Select("""
-            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
+            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
                    return_request_date, return_approve_date,return_date, return_consent, return_request_note
@@ -116,7 +116,7 @@ public interface ReturnMapper {
             LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
             LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
             LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
-            LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
             LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no    
             LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no    
@@ -217,4 +217,12 @@ public interface ReturnMapper {
             </script>      
             """)
     int countAll(String state, String type, String keyword);
+
+    //반려: consent = false
+    @Update("""
+            UPDATE TB_RTN_REQ
+            SET return_consent = false
+            WHERE return_request_key=#{returnRequestKey}
+            """)
+    int disapproveReturn(String returnRequestKey);
 }
