@@ -17,9 +17,10 @@ public interface ItemMapper {
     int addItem(Item item);
 
     @Select("""
-            SELECT c.item_code AS item_common_code, ic.item_common_name
-            FROM TB_CUSTMST c LEFT JOIN TB_ITEMCOMM ic ON c.item_code = ic.item_common_code
-            WHERE c.item_code NOT IN (SELECT item_common_code FROM TB_ITEMMST)
+            SELECT c.item_code AS item_common_code, sc.common_code_name as item_common_name
+            FROM TB_CUSTMST c LEFT JOIN TB_SYSCOMM sc ON c.item_code = sc.common_code
+            WHERE c.item_code NOT IN (SELECT common_code FROM TB_ITEMMST)
+            AND c.customer_active = 1
             ORDER BY binary(item_common_name)
             """)
     List<Map<String, String>> getItemCommonCode();
@@ -28,10 +29,10 @@ public interface ItemMapper {
             <script>
                 SELECT\s
                     i.*,
-                    ic.item_common_name,
+                    sc.common_code_name as item_common_name,
                     c.customer_name
                 FROM TB_ITEMMST i
-                LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
                 LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
                 WHERE 1=1
             
@@ -43,7 +44,7 @@ public interface ItemMapper {
                     <choose>
                         <when test="type == null">
                             AND (
-                                ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                sc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                 OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
                                 OR i.unit LIKE CONCAT('%', #{keyword}, '%')
                                 OR i.size LIKE CONCAT('%', #{keyword}, '%')
@@ -73,7 +74,7 @@ public interface ItemMapper {
                 <script>
                     SELECT COUNT(*)
                     FROM TB_ITEMMST i
-                    LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+                    LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
                     LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
                     WHERE 1=1
                     <if test="active == false">
@@ -84,7 +85,7 @@ public interface ItemMapper {
                         <choose>
                             <when test="type == null">
                                 AND (
-                                    ic.item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    sc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                     OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
                                     OR i.unit LIKE CONCAT('%', #{keyword}, '%')
                                     OR i.size LIKE CONCAT('%', #{keyword}, '%')
@@ -103,8 +104,8 @@ public interface ItemMapper {
 
 
     @Select("""
-            SELECT i.*, ic.item_common_name, c.customer_name
-            FROM TB_ITEMMST i LEFT JOIN TB_ITEMCOMM ic ON i.item_common_code = ic.item_common_code
+            SELECT i.*, sc.common_code_name as item_common_name, c.customer_name
+            FROM TB_ITEMMST i LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             WHERE i.item_key = #{itemKey}
             """)
