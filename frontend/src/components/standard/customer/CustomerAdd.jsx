@@ -41,6 +41,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerAddressDetail, setCustomerAddressDetail] = useState("");
   const [customerPost, setCustomerPost] = useState("");
   const [customerNote, setCustomerNote] = useState("");
+  const [customerActive, setCustomerActive] = useState("true");
 
   // 물품 코드 불러오기
   useEffect(() => {
@@ -62,6 +63,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     setCustomerAddressDetail("");
     setCustomerPost("");
     setCustomerNote("");
+    setCustomerActive(true);
   };
 
   const handleSaveClick = () => {
@@ -84,6 +86,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       customerAddress,
       customerAddressDetail,
       customerNote,
+      customerActive,
     };
     onSave(customerData);
     resetState();

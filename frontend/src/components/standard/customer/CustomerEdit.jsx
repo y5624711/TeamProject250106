@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
 function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
   const [customer, setCustomer] = useState(null);
@@ -22,7 +23,10 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
     if (customerKey) {
       axios
         .get(`/api/customer/view/${customerKey}`)
-        .then((res) => setCustomer(res.data))
+        .then((res) => {
+          setCustomer(res.data);
+          // console.log("back 반환", res.data);
+        })
         .catch((error) => console.error("오류 발생", error));
     }
   }, [customerKey]);
@@ -34,6 +38,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
       ...prevCustomer,
       [name]: value,
     }));
+    // console.log("입력 정보", customer);
   };
 
   const handleClose = () => {
@@ -132,6 +137,19 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                     name={"customerNote"}
                     value={customer.customerNote}
                     onChange={handleInputChange}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"사용 여부"}>
+                  <Checkbox
+                    name={"customerActive"}
+                    checked={customer.customerActive}
+                    onChange={(e) => {
+                      const { checked } = e.target; // 체크 여부 가져오기
+                      setCustomer((prevCustomer) => ({
+                        ...prevCustomer,
+                        customerActive: checked, // 상태 업데이트
+                      }));
+                    }}
                   />
                 </Field>
               </Stack>
