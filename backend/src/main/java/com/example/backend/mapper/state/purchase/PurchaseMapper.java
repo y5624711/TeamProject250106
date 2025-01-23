@@ -35,7 +35,6 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
-            ORDER BY pr.purchase_request_date DESC
             """)
     List<Purchase> purchaseList();
 

@@ -166,7 +166,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
 
       {/* 승인/반려 버튼이 보일지 여부를 상태로 제어 */}
       {showButton && (
-        <Box display="flex" gap={4} mt={6}>
+        <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleApprove} colorScheme="blue">
             승인
           </Button>
