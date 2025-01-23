@@ -28,8 +28,8 @@ export function PurchaseList({
       { label: "전체", value: "all" },
       { label: "신청자 사번", value: "employeeNo" },
       { label: "신청자", value: "employeeName" },
-      { label: "협력업체", value: "customerName" },
-      { label: "품목명", value: "itemCommonName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "품목", value: "itemCommonName" },
       { label: "승인자 사번", value: "customerEmployeeNo" },
       { label: "승인자", value: "customerEmployeeName" },
     ],
@@ -80,10 +80,10 @@ export function PurchaseList({
 
       <RadioGroup defaultValue="1" my={6} ml={12}>
         <HStack gap={6}>
-          <Radio value="1">전체 조회</Radio>
-          <Radio value="2">대기 상태 조회</Radio>
-          <Radio value="3">승인 상태 조회</Radio>
-          <Radio value="4">반려 상태 조회</Radio>
+          <Radio value="1">전체</Radio>
+          <Radio value="2">대기</Radio>
+          <Radio value="3">승인</Radio>
+          <Radio value="4">반려</Radio>
         </HStack>
       </RadioGroup>
 
@@ -103,7 +103,7 @@ export function PurchaseList({
               신청자
             </TableColumnHeader>
             <TableColumnHeader textAlign="center" verticalAlign="middle">
-              승인자{" "}
+              승인자
             </TableColumnHeader>
             <TableColumnHeader textAlign="center" verticalAlign="middle">
               날짜
@@ -147,7 +147,7 @@ export function PurchaseList({
                     ? "승인"
                     : purchase.purchaseConsent == 0
                       ? "반려"
-                      : "대기"}{" "}
+                      : "대기"}
                 </Table.Cell>
               </Table.Row>
             ))
