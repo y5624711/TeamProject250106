@@ -214,13 +214,16 @@ export function CommonCodeView({
           </DialogBody>
           <DialogFooter>
             <HStack>
-              <Button
-                onClick={handleSaveClick}
-                disabled={!isValid}
-                colorPalette={"blue"}
-              >
-                저장
-              </Button>
+              {editedCommonCode.commonCodeActive && (
+                <Button
+                  onClick={handleSaveClick}
+                  disabled={!isValid}
+                  colorPalette={"blue"}
+                >
+                  저장
+                </Button>
+              )}
+
               <Button onClick={handleClose}>취소</Button>
             </HStack>
           </DialogFooter>
