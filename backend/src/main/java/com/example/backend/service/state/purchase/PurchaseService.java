@@ -43,6 +43,9 @@ public class PurchaseService {
 
     // 구매 승인
     public boolean purchaseApprove(Purchase purchase) {
+        // 상태 현황 업데이트
+        mapper.updatePurchaseConsent(purchase.getPurchaseRequestKey());
+
         // 기존 발주 번호에서 최대 번호를 조회
         Long maxNo = mapper.viewMaxPurchaseNo();
 

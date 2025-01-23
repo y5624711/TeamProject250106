@@ -1,10 +1,7 @@
 package com.example.backend.mapper.state.purchase;
 
 import com.example.backend.dto.state.purchase.Purchase;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -38,6 +35,7 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
+            ORDER BY pr.purchase_request_date DESC
             """)
     List<Purchase> purchaseList();
 
@@ -82,4 +80,12 @@ public interface PurchaseMapper {
             FROM TB_PURCH_APPR
             """)
     Long viewMaxPurchaseNo();
+
+    // 상태 현황 업데이트
+    @Update("""
+            UPDATE TB_PURCH_REQ
+            SET purchase_consent = TRUE
+            WHERE purchase_request_key = #{purchaseRequestKey}
+            """)
+    int updatePurchaseConsent(Integer purchaseRequestKey);
 }

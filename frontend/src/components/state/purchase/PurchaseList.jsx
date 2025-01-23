@@ -110,7 +110,11 @@ export function PurchaseList({
                 <Table.Cell>{purchase.customerEmployeeName}</Table.Cell>
                 <Table.Cell>{purchase.purchaseRequestDate}</Table.Cell>
                 <Table.Cell>
-                  {purchase.purchaseConsent ? "승인" : "요청"}
+                  {purchase.purchaseConsent == 1
+                    ? "승인"
+                    : purchase.purchaseConsent == 0
+                      ? "반려"
+                      : "요청"}
                 </Table.Cell>
               </Table.Row>
             ))
