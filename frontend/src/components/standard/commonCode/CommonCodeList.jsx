@@ -5,8 +5,8 @@ import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 
-export function ItemCommonCodeList({
-  itemCommonCodeList,
+export function CommonCodeList({
+  commonCodeList,
   count,
   searchParams,
   setSearchParams,
@@ -16,16 +16,17 @@ export function ItemCommonCodeList({
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "품목코드", value: "itemCommonCode" },
-      { label: "품목명", value: "itemCommonName" },
+      { label: "품목코드", value: "commonCode" },
+      { label: "품목명", value: "commonCodeName" },
     ],
   });
 
   // 정렬 헤더
   const sortOptions = [
-    { key: "itemCommonCodeKey", label: "#" },
-    { key: "itemCommonCode", label: "코드" },
-    { key: "itemCommonName", label: "코드명" },
+    { key: "commonCodeKey", label: "#" },
+    { key: "commonCodeType", label: "코드구분" },
+    { key: "commonCode", label: "코드" },
+    { key: "commonCodeName", label: "코드명" },
   ];
 
   return (
@@ -50,22 +51,26 @@ export function ItemCommonCodeList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {itemCommonCodeList?.map((item, index) => (
+            {commonCodeList?.map((item, index) => (
               <Table.Row
-                key={item.itemCommonCodeKey ? item.itemCommonCodeKey : index}
-                onClick={() => onRowClick(item.itemCommonCodeKey)}
+                key={item.commonCodeKey ? item.commonCodeKey : index}
+                onClick={() => {
+                  console.log("클릭");
+                  onRowClick(item.commonCodeKey);
+                }}
                 style={{
                   cursor: "pointer",
                 }}
-                bg={item.itemCommonCodeActive ? "white" : "gray.100"}
+                bg={item.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {item.itemCommonCode}
+                  {item.commonCodeType}
                 </Table.Cell>
+                <Table.Cell textAlign="center">{item.commonCode}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {item.itemCommonName}
+                  {item.commonCodeName}
                 </Table.Cell>
               </Table.Row>
             ))}

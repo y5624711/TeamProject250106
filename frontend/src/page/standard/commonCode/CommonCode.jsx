@@ -3,14 +3,14 @@ import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../../../components/ui/button.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
-import { ItemCommonCodeList } from "../../../components/standard/commonCode/ItemCommonCodeList.jsx";
-import { ItemCommonCodeAdd } from "../../../components/standard/commonCode/ItemCommonCodeAdd.jsx";
+import { CommonCodeList } from "../../../components/standard/commonCode/CommonCodeList.jsx";
+import { CommonCodeAdd } from "../../../components/standard/commonCode/CommonCodeAdd.jsx";
 import { useSearchParams } from "react-router-dom";
-import { ItemCommonCodeView } from "../../../components/standard/commonCode/ItemCommonCodeView.jsx";
+import { CommonCodeView } from "../../../components/standard/commonCode/CommonCodeView.jsx";
 
-export function ItemCommonCode() {
-  const [itemCommonCodeKey, setItemCommonCodeKey] = useState(1);
-  const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
+export function CommonCode() {
+  const [commonCodeKey, setCommonCodeKey] = useState(1);
+  const [commonCodeList, setCommonCodeList] = useState([]);
   const [change, setChange] = useState(false);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
@@ -24,8 +24,9 @@ export function ItemCommonCode() {
         params: searchParams,
       })
       .then((res) => {
-        setItemCommonCodeList(res.data.list || []);
+        setCommonCodeList(res.data.list || []);
         setCount(res.data.count);
+        setCommonCodeKey(null);
       })
       .catch((error) => {
         console.error("품목 공통 코드 목록 요청 중 오류 발생: ", error);
@@ -33,14 +34,14 @@ export function ItemCommonCode() {
   }, [searchParams, change]);
 
   // 물품 코드 등록 시 리스트 변경, 다이얼로그 닫기
-  const handleAddItemCommonCode = (newItem) => {
-    setItemCommonCodeList((prevItems) => [newItem, ...prevItems]);
+  const handleAddCommonCode = (newItem) => {
+    setCommonCodeList((prevItems) => [newItem, ...prevItems]);
     setAddDialogOpen(false);
   };
 
   // 물품 선택 시 해당 물품 보여주기
   const handleRowClick = (item) => {
-    setItemCommonCodeKey(item);
+    setCommonCodeKey(item);
     setViewDialogOpen(true);
   };
 
@@ -53,13 +54,12 @@ export function ItemCommonCode() {
             공통코드 관리
           </Text>
           <Box position="relative">
-            {/* ItemCommonCodeList 감싸는 컨테이너 */}
-            <ItemCommonCodeList
+            {/* CommonCodeList 감싸는 컨테이너 */}
+            <CommonCodeList
               count={count}
-              itemCommonCodeList={itemCommonCodeList}
+              commonCodeList={commonCodeList}
               searchParams={searchParams}
               setSearchParams={setSearchParams}
-              setItemCommonCodeKey={setItemCommonCodeKey}
               onRowClick={handleRowClick}
             />
             <Button
@@ -72,18 +72,17 @@ export function ItemCommonCode() {
             </Button>
           </Box>
         </Stack>
-        <ItemCommonCodeView
-          itemCommonCodeKey={itemCommonCodeKey}
-          setItemCommonCodeKey={setItemCommonCodeKey}
+        <CommonCodeView
+          commonCodeKey={commonCodeKey}
+          setCommonCodeKey={setCommonCodeKey}
           isOpen={viewDialogOpen}
           onClose={() => setViewDialogOpen(false)}
           setChange={setChange}
         />
-        <ItemCommonCodeAdd
+        <CommonCodeAdd
           isOpen={addDialogOpen}
           onClose={() => setAddDialogOpen(false)}
-          onAdd={handleAddItemCommonCode}
-          setItemCommonCodeKey={setItemCommonCodeKey}
+          onAdd={handleAddCommonCode}
           setChange={setChange}
         />
       </HStack>

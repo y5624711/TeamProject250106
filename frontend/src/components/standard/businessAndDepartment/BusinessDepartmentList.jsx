@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -111,30 +111,22 @@ export function BusinessDepartmentList() {
 
   return (
     <Box>
-      <Center>
-        <Checkbox
-          variant={"subtle"}
-          checked={active}
-          onCheckedChange={toggleCheckActive}
-          whiteSpace={"nowrap"}
-          float={"left"}
-        >
-          삭제된 부서 포함하기
-        </Checkbox>
-        <Flex
-          w={"100%"}
-          justifyContent="center" // 수평 중앙 정렬
-          alignItems="center" // 수직 중앙 정렬
-        >
-          {/*검색창&필터*/}
-          <BusinessSearchAndFilter
-            search={search}
-            setSearch={setSearch}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-          />
-        </Flex>
-      </Center>
+      {/*검색창&필터*/}
+      <BusinessSearchAndFilter
+        search={search}
+        setSearch={setSearch}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+      />
+
+      <Checkbox
+        variant={"subtle"}
+        checked={active}
+        onCheckedChange={toggleCheckActive}
+        whiteSpace={"nowrap"}
+      >
+        삭제된 부서 포함하기
+      </Checkbox>
 
       {/*리스트*/}
       <BusinessListTable
