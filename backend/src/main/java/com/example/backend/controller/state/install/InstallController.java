@@ -71,17 +71,21 @@ public class InstallController {
     // 설치 승인
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install, Authentication authentication) {
-        if (service.installApprove(install, authentication)) {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success",
-                            "text", "설치 승인되었습니다."),
-                    "data", install
-            ));
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
+        if (service.approveValidate(install)) {
+            if (service.installApprove(install)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "설치 승인되었습니다."),
+                        "data", install));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")
-            ));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
         }
     }
 

@@ -166,7 +166,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 />
               </Field>
               <HStack>
-                <Field label="설치기사" orientation="horizontal">
+                <Field label="설치 기사" orientation="horizontal">
                   <SelectRoot
                     onValueChange={(e) => {
                       const selectedCE = customerEmployeeList.find(

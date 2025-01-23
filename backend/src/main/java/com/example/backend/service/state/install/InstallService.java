@@ -58,8 +58,17 @@ public class InstallService {
         return mapper.getCustomerEmployee(installKey);
     }
 
+    // 설치 예정일, 설치 기사, 사번 입력됐는지 검증
+    public boolean approveValidate(Install install) {
+        boolean schedule = install.getInstallScheduleDate() != null;
+        boolean installer = install.getCustomerInstallerName().trim().length() > 0;
+        boolean installerNo = install.getCustomerInstallerNo().trim().length() > 0;
+
+        return schedule && installer && installerNo;
+    }
+
     // 설치 승인
-    public boolean installApprove(Install install, Authentication authentication) {
+    public boolean installApprove(Install install) {
         try {
             // 요청 수량 가져오기
             int num = install.getInstallRequestAmount();
@@ -170,4 +179,5 @@ public class InstallService {
             return false;
         }
     }
+
 }
