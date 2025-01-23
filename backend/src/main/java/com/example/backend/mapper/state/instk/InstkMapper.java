@@ -1,6 +1,8 @@
 package com.example.backend.mapper.state.instk;
 
 import com.example.backend.dto.state.instk.Instk;
+import com.example.backend.dto.state.retrieve.Return;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -92,4 +94,11 @@ SELECT
     where   serial_no=#{serialNo}
     """)
     String getInstkNoteByInputKey(int inputKey, Integer serialNo);
+
+    @Insert("""
+            INSERT INTO TB_BUYIN
+            (input_common_code, business_employee_no, input_no, input_note) 
+            VALUES ('RETRN', #{businessEmployeeNo}, #{returnNo}, #{returnApproveNote})
+            """)
+    int addBuyIn(Return approveInfo);
 }

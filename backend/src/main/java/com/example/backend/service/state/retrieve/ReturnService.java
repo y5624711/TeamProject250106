@@ -2,6 +2,7 @@ package com.example.backend.service.state.retrieve;
 
 import com.example.backend.dto.state.retrieve.Return;
 import com.example.backend.mapper.standard.franchise.FranchiseMapper;
+import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class ReturnService {
     final ReturnMapper mapper;
     final FranchiseMapper franchiseMapper;
+    final InstkMapper instkMapper;
 
     //반환 관리 리스트
     public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order) {
@@ -51,11 +53,12 @@ public class ReturnService {
 
     //요청 정보 조회 (1개)
     public List<Return> getRequestInfo(String returnRequestKey) {
+//        System.out.println("key: " + returnRequestKey);
 //        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
         return mapper.getRequestInfo(returnRequestKey);
     }
 
-    //반품 요청 승인
+    //반품 요청 승인 + 가입고 신청
     public boolean addApprove(Return approveInfo) {
         //1. 요청의 승인여부 변경
         mapper.changeConsent(approveInfo.getReturnRequestKey());
@@ -69,6 +72,10 @@ public class ReturnService {
 
         //3. 요청 내용 테이블에 추가
         int cnt = mapper.addApprove(approveInfo);
+
+        //4. 가입고 BUY_IN 테이블에 삽입
+        instkMapper.addBuyIn(approveInfo);
+
 
         return cnt == 1;
     }

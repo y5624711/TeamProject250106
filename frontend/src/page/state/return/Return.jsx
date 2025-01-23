@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import ReturnList from "../../../components/state/return/ReturnList.jsx";
 import axios from "axios";
 import { Button } from "../../../components/ui/button.jsx";
@@ -88,39 +88,43 @@ function Return(props) {
   // console.log("list", returnList);
 
   return (
-    <Box display="flex" height="100vh">
-      <StateSideBar />
-      <Stack w={"80%"} mx={"auto"}>
-        <Text fontSize="xl" my={5}>
-          구매/설치 관리 {">"} 반품/회수 관리
-        </Text>
-        <ReturnList
-          returnList={returnList}
-          onRowClick={handleRowClick}
-          setSearchParams={setSearchParams}
-          count={count}
-          filters={filters}
-          setFilters={setFilters}
-          handleFilterChange={handleFilterChange}
-          handlePageChange={handlePageChange}
-          handleResetClick={handleResetClick}
+    <Box>
+      <HStack align="flex-start" w="100%">
+        <StateSideBar />
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            구매 / 설치 관리 {">"} 반품 / 회수 관리
+          </Heading>
+          <ReturnList
+            returnList={returnList}
+            onRowClick={handleRowClick}
+            setSearchParams={setSearchParams}
+            count={count}
+            filters={filters}
+            setFilters={setFilters}
+            handleFilterChange={handleFilterChange}
+            handlePageChange={handlePageChange}
+            handleResetClick={handleResetClick}
+          />
+          <Flex justify="flex-end">
+            <Button onClick={() => setRequestDialogOpen(true)}>
+              반품 신청
+            </Button>
+          </Flex>
+        </Stack>
+        <ReturnRequest
+          isOpen={requestDialogOpen}
+          onClose={() => setRequestDialogOpen(false)}
+          onRequest={handleRequestClick}
         />
-        <Flex justify="flex-end">
-          <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>
-        </Flex>
-      </Stack>
-      <ReturnRequest
-        isOpen={requestDialogOpen}
-        onClose={() => setRequestDialogOpen(false)}
-        onRequest={handleRequestClick}
-      />
-      <ReturnApprove
-        returnRequestKey={returnRequestKey}
-        setReturnRequestKey={setReturnRequestKey}
-        isOpen={approveDialogOpen}
-        onClose={() => setApproveDialogOpen(false)}
-        onApprove={handleRequestClick}
-      />
+        <ReturnApprove
+          returnRequestKey={returnRequestKey}
+          setReturnRequestKey={setReturnRequestKey}
+          isOpen={approveDialogOpen}
+          onClose={() => setApproveDialogOpen(false)}
+          onApprove={handleRequestClick}
+        />
+      </HStack>
     </Box>
   );
 }

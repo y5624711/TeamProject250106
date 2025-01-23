@@ -57,7 +57,7 @@ public class ReturnController {
     }
 
 
-    //반환 승인
+    //반품 승인 + 가입고 신청
     @PostMapping("approve")
     public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo) {
 //        System.out.println("controller: " + approveInfo);
