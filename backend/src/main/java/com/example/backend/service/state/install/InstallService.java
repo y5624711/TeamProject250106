@@ -54,8 +54,8 @@ public class InstallService {
     }
 
     // 설치 기사 사번으로 이름 가져오기
-    public List<Map<String, Object>> getCustomerEmployee() {
-        return mapper.getCustomerEmployee();
+    public List<Map<String, Object>> getCustomerEmployee(int installKey) {
+        return mapper.getCustomerEmployee(installKey);
     }
 
     // 설치 승인

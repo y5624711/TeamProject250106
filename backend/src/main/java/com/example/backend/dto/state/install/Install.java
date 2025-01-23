@@ -2,7 +2,7 @@ package com.example.backend.dto.state.install;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class Install {
@@ -12,7 +12,7 @@ public class Install {
     private String businessEmployeeNo;
     private String customerCode;
     private Integer installRequestAmount;
-    private LocalDateTime installRequestDate;
+    private LocalDate installRequestDate;
     private Boolean installRequestConsent;
     private String installRequestNote;
 
@@ -26,14 +26,14 @@ public class Install {
     private String customerEmployeeNo;
     private String customerInstallerNo;
     private String customerInstallerName;
-    private LocalDateTime installScheduleDate;
+    private LocalDate installScheduleDate;
     private String outputNo;
     private Integer installApproveKey;
     private String installApproveNote;
 
     private Integer installSubKey;
     private String serialNo;
-    private LocalDateTime installApproveDate;
+    private LocalDate installApproveDate;
     private String customerEmployeeName;
     private String serialNote;
     private String serialNumbers;

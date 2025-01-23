@@ -86,9 +86,9 @@ public class InstallController {
     }
 
     // 설치 기사 정보 가져오기
-    @GetMapping("customerEmployee")
-    public List<Map<String, Object>> getCustomerEmployee() {
-        return service.getCustomerEmployee();
+    @GetMapping("customerEmployee/{installKey}")
+    public List<Map<String, Object>> getCustomerEmployee(@PathVariable int installKey) {
+        return service.getCustomerEmployee(installKey);
     }
 
     // 설치 요청에 대한 정보 가져오기

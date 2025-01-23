@@ -28,7 +28,7 @@ export function Install() {
             item.consent === true
               ? "승인"
               : item.consent === false
-                ? "설치 반려"
+                ? "반려"
                 : "대기",
         }));
         const approveList = approveRes.data.map((item) => ({
@@ -37,7 +37,7 @@ export function Install() {
             item.consent === true
               ? "완료"
               : item.consent === false
-                ? "설치 확인 반려"
+                ? "반려"
                 : "승인",
         }));
 
@@ -75,7 +75,7 @@ export function Install() {
             bottom="60px"
             right="100px"
           >
-            출고 요청
+            설치 요청
           </Button>
         </Stack>
         <InstallRequest
@@ -87,11 +87,13 @@ export function Install() {
           installKey={selectedInstall?.installRequestKey}
           isOpen={approveDialogOpen}
           onClose={() => setApproveDialogOpen(false)}
+          setChange={setChange}
         />
         <InstallConfiguration
           installKey={selectedInstall?.installApproveKey}
           isOpen={configurationDialogOpen}
           onClose={() => setConfigurationDialogOpen(false)}
+          setChange={setChange}
         />
       </HStack>
     </Box>

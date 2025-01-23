@@ -19,13 +19,14 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Separator,
   Stack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
-export function InstallApprove({ installKey, isOpen, onClose }) {
+export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
   const initialInstallApprove = {
     installScheduleDate: "",
@@ -53,30 +54,33 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
 
   // 설치기사 정보 가져오기
   useEffect(() => {
-    axios
-      .get("api/install/customerEmployee")
-      .then((res) => setCustomerEmployeeList(res.data))
-      .catch((error) => console.log("설치기사 정보 오류:", error));
-  }, []);
+    if (installKey) {
+      axios
+        .get(`api/install/customerEmployee/${installKey}`)
+        .then((res) => setCustomerEmployeeList(res.data))
+        .catch((error) => console.log("설치기사 정보 오류:", error));
+    }
+  }, [installKey]);
 
   const handleApproveClick = () => {
-    // const approveData = {
-    //   installRequestKey: installKey,
-    //   itemCommonCode: installRequest[0]?.itemCommonCode,
-    //   installRequestAmount: installRequest[0]?.installRequestAmount,
-    //   customerInstallerNo,
-    //   customerEmployeeNo: "CUS0000000010", // 협력업체 직원 사번 (로그인된 사용자)
-    //   installScheduleDate: new Date(installScheduleDate),
-    //   installApproveNote: installRequest[0]?.installRequestNote || "", // 비고
-    // };
+    const approveData = {
+      installRequestKey: installKey,
+      itemCommonCode: installRequest[0]?.itemCommonCode,
+      installRequestAmount: installRequest[0]?.installRequestAmount,
+      customerInstallerNo,
+      customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자)
+      ...installApprove,
+    };
+    console.log("test");
     axios
-      .post("/api/install/approve", installApprove)
+      .post("/api/install/approve", approveData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           description: data.message.text,
           type: data.message.type,
         });
+        setChange((prev) => !prev);
         onClose();
       })
       .catch((e) => {
@@ -104,15 +108,15 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
         </DialogHeader>
         <DialogBody>
           <Box>
-            <Stack gap={4}>
-              <Field label={"가맹점명"} orientation="horizontal">
+            <Stack gap={"15px"}>
+              <Field label={"가맹점"} orientation="horizontal">
                 <Input value={installRequest.franchiseName} readOnly />
               </Field>
               <Field label={"가맹점 주소"} orientation="horizontal">
                 <Input value={installRequest.franchiseAddress} readOnly />
               </Field>
               <HStack>
-                <Field label={"품목명"} orientation="horizontal">
+                <Field label={"품목"} orientation="horizontal">
                   <Input value={installRequest.itemCommonName} readOnly />
                 </Field>
                 <Field label={"수량"} orientation="horizontal">
@@ -120,32 +124,38 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
                 </Field>
               </HStack>
               <HStack spacing={4}>
-                <Field label={"신청자 사번"} orientation="horizontal">
-                  <Input value={installRequest.businessEmployeeNo} readOnly />
-                </Field>
                 <Field label={"신청자"} orientation="horizontal">
                   <Input value={installRequest.businessEmployeeName} readOnly />
+                </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={installRequest.businessEmployeeNo} readOnly />
                 </Field>
               </HStack>
               <HStack>
                 {/*로그인 한 사용자의 사번, 이름 - customer*/}
-                <Field label={"승인자 사번"} orientation="horizontal">
-                  <Input value={id} readOnly />
-                </Field>
                 <Field label={"승인자"} orientation="horizontal">
                   <Input value={name} readOnly />
                 </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={id} readOnly />
+                </Field>
               </HStack>
               <HStack>
-                <Field label={"창고명"} orientation="horizontal">
+                <Field label={"창고"} orientation="horizontal">
                   <Input value={installRequest.warehouseName} readOnly />
                 </Field>
-                <Field label={"창고 위치"} orientation="horizontal">
+                <Field label={"창고 주소"} orientation="horizontal">
                   <Input value={installRequest.warehouseAddress} readOnly />
                 </Field>
               </HStack>
-
-              <Field label={"설치 예정 날짜"} orientation="horizontal">
+              <Field label={"요청 날짜"} orientation="horizontal">
+                <Input value={installRequest.installRequestDate} readOnly />
+              </Field>
+              <Field label={"요청 비고"} orientation="horizontal">
+                <Input value={installRequest.installRequestNote} readOnly />
+              </Field>
+              <Separator />
+              <Field label={"설치 예정일"} orientation="horizontal">
                 <Input
                   value={installApprove.installScheduleDate}
                   onChange={(e) =>
@@ -155,65 +165,70 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
                     })
                   }
                   type={"date"}
-                  // placeholder="9999-99-99"
-                  // ref={withMask("9999-99-99")}
                 />
               </Field>
-
-              <Field label="설치기사" orientation="horizontal">
-                <SelectRoot
-                  onValueChange={(e) => {
-                    const selectedCE = customerEmployeeList.find(
-                      (selectedCE) =>
-                        selectedCE.customer_installer_no === e.value[0],
-                    );
-                    console.log(e.value[0]);
-                    if (selectedCE) {
-                      setInstallApprove((prev) => ({
-                        ...prev,
-                        customerInstallerNo:
-                          selectedCE.customer_installer_no || "",
-                        customerInstallerName:
-                          selectedCE.customer_installer_name || "",
-                      }));
-                    }
-                    console.log(installApprove);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValueText>
-                      {installApprove.customerInstallerNo || "설치기사 선택"}
-                    </SelectValueText>
-                  </SelectTrigger>
-                  <SelectContent
-                    maxHeight={"100px"}
-                    style={{
-                      width: "85%",
-                      top: "40px",
-                      position: "absolute",
+              <HStack>
+                <Field label="설치기사" orientation="horizontal">
+                  <SelectRoot
+                    onValueChange={(e) => {
+                      const selectedCE = customerEmployeeList.find(
+                        (selectedCE) =>
+                          selectedCE.customer_installer_name === e.value[0],
+                      );
+                      if (selectedCE) {
+                        setInstallApprove((prev) => ({
+                          ...prev,
+                          customerInstallerName:
+                            selectedCE.customer_installer_name || "",
+                          customerInstallerNo:
+                            selectedCE.customer_installer_no || "",
+                        }));
+                      }
                     }}
                   >
-                    {customerEmployeeList
-                      .filter((customer) => customer.customer_installer_no)
-                      .map((customer) => (
-                        <SelectItem
-                          key={customer.customer_installer_no}
-                          item={customer.customer_installer_no}
-                        >
-                          {customer.customer_installer_no}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </SelectRoot>
-              </Field>
+                    <SelectTrigger
+                      onClick={() => {
+                        if (customerEmployeeList.length === 0 && installKey) {
+                          axios
+                            .get(`/api/install/customerEmployee/${installKey}`)
+                            .then((res) => setCustomerEmployeeList(res.data))
+                            .catch((error) =>
+                              console.log("설치기사 정보 오류 발생:", error),
+                            );
+                        }
+                      }}
+                    >
+                      <SelectValueText>
+                        {installApprove.customerInstallerName}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      maxHeight={"100px"}
+                      style={{
+                        width: "75%",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {customerEmployeeList
+                        .filter((customer) => customer.customer_installer_name)
+                        .map((customer) => (
+                          <SelectItem
+                            key={customer.customer_installer_name}
+                            item={customer.customer_installer_name}
+                          >
+                            {customer.customer_installer_name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </SelectRoot>
+                </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={installApprove.customerInstallerNo} readOnly />
+                </Field>
+              </HStack>
 
-              <Field label={"설치 기사 이름"} orientation="horizontal">
-                <Input value={installApprove.customerInstallerName} readOnly />
-              </Field>
-              <Field label={"요청 비고"} orientation="horizontal">
-                <Input value={installRequest.installRequestNote} readOnly />
-              </Field>
-              <Field label={"설치 비고"} orientation="horizontal">
+              <Field label={"비고"} orientation="horizontal">
                 <Input
                   value={installApprove.installApproveNote}
                   onChange={(e) =>
@@ -229,10 +244,10 @@ export function InstallApprove({ installKey, isOpen, onClose }) {
         </DialogBody>
         <DialogFooter>
           <HStack>
+            <Button variant="outline">반려</Button>
             <Button onClick={handleApproveClick} disabled={!isValid}>
-              설치 승인
+              승인
             </Button>
-            <Button>설치 반려</Button>
           </HStack>
         </DialogFooter>
         <DialogCloseTrigger />
