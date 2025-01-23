@@ -48,7 +48,13 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
                 <Input value={instk.inputCommonCode} />
               </Field>
               <Field orientation="horizontal" label={"입고 구분 명"}>
-                <Input value={instk.inputCommonCodeName} />
+                <Input
+                  value={
+                    instk.inputCommonCode === "RETRN"
+                      ? "회수 입고"
+                      : "구매 입고"
+                  }
+                />
               </Field>
             </HStack>
             <HStack>
@@ -77,10 +83,10 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </Field>
 
             <Field label={"창고 주소(코드)"} orientation="horizontal">
-              <Input readOnly value={"아직 안함"} />
+              <Input readOnly value={"WH5438332"} />
             </Field>
             <Field label={"창고 + 로케이션"} orientation="horizontal">
-              <Input readOnly value={"아직 안함"} />
+              <Input readOnly value={"창고 +로케이션"} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">
               <Input readOnly value={instk.inputStockDate} />

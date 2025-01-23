@@ -118,7 +118,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
               </Field>
             </HStack>
             <Field label={"창고 주소(코드)"} orientation="horizontal">
-              <Input value={"직접기입?"} />
+              <Input value={"WH5438332"} />
             </Field>
             <Field label={"가입고 승인자"} orientation="horizontal">
               <Input value={localStorage.getItem("name")} readOnly />
