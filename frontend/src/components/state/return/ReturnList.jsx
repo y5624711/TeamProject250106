@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Center,
   createListCollection,
   HStack,
   Input,
@@ -38,17 +37,17 @@ function ReturnList({
   const returnSearchKeywords = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "가맹점명", value: "franchiseName" },
+      { label: "가맹점", value: "franchiseName" },
       { label: "품목", value: "itemCommonName" },
       { label: "시리얼번호", value: "serialNo" },
       { label: "반품번호", value: "returnNo" },
-      { label: "협력업체명", value: "customerName" },
-      { label: "요청자명", value: "businessEmployeeName" },
-      { label: "요청자사번", value: "businessEmployeeNo" },
-      { label: "승인자명", value: "customerEmployeeName" },
+      { label: "협력업체", value: "customerName" },
+      { label: "신청자", value: "businessEmployeeName" },
+      { label: "신청자사번", value: "businessEmployeeNo" },
+      { label: "승인자", value: "customerEmployeeName" },
       { label: "승인자사번", value: "customerEmployeeNo" },
-      { label: "검수자명", value: "customerConfigurerName" },
-      { label: "검수자사번", value: "customerConfigurerNo" },
+      { label: "검수기사", value: "customerConfigurerName" },
+      { label: "검수기사 사번", value: "customerConfigurerNo" },
     ],
   });
 
@@ -72,59 +71,55 @@ function ReturnList({
 
   return (
     <Box>
-      {/*검색창*/}
-      {/*<SearchBar*/}
-      {/*  itemSearchOptions={returnSearchKeywords}*/}
-      {/*  onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}*/}
-      {/*/>*/}
-      <Center>
-        <HStack alignItems={"flex-start"} w={"80%"}>
-          <SelectRoot
-            collection={returnSearchKeywords}
-            postition={"relative"}
-            width={"200px"}
-            onValueChange={(value) => {
-              setLocalType(value.value[0]);
-            }}
-          >
-            <SelectTrigger>
-              <SelectValueText placeholder={"선택"} />
-            </SelectTrigger>
-            <SelectContent>
-              {returnSearchKeywords.items.map((e) => (
-                <SelectItem item={e} key={e.value}>
-                  {e.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-          <Input
-            value={localKeyword}
-            onChange={(e) => setLocalKeyword(e.target.value)}
-            placeholder="검색어를 입력해 주세요"
-          />
-          <Box
-            onClick={handleResetClick}
-            transform="translateX(-170%) translateY(30%)"
-            style={{ cursor: "pointer" }}
-          >
-            <BsArrowCounterclockwise size="25px" />
-          </Box>
-          <Button onClick={handleSearchClick} transform="translateX(-55%) ">
-            검색
-          </Button>
-        </HStack>
-      </Center>
+      {/*검색*/}
+      <HStack justifyContent="center" w={"100%"}>
+        <SelectRoot
+          collection={returnSearchKeywords}
+          postition={"relative"}
+          width={"160px"}
+          onValueChange={(value) => {
+            setLocalType(value.value[0]);
+          }}
+        >
+          <SelectTrigger>
+            <SelectValueText placeholder={"선택"} />
+          </SelectTrigger>
+          <SelectContent>
+            {returnSearchKeywords.items.map((e) => (
+              <SelectItem item={e} key={e.value}>
+                {e.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+        <Input
+          width="50%"
+          value={localKeyword}
+          onChange={(e) => setLocalKeyword(e.target.value)}
+          placeholder="검색어를 입력해 주세요."
+        />
+        <Box
+          onClick={handleResetClick}
+          transform="translateX(-170%) "
+          style={{ cursor: "pointer" }}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </Box>
+        <Button onClick={handleSearchClick} transform="translateX(-55%) ">
+          검색
+        </Button>
+      </HStack>
 
+      {/* 상태 분류 */}
       <RadioGroup
         name={filters.state}
         value={filters.state}
         onValueChange={(value) => handleFilterChange("state", value.value)}
-        my={5}
+        my={3}
       >
-        <HStack>
+        <HStack gap={6}>
           <Radio value="all">전체 조회</Radio>
-          <Radio value="request">요청 상태 조회</Radio>
+          <Radio value="request">대기 상태 조회</Radio>
           <Radio value="approve">승인 상태 조회</Radio>
           <Radio value="disapprove">반려 상태 조회</Radio>
         </HStack>
@@ -133,24 +128,34 @@ function ReturnList({
       {/*리스트*/}
       <Table.Root interactive my={3}>
         <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader onClick={() => onHeader("customer_key")}>
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => onHeader("customer_key")}
+            >
               <HStack align={"flex-start"}>
                 <Stack>
                   <MdOutlineNumbers />
                 </Stack>
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader>가맹점 명</Table.ColumnHeader>
-            <Table.ColumnHeader>품목</Table.ColumnHeader>
-            <Table.ColumnHeader>시리얼 번호</Table.ColumnHeader>
-            <Table.ColumnHeader>반품 번호</Table.ColumnHeader>
-            <Table.ColumnHeader>요청자</Table.ColumnHeader>
-            <Table.ColumnHeader>협력 업체</Table.ColumnHeader>
-            <Table.ColumnHeader>승인자</Table.ColumnHeader>
-            <Table.ColumnHeader>검수기사</Table.ColumnHeader>
-            <Table.ColumnHeader>날짜</Table.ColumnHeader>
-            <Table.ColumnHeader>상태</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">가맹점</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">
+              담당 업체
+            </Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">
+              시리얼 번호
+            </Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">
+              반품 번호
+            </Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">산청자</Table.ColumnHeader>
+
+            <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">검수기사</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -161,19 +166,26 @@ function ReturnList({
                 onRowClick(data.returnRequestKey);
               }}
             >
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell>{data.franchiseName}</Table.Cell>
-              <Table.Cell>{data.itemCommonName}</Table.Cell>
-              <Table.Cell>{data.serialNo}</Table.Cell>
-              <Table.Cell>{data.returnNo}</Table.Cell>
-              <Table.Cell>{data.businessEmployeeName}</Table.Cell>
-              <Table.Cell>{data.customerName}</Table.Cell>
-              <Table.Cell>{data.customerEmployeeName}</Table.Cell>
-              <Table.Cell>{data.customerConfigurerName}</Table.Cell>
-              <Table.Cell>
+              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell textAlign="center">{data.franchiseName}</Table.Cell>
+              <Table.Cell textAlign="center">{data.itemCommonName}</Table.Cell>
+              <Table.Cell textAlign="center">{data.customerName}</Table.Cell>
+
+              <Table.Cell textAlign="center">{data.serialNo}</Table.Cell>
+              <Table.Cell textAlign="center">{data.returnNo}</Table.Cell>
+              <Table.Cell textAlign="center">
+                {data.businessEmployeeName}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {data.customerEmployeeName}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {data.customerConfigurerName}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
                 {data.returnApproveDate || data.returnRequestDate}
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell textAlign="center">
                 {data.returnConsent == 1
                   ? "승인"
                   : data.returnConsent == 0

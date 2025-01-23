@@ -51,6 +51,7 @@ public class ReturnService {
 
     //요청 정보 조회 (1개)
     public List<Return> getRequestInfo(String returnRequestKey) {
+//        System.out.println("key: " + returnRequestKey);
 //        System.out.println("반환: " + mapper.getRequestInfo(returnRequestKey));
         return mapper.getRequestInfo(returnRequestKey);
     }

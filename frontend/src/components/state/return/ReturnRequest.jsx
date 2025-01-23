@@ -72,25 +72,25 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   };
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleCancel}>
+    <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>반품 요청</DialogTitle>
+          <DialogTitle>반품 신청</DialogTitle>
         </DialogHeader>
         <DialogBody
-          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
-          <Field orientation="horizontal" label="가맹점명">
+          <Field orientation="horizontal" label="가맹점">
             <Input
               value={requestData.franchiseName}
-              placeholder="OOO점"
+              // placeholder="OOO점"
               onChange={handleInput("franchiseName")}
             />
             <Button>조회</Button>
           </Field>
           <Field orientation="horizontal" label="시리얼 번호">
             <Input
-              placeholder="00000000000000000000"
+              // placeholder="00000000000000000000"
               value={requestData.serialNo}
               onChange={handleInput("serialNo")}
             />
@@ -98,33 +98,33 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               조회
             </Button>
           </Field>
-          <Field orientation="horizontal" label="품목명">
+          <Field orientation="horizontal" label="품목">
             <Input
               readOnly
               value={requestData.itemCommonName}
-              placeholder={"OOOO"}
+              // placeholder={"OOOO"}
             />
           </Field>
-          <Field orientation="horizontal" label="회수 업체">
+          <Field orientation="horizontal" label="담당 업체">
             <Input
               readOnly
               value={requestData.customerName}
-              placeholder="OOOO"
+              // placeholder="OOOO"
             />
           </Field>
           <HStack>
-            <Field orientation="horizontal" label="신청자 사번">
-              <Input
-                value={requestData.businessEmployeeNo}
-                placeholder="0000000000000"
-                onChange={handleInput("businessEmployeeNo")}
-              />
-            </Field>
-            <Field orientation="horizontal" label="신청자 명">
+            <Field orientation="horizontal" label="신청자">
               <Input
                 value={requestData.businessEmployeeName}
-                placeholder="홍길동"
+                // placeholder="홍길동"
                 onChange={handleInput("businessEmployeeName")}
+              />
+            </Field>
+            <Field orientation="horizontal" label="사번">
+              <Input
+                value={requestData.businessEmployeeNo}
+                // placeholder="0000000000000"
+                onChange={handleInput("businessEmployeeNo")}
               />
             </Field>
           </HStack>
@@ -142,7 +142,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestButtonClick}>요청</Button>
+          <Button onClick={handleRequestButtonClick}>신청</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

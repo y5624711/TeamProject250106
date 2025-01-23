@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Separator, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -36,7 +36,7 @@ function ReturnApprove({
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        // console.log("호출", res.data);
+        console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
@@ -97,42 +97,43 @@ function ReturnApprove({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {approveData.returnConsent ? "반품 승인 상세" : "반품 승인 여부"}
+            {approveData.returnConsent ? "반품 승인 상세" : "반품 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
-          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
-          <Field orientation="horizontal" label="가맹점명">
+          <Field orientation="horizontal" label="가맹점">
             <Input readOnly value={approveData.franchiseName} />
           </Field>
           <HStack>
+            <Field orientation="horizontal" label="품목">
+              <Input readOnly value={approveData.itemCommonName} />
+            </Field>
             <Field orientation="horizontal" label="시리얼 번호">
               <Input readOnly defaultValue={approveData.serialNo} />
             </Field>
-            <Field orientation="horizontal" label="품목명">
-              <Input readOnly value={approveData.itemCommonName} />
-            </Field>
           </HStack>
           <HStack>
-            <Field orientation="horizontal" label="신청자 사번">
-              <Input readOnly value={approveData.businessEmployeeNo} />
-            </Field>
-            <Field orientation="horizontal" label="신청자 명">
+            <Field orientation="horizontal" label="신청자">
               <Input readOnly value={approveData.businessEmployeeName} />
             </Field>
-          </HStack>{" "}
-          <Field orientation="horizontal" label="요청 날짜">
+            <Field orientation="horizontal" label="사번">
+              <Input readOnly value={approveData.businessEmployeeNo} />
+            </Field>
+          </HStack>
+
+          <Field orientation="horizontal" label="담당 업체">
+            <Input readOnly value={approveData.customerName} />
+          </Field>
+          <Field orientation="horizontal" label="신청 날짜">
             <Input
               readOnly
               type={"date"}
               value={approveData.returnRequestDate}
             />
           </Field>
-          <Field orientation="horizontal" label="회수 업체">
-            <Input readOnly value={approveData.customerName} />
-          </Field>
-          <Field orientation="horizontal" label="요청 비고">
+          <Field orientation="horizontal" label="신청 비고">
             {<Input readOnly value={"내용 없음"} /> || (
               <Textarea readOnly value={approveData.returnRequestNote} />
             )}
@@ -142,75 +143,78 @@ function ReturnApprove({
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
               <HStack>
-                <Field orientation="horizontal" label="승인자 사번">
-                  <Input readOnly value={approveData.customerEmployeeNo} />
-                </Field>
-                <Field orientation="horizontal" label="승인자 명">
+                <Field orientation="horizontal" label="승인자">
                   <Input readOnly value={approveData.customerEmployeeName} />
+                </Field>
+                <Field orientation="horizontal" label="사번">
+                  <Input readOnly value={approveData.customerEmployeeNo} />
                 </Field>
               </HStack>
               <HStack>
-                <Field orientation="horizontal" label="검수자 사번">
-                  <Input readOnly value={approveData.customerConfigurerNo} />
-                </Field>
-                <Field orientation="horizontal" label="검수자 명">
+                <Field orientation="horizontal" label="검수기사">
                   <Input readOnly value={approveData.customerConfigurerName} />
                 </Field>
+                <Field orientation="horizontal" label="사번">
+                  <Input readOnly value={approveData.customerConfigurerNo} />
+                </Field>
               </HStack>
-              <Field orientation="horizontal" label="회수 날짜">
-                <Input readOnly value={"미정" || approveData.returnDate} />
+              <Field orientation="horizontal" label="회수 예정일">
+                <Input readOnly value={approveData.returnDate || "미정"} />
               </Field>
               <Field orientation="horizontal" label="승인 날짜">
                 <Input readOnly value={approveData.returnApproveDate} />
               </Field>
-              <Field orientation="horizontal" label="비고">
-                <Textarea readOnly value={approveData.returnApproveNote} />
+              <Field orientation="horizontal" label="승인 비고">
+                {<Input readOnly value={"내용 없음"} /> || (
+                  <Textarea readOnly value={approveData.returnApproveNote} />
+                )}
               </Field>
             </Box>
           ) : (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
+              <Separator />
               <HStack>
-                <Field orientation="horizontal" label="승인자 사번">
-                  <Input
-                    value={approveData.customerEmployeeNo}
-                    placeholder="0000000000000"
-                    onChange={handleApproveInput("customerEmployeeNo")}
-                  />
-                </Field>
-                <Field orientation="horizontal" label="승인자 명">
+                <Field orientation="horizontal" label="승인자">
                   <Input
                     value={approveData.customerEmployeeName}
-                    placeholder="홍길동"
+                    // placeholder="홍길동"
                     onChange={handleApproveInput("customerEmployeeName")}
                   />
                 </Field>
-              </HStack>
-              <HStack>
-                <Field orientation="horizontal" label="검수자 사번">
+                <Field orientation="horizontal" label="사번">
                   <Input
-                    value={approveData.customerConfigurerNo}
-                    placeholder="0000000000000"
-                    onChange={handleApproveInput("customerConfigurerNo")}
+                    value={approveData.customerEmployeeNo}
+                    // placeholder="0000000000000"
+                    onChange={handleApproveInput("customerEmployeeNo")}
                   />
                 </Field>
-                <Field orientation="horizontal" label="검수자 명">
+              </HStack>
+              <HStack>
+                <Field orientation="horizontal" label="검수기사">
                   <Input
                     value={approveData.customerConfigurerName}
-                    placeholder="홍길동"
+                    // placeholder="홍길동"
                     onChange={handleApproveInput("customerConfigurerName")}
                   />
                 </Field>
+                <Field orientation="horizontal" label="사번">
+                  <Input
+                    value={approveData.customerConfigurerNo}
+                    // placeholder="0000000000000"
+                    onChange={handleApproveInput("customerConfigurerNo")}
+                  />
+                </Field>
               </HStack>
-              <Field orientation="horizontal" label="회수 날짜">
+              <Field orientation="horizontal" label="회수 예정일">
                 <Input
                   type="date" // 사용자가 달력으로 날짜 선택 가능
                   value={approveData.returnDate || ""}
                   onChange={handleApproveInput("returnDate")}
                 />
               </Field>
-              <Field orientation="horizontal" label="비고">
+              <Field orientation="horizontal" label="승인 비고">
                 <Textarea
                   value={approveData.returnApproveNote}
                   placeholder="최대 50자"
@@ -223,14 +227,16 @@ function ReturnApprove({
         <DialogFooter>
           {approveData.returnConsent ? (
             <Button onClick={onClose} variant="outline">
-              목록으로
+              취소
             </Button>
           ) : (
             <HStack>
-              <Button onClick={onClose} variant="outline">
-                취소
+              {/*<Button onClick={onClose} variant="outline">*/}
+              {/*  취소*/}
+              {/*</Button>*/}
+              <Button onClick={handleDisapproveButton} variant="outline">
+                반려
               </Button>
-              <Button onClick={handleDisapproveButton}>반려</Button>
               <Button onClick={handleApproveButtonClick}>승인</Button>
             </HStack>
           )}
