@@ -25,7 +25,7 @@ export function Pagination({ count, pageSize, onPageChange }) {
   };
 
   return (
-    <Center position="fixed" bottom="10" w="100%" p={4}>
+    <Center bottom="10" w="100%" p={4}>
       <PaginationRoot
         onPageChange={(e) => handlePageChange(e.page)}
         count={count}

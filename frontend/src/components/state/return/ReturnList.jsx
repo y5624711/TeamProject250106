@@ -9,10 +9,8 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Stack,
   Table,
 } from "@chakra-ui/react";
-import { MdOutlineNumbers } from "react-icons/md";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Button } from "../../ui/button.jsx";
@@ -133,11 +131,7 @@ function ReturnList({
               textAlign="center"
               onClick={() => onHeader("customer_key")}
             >
-              <HStack align={"flex-start"}>
-                <Stack>
-                  <MdOutlineNumbers />
-                </Stack>
-              </HStack>
+              #
             </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">가맹점</Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
