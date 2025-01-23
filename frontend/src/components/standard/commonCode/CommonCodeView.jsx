@@ -110,7 +110,6 @@ export function CommonCodeView({
       commonCodeActive: editCommonCode, // 체크박스 상태 반영
     };
 
-    console.log(editedCommonCode);
     axios
       .put(`/api/commonCode/edit/${commonCodeKey}`, updatedCommonCode)
       .then((res) => res.data)

@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  createListCollection,
-  HStack,
-  Table,
-} from "@chakra-ui/react";
+import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -18,7 +12,6 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
-  setRadioValue,
   radioValue,
 }) {
   // 검색 옵션
@@ -38,8 +31,6 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
-  console.log(radioValue);
-
   return (
     <Box w={"100%"}>
       <SearchBar
@@ -49,14 +40,9 @@ export function CommonCodeList({
       <ActiveSwitch
         onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <RadioGroup defaultValue={radioValue} my={1} marginBottom={2}>
-        <HStack gap={6}>
-          <Radio value="1">전체 조회</Radio>
-          <Radio value="2">시스템 코드 조회</Radio>
-          <Radio value="3">물품 코드 조회</Radio>
-        </HStack>
-      </RadioGroup>
-
+      <FilterRadioGroup
+        onRadioChange={(nextRadioValue) => setSearchParams(nextRadioValue)}
+      />
       <Box>
         <Table.Root>
           <Table.Header>

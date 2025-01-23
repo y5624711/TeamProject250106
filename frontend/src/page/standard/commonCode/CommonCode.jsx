@@ -16,8 +16,6 @@ export function CommonCode() {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
-  const [radioValue, setRadioValue] = useState("1");
-
   // 품목 공통 코드 목록 가져오기
   useEffect(() => {
     axios
@@ -50,8 +48,8 @@ export function CommonCode() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack flex={1} p={5}>
-          <Heading size={"xl"} m={5} mb={3}>
+        <Stack flex={1} p={5} pt={6}>
+          <Heading size={"xl"} mb={3}>
             공통코드 관리
           </Heading>
           <Box>
@@ -62,8 +60,6 @@ export function CommonCode() {
               searchParams={searchParams}
               setSearchParams={setSearchParams}
               onRowClick={handleRowClick}
-              setRadioValue={setRadioValue}
-              radioValue={radioValue}
             />
             <Button
               onClick={() => setAddDialogOpen(true)}
