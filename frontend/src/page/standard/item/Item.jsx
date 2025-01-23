@@ -66,7 +66,7 @@ export function Item() {
             bottom="100px"
             right="100px"
           >
-            물품 등록
+            품목 등록
           </Button>
         </Stack>
         <ItemView
