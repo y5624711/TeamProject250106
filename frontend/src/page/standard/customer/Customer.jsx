@@ -71,7 +71,7 @@ function Customer() {
   // 리스트 행 클릭 시 동작
   const handleRowClick = (key) => {
     setCustomerKey(key);
-    setViewDialogOpen(true);
+    setEditDialogOpen(true);
   };
 
   //협력사 등록
