@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -102,23 +104,34 @@ public class InstallController {
 
     // 설치 가능한 품목명, 품목 코드 가져오기
     @GetMapping("commonCode")
-    public List<Map<String, String>> getInstallItemList() {
+    public List<Map<String, Object>> getInstallItemList() {
         return service.getInstallItemList();
+    }
+
+    // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
+    @GetMapping("franchise")
+    public List<Map<String, String>> getInstallFranchiseList() {
+        return service.getInstallFranchiseList();
     }
 
     // 설치 요청
     @PostMapping("request")
-    public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install) {
-        if (service.installRequest(install)) {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success",
-                            "text", "설치 요청이 등록되었습니다."),
-                    "data", install
-            ));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install, Authentication authentication) {
+        if (service.requestValidate(install)) {
+            if (service.installRequest(install, authentication)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "설치 요청이 등록되었습니다."),
+                        "data", install));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "설치 요청이 실패하였습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 요청이 실패하였습니다.")
-            ));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "상품명, 가격, 거래 장소가 입력되지 않았습니다.")));
         }
     }
 }

@@ -11,6 +11,8 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import {
+  Box,
+  Heading,
   HStack,
   Input,
   SelectContent,
@@ -22,22 +24,21 @@ import {
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
-import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { toaster } from "../../ui/toaster.jsx";
 
-export function InstallRequest({ isOpen, onClose }) {
+export function InstallRequest({ isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
   const initialInstallRequest = {
     franchiseName: "",
     itemCommonName: "",
     installRequestAmount: "",
     franchiseAddress: "",
-    departmentName: "",
-    employeeName: "",
     customerName: "",
     installRequestNote: "",
   };
   const [installItemList, setInstallItemList] = useState([]);
+  const [installFranchiseList, setInstallFranchiseList] = useState([]);
   const [installRequest, setInstallRequest] = useState(initialInstallRequest);
 
   // 요청 창 닫히면 초기화
@@ -50,6 +51,14 @@ export function InstallRequest({ isOpen, onClose }) {
     const value = e.target ? e.target.value : e.value;
     setInstallRequest((prev) => ({ ...prev, [field]: value }));
   };
+
+  // 협력업체 정보 가져오기
+  useEffect(() => {
+    axios
+      .get("api/install/franchise")
+      .then((res) => setInstallFranchiseList(res.data))
+      .catch((error) => console.log("협력업체 정보 오류:", error));
+  }, []);
 
   // 사용중인 품목명, 품목 코드 가져오기
   useEffect(() => {
@@ -69,16 +78,25 @@ export function InstallRequest({ isOpen, onClose }) {
           description: data.message.text,
           type: data.message.type,
         });
+        setChange((prev) => !prev);
         handleClose();
       })
       .catch((e) => {
         const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
+    console.log(installRequest);
   };
 
+  // 유효성 검증
+  const isValid =
+    installRequest.franchiseName &&
+    installRequest.itemCommonName &&
+    installRequest.installRequestAmount &&
+    installRequest.installRequestAmount <= installRequest.countItem;
+
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleClose}>
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>출고 요청</DialogTitle>
@@ -86,11 +104,46 @@ export function InstallRequest({ isOpen, onClose }) {
         <DialogBody>
           <Stack gap={5}>
             <Field label="가맹점명" orientation="horizontal">
-              <Input
-                placeholder="가맹점명"
-                value={installRequest.franchiseName}
-                onChange={handleInputChange("franchiseName")}
-              />
+              <SelectRoot
+                onValueChange={(e) => {
+                  const selectedFranchise = installFranchiseList.find(
+                    (franchise) => franchise.franchise_name === e.value[0],
+                  );
+                  if (selectedFranchise) {
+                    setInstallRequest((prev) => ({
+                      ...prev,
+                      franchiseCode: selectedFranchise.franchise_code || "",
+                      franchiseName: selectedFranchise.franchise_name || "",
+                      franchiseAddress:
+                        selectedFranchise.franchise_address || "",
+                    }));
+                  }
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValueText>
+                    {installRequest.franchiseName || "가맹점 선택"}
+                  </SelectValueText>
+                </SelectTrigger>
+                <SelectContent
+                  style={{
+                    width: "85%",
+                    top: "40px",
+                    position: "absolute",
+                  }}
+                >
+                  {installFranchiseList
+                    .filter((franchise) => franchise.franchise_name) // 빈 데이터 필터링
+                    .map((franchise) => (
+                      <SelectItem
+                        key={franchise.franchise_name}
+                        item={franchise.franchise_name} // item을 value로 변경
+                      >
+                        {franchise.franchise_name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </SelectRoot>
             </Field>
             <Field label="품목" orientation="horizontal">
               <SelectRoot
@@ -105,6 +158,7 @@ export function InstallRequest({ isOpen, onClose }) {
                       itemCommonName: selectedItem.item_common_name || "",
                       customerName: selectedItem.customer_name || "",
                       customerCode: selectedItem.customer_code || "",
+                      countItem: selectedItem.count_item,
                     }));
                   }
                 }}
@@ -134,13 +188,29 @@ export function InstallRequest({ isOpen, onClose }) {
                 </SelectContent>
               </SelectRoot>
             </Field>
+            <Box display="flex" justifyContent="flex-end">
+              <Heading size="xs" color="gray.500" my={-3}>
+                가능한 수량:{" "}
+                {installRequest.countItem > 0 ? installRequest.countItem : 0}
+              </Heading>
+            </Box>
             <Field label="수량" orientation="horizontal">
               <Input
+                type="number"
                 placeholder="수량"
                 value={installRequest.installRequestAmount}
                 onChange={handleInputChange("installRequestAmount")}
+                min="1"
               />
             </Field>
+            {installRequest.installRequestAmount > installRequest.countItem && (
+              <Box display="flex">
+                <Heading size="xs" color="gray.500" my={-3} ml={"90px"}>
+                  출고 요청 수량이 많습니다.:{" "}
+                  {installRequest.countItem > 0 ? installRequest.countItem : 0}
+                </Heading>
+              </Box>
+            )}
             <Field label="가맹점 주소" orientation="horizontal">
               <Input
                 placeholder="가맹점 주소"
@@ -158,6 +228,7 @@ export function InstallRequest({ isOpen, onClose }) {
             </HStack>
             <Field label="협력업체" orientation="horizontal">
               <Input
+                readOnly
                 placeholder="협력업체"
                 value={installRequest.customerName}
                 onChange={handleInputChange("customerName")}
@@ -178,7 +249,9 @@ export function InstallRequest({ isOpen, onClose }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestClick}>출고 요청</Button>
+          <Button onClick={handleRequestClick} disabled={!isValid}>
+            출고 요청
+          </Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

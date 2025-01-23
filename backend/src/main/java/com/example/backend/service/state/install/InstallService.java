@@ -3,7 +3,7 @@ package com.example.backend.service.state.install;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.mapper.state.install.InstallMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,20 +16,30 @@ import java.util.Map;
 public class InstallService {
 
     final InstallMapper mapper;
-    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
+
+    // 가맹점명, 품목, 수량 입력됐는지 검증
+    public boolean requestValidate(Install install) {
+        boolean franchiseName = install.getFranchiseName().trim().length() > 0;
+        boolean itemCommonName = install.getItemCommonName().trim().length() > 0;
+        boolean amount = install.getInstallRequestAmount() > 0;
+
+        return franchiseName && itemCommonName && amount;
+    }
 
     // 설치 요청
-    public boolean installRequest(Install install) {
-        // 임시로 가맹점 코드 입력 -> 가맹점 명을 통해 클라이언트에서 가맹점 코드로 처리 필요
-        install.setFranchiseCode("FC12345678901");
-        // 임시로 신청자 직원 사번 입력 -> 로그인한 사용자의 사번으로 설정
-        install.setBusinessEmployeeNo("EMP0000000001");
+    public boolean installRequest(Install install, Authentication authentication) {
+        install.setBusinessEmployeeNo(authentication.getName());
         int cnt = mapper.installRequest(install);
         return cnt == 1;
     }
 
+    // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
+    public List<Map<String, String>> getInstallFranchiseList() {
+        return mapper.getInstallFranchiseList();
+    }
+
     // 설치 가능한 품목명, 품목 코드 가져오기
-    public List<Map<String, String>> getInstallItemList() {
+    public List<Map<String, Object>> getInstallItemList() {
         return mapper.getInstallItemList();
     }
 

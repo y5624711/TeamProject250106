@@ -15,6 +15,7 @@ export function Install() {
   const [installList, setInstallList] = useState([]);
   const [installKey, setInstallKey] = useState(null);
   const [selectedInstall, setSelectedInstall] = useState(null); // 선택된 설치 정보
+  const [change, setChange] = useState();
 
   useEffect(() => {
     const fetchRequestList = axios.get("/api/install/list/request");
@@ -47,8 +48,7 @@ export function Install() {
       .catch((error) => {
         console.error("데이터 요청 중 오류 발생: ", error);
       });
-  }, []);
-  console.log(installList);
+  }, [change]);
 
   const handleRowClick = (key) => {
     setSelectedInstall(key);
@@ -82,6 +82,7 @@ export function Install() {
         <InstallRequest
           isOpen={requestDialogOpen}
           onClose={() => setRequestDialogOpen(false)}
+          setChange={setChange}
         />
         <InstallApprove
           installKey={selectedInstall?.installRequestKey}

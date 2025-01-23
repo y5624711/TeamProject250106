@@ -43,4 +43,5 @@ public class Install {
     private String warehouseCode;
     private String inoutHistoryNote;
     private Boolean consent;
+    private Integer countItem;
 }
