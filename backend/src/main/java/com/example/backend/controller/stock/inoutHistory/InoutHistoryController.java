@@ -26,7 +26,6 @@ public class InoutHistoryController {
 
     @GetMapping("view/{inoutHistoryKey}")
     public InoutHistory view(@PathVariable Integer inoutHistoryKey) {
-        System.out.println(inoutHistoryKey);
         return service.view(inoutHistoryKey);
     }
 }

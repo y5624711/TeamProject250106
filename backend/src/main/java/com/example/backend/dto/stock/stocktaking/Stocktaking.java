@@ -23,5 +23,9 @@ public class Stocktaking {
     private String customerEmployeeName;
     //    전화번호
     private String employeeTel;
+    //    업체 전화번호
+    private String customerTel;
+    //    비고
+    private String stocktakingNote;
 
 }

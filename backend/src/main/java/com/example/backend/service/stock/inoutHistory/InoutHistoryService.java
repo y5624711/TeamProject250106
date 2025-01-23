@@ -25,7 +25,6 @@ public class InoutHistoryService {
     }
 
     public InoutHistory view(Integer inoutHistoryKey) {
-        System.out.println(inoutHistoryKey);
         return mapper.view(inoutHistoryKey);
     }
 }

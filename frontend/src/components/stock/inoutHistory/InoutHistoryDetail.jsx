@@ -15,7 +15,7 @@ import InoutHistoryView from "./InoutHistoryView.jsx";
 
 function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="xl">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

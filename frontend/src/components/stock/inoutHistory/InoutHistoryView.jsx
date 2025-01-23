@@ -33,16 +33,35 @@ function InoutHistoryView({ inoutHistoryKey }) {
       )}
       시리얼
       <Input value={inoutHistoryDetail.serialNo} readOnly />
+      품목명
+      <Input value={inoutHistoryDetail.itemName} readOnly />
+      품목 코드
+      <Input value={inoutHistoryDetail.itemCode} readOnly />
+      창고명
+      <Input value={inoutHistoryDetail.warehouseName} readOnly />
       창고 코드
       <Input value={inoutHistoryDetail.warehouseCode} readOnly />
+      본사직원명
+      <Input value={inoutHistoryDetail.businessEmployeeName} readOnly />
       본사직원 사번
       <Input value={inoutHistoryDetail.businessEmployeeNo} readOnly />
+      협력업체 직원명
+      <Input value={inoutHistoryDetail.customerEmployeeName} readOnly />
       협력업체 직원 사번
       <Input value={inoutHistoryDetail.customerEmployeeNo} readOnly />
-      가맹점 코드
-      <Input value={inoutHistoryDetail.franchiseCode} readOnly />
-      로케이션
-      <Input value={inoutHistoryDetail.locationKey} readOnly />
+      {inoutHistoryDetail.inoutCommonCode === "in" ? (
+        <Box>
+          로케이션
+          <Input value={inoutHistoryDetail.locationKey} readOnly />
+        </Box>
+      ) : (
+        <Box>
+          가맹점명
+          <Input value={inoutHistoryDetail.franchiseName} readOnly />
+          가맹점 코드
+          <Input value={inoutHistoryDetail.franchiseCode} readOnly />
+        </Box>
+      )}
       날짜
       <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
       비고
