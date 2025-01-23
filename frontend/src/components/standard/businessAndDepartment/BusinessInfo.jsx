@@ -1,8 +1,15 @@
-import { Box, Flex, Heading, HStack, Spacer, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Spacer,
+  Stack,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
-import { CustomInput } from "./CustomInput.jsx";
 
 export function BusinessInfo({
   business,
@@ -34,7 +41,7 @@ export function BusinessInfo({
   };
 
   return (
-    <Box p={5} bg={"gray.200"} borderRadius="10px">
+    <Box p={5} bg={"gray.200"}>
       <Box>
         <Flex>
           <Heading>사업장 정보</Heading>
@@ -46,7 +53,8 @@ export function BusinessInfo({
         <Stack>
           <HStack gap={5}>
             <Field label={"회사명"}>
-              <CustomInput
+              <Input
+                variant="subtle"
                 value={business.businessName}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -57,7 +65,8 @@ export function BusinessInfo({
               />
             </Field>
             <Field label={"대표"}>
-              <CustomInput
+              <Input
+                variant="subtle"
                 value={business.businessRep || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -68,7 +77,8 @@ export function BusinessInfo({
               />
             </Field>
             <Field label={"사업자번호"}>
-              <CustomInput
+              <Input
+                variant="subtle"
                 value={business.businessNo || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -81,7 +91,8 @@ export function BusinessInfo({
           </HStack>
           <HStack gap={5}>
             <Field label={"대표 전화번호"}>
-              <CustomInput
+              <Input
+                variant="subtle"
                 value={business.businessTel || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -92,7 +103,8 @@ export function BusinessInfo({
               />
             </Field>
             <Field label={"팩스번호"}>
-              <CustomInput
+              <Input
+                variant="subtle"
                 value={business.businessFax || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -104,7 +116,8 @@ export function BusinessInfo({
             </Field>
           </HStack>
           <Field label={"주소"}>
-            <CustomInput
+            <Input
+              variant="subtle"
               value={business.businessAddress || ""}
               onChange={(e) =>
                 setBusiness((prev) => ({

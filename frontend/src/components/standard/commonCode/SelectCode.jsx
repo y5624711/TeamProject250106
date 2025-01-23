@@ -22,7 +22,8 @@ export function SelectCode({ selectOptions, onChange }) {
       collection={selectOptions}
       position="relative"
       pt={"10px"}
-      pb={"10px"}
+      marginBottom={15}
+      marginTop={5}
       onValueChange={handleSelect}
     >
       <SelectLabel>코드 종류 선택</SelectLabel>

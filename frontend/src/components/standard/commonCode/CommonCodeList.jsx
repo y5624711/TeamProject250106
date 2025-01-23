@@ -1,9 +1,16 @@
 import React from "react";
-import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  createListCollection,
+  HStack,
+  Table,
+} from "@chakra-ui/react";
 import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -30,7 +37,7 @@ export function CommonCodeList({
   ];
 
   return (
-    <Box px={10}>
+    <Box w={"100%"}>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -38,10 +45,18 @@ export function CommonCodeList({
       <ActiveSwitch
         onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
+      <RadioGroup defaultValue="1" my={1} marginBottom={2}>
+        <HStack gap={6}>
+          <Radio value="1">전체 조회</Radio>
+          <Radio value="2">시스템 코드 조회</Radio>
+          <Radio value="3">물품 코드 조회</Radio>
+        </HStack>
+      </RadioGroup>
+
       <Box>
         <Table.Root>
-          <Table.Header style={{ backgroundColor: "blue", color: "white" }}>
-            <Table.Row>
+          <Table.Header>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Sort
                 sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>
@@ -64,12 +79,16 @@ export function CommonCodeList({
                 bg={item.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell verticalAlign="middle" textAlign="center">
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell verticalAlign="middle" textAlign="center">
                   {item.commonCodeType}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{item.commonCode}</Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell verticalAlign="middle" textAlign="center">
+                  {item.commonCode}
+                </Table.Cell>
+                <Table.Cell verticalAlign="middle" textAlign="center">
                   {item.commonCodeName}
                 </Table.Cell>
               </Table.Row>

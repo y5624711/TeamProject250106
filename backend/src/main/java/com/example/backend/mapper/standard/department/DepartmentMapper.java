@@ -68,7 +68,8 @@ public interface DepartmentMapper {
             SET department_name = #{departmentName},
                 department_tel = #{departmentTel},
                 department_fax = #{departmentFax},
-                department_note = #{departmentNote}
+                department_note = #{departmentNote},
+                department_active = #{departmentActive}
             WHERE department_key = #{departmentKey}
             """)
     int updateDepartment(Department department);

@@ -50,7 +50,7 @@ export function BusinessSearchAndFilter({
   }
 
   return (
-    <HStack justifyContent="center">
+    <HStack justifyContent="center" mt={5}>
       {/*셀렉트 &&검색창*/}
       <SelectRoot
         collection={optionList}
@@ -58,7 +58,7 @@ export function BusinessSearchAndFilter({
         onValueChange={(sel) => {
           setSearch({ ...search, type: sel.value[0] });
         }}
-        width="100px"
+        width="150px"
         position="relative"
       >
         <SelectTrigger>
@@ -86,6 +86,7 @@ export function BusinessSearchAndFilter({
         onChange={(e) =>
           setSearch({ ...search, keyword: e.target.value.trim() })
         }
+        placeholder={"검색어를 입력해 주세요"}
         onKeyDown={handlePressKey}
       />
       <Button onClick={handleSearchClick}>검색</Button>

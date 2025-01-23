@@ -18,9 +18,9 @@ export function BusinessListTable({
 
   return (
     <Box>
-      <Table.Root variant={"outline"}>
+      <Table.Root>
         <Table.Header>
-          <Table.Row whiteSpace={"nowrap"}>
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             {columnsList.map((col) => (
               <SortableColumnHeader
                 key={col.key}
