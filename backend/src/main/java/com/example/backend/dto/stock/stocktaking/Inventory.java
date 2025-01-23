@@ -6,7 +6,11 @@ import lombok.Data;
 public class Inventory {
     private Integer itemCurrentKey;
     private String itemCode;
-    private String itemCurrentCommonCode;
+    private String wareHouseCode;
+    private String commonCodeName;
+    private String wareHouseName;
+    private String wareHouseCity;
+    private String wareHouseAddress;
     private String customerName;
     private Integer count;
 }
