@@ -84,13 +84,11 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
             <HStack>
               <Field label={"주문 승인자"} orientation="horizontal">
-                <Input readOnly value={"김용수"} />
-                {/*<Input readOnl value={instk.inputStockEmployeeName} />*/}
+                <Input readOnl value={instk.inputStockEmployeeName} />
               </Field>
 
               <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={"CUSEMP0000010"} />
-                {/*<Input readOnl value={instk.inputStockEmployeeNo} />*/}
+                <Input readOnl value={instk.inputStockEmployeeNo} />
               </Field>
             </HStack>
 
@@ -98,8 +96,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
               <Input readOnly value={"창고 +로케이션"} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">
-              <Input readOnly value={"2025-01-23"} />
-              {/*<Input readOnly value={instk.inputStockDate} />*/}
+              <Input readOnly value={instk.inputStockDate} />
             </Field>
             <Separator />
             <Field label={"비고"} orientation="horizontal">
@@ -107,7 +104,17 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </Field>
           </Stack>
         </DialogBody>
-        <DialogFooter></DialogFooter>
+        <DialogFooter>
+          <DialogActionTrigger asChild>
+            <Button
+              onClick={() => {
+                setChangeModal();
+              }}
+            >
+              취소
+            </Button>
+          </DialogActionTrigger>
+        </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {
             setChangeModal();
