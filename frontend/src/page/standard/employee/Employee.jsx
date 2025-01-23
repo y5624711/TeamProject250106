@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { EmployeeList } from "../../../components/standard/employee/EmployeeList.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -22,12 +22,15 @@ export function Employee() {
   return (
     <Box display={"flex"}>
       <StandardSideBar />
-      <EmployeeList
-        onSelect={handleSelectedNo}
-        updateList={addCheck}
-        viewKey={selectedEmployeeNo}
-        onChange={handleAddCheck}
-      />
+      <Box p={5}>
+        <Heading>기준정보관리 > 인사관리</Heading>
+        <EmployeeList
+          onSelect={handleSelectedNo}
+          updateList={addCheck}
+          viewKey={selectedEmployeeNo}
+          onChange={handleAddCheck}
+        />
+      </Box>
       {/* 혹시몰라 남겨놈*/}
       {/*<EmployeeAdd*/}
       {/*  viewKey={selectedEmployeeNo}*/}

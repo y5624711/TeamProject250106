@@ -5,7 +5,6 @@ import {
   Button,
   createListCollection,
   Flex,
-  Heading,
   HStack,
   Input,
   SelectContent,
@@ -29,8 +28,12 @@ import { FaArrowDown } from "react-icons/fa6";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import { Switch } from "../../ui/switch.jsx";
+import * as PropTypes from "prop-types";
+import { SortColumnHeader } from "./SortColumnHeader.jsx";
 
 EmployeeViewDialog.propTypes = {};
+
+SortColumnHeader.propTypes = { hanldeSortContorl: PropTypes.func };
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
@@ -78,7 +81,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         setMemberList(res.data.employeeList);
         setCount(res.data.totalCount);
         // 정렬된 첫 번째 값을 불러오기 위해서
-        handleSelectedItem(res.data.employeeList[0].employeeKey);
       })
       .catch((err) => {
         console.log("직원 정보를 받는중 오류", err);
@@ -134,11 +136,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   });
 
   const handleSortControl = (sortName, orderName) => {
+    const convertedOrderName = orderName === "asc" ? "desc" : "asc";
+    console.log(convertedOrderName);
+
     setSearchParams((prev) => {
       setSort(sortName);
-      setOrder(orderName);
+      setOrder(convertedOrderName);
       const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
-      newParams.order = orderName;
+      newParams.order = convertedOrderName;
       return newParams; // 새로운 객체를 반환
     });
   };
@@ -152,7 +157,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
   return (
     <Box h={"100vh"} p={10}>
-      <Heading>인사관리</Heading>
       <HStack
         style={{
           alignItems: "flex-start",
@@ -201,180 +205,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       />
       <Table.Root>
         <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader>
-              <HStack>
-                #
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("기본키", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("기본키", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                소속 구분
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("소속구분", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("소속구분", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                기업명{" "}
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("기업명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("기업명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                기업 전화번호
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("기본키", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("기본키", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                부서명{" "}
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("부서명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("부서명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                부서 번호
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("부서명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("부서명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                직원명
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("직원명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("직원명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                직원전화번호
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("직원명", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("직원명", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            <Table.ColumnHeader>
-              <HStack>
-                사번{" "}
-                <Stack>
-                  <FaArrowUp
-                    onClick={() => {
-                      handleSortControl("사번", "asc");
-                    }}
-                  />
-                  <FaArrowDown
-                    onClick={() => {
-                      handleSortControl("사번", "desc");
-                    }}
-                  />
-                </Stack>
-              </HStack>
-            </Table.ColumnHeader>
-            {isActiveVisible && (
-              <Table.ColumnHeader>
-                <HStack>
-                  계약여부{" "}
-                  <Stack>
-                    <FaArrowUp
-                      onClick={() => {
-                        handleSortControl("계약여부", "asc");
-                      }}
-                    />
-                    <FaArrowDown
-                      onClick={() => {
-                        handleSortControl("계약여부", "desc");
-                      }}
-                    />
-                  </Stack>
-                </HStack>
-              </Table.ColumnHeader>
-            )}
-          </Table.Row>
+          <SortColumnHeader handleSortControl={handleSortControl} />
         </Table.Header>
         <Table.Body>
           {memberList.map((item, index) => (

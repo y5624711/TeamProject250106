@@ -26,7 +26,9 @@ export function EmployeeAddDialog({
     <DialogRoot open={isModalOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>제목</DialogTitle>
+          <DialogTitle>
+            {viewKey === -1 ? "회원 등록" : "회원 상세"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <EmployeeAdd

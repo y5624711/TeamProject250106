@@ -19,19 +19,6 @@ import { Field } from "../../ui/field.jsx";
 import * as PropTypes from "prop-types";
 import { SelectViewComp } from "./SelectViewComp.jsx";
 
-SelectViewComp.propTypes = {
-  formdata: PropTypes.shape({
-    note: PropTypes.string,
-    password: PropTypes.string,
-    selectedCommonCode: PropTypes.string,
-    name: PropTypes.string,
-    tel: PropTypes.string,
-    employeeNo: PropTypes.string,
-    departMent: PropTypes.string,
-    workPlace: PropTypes.string,
-  }),
-};
-
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -221,9 +208,12 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const isCommonCodeSelectedCheck =
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
+  const checkNameLength = () => {
+    formData.name.trim() > 0 && formData.name.length < 6;
+  };
+
   return (
     <Box>
-      <Heading>{viewKey === -1 ? "회원 등록" : "회원 정보"}</Heading>
       <Stack spacing={4}>
         <SelectRoot
           collection={frameworks}
@@ -253,7 +243,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         )}
 
         {viewKey !== -1 && (
-          <Field label={"소속코드"} required>
+          <Field label={"소속코드"} required orientation="horizontal">
             <Input
               name="workPlace"
               placeholder={"소속 코드 / 소속 명"}
@@ -263,17 +253,16 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             />
           </Field>
         )}
-        <Field label={"직원명"} required>
+        <Field label={"직원"} required orientation="horizontal">
           <Input
             name="name"
-            placeholder={"직원명"}
             value={formData.name}
             onChange={handleInputChange}
             readOnly={viewKey !== -1 && !isEditMode}
           />
         </Field>
         {viewKey !== -1 && (
-          <Field label={"사번"}>
+          <Field label={"사번"} orientation="horizontal">
             <Input
               name="employeeNo"
               placeholder={"사번"}
@@ -284,7 +273,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Field>
         )}
 
-        <Field label={"전화 번호"}>
+        <Field label={"전화 번호"} orientation="horizontal">
           <Input
             name="tel"
             placeholder={"전화번호"}
@@ -294,7 +283,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
 
-        <Field label={"비고"}>
+        <Field label={"비고"} orientation="horizontal">
           <Input
             name="note"
             placeholder={"비고"}
@@ -304,7 +293,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
         {viewKey !== -1 && (
-          <Field label={"비밀번호"}>
+          <Field label={"비밀번호"} orientation="horizontal">
             <Input
               name="password"
               placeholder={"비밀번호"}
@@ -316,8 +305,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         )}
       </Stack>
 
-      <Box mt={4}>
-        <Button onClick={handleSubmit}>
+      <Box display={"flex"} mt={4}>
+        <Button onClick={handleSubmit} disabled={checkNameLength()}>
           {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
         </Button>
 

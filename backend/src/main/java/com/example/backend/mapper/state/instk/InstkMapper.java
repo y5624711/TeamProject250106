@@ -27,7 +27,6 @@ SELECT
     EM.employee_no as request_approval_employee_no,
     EM2.employee_name as request_employee_name,
     EM2.employee_no as request_employee_no,
-
     CASE 
         WHEN BI.input_consent=TRUE  THEN INS.input_stock_date 
         ELSE NULL
@@ -67,7 +66,7 @@ SELECT
          LEFT JOIN TB_EMPMST EM2
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
-                
+               
      LEFT JOIN TB_CUSTMST CT ON (CT.customer_code = EM.employee_workplace_code)
      LEFT JOIN TB_SYSCOMM SC ON SC.common_code = CT.item_code
      LEFT JOIN TB_SYSCOMM SC2 ON SC2.common_code = BI.input_common_code
