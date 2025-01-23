@@ -25,7 +25,7 @@ export function StateSideBar() {
   return (
     <Flex>
       <Box
-        w="230px"
+        w="220px"
         pb="4"
         bg="gray.100"
         h={"100vh"}
@@ -39,12 +39,12 @@ export function StateSideBar() {
           justifyContent="center" // 가로 방향 가운데 정렬
           alignItems="center" // 세로 방향 가운데 정렬
         >
-          <Text fontWeight="bold" color={"white"} fontSize={"25px"}>
+          <Text fontWeight="bold" color={"white"} fontSize={"22px"}>
             구매 / 설치 관리
           </Text>
         </Box>
 
-        <Stack spacing="2" mt="4" alignItems="center">
+        <Stack spacing="2" mt="4">
           <SidebarItem path="/purchase">구매 관리</SidebarItem>
           <SidebarItem path="/instk">입고 관리</SidebarItem>
           <SidebarItem path="/install">설치 관리</SidebarItem>

@@ -63,7 +63,7 @@ export function Install() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StateSideBar />
-        <Stack flex={1} p={4}>
+        <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
             구매 / 설치 관리 {">"} 설치 관리
           </Heading>
