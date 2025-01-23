@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, HStack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
 import axios from "axios";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../../components/ui/pagination.jsx";
+import { useSearchParams } from "react-router-dom";
 
 export function Purchase() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState({
+    type: "all",
+    keyword: "",
+  });
+  const [count, setCount] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // 구매 요청 다이얼로그를 열기 위한 상태
   const [purchaseList, setPurchaseList] = useState([]);
@@ -23,6 +36,43 @@ export function Purchase() {
         console.error("구매 목록 요청 중 오류 발생:", error);
       });
   }, []);
+
+  // 검색 상태를 URLSearchParams에 맞게 업데이트
+  useEffect(() => {
+    const nextSearch = { ...search };
+    if (searchParams.get("type")) {
+      nextSearch.type = searchParams.get("type");
+    } else {
+      nextSearch.type = "all";
+    }
+    if (searchParams.get("keyword")) {
+      nextSearch.keyword = searchParams.get("keyword");
+    } else {
+      nextSearch.keyword = "";
+    }
+    setSearch(nextSearch);
+  }, [searchParams]);
+
+  // 검색 파라미터 업데이트
+  const handleSearchClick = () => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+    if (search.keyword.trim().length > 0) {
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
+      nextSearchParam.set("page", 1);
+    } else {
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
+    }
+    setSearchParams(nextSearchParam);
+  };
+
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
+  function handlePageChange(e) {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
 
   // 구매 요청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
@@ -54,8 +104,11 @@ export function Purchase() {
         </Heading>
         {/* 구매 관리 리스트 */}
         <PurchaseList
+          handleSearchClick={handleSearchClick}
           purchaseList={purchaseList}
           onViewClick={handleViewClick} // 승인 클릭 시 다이얼로그 열기
+          search={search}
+          setSearch={setSearch}
         />
         {/* 구매 요청 버튼 */}
         <Box display="flex" justifyContent="flex-end" mb={4}>
@@ -63,6 +116,22 @@ export function Purchase() {
             구매 요청
           </Button>
         </Box>
+        {/* 페이지네이션 */}
+        <Center>
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            // page={Number(searchParams.get("page") || 1)}
+            variant="solid"
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
         {/* 구매 다이얼로그 */}
         <PurchaseDialog
           isOpen={isDialogOpen}
