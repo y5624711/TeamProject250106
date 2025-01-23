@@ -22,7 +22,7 @@ function StocktakingList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root interactive showColumnBorder>
+          <Table.Root interactive>
             <Table.Header>
               {/* 재고실사 테이블 헤더 */}
               <StocktakingListHeader />

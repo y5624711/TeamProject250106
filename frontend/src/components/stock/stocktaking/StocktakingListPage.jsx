@@ -37,9 +37,6 @@ function StocktakingListPage({
           {stocktaking.customerEmployeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.employeeTel}
-        </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.stocktakingDate.slice(0, 10)}
         </Table.Cell>
       </Table.Row>

@@ -22,7 +22,9 @@ function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
             <Box>입출 내역 상세</Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           {/*팝업창 내부 내용*/}
           <InoutHistoryView inoutHistoryKey={inoutHistoryKey} />
         </DialogBody>

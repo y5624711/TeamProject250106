@@ -18,6 +18,8 @@ public class InoutHistory {
     private Integer countCurrent;
     private String inoutHistoryNote;
 
+    private String customerName;
+
     //    아이템 이름
     private String itemName;
     //    아이템 코드

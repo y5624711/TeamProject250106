@@ -3,7 +3,7 @@ import { Table } from "@chakra-ui/react";
 
 function StocktakingListHeader(props) {
   return (
-    <Table.Row>
+    <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader
         width="80px"
         textAlign="center"
@@ -16,14 +16,14 @@ function StocktakingListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
-        창고명
+        창고
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
         textAlign="center"
         verticalAlign="middle"
       >
-        품목명
+        품목
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
@@ -44,14 +44,7 @@ function StocktakingListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
-        협력업체 직원
-      </Table.ColumnHeader>
-      <Table.ColumnHeader
-        width="200px"
-        textAlign="center"
-        verticalAlign="middle"
-      >
-        전화번호
+        담당자
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="150px"

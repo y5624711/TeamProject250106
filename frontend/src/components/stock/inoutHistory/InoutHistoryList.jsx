@@ -23,7 +23,7 @@ function InoutHistoryList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root interactive showColumnBorder>
+          <Table.Root interactive>
             <Table.Header>
               {/* 테이블 헤더 */}
               <InoutHistoryListHeader />

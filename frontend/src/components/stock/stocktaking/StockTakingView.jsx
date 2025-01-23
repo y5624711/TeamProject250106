@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Input, Stack } from "@chakra-ui/react";
+import { Box, Center, HStack, Input, Stack } from "@chakra-ui/react";
 
 function StockTakingView({ stocktakingKey }) {
   const [stocktakingDetail, setStocktakingDetail] = useState([]);
@@ -19,40 +19,65 @@ function StockTakingView({ stocktakingKey }) {
   // size 로 키워서 예쁘게 보기
   return (
     <Box>
-      <Stack>
-        재고 실사 번호
-        <Input value={stocktakingDetail.stocktakingKey} readOnly />
-        창고명
-        <Input value={stocktakingDetail.warehouseName} readOnly />
-        창고 코드
-        <Input value={stocktakingDetail.warehouseCode} readOnly />
-        로케이션
-        <Input value={stocktakingDetail.location} readOnly />
-        품목명
-        <Input value={stocktakingDetail.itemName} readOnly />
-        품목 코드
-        <Input value={stocktakingDetail.itemCode} readOnly />
-        전산 수량
-        <Input value={stocktakingDetail.countCurrent} />
-        실제 수량
-        <Input value={stocktakingDetail.countConfiguration} />
-        협력업체
-        <Input value={stocktakingDetail.customerName} />
-        협력업체 코드
-        <Input value={stocktakingDetail.customerCode} />
-        업체 전화번호
-        <Input value={stocktakingDetail.customerTel} />
-        협력업체 직원
-        <Input value={stocktakingDetail.customerEmployeeName} />
-        협력업체 직원 사번
-        <Input value={stocktakingDetail.customerEmployeeNo} />
-        직원 전화번호
-        <Input value={stocktakingDetail.employeeTel} />
-        확인 날짜
-        <Input value={stocktakingDetail.stocktakingDate} />
-        비고
-        <Input value={stocktakingDetail.stocktakingNote} />
-      </Stack>
+      <Center>
+        <Stack gap={4}>
+          <HStack>
+            <Stack w={370}>
+              창고
+              <Input value={stocktakingDetail.warehouseName} readOnly />
+            </Stack>
+            <Box w={10} />
+            <Stack w={370}>
+              로케이션
+              <Input value={stocktakingDetail.location} />
+            </Stack>
+          </HStack>
+
+          <HStack>
+            <Stack w={370}>
+              품목명
+              <Input value={stocktakingDetail.itemName} readOnly />
+            </Stack>
+            <Box w={10} />
+            <Stack w={370}>
+              담당 업체
+              <Input value={stocktakingDetail.customerName} readOnly />
+            </Stack>
+          </HStack>
+
+          <HStack>
+            <Stack w={370}>
+              전산 수량
+              <Input value={stocktakingDetail.countCurrent} />
+            </Stack>
+            <Box w={10} />
+            <Stack w={370}>
+              실제 수량
+              <Input value={stocktakingDetail.countConfiguration} />
+            </Stack>
+          </HStack>
+
+          <HStack>
+            <Stack w={370}>
+              담당자
+              <Input value={stocktakingDetail.customerEmployeeName} />
+            </Stack>
+            <Box w={10} />
+            <Stack w={370}>
+              사번
+              <Input value={stocktakingDetail.customerEmployeeNo} />
+            </Stack>
+          </HStack>
+          <Box w={795}>
+            실사 날짜
+            <Input value={stocktakingDetail.stocktakingDate} />
+          </Box>
+          <Box w={795}>
+            비고
+            <Input value={stocktakingDetail.stocktakingNote} />
+          </Box>
+        </Stack>
+      </Center>
     </Box>
   );
 }

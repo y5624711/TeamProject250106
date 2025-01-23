@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
-import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
 import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHistorySearch.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -59,10 +65,12 @@ function InoutHistory(props) {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StockSideBar />
-        <Stack margin="10pt">
-          <Box>물류 관리 > 물품입출내역</Box>
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            물류 관리 {">"} 물품입출내역
+          </Heading>
           {/* 검색 jsx */}
           <InoutHistorySearch
             inoutHistoryOptionList={inoutHistoryOptionList}
@@ -70,9 +78,13 @@ function InoutHistory(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <RadioGroup value={value} onValueChange={(e) => setValue(e.value)}>
+          <RadioGroup
+            value={value}
+            my={1}
+            onValueChange={(e) => setValue(e.value)}
+          >
             {/*TODO: Radio 기능 넣기*/}
-            <HStack gap="6">
+            <HStack gap={6}>
               <Radio value="inout">전체 내역</Radio>
               <Radio value="storage">입고 내역</Radio>
               <Radio value="retrieval">출고 내역</Radio>

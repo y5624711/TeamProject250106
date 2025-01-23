@@ -24,10 +24,13 @@ function InoutHistoryListPage({
           {inoutHistory.inoutCommonCode === "in" ? "입고" : "출고"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.itemName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.serialNo}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.itemName}
+          {inoutHistory.customerName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.warehouseName}

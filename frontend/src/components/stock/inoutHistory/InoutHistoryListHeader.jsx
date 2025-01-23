@@ -3,7 +3,7 @@ import { Table } from "@chakra-ui/react";
 
 function InoutHistoryListHeader(props) {
   return (
-    <Table.Row>
+    <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader
         width="80px"
         textAlign="center"
@@ -23,6 +23,13 @@ function InoutHistoryListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
+        품목
+      </Table.ColumnHeader>
+      <Table.ColumnHeader
+        width="200px"
+        textAlign="center"
+        verticalAlign="middle"
+      >
         시리얼 번호
       </Table.ColumnHeader>
       <Table.ColumnHeader
@@ -30,21 +37,21 @@ function InoutHistoryListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
-        품목명
+        담당 업체
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
         textAlign="center"
         verticalAlign="middle"
       >
-        창고명
+        창고
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
         textAlign="center"
         verticalAlign="middle"
       >
-        가맹점명
+        가맹점
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
@@ -59,7 +66,7 @@ function InoutHistoryListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
-        협력업체 직원
+        담당 업체 직원
       </Table.ColumnHeader>
 
       <Table.ColumnHeader

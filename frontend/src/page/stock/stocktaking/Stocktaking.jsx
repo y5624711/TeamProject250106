@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
-import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
@@ -57,10 +63,12 @@ function Stocktaking(props) {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StockSideBar />
-        <Stack margin="10pt">
-          <Box>물류 관리 > 재고 실사</Box>
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            물류 관리 {">"} 재고 실사
+          </Heading>
           {/* 검색 jsx */}
           <StocktakingSearch
             stocktakingOptionList={stocktakingOptionList}
@@ -68,6 +76,7 @@ function Stocktaking(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
+          <Box h={7}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
             countStocktaking={countStocktaking}
