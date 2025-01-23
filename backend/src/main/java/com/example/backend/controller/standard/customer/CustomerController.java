@@ -104,6 +104,7 @@ public class CustomerController {
         }
     }
 
+    //등록할 수 있는 품목 목록
     @GetMapping("itemCode/list")
     private List<CommonCode> itemCodeList() {
         return service.itemCodeList();

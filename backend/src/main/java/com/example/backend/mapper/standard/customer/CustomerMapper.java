@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface CustomerMapper {
 
+    //협력사 등록
     @Insert("""
             INSERT INTO TB_CUSTMST
             (customer_name, customer_code, item_code, customer_rep, customer_no, 
@@ -23,11 +24,11 @@ public interface CustomerMapper {
             """)
     int addCustomer(Customer customer);
 
-
+    //협력사 목록
     @Select("""
             <script>
-            SELECT customer_key, customer_name, customer_no, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_tel, customer_active 
-            FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+            SELECT customer_key, customer_name, customer_no, customer_code, item_code, common_code_name AS itemName, customer_rep, customer_tel, customer_active 
+            FROM TB_CUSTMST c LEFT OUTER JOIN TB_SYSCOMM s ON c.item_code = s.common_code
             WHERE 
                 <if test="active == false">
                     customer_active = TRUE
@@ -62,14 +63,16 @@ public interface CustomerMapper {
             """)
     List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
+    //협력사 정보 불러오기
     @Select("""
-            SELECT *, item_common_name AS itemName 
-            FROM TB_CUSTMST 
-            LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+            SELECT *, common_code_name AS itemName 
+            FROM TB_CUSTMST
+            LEFT OUTER JOIN TB_SYSCOMM ON item_code = common_code
             WHERE customer_key = #{customerKey}
             """)
     Customer viewCustomer(String customerKey);
 
+    //사용 여부 x 표시
     @Update("""
             UPDATE TB_CUSTMST
             SET customer_active = FALSE
@@ -77,6 +80,7 @@ public interface CustomerMapper {
             """)
     int deleteCustomer(String customerKey);
 
+    //협력사 정보 수정
     @Update("""
             UPDATE TB_CUSTMST
             SET customer_name = #{customerName}, item_code = #{itemCode}, 
@@ -88,21 +92,25 @@ public interface CustomerMapper {
             """)
     int editCustomer(Customer customer);
 
+    //품목 목록 조회
     @Select("""
             SELECT ic.*
-            FROM TB_ITEMCOMM ic
+            FROM TB_SYSCOMM ic
                      LEFT JOIN (SELECT DISTINCT item_code
                                 FROM TB_CUSTMST
-                                WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
+                                WHERE customer_active = TRUE) cm 
+                     ON ic.common_code = cm.item_code
             WHERE cm.item_code IS NULL
-              AND ic.item_common_code_active = TRUE
+              AND ic.common_code_active = TRUE
+              AND common_code_type='ITEM'
             """)
     List<CommonCode> itemCodeList();
 
+    //협력사 목록 총계
     @Select("""
             <script>
                 SELECT COUNT(*)
-                FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+                 FROM TB_CUSTMST c LEFT OUTER JOIN TB_SYSCOMM s ON c.item_code = s.common_code
                 WHERE 
                 <if test="active == false">
                     customer_active = TRUE
@@ -120,7 +128,7 @@ public interface CustomerMapper {
                                     OR customer_no LIKE CONCAT('%', #{keyword}, '%')
                                 </if>           
                                 <if test="type=='all' or type=='itemName'">
-                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
                                 <if test="type=='all' or type=='customerRep'">
                                     OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
@@ -135,6 +143,7 @@ public interface CustomerMapper {
             """)
     Integer countCustomerList(Boolean active, String type, String keyword);
 
+    //협력사 코드 최대값
     @Select("""
                 <script>
                SELECT COALESCE(MAX(CAST(SUBSTRING(customer_code, 4) AS UNSIGNED)), 0) AS maxNumber
@@ -152,6 +161,7 @@ public interface CustomerMapper {
             """)
     List<Customer> customerCodeNames();
 
+    //사용한 품목 코드 조회
     @Select("""
             SELECT item_code
             FROM TB_CUSTMST
@@ -159,6 +169,7 @@ public interface CustomerMapper {
             """)
     List<String> getUsedItemCode();
 
+    //사용한 협력사명 조회 (중복 방지)
     @Select("""
             SELECT customer_name
             FROM TB_CUSTMST
@@ -166,6 +177,7 @@ public interface CustomerMapper {
             """)
     List<String> getUsedCustomerName();
 
+    //사용된 협력사 사업자 번호 조회 (중복 방지)
     @Select("""
             SELECT customer_no
             FROM TB_CUSTMST
@@ -173,6 +185,7 @@ public interface CustomerMapper {
             """)
     List<String> getUsedCustomerNo();
 
+    //사용된 협력사 전화번호 조회 (중복 방지)
     @Select("""
             SELECT customer_tel
             FROM TB_CUSTMST
@@ -180,6 +193,7 @@ public interface CustomerMapper {
             """)
     List<String> getUsedCustomerTel();
 
+    //삭제된 협력사 조회 (중복 삭제 방지)
     @Select("""
             SELECT customer_key
             FROM TB_CUSTMST

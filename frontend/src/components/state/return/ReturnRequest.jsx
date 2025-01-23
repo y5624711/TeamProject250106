@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  DialogActionTrigger,
   DialogBody,
+  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -8,7 +10,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Input, Textarea } from "@chakra-ui/react";
+import { HStack, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 
@@ -70,12 +72,22 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   };
 
   return (
-    <DialogRoot open={isOpen}>
+    <DialogRoot open={isOpen} onOpenChange={handleCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>반품 요청</DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+        >
+          <Field orientation="horizontal" label="가맹점명">
+            <Input
+              value={requestData.franchiseName}
+              placeholder="OOO점"
+              onChange={handleInput("franchiseName")}
+            />
+            <Button>조회</Button>
+          </Field>
           <Field orientation="horizontal" label="시리얼 번호">
             <Input
               placeholder="00000000000000000000"
@@ -93,27 +105,6 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               placeholder={"OOOO"}
             />
           </Field>
-          <Field orientation="horizontal" label="가맹점명">
-            <Input
-              value={requestData.franchiseName}
-              placeholder="OOO점"
-              onChange={handleInput("franchiseName")}
-            />
-          </Field>
-          <Field orientation="horizontal" label="신청자 사번">
-            <Input
-              value={requestData.businessEmployeeNo}
-              placeholder="0000000000000"
-              onChange={handleInput("businessEmployeeNo")}
-            />
-          </Field>
-          <Field orientation="horizontal" label="신청자 명">
-            <Input
-              value={requestData.businessEmployeeName}
-              placeholder="홍길동"
-              onChange={handleInput("businessEmployeeName")}
-            />
-          </Field>
           <Field orientation="horizontal" label="회수 업체">
             <Input
               readOnly
@@ -121,6 +112,22 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               placeholder="OOOO"
             />
           </Field>
+          <HStack>
+            <Field orientation="horizontal" label="신청자 사번">
+              <Input
+                value={requestData.businessEmployeeNo}
+                placeholder="0000000000000"
+                onChange={handleInput("businessEmployeeNo")}
+              />
+            </Field>
+            <Field orientation="horizontal" label="신청자 명">
+              <Input
+                value={requestData.businessEmployeeName}
+                placeholder="홍길동"
+                onChange={handleInput("businessEmployeeName")}
+              />
+            </Field>
+          </HStack>
           <Field orientation="horizontal" label="비고">
             <Textarea
               value={requestData.returnRequestNote}
@@ -130,9 +137,14 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           </Field>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={handleCancel}>취소</Button>
+          <DialogActionTrigger asChild>
+            <Button onClick={handleCancel} variant="outline">
+              취소
+            </Button>
+          </DialogActionTrigger>
           <Button onClick={handleRequestButtonClick}>요청</Button>
         </DialogFooter>
+        <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
   );

@@ -18,15 +18,16 @@ public class ReturnService {
     final FranchiseMapper franchiseMapper;
 
     //반환 관리 리스트
-    public Map<String, Object> returnList(Integer page, Boolean returnConsent, String type, String keyword, String sort, String order) {
+    public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order) {
 //        System.out.println("리스트: " + mapper.getReturnList());
         Integer offset = (page - 1) * 10;
 
         //리스트
-        List<Return> returnList = mapper.getReturnList(returnConsent, offset, type, keyword, sort, order);
+        List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order);
+//        System.out.println("returnList" + returnList);
 
         //총 수
-        Integer count = mapper.countAll(returnConsent, type, keyword);
+        Integer count = mapper.countAll(state, type, keyword);
 
 
         return Map.of("returnList", returnList, "count", count);
@@ -70,5 +71,11 @@ public class ReturnService {
         int cnt = mapper.addApprove(approveInfo);
 
         return cnt == 1;
+    }
+
+    //반품 반려
+    public boolean disapproveReturn(String returnRequestKey) {
+        //return_consent = false
+        return mapper.disapproveReturn(returnRequestKey) == 1;
     }
 }

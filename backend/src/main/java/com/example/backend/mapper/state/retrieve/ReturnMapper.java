@@ -14,7 +14,7 @@ public interface ReturnMapper {
     //반품 관리 리스트
     @Select("""
             <script>  
-            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
+            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
                    customer_employee_no, emce.employee_name customerEmployeeName, customer_configurer_no, emcc.employee_name customerConfigurerName,
                    return_request_date, return_approve_date, return_consent
@@ -24,16 +24,22 @@ public interface ReturnMapper {
             LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
             LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
             LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
-            LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
             LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
             LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
             WHERE
-            <if test="returnConsent == null">
-                1=1
+            <if test="state == 'all'">
+                (1=1 || return_consent IS NOT true || return_consent IS NOT false)
             </if>
-            <if test="returnConsent == true">
-                return_consent = TRUE
+            <if test="state == 'request'">
+                (return_consent IS NOT true || false)
+            </if>
+            <if test="state == 'approve'">
+                return_consent = true
+            </if>
+            <if test="state == 'disapprove'">
+                return_consent = false
             </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
@@ -42,46 +48,49 @@ public interface ReturnMapper {
                             franchise_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='serialNo'">
-                            OR serial_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>                                
+                            OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='itemCommonName'">
+                            OR itc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
                         <if test="type=='all' or type=='returnNo'">
-                            OR return_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR ra.return_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='customerName'">
                             OR customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='businessEmployeeNo'">
-                            OR business_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='businessEmployeeName'">
-                            OR business_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='customerEmployeeNo'">
-                            OR customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='customerEmployeeName'">
-                            OR customer_employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='customerConfigurerNo'">
-                            OR customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='customerConfigurerName'">
-                            OR customer_configurer_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>             
                     </trim>
                 )    
             </if>
-            ORDER BY COALESCE(return_approve_date, return_request_date) DESC
+            ORDER BY ${sort} ${order}
             LIMIT #{offset}, 10    
             </script>      
             """)
-    List<Return> getReturnList(Boolean returnConsent, Integer offset, String type, String keyword, String sort, String order);
+    List<Return> getReturnList(String state, Integer offset, String type, String keyword, String sort, String order);
 
     //입출 내역 생기면 franchise도 불러올 수 있음
     @Select("""
-            SELECT item_common_name, its.item_common_code, customer_name, customer_code
+            SELECT common_code_name itemCommonName, its.item_common_code, customer_name, customer_code
             FROM TB_ITEMSUB its
-            LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_CUSTMST c ON c.item_code = its.item_common_code
             WHERE serial_no=#{serialNo}
             """)
@@ -97,7 +106,7 @@ public interface ReturnMapper {
 
     //요청/승인 내용 (1개) 반환
     @Select("""
-            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, item_common_name, 
+            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
                    return_request_date, return_approve_date,return_date, return_consent, return_request_note
@@ -107,7 +116,7 @@ public interface ReturnMapper {
             LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
             LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
             LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
-            LEFT JOIN TB_ITEMCOMM itc ON itc.item_common_code = its.item_common_code
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
             LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no    
             LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no    
@@ -140,5 +149,80 @@ public interface ReturnMapper {
             """)
     Integer viewMaxReturnNo();
 
-    int countAll(Boolean returnConsent, String type, String keyword);
+    @Select("""
+            <script>  
+            SELECT COUNT(*)
+            FROM TB_RTN_REQ rr
+            LEFT JOIN TB_RTN_APPR ra
+            ON ra.return_request_key = rr.return_request_key
+            LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
+            LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
+            LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
+            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
+            LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
+            LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
+            LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
+            WHERE  
+            <if test="state == 'all'">
+                (1=1 || return_consent IS NOT true || return_consent IS NOT false)
+            </if>
+            <if test="state == 'request'">
+                (return_consent IS NOT true || false)
+            </if>
+            <if test="state == 'approve'">
+                return_consent = true
+            </if>
+            <if test="state == 'disapprove'">
+                return_consent = false
+            </if>
+            <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='franchiseName'">
+                            franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='itemCommonName'">
+                            OR itc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='serialNo'">
+                            OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                                
+                        <if test="type=='all' or type=='returnNo'">
+                            OR ra.return_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='customerName'">
+                            OR customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='businessEmployeeNo'">
+                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='businessEmployeeName'">
+                            OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeNo'">
+                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerConfigurerNo'">
+                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerConfigurerName'">
+                            OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>             
+                    </trim>
+                )    
+            </if>
+            </script>      
+            """)
+    int countAll(String state, String type, String keyword);
+
+    //반려: consent = false
+    @Update("""
+            UPDATE TB_RTN_REQ
+            SET return_consent = false
+            WHERE return_request_key=#{returnRequestKey}
+            """)
+    int disapproveReturn(String returnRequestKey);
 }

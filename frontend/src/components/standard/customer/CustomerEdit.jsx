@@ -5,6 +5,7 @@ import { Button } from "../../ui/button.jsx";
 import {
   DialogActionTrigger,
   DialogBody,
+  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -12,6 +13,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
 function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
   const [customer, setCustomer] = useState(null);
@@ -21,7 +23,10 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
     if (customerKey) {
       axios
         .get(`/api/customer/view/${customerKey}`)
-        .then((res) => setCustomer(res.data))
+        .then((res) => {
+          setCustomer(res.data);
+          // console.log("back 반환", res.data);
+        })
         .catch((error) => console.error("오류 발생", error));
     }
   }, [customerKey]);
@@ -33,6 +38,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
       ...prevCustomer,
       [name]: value,
     }));
+    // console.log("입력 정보", customer);
   };
 
   const handleClose = () => {
@@ -48,6 +54,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
           onCancel();
           handleClose();
         }}
+        size={"lg"}
       >
         <DialogContent>
           <DialogHeader>
@@ -55,74 +62,95 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
           </DialogHeader>
           <DialogBody>
             {customer ? (
-              <Stack gap={5}>
-                <Field label={"업체 코드"}>
-                  <Input readOnly value={customer.customerCode || ""} />
-                </Field>
-                <Field label={"업체명"}>
-                  <Input
-                    name="customerName"
-                    value={customer.customerName || ""}
-                    onChange={handleInputChange}
-                  />
-                </Field>
-                <Field label={"대표자"}>
-                  <Input
-                    name="customerRep"
-                    value={customer.customerRep}
-                    onChange={handleInputChange}
-                  />
-                </Field>
-                <Field label={"취급 품목"}>
+              <Stack gap={2}>
+                <HStack>
+                  <Field orientation="horizontal" label={"업체명"}>
+                    <Input
+                      name="customerName"
+                      value={customer.customerName || ""}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                  <Field orientation="horizontal" label={"업체 코드"}>
+                    <Input readOnly value={customer.customerCode || ""} />
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"취급 품목"}>
                   <Input readOnly name="itemName" value={customer.itemName} />
                 </Field>
-                <Field label={"사업자 번호"}>
-                  <Input
-                    name="customerNo"
-                    value={customer.customerNo}
-                    onChange={handleInputChange}
-                  />
-                </Field>
-                <Field label={"전화 번호"}>
-                  <Input
-                    name="customerTel"
-                    value={customer.customerTel}
-                    onChange={handleInputChange}
-                  />
-                </Field>
-                <Field label={"팩스 번호"}>
-                  <Input
-                    name="customerFax"
-                    value={customer.customerFax}
-                    onChange={handleInputChange}
-                  />
-                </Field>
-                <Field label={"우편 번호"}>
+                <HStack>
+                  <Field orientation="horizontal" label={"대표자"}>
+                    <Input
+                      name="customerRep"
+                      value={customer.customerRep}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+
+                  <Field orientation="horizontal" label={"사업자 번호"}>
+                    <Input
+                      name="customerNo"
+                      value={customer.customerNo}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                </HStack>
+                <HStack>
+                  <Field orientation="horizontal" label={"전화 번호"}>
+                    <Input
+                      name="customerTel"
+                      value={customer.customerTel}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                  <Field orientation="horizontal" label={"팩스 번호"}>
+                    <Input
+                      name="customerFax"
+                      value={customer.customerFax}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"우편 번호"}>
                   <Input
                     name={"customerPost"}
                     value={customer.customerPost}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label={"주소"}>
+                <Field orientation="horizontal" label={"주소"}>
                   <Input
                     name={"customerAddress"}
                     value={customer.customerAddress}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label={"상세 주소"}>
+                <Field orientation="horizontal" label={"상세 주소"}>
                   <Input
                     name={"customerAddressDetail"}
                     value={customer.customerAddressDetail}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label={"비고"}>
+                <Field orientation="horizontal" label={"비고"}>
                   <Textarea
                     name={"customerNote"}
                     value={customer.customerNote}
                     onChange={handleInputChange}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"사용 여부"}>
+                  <Checkbox
+                    transform="translateX(-2590%)"
+                    name={"customerActive"}
+                    checked={customer.customerActive}
+                    onChange={(e) => {
+                      const { checked } = e.target; // 체크 여부 가져오기
+                      setCustomer((prevCustomer) => ({
+                        ...prevCustomer,
+                        customerActive: checked, // 상태 업데이트
+                      }));
+                    }}
                   />
                 </Field>
               </Stack>
@@ -137,8 +165,9 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                   취소
                 </Button>
               </DialogActionTrigger>
-              <Button onClick={() => onEdit(customer)}>수정</Button>
+              <Button onClick={() => onEdit(customer)}>확인</Button>
             </HStack>
+            <DialogCloseTrigger />
           </DialogFooter>
         </DialogContent>
       </DialogRoot>

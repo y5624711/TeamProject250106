@@ -202,7 +202,7 @@ function CustomerList({
           {customerList.map((customer, index) => (
             <Table.Row
               key={customer.customerKey}
-              onClick={() => {
+              onDoubleClick={() => {
                 onRowClick(customer.customerKey);
               }}
               _hover={{ cursor: "pointer" }}

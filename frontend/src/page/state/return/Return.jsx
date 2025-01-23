@@ -14,14 +14,45 @@ function Return(props) {
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
+  const [count, setCount] = useState(1);
+  const [sort, setSort] = useState(searchParams.get("sort") || "all");
+  const [order, setOrder] = useState(searchParams.get("order") || "desc");
+
+  const [filters, setFilters] = useState({
+    page: searchParams.get("page") || 1,
+    type: searchParams.get("type") || "all",
+    keyword: searchParams.get("keyword") || "",
+    state: searchParams.get("state") || "all",
+  });
+
+  // const page = searchParams.get("page") || 1;
+  // const type = searchParams.get("type") || "all";
+  // const keyword = searchParams.get("keyword") || "";
+  // const state = searchParams.get("state") || "all";
 
   //목록 불러오기
   useEffect(() => {
     axios
-      .get("/api/return/list", { params: searchParams })
+      .get("/api/return/list", { params: filters })
       .then((res) => res.data)
-      .then((data) => setReturnList(data));
-  }, []);
+      .then((data) => {
+        // console.log("반환", data);
+        setReturnList(data.returnList);
+        setCount(data.count);
+      });
+  }, [filters]);
+
+  // 필터 값 변경 핸들러
+  const handleFilterChange = (key, value) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    setSearchParams(updatedFilters); // URL 갱신
+  };
+
+  // 페이지 변경 핸들러
+  const handlePageChange = (newPage) => {
+    handleFilterChange("page", newPage);
+  };
 
   //요청창 작성 후 버튼 클릭
   const handleRequestClick = (newRequest) => {
@@ -36,19 +67,43 @@ function Return(props) {
     setApproveDialogOpen(true);
   };
 
+  // 검색 초기화 버튼 클릭 핸들러
+  const handleResetClick = () => {
+    setFilters({
+      page: 1,
+      type: "all",
+      keyword: "",
+      state: "all",
+    });
+
+    const nextSearchParam = new URLSearchParams();
+    nextSearchParam.set("page", "1");
+    nextSearchParam.set("type", "all");
+    nextSearchParam.set("keyword", "");
+    nextSearchParam.set("state", "all");
+
+    setSearchParams(nextSearchParam);
+  };
+
   // console.log("list", returnList);
 
   return (
     <Box display="flex" height="100vh">
       <StateSideBar />
-      <Stack w={"100%"} mx={"auto"}>
-        <Text fontSize="xl" mx={10} my={3}>
+      <Stack w={"80%"} mx={"auto"}>
+        <Text fontSize="xl" my={5}>
           구매/설치 관리 {">"} 반품/회수 관리
         </Text>
         <ReturnList
           returnList={returnList}
           onRowClick={handleRowClick}
           setSearchParams={setSearchParams}
+          count={count}
+          filters={filters}
+          setFilters={setFilters}
+          handleFilterChange={handleFilterChange}
+          handlePageChange={handlePageChange}
+          handleResetClick={handleResetClick}
         />
         <Flex justify="flex-end">
           <Button onClick={() => setRequestDialogOpen(true)}>반품 요청</Button>
