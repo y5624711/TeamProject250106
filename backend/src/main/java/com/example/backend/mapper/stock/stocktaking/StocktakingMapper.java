@@ -23,7 +23,7 @@ public interface StocktakingMapper {
                    s.customer_employee_no,
                    s.count_current,
                    s.count_configuration,
-                   s.stocking_date,
+                   s.stocktaking_date,
                    w.warehouse_name,
                    w.customer_code,
                    itcm.item_common_name itemName
