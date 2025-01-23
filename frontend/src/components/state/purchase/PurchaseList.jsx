@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   createListCollection,
+  HStack,
   Input,
   SelectContent,
   SelectItem,
@@ -11,9 +12,9 @@ import {
   Table,
   TableColumnHeader,
   TableHeader,
-  TableRow,
 } from "@chakra-ui/react";
 import React from "react";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
 export function PurchaseList({
   purchaseList,
@@ -36,63 +37,83 @@ export function PurchaseList({
 
   return (
     <Box>
-      <Box display="flex" justifyContent="center" alignItems="center" mb={6}>
-        <Box display="flex" alignItems="center" justifyContent="center">
-          <SelectRoot
-            collection={PurchaseOptionList}
-            value={[search.type]}
-            onValueChange={(oc) => {
-              setSearch({ ...search, type: oc.value[0] });
+      <HStack justifyContent="center">
+        <SelectRoot
+          collection={PurchaseOptionList}
+          width="160px"
+          position="relative"
+          value={[search.type]}
+          onValueChange={(oc) => {
+            setSearch({ ...search, type: oc.value[0] });
+          }}
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              width: "150px",
+              top: "40px",
+              position: "absolute",
             }}
-            width="150px"
           >
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "150px",
-                position: "absolute",
-              }}
-            >
-              {PurchaseOptionList.items.map((option) => (
-                <SelectItem item={option} key={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-          <Input
-            value={search.keyword}
-            onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
-            placeholder="검색어를 입력해 주세요."
-            width="700px"
-            marginLeft="10px"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearchClick();
-              }
-            }}
-          />
-          <Button onClick={handleSearchClick} marginLeft="10px" width="80px">
-            검색
-          </Button>
-        </Box>
-      </Box>
+            {PurchaseOptionList.items.map((option) => (
+              <SelectItem item={option} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+        <Input
+          placeholder="검색어를 입력해 주세요."
+          width="50%"
+          value={search.keyword}
+          onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchClick();
+            }
+          }}
+        />
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
+
+      <RadioGroup defaultValue="1" my={6} ml={12}>
+        <HStack gap={6}>
+          <Radio value="1">전체 조회</Radio>
+          <Radio value="2">대기 상태 조회</Radio>
+          <Radio value="3">승인 상태 조회</Radio>
+          <Radio value="4">반려 상태 조회</Radio>
+        </HStack>
+      </RadioGroup>
+
       <Table.Root interactive>
         <TableHeader>
-          <TableRow>
-            <TableColumnHeader>#</TableColumnHeader>
-            <TableColumnHeader>협력 업체</TableColumnHeader>
-            <TableColumnHeader>품목명</TableColumnHeader>
-            {/*<TableColumnHeader>신청자 사번</TableColumnHeader>*/}
-            <TableColumnHeader>신청자</TableColumnHeader>
-            {/*<TableColumnHeader>승인자 사번 </TableColumnHeader>*/}
-            <TableColumnHeader>승인자 </TableColumnHeader>
-            <TableColumnHeader>날짜</TableColumnHeader>
-            <TableColumnHeader>상태 현황</TableColumnHeader>
-          </TableRow>
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              #
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              담당 업체
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              품목
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              신청자
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              승인자{" "}
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              날짜
+            </TableColumnHeader>
+            <TableColumnHeader textAlign="center" verticalAlign="middle">
+              상태
+            </TableColumnHeader>
+          </Table.Row>
         </TableHeader>
+
         <Table.Body>
           {purchaseList && purchaseList.length > 0 ? (
             purchaseList.map((purchase, index) => (
@@ -100,27 +121,41 @@ export function PurchaseList({
                 key={index}
                 onClick={() => onViewClick(purchase.purchaseRequestKey)}
                 style={{ cursor: "pointer" }}
+                textAlign="center"
+                verticalAlign="middle"
               >
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{purchase.customerName}</Table.Cell>
-                <Table.Cell>{purchase.itemCommonName}</Table.Cell>
-                {/*<Table.Cell>{purchase.employeeNo}</Table.Cell>*/}
-                <Table.Cell>{purchase.employeeName}</Table.Cell>
-                {/*<Table.Cell>{purchase.customerEmployeeNo}</Table.Cell>*/}
-                <Table.Cell>{purchase.customerEmployeeName}</Table.Cell>
-                <Table.Cell>{purchase.purchaseRequestDate}</Table.Cell>
-                <Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {purchase.customerName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {purchase.itemCommonName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {purchase.employeeName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {purchase.customerEmployeeName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {purchase.purchaseRequestDate}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
                   {purchase.purchaseConsent == 1
                     ? "승인"
                     : purchase.purchaseConsent == 0
                       ? "반려"
-                      : "요청"}
+                      : "대기"}{" "}
                 </Table.Cell>
               </Table.Row>
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan="9">데이터가 없습니다.</Table.Cell>
+              <Table.Cell textAlign="center" colSpan="9">
+                데이터가 없습니다.
+              </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>

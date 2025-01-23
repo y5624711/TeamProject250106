@@ -26,14 +26,16 @@ export function PurchaseDialog({
   }, [isOpen]);
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose}>
+    <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
             {isAddDialogOpen ? "구매 요청" : "구매 승인"}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           {isAddDialogOpen ? (
             <PurchaseRequest onClose={onClose} /> // 구매 요청 컴포넌트 렌더링
           ) : purchaseRequestKey ? (
