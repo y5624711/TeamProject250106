@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Checkbox } from "../../ui/checkbox.jsx";
 
 export function ActiveSwitch({ onActiveChange }) {
   const [searchParams, setSearchParams] = useSearchParams("");
-  const [active, setActive] = useState({
-    active: "",
-  });
-
-  useEffect(() => {
+  const [active, setActive] = useState(() => {
     const checkActive = searchParams.get("active");
-    if (checkActive) {
-      setActive(checkActive === "false");
-    } else {
-      setActive(!checkActive);
-    }
-  }, [searchParams]);
+    return checkActive === "false";
+  });
 
   const handleSwitchChange = () => {
     const newActive = !active;
