@@ -36,4 +36,12 @@ public class Install {
     private LocalDateTime installApproveDate;
     private String customerEmployeeName;
     private String serialNote;
+    private String serialNumbers;
+    private String serialNotes;
+    private Integer installConfigurationKey;
+    private Boolean installConfiguration;
+    private String warehouseCode;
+    private String inoutHistoryNote;
+    private Boolean consent;
+    private Integer countItem;
 }

@@ -22,3 +22,6 @@ FROM TB_ITEMSUB its
          LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
          LEFT JOIN TB_CUSTMST c ON c.item_code = its.item_common_code
 WHERE serial_no = 00000000000000000016;
+
+ALTER TABLE TB_ITEMSUB
+    ADD current_common_code VARCHAR(10) AFTER serial_no;

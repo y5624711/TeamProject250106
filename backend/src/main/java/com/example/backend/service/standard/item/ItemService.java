@@ -82,7 +82,7 @@ public class ItemService {
             case "size":
                 return "i.size";
             case "item_common_name":
-                return "ic.item_common_name";
+                return "sc.common_code_name";
             case "customer_name":
                 return "c.customer_name";
             case "input_price":
