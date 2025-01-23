@@ -23,8 +23,7 @@ public class PurchaseController {
     public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase) {
         if (service.validate(purchase)) {
             if (service.purchaseRequest(purchase)) {
-                return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
             } else {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청에 실패하였습니다.")));
             }
@@ -43,5 +42,15 @@ public class PurchaseController {
     @GetMapping("approve/{purchaseRequestKey}")
     public Purchase viewPurchaseApprove(@PathVariable int purchaseRequestKey) {
         return service.viewPurchaseApprove(purchaseRequestKey);
+    }
+
+    // 구매 승인
+    @PostMapping("/approve/{purchaseRequestKey}")
+    public ResponseEntity<Map<String, Object>> approvePurchase(@RequestBody Purchase purchase) {
+        if (service.purchaseApprove(purchase)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 승인에 실패하였습니다.")));
+        }
     }
 }

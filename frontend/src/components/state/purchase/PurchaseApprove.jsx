@@ -1,20 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { Button, Spinner } from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Input, Spinner } from "@chakra-ui/react";
+import { Field } from "../../ui/field.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
+import { toaster } from "../../ui/toaster.jsx";
 
 export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
-  const [purchase, setPurchase] = useState(null); // 구매 데이터 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const { id, name } = useContext(AuthenticationContext);
+  const [purchase, setPurchase] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showPurchaseNo, setShowPurchaseNo] = useState(false);
+  const [showButton, setShowButton] = useState(true);
 
-  // 구매 승인 데이터 조회
+  // 구매 승인 팝업 보기
   useEffect(() => {
     const purchaseData = () => {
       axios
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
-        .then((response) => {
-          console.log("구매 데이터:", response.data); // 서버 응답 확인
-          setPurchase(response.data);
+        .then((res) => {
+          console.log("구매 데이터:", res.data);
+          setPurchase(res.data);
           setLoading(false);
+
+          // 이미 발주 번호가 있으면 승인 버튼 숨기고 발주 번호 표시
+          if (res.data.purchaseNo) {
+            setShowPurchaseNo(true);
+            setShowButton(false);
+          }
         })
         .catch((error) => {
           console.error("구매 데이터를 가져오는 데 실패했습니다:", error);
@@ -26,19 +38,53 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
     }
   }, [purchaseRequestKey]);
 
+  // 구매 요청 승인
   const handleApprove = () => {
-    // 승인 처리 로직 추가
-    console.log("구매 승인:", purchase);
-    onClose();
+    const updatedPurchase = {
+      ...purchase,
+      customerEmployeeNo: id,
+      warehouseCode: purchase.warehouseCode,
+    };
+    console.log("구매 승인:", updatedPurchase);
+
+    axios
+      .post(
+        `/api/purchase/approve/${purchase.purchaseRequestKey}`,
+        updatedPurchase,
+      )
+      .then((res) => {
+        console.log("구매 승인 응답:", res.data);
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        if (res.data.purchaseNo) {
+          setPurchase((prevPurchase) => ({
+            ...prevPurchase,
+            purchaseNo: res.data.purchaseNo,
+          }));
+          setShowPurchaseNo(true);
+          setShowButton(false);
+        }
+      })
+      .catch((e) => {
+        console.error("구매 승인 실패:", e);
+        const message = e.res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
 
+  // 구매 요청 반려
   const handleReject = () => {
-    // 반려 처리 로직 추가
     console.log("구매 반려:", purchase);
+    setShowButton(false);
     onClose();
   };
 
-  // 구매 데이터가 로딩 중이면 Spinner 표시
   if (loading) {
     return <Spinner />;
   }
@@ -48,20 +94,87 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   }
 
   return (
-    <div>
-      <p>구매 요청 키: {purchase.purchaseRequestKey}</p>
-      <p>상품명: {purchase.productName}</p>
-      <p>금액: {purchase.amount}</p>
+    <Box>
+      <Box display="flex" gap={4}>
+        <Field label="직원 사번" orientation="horizontal" mb={7}>
+          <Input value={purchase.employeeNo} placeholder="직원 사번" readOnly />
+        </Field>
+        <Field label="직원 이름" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase.employeeName}
+            placeholder="직원 이름"
+            readOnly
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="승인자 사번" orientation="horizontal" mb={7}>
+          <Input value={id} placeholder="승인자 사번" readOnly />
+        </Field>
+        <Field label="승인자 이름" orientation="horizontal" mb={7}>
+          <Input value={name} placeholder="승인자 이름" readOnly />
+        </Field>
+      </Box>
+      <Field label="품목" orientation="horizontal" mb={7}>
+        <Input value={purchase.itemCommonName} placeholder="품목" readOnly />
+      </Field>
+      <Box display="flex" gap={4}>
+        <Field label="담당 업체" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase.customerName}
+            placeholder="담당 업체"
+            readOnly
+          />
+        </Field>
+        <Field label="창고" orientation="horizontal" mb={7}>
+          <Input
+            value={purchase?.warehouseName || "창고 정보 없음"}
+            placeholder="창고"
+            readOnly
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="수량" orientation="horizontal" mb={7}>
+          <Input value={purchase.amount} placeholder="수량" readOnly />
+        </Field>
+        <Field label="가격" orientation="horizontal" mb={7}>
+          <Input value={purchase.inputPrice} placeholder="가격" readOnly />
+        </Field>
+      </Box>
+      <Field label="요청 날짜" orientation="horizontal" mb={7}>
+        <Input
+          value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
+          placeholder="요청 날짜"
+          readOnly
+        />
+      </Field>
+      <Field label="비고" orientation="horizontal" mb={7}>
+        <Input
+          value={purchase.purchaseRequestNote}
+          placeholder="비고"
+          readOnly
+        />
+      </Field>
 
-      {/* 추가적인 구매 정보가 있으면 여기에 표시 */}
-      <div>
-        <h3>구매 정보</h3>
-        <p>구매자: {purchase.buyerName}</p>
-        <p>구매일자: {purchase.purchaseDate}</p>
-      </div>
+      {/* 승인 후 발주 번호 필드 추가 */}
+      {showPurchaseNo && (
+        <Field label="발주 번호" orientation="horizontal" mb={7}>
+          <Input value={purchase.purchaseNo} placeholder="발주 번호" readOnly />
+        </Field>
+      )}
 
-      <Button onClick={handleApprove}>승인</Button>
-      <Button onClick={handleReject}>반려</Button>
-    </div>
+      {/* 승인/반려 버튼이 보일지 여부를 상태로 제어 */}
+      {showButton && (
+        <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
+          <Button onClick={handleApprove} colorScheme="blue">
+            승인
+          </Button>
+          <Button onClick={handleReject} colorScheme="red">
+            반려
+          </Button>
+        </Box>
+      )}
+    </Box>
   );
 }

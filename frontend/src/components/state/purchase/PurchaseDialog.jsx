@@ -20,15 +20,13 @@ export function PurchaseDialog({
     console.log("PurchaseDialog 열림 상태:", isOpen);
   }, [isOpen]);
 
+  useEffect(() => {
+    // 구매 요청 상태를 열 때마다 확인
+    console.log("다이얼로그 열림 상태가 변경됨:", isOpen);
+  }, [isOpen]);
+
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (open && !open.open) {
-          onClose();
-        }
-      }}
-    >
+    <DialogRoot open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

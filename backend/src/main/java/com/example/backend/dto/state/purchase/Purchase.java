@@ -22,6 +22,7 @@ public class Purchase {
     private String customerEmployeeNo;
     private String customerEmployeeName;
     private String warehouseCode;
+    private String warehouseName;
     private String purchaseNo;
     private LocalDate purchaseApproveDate;
     private String purchaseApproveNote;

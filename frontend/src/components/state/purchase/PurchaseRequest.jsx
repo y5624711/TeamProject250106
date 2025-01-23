@@ -4,22 +4,19 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function PurchaseRequest({ onSave, onClose }) {
-  const [employeeNo, setEmployeeNo] = useState("");
-  const [employeeName, setEmployeeName] = useState("");
+  const { id, name } = useContext(AuthenticationContext);
   const [itemCommonCode, setItemCommonCode] = useState("");
-  const [customerCode, setCustomerCode] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [amount, setAmount] = useState("");
   const [inputPrice, setInputPrice] = useState("");
@@ -70,8 +67,8 @@ export function PurchaseRequest({ onSave, onClose }) {
   const handleSaveClick = () => {
     axios
       .post("/api/purchase/request", {
-        employeeNo,
-        employeeName,
+        employeeNo: id,
+        employeeName: name,
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
         amount,
@@ -90,8 +87,8 @@ export function PurchaseRequest({ onSave, onClose }) {
         if (res.data && res.data.purchaseRequestKey) {
           onSave({
             purchaseRequestKey: res.data.purchaseRequestKey,
-            employeeNo,
-            employeeName,
+            employeeNo: id,
+            employeeName: name,
             itemCommonCode: itemData.itemCommonCode,
             customerCode: itemData.customerCode,
             amount,
@@ -113,8 +110,6 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   const handleCancelClick = () => {
     // 취소 버튼 클릭 시 입력된 값 초기화
-    setEmployeeNo("");
-    setEmployeeName("");
     setItemCommonCode("");
     setCustomerName("");
     setAmount("");
@@ -128,54 +123,47 @@ export function PurchaseRequest({ onSave, onClose }) {
     <Box>
       <Box display="flex" gap={4}>
         <Field label="직원 사번" orientation="horizontal" required mb={7}>
-          <Input
-            value={employeeNo}
-            onChange={(e) => setEmployeeNo(e.target.value)}
-            placeholder="직원 사번"
-          />
+          <Input value={id} placeholder="직원 사번" />
         </Field>
         <Field label="직원 이름" orientation="horizontal" required mb={7}>
-          <Input
-            value={employeeName}
-            onChange={(e) => setEmployeeName(e.target.value)}
-            placeholder="직원 이름"
-          />
+          <Input value={name} placeholder="직원 이름" />
         </Field>
       </Box>
-      <SelectRoot
-        onValueChange={(e) => {
-          const selectedItem = itemCommonCodeList.find(
-            (item) => item.item_common_name === e.value[0],
-          );
-          setItemData((prev) => ({
-            ...prev,
-            itemCommonName: selectedItem?.item_common_name,
-            itemCommonCode: selectedItem?.item_common_code || "",
-          }));
-        }}
-      >
-        <SelectLabel>
-          품목{" "}
-          <Text as="span" color="red.500">
-            *
-          </Text>
-        </SelectLabel>
-        <SelectTrigger>
-          <SelectValueText>
-            {itemData.itemCommonName || "품목 선택"}
-          </SelectValueText>
-        </SelectTrigger>
-        <SelectContent>
-          {itemCommonCodeList.map((item) => (
-            <SelectItem
-              key={item.item_common_code}
-              item={item.item_common_name}
-            >
-              {item.item_common_name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectRoot>
+      <Field label="품목" orientation="horizontal" required mb={7}>
+        <SelectRoot
+          onValueChange={(e) => {
+            const selectedItem = itemCommonCodeList.find(
+              (item) => item.item_common_name === e.value[0],
+            );
+            setItemData((prev) => ({
+              ...prev,
+              itemCommonName: selectedItem?.item_common_name,
+              itemCommonCode: selectedItem?.item_common_code || "",
+            }));
+          }}
+        >
+          <SelectTrigger>
+            <SelectValueText>
+              {itemData.itemCommonName || "품목 선택"}
+            </SelectValueText>
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              width: "380px",
+              position: "absolute",
+            }}
+          >
+            {itemCommonCodeList.map((item) => (
+              <SelectItem
+                key={item.item_common_code}
+                item={item.item_common_name}
+              >
+                {item.item_common_name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Field>
       <Field label="담당 업체" orientation="horizontal" required mb={7}>
         <Input
           value={itemData.customerName}
@@ -217,11 +205,11 @@ export function PurchaseRequest({ onSave, onClose }) {
           placeholder="비고"
         />
       </Field>
-      <Box display="flex" gap={4}>
-        <Button onClick={handleSaveClick}>구매 요청</Button>
-        <Button onClick={handleCancelClick} colorScheme="gray">
+      <Box display="flex" gap={4} justifyContent="flex-end">
+        <Button variant="outline" onClick={handleCancelClick}>
           취소
         </Button>
+        <Button onClick={handleSaveClick}>구매 요청</Button>
       </Box>
     </Box>
   );
