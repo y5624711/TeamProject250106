@@ -13,7 +13,7 @@ import { HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
@@ -24,10 +24,7 @@ export function DepartmentViewAndUpdateDialog({
   addCheck,
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-
-  useEffect(() => {
-    setSaveFile(department);
-  }, []);
+  const [saveCheck, setSaveCheck] = useState(false);
 
   let disable = false;
   if (department !== null) {
@@ -44,7 +41,7 @@ export function DepartmentViewAndUpdateDialog({
         departmentKey: department.departmentKey,
         departmentName: department.departmentName,
         departmentTel: department.departmentTel,
-        departmentActive: department.departmentActive,
+        departmentActive: saveCheck,
         departmentFax: department.departmentFax,
         departmentNote: department.departmentNote,
       })
@@ -72,6 +69,8 @@ export function DepartmentViewAndUpdateDialog({
     return;
   }
 
+  console.log(saveCheck);
+
   return (
     <DialogRoot
       size={"lg"}
@@ -89,12 +88,9 @@ export function DepartmentViewAndUpdateDialog({
             <Checkbox
               size={"lg"}
               defaultChecked={department.departmentActive}
-              onChange={(e) =>
-                setDepartmentData((prev) => ({
-                  ...prev,
-                  departmentActive: e.target.checked,
-                }))
-              }
+              onChange={(e) => {
+                setSaveCheck(e.target.checked);
+              }}
             >
               부서 사용여부
             </Checkbox>
@@ -163,7 +159,7 @@ export function DepartmentViewAndUpdateDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {saveFile.departmentActive && (
+          {department.departmentActive && (
             <>
               {
                 <>
