@@ -13,7 +13,7 @@ import { HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
@@ -24,6 +24,10 @@ export function DepartmentViewAndUpdateDialog({
   addCheck,
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+
+  useEffect(() => {
+    setSaveFile(department);
+  }, []);
 
   let disable = false;
   if (department !== null) {
@@ -40,6 +44,7 @@ export function DepartmentViewAndUpdateDialog({
         departmentKey: department.departmentKey,
         departmentName: department.departmentName,
         departmentTel: department.departmentTel,
+        departmentActive: department.departmentActive,
         departmentFax: department.departmentFax,
         departmentNote: department.departmentNote,
       })
@@ -63,24 +68,6 @@ export function DepartmentViewAndUpdateDialog({
       });
   };
 
-  function handleDeleteClick() {
-    axios
-      .put("/api/department/delete", {
-        departmentKey: department.departmentKey,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        const message = data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        onCancel();
-        setIsOpenDelete(false);
-        setAddCheck(!addCheck);
-      });
-  }
-
   if (!department) {
     return;
   }
@@ -102,7 +89,12 @@ export function DepartmentViewAndUpdateDialog({
             <Checkbox
               size={"lg"}
               defaultChecked={department.departmentActive}
-              mb={15}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentActive: e.target.checked,
+                }))
+              }
             >
               부서 사용여부
             </Checkbox>
@@ -171,7 +163,7 @@ export function DepartmentViewAndUpdateDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
-          {department.departmentActive && (
+          {saveFile.departmentActive && (
             <>
               {
                 <>
