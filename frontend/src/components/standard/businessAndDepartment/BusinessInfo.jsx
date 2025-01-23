@@ -41,7 +41,7 @@ export function BusinessInfo({
   };
 
   return (
-    <Box p={10} bg={"gray.200"}>
+    <Box p={5} bg={"gray.200"}>
       <Box>
         <Flex>
           <Heading>사업장 정보</Heading>

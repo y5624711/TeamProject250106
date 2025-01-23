@@ -50,7 +50,7 @@ export function BusinessSearchAndFilter({
   }
 
   return (
-    <HStack justifyContent="center">
+    <HStack justifyContent="center" mt={5}>
       {/*셀렉트 &&검색창*/}
       <SelectRoot
         collection={optionList}
