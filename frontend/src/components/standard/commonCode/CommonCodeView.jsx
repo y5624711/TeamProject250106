@@ -158,11 +158,11 @@ export function CommonCodeView({
           <DialogBody>
             <Box>
               <Box>
-                <Text fontSize={"xs"} mt={-5}>
+                <Text fontSize={"xs"} mt={-5} color={"red"}>
                   품목 코드는 대문자 3자리로 입력해야 합니다.
                 </Text>
 
-                <Flex>
+                <Flex mb={15}>
                   {/*코드 종류 선택*/}
                   <SelectViewCode
                     selectOptions={selectOptions}
@@ -184,7 +184,7 @@ export function CommonCodeView({
                   </Checkbox>
                 </Flex>
 
-                <Field label={"물품 코드"} required>
+                <Field label={"물품 코드"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCode"
                     placeholder="물품 코드"
@@ -193,7 +193,7 @@ export function CommonCodeView({
                     maxLength={3}
                   />
                 </Field>
-                <Field label={"물품명"} required>
+                <Field label={"물품명"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCodeName"
                     placeholder="물품명"
@@ -201,7 +201,7 @@ export function CommonCodeView({
                     onChange={handleChange}
                   />
                 </Field>
-                <Field label={"비고"}>
+                <Field label={"비고"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCodeNote"
                     placeholder="비고"
@@ -214,17 +214,14 @@ export function CommonCodeView({
           </DialogBody>
           <DialogFooter>
             <HStack>
+              <Button variant="outline" onClick={handleClose}>
+                취소
+              </Button>
               {editedCommonCode.commonCodeActive && (
-                <Button
-                  onClick={handleSaveClick}
-                  disabled={!isValid}
-                  colorPalette={"blue"}
-                >
-                  저장
+                <Button onClick={handleSaveClick} disabled={!isValid}>
+                  확인
                 </Button>
               )}
-
-              <Button onClick={handleClose}>취소</Button>
             </HStack>
           </DialogFooter>
           <DialogCloseTrigger />

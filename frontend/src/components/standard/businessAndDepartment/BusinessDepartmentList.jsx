@@ -135,17 +135,18 @@ export function BusinessDepartmentList() {
         handleSort={handleSort}
         openDialog={handleOpenDialog}
       />
+      <Box pt={5}>
+        <Button float={"right"} onClick={() => setIsAddOpen(true)}>
+          부서 추가
+        </Button>
 
-      {/*페이지네이션*/}
-      <BusinessPageNation
-        count={count}
-        page={page}
-        handlePageChange={handlePageChange}
-      />
-
-      <Button float={"right"} onClick={() => setIsAddOpen(true)}>
-        부서 추가
-      </Button>
+        {/*페이지네이션*/}
+        <BusinessPageNation
+          count={count}
+          page={page}
+          handlePageChange={handlePageChange}
+        />
+      </Box>
 
       <DepartmentAdd
         saved={handleAddCheck}

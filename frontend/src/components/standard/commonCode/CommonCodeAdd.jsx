@@ -118,7 +118,6 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           <Stack w={"90%"} gap={5} pt={"5"}>
             <Field label="코드" orientation="horizontal">
               <Input
-                placeholder="코드"
                 value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
                 maxLength={
@@ -128,11 +127,11 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
                       ? 5
                       : undefined
                 }
+                marginBottom={15}
               />
             </Field>
-            <Field label="코드명" orientation="horizontal">
+            <Field label="코드명" orientation="horizontal" marginBottom={15}>
               <Input
-                placeholder="코드명"
                 value={codeData.commonCodeName || ""}
                 onChange={handleInputChange("commonCodeName")}
               />

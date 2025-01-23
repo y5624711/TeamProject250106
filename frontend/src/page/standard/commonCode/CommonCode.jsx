@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { Button } from "../../../components/ui/button.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -50,9 +50,9 @@ export function CommonCode() {
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
         <Stack flex={1}>
-          <Text fontSize="xl" mx={10} my={3}>
+          <Heading size={"xl"} p={2} mb={3}>
             공통코드 관리
-          </Text>
+          </Heading>
           <Box position="relative">
             {/* CommonCodeList 감싸는 컨테이너 */}
             <CommonCodeList

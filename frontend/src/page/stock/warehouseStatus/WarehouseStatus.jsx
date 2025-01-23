@@ -1,8 +1,8 @@
 import React from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
+  Center,
   createListCollection,
-  Flex,
   Heading,
   HStack,
   Input,
@@ -15,6 +15,12 @@ import {
   Table,
 } from "@chakra-ui/react";
 import { Button } from "../../../components/ui/button.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../../components/ui/pagination.jsx";
 
 function WarehouseStatus() {
   const searchOptions = createListCollection({
@@ -35,63 +41,49 @@ function WarehouseStatus() {
   const items = [
     {
       id: 1,
+      warName: "1번창고",
+      city: "함경북도",
+      location: "경흥군",
+      address: "상수로길",
       cus_name: "씨씨티비",
-      item_code: "MIC",
       item_name: "전자레인지",
-      position: "아오지",
-      location: "함경북도 경흥군",
-      count: 1,
+      count: 10,
     },
     {
       id: 2,
+      warName: "2번창고",
+      city: "경상북도",
+      location: "봉화군",
+      address: "가나다길",
       cus_name: "중앙포스",
-      item_code: "POS",
       item_name: "포스기",
-      position: "아오지",
-      location: "함경북도 경흥군",
-      count: 90,
+      count: 1,
     },
     {
       id: 3,
+      warName: "3번창고",
+      city: "인천광역시",
+      location: "서구",
+      address: "검단로",
       cus_name: "면발천국",
-      item_code: "RAM",
       item_name: "라면제조기",
-      position: "아오지",
-      location: "함경북도 경흥군",
-      count: 150,
-    },
-    {
-      id: 4,
-      cus_name: "온장원",
-      item_code: "REF",
-      item_name: "냉장고",
-      position: "아오지",
-      location: "함경북도 경흥군",
-      count: 200,
-    },
-    {
-      id: 5,
-      cus_name: "시몬선반",
-      item_code: "WAR",
-      item_name: "온장고",
-      position: "아오지",
-      location: "함경북도 경흥군",
-      count: 101,
+      count: 30,
     },
   ];
 
   return (
-    <Flex>
+    <HStack align="flex-start" w={"100%"}>
       <StockSideBar />
-      <Stack w={"100vh"} mx={"auto"} pt={"20px"}>
+      <Stack flex={1} p={5}>
         {/*셀렉트 &&검색창*/}
-        <Heading>위치별 재고현황</Heading>
-        <HStack>
+        <Heading size={"xl"} p={2} mb={3}>
+          위치별 재고현황
+        </Heading>
+        <HStack justifyContent="center">
           <SelectRoot
             collection={searchOptions}
             value={"전체"}
-            size="sm"
-            width="200px"
+            width="160px"
             position="relative"
           >
             <SelectTrigger>
@@ -112,18 +104,19 @@ function WarehouseStatus() {
             </SelectContent>
           </SelectRoot>
           {/*검색창*/}
-          <Input />
+          <Input w={"50%"} />
           <Button>검색</Button>
         </HStack>
-        <Table.Root interactive showColumnBorder>
+        <Table.Root variant={"outline"}>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>#</Table.ColumnHeader>
-              <Table.ColumnHeader>업체명</Table.ColumnHeader>
-              <Table.ColumnHeader>품목코드</Table.ColumnHeader>
-              <Table.ColumnHeader>품명</Table.ColumnHeader>
               <Table.ColumnHeader>창고명</Table.ColumnHeader>
+              <Table.ColumnHeader>광역시도</Table.ColumnHeader>
+              <Table.ColumnHeader>시군</Table.ColumnHeader>
               <Table.ColumnHeader>창고 위치</Table.ColumnHeader>
+              <Table.ColumnHeader>협력업체</Table.ColumnHeader>
+              <Table.ColumnHeader>품명</Table.ColumnHeader>
               <Table.ColumnHeader textAlign="end">수량</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
@@ -131,18 +124,28 @@ function WarehouseStatus() {
             {items.map((item) => (
               <Table.Row key={item.id}>
                 <Table.Cell>{item.id}</Table.Cell>
-                <Table.Cell>{item.cus_name}</Table.Cell>
-                <Table.Cell>{item.item_code}</Table.Cell>
-                <Table.Cell>{item.item_name}</Table.Cell>
-                <Table.Cell>{item.position}</Table.Cell>
+                <Table.Cell>{item.warName}</Table.Cell>
+                <Table.Cell>{item.city}</Table.Cell>
+                <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.location}</Table.Cell>
+                <Table.Cell>{item.cus_name}</Table.Cell>
+                <Table.Cell>{item.item_name}</Table.Cell>
                 <Table.Cell textAlign="end">{item.count}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
         </Table.Root>
+        <Center>
+          <PaginationRoot count={3} pageSize={10} page={1} variant="solid">
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
       </Stack>
-    </Flex>
+    </HStack>
   );
 }
 
