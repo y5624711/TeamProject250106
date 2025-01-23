@@ -3,12 +3,14 @@ package com.example.backend.controller.state.retrieve;
 import com.example.backend.dto.state.retrieve.Return;
 import com.example.backend.service.state.retrieve.ReturnService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/return")
@@ -88,4 +90,9 @@ public class ReturnController {
         }
     }
 
+    //가맹점이 가진 물품 목록(시리얼번호) 불러오기
+    @GetMapping("serialNoList/{franchiseCode}")
+    public List<Return> getSerialNoList(@PathVariable String franchiseCode) {
+        return service.getSerialNoList(franchiseCode);
+    }
 }

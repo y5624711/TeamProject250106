@@ -85,4 +85,9 @@ public class ReturnService {
         //return_consent = false
         return mapper.disapproveReturn(returnRequestKey) == 1;
     }
+
+    // 가맹점 코드로 시리얼번호 조회
+    public List<Return> getSerialNoList(String franchiseCode) {
+        return mapper.getSerialNoList(franchiseCode);
+    }
 }

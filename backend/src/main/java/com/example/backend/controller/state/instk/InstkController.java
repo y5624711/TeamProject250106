@@ -12,26 +12,26 @@ import java.util.List;
 @RequestMapping("/api/instk")
 public class InstkController {
 
-     final InstkService service;
+    final InstkService service;
 
     @GetMapping("list")
-    public List<Instk> viewlist (){
+    public List<Instk> viewlist() {
         List<Instk> list = service.viewlist();
-        System.out.println("list = " + list);
+//        System.out.println("list = " + list);
         return list;
 
     }
 
     @PostMapping("add")
-    public void  add(@RequestBody Instk instk){
-        System.out.println("");
+    public void add(@RequestBody Instk instk) {
+//        System.out.println("");
     }
 
     @GetMapping("detailview/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey ){
-        System.out.println("inputKey = " + inputKey);
+    public Instk detailView(@PathVariable int inputKey) {
+//        System.out.println("inputKey = " + inputKey);
 
-         return  service.detailView(inputKey);
+        return service.detailView(inputKey);
 
     }
 
