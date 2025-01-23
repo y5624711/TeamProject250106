@@ -85,9 +85,9 @@ export function PurchaseList({
             <TableColumnHeader>#</TableColumnHeader>
             <TableColumnHeader>협력 업체</TableColumnHeader>
             <TableColumnHeader>품목명</TableColumnHeader>
-            <TableColumnHeader>신청자 사번</TableColumnHeader>
+            {/*<TableColumnHeader>신청자 사번</TableColumnHeader>*/}
             <TableColumnHeader>신청자</TableColumnHeader>
-            <TableColumnHeader>승인자 사번 </TableColumnHeader>
+            {/*<TableColumnHeader>승인자 사번 </TableColumnHeader>*/}
             <TableColumnHeader>승인자 </TableColumnHeader>
             <TableColumnHeader>날짜</TableColumnHeader>
             <TableColumnHeader>상태 현황</TableColumnHeader>
@@ -104,9 +104,9 @@ export function PurchaseList({
                 <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell>{purchase.customerName}</Table.Cell>
                 <Table.Cell>{purchase.itemCommonName}</Table.Cell>
-                <Table.Cell>{purchase.employeeNo}</Table.Cell>
+                {/*<Table.Cell>{purchase.employeeNo}</Table.Cell>*/}
                 <Table.Cell>{purchase.employeeName}</Table.Cell>
-                <Table.Cell>{purchase.customerEmployeeNo}</Table.Cell>
+                {/*<Table.Cell>{purchase.customerEmployeeNo}</Table.Cell>*/}
                 <Table.Cell>{purchase.customerEmployeeName}</Table.Cell>
                 <Table.Cell>{purchase.purchaseRequestDate}</Table.Cell>
                 <Table.Cell>
