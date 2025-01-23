@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, HStack, Input, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { NumberInputField, NumberInputRoot } from "../../ui/number-input.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
@@ -130,13 +129,17 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                       <Text fontSize={"xs"} mt={-5}>
                         품목과 담당업체는 수정이 불가능합니다.
                       </Text>
-                      <Field label={"품목 "} required>
+                      <Field label={"품목 "} required orientation="horizontal">
                         <Input readOnly value={item.itemCommonName} />
                       </Field>
-                      <Field label={"담당업체"} required>
+                      <Field
+                        label={"담당업체"}
+                        required
+                        orientation="horizontal"
+                      >
                         <Input readOnly value={item.customerName || ""} />
                       </Field>
-                      <Field label={"규격"}>
+                      <Field label={"규격"} orientation="horizontal">
                         <Input
                           name="size"
                           placeholder="규격"
@@ -144,7 +147,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                           onChange={handleChange}
                         />
                       </Field>
-                      <Field label={"단위"}>
+                      <Field label={"단위"} orientation="horizontal">
                         <Input
                           name="unit"
                           placeholder="단위"
@@ -152,27 +155,25 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                           onChange={handleChange}
                         />
                       </Field>
-                      <Field label={"입고가"} required>
-                        <NumberInputRoot>
-                          <NumberInputField
-                            name="inputPrice"
-                            placeholder="입고가"
-                            value={editedItem.inputPrice}
-                            onChange={handleChange}
-                          />
-                        </NumberInputRoot>
+                      <Field label={"입고가"} required orientation="horizontal">
+                        <Input
+                          type="number"
+                          name="inputPrice"
+                          value={editedItem.inputPrice}
+                          onChange={handleChange}
+                          min="1"
+                        />
                       </Field>
-                      <Field label={"출고가"} required>
-                        <NumberInputRoot>
-                          <NumberInputField
-                            name="outputPrice"
-                            placeholder="출고가"
-                            value={editedItem.outputPrice}
-                            onChange={handleChange}
-                          />
-                        </NumberInputRoot>
+                      <Field label={"출고가"} required orientation="horizontal">
+                        <Input
+                          type="number"
+                          name="outputPrice"
+                          value={editedItem.outputPrice}
+                          onChange={handleChange}
+                          min="1"
+                        />
                       </Field>
-                      <Field label={"비고"}>
+                      <Field label={"비고"} orientation="horizontal">
                         <Input
                           name="itemNote"
                           placeholder="비고"
@@ -183,31 +184,31 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                     </>
                   ) : (
                     <>
-                      <Field label={"품목"}>
+                      <Field label={"품목"} orientation="horizontal">
                         <Input readOnly value={item.itemCommonName} />
                       </Field>
-                      <Field label={"담당업체"}>
+                      <Field label={"담당업체"} orientation="horizontal">
                         <Input readOnly value={item.customerName} />
                       </Field>
-                      <Field label={"규격"}>
+                      <Field label={"규격"} orientation="horizontal">
                         <Input readOnly value={item.size} />
                       </Field>
-                      <Field label={"단위"}>
+                      <Field label={"단위"} orientation="horizontal">
                         <Input readOnly value={item.unit} />
                       </Field>
-                      <Field label={"입고가"}>
+                      <Field label={"입고가"} orientation="horizontal">
                         <Input readOnly value={item.inputPrice} />
                       </Field>
-                      <Field label={"출고가"}>
+                      <Field label={"출고가"} orientation="horizontal">
                         <Input readOnly value={item.outputPrice} />
                       </Field>
-                      <Field label={"사용여부"}>
+                      <Field label={"사용여부"} orientation="horizontal">
                         <Input
                           readOnly
                           value={item.itemActive ? "사용" : "미사용"}
                         />
                       </Field>
-                      <Field label={"비고"}>
+                      <Field label={"비고"} orientation="horizontal">
                         <Input readOnly value={item.itemNote} />
                       </Field>
                     </>

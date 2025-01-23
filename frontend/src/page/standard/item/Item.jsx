@@ -47,8 +47,8 @@ export function Item() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack flex={1}>
-          <Text fontSize="xl" mx={10} my={3}>
+        <Stack flex={1} p={5}>
+          <Text fontSize="xl" p={2} mb={3}>
             기준정보 관리 > 품목 관리
           </Text>
           <ItemList

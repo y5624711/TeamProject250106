@@ -38,7 +38,7 @@ export function ItemList({
   ];
 
   return (
-    <Box px={10}>
+    <Box>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -49,7 +49,7 @@ export function ItemList({
       <Box>
         <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Sort
                 sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>

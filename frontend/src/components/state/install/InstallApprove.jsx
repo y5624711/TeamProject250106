@@ -21,6 +21,7 @@ import {
   SelectValueText,
   Separator,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -218,7 +219,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               </HStack>
 
               <Field label={"비고"} orientation="horizontal">
-                <Input
+                <Textarea
+                  placeholder="최대 50자"
                   value={installApprove.installApproveNote}
                   onChange={(e) =>
                     setInstallApprove({
