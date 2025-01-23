@@ -60,7 +60,7 @@ export function InstallList({ installList, onRowClick }) {
       <Box>
         <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Sort sortOptions={sortInstallOptions} />
             </Table.Row>
           </Table.Header>
