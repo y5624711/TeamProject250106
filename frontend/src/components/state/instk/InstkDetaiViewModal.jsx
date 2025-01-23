@@ -90,7 +90,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
 
               <Field label={"사번"} orientation="horizontal">
                 <Input readOnly value={"CUSEMP0000010"} />
-                <Input readOnl value={instk.inputStockEmployeeNo} />
+                {/*<Input readOnl value={instk.inputStockEmployeeNo} />*/}
               </Field>
             </HStack>
 

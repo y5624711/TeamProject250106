@@ -35,9 +35,9 @@ SELECT
         ELSE NULL
         END AS  input_stock_employee_name,
      CASE 
-        WHEN BI.input_consent=TRUE  THEN EM3.employee_name 
+        WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
         ELSE NULL
-        END AS  input_stock_employee_name,
+        END AS  input_stock_employee_no,
     CASE 
         WHEN BI.input_common_code ='INSTK' THEN PRQ.amount 
        ELSE 1
