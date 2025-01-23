@@ -98,8 +98,8 @@ export function InstallList({ installList, onRowClick }) {
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {install.installRequestKey != null
-                    ? install.installRequestDate?.split("T")[0]
-                    : install.installApproveDate?.split("T")[0]}
+                    ? install.installRequestDate
+                    : install.installApproveDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.state}</Table.Cell>
               </Table.Row>

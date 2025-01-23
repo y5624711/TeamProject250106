@@ -54,11 +54,13 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
 
   // 설치기사 정보 가져오기
   useEffect(() => {
-    axios
-      .get("api/install/customerEmployee")
-      .then((res) => setCustomerEmployeeList(res.data))
-      .catch((error) => console.log("설치기사 정보 오류:", error));
-  }, []);
+    if (installKey) {
+      axios
+        .get(`api/install/customerEmployee/${installKey}`)
+        .then((res) => setCustomerEmployeeList(res.data))
+        .catch((error) => console.log("설치기사 정보 오류:", error));
+    }
+  }, [installKey]);
 
   const handleApproveClick = () => {
     const approveData = {
@@ -163,8 +165,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     })
                   }
                   type={"date"}
-                  // placeholder="9999-99-99"
-                  // ref={withMask("9999-99-99")}
                 />
               </Field>
               <HStack>
@@ -175,7 +175,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         (selectedCE) =>
                           selectedCE.customer_installer_name === e.value[0],
                       );
-                      console.log(e.value[0]);
                       if (selectedCE) {
                         setInstallApprove((prev) => ({
                           ...prev,
@@ -187,7 +186,18 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       }
                     }}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger
+                      onClick={() => {
+                        if (customerEmployeeList.length === 0 && installKey) {
+                          axios
+                            .get(`/api/install/customerEmployee/${installKey}`)
+                            .then((res) => setCustomerEmployeeList(res.data))
+                            .catch((error) =>
+                              console.log("설치기사 정보 오류 발생:", error),
+                            );
+                        }
+                      }}
+                    >
                       <SelectValueText>
                         {installApprove.customerInstallerName}
                       </SelectValueText>
@@ -195,7 +205,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     <SelectContent
                       maxHeight={"100px"}
                       style={{
-                        width: "85%",
+                        width: "75%",
                         top: "40px",
                         position: "absolute",
                       }}

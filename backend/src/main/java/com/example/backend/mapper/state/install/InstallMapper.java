@@ -52,7 +52,8 @@ public interface InstallMapper {
     // 설치 요청에 대한 정보 가져오기
     @Select("""
              SELECT f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
-            i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note, i.install_request_date
+            i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note, i.install_request_date,
+            i.customer_code
              FROM TB_INSTL_REQ i
              LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
              LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
@@ -64,10 +65,13 @@ public interface InstallMapper {
 
     // 설치 기사 사번으로 이름 가져오기
     @Select("""
-            SELECT employee_no as customer_installer_no, employee_name as customer_installer_name
-            FROM TB_EMPMST
+            SELECT e.employee_no as customer_installer_no, e.employee_name as customer_installer_name
+            FROM TB_INSTL_REQ i
+            LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+            LEFT JOIN TB_EMPMST e ON c.customer_code = e.employee_workplace_code
+            WHERE i.install_request_key = #{installKey}
             """)
-    List<Map<String, Object>> getCustomerEmployee();
+    List<Map<String, Object>> getCustomerEmployee(int installKey);
 
     // 출고 번호 등록
     @Select("""

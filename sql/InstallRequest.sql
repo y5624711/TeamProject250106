@@ -28,3 +28,9 @@ FROM TB_INSTL_REQ i
          LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
 WHERE i.install_request_consent IS NULL
    OR i.install_request_consent = 0
+
+SELECT e.employee_no as customer_installer_no, e.employee_name as customer_installer_name
+FROM TB_INSTL_REQ i
+         LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
+         LEFT JOIN TB_EMPMST e ON c.customer_code = e.employee_workplace_code
+WHERE c.customer_code = 'CUS0000000005'
