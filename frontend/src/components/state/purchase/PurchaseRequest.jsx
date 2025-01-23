@@ -7,6 +7,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { Field } from "../../ui/field.jsx";
@@ -33,7 +34,7 @@ export function PurchaseRequest({ onSave, onClose }) {
     axios
       .get("/api/item/commonCode")
       .then((res) => setItemCommonCodeList(res.data))
-      .catch((error) => console.error("데이터 로딩 중 오류 발생:", error));
+      .catch((e) => console.error("데이터 로딩 중 오류 발생:", e));
   }, []);
 
   // 품목 선택 시 협력업체 이름 가져오기
@@ -121,15 +122,7 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   return (
     <Box>
-      <Box display="flex" gap={4}>
-        <Field label="직원 사번" orientation="horizontal" required mb={7}>
-          <Input value={id} placeholder="직원 사번" />
-        </Field>
-        <Field label="직원 이름" orientation="horizontal" required mb={7}>
-          <Input value={name} placeholder="직원 이름" />
-        </Field>
-      </Box>
-      <Field label="품목" orientation="horizontal" required mb={7}>
+      <Field label="품목" orientation="horizontal" required mb={15}>
         <SelectRoot
           onValueChange={(e) => {
             const selectedItem = itemCommonCodeList.find(
@@ -164,45 +157,44 @@ export function PurchaseRequest({ onSave, onClose }) {
           </SelectContent>
         </SelectRoot>
       </Field>
-      <Field label="담당 업체" orientation="horizontal" required mb={7}>
+      <Field label="담당 업체" orientation="horizontal" required mb={15}>
         <Input
           value={itemData.customerName}
           onChange={(e) => setCustomerName(e.target.value)}
-          placeholder="담당 업체"
         />
       </Field>
       <Box display="flex" gap={4}>
-        <Field label="수량" orientation="horizontal" required mb={7}>
+        <Field label="수량" orientation="horizontal" required mb={15}>
           <Input
             type="number"
-            value={amount}
-            onChange={(e) =>
-              setAmount(e.target.value ? parseInt(e.target.value) : "")
-            }
-            placeholder="수량"
-            min={0} // 최소값 0 설정
+            value={amount || 1}
+            onChange={(e) => {
+              const value = parseInt(e.target.value, 10);
+              setAmount(value >= 1 ? value : 1);
+            }}
+            min={1}
           />
         </Field>
-        <Field label="가격" orientation="horizontal" required mb={7}>
+        <Field label="가격" orientation="horizontal" required mb={15}>
           <Input
             value={inputPrice}
             onChange={(e) => setInputPrice(e.target.value)}
-            placeholder="가격"
           />
         </Field>
       </Box>
-      <Field label="요청 날짜" orientation="horizontal" required mb={7}>
-        <Input
-          value={purchaseRequestDate.toISOString().split("T")[0]}
-          onChange={(e) => setPurchaseRequestDate(new Date(e.target.value))}
-          readOnly
-        />
-      </Field>
-      <Field label="비고" orientation="horizontal" mb={7}>
-        <Input
+      <Box display="flex" gap={4}>
+        <Field label="신청자" orientation="horizontal" required mb={15}>
+          <Input value={name} />
+        </Field>
+        <Field label="사번" orientation="horizontal" required mb={15}>
+          <Input value={id} />
+        </Field>
+      </Box>
+      <Field label="승인 비고" orientation="horizontal" mb={15}>
+        <Textarea
           value={purchaseRequestNote}
           onChange={(e) => setPurchaseRequestNote(e.target.value)}
-          placeholder="비고"
+          placeholder={"최대 50자"}
         />
       </Field>
       <Box display="flex" gap={4} justifyContent="flex-end">

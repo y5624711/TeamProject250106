@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Center, Heading, HStack } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, HStack, Stack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
@@ -62,8 +62,8 @@ export function Purchase() {
   return (
     <Box display="flex" h="100vh">
       <StateSideBar />
-      <Box flex="1" p={4}>
-        <Heading size="xl" p={2} mb={3}>
+      <Stack flex="1" p={5}>
+        <Heading size={"xl"} p={2} mb={3}>
           구매 / 설치 관리 {">"} 구매 관리
         </Heading>
         <PurchaseList
@@ -72,15 +72,9 @@ export function Purchase() {
           search={search}
           setSearch={setSearch}
         />
-        {/* 구매 요청 버튼 */}
-        <Box display="flex" justifyContent="flex-end" mb={4}>
-          <Button mt={3} onClick={handlePurchaseRequestClick}>
-            구매 요청
-          </Button>
-        </Box>
         {/* 페이지네이션 */}
         <Center>
-          <PaginationRoot count={count} pageSize={10} variant="solid">
+          <PaginationRoot count={count} pageSize={10} variant="solid" mt={3}>
             <HStack>
               <PaginationPrevTrigger />
               <PaginationItems />
@@ -88,6 +82,10 @@ export function Purchase() {
             </HStack>
           </PaginationRoot>
         </Center>
+        {/* 구매 요청 버튼 */}
+        <Box display="flex" justifyContent="flex-end">
+          <Button onClick={handlePurchaseRequestClick}>구매 요청</Button>
+        </Box>
         {/* 구매 다이얼로그 */}
         <PurchaseDialog
           isOpen={isDialogOpen}
@@ -96,7 +94,7 @@ export function Purchase() {
           purchaseRequestKey={purchaseRequestKey}
           purchaseRequestData={purchaseRequestData} // 발주 데이터 전달
         />
-      </Box>
+      </Stack>
     </Box>
   );
 }

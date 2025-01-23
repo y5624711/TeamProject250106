@@ -26,7 +26,7 @@ public interface PurchaseMapper {
                 cus.customer_name AS customerName,
                 pa.customer_employee_no AS customerEmployeeNo,
                 emp2.employee_name AS customerEmployeeName,
-                ic.item_common_name AS itemCommonName,
+                sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent
             FROM TB_PURCH_REQ pr
@@ -34,7 +34,7 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
-            LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
+            LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
             """)
     List<Purchase> purchaseList();
 
@@ -47,7 +47,7 @@ public interface PurchaseMapper {
                 cus.customer_name AS customerName,
                 pa.customer_employee_no AS customerEmployeeNo,
                 emp2.employee_name AS customerEmployeeName,
-                ic.item_common_name AS itemCommonName,
+                sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_request_note AS purchaseRequestNote,
                 pr.amount AS amount,
@@ -59,7 +59,7 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
-            LEFT JOIN TB_ITEMCOMM ic ON pr.item_common_code = ic.item_common_code
+            LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
             LEFT JOIN TB_WHMST wh ON cus.customer_code = wh.customer_code
             WHERE pr.purchase_request_key = #{purchaseRequestKey}
             """)

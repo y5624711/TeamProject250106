@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Input, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  Separator,
+  Spinner,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
@@ -95,83 +102,83 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
 
   return (
     <Box>
-      <Box display="flex" gap={4}>
-        <Field label="직원 사번" orientation="horizontal" mb={7}>
-          <Input value={purchase.employeeNo} placeholder="직원 사번" readOnly />
-        </Field>
-        <Field label="직원 이름" orientation="horizontal" mb={7}>
-          <Input
-            value={purchase.employeeName}
-            placeholder="직원 이름"
-            readOnly
-          />
-        </Field>
-      </Box>
-      <Box display="flex" gap={4}>
-        <Field label="승인자 사번" orientation="horizontal" mb={7}>
-          <Input value={id} placeholder="승인자 사번" readOnly />
-        </Field>
-        <Field label="승인자 이름" orientation="horizontal" mb={7}>
-          <Input value={name} placeholder="승인자 이름" readOnly />
-        </Field>
-      </Box>
-      <Field label="품목" orientation="horizontal" mb={7}>
-        <Input value={purchase.itemCommonName} placeholder="품목" readOnly />
-      </Field>
-      <Box display="flex" gap={4}>
-        <Field label="담당 업체" orientation="horizontal" mb={7}>
-          <Input
-            value={purchase.customerName}
-            placeholder="담당 업체"
-            readOnly
-          />
-        </Field>
-        <Field label="창고" orientation="horizontal" mb={7}>
-          <Input
-            value={purchase?.warehouseName || "창고 정보 없음"}
-            placeholder="창고"
-            readOnly
-          />
-        </Field>
-      </Box>
-      <Box display="flex" gap={4}>
-        <Field label="수량" orientation="horizontal" mb={7}>
-          <Input value={purchase.amount} placeholder="수량" readOnly />
-        </Field>
-        <Field label="가격" orientation="horizontal" mb={7}>
-          <Input value={purchase.inputPrice} placeholder="가격" readOnly />
-        </Field>
-      </Box>
-      <Field label="요청 날짜" orientation="horizontal" mb={7}>
-        <Input
-          value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
-          placeholder="요청 날짜"
-          readOnly
-        />
-      </Field>
-      <Field label="비고" orientation="horizontal" mb={7}>
-        <Input
-          value={purchase.purchaseRequestNote}
-          placeholder="비고"
-          readOnly
-        />
-      </Field>
-
       {/* 승인 후 발주 번호 필드 추가 */}
       {showPurchaseNo && (
-        <Field label="발주 번호" orientation="horizontal" mb={7}>
+        <Field label="발주 번호" orientation="horizontal" mb={15}>
           <Input value={purchase.purchaseNo} placeholder="발주 번호" readOnly />
         </Field>
       )}
+      <Field label="품목" orientation="horizontal" mb={15}>
+        <Input value={purchase.itemCommonName} readOnly />
+      </Field>
+      <Box display="flex" gap={4}>
+        <Field label="수량" orientation="horizontal" mb={15}>
+          <Input value={purchase.amount} readOnly />
+        </Field>
+        <Field label="가격" orientation="horizontal" mb={15}>
+          <Input value={purchase.inputPrice} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="신청자" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeNo} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="담당 업체" orientation="horizontal" mb={15}>
+          <Input value={purchase.customerName} readOnly />
+        </Field>
+        <Field label="창고" orientation="horizontal" mb={15}>
+          <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
+        </Field>
+      </Box>
+      <Field label="요청 날짜" orientation="horizontal" mb={15}>
+        <Input
+          value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
+          readOnly
+        />
+      </Field>
+      <Field label="신청 비고" orientation="horizontal" mb={15}>
+        <Textarea
+          value={purchase.purchaseRequestNote}
+          readOnly
+          placeholder={"최대 50자"}
+        />
+      </Field>
+      <Separator />
+      <Box display="flex" gap={4} mt={15}>
+        <Field label="승인자" orientation="horizontal" mb={15}>
+          <Input value={name} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={id} readOnly />
+        </Field>
+      </Box>
+      <Field label="승인 날짜" orientation="horizontal" mb={15}>
+        <Input
+          value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
+          readOnly
+        />
+      </Field>
+      <Field label="승인 비고" orientation="horizontal" mb={15}>
+        <Textarea
+          value={purchase.purchaseRequestNote}
+          readOnly
+          placeholder={"최대 50자"}
+        />
+      </Field>
 
       {/* 승인/반려 버튼이 보일지 여부를 상태로 제어 */}
       {showButton && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
-          <Button onClick={handleApprove} colorScheme="blue">
-            승인
+          <Button onClick={handleReject} colorScheme="red" variant="outline">
+            구매 반려
           </Button>
-          <Button onClick={handleReject} colorScheme="red">
-            반려
+          <Button onClick={handleApprove} colorScheme="blue">
+            구매 승인
           </Button>
         </Box>
       )}
