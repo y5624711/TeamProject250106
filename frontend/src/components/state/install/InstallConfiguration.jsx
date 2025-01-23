@@ -19,13 +19,19 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Separator,
   Stack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
-export function InstallConfiguration({ installKey, isOpen, onClose }) {
+export function InstallConfiguration({
+  installKey,
+  isOpen,
+  onClose,
+  setChange,
+}) {
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [selectedSerial, setSelectedSerial] = useState("");
@@ -87,7 +93,7 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
           description: data.message.text,
           type: data.message.type,
         });
-        onClose();
+        setChange((prev) => !prev);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -119,19 +125,41 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>설치 확인</DialogTitle>
+          <DialogTitle>설치 완료</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={5}>
-            <Field label={"가맹점명"} orientation="horizontal">
+          <Stack gap={"15px"}>
+            <Field label={"가맹점"} orientation="horizontal">
               <Input value={installData.franchiseName} readOnly />
             </Field>
-            <Field label={"품목명"} orientation="horizontal">
+            <Field label={"가맹점 주소"} orientation="horizontal">
+              <Input value={installData.franchiseAddress} readOnly />
+            </Field>
+            <Field label={"품목"} orientation="horizontal">
               <Input value={installData.itemCommonName} readOnly />
             </Field>
             <HStack>
+              <Field label={"신청자"} orientation="horizontal">
+                <Input value={installData.businessEmployeeName} readOnly />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={installData.businessEmployeeNo} readOnly />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={"설치 기사"} orientation="horizontal">
+                <Input value={installData.customerInstallerName} readOnly />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={installData.customerInstallerNo} readOnly />
+              </Field>
+            </HStack>
+            <Field label={"승인 비고"} orientation="horizontal">
+              <Input value={installData.installApproveNote} readOnly />
+            </Field>
+            <Separator />
+            <HStack>
               <Field label={"출고 번호"} orientation="horizontal">
-                <Input value={installData.outputNo} readOnly />
                 <Input value={installData.outputNo} readOnly />
               </Field>
               <Field label={"시리얼 번호"} orientation="horizontal">
@@ -161,38 +189,28 @@ export function InstallConfiguration({ installKey, isOpen, onClose }) {
                 </SelectRoot>
               </Field>
             </HStack>
-            <Field label={"가맹점 주소"} orientation="horizontal">
-              <Input value={installData.franchiseAddress} readOnly />
-            </Field>
-            <HStack>
-              <Field label={"신청자 사번"} orientation="horizontal">
-                <Input value={installData.businessEmployeeNo} readOnly />
-              </Field>
-              <Field label={"신청자"} orientation="horizontal">
-                <Input value={installData.businessEmployeeName} readOnly />
-              </Field>
-            </HStack>
-            <Field label={"설치 기사"} orientation="horizontal">
-              <Input value={installData.customerInstallerNo} readOnly />
-            </Field>
-            <Field label={"승인 비고"} orientation="horizontal">
-              <Input value={installData.installApproveNote} readOnly />
-            </Field>
             <Field label={"시리얼 비고"} orientation="horizontal">
               <Input
                 value={serialNote}
                 onChange={(e) => setSerialNote(e.target.value)}
               />
             </Field>
+            {installData.consent && (
+              <Field label={"설치 날짜"} orientation="horizontal">
+                <Input
+                  value={installData.installApproveDate}
+                  onChange={(e) => setSerialNote(e.target.value)}
+                />
+              </Field>
+            )}
           </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          {!installData.consent && (
-            <Button onClick={handleConfigurationClick}>설치 완료</Button>
-          )}
+          {/*다 끝나면 숨기는 것으로 설정*/}
+          <Button onClick={handleConfigurationClick}>완료</Button>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

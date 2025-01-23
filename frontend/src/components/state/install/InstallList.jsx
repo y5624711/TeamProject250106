@@ -15,14 +15,15 @@ export function InstallList({ installList, onRowClick }) {
   const sortInstallOptions = [
     { key: "installKey", label: "#" },
     { key: "customerName", label: "가맹점" },
-    { key: "itemName", label: "품목명" },
+    { key: "itemName", label: "품목" },
+    { key: "customerName", label: "담당 업체" },
     { key: "outputNo", label: "출고 번호" },
-    { key: "businessEmployeeName", label: "신청자명" },
-    { key: "customerEmployeeName", label: "승인자명" },
-    { key: "customerInstallerName", label: "설치기사" },
+    { key: "businessEmployeeName", label: "신청자" },
+    { key: "customerEmployeeName", label: "승인자" },
+    { key: "customerInstallerName", label: "설치 기사" },
     { key: "warehouseName", label: "창고" },
     { key: "installDate", label: "날짜" },
-    { key: "currentState", label: "상태 현황" },
+    { key: "currentState", label: "상태" },
   ];
 
   // 검색 옵션
@@ -30,14 +31,15 @@ export function InstallList({ installList, onRowClick }) {
     items: [
       { label: "전체", value: "all" },
       { label: "가맹점", value: "franchiseName" },
-      { label: "품목명", value: "itemCommonName" },
-      { label: "출고번호", value: "outputNo" },
-      { label: "신청자명", value: "businessEmployeeName" },
-      { label: "승인자명", value: "customerEmployeeName" },
-      { label: "설치기사", value: "customerInstallerName" },
+      { label: "품목", value: "itemCommonName" },
+      { label: "담당 업체", value: "itemCommonName" },
+      { label: "출고 번호", value: "outputNo" },
+      { label: "신청자", value: "businessEmployeeName" },
+      { label: "승인자", value: "customerEmployeeName" },
+      { label: "설치 기사", value: "customerInstallerName" },
       { label: "창고", value: "warehouseName" },
       { label: "날짜", value: "outputPrice" },
-      { label: "상태 현황", value: "state" },
+      { label: "상태", value: "state" },
     ],
   });
 
@@ -77,6 +79,9 @@ export function InstallList({ installList, onRowClick }) {
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {install.itemCommonName}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {install.customerName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.outputNo}</Table.Cell>
                 <Table.Cell textAlign="center">

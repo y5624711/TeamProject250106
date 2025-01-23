@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValueText,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
@@ -103,7 +104,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
-            <Field label="가맹점명" orientation="horizontal">
+            <Field label="가맹점" orientation="horizontal">
               <SelectRoot
                 onValueChange={(e) => {
                   const selectedFranchise = installFranchiseList.find(
@@ -122,7 +123,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               >
                 <SelectTrigger>
                   <SelectValueText>
-                    {installRequest.franchiseName || "가맹점 선택"}
+                    {installRequest.franchiseName}
                   </SelectValueText>
                 </SelectTrigger>
                 <SelectContent
@@ -165,7 +166,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               >
                 <SelectTrigger>
                   <SelectValueText>
-                    {installRequest.itemCommonName || "품목 선택"}
+                    {installRequest.itemCommonName}
                   </SelectValueText>
                 </SelectTrigger>
                 <SelectContent
@@ -197,7 +198,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             <Field label="수량" orientation="horizontal">
               <Input
                 type="number"
-                placeholder="수량"
                 value={installRequest.installRequestAmount}
                 onChange={handleInputChange("installRequestAmount")}
                 min="1"
@@ -218,25 +218,24 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               />
             </Field>
             <HStack>
-              <Field label="신청자 사번" orientation="horizontal">
-                <Input placeholder="신청자 사번" value={id} />
-              </Field>
               <Field label="신청자" orientation="horizontal">
-                <Input placeholder="신청자" value={name} />
+                <Input placeholder="신청자 사번" value={name} />
+              </Field>
+              <Field label="사번" orientation="horizontal">
+                <Input placeholder="신청자" value={id} />
               </Field>
             </HStack>
-            <Field label="협력업체" orientation="horizontal">
+            <Field label="담당 업체" orientation="horizontal">
               <Input
                 readOnly
-                placeholder="협력업체"
                 value={installRequest.customerName}
                 onChange={handleInputChange("customerName")}
               />
             </Field>
             <Field label="비고" orientation="horizontal">
-              <Input
-                placeholder="비고"
+              <Textarea
                 value={installRequest.installRequestNote}
+                placeholder="최대 50자"
                 onChange={handleInputChange("installRequestNote")}
               />
             </Field>
@@ -249,7 +248,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             </Button>
           </DialogActionTrigger>
           <Button onClick={handleRequestClick} disabled={!isValid}>
-            설치 요청
+            요청
           </Button>
         </DialogFooter>
         <DialogCloseTrigger />
