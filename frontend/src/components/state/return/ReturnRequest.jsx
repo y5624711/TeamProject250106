@@ -166,12 +166,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 <SelectValueText></SelectValueText>
               </SelectTrigger>
               <SelectContent>
-                {"미정" ||
-                  serialNoList.map((option) => (
-                    <SelectItem item={option} key={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
+                {serialNoList.map((option) => (
+                  <SelectItem item={option} key={option.value}>
+                    {option.label}
+                  </SelectItem>
+                )) || "내역 없음"}
               </SelectContent>
             </SelectRoot>
             {/*<Input*/}
