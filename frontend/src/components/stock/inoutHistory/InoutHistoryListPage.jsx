@@ -17,15 +17,33 @@ function InoutHistoryListPage({
         }}
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
-        <Table.Cell>{inoutHistory.inoutHistoryKey}</Table.Cell>
-        <Table.Cell>{inoutHistory.inoutCommonCode}</Table.Cell>
-        <Table.Cell>{inoutHistory.serialNo}</Table.Cell>
-        <Table.Cell>{inoutHistory.itemName}</Table.Cell>
-        <Table.Cell>{inoutHistory.warehouseName}</Table.Cell>
-        <Table.Cell>{inoutHistory.franchiseName}</Table.Cell>
-        <Table.Cell>{inoutHistory.businessEmployeeName}</Table.Cell>
-        <Table.Cell>{inoutHistory.customerEmployeeName}</Table.Cell>
-        <Table.Cell>{inoutHistory.inoutHistoryDate}</Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.inoutHistoryKey}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.inoutCommonCode === "in" ? "입고" : "출고"}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.serialNo}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.itemName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.warehouseName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.franchiseName ? inoutHistory.franchiseName : "-"}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.businessEmployeeName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.customerEmployeeName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {inoutHistory.inoutHistoryDate.slice(0, 10)}
+        </Table.Cell>
       </Table.Row>
     </>
   );

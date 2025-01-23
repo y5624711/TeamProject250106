@@ -15,14 +15,15 @@ import InoutHistoryView from "./InoutHistoryView.jsx";
 
 function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="xl">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>{inoutHistoryKey} 입출 상세</Box>
+            <Box>입출 내역 상세</Box>
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
+          {/*팝업창 내부 내용*/}
           <InoutHistoryView inoutHistoryKey={inoutHistoryKey} />
         </DialogBody>
         <DialogFooter>

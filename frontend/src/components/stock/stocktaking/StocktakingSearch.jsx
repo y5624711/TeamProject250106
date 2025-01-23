@@ -17,6 +17,7 @@ function StocktakingSearch({
   search,
   handleSearchClick,
 }) {
+  console.log(search);
   return (
     <Box>
       <Stack justify={"top"} direction={"row"}>

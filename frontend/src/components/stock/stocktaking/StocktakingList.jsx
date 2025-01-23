@@ -8,6 +8,7 @@ import {
 } from "../../ui/pagination.jsx";
 import StocktakingListPage from "./StocktakingListPage.jsx";
 import StocktakingDetail from "./StocktakingDetail.jsx";
+import StocktakingListHeader from "./StocktakingListHeader.jsx";
 
 function StocktakingList({
   stocktakingList,
@@ -23,66 +24,11 @@ function StocktakingList({
         <Box>
           <Table.Root interactive showColumnBorder>
             <Table.Header>
-              <Table.Row>
-                <Table.ColumnHeader
-                  width="80px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  #
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  창고명
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  품목명
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  전산 수량
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  실제 수량
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  협력업체 직원
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  전화번호
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  날짜
-                </Table.ColumnHeader>
-              </Table.Row>
+              {/* 재고실사 테이블 헤더 */}
+              <StocktakingListHeader />
             </Table.Header>
             <Table.Body>
+              {/* 재고실사 각각의 내용*/}
               {stocktakingList.map((stocktaking) => (
                 <StocktakingListPage
                   stocktaking={stocktaking}
@@ -109,8 +55,9 @@ function StocktakingList({
             </HStack>
           </PaginationRoot>
         </Center>
+        {/* 더블클릭 시 뜨는 팝업창 */}
         <StocktakingDetail
-          stocktaking={selectedStocktaking}
+          stocktakingKey={selectedStocktaking}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
         />
