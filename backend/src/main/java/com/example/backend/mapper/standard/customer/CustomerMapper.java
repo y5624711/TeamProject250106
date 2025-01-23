@@ -26,8 +26,8 @@ public interface CustomerMapper {
 
     @Select("""
             <script>
-            SELECT customer_key, customer_name, customer_no, customer_code, item_code, item_common_name AS itemName, customer_rep, customer_tel, customer_active 
-            FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+            SELECT customer_key, customer_name, customer_no, customer_code, item_code, common_code_name AS itemName, customer_rep, customer_tel, customer_active 
+            FROM TB_CUSTMST c LEFT OUTER JOIN TB_SYSCOMM s ON c.item_code = s.common_code
             WHERE 
                 <if test="active == false">
                     customer_active = TRUE
@@ -63,9 +63,9 @@ public interface CustomerMapper {
     List<Customer> getCustomerList(Boolean active, int offset, String type, String keyword, String sort, String order);
 
     @Select("""
-            SELECT *, item_common_name AS itemName 
-            FROM TB_CUSTMST 
-            LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+            SELECT *, common_code_name AS itemName 
+            FROM TB_CUSTMST
+            LEFT OUTER JOIN TB_SYSCOMM ON item_code = common_code
             WHERE customer_key = #{customerKey}
             """)
     Customer viewCustomer(String customerKey);
@@ -90,19 +90,21 @@ public interface CustomerMapper {
 
     @Select("""
             SELECT ic.*
-            FROM TB_ITEMCOMM ic
+            FROM TB_SYSCOMM ic
                      LEFT JOIN (SELECT DISTINCT item_code
                                 FROM TB_CUSTMST
-                                WHERE customer_active = TRUE) cm ON ic.item_common_code = cm.item_code
+                                WHERE customer_active = TRUE) cm 
+                     ON ic.common_code = cm.item_code
             WHERE cm.item_code IS NULL
-              AND ic.item_common_code_active = TRUE
+              AND ic.common_code_active = TRUE
+              AND common_code_type='ITEM'
             """)
     List<CommonCode> itemCodeList();
 
     @Select("""
             <script>
                 SELECT COUNT(*)
-                FROM TB_CUSTMST LEFT OUTER JOIN TB_ITEMCOMM ON item_code = item_common_code
+                 FROM TB_CUSTMST c LEFT OUTER JOIN TB_SYSCOMM s ON c.item_code = s.common_code
                 WHERE 
                 <if test="active == false">
                     customer_active = TRUE
@@ -120,7 +122,7 @@ public interface CustomerMapper {
                                     OR customer_no LIKE CONCAT('%', #{keyword}, '%')
                                 </if>           
                                 <if test="type=='all' or type=='itemName'">
-                                    OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                                    OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>                
                                 <if test="type=='all' or type=='customerRep'">
                                     OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
