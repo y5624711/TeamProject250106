@@ -53,7 +53,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     setInstallRequest((prev) => ({ ...prev, [field]: value }));
   };
 
-  // 협력업체 정보 가져오기
+  // 가맹점 정보 가져오기
   useEffect(() => {
     axios
       .get("api/install/franchise")

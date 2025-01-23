@@ -65,9 +65,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const handleApproveClick = () => {
     const approveData = {
       installRequestKey: installKey,
-      itemCommonCode: installRequest[0]?.itemCommonCode,
-      installRequestAmount: installRequest[0]?.installRequestAmount,
-      customerInstallerNo,
+      itemCommonCode: installRequest?.itemCommonCode,
+      installRequestAmount: installRequest?.installRequestAmount,
       customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자)
       ...installApprove,
     };
@@ -175,6 +174,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         (selectedCE) =>
                           selectedCE.customer_installer_name === e.value[0],
                       );
+                      console.log(selectedCE.customer_installer_name);
+                      console.log(selectedCE.customer_installer_no);
                       if (selectedCE) {
                         setInstallApprove((prev) => ({
                           ...prev,
@@ -186,18 +187,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       }
                     }}
                   >
-                    <SelectTrigger
-                      onClick={() => {
-                        if (customerEmployeeList.length === 0 && installKey) {
-                          axios
-                            .get(`/api/install/customerEmployee/${installKey}`)
-                            .then((res) => setCustomerEmployeeList(res.data))
-                            .catch((error) =>
-                              console.log("설치기사 정보 오류 발생:", error),
-                            );
-                        }
-                      }}
-                    >
+                    <SelectTrigger>
                       <SelectValueText>
                         {installApprove.customerInstallerName}
                       </SelectValueText>

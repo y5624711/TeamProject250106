@@ -43,7 +43,6 @@ export function InstallList({ installList, onRowClick }) {
     ],
   });
 
-  console.log(installList);
   return (
     <Box>
       <SearchBar searchOptions={searchOptions} />
