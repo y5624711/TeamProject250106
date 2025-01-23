@@ -12,16 +12,13 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { HStack, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
-export function InstkDetaiViewModal() {
+export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
+  const { id } = useContext(AuthenticationContext);
   return (
-    <DialogRoot size={"md"}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="md">
-          입고 상세 확인
-        </Button>
-      </DialogTrigger>
+    <DialogRoot size={"md"} open={isModalOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>입고 상세 확인</DialogTitle>
@@ -29,50 +26,49 @@ export function InstkDetaiViewModal() {
         <DialogBody>
           <Stack gap={3}>
             <Field orientation="horizontal" label={"입고 구분 코드"}>
-              <Input readOnly />
+              <Input value={instk.inputCommonCode} />
             </Field>
 
             <HStack>
               <Field orientation="horizontal" label={"품목 코드"}>
-                <Input readOnly />
+                <Input readOnly value={instk.itemCommonCode} />
               </Field>
               <Field orientation="horizontal" label={"품목 명"}>
-                <Input readOnly />
+                <Input readOnly value={instk.itemCommonName} />
               </Field>
             </HStack>
 
             <Field label={"시리얼 번호"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={"아직 안함"} />
             </Field>
             <Field label={"구매 요청자"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={instk.requestEmployeeName} />
             </Field>
 
             <Field label={"입고 승인자"} orientation="horizontal">
-              <Input readOnl />
+              <Input readOnl value={"아직 안함"} />
             </Field>
 
             <Field label={"창고 주소(코드)"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={"아직 안함"} />
             </Field>
             <Field label={"창고 + 로케이션"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={"아직 안함"} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={"input_stock_date"} />
             </Field>
             <Field label={"비고"} orientation="horizontal">
-              <Input readOnly />
+              <Input readOnly value={"승인상태시의 비고"} />
             </Field>
           </Stack>
         </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">취소</Button>
-          </DialogActionTrigger>
-          <Button> 완료</Button>
-        </DialogFooter>
-        <DialogCloseTrigger />
+        <DialogFooter></DialogFooter>
+        <DialogCloseTrigger
+          onClick={() => {
+            setChangeModal();
+          }}
+        />
       </DialogContent>
     </DialogRoot>
   );

@@ -1,8 +1,16 @@
-import { Box, Heading, Table } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  createListCollection,
+  Heading,
+  Table,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
+import { SearchBar } from "../../tool/list/SearchBar.jsx";
+import { Pagination } from "../../tool/list/Pagination.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
@@ -13,7 +21,7 @@ export function InstkList() {
     axios.get("api/instk/list").then((res) => {
       setInstkList(res.data);
     });
-  }, [isApproveModalOpen]);
+  }, []);
 
   console.log(instkList, "instklist");
 
@@ -27,11 +35,27 @@ export function InstkList() {
   const handleSelectModal = (checkState) => {
     checkState === true ? handleDetailViewModal() : handleApproveModal();
   };
-  console.log(isApproveModalOpen, "모달");
+
+  const searchOptions = createListCollection({
+    items: [
+      { label: "전체", value: "all" },
+      { label: "입고 구분", value: "itemCommonName" },
+      { label: "발주 번호", value: "customerName" },
+      { label: "품목 명", value: "size" },
+      { label: "협력 업체", value: "unit" },
+      { label: "날짜", value: "inputPrice" },
+      { label: "신청자", value: "outputPrice" },
+      { label: "승인자", value: "outputPrice" },
+      { label: "상태현황", value: "outputPrice" },
+    ],
+  });
+
   return (
-    <Box>
+    <Box p={5}>
       <Heading>구매/설치관리 >입고 관리</Heading>
-      <Box> 검색 화면 </Box>
+      <Box m={3}>
+        <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
+      </Box>
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -50,19 +74,20 @@ export function InstkList() {
           {instkList.map((item, index) => {
             return (
               <Table.Row
+                key={index}
                 onClick={() => {
                   handleSelectModal(item.inputConsent);
                   setSelectedIndex(index);
                 }}
               >
-                <Table.Cell>{item.inputKey}</Table.Cell>
+                <Table.Cell>{item.index}</Table.Cell>
                 <Table.Cell>{item.inputCommonCode}</Table.Cell>
                 <Table.Cell>{item.inputNo}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
                 <Table.Cell>{item.customerName}</Table.Cell>
-                <Table.Cell>{"날짜"}</Table.Cell>
-                <Table.Cell>{"신청자"}</Table.Cell>
-                <Table.Cell>{"승인자"}</Table.Cell>
+                <Table.Cell>{item.requestDate}</Table.Cell>
+                <Table.Cell>{item.requestEmployeeName}</Table.Cell>
+                <Table.Cell>{}</Table.Cell>
                 <Table.Cell>
                   {item.inputConsent === true ? "승인" : "대기"}
                 </Table.Cell>
@@ -72,6 +97,17 @@ export function InstkList() {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
+      <Center m={3}>
+        <Pagination
+          count={30}
+          pageSize={10}
+          onPageChange={(newPage) => {
+            const nextSearchParam = new URLSearchParams(searchParams);
+            nextSearchParam.set("page", newPage);
+            setSearchParams(nextSearchParam);
+          }}
+        />
+      </Center>
 
       {isApproveModalOpen && (
         <InstkConfirmModal
@@ -80,7 +116,13 @@ export function InstkList() {
           instk={instkList[selectedIndex]}
         />
       )}
-      <InstkDetaiViewModal />
+      {isDetailViewModalOpen && (
+        <InstkDetaiViewModal
+          isModalOpen={isDetailViewModalOpen}
+          setChangeModal={handleDetailViewModal}
+          instk={instkList[selectedIndex]}
+        />
+      )}
     </Box>
   );
 }

@@ -16,6 +16,7 @@ public class InoutHistoryController {
 
     @GetMapping("list")
     public Map<String, Object> list() {
+
         return service.list();
     }
 
@@ -28,5 +29,9 @@ public class InoutHistoryController {
     public InoutHistory view(@PathVariable Integer inoutHistoryKey) {
         System.out.println(inoutHistoryKey);
         return service.view(inoutHistoryKey);
+    }
+    @PostMapping("addhistory")
+    public void addhistoty(@RequestBody InoutHistory InoutHistory) {
+        System.out.println("까꿍");
     }
 }
