@@ -20,4 +20,22 @@ public class InstkService {
         return  instkList;
 
     }
+
+    public Instk detailView(int inputKey) {
+
+       List<Integer> serialList= mapper.getSerialNoByInputKey(inputKey);
+
+        System.out.println("serialList = " + serialList);
+         String inputStockNote= mapper.getInstkNoteByInputKey(inputKey,serialList.get(0));
+
+
+//         이거 애초에 분리해야하네
+        System.out.println("inputStockNote = " + inputStockNote);
+
+      Instk instk = new Instk();
+      instk.setInputNote(inputStockNote);
+      instk.setSerialList(serialList);
+      return instk;
+
+    }
 }

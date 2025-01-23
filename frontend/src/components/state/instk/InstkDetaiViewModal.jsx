@@ -10,13 +10,31 @@ import {
   DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { HStack, Input, Stack } from "@chakra-ui/react";
+import {
+  HStack,
+  Input,
+  NativeSelectField,
+  NativeSelectRoot,
+  Stack,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import axios from "axios";
 
 export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
+  const [detailData, setDetailData] = useState();
+
+  const items = ["Option 1", "Option 2", "Option 3"];
+
+  useEffect(() => {
+    axios.get(`/api/instk/detailview/${instk.inputKey}`).then((res) => {
+      console.log(res.data);
+      setDetailData(res.data);
+    });
+  }, []);
+
   return (
     <DialogRoot size={"md"} open={isModalOpen}>
       <DialogContent>
@@ -25,10 +43,14 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap={3}>
-            <Field orientation="horizontal" label={"입고 구분 코드"}>
-              <Input value={instk.inputCommonCode} />
-            </Field>
-
+            <HStack>
+              <Field orientation="horizontal" label={"입고 구분 코드"}>
+                <Input value={instk.inputCommonCode} />
+              </Field>
+              <Field orientation="horizontal" label={"입고 구분 명"}>
+                <Input value={instk.inputCommonCodeName} />
+              </Field>
+            </HStack>
             <HStack>
               <Field orientation="horizontal" label={"품목 코드"}>
                 <Input readOnly value={instk.itemCommonCode} />
@@ -39,14 +61,19 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
 
             <Field label={"시리얼 번호"} orientation="horizontal">
-              <Input readOnly value={"아직 안함"} />
+              {/*<NativeSelectRoot>*/}
+              {/*  <NativeSelectField*/}
+              {/*    items={["Option 1", "Option 2", "Option 3"]}*/}
+              {/*  />*/}
+              {/*</NativeSelectRoot>*/}
+              <Input readOnly value={"ss"} />
             </Field>
             <Field label={"구매 요청자"} orientation="horizontal">
               <Input readOnly value={instk.requestEmployeeName} />
             </Field>
 
             <Field label={"입고 승인자"} orientation="horizontal">
-              <Input readOnl value={"아직 안함"} />
+              <Input readOnl value={instk.inputStockEmployeeName} />
             </Field>
 
             <Field label={"창고 주소(코드)"} orientation="horizontal">
@@ -56,10 +83,10 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
               <Input readOnly value={"아직 안함"} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">
-              <Input readOnly value={"input_stock_date"} />
+              <Input readOnly value={instk.inputStockDate} />
             </Field>
             <Field label={"비고"} orientation="horizontal">
-              <Input readOnly value={"승인상태시의 비고"} />
+              <Input readOnly value={""} />
             </Field>
           </Stack>
         </DialogBody>

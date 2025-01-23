@@ -100,12 +100,23 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
                 <Input readOnly value={instk.itemAmount} />
               </Field>
             </HStack>
-            <Field label={"구매 요청자 "} orientation="horizontal">
-              <Input readOnly value={instk.requestEmployeeName} />
-            </Field>
-            <Field label={"구매 승인자"} orientation="horizontal">
-              <Input value={instk.requestApprovalEmployeeName} />
-            </Field>
+            <HStack>
+              <Field label={" 요청자 사번 "} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeNo} />
+              </Field>
+              <Field label={"구매 요청자 "} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeName} />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={" 승인자 사번 "} orientation="horizontal">
+                <Input readOnly value={instk.requestApprovalEmployeeNo} />
+              </Field>
+
+              <Field label={"요청 승인자"} orientation="horizontal">
+                <Input value={instk.requestApprovalEmployeeName} />
+              </Field>
+            </HStack>
             <Field label={"창고 주소(코드)"} orientation="horizontal">
               <Input value={"직접기입?"} />
             </Field>

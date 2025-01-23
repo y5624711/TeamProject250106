@@ -27,5 +27,13 @@ public class InstkController {
         System.out.println("");
     }
 
+    @GetMapping("detailview/{inputKey}")
+    public Instk detailView(@PathVariable int inputKey ){
+        System.out.println("inputKey = " + inputKey);
+
+         return  service.detailView(inputKey);
+
+    }
+
 
 }

@@ -85,9 +85,11 @@ export function InstkList() {
                 <Table.Cell>{item.inputNo}</Table.Cell>
                 <Table.Cell>{item.itemCommonName}</Table.Cell>
                 <Table.Cell>{item.customerName}</Table.Cell>
-                <Table.Cell>{item.requestDate}</Table.Cell>
+                <Table.Cell>
+                  {item.inputStockDate || item.requestDate}
+                </Table.Cell>
                 <Table.Cell>{item.requestEmployeeName}</Table.Cell>
-                <Table.Cell>{}</Table.Cell>
+                <Table.Cell>{item.inputStockEmployeeName}</Table.Cell>
                 <Table.Cell>
                   {item.inputConsent === true ? "승인" : "대기"}
                 </Table.Cell>

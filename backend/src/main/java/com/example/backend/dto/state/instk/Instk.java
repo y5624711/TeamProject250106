@@ -3,6 +3,7 @@ package com.example.backend.dto.state.instk;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Instk {
@@ -16,11 +17,19 @@ public class Instk {
     private String itemCommonName;
     private String customerName;
     private String itemAmount;
-    private Date requestDate;
-    private Date inputStockDate;
+    private java.sql.Date requestDate;
+    private java.sql.Date inputStockDate;
     private String employeeName;
+
+    private String requestEmployeeNo;
     private String requestEmployeeName;
+
+    private String requestApprovalEmployeeNo;
     private String requestApprovalEmployeeName;
 
+    private String inputStockEmployeeNo;
+    private String inputStockEmployeeName;
+
+    private List<Integer> serialList;
 
 }
