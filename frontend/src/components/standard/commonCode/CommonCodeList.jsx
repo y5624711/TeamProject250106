@@ -37,7 +37,7 @@ export function CommonCodeList({
   ];
 
   return (
-    <Box w={"100%"} p={5}>
+    <Box w={"100%"}>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -54,9 +54,9 @@ export function CommonCodeList({
       </RadioGroup>
 
       <Box>
-        <Table.Root variant={"outline"}>
+        <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Sort
                 sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>

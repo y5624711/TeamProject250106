@@ -107,9 +107,9 @@ function WarehouseStatus() {
           <Input w={"50%"} />
           <Button>검색</Button>
         </HStack>
-        <Table.Root variant={"outline"}>
+        <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Table.ColumnHeader>#</Table.ColumnHeader>
               <Table.ColumnHeader>창고명</Table.ColumnHeader>
               <Table.ColumnHeader>광역시도</Table.ColumnHeader>

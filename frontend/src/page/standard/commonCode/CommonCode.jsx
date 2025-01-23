@@ -49,11 +49,11 @@ export function CommonCode() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack flex={1}>
-          <Heading size={"xl"} p={2} mb={3}>
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} m={5} mb={3}>
             공통코드 관리
           </Heading>
-          <Box position="relative">
+          <Box>
             {/* CommonCodeList 감싸는 컨테이너 */}
             <CommonCodeList
               count={count}
@@ -65,8 +65,7 @@ export function CommonCode() {
             <Button
               onClick={() => setAddDialogOpen(true)}
               size="lg"
-              position="absolute"
-              right="10px"
+              float={"right"}
             >
               코드 등록
             </Button>
