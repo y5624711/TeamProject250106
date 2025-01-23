@@ -16,6 +16,7 @@ export function CommonCode() {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [radioValue, setRadioValue] = useState("1");
 
   // 품목 공통 코드 목록 가져오기
   useEffect(() => {
@@ -61,6 +62,8 @@ export function CommonCode() {
               searchParams={searchParams}
               setSearchParams={setSearchParams}
               onRowClick={handleRowClick}
+              setRadioValue={setRadioValue}
+              radioValue={radioValue}
             />
             <Button
               onClick={() => setAddDialogOpen(true)}

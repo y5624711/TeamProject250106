@@ -18,6 +18,8 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
+  setRadioValue,
+  radioValue,
 }) {
   // 검색 옵션
   const searchOptions = createListCollection({
@@ -36,6 +38,8 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
+  console.log(radioValue);
+
   return (
     <Box w={"100%"}>
       <SearchBar
@@ -45,7 +49,7 @@ export function CommonCodeList({
       <ActiveSwitch
         onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <RadioGroup defaultValue="1" my={1} marginBottom={2}>
+      <RadioGroup defaultValue={radioValue} my={1} marginBottom={2}>
         <HStack gap={6}>
           <Radio value="1">전체 조회</Radio>
           <Radio value="2">시스템 코드 조회</Radio>

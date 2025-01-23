@@ -32,7 +32,7 @@ export function CommonCodeView({
   setCommonCodeKey,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editCommonCode, setEditCommonCode] = useState(null);
+  const [editCommonCode, setEditCommonCode] = useState(false);
 
   const [editedCommonCode, setEditedCommonCode] = useState({
     commonCode: "",
@@ -55,7 +55,6 @@ export function CommonCodeView({
       axios
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
-          setEditCommonCode(res.data);
           setEditedCommonCode(res.data[0]);
         })
         .catch((error) => {
@@ -105,8 +104,15 @@ export function CommonCodeView({
       });
       return;
     }
+
+    const updatedCommonCode = {
+      ...editedCommonCode,
+      commonCodeActive: editCommonCode, // 체크박스 상태 반영
+    };
+
+    console.log(editedCommonCode);
     axios
-      .put(`/api/commonCode/edit/${commonCodeKey}`, editedCommonCode)
+      .put(`/api/commonCode/edit/${commonCodeKey}`, updatedCommonCode)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -142,8 +148,6 @@ export function CommonCodeView({
       });
   };
 
-  console.log(editCommonCode);
-
   if (!editedCommonCode) {
     return;
   }
@@ -172,13 +176,8 @@ export function CommonCodeView({
                   <Spacer />
                   <Checkbox
                     size={"lg"}
-                    checked={editedCommonCode.commonCodeActive}
-                    onChange={(e) =>
-                      setEditedCommonCode((prev) => ({
-                        ...prev,
-                        commonCodeActive: e.target.checked,
-                      }))
-                    }
+                    defaultChecked={editedCommonCode.commonCodeActive}
+                    onChange={(e) => setEditCommonCode(e.target.checked)}
                   >
                     사용여부
                   </Checkbox>
