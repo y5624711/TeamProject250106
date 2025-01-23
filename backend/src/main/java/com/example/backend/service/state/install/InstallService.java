@@ -54,12 +54,12 @@ public class InstallService {
     }
 
     // 설치 기사 사번으로 이름 가져오기
-    public String getCustomerInstaller(String customerInstallerNo) {
-        return mapper.getCustomerInstaller(customerInstallerNo);
+    public List<Map<String, Object>> getCustomerEmployee() {
+        return mapper.getCustomerEmployee();
     }
 
     // 설치 승인
-    public boolean installApprove(Install install) {
+    public boolean installApprove(Install install, Authentication authentication) {
         try {
             // 요청 수량 가져오기
             int num = install.getInstallRequestAmount();

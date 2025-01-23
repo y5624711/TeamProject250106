@@ -1,9 +1,15 @@
 import React from "react";
-import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  createListCollection,
+  HStack,
+  Table,
+} from "@chakra-ui/react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
 export function InstallList({ installList, onRowClick }) {
   const sortInstallOptions = [
@@ -39,7 +45,16 @@ export function InstallList({ installList, onRowClick }) {
   return (
     <Box>
       <SearchBar searchOptions={searchOptions} />
-      <ActiveSwitch />
+      {/*<ActiveSwitch />*/}
+      <RadioGroup defaultValue="1" my={3}>
+        <HStack gap={6}>
+          <Radio value="1">전체 조회</Radio>
+          <Radio value="2">요청 상태 조회</Radio>
+          <Radio value="3">승인 상태 조회</Radio>
+          <Radio value="3">완료 상태 조회</Radio>
+          <Radio value="3">반려 상태 조회</Radio>
+        </HStack>
+      </RadioGroup>
       <Box>
         <Table.Root>
           <Table.Header>

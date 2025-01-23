@@ -99,7 +99,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>출고 요청</DialogTitle>
+          <DialogTitle>설치 요청</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
@@ -180,7 +180,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                     .map((item) => (
                       <SelectItem
                         key={item.item_common_code}
-                        item={item.item_common_name} // item을 value로 변경
+                        item={item.item_common_name}
                       >
                         {item.item_common_name}
                       </SelectItem>
@@ -206,8 +206,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             {installRequest.installRequestAmount > installRequest.countItem && (
               <Box display="flex">
                 <Heading size="xs" color="gray.500" my={-3} ml={"90px"}>
-                  출고 요청 수량이 많습니다.:{" "}
-                  {installRequest.countItem > 0 ? installRequest.countItem : 0}
+                  설치 요청 수량이 많습니다.{" "}
                 </Heading>
               </Box>
             )}
@@ -250,7 +249,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             </Button>
           </DialogActionTrigger>
           <Button onClick={handleRequestClick} disabled={!isValid}>
-            출고 요청
+            설치 요청
           </Button>
         </DialogFooter>
         <DialogCloseTrigger />

@@ -63,11 +63,10 @@ public interface InstallMapper {
 
     // 설치 기사 사번으로 이름 가져오기
     @Select("""
-            SELECT employee_name as customer_installer_name
+            SELECT employee_no as customer_installer_no, employee_name as customer_installer_name
             FROM TB_EMPMST
-            WHERE employee_no = #{customerInstallerNo}
             """)
-    String getCustomerInstaller(String customerInstallerNo);
+    List<Map<String, Object>> getCustomerEmployee();
 
     // 출고 번호 등록
     @Select("""

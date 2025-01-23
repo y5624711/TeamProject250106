@@ -70,8 +70,9 @@ public class InstallController {
 
     // 설치 승인
     @PostMapping("approve")
-    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
-        if (service.installApprove(install)) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install, Authentication authentication) {
+        if (service.installApprove(install, authentication)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
                             "text", "설치 승인되었습니다."),
@@ -84,10 +85,10 @@ public class InstallController {
         }
     }
 
-    // 설치 기사 사번으로 이름 가져오기
-    @GetMapping("{customerInstallerNo}")
-    public String getCustomerInstaller(@PathVariable String customerInstallerNo) {
-        return service.getCustomerInstaller(customerInstallerNo);
+    // 설치 기사 정보 가져오기
+    @GetMapping("customerEmployee")
+    public List<Map<String, Object>> getCustomerEmployee() {
+        return service.getCustomerEmployee();
     }
 
     // 설치 요청에 대한 정보 가져오기

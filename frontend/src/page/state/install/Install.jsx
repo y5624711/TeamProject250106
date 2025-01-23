@@ -13,8 +13,7 @@ export function Install() {
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [configurationDialogOpen, setConfigurationDialogOpen] = useState(false);
   const [installList, setInstallList] = useState([]);
-  const [installKey, setInstallKey] = useState(null);
-  const [selectedInstall, setSelectedInstall] = useState(null); // 선택된 설치 정보
+  const [selectedInstall, setSelectedInstall] = useState(null);
   const [change, setChange] = useState();
 
   useEffect(() => {
@@ -27,19 +26,19 @@ export function Install() {
           ...item,
           state:
             item.consent === true
-              ? "요청 승인"
+              ? "승인"
               : item.consent === false
-                ? "요청 반려"
-                : "요청 대기",
+                ? "설치 반려"
+                : "대기",
         }));
         const approveList = approveRes.data.map((item) => ({
           ...item,
           state:
             item.consent === true
-              ? "설치 승인"
+              ? "완료"
               : item.consent === false
-                ? "설치 반려"
-                : "설치 대기",
+                ? "설치 확인 반려"
+                : "승인",
         }));
 
         // 두 리스트를 합쳐서 설정
@@ -53,9 +52,9 @@ export function Install() {
   const handleRowClick = (key) => {
     setSelectedInstall(key);
 
-    if (key.state === "요청 대기") {
+    if (key.state === "대기") {
       setApproveDialogOpen(true);
-    } else if (key.state === "설치 대기" || key.state === "설치 승인") {
+    } else if (key.state === "승인" || key.state === "완료") {
       setConfigurationDialogOpen(true);
     }
   };
