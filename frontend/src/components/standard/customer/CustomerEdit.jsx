@@ -141,6 +141,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                 </Field>
                 <Field orientation="horizontal" label={"사용 여부"}>
                   <Checkbox
+                    transform="translateX(-2590%)"
                     name={"customerActive"}
                     checked={customer.customerActive}
                     onChange={(e) => {
