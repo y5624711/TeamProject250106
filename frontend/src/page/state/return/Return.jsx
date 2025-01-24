@@ -95,6 +95,21 @@ function Return(props) {
     setApproveDialogOpen(true);
   };
 
+  //정렬
+  const handleSortOrder = () => {
+    const currentSort = searchParams.get("sort");
+    const currentOrder = searchParams.get("order");
+
+    const newOrder =
+      currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("sort", sort);
+    nextSearchParams.set("order", newOrder);
+
+    setSearchParams(nextSearchParams);
+  };
+
   // console.log("list", returnList);
 
   return (
@@ -113,6 +128,10 @@ function Return(props) {
             state={state}
             handlePageChange={handlePageChange}
             onStateChange={handleStateChange}
+            sort={sort}
+            order={order}
+            searchParams={searchParams}
+            onHeader={handleSortOrder}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>

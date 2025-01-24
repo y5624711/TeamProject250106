@@ -30,6 +30,9 @@ function ReturnList({
   handlePageChange,
   state,
   onStateChange,
+  sort,
+  order,
+  onHeader,
 }) {
   // 검색 keyword와 type 상태 관리
   const [localKeyword, setLocalKeyword] = useState(
@@ -38,7 +41,8 @@ function ReturnList({
   const [localType, setLocalType] = useState(
     new URLSearchParams(window.location.search).get("type") || "all",
   );
-  const [localTypeName, setLocalTypeName] = useState("");
+  const [localSort, setLocalSort] = useState(sort);
+  const [localOrder, setLocalOrder] = useState(order);
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -63,7 +67,8 @@ function ReturnList({
   // console.log("local filters", filters);
   // console.log("state", filters.state);
 
-  const handleSearchButton = () => {
+  //검색 버튼 클릭 시
+  const handleSearchButton = (sort) => {
     const searchParams = new URLSearchParams();
     searchParams.set("type", localType);
     searchParams.set("keyword", localKeyword);
@@ -71,6 +76,19 @@ function ReturnList({
     searchParams.set("state", state);
 
     // URL을 갱신하고 새로고침
+    window.location.search = searchParams.toString();
+  };
+
+  // 헤더 클릭 처리
+  const handleHeaderClick = (columnName) => {
+    const nextOrder =
+      localSort === columnName && localOrder === "ASC" ? "DESC" : "ASC";
+
+    // URL을 업데이트하고 새로고침
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("sort", columnName);
+    searchParams.set("order", nextOrder);
+    searchParams.set("page", 1); // 정렬 변경 시 페이지를 초기화
     window.location.search = searchParams.toString();
   };
 
@@ -88,11 +106,11 @@ function ReturnList({
           onValueChange={(value) => {
             console.log("value", value);
             setLocalType(value.value[0]);
-            setLocalTypeName(value.items[0].label);
+            // setLocalTypeName(value.items[0].label);
           }}
         >
           <SelectTrigger>
-            <SelectValueText placeholder={localTypeName} />
+            <SelectValueText placeholder={"선택"} />
           </SelectTrigger>
           <SelectContent
             style={{
@@ -142,28 +160,78 @@ function ReturnList({
       <Table.Root interactive my={3}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => onHeader("customer_key")}
+              onClick={() => handleHeaderClick("franchise_name")}
             >
-              #
+              가맹점
+              {localSort === "franchise_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">가맹점</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("itc.common_code_name")}
+            >
+              품목
+              {localSort === "itc.common_code_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("customer_name")}
+            >
               담당 업체
+              {localSort === "customer_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("serial_no")}
+            >
               시리얼 번호
+              {localSort === "serial_no" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("return_no")}
+            >
               반품 번호
+              {localSort === "return_no" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">산청자</Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("business_employee_name")}
+            >
+              산청자
+              {localSort === "business_employee_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
 
-            <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">검수기사</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("emce.employee_name")}
+            >
+              승인자
+              {localSort === "emce.employee_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("emcc.employee_name")}
+            >
+              검수기사
+              {localSort === "emcc.employee_name" &&
+                (localOrder === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("date")}
+            >
+              날짜{localSort === "date" && (localOrder === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
