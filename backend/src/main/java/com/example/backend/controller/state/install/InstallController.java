@@ -21,6 +21,16 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 요청, 승인 리스트 가져오기
+    @GetMapping("list")
+    public Map<String, Object> getInstallList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "sort", defaultValue = "") String sort,
+            @RequestParam(value = "order", defaultValue = "") String order,
+            @RequestParam(value = "state", defaultValue = "") String state) {
+        return service.getInstallList(page, sort, order, state);
+    }
+
     // 설치 확인
     @PostMapping("configuration")
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
@@ -39,7 +49,7 @@ public class InstallController {
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 확인이 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "설치 완료가 실패하였습니다.")
             ));
         }
     }
@@ -61,27 +71,24 @@ public class InstallController {
         }
     }
 
-
-    // 설치 승인 테이블에서 리스트 가져오기
-    @GetMapping("list/approve")
-    public List<Install> getInstallApproveList() {
-        return service.getInstallApproveList();
-    }
-
     // 설치 승인
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install, Authentication authentication) {
-        if (service.installApprove(install, authentication)) {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success",
-                            "text", "설치 승인되었습니다."),
-                    "data", install
-            ));
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
+        if (service.approveValidate(install)) {
+            if (service.installApprove(install)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "설치 승인되었습니다."),
+                        "data", install));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")
-            ));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
         }
     }
 
@@ -95,12 +102,6 @@ public class InstallController {
     @GetMapping("/request/{installKey}")
     public List<Install> getInstallRequestView(@PathVariable int installKey) {
         return service.getInstallRequestView(installKey);
-    }
-
-    // 설치 요청 테이블에서 리스트 가져오기
-    @GetMapping("list/request")
-    public List<Install> getInstallRequestList() {
-        return service.getInstallRequestList();
     }
 
     // 설치 가능한 품목명, 품목 코드 가져오기

@@ -47,8 +47,8 @@ export function Item() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack flex={1}>
-          <Text fontSize="xl" mx={10} my={3}>
+        <Stack flex={1} p={5}>
+          <Text fontSize="xl" p={2} mb={3}>
             기준정보 관리 > 품목 관리
           </Text>
           <ItemList
@@ -59,15 +59,11 @@ export function Item() {
             setItemKey={setItemKey}
             onRowClick={handleRowClick}
           />
-          <Button
-            onClick={() => setAddDialogOpen(true)}
-            size="lg"
-            position="absolute"
-            bottom="100px"
-            right="100px"
-          >
-            물품 등록
-          </Button>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
+            <Button onClick={() => setAddDialogOpen(true)} size="lg">
+              품목 등록
+            </Button>
+          </Box>
         </Stack>
         <ItemView
           itemKey={itemKey}

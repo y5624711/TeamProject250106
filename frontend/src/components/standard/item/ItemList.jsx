@@ -17,7 +17,7 @@ export function ItemList({
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "품목명", value: "itemCommonName" },
+      { label: "품목", value: "itemCommonName" },
       { label: "담당 업체", value: "customerName" },
       { label: "규격", value: "size" },
       { label: "단위", value: "unit" },
@@ -29,7 +29,7 @@ export function ItemList({
   // 정렬 헤더
   const sortOptions = [
     { key: "itemKey", label: "#" },
-    { key: "itemCommonName", label: "품목명" },
+    { key: "itemCommonName", label: "품목" },
     { key: "customerName", label: "담당업체" },
     { key: "size", label: "규격" },
     { key: "unit", label: "단위" },
@@ -38,7 +38,7 @@ export function ItemList({
   ];
 
   return (
-    <Box px={10}>
+    <Box>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -49,7 +49,7 @@ export function ItemList({
       <Box>
         <Table.Root>
           <Table.Header>
-            <Table.Row>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
               <Sort
                 sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) =>

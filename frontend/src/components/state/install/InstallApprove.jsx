@@ -21,6 +21,7 @@ import {
   SelectValueText,
   Separator,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -37,6 +38,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const [installApprove, setInstallApprove] = useState(initialInstallApprove);
   const [installRequest, setInstallRequest] = useState({});
   const [customerEmployeeList, setCustomerEmployeeList] = useState([]);
+
+  const handleClose = () => {
+    setInstallApprove(initialInstallApprove);
+    onClose();
+  };
 
   // 설치 요청에 대한 정보 가져오기
   useEffect(() => {
@@ -62,16 +68,15 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     }
   }, [installKey]);
 
+  // 설치 승인
   const handleApproveClick = () => {
     const approveData = {
       installRequestKey: installKey,
-      itemCommonCode: installRequest[0]?.itemCommonCode,
-      installRequestAmount: installRequest[0]?.installRequestAmount,
-      customerInstallerNo,
+      itemCommonCode: installRequest?.itemCommonCode,
+      installRequestAmount: installRequest?.installRequestAmount,
       customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자)
       ...installApprove,
     };
-    console.log("test");
     axios
       .post("/api/install/approve", approveData)
       .then((res) => res.data)
@@ -81,7 +86,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        onClose();
+        handleClose();
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -95,13 +100,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     installApprove.customerInstallerNo;
 
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={() => {
-        onClose();
-      }}
-      size="lg"
-    >
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>설치 승인</DialogTitle>
@@ -168,13 +167,15 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 />
               </Field>
               <HStack>
-                <Field label="설치기사" orientation="horizontal">
+                <Field label="설치 기사" orientation="horizontal">
                   <SelectRoot
                     onValueChange={(e) => {
                       const selectedCE = customerEmployeeList.find(
                         (selectedCE) =>
                           selectedCE.customer_installer_name === e.value[0],
                       );
+                      console.log(selectedCE.customer_installer_name);
+                      console.log(selectedCE.customer_installer_no);
                       if (selectedCE) {
                         setInstallApprove((prev) => ({
                           ...prev,
@@ -186,18 +187,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       }
                     }}
                   >
-                    <SelectTrigger
-                      onClick={() => {
-                        if (customerEmployeeList.length === 0 && installKey) {
-                          axios
-                            .get(`/api/install/customerEmployee/${installKey}`)
-                            .then((res) => setCustomerEmployeeList(res.data))
-                            .catch((error) =>
-                              console.log("설치기사 정보 오류 발생:", error),
-                            );
-                        }
-                      }}
-                    >
+                    <SelectTrigger>
                       <SelectValueText>
                         {installApprove.customerInstallerName}
                       </SelectValueText>
@@ -229,7 +219,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               </HStack>
 
               <Field label={"비고"} orientation="horizontal">
-                <Input
+                <Textarea
+                  placeholder="최대 50자"
                   value={installApprove.installApproveNote}
                   onChange={(e) =>
                     setInstallApprove({

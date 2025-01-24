@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box,
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Text,
+  Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
@@ -23,7 +22,6 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
-import { NumberInputField, NumberInputRoot } from "../../ui/number-input.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 
 export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
@@ -120,94 +118,86 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   };
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleClose}>
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>물품 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Box>
-            <SelectRoot
-              onValueChange={(e) => {
-                const selectedItem = itemCommonCodeList.find(
-                  (item) => item.item_common_name === e.value[0],
-                );
-                setItemData((prev) => ({
-                  ...prev,
-                  itemCommonName: selectedItem?.item_common_name,
-                  itemCommonCode: selectedItem?.item_common_code || "",
-                }));
-              }}
-            >
-              <SelectLabel>
-                품목{" "}
-                <Text as="span" color="red.500">
-                  *
-                </Text>
-              </SelectLabel>
-              <SelectTrigger>
-                <SelectValueText>
-                  {itemData.itemCommonName || "품목 선택"}
-                </SelectValueText>
-              </SelectTrigger>
-              <SelectContent>
-                {itemCommonCodeList.map((item) => (
-                  <SelectItem
-                    key={item.item_common_code}
-                    item={item.item_common_name}
-                  >
-                    {item.item_common_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
-            <Field label={"담당업체"} required>
-              <Input
-                readOnly
-                placeholder="담당업체"
-                value={itemData.customerName}
-              />
+          <Stack gap="15px">
+            <Field label={"품목"} required orientation="horizontal">
+              <SelectRoot
+                onValueChange={(e) => {
+                  const selectedItem = itemCommonCodeList.find(
+                    (item) => item.item_common_name === e.value[0],
+                  );
+                  setItemData((prev) => ({
+                    ...prev,
+                    itemCommonName: selectedItem?.item_common_name,
+                    itemCommonCode: selectedItem?.item_common_code || "",
+                  }));
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValueText>{itemData.itemCommonName}</SelectValueText>
+                </SelectTrigger>
+                <SelectContent
+                  style={{
+                    width: "85%",
+                    top: "40px",
+                    position: "absolute",
+                  }}
+                >
+                  {itemCommonCodeList.map((item) => (
+                    <SelectItem
+                      key={item.item_common_code}
+                      item={item.item_common_name}
+                    >
+                      {item.item_common_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
             </Field>
-            <Field label="규격">
+            <Field label={"담당 업체"} required orientation="horizontal">
+              <Input readOnly value={itemData.customerName} />
+            </Field>
+            <Field label="규격" orientation="horizontal">
               <Input
-                placeholder="규격"
                 value={itemData.size}
                 onChange={handleInputChange("size")}
               />
             </Field>
-            <Field label="단위">
+            <Field label="단위" orientation="horizontal">
               <Input
-                placeholder="단위"
                 value={itemData.unit}
                 onChange={handleInputChange("unit")}
               />
             </Field>
-            <Field label="입고가" required>
-              <NumberInputRoot>
-                <NumberInputField
-                  placeholder="입고가"
-                  value={itemData.inputPrice}
-                  onChange={handleInputChange("inputPrice")}
-                />
-              </NumberInputRoot>
-            </Field>
-            <Field label="출고가" required>
-              <NumberInputRoot>
-                <NumberInputField
-                  placeholder="출고가"
-                  value={itemData.outputPrice}
-                  onChange={handleInputChange("outputPrice")}
-                />
-              </NumberInputRoot>
-            </Field>
-            <Field label="비고">
+            <Field label="입고가" required orientation="horizontal">
               <Input
-                placeholder="비고"
+                type="number"
+                value={itemData.inputPrice}
+                onChange={handleInputChange("inputPrice")}
+                min="1"
+              />
+            </Field>
+            <Field label="출고가" required orientation="horizontal">
+              <Input
+                type="number"
+                value={itemData.outputPrice}
+                onChange={handleInputChange("outputPrice")}
+                min="1"
+              />
+            </Field>
+            <Field label="비고" orientation="horizontal">
+              <Textarea
+                placeholder="최대 50자"
                 value={itemData.itemNote}
                 onChange={handleInputChange("itemNote")}
               />
             </Field>
-          </Box>
+          </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
