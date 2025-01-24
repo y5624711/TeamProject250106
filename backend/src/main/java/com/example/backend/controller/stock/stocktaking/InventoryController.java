@@ -22,6 +22,10 @@ public class InventoryController {
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sortColum", defaultValue = "item_current_key") String sortColum,
             @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
-        return service.getList();
+
+        System.out.println("type = " + type);
+        System.out.println("keyword = " + keyword);
+
+        return service.getList(page, type, keyword, sortColum, sortOrder);
     }
 }

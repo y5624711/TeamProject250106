@@ -12,7 +12,6 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
-  radioValue,
 }) {
   // 검색 옵션
   const searchOptions = createListCollection({

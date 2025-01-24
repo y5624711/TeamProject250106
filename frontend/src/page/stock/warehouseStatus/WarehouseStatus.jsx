@@ -24,13 +24,13 @@ function WarehouseStatus() {
 
   useEffect(() => {
     axios
-      .get("/api/inventory/list")
+      .get("/api/inventory/list", { params: searchParams })
       .then((res) => {
         setInventoryList(res.data.list);
         setCount(res.data.count);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchParams, sort]);
 
   if (loading) {
     return <Spinner />;
@@ -46,7 +46,12 @@ function WarehouseStatus() {
           위치별 재고현황
         </Heading>
 
-        <SearchInventory />
+        <SearchInventory
+          search={search}
+          setSearch={setSearch}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
 
         <InventoryTable
           inventoryList={inventoryList}
