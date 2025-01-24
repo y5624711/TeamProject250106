@@ -27,6 +27,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import Select from "react-select";
 
 export function InstallRequest({ isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -39,8 +40,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     installRequestNote: "",
   };
   const [installItemList, setInstallItemList] = useState([]);
-  const [installFranchiseList, setInstallFranchiseList] = useState([]);
+  const [franchiseList, setFranchiseList] = useState([]);
   const [installRequest, setInstallRequest] = useState(initialInstallRequest);
+  const [localFranchiseName, setLocalFranchiseName] = useState("");
+  const [localFranchiseCode, setLocalFranchiseCode] = useState("");
+  const [selectedFranchise, setSelectedFranchise] = useState(null);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -55,10 +59,15 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
 
   // 가맹점 정보 가져오기
   useEffect(() => {
-    axios
-      .get("api/install/franchise")
-      .then((res) => setInstallFranchiseList(res.data))
-      .catch((error) => console.log("협력업체 정보 오류:", error));
+    axios.get(`/api/install/franchise`).then((res) => {
+      // console.log("호출", res.data);
+      const franchiseOptions = res.data.map((franchise) => ({
+        value: franchise.franchise_code,
+        label: franchise.franchise_name,
+        address: franchise.franchise_address,
+      }));
+      setFranchiseList(franchiseOptions);
+    });
   }, []);
 
   // 사용중인 품목명, 품목 코드 가져오기
@@ -89,6 +98,25 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     console.log(installRequest);
   };
 
+  // 가맹점 변경 시 주소 자동 설정
+  const handleFranchiseChange = (selectedOption) => {
+    setLocalFranchiseName(selectedOption.label);
+    setLocalFranchiseCode(selectedOption.value);
+    setSelectedFranchise(selectedOption);
+  };
+
+  // 가맹점 클릭 시
+  const onFranchiseClick = () => {
+    if (selectedFranchise) {
+      setInstallRequest((prev) => ({
+        ...prev,
+        franchiseName: selectedFranchise.label,
+        franchiseCode: selectedFranchise.value,
+        franchiseAddress: selectedFranchise.address || "", // 선택된 가맹점의 주소 설정
+      }));
+    }
+  };
+
   // 유효성 검증
   const isValid =
     installRequest.franchiseName &&
@@ -105,47 +133,29 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
         <DialogBody>
           <Stack gap={5}>
             <HStack>
-              <Field label="가맹점" orientation="horizontal">
-                <SelectRoot
-                  onValueChange={(e) => {
-                    const selectedFranchise = installFranchiseList.find(
-                      (franchise) => franchise.franchise_name === e.value[0],
-                    );
-                    if (selectedFranchise) {
-                      setInstallRequest((prev) => ({
-                        ...prev,
-                        franchiseCode: selectedFranchise.franchise_code || "",
-                        franchiseName: selectedFranchise.franchise_name || "",
-                        franchiseAddress:
-                          selectedFranchise.franchise_address || "",
-                      }));
-                    }
+              <Field orientation="horizontal" label="가맹점">
+                <Select
+                  options={franchiseList}
+                  value={franchiseList.find(
+                    (opt) => opt.value === installRequest.franchiseName,
+                  )}
+                  onChange={handleFranchiseChange}
+                  placeholder="가맹점 선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "470px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "470px",
+                    }),
                   }}
-                >
-                  <SelectTrigger>
-                    <SelectValueText>
-                      {installRequest.franchiseName}
-                    </SelectValueText>
-                  </SelectTrigger>
-                  <SelectContent
-                    style={{
-                      width: "85%",
-                      top: "40px",
-                      position: "absolute",
-                    }}
-                  >
-                    {installFranchiseList
-                      .filter((franchise) => franchise.franchise_name) // 빈 데이터 필터링
-                      .map((franchise) => (
-                        <SelectItem
-                          key={franchise.franchise_name}
-                          item={franchise.franchise_name} // item을 value로 변경
-                        >
-                          {franchise.franchise_name}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </SelectRoot>
+                />
+                <Button onClick={onFranchiseClick}>조회</Button>
               </Field>
             </HStack>
 
