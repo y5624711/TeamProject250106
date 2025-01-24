@@ -122,9 +122,9 @@ public interface InstallMapper {
             SET item_sub_active = 0
             WHERE serial_no = #{serialNo}
             """)
-    int updateItemSubActive(String serialNo);
+    int updateItemSubActiveFalse(String serialNo);
 
-    // 요청 테이블의 승인 여부 false 처리
+    // 요청 테이블의 승인 여부 true 처리
     @Update("""
             UPDATE TB_INSTL_REQ
             SET install_request_consent = true
@@ -156,8 +156,7 @@ public interface InstallMapper {
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
             ia.install_approve_consent as consent, ir.install_request_date, ia.install_approve_date,
-            GROUP_CONCAT(ts.serial_no) AS serial_numbers,
-            GROUP_CONCAT(ts.serial_note) AS serial_notes
+            GROUP_CONCAT(DISTINCT ts.serial_no) AS serial_numbers
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
             LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
@@ -172,12 +171,20 @@ public interface InstallMapper {
     Install getInstallApproveView(int installKey);
 
     // 해당 시리얼 번호의 비고 내용 추가
+//    @Update("""
+//            UPDATE TB_INSTL_SUB
+//            SET serial_note = #{serialNote}
+//            WHERE serial_no = #{serialNo}
+//            """)
+//    int addSerialNote(String serialNo, String serialNote);
+
+    // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 0으로 업데이트
     @Update("""
-            UPDATE TB_INSTL_SUB
-            SET serial_note = #{serialNote}
+            UPDATE TB_ITEMSUB
+            SET item_sub_active = 1
             WHERE serial_no = #{serialNo}
             """)
-    int addSerialNote(String serialNo, String serialNote);
+    int updateItemSubActiveTrue(String serialNo);
 
     // 승인 테이블에 상태 true로 변경
     @Update("""
@@ -290,4 +297,12 @@ public interface InstallMapper {
             </script>
             """)
     Integer countAll(String state);
+
+    // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
+    @Select("""
+            SELECT serial_no
+            FROM TB_INSTL_SUB
+            WHERE output_no = #{outputNo}
+            """)
+    List<String> getConfigurationSerials(String outputNo);
 }

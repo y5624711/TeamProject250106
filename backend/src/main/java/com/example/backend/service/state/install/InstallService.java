@@ -26,13 +26,6 @@ public class InstallService {
         return franchiseName && itemCommonName && amount;
     }
 
-    // 설치 요청
-    public boolean installRequest(Install install, Authentication authentication) {
-        install.setBusinessEmployeeNo(authentication.getName());
-        int cnt = mapper.installRequest(install);
-        return cnt == 1;
-    }
-
     // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
     public List<Map<String, String>> getInstallFranchiseList() {
         return mapper.getInstallFranchiseList();
@@ -41,6 +34,13 @@ public class InstallService {
     // 설치 가능한 품목명, 품목 코드 가져오기
     public List<Map<String, Object>> getInstallItemList() {
         return mapper.getInstallItemList();
+    }
+
+    // 설치 요청
+    public boolean installRequest(Install install, Authentication authentication) {
+        install.setBusinessEmployeeNo(authentication.getName());
+        int cnt = mapper.installRequest(install);
+        return cnt == 1;
     }
 
     // 설치 요청 테이블에서 요청 가져오기
@@ -97,13 +97,13 @@ public class InstallService {
                 install.setSerialNo(serial);
                 mapper.addSerialToApprove(install);
                 // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 0으로 업데이트
-                int updatedRows = mapper.updateItemSubActive(serial);
+                int updatedRows = mapper.updateItemSubActiveFalse(serial);
                 if (updatedRows <= 0) {
-                    throw new IllegalStateException("시리얼 번호 활성 상태 업데이트 오류: " + serial);
+                    throw new IllegalStateException("시리얼 번호 비활성 상태 업데이트 오류: " + serial);
                 }
             }
 
-            // 요청 테이블의 승인 여부 false 처리
+            // 요청 테이블의 승인 여부 true 처리
             int updateRequestConsent = mapper.updateRequestConsent(install.getInstallRequestKey());
             if (updateRequestConsent <= 0) {
                 throw new IllegalStateException("승인 여부 변경 오류");
@@ -127,16 +127,32 @@ public class InstallService {
         return install;
     }
 
-    // 설치 확인
+    // 설치 완료
     public boolean installConfiguration(Install install) {
         try {
             // 해당 시리얼 번호의 비고 내용 추가
-            if (install.getSerialNo() != null || !install.getSerialNo().trim().isEmpty()) {
-                int serialNote = mapper.addSerialNote(install.getSerialNo(), install.getSerialNote());
-                if (serialNote <= 0) {
-                    throw new IllegalStateException("해당 시리얼 번호에 대한 비고 처리 오류: " + serialNote);
+//            if (install.getSerialNo() != null || !install.getSerialNo().trim().isEmpty()) {
+//                int serialNote = mapper.addSerialNote(install.getSerialNo(), install.getSerialNote());
+//                if (serialNote <= 0) {
+//                    throw new IllegalStateException("해당 시리얼 번호에 대한 비고 처리 오류: " + serialNote);
+//                }
+//            }
+            // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
+            List<String> serialList = mapper.getConfigurationSerials(install.getOutputNo());
+
+            // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 1으로 업데이트
+            for (String serial : serialList) {
+                int updatedSerial = mapper.updateItemSubActiveTrue(serial);
+                if (updatedSerial <= 0) {
+                    throw new IllegalStateException("시리얼 번호 활성 상태 업데이트 오류: " + serial);
+                }
+                // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+                int updateResult = mapper.updateSerialCurrent(serial);
+                if (updateResult != 1) {
+                    throw new IllegalStateException("시리얼 번호 현재 위치 업데이트 실패");
                 }
             }
+
 
             // 승인 테이블에 상태 true로 변경
             int approveConsent = mapper.updateApproveConsent(install.getOutputNo());
@@ -159,12 +175,6 @@ public class InstallService {
                 throw new IllegalStateException("입고된 기록을 찾을 수 없습니다.");
             }
             install.setWarehouseCode(warehouseCode);
-
-            // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
-            int updateResult = mapper.updateSerialCurrent(install.getSerialNo());
-            if (updateResult != 1) {
-                throw new IllegalStateException("시리얼 번호 상세 업데이트 실패");
-            }
 
             // 품목 입출 내역에 추가
             int outHistoryResult = mapper.addOutHistory(install);

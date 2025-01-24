@@ -49,7 +49,7 @@ public class InstallController {
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 확인이 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "설치 완료가 실패하였습니다.")
             ));
         }
     }

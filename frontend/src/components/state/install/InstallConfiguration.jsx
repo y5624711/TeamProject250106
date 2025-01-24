@@ -21,6 +21,7 @@ import {
   SelectValueText,
   Separator,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -34,14 +35,10 @@ export function InstallConfiguration({
 }) {
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
-  const [selectedSerial, setSelectedSerial] = useState("");
-  const [serialNote, setSerialNote] = useState("");
-  const [serialNotes, setSerialNotes] = useState({}); // 시리얼 번호별 비고 저장
+  const [inoutHistoryNote, setInoutHistoryNote] = useState("");
 
   const handleClose = () => {
-    setSelectedSerial("");
-    setSerialNote("");
-    setSerialNotes("");
+    setInoutHistoryNote("");
     onClose();
   };
 
@@ -53,18 +50,6 @@ export function InstallConfiguration({
         .then((res) => {
           const data = res.data || [];
           setInstallData(data);
-
-          // 시리얼 번호별 비고 설정
-          const notes = {};
-          if (data.serialNumbers && data.serialNotes) {
-            const serialList = data.serialNumbers.split(",");
-            const noteList = data.serialNotes.split(",");
-            // 시리얼 번호와 비고를 매핑
-            serialList.forEach((serial, index) => {
-              notes[serial] = noteList[index] || ""; // 비고가 없으면 빈 문자열로 설정
-            });
-          }
-          setSerialNotes(notes);
         })
         .catch((error) => {
           console.error("설치 요청 정보 오류 발생: ", error);
@@ -73,24 +58,14 @@ export function InstallConfiguration({
   }, [installKey]);
 
   const handleConfigurationClick = () => {
-    if (!selectedSerial) {
-      toaster.create({
-        description: "설치 완료된 시리얼 번호를 지정해주세요.",
-        type: "error",
-      });
-      return;
-    }
-
     // 설치 확인 요청
     const configurationData = {
       outputNo: installData.outputNo,
-      serialNo: selectedSerial,
-      serialNote,
       // 협력일체 직원(승인자), 본사 직원(신청자), 가맹점 코드,
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
-      inoutHistoryNote: "",
+      inoutHistoryNote,
     };
     axios
       .post("/api/install/configuration", configurationData)
@@ -111,12 +86,6 @@ export function InstallConfiguration({
 
   // installData의 serialNumbers를 split하여 serialList로 설정
   const serialList = installData?.serialNumbers?.split(",") || [];
-
-  // 시리얼 선택 시 비고 업데이트
-  const handleSerialChange = (serial) => {
-    setSelectedSerial(serial);
-    setSerialNote(serialNotes[serial] || ""); // 선택된 시리얼의 비고 불러오기
-  };
 
   // installData가 null 또는 undefined일 때 렌더링을 막기 위한 처리
   if (!installData) {
@@ -168,15 +137,9 @@ export function InstallConfiguration({
                 <Input value={installData.outputNo} readOnly />
               </Field>
               <Field label={"시리얼 번호"} orientation="horizontal">
-                <SelectRoot
-                  onValueChange={(e) => {
-                    handleSerialChange(e.value[0]);
-                  }}
-                >
+                <SelectRoot>
                   <SelectTrigger>
-                    <SelectValueText>
-                      {selectedSerial || "시리얼 선택"}
-                    </SelectValueText>
+                    <SelectValueText>{serialList[0]}</SelectValueText>
                   </SelectTrigger>
                   <SelectContent
                     style={{
@@ -194,16 +157,17 @@ export function InstallConfiguration({
                 </SelectRoot>
               </Field>
             </HStack>
-            <Field label={"시리얼 비고"} orientation="horizontal">
-              <Input
-                value={serialNote}
-                onChange={(e) => setSerialNote(e.target.value)}
+            <Field label={"완료 비고"} orientation="horizontal">
+              <Textarea
+                value={inoutHistoryNote}
+                placeholder="최대 50자"
+                onChange={(e) => setInoutHistoryNote(e.target.value)}
               />
             </Field>
             {installData.consent && (
               <Field label={"설치 날짜"} orientation="horizontal">
                 <Input
-                  value={installData.installApproveDate}
+                  value={"test"}
                   onChange={(e) => setSerialNote(e.target.value)}
                 />
               </Field>
@@ -214,7 +178,6 @@ export function InstallConfiguration({
           <DialogActionTrigger asChild>
             <Button variant="outline">취소</Button>
           </DialogActionTrigger>
-          {/*다 끝나면 숨기는 것으로 설정*/}
           <Button onClick={handleConfigurationClick}>완료</Button>
         </DialogFooter>
         <DialogCloseTrigger />
