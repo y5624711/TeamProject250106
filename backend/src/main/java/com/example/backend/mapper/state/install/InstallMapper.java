@@ -147,10 +147,18 @@ public interface InstallMapper {
             """)
     int updateItemSubActiveTrue(String serialNo);
 
+    // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+    @Update("""
+            UPDATE TB_ITEMSUB
+            SET current_common_code = 'FRN'
+            WHERE serial_no = #{serialNo}
+            """)
+    int updateSerialCurrent(String serialNo);
+
     // 승인 테이블에 상태 true로 변경
     @Update("""
             UPDATE TB_INSTL_APPR
-            SET install_approve_consent = true
+            SET install_approve_consent = 1
             WHERE output_no = #{outputNo}
             """)
     int updateApproveConsent(String outputNo);
@@ -160,16 +168,11 @@ public interface InstallMapper {
             SELECT warehouse_code
             FROM TB_INOUT_HIS
             WHERE serial_no = #{serialNo}
+            AND inout_common_code = 'IN'
+            ORDER BY inout_history_key DESC
+            LIMIT 1;
             """)
     String getWarehouseCode(String serialNo);
-
-    // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
-    @Update("""
-            UPDATE TB_ITEMSUB
-            SET current_common_code = 'FRN'
-            WHERE serial_no = #{serialNo}
-            """)
-    int updateSerialCurrent(String serialNo);
 
     // 품목 입출력 테이블에 데이터 추가
     @Insert("""

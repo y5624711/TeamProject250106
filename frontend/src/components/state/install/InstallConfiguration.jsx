@@ -66,6 +66,7 @@ export function InstallConfiguration({
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
       inoutHistoryNote,
+      serialNumbers: installData.serialNumbers,
     };
     axios
       .post("/api/install/configuration", configurationData)

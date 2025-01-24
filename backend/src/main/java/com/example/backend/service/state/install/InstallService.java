@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +139,6 @@ public class InstallService {
                 }
             }
 
-
             // 승인 테이블에 상태 true로 변경
             int approveConsent = mapper.updateApproveConsent(install.getOutputNo());
             if (approveConsent <= 0) {
@@ -155,23 +155,35 @@ public class InstallService {
     @Transactional
     public boolean addOutHistory(Install install) {
         try {
-            // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)
-            String warehouseCode = mapper.getWarehouseCode(install.getSerialNo());
-            if (warehouseCode == null || warehouseCode.trim().isEmpty()) {
-                throw new IllegalStateException("입고된 기록을 찾을 수 없습니다.");
-            }
-            install.setWarehouseCode(warehouseCode);
+            // 시리얼 번호 문자열 -> 리스트로 변환
+            List<String> serialList = Arrays.asList(install.getSerialNumbers().split("\\s*,\\s*"));
 
-            // 품목 입출 내역에 추가
-            int outHistoryResult = mapper.addOutHistory(install);
-            if (outHistoryResult != 1) {
-                throw new IllegalStateException("품목 입출 내역 추가 실패");
+            for (String serial : serialList) {
+                try {
+                    // 시리얼 번호로 창고 코드 가져오기
+                    String warehouseCode = mapper.getWarehouseCode(serial);
+                    if (warehouseCode == null || warehouseCode.trim().isEmpty()) {
+                        throw new IllegalStateException("입고된 기록을 찾을 수 없습니다. 시리얼 번호: " + serial);
+                    }
+                    install.setWarehouseCode(warehouseCode);
+                    install.setSerialNo(serial);
+
+                    // 품목 입출 내역 추가
+                    int outHistoryResult = mapper.addOutHistory(install);
+                    if (outHistoryResult != 1) {
+                        throw new IllegalStateException("품목 입출 내역 추가 실패. 시리얼 번호: " + serial);
+                    }
+                } catch (Exception innerException) {
+                    // 개별 시리얼 번호 처리 중 오류 발생 시 로깅 및 중단
+                    System.err.println("시리얼 번호 처리 중 오류 발생: " + serial + " - " + innerException.getMessage());
+                    throw innerException; // 필요 시 상위로 예외 전달
+                }
             }
 
             return true;
         } catch (Exception e) {
-            // 로깅 추가
-            System.out.println("입출고 내역 처리 중 오류 발생: " + e.getMessage());
+            // 전체 처리 중 오류 발생
+            System.err.println("입출고 내역 처리 중 오류 발생: " + e.getMessage());
             return false;
         }
     }
