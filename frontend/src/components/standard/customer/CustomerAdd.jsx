@@ -7,7 +7,6 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -139,7 +138,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                 onChange={(e) => setCustomerName(e.target.value)}
               />
             </Field>
-            <HStack>
+            <Field label={"취급 품목"} orientation={"horizontal"}>
               <SelectRoot
                 onValueChange={(e) => {
                   setItemName(e.value);
@@ -152,11 +151,17 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                   }
                 }}
               >
-                <SelectLabel>취급 품목</SelectLabel>
                 <SelectTrigger>
                   <SelectValueText>{itemName || "품목 선택"}</SelectValueText>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  style={{
+                    position: "absolute",
+                    zIndex: 100,
+                    width: "87%",
+                    top: "40px",
+                  }}
+                >
                   {myItems.items.map((item) => (
                     <SelectItem key={item.value} item={item.label}>
                       {item.label}
@@ -164,7 +169,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                   ))}
                 </SelectContent>
               </SelectRoot>
-            </HStack>
+            </Field>
             <HStack>
               <Field orientation="horizontal" label={"대표자"}>
                 <Input

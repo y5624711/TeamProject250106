@@ -106,7 +106,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     const value = e.target ? e.target.value : e.value;
     setRequestData((prev) => ({ ...prev, [field]: value }));
   };
-  console.log("requestData", requestData);
+  // console.log("requestData", requestData);
 
   const handleFranchiseChange = (selectedOption) => {
     // console.log("선택", selectedOption);
@@ -189,6 +189,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 </SelectTrigger>
                 <SelectContent
                   style={{
+                    top: "40px",
                     position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
                     zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
                     width: "72.5%", // 드롭다운 너비를 트리거와 동일하게

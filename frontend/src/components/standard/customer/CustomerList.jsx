@@ -57,10 +57,10 @@ function CustomerList({
     <Box px={10}>
       <Center>
         {/* 검색창 */}
-        <HStack w={"70%"} my={3}>
+        <HStack justifyContent="center" w={"100%"}>
           <SelectRoot
             collection={optionList}
-            width={"150px"}
+            width={"160px"}
             position={"relative"}
             value={[search.type]}
             onValueChange={(oc) => {
@@ -73,9 +73,10 @@ function CustomerList({
             </SelectTrigger>
             <SelectContent
               style={{
-                width: "150px",
                 top: "40px",
-                position: "absolute",
+                position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
+                zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
+                width: "160px", // 드롭다운 너비를 트리거와 동일하게
               }}
             >
               {optionList.items.map((option) => (
@@ -87,6 +88,7 @@ function CustomerList({
           </SelectRoot>
 
           <Input
+            width="50%"
             placeholder="검색어를 입력해 주세요"
             type="text"
             value={search.keyword}
