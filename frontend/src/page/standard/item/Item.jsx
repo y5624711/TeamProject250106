@@ -59,15 +59,11 @@ export function Item() {
             setItemKey={setItemKey}
             onRowClick={handleRowClick}
           />
-          <Button
-            onClick={() => setAddDialogOpen(true)}
-            size="lg"
-            position="absolute"
-            bottom="100px"
-            right="100px"
-          >
-            품목 등록
-          </Button>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
+            <Button onClick={() => setAddDialogOpen(true)} size="lg">
+              품목 등록
+            </Button>
+          </Box>
         </Stack>
         <ItemView
           itemKey={itemKey}
