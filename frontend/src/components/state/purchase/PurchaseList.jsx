@@ -26,12 +26,12 @@ export function PurchaseList({
   const PurchaseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "신청자 사번", value: "employeeNo" },
-      { label: "신청자", value: "employeeName" },
       { label: "담당 업체", value: "customerName" },
       { label: "품목", value: "itemCommonName" },
-      { label: "승인자 사번", value: "customerEmployeeNo" },
+      { label: "신청자", value: "employeeName" },
+      { label: "신청자 사번", value: "employeeNo" },
       { label: "승인자", value: "customerEmployeeName" },
+      { label: "승인자 사번", value: "customerEmployeeNo" },
     ],
   });
 
@@ -119,7 +119,7 @@ export function PurchaseList({
             purchaseList.map((purchase, index) => (
               <Table.Row
                 key={index}
-                onClick={() => onViewClick(purchase.purchaseRequestKey)}
+                onDoubleClick={() => onViewClick(purchase.purchaseRequestKey)}
                 style={{ cursor: "pointer" }}
                 textAlign="center"
                 verticalAlign="middle"

@@ -16,43 +16,29 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   const { id, name } = useContext(AuthenticationContext);
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showPurchaseNo, setShowPurchaseNo] = useState(false);
-  const [showButton, setShowButton] = useState(true);
 
-  // 구매 승인 팝업 보기
+  // 구매 신청 팝업 (승인 팝업) 보기
   useEffect(() => {
-    const purchaseData = () => {
+    if (purchaseRequestKey) {
       axios
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((res) => {
-          console.log("구매 데이터:", res.data);
           setPurchase(res.data);
           setLoading(false);
-
-          // 이미 발주 번호가 있으면 승인 버튼 숨기고 발주 번호 표시
-          if (res.data.purchaseNo) {
-            setShowPurchaseNo(true);
-            setShowButton(false);
-          }
         })
         .catch((error) => {
           console.error("구매 데이터를 가져오는 데 실패했습니다:", error);
         });
-    };
-
-    if (purchaseRequestKey) {
-      purchaseData();
     }
   }, [purchaseRequestKey]);
 
-  // 구매 요청 승인
+  // 구매 신청 승인하기
   const handleApprove = () => {
     const updatedPurchase = {
       ...purchase,
       customerEmployeeNo: id,
       warehouseCode: purchase.warehouseCode,
     };
-    console.log("구매 승인:", updatedPurchase);
 
     axios
       .post(
@@ -60,24 +46,23 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         updatedPurchase,
       )
       .then((res) => {
-        console.log("구매 승인 응답:", res.data);
         const message = res.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
+
         if (res.data.purchaseNo) {
           setPurchase((prevPurchase) => ({
             ...prevPurchase,
             purchaseNo: res.data.purchaseNo,
+            purchaseConsent: true,
+            purchaseApproveDate: res.data.purchaseApproveDate,
           }));
-          setShowPurchaseNo(true);
-          setShowButton(false);
         }
       })
       .catch((e) => {
-        console.error("구매 승인 실패:", e);
-        const message = e.res.data.message;
+        const message = e.response?.data?.message;
         toaster.create({
           type: message.type,
           description: message.text,
@@ -85,10 +70,9 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       });
   };
 
-  // 구매 요청 반려
+  // 구매 신청 반려
   const handleReject = () => {
     console.log("구매 반려:", purchase);
-    setShowButton(false);
     onClose();
   };
 
@@ -96,18 +80,16 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
     return <Spinner />;
   }
 
-  if (!purchase) {
-    return <p>구매 정보를 가져오는 데 실패했습니다.</p>;
-  }
-
   return (
     <Box>
-      {/* 승인 후 발주 번호 필드 추가 */}
-      {showPurchaseNo && (
+      {/* 승인 여부에 따라 발주 번호 추가 */}
+      {purchase.purchaseConsent ? (
         <Field label="발주 번호" orientation="horizontal" mb={15}>
-          <Input value={purchase.purchaseNo} placeholder="발주 번호" readOnly />
+          <Input value={purchase.purchaseNo} readOnly />
         </Field>
-      )}
+      ) : null}
+
+      {/* 기존 필드 */}
       <Field label="품목" orientation="horizontal" mb={15}>
         <Input value={purchase.itemCommonName} readOnly />
       </Field>
@@ -116,7 +98,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           <Input value={purchase.amount} readOnly />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={purchase.inputPrice} readOnly />
+          <Input value={purchase?.totalPrice || "N/A"} readOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
@@ -157,28 +139,40 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           <Input value={id} readOnly />
         </Field>
       </Box>
-      <Field label="승인 날짜" orientation="horizontal" mb={15}>
-        <Input
-          value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
-          readOnly
-        />
-      </Field>
+
+      {/* 승인 여부에 따라 승인 날짜 추가 */}
+      {purchase.purchaseConsent && (
+        <Field label="승인 날짜" orientation="horizontal" mb={15}>
+          <Input
+            value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
+            readOnly
+          />
+        </Field>
+      )}
+
       <Field label="승인 비고" orientation="horizontal" mb={15}>
         <Textarea
-          value={purchase.purchaseRequestNote}
-          readOnly
+          value={purchase.purchaseApproveNote}
           placeholder={"최대 50자"}
+          onChange={(e) =>
+            !purchase.purchaseConsent &&
+            setPurchase({
+              ...purchase,
+              purchaseApproveNote: e.target.value,
+            })
+          }
+          readOnly={purchase.purchaseConsent}
         />
       </Field>
 
-      {/* 승인/반려 버튼이 보일지 여부를 상태로 제어 */}
-      {showButton && (
+      {/* 승인 여부에 따라 버튼 표시 */}
+      {!purchase.purchaseConsent && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleReject} colorScheme="red" variant="outline">
-            구매 반려
+            반려
           </Button>
           <Button onClick={handleApprove} colorScheme="blue">
-            구매 승인
+            승인
           </Button>
         </Box>
       )}

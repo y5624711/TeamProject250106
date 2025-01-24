@@ -1,18 +1,39 @@
 package com.example.backend.mapper.state.purchase;
 
+import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PurchaseMapper {
 
-    // 구매 요청
+    // 품목 구분 코드 리스트 가져오기
+    @Select("""
+            SELECT cus.item_code AS item_common_code,
+                   sys.common_code_name AS item_common_name
+            FROM TB_CUSTMST cus
+            LEFT JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
+            ORDER BY BINARY(item_common_name)
+            """)
+    List<Map<String, Object>> getItemCommonCodeList();
+
+    // 해당 품목을 담당하는 협력 업체 이름, 가격 가져오기
+    @Select("""
+            SELECT cus.customer_name, cus.customer_code, ite.input_price
+            FROM TB_CUSTMST cus
+            LEFT JOIN TB_ITEMMST ite ON cus.item_code = ite.item_common_code
+            WHERE item_code = #{itemCommonCode}
+            """)
+    List<Item> getCustomerName(String itemCommonCode);
+
+    // 구매 신청
     @Insert("""
             INSERT INTO TB_PURCH_REQ
-            (employee_no, item_common_code, customer_code, amount, purchase_request_date, purchase_request_note)
-            VALUES (#{employeeNo}, #{itemCommonCode}, #{customerCode}, #{amount}, #{purchaseRequestDate}, #{purchaseRequestNote})
+            (employee_no, item_common_code, customer_code, amount, purchase_request_note)
+            VALUES (#{employeeNo}, #{itemCommonCode}, #{customerCode}, #{amount}, #{purchaseRequestNote})
             """)
     @Options(keyProperty = "purchaseRequestKey", useGeneratedKeys = true)
     int purchaseRequest(Purchase purchase);
@@ -51,9 +72,13 @@ public interface PurchaseMapper {
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_request_note AS purchaseRequestNote,
                 pr.amount AS amount,
+                ite.input_price * pr.amount AS totalPrice,
                 pr.purchase_consent AS purchaseConsent,
                 wh.warehouse_code AS warehouseCode,
-                wh.warehouse_name AS warehouseName
+                wh.warehouse_name AS warehouseName,
+                pa.purchase_no AS purchaseNo,
+                pa.purchase_approve_date AS purchaseApproveDate,
+                pa.purchase_approve_note AS purchaseApproveNote
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
@@ -61,6 +86,7 @@ public interface PurchaseMapper {
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
             LEFT JOIN TB_WHMST wh ON cus.customer_code = wh.customer_code
+            LEFT JOIN TB_ITEMMST ite ON cus.item_code = ite.item_common_code
             WHERE pr.purchase_request_key = #{purchaseRequestKey}
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);
