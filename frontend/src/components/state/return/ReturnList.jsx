@@ -21,15 +21,19 @@ function ReturnList({
   onRowClick,
   setSearchParams,
   count,
-  filters,
-  handleFilterChange,
-  setFilters,
   handlePageChange,
-  handleResetClick,
+  onSearchClick,
+  state,
+  searchParams,
 }) {
   // 검색 keyword와 type 상태 관리
-  const [localKeyword, setLocalKeyword] = useState(filters.keyword || "");
-  const [localType, setLocalType] = useState("all");
+  const [localKeyword, setLocalKeyword] = useState(
+    new URLSearchParams(window.location.search).get("keyword") || "",
+  );
+  const [localType, setLocalType] = useState(
+    new URLSearchParams(window.location.search).get("type") || "all",
+  );
+  const [localTypeName, setLocalTypeName] = useState("");
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -49,23 +53,23 @@ function ReturnList({
     ],
   });
 
-  // 검색 버튼 클릭 핸들러
-  const handleSearchClick = () => {
-    const updatedFilters = {
-      ...filters,
-      type: localType,
-      keyword: localKeyword,
-      page: 1,
-    };
-    setFilters(updatedFilters);
-    setSearchParams(new URLSearchParams(updatedFilters)); // URL 반영
-    // console.log("Updated filters after search:", updatedFilters); // 디버깅 로그
-  };
-
   // console.log("list", returnList);
   // console.log("count", count);
   // console.log("local filters", filters);
   // console.log("state", filters.state);
+
+  const handleSearchButton = () => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("type", localType);
+    searchParams.set("keyword", localKeyword);
+    searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
+
+    // URL을 갱신하고 새로고침
+    window.location.search = searchParams.toString();
+  };
+
+  // console.log(localType);
+  console.log("name", localType);
 
   return (
     <Box>
@@ -76,18 +80,20 @@ function ReturnList({
           postition={"relative"}
           width={"160px"}
           onValueChange={(value) => {
+            console.log("value", value);
             setLocalType(value.value[0]);
+            setLocalTypeName(value.items[0].label);
           }}
         >
           <SelectTrigger>
-            <SelectValueText placeholder={"선택"} />
+            <SelectValueText placeholder={localTypeName} />
           </SelectTrigger>
           <SelectContent
             style={{
               top: "242px",
-              position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
-              zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
-              width: "160px", // 드롭다운 너비를 트리거와 동일하게
+              position: "absolute",
+              zIndex: 100,
+              width: "160px",
             }}
           >
             {returnSearchKeywords.items.map((e) => (
@@ -103,23 +109,19 @@ function ReturnList({
           onChange={(e) => setLocalKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요."
         />
-        <Box
-          onClick={handleResetClick}
-          transform="translateX(-170%) "
-          style={{ cursor: "pointer" }}
-        >
+        <Box transform="translateX(-170%) " style={{ cursor: "pointer" }}>
           <BsArrowCounterclockwise size="25px" />
         </Box>
-        <Button onClick={handleSearchClick} transform="translateX(-55%) ">
+        <Button onClick={handleSearchButton} transform="translateX(-55%) ">
           검색
         </Button>
       </HStack>
 
       {/* 상태 분류 */}
       <RadioGroup
-        name={filters.state}
-        value={filters.state}
-        onValueChange={(value) => handleFilterChange("state", value.value)}
+        name={state}
+        value={state}
+        // onValueChange={(value) => handleFilterChange("state", value)}
         my={3}
       >
         <HStack gap={6}>

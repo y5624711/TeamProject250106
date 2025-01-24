@@ -15,46 +15,60 @@ function Return(props) {
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
-  const [sort, setSort] = useState(searchParams.get("sort") || "all");
-  const [order, setOrder] = useState(searchParams.get("order") || "desc");
 
-  const [filters, setFilters] = useState({
-    page: searchParams.get("page") || 1,
-    type: searchParams.get("type") || "all",
-    keyword: searchParams.get("keyword") || "",
-    state: searchParams.get("state") || "all",
-  });
-
-  // const page = searchParams.get("page") || 1;
-  // const type = searchParams.get("type") || "all";
-  // const keyword = searchParams.get("keyword") || "";
-  // const state = searchParams.get("state") || "all";
+  const page = searchParams.get("page") || 1;
+  const type = searchParams.get("type") || "all";
+  const keyword = searchParams.get("keyword") || "";
+  const state = searchParams.get("state") || "all";
+  const sort = searchParams.get("sort") || "date";
+  const order = searchParams.get("order") || "desc";
 
   //목록 불러오기
   useEffect(() => {
+    const controller = new AbortController();
     axios
-      .get("/api/return/list", { params: filters })
+      .get("/api/return/list", {
+        params: searchParams,
+        signal: controller.signal,
+      })
       .then((res) => res.data)
       .then((data) => {
         // console.log("반환", data);
         setReturnList(data.returnList);
         setCount(data.count);
       });
-  }, [filters]);
+    return () => {
+      controller.abort();
+    };
+  }, [searchParams]);
 
-  // 필터 값 변경 핸들러
-  const handleFilterChange = (key, value) => {
-    const updatedFilters = { ...filters, [key]: value };
-    setFilters(updatedFilters);
-    setSearchParams(updatedFilters); // URL 갱신
-  };
+  console.log("searchParams", searchParams.toString());
 
-  // 페이지 변경 핸들러
-  const handlePageChange = (newPage) => {
-    handleFilterChange("page", newPage);
-  };
+  //페이지 이동
+  function handlePageChange(e) {
+    console.log(e);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
 
-  //요청창 작성 후 버튼 클릭
+  //검색
+  function handleSearchClick() {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    if (keyword.trim().length > 0) {
+      //검색 입력
+      nextSearchParams.set("type", type);
+      nextSearchParams.set("type", keyword);
+      nextSearchParams.set("page", 1);
+      setSearchParams(nextSearchParams);
+    } else {
+      //기본
+      nextSearchParams.delete("type");
+      nextSearchParams.delete("keyword");
+    }
+  }
+
+  //요청창 작성 후 버튼 클릭 : returnRequest
   const handleRequestClick = (newRequest) => {
     setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
     setRequestDialogOpen(false);
@@ -65,24 +79,6 @@ function Return(props) {
     // console.log(requestKey);
     setReturnRequestKey(requestKey);
     setApproveDialogOpen(true);
-  };
-
-  // 검색 초기화 버튼 클릭 핸들러
-  const handleResetClick = () => {
-    setFilters({
-      page: 1,
-      type: "all",
-      keyword: "",
-      state: "all",
-    });
-
-    const nextSearchParam = new URLSearchParams();
-    nextSearchParam.set("page", "1");
-    nextSearchParam.set("type", "all");
-    nextSearchParam.set("keyword", "");
-    nextSearchParam.set("state", "all");
-
-    setSearchParams(nextSearchParam);
   };
 
   // console.log("list", returnList);
@@ -100,11 +96,10 @@ function Return(props) {
             onRowClick={handleRowClick}
             setSearchParams={setSearchParams}
             count={count}
-            filters={filters}
-            setFilters={setFilters}
-            handleFilterChange={handleFilterChange}
+            state={state}
             handlePageChange={handlePageChange}
-            handleResetClick={handleResetClick}
+            searchParams={searchParams}
+            onSearchClick={handleSearchClick}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>
