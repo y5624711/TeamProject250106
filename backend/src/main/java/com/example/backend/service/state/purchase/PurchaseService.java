@@ -21,9 +21,8 @@ public class PurchaseService {
         boolean itemCommonCodeValid = purchase.getItemCommonCode() != null && !purchase.getItemCommonCode().trim().isEmpty();
         boolean customerCodeValid = purchase.getCustomerCode() != null && !purchase.getCustomerCode().trim().isEmpty();
         boolean amountValid = purchase.getAmount() != null && purchase.getAmount() > 0;
-        boolean purchaseRequestDateValid = purchase.getPurchaseRequestDate() != null;
 
-        return itemCommonCodeValid && customerCodeValid && amountValid && purchaseRequestDateValid;
+        return itemCommonCodeValid && customerCodeValid && amountValid;
     }
 
     // 품목 구분 코드 리스트 가져오기

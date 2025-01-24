@@ -20,7 +20,6 @@ export function PurchaseRequest({ onSave, onClose }) {
   const [customerName, setCustomerName] = useState("");
   const [amount, setAmount] = useState("");
   const [inputPrice, setInputPrice] = useState("");
-  const [purchaseRequestDate, setPurchaseRequestDate] = useState(new Date());
   const [purchaseRequestNote, setPurchaseRequestNote] = useState("");
   const [itemData, setItemData] = useState({
     itemCommonName: "",
@@ -64,10 +63,9 @@ export function PurchaseRequest({ onSave, onClose }) {
     }
   }, [itemData.itemCommonCode]);
 
+  // 구매 신청하기
   const handleSaveClick = () => {
-    // amount 값이 없거나 0 이하인 경우 기본값 1로 설정
-    const requestAmount = amount && amount > 0 ? amount : 1;
-
+    const requestAmount = amount && amount > 0 ? amount : 1; // 수량 기본값 1로 설정
     axios
       .post("/api/purchase/request", {
         employeeNo: id,
@@ -75,7 +73,6 @@ export function PurchaseRequest({ onSave, onClose }) {
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
         amount: requestAmount,
-        purchaseRequestDate: purchaseRequestDate.toISOString(),
         purchaseRequestNote,
       })
       .then((res) => {
@@ -100,6 +97,7 @@ export function PurchaseRequest({ onSave, onClose }) {
       });
   };
 
+  // 취소 버튼 클릭 시 창 닫기
   const handleCancelClick = () => {
     onClose();
   };

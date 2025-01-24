@@ -22,8 +22,8 @@ public interface PurchaseMapper {
     // 구매 신청
     @Insert("""
             INSERT INTO TB_PURCH_REQ
-            (employee_no, item_common_code, customer_code, amount, purchase_request_date, purchase_request_note)
-            VALUES (#{employeeNo}, #{itemCommonCode}, #{customerCode}, #{amount}, #{purchaseRequestDate}, #{purchaseRequestNote})
+            (employee_no, item_common_code, customer_code, amount, purchase_request_note)
+            VALUES (#{employeeNo}, #{itemCommonCode}, #{customerCode}, #{amount}, #{purchaseRequestNote})
             """)
     @Options(keyProperty = "purchaseRequestKey", useGeneratedKeys = true)
     int purchaseRequest(Purchase purchase);
