@@ -177,8 +177,8 @@ public interface InstallMapper {
     // 품목 입출력 테이블에 데이터 추가
     @Insert("""
             INSERT INTO TB_INOUT_HIS
-            (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, location_key, inout_history_note)
-            VALUES (#{serialNo}, #{warehouseCode}, 'OUT', #{customerEmployeeNo}, #{businessEmployeeNo}, #{franchiseCode}, NULL,  #{inoutHistoryNote})
+            (serial_no, inout_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, location_key, inout_history_note)
+            VALUES (#{serialNo}, #{outputNo}, #{warehouseCode}, 'OUT', #{customerEmployeeNo}, #{businessEmployeeNo}, #{franchiseCode}, NULL,  #{inoutHistoryNote})
             """)
     int addOutHistory(Install install);
 
@@ -213,6 +213,7 @@ public interface InstallMapper {
                 LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+                LEFT JOIN TB_INOUT_HIS ih ON ia.seri
             WHERE 1=1
             <if test="state == 'request'">
                 AND ir.install_request_consent IS NULL

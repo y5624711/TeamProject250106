@@ -47,3 +47,6 @@ WHERE h.inout_history_key = 1;
 SELECT *
 FROM TB_EMPMST
 WHERE employee_no = 'BIZEMP0000004';
+
+ALTER TABLE TB_INOUT_HIS
+    ADD inout_no VARCHAR(13);
