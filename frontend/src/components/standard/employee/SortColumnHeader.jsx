@@ -48,7 +48,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
         }}
       >
         <HStack>
-          기업명
+          기업
           {searchParams.get("sort") === "기업명" ? (
             searchParams.get("order") === "asc" ? (
               <FaCaretUp />
@@ -138,7 +138,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
         }}
       >
         <HStack>
-          직원전화번호
+          직원 전화번호
           {searchParams.get("sort") === "직원전화번호" ? (
             searchParams.get("order") === "asc" ? (
               <FaCaretUp />

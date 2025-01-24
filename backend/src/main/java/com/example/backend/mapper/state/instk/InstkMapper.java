@@ -50,6 +50,8 @@ SELECT
         END AS request_date
             FROM TB_BUYIN BI  
     LEFT JOIN TB_PURCH_APPR PR
+        
+        
      ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
     LEFT JOIN TB_PURCH_REQ PRQ  
                 ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key=PR.purchase_request_key
@@ -62,8 +64,8 @@ SELECT
       LEFT JOIN TB_EMPMST EM
         ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-                
-         LEFT JOIN TB_EMPMST EM2
+    
+      LEFT JOIN TB_EMPMST EM2
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
                

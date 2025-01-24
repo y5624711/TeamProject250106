@@ -25,9 +25,10 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     //   요청해서 가져와야하는거 구매승인자,창고주소
   }, []);
 
+  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가
   const handleAddInOutHistory = () => {
     axios
-      .post("/api/inoutHistory/addhistory", {
+      .post("/api/instk/add", {
         data: {
           serialNo: "",
           warehouseCode: "",
@@ -42,27 +43,6 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
         console.log(res);
       })
       .catch((error) => {});
-  };
-
-  // 입고 테이블에 넣는 요청
-  const handleAddInstk = () => {
-    axios.post("api/instk/add", {
-      data: {
-        이힝이힝,
-      },
-    });
-  };
-
-  // 가입고 상태 변환 코드
-  const handleBuyIn = () => {
-    console.log("뭘보 ㅏ");
-  };
-
-  //  입고 확정 버튼 클릭시
-  const handleApprovalClick = () => {
-    handleAddInOutHistory();
-    handleAddInstk();
-    handleBuyIn();
   };
 
   return (
