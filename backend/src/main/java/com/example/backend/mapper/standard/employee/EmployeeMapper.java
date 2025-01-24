@@ -68,13 +68,13 @@ public interface EmployeeMapper {
                                  )
                              </if>
                              <if test="type != 'all'">
-                                 AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                                 AND #{type} LIKE CONCAT('%', #{keyword}, '%')
                              </if>
             
                          </if>
             
                          <!-- 정렬 조건   -->
-                         ORDER BY\s
+                         ORDER BY
                          <choose>
                              <when test="convertedSort != null and convertedSort != ''\s
                                                and (convertedSort == 'employee_name'\s
@@ -90,7 +90,7 @@ public interface EmployeeMapper {
                                  employee_key
                              </otherwise>
                          </choose>
-                         ${order}
+                         #{order}
             
                          LIMIT #{offset}, 10
                          </script>
@@ -136,8 +136,15 @@ public interface EmployeeMapper {
 
     @Select("""
                 <script>
-                SELECT COUNT(employee_key)
-                FROM TB_EMPMST
+                SELECT COUNT(*)
+               FROM TB_EMPMST E
+                         LEFT JOIN TB_DEPARTMST D
+                         ON E.employee_common_code = 'EMP'
+                         AND E.employee_workplace_code = D.department_code
+                         LEFT JOIN TB_CUSTMST C
+                         ON E.employee_common_code = 'CUS'
+                         AND E.employee_workplace_code = C.customer_code
+                        
                 <where>
                     <!-- isActiveVisible이 false라면 employee_active = true 조건 추가 -->
                     <if test="isActiveVisible != null and !isActiveVisible">
