@@ -26,4 +26,7 @@ public class Purchase {
     private String purchaseNo;
     private LocalDate purchaseApproveDate;
     private String purchaseApproveNote;
+
+    private Integer inputPrice;
+    private Integer totalPrice;
 }

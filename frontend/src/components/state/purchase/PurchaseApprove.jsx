@@ -26,6 +26,10 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((res) => {
           console.log("구매 데이터:", res.data);
+          // 응답에서 totalPrice가 있는지 확인
+          if (res.data.totalPrice !== undefined) {
+            console.log("Total Price:", res.data.totalPrice);
+          }
           setPurchase(res.data);
           setLoading(false);
 
@@ -116,7 +120,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           <Input value={purchase.amount} readOnly />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={purchase.inputPrice} readOnly />
+          <Input value={purchase?.totalPrice || "N/A"} readOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
@@ -165,8 +169,13 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       </Field>
       <Field label="승인 비고" orientation="horizontal" mb={15}>
         <Textarea
-          value={purchase.purchaseRequestNote}
-          readOnly
+          value={purchase.purchaseApproveNote}
+          onChange={(e) => {
+            setPurchase((prevPurchase) => ({
+              ...prevPurchase,
+              purchaseApproveNote: e.target.value,
+            }));
+          }}
           placeholder={"최대 50자"}
         />
       </Field>
