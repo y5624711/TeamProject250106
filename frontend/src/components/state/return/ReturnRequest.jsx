@@ -66,12 +66,13 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
       ...prev,
       ["franchiseName"]: localFranchiseName,
       ["franchiseCode"]: localFranchiseCode,
+      ["serialNo"]: "",
     }));
     if (localFranchiseCode) {
       axios
         .get(`api/return/serialNoList/${localFranchiseCode}`)
         .then((res) => {
-          console.log("serial 반환", res.data);
+          // console.log("serial 반환", res.data);
           const serialNoOptions = res.data.map((serialNo) => ({
             value: serialNo.serialNo,
             label: serialNo.serialNo,
@@ -100,13 +101,12 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     }
   }, [serialNo]);
 
-  // console.log("requestData", requestData);
-
   //정보 기입 핸들러
   const handleInput = (field) => (e) => {
     const value = e.target ? e.target.value : e.value;
     setRequestData((prev) => ({ ...prev, [field]: value }));
   };
+  console.log("requestData", requestData);
 
   const handleFranchiseChange = (selectedOption) => {
     // console.log("선택", selectedOption);
@@ -149,8 +149,19 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               )}
               onChange={handleFranchiseChange}
               placeholder="가맹점 선택"
-              isClearable
               isSearchable
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  width: "470px", // 너비 고정
+                  height: "40px",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                  width: "470px",
+                }),
+              }}
             />
             {/*<Input*/}
             {/*  value={requestData.franchiseName}*/}
@@ -162,16 +173,27 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           <HStack>
             <Field orientation="horizontal" label="시리얼 번호">
               <SelectRoot
+                value={requestData.serialNo}
                 onValueChange={(e) => {
                   setSerialNo(e.value);
+                  setRequestData((prev) => ({
+                    ...prev,
+                    ["serialNo"]: e.value[0],
+                  }));
                 }}
               >
                 <SelectTrigger>
                   <SelectValueText>
-                    {serialNo || "반품할 물품 선택"}
+                    {requestData.serialNo || "반품할 물품 선택"}
                   </SelectValueText>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  style={{
+                    position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
+                    zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
+                    width: "72.5%", // 드롭다운 너비를 트리거와 동일하게
+                  }}
+                >
                   {serialNoList.map((option) => (
                     <SelectItem item={option} key={option.value}>
                       {option.label}
