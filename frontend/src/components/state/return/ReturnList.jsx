@@ -6,11 +6,6 @@ import {
   HStack,
   IconButton,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Table,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
@@ -22,6 +17,13 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
 
 function ReturnList({
   returnList,
@@ -102,8 +104,8 @@ function ReturnList({
       <HStack justifyContent="center" w={"100%"}>
         <SelectRoot
           collection={returnSearchKeywords}
-          // postition={"relative"}
           width={"160px"}
+          value={localType}
           onValueChange={(e) => {
             console.log("value", e);
             setLocalType(e.value[0]);
@@ -111,16 +113,9 @@ function ReturnList({
           }}
         >
           <SelectTrigger>
-            <SelectValueText>{localTypeName}</SelectValueText>
+            <SelectValueText>{localTypeName || "전체"}</SelectValueText>
           </SelectTrigger>
-          <SelectContent
-          // style={{
-          //   top: "242px",
-          //   position: "absolute",
-          //   zIndex: 100,
-          //   width: "160px",
-          // }}
-          >
+          <SelectContent>
             {returnSearchKeywords.items.map((e) => (
               <SelectItem item={e} key={e.value}>
                 {e.label}

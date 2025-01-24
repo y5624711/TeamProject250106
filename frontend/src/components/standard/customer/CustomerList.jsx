@@ -5,11 +5,6 @@ import {
   createListCollection,
   HStack,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Stack,
   Table,
 } from "@chakra-ui/react";
@@ -18,6 +13,13 @@ import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { Pagination } from "../../tool/list/Pagination.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
 
 function CustomerList({
   customerList,
@@ -61,7 +63,6 @@ function CustomerList({
           <SelectRoot
             collection={optionList}
             width={"160px"}
-            position={"relative"}
             value={[search.type]}
             onValueChange={(oc) => {
               setSearch({ ...search, type: oc.value[0] });
@@ -71,14 +72,7 @@ function CustomerList({
             <SelectTrigger>
               <SelectValueText />
             </SelectTrigger>
-            <SelectContent
-              style={{
-                top: "40px",
-                position: "absolute",
-                zIndex: 100,
-                width: "160px",
-              }}
-            >
+            <SelectContent>
               {optionList.items.map((option) => (
                 <SelectItem item={option} key={option.value}>
                   {option.label}
