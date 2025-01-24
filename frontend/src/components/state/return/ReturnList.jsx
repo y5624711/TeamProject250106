@@ -4,6 +4,7 @@ import {
   Center,
   createListCollection,
   HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -132,10 +133,17 @@ function ReturnList({
           onChange={(e) => setLocalKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요."
         />
-        <Box transform="translateX(-170%) " style={{ cursor: "pointer" }}>
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={() => {
+            window.location.search = ""; // searchParams 초기화
+          }}
+        >
           <BsArrowCounterclockwise size="25px" />
-        </Box>
-        <Button onClick={handleSearchButton} transform="translateX(-55%) ">
+        </IconButton>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)">
           검색
         </Button>
       </HStack>
