@@ -1,5 +1,6 @@
 package com.example.backend.service.state.purchase;
 
+import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,13 @@ public class PurchaseService {
     }
 
     // 품목 구분 코드 리스트 가져오기
-    public List<Map<String, String>> getItemCommonCodeList() {
+    public List<Map<String, Object>> getItemCommonCodeList() {
         return mapper.getItemCommonCodeList();
+    }
+
+    // 해당 품목을 담당하는 협력 업체 이름, 가격 가져오기
+    public List<Item> getCustomerName(String itemCommonCode) {
+        return mapper.getCustomerName(itemCommonCode);
     }
 
     // 구매 신청

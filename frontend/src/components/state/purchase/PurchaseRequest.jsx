@@ -18,16 +18,16 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 export function PurchaseRequest({ onSave, onClose }) {
   const { id, name } = useContext(AuthenticationContext);
   const [customerName, setCustomerName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [inputPrice, setInputPrice] = useState("");
+  const [amount, setAmount] = useState(1);
   const [purchaseRequestNote, setPurchaseRequestNote] = useState("");
   const [itemData, setItemData] = useState({
     itemCommonName: "",
     itemCommonCode: "",
+    inputPrice: 0,
   });
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
 
-  // 품목 구분 코드 가져오기 (UI에서 품목명을 보여줘야 되는데 우리는 코드를 사용해서 -> 품목 구분 코드를 가져와야 함)
+  // 품목 구분 코드 가져오기
   useEffect(() => {
     axios
       .get("/api/purchase/commonCode")
@@ -35,33 +35,41 @@ export function PurchaseRequest({ onSave, onClose }) {
       .catch((e) => console.error("데이터 로딩 중 오류 발생:", e));
   }, []);
 
-  // 품목 선택 시 협력 업체 이름 가져오기
+  // 품목 선택 시 해당 품목에 대한 협력 업체, 가격 가져오기
   useEffect(() => {
-    // itemCommonCode 값이 변경될 때 실행
     if (itemData.itemCommonCode) {
-      console.log("itemCommonCode 변경됨:", itemData.itemCommonCode);
+      console.log("품목:", itemData.itemCommonCode);
       axios
-        .get(`/api/item/customer/${itemData.itemCommonCode}`)
+        .get(`/api/purchase/customer/${itemData.itemCommonCode}`)
         .then((res) => {
-          const customerData = res.data[0] || {}; // 응답 데이터에서 첫 번째 협력업체 정보 가져오기
+          // console.log("응답 데이터:", res.data);
+          const customerData = res.data[0] || {};
           setItemData((prev) => ({
             ...prev,
             customerName: customerData.customerName || "없음",
             customerCode: customerData.customerCode || "",
+            inputPrice: customerData.inputPrice || "",
           }));
         })
         .catch((error) => {
-          console.error("협력업체 정보 로드 중 오류 발생: ", error);
+          console.error("협력 업체 정보 로드 중 오류 발생: ", error);
 
-          // 오류 발생 시 협력 업체 정보 초기화
+          // 오류 발생 시 상태 초기화
           setItemData((prev) => ({
             ...prev,
             customerName: "",
             customerCode: "",
+            inputPrice: "",
           }));
         });
     }
   }, [itemData.itemCommonCode]);
+
+  // 수량 변경 시 가격에 수량 곱한 값으로 표시
+  const handleAmountChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setAmount(value >= 1 ? value : 1);
+  };
 
   // 구매 신청하기
   const handleSaveClick = () => {
@@ -73,6 +81,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
         amount: requestAmount,
+        inputPrice: itemData.inputPrice,
         purchaseRequestNote,
       })
       .then((res) => {
@@ -149,19 +158,13 @@ export function PurchaseRequest({ onSave, onClose }) {
         <Field label="수량" orientation="horizontal" required mb={15}>
           <Input
             type="number"
-            value={amount || 1}
-            onChange={(e) => {
-              const value = parseInt(e.target.value, 10);
-              setAmount(value >= 1 ? value : 1);
-            }}
+            value={amount}
+            onChange={handleAmountChange}
             min={1}
           />
         </Field>
         <Field label="가격" orientation="horizontal" required mb={15}>
-          <Input
-            value={inputPrice}
-            onChange={(e) => setInputPrice(e.target.value)}
-          />
+          <Input value={itemData.inputPrice * amount} isReadOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>

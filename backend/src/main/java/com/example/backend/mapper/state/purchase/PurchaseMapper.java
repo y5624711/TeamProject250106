@@ -1,5 +1,6 @@
 package com.example.backend.mapper.state.purchase;
 
+import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
 import org.apache.ibatis.annotations.*;
 
@@ -17,7 +18,16 @@ public interface PurchaseMapper {
             LEFT JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
             ORDER BY BINARY(item_common_name)
             """)
-    List<Map<String, String>> getItemCommonCodeList();
+    List<Map<String, Object>> getItemCommonCodeList();
+
+    // 해당 품목을 담당하는 협력 업체 이름, 가격 가져오기
+    @Select("""
+            SELECT cus.customer_name, cus.customer_code, ite.input_price
+            FROM TB_CUSTMST cus
+            LEFT JOIN TB_ITEMMST ite ON cus.item_code = ite.item_common_code
+            WHERE item_code = #{itemCommonCode}
+            """)
+    List<Item> getCustomerName(String itemCommonCode);
 
     // 구매 신청
     @Insert("""
