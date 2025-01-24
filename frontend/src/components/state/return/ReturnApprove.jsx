@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -13,6 +13,7 @@ import { Box, HStack, Input, Separator, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 function ReturnApprove({
   isOpen,
@@ -21,6 +22,8 @@ function ReturnApprove({
   returnRequestKey,
   setReturnRequestKey,
 }) {
+  const { id, name } = useContext(AuthenticationContext);
+
   const initialApproveData = {
     customerEmployeeNo: "",
     customerEmployeeName: "",
@@ -36,11 +39,13 @@ function ReturnApprove({
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        // console.log("호출", res.data);
+        console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
   }, [returnRequestKey]);
+
+  console.log("셋팅", approveData);
 
   //정보 기입 (변화 적용)
   const handleApproveInput = (field) => (e) => {
@@ -50,19 +55,26 @@ function ReturnApprove({
 
   //반품 승인 정보 전달
   const handleApproveButtonClick = () => {
+    const updatedApproveData = {
+      ...approveData,
+      customerEmployeeName: name,
+      customerEmployeeNo: id,
+    };
+
     axios
-      .post(`api/return/approve`, approveData)
+      .post(`api/return/approve`, updatedApproveData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           type: data.message.type,
           description: data.message.text,
         });
-        onApprove(approveData);
+        onApprove(updatedApproveData);
         setApproveData(initialApproveData);
         onClose();
       })
       .catch((e) => {
+        console.error(e);
         toaster.create({
           type: message.type,
           description: message.text,
@@ -89,8 +101,6 @@ function ReturnApprove({
         });
       });
   };
-
-  // console.log("셋팅", approveData);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
@@ -134,9 +144,7 @@ function ReturnApprove({
             />
           </Field>
           <Field orientation="horizontal" label="신청 비고">
-            {<Input readOnly value={"내용 없음"} /> || (
-              <Textarea readOnly value={approveData.returnRequestNote} />
-            )}
+            <Textarea readOnly value={approveData.returnRequestNote} />
           </Field>
           {approveData.returnConsent ? (
             <Box
@@ -177,18 +185,10 @@ function ReturnApprove({
               <Separator />
               <HStack>
                 <Field orientation="horizontal" label="승인자">
-                  <Input
-                    value={approveData.customerEmployeeName}
-                    // placeholder="홍길동"
-                    onChange={handleApproveInput("customerEmployeeName")}
-                  />
+                  <Input readOnly value={name} />
                 </Field>
                 <Field orientation="horizontal" label="사번">
-                  <Input
-                    value={approveData.customerEmployeeNo}
-                    // placeholder="0000000000000"
-                    onChange={handleApproveInput("customerEmployeeNo")}
-                  />
+                  <Input readOnly value={id} />
                 </Field>
               </HStack>
               <HStack>
@@ -227,13 +227,10 @@ function ReturnApprove({
         <DialogFooter>
           {approveData.returnConsent ? (
             <Button onClick={onClose} variant="outline">
-              취소
+              닫기
             </Button>
           ) : (
             <HStack>
-              {/*<Button onClick={onClose} variant="outline">*/}
-              {/*  취소*/}
-              {/*</Button>*/}
               <Button onClick={handleDisapproveButton} variant="outline">
                 반려
               </Button>

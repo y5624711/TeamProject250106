@@ -49,13 +49,17 @@ public class ReturnService {
     }
 
     //반품 요청 정보 저장
-    public void addRequest(Return requestInfo) {
+    public boolean addRequest(Return requestInfo) {
+
         //프랜차이즈 이름-> 코드
         String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
 //        System.out.println("프랜차이즈 이름, 코드: " + requestInfo.getFranchiseName() + franchiseCode);
         requestInfo.setFranchiseCode(franchiseCode);
 
-        mapper.addRequest(requestInfo);
+        //요청 정보 작성
+        int count = mapper.addRequest(requestInfo);
+
+        return count == 1;
     }
 
     //요청 정보 조회 (1개)

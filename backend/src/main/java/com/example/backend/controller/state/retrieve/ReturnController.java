@@ -5,6 +5,7 @@ import com.example.backend.service.state.retrieve.ReturnService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class ReturnController {
         return service.returnList(page, state, type, keyword, sort, order);
     }
 
-    //시리얼 번호를 통해 정보 불러오기
-    @GetMapping("serialNo/{serialNo}")
+    //시리얼 번호를 통해 정보 불러오기 (반품 요청창 작성)
+    @GetMapping("{serialNo}")
     public List<Return> getSerialNo(@PathVariable String serialNo) {
 //        System.out.println("controller" + serialNo);
         return service.getStandardInfo(serialNo);
@@ -47,9 +48,18 @@ public class ReturnController {
 
     //반품 요청
     @PostMapping("request")
-    public void requestReturn(@RequestBody Return requestInfo) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> requestReturn(@RequestBody Return requestInfo) {
 //        System.out.println("request: " + requestInfo);
-        service.addRequest(requestInfo);
+
+        if (service.addRequest(requestInfo)) {
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "신청하였습니다."),
+                    "data", requestInfo));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "신청에 실패하였습니다.")));
+        }
     }
 
     //반품 요청 정보 불러오기
@@ -62,6 +72,7 @@ public class ReturnController {
 
     //반품 승인 + 가입고 신청
     @PostMapping("approve")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo) {
 //        System.out.println("controller: " + approveInfo);
         if (service.addApprove(approveInfo)) {

@@ -43,7 +43,6 @@ function ReturnList({
   const [localType, setLocalType] = useState(
     new URLSearchParams(window.location.search).get("type") || "all",
   );
-  const [localTypeName, setLocalTypeName] = useState("");
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -71,7 +70,7 @@ function ReturnList({
     return item ? item.label : value;
   };
 
-  console.log("이름", getLabelByValue(localType));
+  // console.log("이름", getLabelByValue(localType));
 
   // console.log("list", returnList);
   // console.log("count", count);
@@ -106,7 +105,7 @@ function ReturnList({
 
   // console.log(localType);
   // console.log("name", localTypeName);
-  console.log("type", localType);
+  // console.log("type", localType);
 
   return (
     <Box>

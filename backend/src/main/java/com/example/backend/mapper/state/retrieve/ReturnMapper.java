@@ -226,11 +226,16 @@ public interface ReturnMapper {
             """)
     int disapproveReturn(String returnRequestKey);
 
-    // 가맹점 코드로 시리얼 번호 목록 반환 (차후 재입고로 번호 중복도 염두에 둘 것)
+    // 가맹점 코드로 시리얼 번호 목록 반환 (대기, 승인인 것 제외)
     @Select("""
             SELECT serial_no
             FROM TB_INOUT_HIS
             WHERE franchise_code = #{franchiseCode}
+            EXCEPT
+            (SELECT serial_no
+             FROM TB_RTN_REQ
+             WHERE return_consent IS NULL || TB_RTN_REQ.return_consent = true
+                 AND franchise_code = #{franchiseCode})
             """)
     List<Return> getSerialNoList(String franchiseCode);
 }
