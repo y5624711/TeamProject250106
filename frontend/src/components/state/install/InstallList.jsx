@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -49,6 +49,10 @@ export function InstallList({
     ],
   });
 
+  const [radioValue, setRadioValue] = useState(
+    searchParams.get("state") || "all",
+  );
+
   const handleStateChange = (value) => {
     const nextSearchParam = new URLSearchParams(searchParams);
 
@@ -57,12 +61,17 @@ export function InstallList({
     setSearchParams(nextSearchParam);
   };
 
+  // 새로고침 시 검색 파라미터에서 state 값이 있으면 라디오 버튼 상태를 설정
+  useEffect(() => {
+    const stateFromParams = searchParams.get("state") || "all";
+    setRadioValue(stateFromParams);
+  }, [searchParams]);
+
   return (
     <Box>
       <SearchBar searchOptions={searchOptions} />
-      {/*<ActiveSwitch />*/}
       <RadioGroup
-        defaultValue="1"
+        defaultValue={radioValue}
         my={3}
         onValueChange={(value) => handleStateChange(value.value)}
       >
