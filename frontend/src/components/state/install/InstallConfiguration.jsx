@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -97,7 +96,9 @@ export function InstallConfiguration({
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>설치 완료</DialogTitle>
+          <DialogTitle>
+            {installData.inoutHistoryDate ? "설치 완료 상세" : "설치 완료"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={"15px"}>
@@ -158,28 +159,34 @@ export function InstallConfiguration({
                 </SelectRoot>
               </Field>
             </HStack>
-            <Field label={"완료 비고"} orientation="horizontal">
-              <Textarea
-                value={inoutHistoryNote}
-                placeholder="최대 50자"
-                onChange={(e) => setInoutHistoryNote(e.target.value)}
-              />
-            </Field>
-            {installData.consent && (
-              <Field label={"설치 날짜"} orientation="horizontal">
-                <Input
-                  value={"test"}
-                  onChange={(e) => setSerialNote(e.target.value)}
+            {!installData.inoutHistoryDate && (
+              <Field label={"완료 비고"} orientation="horizontal">
+                <Textarea
+                  value={inoutHistoryNote}
+                  placeholder="최대 50자"
+                  onChange={(e) => setInoutHistoryNote(e.target.value)}
                 />
               </Field>
+            )}
+            {installData.inoutHistoryDate && (
+              <Stack gap={"15px"}>
+                <Field label={"설치 날짜"} orientation="horizontal">
+                  <Input value={installData.inoutHistoryDate} />
+                </Field>
+                <Field label={"설치 비고"} orientation="horizontal">
+                  <Input value={installData.inoutHistoryNote} />
+                </Field>
+              </Stack>
             )}
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">취소</Button>
-          </DialogActionTrigger>
-          <Button onClick={handleConfigurationClick}>완료</Button>
+          <Button variant="outline" onClick={handleClose}>
+            {!installData.inoutHistoryDate ? "취소" : "닫기"}
+          </Button>
+          {!installData.inoutHistoryDate && (
+            <Button onClick={handleConfigurationClick}>완료</Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

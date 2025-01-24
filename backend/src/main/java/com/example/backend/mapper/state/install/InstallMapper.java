@@ -125,6 +125,7 @@ public interface InstallMapper {
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
             ia.install_approve_consent as consent, ir.install_request_date, ia.install_approve_date,
+            ih.inout_history_date, ih.inout_history_note ,
             GROUP_CONCAT(DISTINCT ts.serial_no) AS serial_numbers
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
@@ -134,6 +135,7 @@ public interface InstallMapper {
             LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
             LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
             LEFT JOIN TB_INSTL_SUB ts ON ia.output_no = ts.output_no
+            LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
             WHERE ia.install_approve_key = #{installKey}
             GROUP BY ia.install_approve_key
             """)
