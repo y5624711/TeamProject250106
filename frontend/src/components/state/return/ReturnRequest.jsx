@@ -82,8 +82,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     }
   };
 
-  //시리얼 목록 select로 보기
-  console.log("serialList", serialNoList);
+  // console.log("serialList", serialNoList);
 
   //시리얼 번호로 정보 불러오기
   useEffect(() => {
@@ -160,35 +159,43 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             {/*/>*/}
             <Button onClick={onFranchiseClick}>조회</Button>
           </Field>
-          <Field orientation="horizontal" label="시리얼 번호">
-            <SelectRoot>
-              <SelectTrigger>
-                <SelectValueText></SelectValueText>
-              </SelectTrigger>
-              <SelectContent>
-                {serialNoList.map((option) => (
-                  <SelectItem item={option} key={option.value}>
-                    {option.label}
-                  </SelectItem>
-                )) || "내역 없음"}
-              </SelectContent>
-            </SelectRoot>
-            {/*<Input*/}
-            {/*  // placeholder="00000000000000000000"*/}
-            {/*  value={requestData.serialNo}*/}
-            {/*  onChange={handleInput("serialNo")}*/}
-            {/*/>*/}
-            <Button onClick={() => setSerialNo(requestData.serialNo)}>
-              조회
-            </Button>
-          </Field>
-          <Field orientation="horizontal" label="품목">
-            <Input
-              readOnly
-              value={requestData.itemCommonName}
-              // placeholder={"OOOO"}
-            />
-          </Field>
+          <HStack>
+            <Field orientation="horizontal" label="시리얼 번호">
+              <SelectRoot
+                onValueChange={(e) => {
+                  setSerialNo(e.value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValueText>
+                    {serialNo || "반품할 물품 선택"}
+                  </SelectValueText>
+                </SelectTrigger>
+                <SelectContent>
+                  {serialNoList.map((option) => (
+                    <SelectItem item={option} key={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  )) || "내역 없음"}
+                </SelectContent>
+              </SelectRoot>
+              {/*<Input*/}
+              {/*  // placeholder="00000000000000000000"*/}
+              {/*  value={requestData.serialNo}*/}
+              {/*  onChange={handleInput("serialNo")}*/}
+              {/*/>*/}
+              {/*<Button onClick={() => setSerialNo(requestData.serialNo)}>*/}
+              {/*  조회*/}
+              {/*</Button>*/}
+            </Field>
+            <Field orientation="horizontal" label="품목">
+              <Input
+                readOnly
+                value={requestData.itemCommonName}
+                // placeholder={"OOOO"}
+              />
+            </Field>
+          </HStack>
           <Field orientation="horizontal" label="담당 업체">
             <Input
               readOnly
