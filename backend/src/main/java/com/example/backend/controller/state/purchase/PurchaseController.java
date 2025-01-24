@@ -18,6 +18,12 @@ public class PurchaseController {
 
     private final PurchaseService service;
 
+    // 품목 구분 코드 리스트 가져오기
+    @GetMapping("commonCode")
+    public List<Map<String, String>> getItemCommonCodeList() {
+        return service.getItemCommonCodeList();
+    }
+
     // 구매 신청
     @PostMapping("/request")
     public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase) {

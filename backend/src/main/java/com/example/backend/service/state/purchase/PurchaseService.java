@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -23,6 +24,11 @@ public class PurchaseService {
         boolean purchaseRequestDateValid = purchase.getPurchaseRequestDate() != null;
 
         return itemCommonCodeValid && customerCodeValid && amountValid && purchaseRequestDateValid;
+    }
+
+    // 품목 구분 코드 리스트 가져오기
+    public List<Map<String, String>> getItemCommonCodeList() {
+        return mapper.getItemCommonCodeList();
     }
 
     // 구매 신청

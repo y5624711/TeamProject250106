@@ -32,12 +32,12 @@ export function PurchaseRequest({ onSave, onClose }) {
   // 품목 구분 코드 가져오기 (UI에서 품목명을 보여줘야 되는데 우리는 코드를 사용해서 -> 품목 구분 코드를 가져와야 함)
   useEffect(() => {
     axios
-      .get("/api/item/commonCode")
+      .get("/api/purchase/commonCode")
       .then((res) => setItemCommonCodeList(res.data))
       .catch((e) => console.error("데이터 로딩 중 오류 발생:", e));
   }, []);
 
-  // 품목 선택 시 협력업체 이름 가져오기
+  // 품목 선택 시 협력 업체 이름 가져오기
   useEffect(() => {
     // itemCommonCode 값이 변경될 때 실행
     if (itemData.itemCommonCode) {
@@ -55,7 +55,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         .catch((error) => {
           console.error("협력업체 정보 로드 중 오류 발생: ", error);
 
-          // 오류 발생 시 협력업체 정보 초기화
+          // 오류 발생 시 협력 업체 정보 초기화
           setItemData((prev) => ({
             ...prev,
             customerName: "",
@@ -142,7 +142,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           </SelectTrigger>
           <SelectContent
             style={{
-              width: "380px",
+              width: "280px",
               position: "absolute",
             }}
           >
