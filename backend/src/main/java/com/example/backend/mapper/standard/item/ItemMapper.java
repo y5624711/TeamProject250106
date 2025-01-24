@@ -19,7 +19,7 @@ public interface ItemMapper {
     @Select("""
             SELECT c.item_code AS item_common_code, sc.common_code_name as item_common_name
             FROM TB_CUSTMST c LEFT JOIN TB_SYSCOMM sc ON c.item_code = sc.common_code
-            WHERE c.item_code NOT IN (SELECT common_code FROM TB_ITEMMST)
+            WHERE c.item_code NOT IN (SELECT item_common_code FROM TB_ITEMMST)
             AND c.customer_active = 1
             ORDER BY binary(item_common_name)
             """)
