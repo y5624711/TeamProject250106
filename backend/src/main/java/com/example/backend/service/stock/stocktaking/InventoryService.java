@@ -15,6 +15,6 @@ public class InventoryService {
 
 
     public Map<String, Object> getList() {
-        return Map.of("list", mapper.selectList(), "count", "");
+        return Map.of("list", mapper.selectList(), "count", mapper.countAll());
     }
 }
