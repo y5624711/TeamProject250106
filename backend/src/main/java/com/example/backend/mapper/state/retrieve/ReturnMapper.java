@@ -33,7 +33,7 @@ public interface ReturnMapper {
                 (1=1 || return_consent IS NOT true || return_consent IS NOT false)
             </if>
             <if test="state == 'request'">
-                (return_consent IS NOT true || false)
+                return_consent IS NULL
             </if>
             <if test="state == 'approve'">
                 return_consent = true
@@ -167,7 +167,7 @@ public interface ReturnMapper {
                 (1=1 || return_consent IS NOT true || return_consent IS NOT false)
             </if>
             <if test="state == 'request'">
-                (return_consent IS NOT true || false)
+               return_consent IS NULL
             </if>
             <if test="state == 'approve'">
                 return_consent = true
