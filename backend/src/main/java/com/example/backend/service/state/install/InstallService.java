@@ -44,9 +44,9 @@ public class InstallService {
     }
 
     // 설치 요청 테이블에서 요청 가져오기
-    public List<Install> getInstallRequestList() {
-        return mapper.getInstallRequestList();
-    }
+//    public List<Install> getInstallRequestList() {
+//        return mapper.getInstallRequestList();
+//    }
 
     // 설치 요청에 대한 정보 가져오기
     public List<Install> getInstallRequestView(int installKey) {
@@ -117,9 +117,9 @@ public class InstallService {
     }
 
     // 설치 승인 테이블에서 요청 리스트 가져오기
-    public List<Install> getInstallApproveList() {
-        return mapper.getInstallApproveList();
-    }
+//    public List<Install> getInstallApproveList() {
+//        return mapper.getInstallApproveList();
+//    }
 
     // 설치 승인에 대한 정보 가져오기
     public Install getInstallApproveView(int installKey) {
@@ -180,4 +180,10 @@ public class InstallService {
         }
     }
 
+    // 설치 요청, 승인 리스트 가져오기
+    public Map<String, Object> getInstallList(Integer page) {
+        Integer offset = (page - 1) * 10;
+        return Map.of("list", mapper.getInstallList(offset),
+                "count", mapper.countAll());
+    }
 }

@@ -11,7 +11,13 @@ import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
-export function InstallList({ installList, onRowClick }) {
+export function InstallList({
+  installList,
+  onRowClick,
+  count,
+  searchParams,
+  setSearchParams,
+}) {
   const sortInstallOptions = [
     { key: "installKey", label: "#" },
     { key: "customerName", label: "가맹점" },
@@ -106,7 +112,15 @@ export function InstallList({ installList, onRowClick }) {
           </Table.Body>
         </Table.Root>
         <Center>
-          <Pagination />
+          <Pagination
+            count={count}
+            pageSize={10}
+            onPageChange={(newPage) => {
+              const nextSearchParam = new URLSearchParams(searchParams);
+              nextSearchParam.set("page", newPage);
+              setSearchParams(nextSearchParam);
+            }}
+          />
         </Center>
       </Box>
     </Box>

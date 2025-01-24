@@ -7,6 +7,7 @@ import { InstallRequest } from "../../../components/state/install/InstallRequest
 import { InstallApprove } from "../../../components/state/install/InstallApprove.jsx";
 import axios from "axios";
 import { InstallConfiguration } from "../../../components/state/install/InstallConfiguration.jsx";
+import { useSearchParams } from "react-router-dom";
 
 export function Install() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
@@ -15,39 +16,48 @@ export function Install() {
   const [installList, setInstallList] = useState([]);
   const [selectedInstall, setSelectedInstall] = useState(null);
   const [change, setChange] = useState();
+  const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams("");
 
   useEffect(() => {
-    const fetchRequestList = axios.get("/api/install/list/request");
-    const fetchApproveList = axios.get("/api/install/list/approve");
+    axios
+      .get("/api/install/list", {
+        params: searchParams,
+      })
+      .then((res) => {
+        const formattedList = res.data.list.map((item) => {
+          // requestKey 상태에 따라 "대기", "승인", "반려" 구분
+          let state = null;
 
-    Promise.all([fetchRequestList, fetchApproveList])
-      .then(([requestRes, approveRes]) => {
-        const requestList = requestRes.data.map((item) => ({
-          ...item,
-          state:
-            item.consent === true
-              ? "승인"
-              : item.consent === false
-                ? "반려"
-                : "대기",
-        }));
-        const approveList = approveRes.data.map((item) => ({
-          ...item,
-          state:
-            item.consent === true
-              ? "완료"
-              : item.consent === false
-                ? "반려"
-                : "승인",
-        }));
+          console.log(item.installApproveKey);
+          console.log(item.requestConsent);
+          if (!item.installApproveKey) {
+            if (!item.requestConsent) {
+              state = "대기";
+            } else if (item.requestConsent === true) {
+              state = "승인";
+            } else if (item.requestConsent === false) {
+              state = "반려";
+            }
+          } else if (item.installApproveKey) {
+            if (!item.approveConsent) {
+              state = "승인";
+            } else if (item.approveConsent === true) {
+              state = "완료";
+            } else if (item.approveConsent === false) {
+              state = "반려";
+            }
+          }
 
-        // 두 리스트를 합쳐서 설정
-        setInstallList([...requestList, ...approveList]);
+          return { ...item, state };
+        });
+        setInstallList(formattedList || []);
+        setCount(res.data.count);
       })
       .catch((error) => {
-        console.error("데이터 요청 중 오류 발생: ", error);
+        console.error("품목 목록 요청 중 오류 발생: ", error);
       });
-  }, [change]);
+  }, [searchParams, change]);
 
   const handleRowClick = (key) => {
     setSelectedInstall(key);
@@ -67,7 +77,13 @@ export function Install() {
           <Heading size={"xl"} p={2} mb={3}>
             구매 / 설치 관리 {">"} 설치 관리
           </Heading>
-          <InstallList installList={installList} onRowClick={handleRowClick} />
+          <InstallList
+            installList={installList}
+            onRowClick={handleRowClick}
+            count={count}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
           <Button
             onClick={() => setRequestDialogOpen(true)}
             size="lg"

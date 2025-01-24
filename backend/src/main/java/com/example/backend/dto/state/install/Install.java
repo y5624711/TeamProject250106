@@ -42,6 +42,8 @@ public class Install {
     private Boolean installConfiguration;
     private String warehouseCode;
     private String inoutHistoryNote;
-    private Boolean consent;
+    private Boolean requestConsent;
+    private Boolean approveConsent;
     private Integer countItem;
+
 }
