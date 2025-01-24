@@ -29,7 +29,7 @@ export function StockSideBar() {
         w="220px"
         pb="4"
         bg="gray.100"
-        h={"100vh"} // <  화면 길이 계산해서 100%
+        h={"80vh"} // <  화면 길이 계산해서 100%
         borderRight="1px solid"
         borderColor="gray.200"
       >

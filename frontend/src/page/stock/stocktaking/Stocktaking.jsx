@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
+  Center,
   createListCollection,
   Heading,
   HStack,
@@ -11,6 +12,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../../components/ui/pagination.jsx";
 
 function Stocktaking(props) {
   const [search, setSearch] = useState({
@@ -79,13 +86,28 @@ function Stocktaking(props) {
           <Box h={7}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
-            countStocktaking={countStocktaking}
             stocktakingList={stocktakingList}
             currentPage={currentPage}
-            handlePageChangeClick={handlePageChangeClick}
           />
         </Stack>
       </HStack>
+
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChangeClick}
+          count={countStocktaking}
+          pageSize={10}
+          // page={page}
+          siblingCount={2}
+          defaultPage={currentPage}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }

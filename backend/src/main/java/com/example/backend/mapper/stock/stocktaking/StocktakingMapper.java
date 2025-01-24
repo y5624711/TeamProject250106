@@ -10,6 +10,7 @@ import java.util.List;
 public interface StocktakingMapper {
 
     @Select("""
+            <script>
             SELECT s.stocktaking_key,
                    s.item_code,
                    s.warehouse_code,
@@ -23,13 +24,15 @@ public interface StocktakingMapper {
                    itcm.item_common_name itemName,
                    cus.customer_name,
                    emp.employee_name customerEmployeeName
-            FROM TB_STKTK s 
+            FROM TB_STKTK s
                 LEFT JOIN TB_WHMST w ON s.warehouse_code=w.warehouse_code
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                 LEFT JOIN TB_ITEMCOMM itcm ON s.item_code=itcm.item_common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
+            WHERE 
+            </script>
             """)
-    List<Stocktaking> list();
+    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList);
 
     @Select("""
             SELECT s.stocktaking_key,

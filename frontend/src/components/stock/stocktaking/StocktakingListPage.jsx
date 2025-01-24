@@ -5,6 +5,7 @@ function StocktakingListPage({
   stocktaking,
   setIsDetailDialogOpen,
   setSelectedStocktaking,
+  index,
 }) {
   return (
     <>
@@ -19,10 +20,10 @@ function StocktakingListPage({
         {/* TODO: stocktakingKey 대신 index 주기 */}
 
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.stocktakingKey}
+          {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.warehouseName}
+          {stocktaking.customerName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.itemName}
@@ -32,6 +33,15 @@ function StocktakingListPage({
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.countConfiguration}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.countDifference}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.warehouseName}
+        </Table.Cell>
+        <Table.Cell textAlign="center" verticalAlign="middle">
+          {stocktaking.stocktakingType}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.customerEmployeeName}
