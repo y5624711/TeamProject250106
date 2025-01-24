@@ -33,7 +33,6 @@ function ReturnList({
   onStateChange,
   sort,
   order,
-  onHeader,
 }) {
   // 검색 keyword와 type 상태 관리
   const [localKeyword, setLocalKeyword] = useState(
@@ -42,6 +41,7 @@ function ReturnList({
   const [localType, setLocalType] = useState(
     new URLSearchParams(window.location.search).get("type") || "all",
   );
+  const [localTypeName, setLocalTypeName] = useState("");
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -80,7 +80,7 @@ function ReturnList({
     window.location.search = searchParams.toString();
   };
 
-  // 헤더 클릭 처리
+  // 헤더 클릭 처리 : 정렬
   const handleHeaderClick = (columnName) => {
     const nextOrder = sort === columnName && order === "ASC" ? "DESC" : "ASC";
 
@@ -93,7 +93,8 @@ function ReturnList({
   };
 
   // console.log(localType);
-  // console.log("name", localType);
+  console.log("name", localTypeName);
+  console.log("type", localType);
 
   return (
     <Box>
@@ -101,24 +102,24 @@ function ReturnList({
       <HStack justifyContent="center" w={"100%"}>
         <SelectRoot
           collection={returnSearchKeywords}
-          postition={"relative"}
+          // postition={"relative"}
           width={"160px"}
-          onValueChange={(value) => {
-            console.log("value", value);
-            setLocalType(value.value[0]);
-            // setLocalTypeName(value.items[0].label);
+          onValueChange={(e) => {
+            console.log("value", e);
+            setLocalType(e.value[0]);
+            setLocalTypeName(e.items[0].label);
           }}
         >
           <SelectTrigger>
-            <SelectValueText placeholder={"선택"} />
+            <SelectValueText>{localTypeName}</SelectValueText>
           </SelectTrigger>
           <SelectContent
-            style={{
-              top: "242px",
-              position: "absolute",
-              zIndex: 100,
-              width: "160px",
-            }}
+          // style={{
+          //   top: "242px",
+          //   position: "absolute",
+          //   zIndex: 100,
+          //   width: "160px",
+          // }}
           >
             {returnSearchKeywords.items.map((e) => (
               <SelectItem item={e} key={e.value}>

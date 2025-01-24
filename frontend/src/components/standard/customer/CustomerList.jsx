@@ -74,9 +74,9 @@ function CustomerList({
             <SelectContent
               style={{
                 top: "40px",
-                position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
-                zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
-                width: "160px", // 드롭다운 너비를 트리거와 동일하게
+                position: "absolute",
+                zIndex: 100,
+                width: "160px",
               }}
             >
               {optionList.items.map((option) => (

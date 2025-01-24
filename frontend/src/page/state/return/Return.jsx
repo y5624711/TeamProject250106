@@ -42,7 +42,7 @@ function Return(props) {
     };
   }, [searchParams]);
 
-  console.log("searchParams", searchParams.toString());
+  // console.log("searchParams", searchParams.toString());
 
   //페이지 이동
   function handlePageChange(e) {
@@ -95,20 +95,20 @@ function Return(props) {
     setApproveDialogOpen(true);
   };
 
-  //정렬
-  const handleSortOrder = () => {
-    const currentSort = searchParams.get("sort");
-    const currentOrder = searchParams.get("order");
-
-    const newOrder =
-      currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("sort", sort);
-    nextSearchParams.set("order", newOrder);
-
-    setSearchParams(nextSearchParams);
-  };
+  // //정렬
+  // const handleSortOrder = () => {
+  //   const currentSort = searchParams.get("sort");
+  //   const currentOrder = searchParams.get("order");
+  //
+  //   const newOrder =
+  //     currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
+  //
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   nextSearchParams.set("sort", sort);
+  //   nextSearchParams.set("order", newOrder);
+  //
+  //   setSearchParams(nextSearchParams);
+  // };
 
   // console.log("list", returnList);
 
@@ -131,7 +131,6 @@ function Return(props) {
             sort={sort}
             order={order}
             searchParams={searchParams}
-            onHeader={handleSortOrder}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>
