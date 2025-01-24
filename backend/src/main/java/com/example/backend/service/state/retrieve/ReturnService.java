@@ -21,7 +21,14 @@ public class ReturnService {
 
     //반환 관리 리스트
     public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order) {
-//        System.out.println("리스트: " + mapper.getReturnList());
+        // 날짜순은 두개 합쳐야함
+        if ("date".equals(sort)) {
+            sort = "COALESCE(return_approve_date, return_request_date)";
+        }
+
+//        System.out.println("sort: " + sort);
+
+        //        System.out.println("리스트: " + mapper.getReturnList());
         Integer offset = (page - 1) * 10;
 
         //리스트
@@ -84,5 +91,10 @@ public class ReturnService {
     public boolean disapproveReturn(String returnRequestKey) {
         //return_consent = false
         return mapper.disapproveReturn(returnRequestKey) == 1;
+    }
+
+    // 가맹점 코드로 시리얼번호 조회
+    public List<Return> getSerialNoList(String franchiseCode) {
+        return mapper.getSerialNoList(franchiseCode);
     }
 }

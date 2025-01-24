@@ -15,46 +15,74 @@ function Return(props) {
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
-  const [sort, setSort] = useState(searchParams.get("sort") || "all");
-  const [order, setOrder] = useState(searchParams.get("order") || "desc");
 
-  const [filters, setFilters] = useState({
-    page: searchParams.get("page") || 1,
-    type: searchParams.get("type") || "all",
-    keyword: searchParams.get("keyword") || "",
-    state: searchParams.get("state") || "all",
-  });
-
-  // const page = searchParams.get("page") || 1;
+  const page = searchParams.get("page") || 1;
   // const type = searchParams.get("type") || "all";
   // const keyword = searchParams.get("keyword") || "";
-  // const state = searchParams.get("state") || "all";
+  const state = searchParams.get("state") || "all";
+  const sort = searchParams.get("sort") || "date";
+  const order = searchParams.get("order") || "desc";
 
   //목록 불러오기
   useEffect(() => {
+    const controller = new AbortController();
     axios
-      .get("/api/return/list", { params: filters })
+      .get("/api/return/list", {
+        params: searchParams,
+        signal: controller.signal,
+      })
       .then((res) => res.data)
       .then((data) => {
         // console.log("반환", data);
         setReturnList(data.returnList);
         setCount(data.count);
       });
-  }, [filters]);
+    return () => {
+      controller.abort();
+    };
+  }, [searchParams]);
 
-  // 필터 값 변경 핸들러
-  const handleFilterChange = (key, value) => {
-    const updatedFilters = { ...filters, [key]: value };
-    setFilters(updatedFilters);
-    setSearchParams(updatedFilters); // URL 갱신
+  // console.log("searchParams", searchParams.toString());
+
+  //페이지 이동
+  function handlePageChange(e) {
+    console.log(e);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
+
+  // //검색
+  // function handleSearchClick() {
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   if (keyword.trim().length > 0) {
+  //     //검색 입력
+  //     nextSearchParams.set("type", type);
+  //     nextSearchParams.set("type", keyword);
+  //     nextSearchParams.set("page", 1);
+  //     setSearchParams(nextSearchParams);
+  //   } else {
+  //     //기본
+  //     nextSearchParams.delete("type");
+  //     nextSearchParams.delete("keyword");
+  //   }
+  // }
+
+  // state 변경 핸들러
+  const handleStateChange = (newState) => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("state", newState.value); // 새로운 state 값 반영
+    nextSearchParams.set("page", 1); // 상태 변경 시 페이지를 초기화
+    setSearchParams(nextSearchParams);
   };
 
-  // 페이지 변경 핸들러
-  const handlePageChange = (newPage) => {
-    handleFilterChange("page", newPage);
-  };
+  // URL 변화 시 검색 상태 갱신
+  useEffect(() => {
+    const newState = searchParams.get("state") || "all";
+    console.log("Updated state from URL:", newState);
+  }, [searchParams]);
 
-  //요청창 작성 후 버튼 클릭
+  //요청창 작성 후 버튼 클릭 : returnRequest
   const handleRequestClick = (newRequest) => {
     setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
     setRequestDialogOpen(false);
@@ -67,23 +95,20 @@ function Return(props) {
     setApproveDialogOpen(true);
   };
 
-  // 검색 초기화 버튼 클릭 핸들러
-  const handleResetClick = () => {
-    setFilters({
-      page: 1,
-      type: "all",
-      keyword: "",
-      state: "all",
-    });
-
-    const nextSearchParam = new URLSearchParams();
-    nextSearchParam.set("page", "1");
-    nextSearchParam.set("type", "all");
-    nextSearchParam.set("keyword", "");
-    nextSearchParam.set("state", "all");
-
-    setSearchParams(nextSearchParam);
-  };
+  // //정렬
+  // const handleSortOrder = () => {
+  //   const currentSort = searchParams.get("sort");
+  //   const currentOrder = searchParams.get("order");
+  //
+  //   const newOrder =
+  //     currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
+  //
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   nextSearchParams.set("sort", sort);
+  //   nextSearchParams.set("order", newOrder);
+  //
+  //   setSearchParams(nextSearchParams);
+  // };
 
   // console.log("list", returnList);
 
@@ -98,13 +123,14 @@ function Return(props) {
           <ReturnList
             returnList={returnList}
             onRowClick={handleRowClick}
-            setSearchParams={setSearchParams}
+            page={page}
             count={count}
-            filters={filters}
-            setFilters={setFilters}
-            handleFilterChange={handleFilterChange}
+            state={state}
             handlePageChange={handlePageChange}
-            handleResetClick={handleResetClick}
+            onStateChange={handleStateChange}
+            sort={sort}
+            order={order}
+            searchParams={searchParams}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>

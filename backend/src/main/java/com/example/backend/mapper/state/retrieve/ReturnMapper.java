@@ -33,7 +33,7 @@ public interface ReturnMapper {
                 (1=1 || return_consent IS NOT true || return_consent IS NOT false)
             </if>
             <if test="state == 'request'">
-                (return_consent IS NOT true || false)
+                return_consent IS NULL
             </if>
             <if test="state == 'approve'">
                 return_consent = true
@@ -167,7 +167,7 @@ public interface ReturnMapper {
                 (1=1 || return_consent IS NOT true || return_consent IS NOT false)
             </if>
             <if test="state == 'request'">
-                (return_consent IS NOT true || false)
+               return_consent IS NULL
             </if>
             <if test="state == 'approve'">
                 return_consent = true
@@ -225,4 +225,12 @@ public interface ReturnMapper {
             WHERE return_request_key=#{returnRequestKey}
             """)
     int disapproveReturn(String returnRequestKey);
+
+    // 가맹점 코드로 시리얼 번호 목록 반환 (차후 재입고로 번호 중복도 염두에 둘 것)
+    @Select("""
+            SELECT serial_no
+            FROM TB_INOUT_HIS
+            WHERE franchise_code = #{franchiseCode}
+            """)
+    List<Return> getSerialNoList(String franchiseCode);
 }

@@ -254,6 +254,7 @@ function Customer() {
     setCurrentPage(page);
   }, [searchParams]);
 
+  //정렬 기즌
   function handleStandard(sort) {
     const currentSort = searchParams.get("sort");
     const currentOrder = searchParams.get("order");

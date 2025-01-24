@@ -5,11 +5,6 @@ import {
   createListCollection,
   HStack,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Stack,
   Table,
 } from "@chakra-ui/react";
@@ -18,6 +13,13 @@ import { Button } from "../../ui/button.jsx";
 import { MdOutlineNumbers } from "react-icons/md";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { Pagination } from "../../tool/list/Pagination.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
 
 function CustomerList({
   customerList,
@@ -57,11 +59,10 @@ function CustomerList({
     <Box px={10}>
       <Center>
         {/* 검색창 */}
-        <HStack w={"70%"} my={3}>
+        <HStack justifyContent="center" w={"100%"}>
           <SelectRoot
             collection={optionList}
-            width={"150px"}
-            position={"relative"}
+            width={"160px"}
             value={[search.type]}
             onValueChange={(oc) => {
               setSearch({ ...search, type: oc.value[0] });
@@ -71,13 +72,7 @@ function CustomerList({
             <SelectTrigger>
               <SelectValueText />
             </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "150px",
-                top: "40px",
-                position: "absolute",
-              }}
-            >
+            <SelectContent>
               {optionList.items.map((option) => (
                 <SelectItem item={option} key={option.value}>
                   {option.label}
@@ -87,6 +82,7 @@ function CustomerList({
           </SelectRoot>
 
           <Input
+            width="50%"
             placeholder="검색어를 입력해 주세요"
             type="text"
             value={search.keyword}

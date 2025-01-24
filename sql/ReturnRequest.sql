@@ -54,3 +54,11 @@ FROM TB_RTN_REQ rr
          LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
          LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
 WHERE rr.return_request_key = 1;
+
+SELECT serial_no
+FROM TB_INOUT_HIS
+WHERE franchise_code = 'FRN0000000003';
+
+# SELECT serial_no
+# FROM TB_INOUT_HIS
+# WHERE

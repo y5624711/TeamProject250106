@@ -1,37 +1,49 @@
 import React, { useState } from "react";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
+  IconButton,
   Input,
+  Table,
+} from "@chakra-ui/react";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { Button } from "../../ui/button.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
+import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Stack,
-  Table,
-} from "@chakra-ui/react";
-import { MdOutlineNumbers } from "react-icons/md";
-import { Pagination } from "../../tool/list/Pagination.jsx";
-import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import { Button } from "../../ui/button.jsx";
-import { BsArrowCounterclockwise } from "react-icons/bs";
+} from "../../ui/select.jsx";
 
 function ReturnList({
   returnList,
   onRowClick,
-  setSearchParams,
   count,
-  filters,
-  handleFilterChange,
-  setFilters,
+  page,
   handlePageChange,
-  handleResetClick,
+  state,
+  onStateChange,
+  sort,
+  order,
 }) {
   // 검색 keyword와 type 상태 관리
-  const [localKeyword, setLocalKeyword] = useState(filters.keyword || "");
-  const [localType, setLocalType] = useState("all");
+  const [localKeyword, setLocalKeyword] = useState(
+    new URLSearchParams(window.location.search).get("keyword") || "",
+  );
+  const [localType, setLocalType] = useState(
+    new URLSearchParams(window.location.search).get("type") || "all",
+  );
+  const [localTypeName, setLocalTypeName] = useState("");
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -51,23 +63,50 @@ function ReturnList({
     ],
   });
 
-  // 검색 버튼 클릭 핸들러
-  const handleSearchClick = () => {
-    const updatedFilters = {
-      ...filters,
-      type: localType,
-      keyword: localKeyword,
-      page: 1,
-    };
-    setFilters(updatedFilters);
-    setSearchParams(new URLSearchParams(updatedFilters)); // URL 반영
-    // console.log("Updated filters after search:", updatedFilters); // 디버깅 로그
+  //영어명으로 한국명 찾기
+  const getLabelByValue = (value) => {
+    const item = returnSearchKeywords.items.find(
+      (item) => item.value === value,
+    );
+    return item ? item.label : value;
   };
+
+  console.log("이름", getLabelByValue(localType));
 
   // console.log("list", returnList);
   // console.log("count", count);
   // console.log("local filters", filters);
   // console.log("state", filters.state);
+
+  //검색 버튼 클릭 시
+  const handleSearchButton = () => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("type", localType);
+    searchParams.set("keyword", localKeyword);
+    searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
+    searchParams.set("state", state);
+    searchParams.set("sort", sort);
+    searchParams.set("order", order);
+
+    // URL을 갱신하고 새로고침
+    window.location.search = searchParams.toString();
+  };
+
+  // 헤더 클릭 처리 : 정렬
+  const handleHeaderClick = (columnName) => {
+    const nextOrder = sort === columnName && order === "ASC" ? "DESC" : "ASC";
+
+    // URL을 업데이트하고 새로고침
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("sort", columnName);
+    searchParams.set("order", nextOrder);
+    searchParams.set("page", 1); // 정렬 변경 시 페이지를 초기화
+    window.location.search = searchParams.toString();
+  };
+
+  // console.log(localType);
+  // console.log("name", localTypeName);
+  console.log("type", localType);
 
   return (
     <Box>
@@ -75,18 +114,18 @@ function ReturnList({
       <HStack justifyContent="center" w={"100%"}>
         <SelectRoot
           collection={returnSearchKeywords}
-          postition={"relative"}
           width={"160px"}
-          onValueChange={(value) => {
-            setLocalType(value.value[0]);
+          value={getLabelByValue(localType)}
+          onValueChange={(e) => {
+            setLocalType(e.value[0]);
           }}
         >
           <SelectTrigger>
-            <SelectValueText placeholder={"선택"} />
+            <SelectValueText placeholder={getLabelByValue(localType)} />
           </SelectTrigger>
           <SelectContent>
             {returnSearchKeywords.items.map((e) => (
-              <SelectItem item={e} key={e.value}>
+              <SelectItem item={e} key={e.value} value={e.value}>
                 {e.label}
               </SelectItem>
             ))}
@@ -98,23 +137,26 @@ function ReturnList({
           onChange={(e) => setLocalKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요."
         />
-        <Box
-          onClick={handleResetClick}
-          transform="translateX(-170%) "
+        <IconButton
+          transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={() => {
+            window.location.search = ""; // searchParams 초기화
+          }}
         >
           <BsArrowCounterclockwise size="25px" />
-        </Box>
-        <Button onClick={handleSearchClick} transform="translateX(-55%) ">
+        </IconButton>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)">
           검색
         </Button>
       </HStack>
 
       {/* 상태 분류 */}
       <RadioGroup
-        name={filters.state}
-        value={filters.state}
-        onValueChange={(value) => handleFilterChange("state", value.value)}
+        name={state}
+        value={state}
+        onValueChange={onStateChange}
         my={3}
       >
         <HStack gap={6}>
@@ -129,32 +171,72 @@ function ReturnList({
       <Table.Root interactive my={3}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => onHeader("customer_key")}
+              onClick={() => handleHeaderClick("franchise_name")}
             >
-              <HStack align={"flex-start"}>
-                <Stack>
-                  <MdOutlineNumbers />
-                </Stack>
-              </HStack>
+              가맹점
+              {sort === "franchise_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">가맹점</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("itc.common_code_name")}
+            >
+              품목
+              {sort === "itc.common_code_name" &&
+                (order === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("customer_name")}
+            >
               담당 업체
+              {sort === "customer_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("serial_no")}
+            >
               시리얼 번호
+              {sort === "serial_no" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("return_no")}
+            >
               반품 번호
+              {sort === "return_no" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">산청자</Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("business_employee_name")}
+            >
+              산청자
+              {sort === "business_employee_name" &&
+                (order === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
 
-            <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">검수기사</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("emce.employee_name")}
+            >
+              승인자
+              {sort === "emce.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("emcc.employee_name")}
+            >
+              검수기사
+              {sort === "emcc.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleHeaderClick("date")}
+            >
+              날짜{sort === "date" && (order === "ASC" ? " ▲" : " ▼")}
+            </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -198,12 +280,21 @@ function ReturnList({
       </Table.Root>
 
       {/*페이지*/}
-      <Pagination
-        my={3}
-        count={count}
-        pageSize={10}
-        onPageChange={handlePageChange}
-      />
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={count}
+          pageSize={10}
+          page={page}
+          variant={"solid"}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }
