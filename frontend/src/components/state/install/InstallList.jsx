@@ -131,7 +131,7 @@ export function InstallList({
                 <Table.Cell textAlign="center">
                   {!install.installApproveKey
                     ? install.installRequestDate
-                    : install.installApproveDate}
+                    : install.inoutHistoryDate || install.installApproveDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.state}</Table.Cell>
               </Table.Row>

@@ -45,5 +45,6 @@ public class Install {
     private Boolean requestConsent;
     private Boolean approveConsent;
     private Integer countItem;
+    private LocalDate inoutHistoryDate;
 
 }

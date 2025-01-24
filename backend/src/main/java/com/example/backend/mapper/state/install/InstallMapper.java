@@ -200,10 +200,12 @@ public interface InstallMapper {
                     e3.employee_name           as customerInstallerName,
                     ia.install_approve_date    as installApproveDate,
                     ir.install_request_date    as installRequestDate,
+                    ih.inout_history_date      as inoutHistoryDate,
                     ia.install_approve_consent as approveConsent,
-                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date),
+                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date, ih.inout_history_date),
                                            ir.install_request_date,
-                                           ia.install_approve_date) AS installDate
+                                           ia.install_approve_date,
+                                           ih.inout_history_date) AS installDate
             FROM TB_INSTL_REQ ir
                 LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
                 LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
@@ -213,7 +215,7 @@ public interface InstallMapper {
                 LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
-                LEFT JOIN TB_INOUT_HIS ih ON ia.seri
+                LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
             WHERE 1=1
             <if test="state == 'request'">
                 AND ir.install_request_consent IS NULL
