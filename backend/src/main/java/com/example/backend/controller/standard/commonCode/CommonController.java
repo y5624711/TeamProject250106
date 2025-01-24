@@ -108,7 +108,6 @@ public class CommonController {
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        System.out.println("radio = " + radio);
         return service.getCommonCodeList(page, active, sort, order, type, keyword, radio);
     }
 }
