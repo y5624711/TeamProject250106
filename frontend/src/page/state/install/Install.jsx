@@ -29,8 +29,6 @@ export function Install() {
           // requestKey 상태에 따라 "대기", "승인", "반려" 구분
           let state = null;
 
-          console.log(item.installApproveKey);
-          console.log(item.requestConsent);
           if (!item.installApproveKey) {
             if (!item.requestConsent) {
               state = "대기";
@@ -84,15 +82,11 @@ export function Install() {
             searchParams={searchParams}
             setSearchParams={setSearchParams}
           />
-          <Button
-            onClick={() => setRequestDialogOpen(true)}
-            size="lg"
-            position="fixed"
-            bottom="60px"
-            right="100px"
-          >
-            설치 요청
-          </Button>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
+            <Button onClick={() => setRequestDialogOpen(true)} size="lg">
+              설치 요청
+            </Button>
+          </Box>
         </Stack>
         <InstallRequest
           isOpen={requestDialogOpen}

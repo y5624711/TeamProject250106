@@ -18,10 +18,11 @@ export function InstallList({
   searchParams,
   setSearchParams,
 }) {
+  // 정렬 헤더
   const sortInstallOptions = [
-    { key: "installKey", label: "#" },
-    { key: "customerName", label: "가맹점" },
-    { key: "itemName", label: "품목" },
+    { key: "installRequestKey", label: "#" },
+    { key: "franchiseName", label: "가맹점" },
+    { key: "itemCommonName", label: "품목" },
     { key: "customerName", label: "담당 업체" },
     { key: "outputNo", label: "출고 번호" },
     { key: "businessEmployeeName", label: "신청자" },
@@ -29,7 +30,6 @@ export function InstallList({
     { key: "customerInstallerName", label: "설치 기사" },
     { key: "warehouseName", label: "창고" },
     { key: "installDate", label: "날짜" },
-    { key: "currentState", label: "상태" },
   ];
 
   // 검색 옵션
@@ -58,15 +58,21 @@ export function InstallList({
           <Radio value="1">전체 조회</Radio>
           <Radio value="2">요청 상태 조회</Radio>
           <Radio value="3">승인 상태 조회</Radio>
-          <Radio value="3">완료 상태 조회</Radio>
-          <Radio value="3">반려 상태 조회</Radio>
+          <Radio value="4">완료 상태 조회</Radio>
+          <Radio value="5">반려 상태 조회</Radio>
         </HStack>
       </RadioGroup>
       <Box>
         <Table.Root>
           <Table.Header>
             <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-              <Sort sortOptions={sortInstallOptions} />
+              <Sort
+                sortOptions={sortInstallOptions}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
+              <Table.Cell textAlign="center">상태</Table.Cell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -102,7 +108,7 @@ export function InstallList({
                   {install.warehouseName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {install.installRequestKey != null
+                  {!install.installApproveKey
                     ? install.installRequestDate
                     : install.installApproveDate}
                 </Table.Cell>

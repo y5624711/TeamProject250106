@@ -23,8 +23,11 @@ public class InstallController {
 
     // 설치 요청, 승인 리스트 가져오기
     @GetMapping("list")
-    public Map<String, Object> getInstallList(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-        return service.getInstallList(page);
+    public Map<String, Object> getInstallList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "sort", defaultValue = "") String sort,
+            @RequestParam(value = "order", defaultValue = "") String order) {
+        return service.getInstallList(page, sort, order);
     }
 
     // 설치 확인
