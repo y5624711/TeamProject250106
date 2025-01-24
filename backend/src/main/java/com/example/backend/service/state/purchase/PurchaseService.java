@@ -2,6 +2,7 @@ package com.example.backend.service.state.purchase;
 
 import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
+import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class PurchaseService {
 
     final PurchaseMapper mapper;
+    final InstkMapper instkMapper;
 
     // 필드 유효성 확인 (사번, 이름은 로그인 정보를 가져오기 때문에 굳이 확인할 필요 없어서 뺌)
     public boolean validate(Purchase purchase) {
@@ -66,7 +68,12 @@ public class PurchaseService {
         // 생성된 새로운 발주 번호를 purchase 객체에 설정
         purchase.setPurchaseNo(newNumber);
 
+        // 구매 승인
         int cnt = mapper.purchaseApprove(purchase);
+
+        // 구매 승인 데이터 가입고 테이블에 넘기기
+        instkMapper.addPurchaseInfo(purchase);
+
         return cnt == 1;
     }
 }
