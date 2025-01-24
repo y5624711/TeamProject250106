@@ -37,6 +37,8 @@ public class EmployeeController {
         String convertedType = Employee.correctCommonCode(type);
         String convertedSort = Employee.correctCommonCode(sort);
 
+        System.out.println("convertedSort = " + convertedSort); 
+
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);
 

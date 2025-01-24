@@ -21,20 +21,18 @@ public class Employee {
         switch (commonCode) {
             case "기본키":
                 return "employee_key";
-            case "공통구부":
+            case "공통구분":
                 return "employee_common_code";
             case "소속구분":
                 return "employee_workplace_code";
             case "기업명":
-                return "employee_company_name";
+                return "employee_workplace_name";
             case "부서명":
                 return "employee_department_name";
             case "직원명":
                 return "employee_name";
             case "사번":
                 return "employee_no";
-            case "계약여부":
-                return "employee_active";
             default:
                 return "all";
         }

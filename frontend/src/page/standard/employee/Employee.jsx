@@ -31,12 +31,6 @@ export function Employee() {
           onChange={handleAddCheck}
         />
       </Box>
-      {/* 혹시몰라 남겨놈*/}
-      {/*<EmployeeAdd*/}
-      {/*  viewKey={selectedEmployeeNo}*/}
-      {/*  onChange={handleAddCheck}*/}
-      {/*  onSelect={handleSelectedNo}*/}
-      {/*/>*/}
     </Box>
   );
 }

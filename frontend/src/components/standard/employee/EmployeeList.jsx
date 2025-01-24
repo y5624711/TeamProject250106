@@ -92,7 +92,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const handleSelectedItem = (no) => {
     onSelect(no);
   };
+
   // active 보여주는거 정하는 버튼
+
   const handleVisible = () => {
     setIsActiveVisible(!isActiveVisible);
     setSearchParams((prev) => {
@@ -127,17 +129,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const frameworks = createListCollection({
     items: [
       { label: "소속구분", value: "소속구분" },
-      { label: "기업명", value: "기업명" },
-      { label: "부서명", value: "부서명" },
-      { label: "직원명", value: "직원명" },
+      { label: "기업", value: "기업명" },
+      { label: "부서", value: "부서명" },
+      { label: "직원", value: "직원명" },
       { label: "사번", value: "사번" },
       { label: "계약여부", value: "계약여부" },
     ],
   });
 
-  const handleSortControl = (sortName, orderName) => {
-    const convertedOrderName = orderName === "asc" ? "desc" : "asc";
-    console.log(convertedOrderName);
+  const handleSortControl = (sortName) => {
+    const convertedOrderName =
+      searchParams.get("order") === "asc" ? "desc" : "asc";
 
     setSearchParams((prev) => {
       setSort(sortName);
@@ -155,6 +157,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
+  console.log(memberList);
   return (
     <Box h={"100vh"} p={10}>
       <HStack
@@ -205,7 +208,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       />
       <Table.Root>
         <Table.Header>
-          <SortColumnHeader handleSortControl={handleSortControl} />
+          <SortColumnHeader
+            handleSortControl={handleSortControl}
+            searchParams={searchParams}
+          />
         </Table.Header>
         <Table.Body>
           {memberList.map((item, index) => (
@@ -215,6 +221,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                 handleSelectedItem(item.employeeKey);
                 handleviewModalControl();
               }}
+              bg={item.employeeActive ? "white" : "gray.100"}
             >
               <Table.Cell>{index + 1}</Table.Cell>
               <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
@@ -238,12 +245,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeTel} </Table.Cell>
               <Table.Cell> {item.employeeNo} </Table.Cell>
-              {/*사용여부 버튼 누른지 아닌지 확인*/}
-              {isActiveVisible && (
-                <Table.Cell textAlign="center">
-                  <Checkbox checked={item.employeeActive} />
-                </Table.Cell>
-              )}
             </Table.Row>
           ))}
           {memberList.length === 0 && <Box> 조회 결과 x</Box>}

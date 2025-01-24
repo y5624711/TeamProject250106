@@ -2,6 +2,7 @@ import {
   Box,
   createListCollection,
   Heading,
+  HStack,
   Input,
   SelectContent,
   SelectItem,
@@ -178,8 +179,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     }
   };
 
-  console.log("값 변경 확인", formData.workPlace);
-
   const handleDelete = () => {
     axios
       .put("api/employee/delete", { employeeKey: viewKey })
@@ -209,41 +208,51 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
   const checkNameLength = () => {
-    formData.name.trim() > 0 && formData.name.length < 6;
+    const isValid = formData.name.trim() > 0 && formData.name.length < 6;
+    return isValid;
   };
 
   return (
     <Box>
       <Stack spacing={4}>
-        <SelectRoot
-          collection={frameworks}
-          value={formData.selectedCommonCode}
-          onValueChange={handleSelectChange}
-          defaultValue={viewKey !== -1 ? [formData.selectedCommonCode] : ""}
-          readOnly={viewKey !== -1}
-        >
-          <SelectLabel>상위 구분 코드</SelectLabel>
-          <SelectTrigger>
-            <SelectValueText placeholder={"선택 해 주세요"} />
-          </SelectTrigger>
-          <SelectContent>
-            {frameworks.items.map((code) => (
-              <SelectItem item={code} key={code.value}>
-                {code.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-
+        <Field orientation="horizontal" label={"소속 구분"}>
+          <SelectRoot
+            collection={frameworks}
+            value={
+              viewKey !== -1
+                ? [formData.selectedCommonCode]
+                : formData.selectedCommonCode
+            }
+            onValueChange={handleSelectChange}
+            readOnly={viewKey !== -1}
+            position="relative"
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder={"소속을 선택 해주세요."} />
+            </SelectTrigger>
+            <SelectContent
+              style={{
+                width: "100%",
+                top: "40px",
+                position: "absolute",
+              }}
+            >
+              {frameworks.items.map((code) => (
+                <SelectItem item={code} key={code.value}>
+                  {code.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        </Field>
         {isCommonCodeSelectedCheck && (
           <SelectViewComp
             formData={formData}
             handleSelectChange={handleWorkPlaceChange}
           />
         )}
-
         {viewKey !== -1 && (
-          <Field label={"소속코드"} required orientation="horizontal">
+          <Field label={"소속 코드"} required orientation="horizontal">
             <Input
               name="workPlace"
               placeholder={"소속 코드 / 소속 명"}
@@ -272,7 +281,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             />
           </Field>
         )}
-
         <Field label={"전화 번호"} orientation="horizontal">
           <Input
             name="tel"
@@ -282,11 +290,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             readOnly={viewKey !== -1 && !isEditMode}
           />
         </Field>
-
         <Field label={"비고"} orientation="horizontal">
           <Input
             name="note"
-            placeholder={"비고"}
+            placeholder={"최대 50 글자"}
             value={formData.note}
             onChange={handleInputChange}
             readOnly={viewKey !== -1 && !isEditMode}

@@ -36,12 +36,15 @@ public interface EmployeeMapper {
                               WHEN E.employee_common_code = 'CUS' THEN C.customer_name
                                 ELSE NULL
                               END AS employee_workplace_name,
-                                  CASE
-                        WHEN E.employee_common_code = 'EMP' THEN D.department_tel
-                        WHEN E.employee_common_code = 'CUS' THEN C.customer_tel
-                         END AS employee_workplace_tel
-                        FROM
-                        TB_EMPMST E
+                        CASE
+                            WHEN E.employee_common_code = 'EMP' THEN D.department_tel
+                            WHEN E.employee_common_code = 'CUS' THEN C.customer_tel
+                             END AS employee_workplace_tel ,
+                        CASE
+                            WHEN E.employee_common_code = 'EMP' THEN D.department_name
+                            ELSE NULL
+                            END AS employee_department_name
+                        FROM TB_EMPMST E
                          LEFT JOIN TB_DEPARTMST D
                          ON E.employee_common_code = 'EMP'
                          AND E.employee_workplace_code = D.department_code
@@ -77,6 +80,8 @@ public interface EmployeeMapper {
                                                and (convertedSort == 'employee_name'\s
                                                or convertedSort == 'employee_no'\s
                                                or convertedSort == 'employee_active'\s
+                                               or convertedSort == 'employee_workplace_name'\s
+                                                or convertedSort == 'employee_department_name'\s
                                                or convertedSort == 'employee_workplace_code')">
             
                                  ${convertedSort}

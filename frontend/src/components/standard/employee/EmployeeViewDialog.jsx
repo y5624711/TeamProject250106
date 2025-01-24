@@ -22,7 +22,6 @@ export function EmployeeViewDialog({
     modalChange();
   };
 
-  console.log(viewKey, "view ,");
   return (
     <DialogRoot open={isModalOpen}>
       <DialogContent>
