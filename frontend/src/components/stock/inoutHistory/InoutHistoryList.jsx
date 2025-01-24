@@ -30,11 +30,13 @@ function InoutHistoryList({
             </Table.Header>
             <Table.Body>
               {/* 각 입출내역 */}
-              {inoutHistoryList.map((inoutHistory) => (
+              {inoutHistoryList.map((inoutHistory, index) => (
                 <InoutHistoryListPage
+                  index={index}
                   inoutHistory={inoutHistory}
                   setSelectedInoutHistory={setSelectedInoutHistory}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
+                  page={currentPage}
                 />
               ))}
             </Table.Body>
