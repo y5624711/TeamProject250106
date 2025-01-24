@@ -3,10 +3,7 @@ package com.example.backend.controller.stock.stocktaking;
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -18,8 +15,10 @@ public class StocktakingController {
     final StocktakingService service;
 
     @GetMapping("list")
-    public Map<String, Object> list() {
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(searchType, searchKeyword, page);
     }
 
     @GetMapping("view/{stocktakingKey}")

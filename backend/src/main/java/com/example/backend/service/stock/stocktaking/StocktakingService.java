@@ -14,8 +14,9 @@ public class StocktakingService {
 
     final StocktakingMapper mapper;
 
-    public Map<String, Object> list() {
-        List<Stocktaking> list = mapper.list();
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page) {
+        Integer pageList = (page - 1) * 10;
+        List<Stocktaking> list = mapper.list(searchType, searchKeyword, pageList);
 
         return Map.of("list", list);
     }

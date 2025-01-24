@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
+  Center,
   createListCollection,
   Heading,
   HStack,
@@ -11,6 +12,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../../components/ui/pagination.jsx";
 
 function Stocktaking(props) {
   const [search, setSearch] = useState({
@@ -79,13 +86,28 @@ function Stocktaking(props) {
           <Box h={7}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
-            countStocktaking={countStocktaking}
             stocktakingList={stocktakingList}
             currentPage={currentPage}
-            handlePageChangeClick={handlePageChangeClick}
           />
         </Stack>
       </HStack>
+
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChangeClick}
+          count={countStocktaking}
+          pageSize={10}
+          // page={page}
+          siblingCount={2}
+          defaultPage={currentPage}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }
@@ -93,11 +115,11 @@ function Stocktaking(props) {
 const stocktakingOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "시리얼 번호", value: "serialNumber" },
-    { label: "품목명", value: "itemName" },
-    { label: "창고명", value: "warehouseName" },
-    { label: "협력업체 직원", value: "customerEmployeeName" },
-    { label: "협력업체 직원 사번", value: "customerEmployeeNumber" },
+    { label: "담당 업체", value: "customer" },
+    { label: "품목", value: "item" },
+    { label: "창고", value: "warehouse" },
+    { label: "담당자", value: "customerEmployee" },
+    { label: "실사 유형", value: "type" },
     { label: "날짜", value: "date" },
   ],
 });

@@ -5,6 +5,8 @@ function InoutHistoryListPage({
   inoutHistory,
   setSelectedInoutHistory,
   setIsDetailDialogOpen,
+  index,
+  page,
 }) {
   return (
     <>
@@ -18,7 +20,7 @@ function InoutHistoryListPage({
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.inoutHistoryKey}
+          {(page - 1) * 10 + index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.inoutCommonCode === "in" ? "입고" : "출고"}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
+  Center,
   createListCollection,
   Heading,
   HStack,
@@ -12,6 +13,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
 import { Radio, RadioGroup } from "../../../components/ui/radio.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../../components/ui/pagination.jsx";
 
 function InoutHistory(props) {
   const [search, setSearch] = useState({
@@ -92,13 +99,26 @@ function InoutHistory(props) {
           </RadioGroup>
           {/*리스트 jsx*/}
           <InoutHistoryList
-            countInoutHistory={countInoutHistory}
             inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
-            handlePageChangeClick={handlePageChangeClick}
           />
         </Stack>
       </HStack>
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChangeClick}
+          count={countInoutHistory}
+          pageSize={10}
+          siblingCount={2}
+          defaultPage={currentPage}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }
@@ -106,14 +126,14 @@ function InoutHistory(props) {
 const inoutHistoryOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "시리얼 번호", value: "serialNumber" },
-    { label: "품목명", value: "itemName" },
-    { label: "창고명", value: "warehouseName" },
-    { label: "가맹점명", value: "franchiseName" },
-    { label: "본사 직원", value: "businessEmployeeName" },
-    { label: "본사 직원 사번", value: "businessEmployeeNumber" },
-    { label: "협력업체 직원", value: "customerEmployeeName" },
-    { label: "협력업체 직원 사번", value: "customerEmployeeNumber" },
+    { label: "시리얼 번호", value: "serialNo" },
+    { label: "품목", value: "item" },
+    { label: "담당 업체", value: "customer" },
+    { label: "창고", value: "warehouse" },
+    { label: "가맹점", value: "franchise" },
+    { label: "본사 직원", value: "businessEmployee" },
+    { label: "협력업체 직원", value: "customerEmployee" },
+    { label: "사번", value: "employeeNumber" },
     { label: "날짜", value: "date" },
   ],
 });

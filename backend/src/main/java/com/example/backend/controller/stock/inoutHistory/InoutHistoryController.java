@@ -15,9 +15,10 @@ public class InoutHistoryController {
     final InoutHistoryService service;
 
     @GetMapping("list")
-    public Map<String, Object> list() {
-
-        return service.list();
+    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "type", defaultValue = "all") String searchType,
+                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
+        return service.list(page, searchKeyword, searchType);
     }
 
     @PostMapping("add")
@@ -29,6 +30,7 @@ public class InoutHistoryController {
     public InoutHistory view(@PathVariable Integer inoutHistoryKey) {
         return service.view(inoutHistoryKey);
     }
+
     @PostMapping("addhistory")
     public void addhistoty(@RequestBody InoutHistory InoutHistory) {
         System.out.println("까꿍");

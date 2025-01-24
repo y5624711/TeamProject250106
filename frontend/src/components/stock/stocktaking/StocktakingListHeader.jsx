@@ -16,7 +16,7 @@ function StocktakingListHeader(props) {
         textAlign="center"
         verticalAlign="middle"
       >
-        창고
+        담당 업체
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
@@ -38,6 +38,27 @@ function StocktakingListHeader(props) {
         verticalAlign="middle"
       >
         실제 수량
+      </Table.ColumnHeader>
+      <Table.ColumnHeader
+        width="200px"
+        textAlign="center"
+        verticalAlign="middle"
+      >
+        차이 수량
+      </Table.ColumnHeader>
+      <Table.ColumnHeader
+        width="200px"
+        textAlign="center"
+        verticalAlign="middle"
+      >
+        창고
+      </Table.ColumnHeader>
+      <Table.ColumnHeader
+        width="200px"
+        textAlign="center"
+        verticalAlign="middle"
+      >
+        실사 유형
       </Table.ColumnHeader>
       <Table.ColumnHeader
         width="200px"
