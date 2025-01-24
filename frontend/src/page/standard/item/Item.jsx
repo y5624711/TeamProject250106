@@ -49,7 +49,7 @@ export function Item() {
         <StandardSideBar />
         <Stack flex={1}>
           <Text fontSize="xl" mx={10} my={3}>
-            기준정보 관리 > 품목 관리
+            기준정보 관리 {">"} 품목 관리
           </Text>
           <ItemList
             count={count}

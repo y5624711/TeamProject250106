@@ -25,7 +25,7 @@ public class DepartmentController {
             @RequestParam(value = "sortColum", defaultValue = "department_code") String sortColum,
             @RequestParam(value = "sortOrder", defaultValue = "desc") String sortOrder) {
 
-        System.out.println("searchType = " + searchType);
+//        System.out.println("searchType = " + searchType);
         return service.businessDepartmentList(page, searchType, searchKeyword, active, sortColum, sortOrder);
     }
 
