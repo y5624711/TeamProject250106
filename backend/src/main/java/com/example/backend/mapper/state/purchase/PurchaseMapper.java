@@ -75,7 +75,10 @@ public interface PurchaseMapper {
                 ite.input_price * pr.amount AS totalPrice,
                 pr.purchase_consent AS purchaseConsent,
                 wh.warehouse_code AS warehouseCode,
-                wh.warehouse_name AS warehouseName
+                wh.warehouse_name AS warehouseName,
+                pa.purchase_no AS purchaseNo,
+                pa.purchase_approve_date AS purchaseApproveDate,
+                pa.purchase_approve_note AS purchaseApproveNote
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
