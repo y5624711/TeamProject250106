@@ -71,7 +71,7 @@ function Return(props) {
   // state 변경 핸들러
   const handleStateChange = (newState) => {
     const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("state", newState); // 새로운 state 값 반영
+    nextSearchParams.set("state", newState.value); // 새로운 state 값 반영
     nextSearchParams.set("page", 1); // 상태 변경 시 페이지를 초기화
     setSearchParams(nextSearchParams);
   };

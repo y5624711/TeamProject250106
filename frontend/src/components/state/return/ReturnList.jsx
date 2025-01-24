@@ -68,13 +68,14 @@ function ReturnList({
     searchParams.set("type", localType);
     searchParams.set("keyword", localKeyword);
     searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
+    searchParams.set("state", state);
 
     // URL을 갱신하고 새로고침
     window.location.search = searchParams.toString();
   };
 
   // console.log(localType);
-  console.log("name", localType);
+  // console.log("name", localType);
 
   return (
     <Box>
