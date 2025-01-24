@@ -17,7 +17,6 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 
 export function PurchaseRequest({ onSave, onClose }) {
   const { id, name } = useContext(AuthenticationContext);
-  const [itemCommonCode, setItemCommonCode] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [amount, setAmount] = useState("");
   const [inputPrice, setInputPrice] = useState("");
@@ -66,42 +65,34 @@ export function PurchaseRequest({ onSave, onClose }) {
   }, [itemData.itemCommonCode]);
 
   const handleSaveClick = () => {
+    // amount 값이 없거나 0 이하인 경우 기본값 1로 설정
+    const requestAmount = amount && amount > 0 ? amount : 1;
+
     axios
       .post("/api/purchase/request", {
         employeeNo: id,
         employeeName: name,
         itemCommonCode: itemData.itemCommonCode,
         customerCode: itemData.customerCode,
-        amount,
+        amount: requestAmount,
         purchaseRequestDate: purchaseRequestDate.toISOString(),
         purchaseRequestNote,
       })
       .then((res) => {
         console.log("응답 데이터:", res);
+
         const message = res.data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
 
-        // 신청 성공 시 추가 작업 수행
-        if (res.data && res.data.purchaseRequestKey) {
-          onSave({
-            purchaseRequestKey: res.data.purchaseRequestKey,
-            employeeNo: id,
-            employeeName: name,
-            itemCommonCode: itemData.itemCommonCode,
-            customerCode: itemData.customerCode,
-            amount,
-            purchaseRequestDate: purchaseRequestDate.toISOString(),
-            purchaseRequestNote,
-          });
-        }
         onClose();
       })
       .catch((e) => {
         console.error("신청 오류:", e);
-        const message = e.response.data.message;
+
+        const message = e.response?.data?.message;
         toaster.create({
           type: message.type,
           description: message.text,
@@ -110,13 +101,6 @@ export function PurchaseRequest({ onSave, onClose }) {
   };
 
   const handleCancelClick = () => {
-    // 취소 버튼 클릭 시 입력된 값 초기화
-    setItemCommonCode("");
-    setCustomerName("");
-    setAmount("");
-    setInputPrice("");
-    setPurchaseRequestDate(new Date());
-    setPurchaseRequestNote("");
     onClose();
   };
 
