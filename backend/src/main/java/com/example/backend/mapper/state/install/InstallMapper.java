@@ -266,4 +266,12 @@ public interface InstallMapper {
             WHERE output_no = #{outputNo}
             """)
     List<String> getConfigurationSerials(String outputNo);
+
+    // 설치 요청 반려
+    @Update("""
+            UPDATE TB_INSTL_REQ
+            SET install_request_consent = false
+            WHERE install_request_key = #{installKey}
+            """)
+    int installDisapprove(int installKey);
 }

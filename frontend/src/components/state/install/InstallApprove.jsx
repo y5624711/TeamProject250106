@@ -94,6 +94,25 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
+  // 설치 요청 반려
+  const handleDisapproveClick = () => {
+    axios
+      .post(`/api/install/disapprove/${installKey}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        setChange((prev) => !prev);
+        handleClose();
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
+  };
+
   const isValid =
     installApprove.installScheduleDate &&
     installApprove.customerInstallerName &&
@@ -235,7 +254,9 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         </DialogBody>
         <DialogFooter>
           <HStack>
-            <Button variant="outline">반려</Button>
+            <Button variant="outline" onClick={handleDisapproveClick}>
+              반려
+            </Button>
             <Button onClick={handleApproveClick} disabled={!isValid}>
               승인
             </Button>

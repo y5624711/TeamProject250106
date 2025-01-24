@@ -21,6 +21,22 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 요청 반려
+    @PostMapping("disapprove/{installKey}")
+    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey) {
+        // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
+        if (service.installDisapprove(installKey)) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
+            ));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "설치 요청 반려를 실패하였습니다.")
+            ));
+        }
+    }
+
+
     // 설치 요청, 승인 리스트 가져오기
     @GetMapping("list")
     public Map<String, Object> getInstallList(

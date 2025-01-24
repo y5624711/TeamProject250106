@@ -182,4 +182,10 @@ public class InstallService {
         return Map.of("list", mapper.getInstallList(offset, sort, order, state),
                 "count", mapper.countAll(state));
     }
+
+    // 설치 요청 반려
+    public boolean installDisapprove(int installKey) {
+        int cnt = mapper.installDisapprove(installKey);
+        return cnt == 1;
+    }
 }

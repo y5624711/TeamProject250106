@@ -30,7 +30,10 @@ export function Install() {
           let state = null;
 
           if (!item.installApproveKey) {
-            if (!item.requestConsent) {
+            if (
+              item.requestConsent === null ||
+              item.requestConsent === undefined
+            ) {
               state = "대기";
             } else if (item.requestConsent === true) {
               state = "승인";
