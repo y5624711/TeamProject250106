@@ -84,7 +84,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           description: message.text,
         });
 
-        // 요청 성공 시 추가 작업 수행
+        // 신청 성공 시 추가 작업 수행
         if (res.data && res.data.purchaseRequestKey) {
           onSave({
             purchaseRequestKey: res.data.purchaseRequestKey,
@@ -100,7 +100,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         onClose();
       })
       .catch((e) => {
-        console.error("요청 오류:", e);
+        console.error("신청 오류:", e);
         const message = e.response.data.message;
         toaster.create({
           type: message.type,
@@ -190,7 +190,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           <Input value={id} />
         </Field>
       </Box>
-      <Field label="승인 비고" orientation="horizontal" mb={15}>
+      <Field label="신청 비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchaseRequestNote}
           onChange={(e) => setPurchaseRequestNote(e.target.value)}

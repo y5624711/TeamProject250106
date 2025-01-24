@@ -25,7 +25,7 @@ public class PurchaseService {
         return itemCommonCodeValid && customerCodeValid && amountValid && purchaseRequestDateValid;
     }
 
-    // 구매 요청
+    // 구매 신청
     public boolean purchaseRequest(Purchase purchase) {
         int cnt = mapper.purchaseRequest(purchase);
         return cnt == 1;
