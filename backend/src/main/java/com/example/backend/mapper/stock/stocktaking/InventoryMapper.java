@@ -26,6 +26,12 @@ public interface InventoryMapper {
                  <where>
                      <trim prefixOverrides="OR">
                          <if test="keyword != null and keyword != ''">
+                             <if test="type == 'all'">
+                                 OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR b.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR d.warehouse_city LIKE CONCAT('%', #{keyword}, '%')
+                             </if>
                              <if test="type == 'all' or type == 'wareHouseName'">
                                  OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
                                  </if>
@@ -54,6 +60,12 @@ public interface InventoryMapper {
                  <where>
                      <trim prefixOverrides="OR">
                          <if test="keyword != null and keyword != ''">
+                             <if test="type == 'all'">
+                                 OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR b.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                                 OR d.warehouse_city LIKE CONCAT('%', #{keyword}, '%')
+                             </if>
                              <if test="type == 'all' or type == 'wareHouseName'">
                                  OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
                                  </if>
