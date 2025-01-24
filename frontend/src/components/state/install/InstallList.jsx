@@ -49,17 +49,29 @@ export function InstallList({
     ],
   });
 
+  const handleStateChange = (value) => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    nextSearchParam.set("page", "1");
+    nextSearchParam.set("state", value);
+    setSearchParams(nextSearchParam);
+  };
+
   return (
     <Box>
       <SearchBar searchOptions={searchOptions} />
       {/*<ActiveSwitch />*/}
-      <RadioGroup defaultValue="1" my={3}>
+      <RadioGroup
+        defaultValue="1"
+        my={3}
+        onValueChange={(value) => handleStateChange(value.value)}
+      >
         <HStack gap={6}>
-          <Radio value="1">전체 조회</Radio>
-          <Radio value="2">요청 상태 조회</Radio>
-          <Radio value="3">승인 상태 조회</Radio>
-          <Radio value="4">완료 상태 조회</Radio>
-          <Radio value="5">반려 상태 조회</Radio>
+          <Radio value="all">전체 조회</Radio>
+          <Radio value="request">대기 상태 조회</Radio>
+          <Radio value="approve">승인 상태 조회</Radio>
+          <Radio value="configuration">완료 상태 조회</Radio>
+          <Radio value="disapprove">반려 상태 조회</Radio>
         </HStack>
       </RadioGroup>
       <Box>

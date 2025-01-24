@@ -26,8 +26,9 @@ public class InstallController {
     public Map<String, Object> getInstallList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "sort", defaultValue = "") String sort,
-            @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.getInstallList(page, sort, order);
+            @RequestParam(value = "order", defaultValue = "") String order,
+            @RequestParam(value = "state", defaultValue = "") String state) {
+        return service.getInstallList(page, sort, order, state);
     }
 
     // 설치 확인

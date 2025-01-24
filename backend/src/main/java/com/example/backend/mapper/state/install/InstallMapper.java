@@ -213,52 +213,81 @@ public interface InstallMapper {
 
     // 설치 요청, 승인 리스트 가져오기
     @Select("""
-             <script>
-              SELECT DISTINCT ir.install_request_key as installRequestKey,
-                  ia.install_approve_key,
-                  f.franchise_name           as franchiseName,
-                  sc.common_code_name        as itemCommonName,
-                  c.customer_name            as customerName,
-                  ir.business_employee_no,
-                  e1.employee_name           as businessEmployeeName,
-                  w.warehouse_name           as warehouseName,
-                  ir.install_request_consent as requestConsent,
-                  ia.output_no               as outputNo,
-                  ia.customer_employee_no,
-                  e2.employee_name           as customerEmployeeName,
-                  e3.employee_name           as customerInstallerName,
-                  ia.install_approve_date    as installApproveDate,
-                  ir.install_request_date    as installRequestDate,
-                  ia.install_approve_consent as approveConsent,
-                  COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date),
+            <script>
+                SELECT DISTINCT ir.install_request_key as installRequestKey,
+                    ia.install_approve_key,
+                    f.franchise_name           as franchiseName,
+                    sc.common_code_name        as itemCommonName,
+                    c.customer_name            as customerName,
+                    ir.business_employee_no,
+                    e1.employee_name           as businessEmployeeName,
+                    w.warehouse_name           as warehouseName,
+                    ir.install_request_consent as requestConsent,
+                    ia.output_no               as outputNo,
+                    ia.customer_employee_no,
+                    e2.employee_name           as customerEmployeeName,
+                    e3.employee_name           as customerInstallerName,
+                    ia.install_approve_date    as installApproveDate,
+                    ir.install_request_date    as installRequestDate,
+                    ia.install_approve_consent as approveConsent,
+                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date),
                                            ir.install_request_date,
                                            ia.install_approve_date) AS installDate
+            FROM TB_INSTL_REQ ir
+                LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+                LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
+                LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
+                LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
+                LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+                LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
+                LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+            WHERE 1=1
+            <if test="state == 'request'">
+                AND ir.install_request_consent IS NULL
+            </if>
+            <if test="state == 'approve'">
+                AND (ir.install_request_consent = true AND ia.install_approve_consent IS NULL)
+            </if>
+            <if test="state == 'configuration'">
+                AND ia.install_approve_consent = true
+            </if>
+            <if test="state == 'disapprove'">
+                AND (ir.install_request_consent = false OR ia.install_approve_consent = false)
+            </if>
             
-              FROM TB_INSTL_REQ ir
-                   LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
-                   LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
-                   LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
-                   LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
-                   LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
-                   LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
-                   LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
-                   LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
             <if test="sort != null and sort != ''">
-                 ORDER BY ${sort} ${order}
-             </if>
-             <if test="sort == null">
-                 ORDER BY ir.install_request_key DESC
-             </if>
+                ORDER BY ${sort} ${order}
+            </if>
+            <if test="sort == null">
+                ORDER BY ir.install_request_key DESC
+            </if>
             
-             LIMIT ${offset}, 10
-             </script>
+            LIMIT #{offset}, 10
+            </script>
             """)
-    List<Install> getInstallList(Integer offset, String sort, String order);
+    List<Install> getInstallList(Integer offset, String sort, String order, String state);
 
     // 총 페이지 수 계산
     @Select("""
-            SELECT COUNT(*)
-                FROM TB_INSTL_REQ
+            <script>
+                SELECT COUNT(*)
+                FROM TB_INSTL_REQ ir
+                LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                WHERE 1=1
+                <if test="state == 'request'">
+                    AND ir.install_request_consent IS NULL
+                </if>
+                <if test="state == 'approve'">
+                    AND (ir.install_request_consent = true AND ia.install_approve_consent IS NULL)
+                </if>
+                <if test="state == 'configuration'">
+                    AND ia.install_approve_consent = true
+                </if>
+                <if test="state == 'disapprove'">
+                    AND (ir.install_request_consent = false OR ia.install_approve_consent = false)
+                </if>
+            </script>
             """)
-    Integer countAll();
+    Integer countAll(String state);
 }
