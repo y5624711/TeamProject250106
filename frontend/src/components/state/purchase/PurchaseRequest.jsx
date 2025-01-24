@@ -201,7 +201,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         <Button variant="outline" onClick={handleCancelClick}>
           취소
         </Button>
-        <Button onClick={handleSaveClick}>구매 요청</Button>
+        <Button onClick={handleSaveClick}>신청</Button>
       </Box>
     </Box>
   );

@@ -37,7 +37,7 @@ export function Purchase() {
       });
   }, []);
 
-  // 구매 요청 다이얼로그 열기
+  // 구매 신청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
     setIsAddDialogOpen(true);
     setIsDialogOpen(true);
@@ -82,9 +82,9 @@ export function Purchase() {
             </HStack>
           </PaginationRoot>
         </Center>
-        {/* 구매 요청 버튼 */}
+        {/* 구매 신청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handlePurchaseRequestClick}>구매 요청</Button>
+          <Button onClick={handlePurchaseRequestClick}>구매 신청</Button>
         </Box>
         {/* 구매 다이얼로그 */}
         <PurchaseDialog

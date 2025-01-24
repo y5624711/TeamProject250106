@@ -175,10 +175,10 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       {showButton && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleReject} colorScheme="red" variant="outline">
-            구매 반려
+            반려
           </Button>
           <Button onClick={handleApprove} colorScheme="blue">
-            구매 승인
+            승인
           </Button>
         </Box>
       )}
