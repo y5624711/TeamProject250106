@@ -172,7 +172,7 @@ export function FranchiseList({
             sortedFranchiseList.map((franchise, index) => (
               <Table.Row
                 key={index}
-                onClick={() => onFranchiseClick(franchise.franchiseKey)}
+                onDoubleClick={() => onFranchiseClick(franchise.franchiseKey)}
                 style={{
                   cursor: "pointer",
                   backgroundColor:

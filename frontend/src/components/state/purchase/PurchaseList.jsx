@@ -119,7 +119,7 @@ export function PurchaseList({
             purchaseList.map((purchase, index) => (
               <Table.Row
                 key={index}
-                onClick={() => onViewClick(purchase.purchaseRequestKey)}
+                onDoubleClick={() => onViewClick(purchase.purchaseRequestKey)}
                 style={{ cursor: "pointer" }}
                 textAlign="center"
                 verticalAlign="middle"
