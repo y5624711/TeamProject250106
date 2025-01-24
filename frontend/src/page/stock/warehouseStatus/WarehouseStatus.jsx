@@ -18,7 +18,7 @@ function WarehouseStatus() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({ type: "all", keyword: "" });
-  const [sort, setSort] = useState({ column: "", order: "desc" });
+  // const [sort, setSort] = useState({ column: "", order: "desc" });
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
@@ -30,7 +30,7 @@ function WarehouseStatus() {
         setCount(res.data.count);
       })
       .finally(() => setLoading(false));
-  }, [searchParams, sort]);
+  }, [searchParams]);
 
   if (loading) {
     return <Spinner />;
@@ -55,8 +55,8 @@ function WarehouseStatus() {
 
         <InventoryTable
           inventoryList={inventoryList}
-          sort={sort}
-          setSort={setSort}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
 
         <Center>

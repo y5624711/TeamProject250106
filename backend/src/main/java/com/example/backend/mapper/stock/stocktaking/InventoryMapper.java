@@ -26,12 +26,6 @@ public interface InventoryMapper {
                  <where>
                      <trim prefixOverrides="OR">
                          <if test="keyword != null and keyword != ''">
-                             <if test="type == 'all'">
-                                 OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR b.common_code_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR d.warehouse_city LIKE CONCAT('%', #{keyword}, '%')
-                             </if>
                              <if test="type == 'all' or type == 'wareHouseName'">
                                  OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
                                  </if>
@@ -44,11 +38,27 @@ public interface InventoryMapper {
                          </if>
                      </trim>
                  </where>
-                ORDER BY a.item_current_key
+                ORDER BY 
+                            <choose>
+                                <when test="sortColum == 'wareHouseName'">d.warehouse_name</when>
+                                <when test="sortColum == 'wareHouseCity'">d.warehouse_city</when>
+                                <when test="sortColum == 'wareHouseAddress'">d.warehouse_address</when>
+                                <when test="sortColum == 'wareHouseAddressDetail'">d.warehouse_address_detail</when>
+                                <when test="sortColum == 'customerName'">c.customer_name</when>
+                                <when test="sortColum == 'commonCodeName'">b.common_code_name</when>
+                                <when test="sortColum == 'count'">a.count</when>
+                                <otherwise> a.item_current_key DESC</otherwise> <!-- 기본 정렬 -->
+                            </choose>
+                            <if test="sortOrder == 'desc'">
+                                DESC
+                            </if>
+                            <if test="sortOrder == 'asc'">
+                                ASC
+                            </if>
                 LIMIT #{offset},10
                 </script>
             """)
-    List<Inventory> selectList(int offset, String type, String keyword);
+    List<Inventory> selectList(int offset, String type, String keyword, String sortColum, String sortOrder);
 
     @Select("""
                 <script>
@@ -60,12 +70,6 @@ public interface InventoryMapper {
                  <where>
                      <trim prefixOverrides="OR">
                          <if test="keyword != null and keyword != ''">
-                             <if test="type == 'all'">
-                                 OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR b.common_code_name LIKE CONCAT('%', #{keyword}, '%')
-                                 OR d.warehouse_city LIKE CONCAT('%', #{keyword}, '%')
-                             </if>
                              <if test="type == 'all' or type == 'wareHouseName'">
                                  OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
                                  </if>

@@ -14,9 +14,13 @@ public class InventoryService {
     final InventoryMapper mapper;
 
 
-    public Map<String, Object> getList(Integer page, String type, String keyword, String sortColum, String sortOrder) {
+    public Map<String, Object> getList(Integer page,
+                                       String type,
+                                       String keyword,
+                                       String sortColum,
+                                       String sortOrder) {
         int offset = (page - 1) * 10;
 
-        return Map.of("list", mapper.selectList(offset, type, keyword), "count", mapper.countAll(type, keyword));
+        return Map.of("list", mapper.selectList(offset, type, keyword, sortColum, sortOrder), "count", mapper.countAll(type, keyword));
     }
 }

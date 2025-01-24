@@ -1,39 +1,36 @@
 import { Table } from "@chakra-ui/react";
-import { SortableColumnHeader } from "../../tool/SortableColumnHeader.jsx";
 import React from "react";
+import { SortInventoryTableColumnHeader } from "./SortInventoryTableColumnHeader.jsx";
 
-export function InventoryTable({ inventoryList, sort, setSort }) {
+export function InventoryTable({
+  inventoryList,
+  searchParams,
+  setSearchParams,
+}) {
   // 컬럼 배열 정의
   const columnsList = [
-    { key: "item_current_key", label: "#" },
-    { key: "ware_house_name", label: "창고명" },
-    { key: "ware_house_city", label: "광역시도" },
-    { key: "ware_house_address", label: "시군" },
-    { key: "ware_house_address_detail", label: "창고 위치" },
-    { key: "customer_name", label: "협력업체" },
-    { key: "common_code_name", label: "품명" },
+    { key: "itemCurrentKey", label: "#" },
+    { key: "wareHouseName", label: "창고명" },
+    { key: "wareHouseCity", label: "광역시도" },
+    { key: "wareHouseAddress", label: "시군" },
+    { key: "wareHouseAddressDetail", label: "창고 위치" },
+    { key: "customerName", label: "협력업체" },
+    { key: "commonCodeName", label: "품명" },
     { key: "count", label: "수량" },
   ];
-
-  function handleSort(column) {
-    const order =
-      sort.column === column && sort.order === "asc" ? "desc" : "asc";
-    setSort({ column, order });
-  }
 
   return (
     <Table.Root>
       <Table.Header>
         <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-          {columnsList.map((col) => (
-            <SortableColumnHeader
-              key={col.key}
-              columnKey={col.key}
-              label={col.label}
-              sort={sort}
-              handleSort={handleSort}
-            />
-          ))}
+          <SortInventoryTableColumnHeader
+            columnsList={columnsList}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            onSortChange={(nextSearchParams) =>
+              setSearchParams(nextSearchParams)
+            }
+          />
         </Table.Row>
       </Table.Header>
       <Table.Body>
