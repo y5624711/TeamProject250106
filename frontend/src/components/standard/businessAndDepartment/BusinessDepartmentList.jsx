@@ -71,7 +71,7 @@ export function BusinessDepartmentList() {
     }
 
     setSearch(nextSearch);
-  }, [searchParams, sort]);
+  }, [searchParams]);
 
   const active = searchParams.get("active") === "true";
 
@@ -81,6 +81,7 @@ export function BusinessDepartmentList() {
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
+    nextSearchParams.set("page", "1");
     setSearchParams(nextSearchParams);
   };
 

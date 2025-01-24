@@ -11,6 +11,7 @@ public class Inventory {
     private String wareHouseName;
     private String wareHouseCity;
     private String wareHouseAddress;
+    private String wareHouseAddressDetail;
     private String customerName;
     private Integer count;
 }
