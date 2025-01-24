@@ -25,19 +25,11 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     //   요청해서 가져와야하는거 구매승인자,창고주소
   }, []);
 
-  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가
-  const handleAddInOutHistory = () => {
+  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가 ,입고 상세에 시리얼 번호 로케이션 등등
+  const handleAddInstk = () => {
     axios
       .post("/api/instk/add", {
-        data: {
-          serialNo: "",
-          warehouseCode: "",
-          inoutCommonCode: "",
-          businessEmployeeNo: "",
-          customerEmployeeNo: "",
-          locationKey: "",
-          inoutHistoryNote: "",
-        },
+        inputKey: instk.inputKey,
       })
       .then((res) => {
         console.log(res);
@@ -113,7 +105,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           <DialogActionTrigger asChild>
             <Button
               onClick={() => {
-                handleApprovalClick();
+                handleAddInstk();
               }}
             >
               승인

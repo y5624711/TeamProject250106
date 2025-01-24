@@ -74,8 +74,9 @@ SELECT
      LEFT JOIN TB_SYSCOMM SC ON SC.common_code = CT.item_code
      LEFT JOIN TB_SYSCOMM SC2 ON SC2.common_code = BI.input_common_code
                 
-    LEFT JOIN TB_INSTK INS ON( BI.input_consent=true and  INS.input_key=BI.input_key)                  
-    LEFT JOIN TB_ITEMSUB ITS ON (BI.input_consent=true and ITS.serial_no=INS.serial_no)
+    LEFT JOIN TB_INSTK INS ON( BI.input_consent=true and  INS.input_key=BI.input_key)          
+    -- 시리얼 번호 옮겨서  오류나서 주석
+  -- LEFT JOIN TB_ITEMSUB ITS ON (BI.input_consent=true and ITS.serial_no=INS.serial_no)
     LEFT JOIN TB_EMPMST EM3 ON(BI.input_consent=true and EM3.employee_no=INS.customer_employee_no)
       </script>                              
 """)

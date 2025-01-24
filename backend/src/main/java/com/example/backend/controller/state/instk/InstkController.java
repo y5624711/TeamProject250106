@@ -24,7 +24,11 @@ public class InstkController {
 
     @PostMapping("add")
     public void add(@RequestBody Instk instk) {
-//        System.out.println("");
+        // 인풋 키만 있으면 됨
+        System.out.println("instk = " + instk);
+
+        service.sibal(instk);
+
     }
 
     @GetMapping("detailview/{inputKey}")

@@ -57,10 +57,10 @@ export function InstkList() {
       <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
       <RadioGroup defaultValue="1" my={3}>
         <HStack gap={6}>
-          <Radio value="1">전체 조회</Radio>
-          <Radio value="2">요청 상태 조회</Radio>
-          <Radio value="3">승인 상태 조회</Radio>
-          <Radio value="4">반려 상태 조회</Radio>
+          <Radio value="1">전체</Radio>
+          <Radio value="2">요청</Radio>
+          <Radio value="3">승인</Radio>
+          <Radio value="4">반려</Radio>
         </HStack>
       </RadioGroup>
       <Box>
@@ -118,7 +118,11 @@ export function InstkList() {
                     {item.inputStockDate || item.requestDate}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    {item.inputConsent === true ? "승인" : "대기"}
+                    {item.inputConsent === 1
+                      ? "승인"
+                      : item.inputConsent === 0
+                        ? "반려"
+                        : "대기"}
                   </Table.Cell>
                 </Table.Row>
               );

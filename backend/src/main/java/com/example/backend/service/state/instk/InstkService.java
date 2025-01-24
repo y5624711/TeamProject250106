@@ -17,6 +17,7 @@ public class InstkService {
 
          List<Instk> instkList = mapper.viewBuyInList();
 
+
         return  instkList;
 
     }
@@ -40,6 +41,10 @@ public class InstkService {
       instk.setSerialList(serialList);
         System.out.println("instk = " + instk);
       return instk;
+
+    }
+
+    public void sibal(Instk instk) {
 
     }
 }
