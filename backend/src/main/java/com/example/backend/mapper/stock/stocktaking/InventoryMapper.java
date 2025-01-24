@@ -26,9 +26,12 @@ public interface InventoryMapper {
                  <where>
                      <trim prefixOverrides="OR">
                          <if test="keyword != null and keyword != ''">
+                             <if test="type == 'all' or type == 'warehouseCity'">
+                                 OR d.warehouse_city LIKE CONCAT('%', #{keyword}, '%')
+                             </if>
                              <if test="type == 'all' or type == 'wareHouseName'">
                                  OR d.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
-                                 </if>
+                             </if>
                              <if test="type == 'all' or type == 'customerName'">
                                   OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
                              </if>

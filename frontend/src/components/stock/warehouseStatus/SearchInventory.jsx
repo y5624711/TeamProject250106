@@ -23,6 +23,7 @@ export function SearchInventory({
       { label: "창고명", value: "wareHouseName" },
       { label: "업체명", value: "customerName" },
       { label: "품명", value: "itemName" },
+      { label: "광역시도", value: "warehouseCity" },
     ],
   });
 
