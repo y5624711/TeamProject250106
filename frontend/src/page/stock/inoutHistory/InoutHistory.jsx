@@ -106,14 +106,14 @@ function InoutHistory(props) {
 const inoutHistoryOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "시리얼 번호", value: "serialNumber" },
-    { label: "품목명", value: "itemName" },
-    { label: "창고명", value: "warehouseName" },
-    { label: "가맹점명", value: "franchiseName" },
-    { label: "본사 직원", value: "businessEmployeeName" },
-    { label: "본사 직원 사번", value: "businessEmployeeNumber" },
-    { label: "협력업체 직원", value: "customerEmployeeName" },
-    { label: "협력업체 직원 사번", value: "customerEmployeeNumber" },
+    { label: "시리얼 번호", value: "serialNo" },
+    { label: "품목", value: "item" },
+    { label: "담당 업체", value: "customer" },
+    { label: "창고", value: "warehouse" },
+    { label: "가맹점", value: "franchise" },
+    { label: "본사 직원", value: "businessEmployee" },
+    { label: "협력업체 직원", value: "customerEmployee" },
+    { label: "사번", value: "employeeNumber" },
     { label: "날짜", value: "date" },
   ],
 });

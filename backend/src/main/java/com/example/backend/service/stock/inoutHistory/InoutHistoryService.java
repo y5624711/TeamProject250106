@@ -14,10 +14,14 @@ public class InoutHistoryService {
 
     final InoutHistoryMapper mapper;
 
-    public Map<String, Object> list() {
-        List<InoutHistory> list = mapper.list();
+    public Map<String, Object> list(Integer page, String searchKeyword, String searchType) {
 
-        return Map.of("list", list);
+        Integer pageList = (page - 1) * 10;
+        List<InoutHistory> list = mapper.list(pageList, searchKeyword, searchType);
+        Integer count = mapper.count(searchKeyword, searchType);
+        System.out.println(count);
+
+        return Map.of("list", list, "count", count);
     }
 
     public void add(InoutHistory InoutHistory) {
