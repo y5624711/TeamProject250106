@@ -63,6 +63,16 @@ function ReturnList({
     ],
   });
 
+  //영어명으로 한국명 찾기
+  const getLabelByValue = (value) => {
+    const item = returnSearchKeywords.items.find(
+      (item) => item.value === value,
+    );
+    return item ? item.label : value;
+  };
+
+  console.log("이름", getLabelByValue(localType));
+
   // console.log("list", returnList);
   // console.log("count", count);
   // console.log("local filters", filters);
@@ -95,7 +105,7 @@ function ReturnList({
   };
 
   // console.log(localType);
-  console.log("name", localTypeName);
+  // console.log("name", localTypeName);
   console.log("type", localType);
 
   return (
@@ -105,19 +115,17 @@ function ReturnList({
         <SelectRoot
           collection={returnSearchKeywords}
           width={"160px"}
-          value={localType}
+          value={getLabelByValue(localType)}
           onValueChange={(e) => {
-            console.log("value", e);
             setLocalType(e.value[0]);
-            setLocalTypeName(e.items[0].label);
           }}
         >
           <SelectTrigger>
-            <SelectValueText>{localTypeName || "전체"}</SelectValueText>
+            <SelectValueText placeholder={getLabelByValue(localType)} />
           </SelectTrigger>
           <SelectContent>
             {returnSearchKeywords.items.map((e) => (
-              <SelectItem item={e} key={e.value}>
+              <SelectItem item={e} key={e.value} value={e.value}>
                 {e.label}
               </SelectItem>
             ))}
