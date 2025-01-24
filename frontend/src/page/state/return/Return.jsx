@@ -52,21 +52,21 @@ function Return(props) {
     setSearchParams(nextSearchParams);
   }
 
-  //검색
-  function handleSearchClick() {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    if (keyword.trim().length > 0) {
-      //검색 입력
-      nextSearchParams.set("type", type);
-      nextSearchParams.set("type", keyword);
-      nextSearchParams.set("page", 1);
-      setSearchParams(nextSearchParams);
-    } else {
-      //기본
-      nextSearchParams.delete("type");
-      nextSearchParams.delete("keyword");
-    }
-  }
+  // //검색
+  // function handleSearchClick() {
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   if (keyword.trim().length > 0) {
+  //     //검색 입력
+  //     nextSearchParams.set("type", type);
+  //     nextSearchParams.set("type", keyword);
+  //     nextSearchParams.set("page", 1);
+  //     setSearchParams(nextSearchParams);
+  //   } else {
+  //     //기본
+  //     nextSearchParams.delete("type");
+  //     nextSearchParams.delete("keyword");
+  //   }
+  // }
 
   //요청창 작성 후 버튼 클릭 : returnRequest
   const handleRequestClick = (newRequest) => {
@@ -94,12 +94,10 @@ function Return(props) {
           <ReturnList
             returnList={returnList}
             onRowClick={handleRowClick}
-            setSearchParams={setSearchParams}
+            page={page}
             count={count}
             state={state}
             handlePageChange={handlePageChange}
-            searchParams={searchParams}
-            onSearchClick={handleSearchClick}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Box,
+  Center,
   createListCollection,
   HStack,
   Input,
@@ -11,20 +12,23 @@ import {
   SelectValueText,
   Table,
 } from "@chakra-ui/react";
-import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Button } from "../../ui/button.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
 
 function ReturnList({
   returnList,
   onRowClick,
-  setSearchParams,
   count,
+  page,
   handlePageChange,
-  onSearchClick,
   state,
-  searchParams,
 }) {
   // 검색 keyword와 type 상태 관리
   const [localKeyword, setLocalKeyword] = useState(
@@ -201,12 +205,21 @@ function ReturnList({
       </Table.Root>
 
       {/*페이지*/}
-      <Pagination
-        my={3}
-        count={count}
-        pageSize={10}
-        onPageChange={handlePageChange}
-      />
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={count}
+          pageSize={10}
+          page={page}
+          variant={"solid"}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }
