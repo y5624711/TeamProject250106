@@ -59,22 +59,16 @@ public interface ReturnMapper {
                         <if test="type=='all' or type=='customerName'">
                             OR customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='businessEmployeeNo'">
-                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='businessEmployeeName'">
+                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='customerEmployeeNo'">
-                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerEmployeeName'">
+                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='customerConfigurerNo'">
-                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerConfigurerName'">
+                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>             
                     </trim>
@@ -180,37 +174,31 @@ public interface ReturnMapper {
                     <trim prefixOverrides="OR">
                         <if test="type=='all' or type=='franchiseName'">
                             franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='serialNo'">
+                            OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='itemCommonName'">
                             OR itc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='serialNo'">
-                            OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>                                
                         <if test="type=='all' or type=='returnNo'">
                             OR ra.return_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='customerName'">
                             OR customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='businessEmployeeNo'">
-                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='businessEmployeeName'">
+                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='customerEmployeeNo'">
-                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerEmployeeName'">
+                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
-                        <if test="type=='all' or type=='customerConfigurerNo'">
-                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerConfigurerName'">
+                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
                             OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>             
+                        </if>    
                     </trim>
                 )    
             </if>

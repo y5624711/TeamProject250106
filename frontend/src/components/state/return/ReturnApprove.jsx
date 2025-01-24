@@ -39,13 +39,13 @@ function ReturnApprove({
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        console.log("호출", res.data);
+        // console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
   }, [returnRequestKey]);
 
-  console.log("셋팅", approveData);
+  // console.log("셋팅", approveData);
 
   //정보 기입 (변화 적용)
   const handleApproveInput = (field) => (e) => {
