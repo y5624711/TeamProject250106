@@ -43,11 +43,6 @@ public class InstallService {
         return cnt == 1;
     }
 
-    // 설치 요청 테이블에서 요청 가져오기
-//    public List<Install> getInstallRequestList() {
-//        return mapper.getInstallRequestList();
-//    }
-
     // 설치 요청에 대한 정보 가져오기
     public List<Install> getInstallRequestView(int installKey) {
         return mapper.getInstallRequestView(installKey);
@@ -68,6 +63,7 @@ public class InstallService {
     }
 
     // 설치 승인
+    @Transactional
     public boolean installApprove(Install install) {
         try {
             // 요청 수량 가져오기
@@ -116,11 +112,6 @@ public class InstallService {
         }
     }
 
-    // 설치 승인 테이블에서 요청 리스트 가져오기
-//    public List<Install> getInstallApproveList() {
-//        return mapper.getInstallApproveList();
-//    }
-
     // 설치 승인에 대한 정보 가져오기
     public Install getInstallApproveView(int installKey) {
         Install install = mapper.getInstallApproveView(installKey);
@@ -128,15 +119,9 @@ public class InstallService {
     }
 
     // 설치 완료
+    @Transactional
     public boolean installConfiguration(Install install) {
         try {
-            // 해당 시리얼 번호의 비고 내용 추가
-//            if (install.getSerialNo() != null || !install.getSerialNo().trim().isEmpty()) {
-//                int serialNote = mapper.addSerialNote(install.getSerialNo(), install.getSerialNote());
-//                if (serialNote <= 0) {
-//                    throw new IllegalStateException("해당 시리얼 번호에 대한 비고 처리 오류: " + serialNote);
-//                }
-//            }
             // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
             List<String> serialList = mapper.getConfigurationSerials(install.getOutputNo());
 
@@ -167,6 +152,7 @@ public class InstallService {
     }
 
     // 품목 입출력 테이블에 데이터 추가
+    @Transactional
     public boolean addOutHistory(Install install) {
         try {
             // 시리얼 번호로 입출력 테이블에서 입고된 기록 가져오기(창고 코드)

@@ -71,13 +71,6 @@ public class InstallController {
         }
     }
 
-
-    // 설치 승인 테이블에서 리스트 가져오기
-//    @GetMapping("list/approve")
-//    public List<Install> getInstallApproveList() {
-//        return service.getInstallApproveList();
-//    }
-
     // 설치 승인
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
@@ -110,12 +103,6 @@ public class InstallController {
     public List<Install> getInstallRequestView(@PathVariable int installKey) {
         return service.getInstallRequestView(installKey);
     }
-
-    // 설치 요청 테이블에서 리스트 가져오기
-//    @GetMapping("list/request")
-//    public List<Install> getInstallRequestList() {
-//        return service.getInstallRequestList();
-//    }
 
     // 설치 가능한 품목명, 품목 코드 가져오기
     @GetMapping("commonCode")
