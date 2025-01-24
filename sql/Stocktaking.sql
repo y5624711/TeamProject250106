@@ -9,6 +9,7 @@ CREATE TABLE TB_STKTK
     customer_employee_no VARCHAR(13) NOT NULL,
     count_current        INT         NULL,
     count_configuration  INT         NULL,
+    stocktaking_type     BOOLEAN     NOT NULL,
     stocktaking_date     DATETIME    NULL DEFAULT NOW()
 );
 

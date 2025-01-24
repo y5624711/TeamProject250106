@@ -17,8 +17,8 @@ public class StocktakingService {
     public Map<String, Object> list(String searchType, String searchKeyword, Integer page) {
         Integer pageList = (page - 1) * 10;
         List<Stocktaking> list = mapper.list(searchType, searchKeyword, pageList);
-
-        return Map.of("list", list);
+        Integer count = mapper.count(searchType, searchKeyword);
+        return Map.of("list", list, "count", count);
     }
 
     public Stocktaking view(Integer stocktakingKey) {
