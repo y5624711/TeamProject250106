@@ -17,8 +17,8 @@ function Return(props) {
   const [count, setCount] = useState(1);
 
   const page = searchParams.get("page") || 1;
-  const type = searchParams.get("type") || "all";
-  const keyword = searchParams.get("keyword") || "";
+  // const type = searchParams.get("type") || "all";
+  // const keyword = searchParams.get("keyword") || "";
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
   const order = searchParams.get("order") || "desc";
@@ -68,6 +68,20 @@ function Return(props) {
   //   }
   // }
 
+  // state 변경 핸들러
+  const handleStateChange = (newState) => {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("state", newState); // 새로운 state 값 반영
+    nextSearchParams.set("page", 1); // 상태 변경 시 페이지를 초기화
+    setSearchParams(nextSearchParams);
+  };
+
+  // URL 변화 시 검색 상태 갱신
+  useEffect(() => {
+    const newState = searchParams.get("state") || "all";
+    console.log("Updated state from URL:", newState);
+  }, [searchParams]);
+
   //요청창 작성 후 버튼 클릭 : returnRequest
   const handleRequestClick = (newRequest) => {
     setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
@@ -98,6 +112,7 @@ function Return(props) {
             count={count}
             state={state}
             handlePageChange={handlePageChange}
+            onStateChange={handleStateChange}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>

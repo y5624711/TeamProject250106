@@ -29,6 +29,7 @@ function ReturnList({
   page,
   handlePageChange,
   state,
+  onStateChange,
 }) {
   // 검색 keyword와 type 상태 관리
   const [localKeyword, setLocalKeyword] = useState(
@@ -125,7 +126,7 @@ function ReturnList({
       <RadioGroup
         name={state}
         value={state}
-        // onValueChange={(value) => handleFilterChange("state", value)}
+        onValueChange={onStateChange}
         my={3}
       >
         <HStack gap={6}>
