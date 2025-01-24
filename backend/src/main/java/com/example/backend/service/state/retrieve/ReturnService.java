@@ -26,7 +26,7 @@ public class ReturnService {
             sort = "COALESCE(return_approve_date, return_request_date)";
         }
 
-        System.out.println("sort: " + sort);
+//        System.out.println("sort: " + sort);
 
         //        System.out.println("리스트: " + mapper.getReturnList());
         Integer offset = (page - 1) * 10;

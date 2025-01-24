@@ -41,8 +41,6 @@ function ReturnList({
   const [localType, setLocalType] = useState(
     new URLSearchParams(window.location.search).get("type") || "all",
   );
-  const [localSort, setLocalSort] = useState(sort);
-  const [localOrder, setLocalOrder] = useState(order);
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -68,12 +66,14 @@ function ReturnList({
   // console.log("state", filters.state);
 
   //검색 버튼 클릭 시
-  const handleSearchButton = (sort) => {
+  const handleSearchButton = () => {
     const searchParams = new URLSearchParams();
     searchParams.set("type", localType);
     searchParams.set("keyword", localKeyword);
     searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
     searchParams.set("state", state);
+    searchParams.set("sort", sort);
+    searchParams.set("order", order);
 
     // URL을 갱신하고 새로고침
     window.location.search = searchParams.toString();
@@ -81,8 +81,7 @@ function ReturnList({
 
   // 헤더 클릭 처리
   const handleHeaderClick = (columnName) => {
-    const nextOrder =
-      localSort === columnName && localOrder === "ASC" ? "DESC" : "ASC";
+    const nextOrder = sort === columnName && order === "ASC" ? "DESC" : "ASC";
 
     // URL을 업데이트하고 새로고침
     const searchParams = new URLSearchParams(window.location.search);
@@ -166,48 +165,44 @@ function ReturnList({
               onClick={() => handleHeaderClick("franchise_name")}
             >
               가맹점
-              {localSort === "franchise_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "franchise_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("itc.common_code_name")}
             >
               품목
-              {localSort === "itc.common_code_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "itc.common_code_name" &&
+                (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("customer_name")}
             >
               담당 업체
-              {localSort === "customer_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "customer_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("serial_no")}
             >
               시리얼 번호
-              {localSort === "serial_no" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "serial_no" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("return_no")}
             >
               반품 번호
-              {localSort === "return_no" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "return_no" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("business_employee_name")}
             >
               산청자
-              {localSort === "business_employee_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "business_employee_name" &&
+                (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
 
             <Table.ColumnHeader
@@ -215,22 +210,20 @@ function ReturnList({
               onClick={() => handleHeaderClick("emce.employee_name")}
             >
               승인자
-              {localSort === "emce.employee_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "emce.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("emcc.employee_name")}
             >
               검수기사
-              {localSort === "emcc.employee_name" &&
-                (localOrder === "ASC" ? " ▲" : " ▼")}
+              {sort === "emcc.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("date")}
             >
-              날짜{localSort === "date" && (localOrder === "ASC" ? " ▲" : " ▼")}
+              날짜{sort === "date" && (order === "ASC" ? " ▲" : " ▼")}
             </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
