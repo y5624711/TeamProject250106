@@ -16,17 +16,30 @@ public interface CommonMapper {
                     <if test="active == false">
                         AND common_code_active = TRUE
                     </if>
-                    <if test="keyword != null and keyword.trim() != ''">
-                        <if test="type == 'all'">
-                            AND (
-                                common_code LIKE CONCAT('%', #{keyword}, '%')
-                                OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
-                            )
-                        </if>
-                        <if test="type != 'all'">
-                            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
+                <if test="radio != null">
+                    <choose>
+                        <when test="radio == 'system'">
+                            AND common_code_type = 'SYSTEM'
+                        </when>
+                        <when test="radio == 'item'">
+                            AND common_code_type = 'ITEM'
+                        </when>
+                        <otherwise>
+                            <!-- 'all' 또는 기타 값인 경우 조건 추가하지 않음 -->
+                        </otherwise>
+                    </choose>
                     </if>
+                        <if test="keyword != null and keyword.trim() != ''">
+                            <if test="type == 'all'">
+                                AND (
+                                    common_code LIKE CONCAT('%', #{keyword}, '%')
+                                    OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                                )
+                            </if>
+                            <if test="type != 'all'">
+                                AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </if>
                     <choose>
                         <when test="sort != null and sort != ''">
                             ORDER BY `${sort}` ${order}
@@ -38,7 +51,8 @@ public interface CommonMapper {
                     LIMIT #{offset}, 10
                 </script>
             """)
-    List<CommonCode> getCommonCodeList(Integer offset, Boolean active, String sort, String order, String type, String keyword);
+    List<CommonCode> getCommonCodeList(Integer offset, Boolean active, String sort, String order, String type,
+                                       String keyword, String radio);
 
     @Select("""
             <script>
@@ -47,6 +61,19 @@ public interface CommonMapper {
                 WHERE 1=1
                 <if test="active == false">
                     AND common_code_active = TRUE
+                </if>
+                <if test="radio != null">
+                    <choose>
+                        <when test="radio == 'system'">
+                            AND common_code_type = 'SYSTEM'
+                        </when>
+                        <when test="radio == 'item'">
+                            AND common_code_type = 'ITEM'
+                        </when>
+                        <otherwise>
+                            <!-- 'all' 또는 기타 값인 경우 조건 추가하지 않음 -->
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="keyword != null and keyword.trim() != ''">
                     <if test="type == 'all'">
@@ -61,7 +88,7 @@ public interface CommonMapper {
                 </if>
             </script>
             """)
-    Integer countAll(Boolean active, String type, String keyword);
+    Integer countAll(Boolean active, String type, String keyword, String radio);
 
     @Select("""
             SELECT COUNT(*)

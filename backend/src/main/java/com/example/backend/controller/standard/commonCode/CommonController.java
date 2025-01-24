@@ -103,12 +103,12 @@ public class CommonController {
     public Map<String, Object> getCommonCodeList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "active", defaultValue = "false") Boolean active,
-            @RequestParam(value = "filter", defaultValue = "1") String radio,
+            @RequestParam(value = "filter", defaultValue = "all") String radio,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
         System.out.println("radio = " + radio);
-        return service.getCommonCodeList(page, active, sort, order, type, keyword);
+        return service.getCommonCodeList(page, active, sort, order, type, keyword, radio);
     }
 }

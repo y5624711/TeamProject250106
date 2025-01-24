@@ -16,12 +16,18 @@ public class CommonService {
     final CommonMapper mapper;
 
     // 품목 공통 코드 조회
-    public Map<String, Object> getCommonCodeList(Integer page, Boolean active, String sort, String order, String type, String keyword) {
+    public Map<String, Object> getCommonCodeList(Integer page,
+                                                 Boolean active,
+                                                 String sort,
+                                                 String order,
+                                                 String type,
+                                                 String keyword,
+                                                 String radio) {
         Integer offset = (page - 1) * 10;
         type = toSnakeCase(type);
         sort = toSnakeCase(sort);
-        return Map.of("list", mapper.getCommonCodeList(offset, active, sort, order, type, keyword),
-                "count", mapper.countAll(active, type, keyword));
+        return Map.of("list", mapper.getCommonCodeList(offset, active, sort, order, type, keyword, radio),
+                "count", mapper.countAll(active, type, keyword, radio));
     }
 
     // camelCase를 snake_case로 변환하는 로직
