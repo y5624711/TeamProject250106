@@ -63,7 +63,7 @@ function ReturnApprove({
     axios
       .get(`api/return/configurer/${returnRequestKey}`)
       .then((res) => {
-        console.log("직원 목록", res.data);
+        // console.log("직원 목록", res.data);
         setConfigurerList(res.data);
       })
       .catch((e) => console.error("검수자 에러", e));

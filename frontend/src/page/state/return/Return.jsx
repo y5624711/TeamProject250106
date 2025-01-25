@@ -16,9 +16,6 @@ function Return(props) {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
 
-  const page = searchParams.get("page") || 1;
-  // const type = searchParams.get("type") || "all";
-  // const keyword = searchParams.get("keyword") || "";
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
   const order = searchParams.get("order") || "desc";
@@ -123,7 +120,6 @@ function Return(props) {
           <ReturnList
             returnList={returnList}
             onRowClick={handleRowClick}
-            page={page}
             count={count}
             state={state}
             handlePageChange={handlePageChange}

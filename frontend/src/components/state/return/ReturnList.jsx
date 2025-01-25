@@ -29,7 +29,6 @@ function ReturnList({
   returnList,
   onRowClick,
   count,
-  page,
   handlePageChange,
   state,
   onStateChange,
@@ -75,7 +74,7 @@ function ReturnList({
   // console.log("count", count);
   // console.log("local filters", filters);
   // console.log("state", filters.state);
-  console.log("page", page);
+  // console.log("page", page);
 
   //검색 버튼 클릭 시
   const handleSearchButton = () => {

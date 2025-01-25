@@ -34,7 +34,6 @@ public class ReturnController {
 //        System.out.println("keyword:" + keyword);
 //        System.out.println("sort:" + sort);
 //        System.out.println("order:" + order);
-        System.out.println("true");
 
         return service.returnList(page, state, type, keyword, sort, order);
     }
