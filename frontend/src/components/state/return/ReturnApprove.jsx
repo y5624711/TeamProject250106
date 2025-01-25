@@ -9,7 +9,18 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, HStack, Input, Separator, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Separator,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -33,6 +44,7 @@ function ReturnApprove({
     returnApproveNote: "",
   };
   const [approveData, setApproveData] = useState(initialApproveData);
+  const [configurerList, setConfigurerList] = useState([]);
 
   //요청 정보 가져오기
   useEffect(() => {
@@ -44,8 +56,18 @@ function ReturnApprove({
       });
     }
   }, [returnRequestKey]);
+  // console.log("셋팅", approveData);
 
-  console.log("셋팅", approveData);
+  //검수 기사 정보 가져오기
+  useEffect(() => {
+    axios
+      .get(`api/return/configurer/${returnRequestKey}`)
+      .then((res) => {
+        console.log("직원 목록", res.data);
+        setConfigurerList(res.data);
+      })
+      .catch((e) => console.error("검수자 에러", e));
+  }, [returnRequestKey]);
 
   //정보 기입 (변화 적용)
   const handleApproveInput = (field) => (e) => {
@@ -205,21 +227,56 @@ function ReturnApprove({
                 </Field>
               </HStack>
               <HStack>
-                <Field orientation="horizontal" label="검수기사">
-                  <Input
-                    value={approveData.customerConfigurerName}
-                    // placeholder="홍길동"
-                    onChange={handleApproveInput("customerConfigurerName")}
-                  />
+                <Field label={"검수 기사"} orientation="horizontal">
+                  <SelectRoot
+                    onValueChange={(e) => {
+                      const selectedConfigurer = configurerList.find(
+                        (info) => info.customerConfigurerName === e.value[0],
+                      );
+                      if (selectedConfigurer) {
+                        setApproveData((prev) => ({
+                          ...prev,
+                          customerConfigurerName:
+                            selectedConfigurer.customerConfigurerName || "",
+                          customerConfigurerNo:
+                            selectedConfigurer.customerConfigurerNo || "",
+                        }));
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValueText placeholder={"검수 기사 선택"}>
+                        {approveData.customerConfigurerName}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      maxHeight={"100px"}
+                      style={{
+                        width: "75%",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {configurerList
+                        .filter(
+                          (configurer) => configurer.customerConfigurerName,
+                        )
+                        .map((configurer) => (
+                          <SelectItem
+                            key={configurer.customerConfigurerName}
+                            item={configurer.customerConfigurerName}
+                          >
+                            {configurer.customerConfigurerName}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </SelectRoot>
                 </Field>
-                <Field orientation="horizontal" label="사번">
-                  <Input
-                    value={approveData.customerConfigurerNo}
-                    // placeholder="0000000000000"
-                    onChange={handleApproveInput("customerConfigurerNo")}
-                  />
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={approveData.customerConfigurerNo} readOnly />
                 </Field>
               </HStack>
+
               <Field orientation="horizontal" label="회수 예정일">
                 <Input
                   type="date" // 사용자가 달력으로 날짜 선택 가능

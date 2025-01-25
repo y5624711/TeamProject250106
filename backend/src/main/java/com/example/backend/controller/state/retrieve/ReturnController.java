@@ -69,6 +69,11 @@ public class ReturnController {
         return service.getRequestInfo(returnRequestKey);
     }
 
+    //협력업체의 직원(기사) 목록 불러오기
+    @GetMapping("configurer/{returnRequestKey}")
+    public List<Map<String, Object>> getConfigurerList(@PathVariable String returnRequestKey) {
+        return service.getConfigurerList(returnRequestKey);
+    }
 
     //반품 승인 + 가입고 신청
     @PostMapping("approve")

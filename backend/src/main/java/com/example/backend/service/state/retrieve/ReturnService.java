@@ -5,12 +5,14 @@ import com.example.backend.mapper.standard.franchise.FranchiseMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -100,5 +102,11 @@ public class ReturnService {
     // 가맹점 코드로 시리얼번호 조회
     public List<Return> getSerialNoList(String franchiseCode) {
         return mapper.getSerialNoList(franchiseCode);
+    }
+
+    //검수기사 목록 반환
+    public List<Map<String, Object>> getConfigurerList(String returnRequestKey) {
+//        System.out.println("업체 당 기사 목록: " + mapper.getConfigurerList(returnRequestKey));
+        return mapper.getConfigurerList(returnRequestKey);
     }
 }

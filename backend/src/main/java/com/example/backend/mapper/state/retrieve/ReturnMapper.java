@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ReturnMapper {
@@ -226,4 +227,13 @@ public interface ReturnMapper {
                  AND franchise_code = #{franchiseCode})
             """)
     List<Return> getSerialNoList(String franchiseCode);
+
+    //협력 업체의 직원(기사 조회)
+    @Select("""
+            SELECT e.employee_name AS customerConfigurerName, e.employee_no AS customerConfigurerNo
+            FROM TB_RTN_REQ r
+            LEFT JOIN TB_EMPMST e ON r.customer_code =  e.employee_workplace_code
+            WHERE r.return_request_key = #{returnRequestKey}
+            """)
+    List<Map<String, Object>> getConfigurerList(String returnRequestKey);
 }

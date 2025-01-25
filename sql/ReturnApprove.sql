@@ -107,3 +107,9 @@ FROM TB_RTN_REQ rr
          LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
          LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
 WHERE rr.return_request_key = 11;
+
+
+SELECT e.employee_name AS customerConfigurerName, e.employee_no AS customerConfigurerNo
+FROM TB_RTN_REQ r
+         LEFT JOIN TB_EMPMST e ON r.customer_code = e.employee_workplace_code
+WHERE r.return_request_key = 12;
