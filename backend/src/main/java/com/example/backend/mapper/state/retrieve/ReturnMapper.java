@@ -103,7 +103,7 @@ public interface ReturnMapper {
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
-                   return_request_date, return_approve_date,return_date, return_consent, return_request_note
+                   return_request_date, return_approve_date,return_date, return_consent, return_request_note, return_approve_note
             FROM TB_RTN_REQ rr
             LEFT JOIN TB_RTN_APPR ra
             ON ra.return_request_key = rr.return_request_key

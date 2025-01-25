@@ -45,7 +45,7 @@ function ReturnApprove({
     }
   }, [returnRequestKey]);
 
-  // console.log("셋팅", approveData);
+  console.log("셋팅", approveData);
 
   //정보 기입 (변화 적용)
   const handleApproveInput = (field) => (e) => {
@@ -107,7 +107,11 @@ function ReturnApprove({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {approveData.returnConsent ? "반품 승인 상세" : "반품 승인"}
+            {approveData.returnConsent === "1"
+              ? "반품 승인 상세"
+              : approveData.returnConsent === "0"
+                ? "반품 반려 상세"
+                : "반품 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
@@ -144,9 +148,14 @@ function ReturnApprove({
             />
           </Field>
           <Field orientation="horizontal" label="신청 비고">
-            <Textarea readOnly value={approveData.returnRequestNote} />
+            {approveData.returnRequestNote ? (
+              <Textarea readOnly value={approveData.returnRequestNote} />
+            ) : (
+              <Input readOnly value={"내용 없음"} />
+            )}
           </Field>
-          {approveData.returnConsent ? (
+
+          {approveData.returnConsent === "1" ? (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
@@ -173,11 +182,15 @@ function ReturnApprove({
                 <Input readOnly value={approveData.returnApproveDate} />
               </Field>
               <Field orientation="horizontal" label="승인 비고">
-                {<Input readOnly value={"내용 없음"} /> || (
+                {approveData.returnApproveNote ? (
                   <Textarea readOnly value={approveData.returnApproveNote} />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
                 )}
               </Field>
             </Box>
+          ) : approveData.returnConsent === "0" ? (
+            ""
           ) : (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
@@ -225,7 +238,8 @@ function ReturnApprove({
           )}
         </DialogBody>
         <DialogFooter>
-          {approveData.returnConsent ? (
+          {approveData.returnConsent === "1" ||
+          approveData.returnConsent === "0" ? (
             <Button onClick={onClose} variant="outline">
               닫기
             </Button>
@@ -237,6 +251,7 @@ function ReturnApprove({
               <Button onClick={handleApproveButtonClick}>승인</Button>
             </HStack>
           )}
+
           <DialogCloseTrigger />
         </DialogFooter>
       </DialogContent>
