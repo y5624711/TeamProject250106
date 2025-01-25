@@ -27,6 +27,7 @@ function WarehouseStatus() {
       .get("/api/inventory/list", { params: searchParams })
       .then((res) => {
         setInventoryList(res.data.list);
+        console.log(res.data.list);
         setCount(res.data.count);
       })
       .finally(() => setLoading(false));

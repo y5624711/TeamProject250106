@@ -35,7 +35,7 @@ export function InventoryTable({
       </Table.Header>
       <Table.Body>
         {inventoryList.map((item, index) => (
-          <Table.Row key={item.itemCurrentKey || index}>
+          <Table.Row key={item.inoutHistoryNote || index}>
             <Table.Cell>{index + 1}</Table.Cell>
             <Table.Cell>{item.wareHouseName}</Table.Cell>
             <Table.Cell>{item.wareHouseCity}</Table.Cell>
