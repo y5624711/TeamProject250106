@@ -46,7 +46,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        console.log("호출", res.data);
+        // console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }

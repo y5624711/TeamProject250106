@@ -130,7 +130,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
 
   //반품 요청
   const handleRequestButtonClick = () => {
-    if (!validate) {
+    if (validate()) {
       axios
         .post("/api/return/request", requestData)
         .then((res) => res.data)
@@ -141,7 +141,8 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           });
           onRequest(requestData);
           setRequestData(initialRequestData);
-        });
+        })
+        .catch((e) => console.error("반품 요청 에러", e));
     }
   };
 
