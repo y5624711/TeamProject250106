@@ -12,18 +12,18 @@ import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Button } from "../../ui/button.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../ui/pagination.jsx";
-import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
 
 function ReturnList({
   returnList,
@@ -71,11 +71,11 @@ function ReturnList({
   };
 
   // console.log("이름", getLabelByValue(localType));
-
   // console.log("list", returnList);
   // console.log("count", count);
   // console.log("local filters", filters);
   // console.log("state", filters.state);
+  console.log("page", page);
 
   //검색 버튼 클릭 시
   const handleSearchButton = () => {
@@ -284,8 +284,7 @@ function ReturnList({
           onPageChange={handlePageChange}
           count={count}
           pageSize={10}
-          page={page}
-          variant={"solid"}
+          variant="solid"
         >
           <HStack>
             <PaginationPrevTrigger />

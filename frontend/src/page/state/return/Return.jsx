@@ -46,7 +46,7 @@ function Return(props) {
 
   //페이지 이동
   function handlePageChange(e) {
-    console.log(e);
+    // console.log(e);
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
@@ -76,11 +76,11 @@ function Return(props) {
     setSearchParams(nextSearchParams);
   };
 
-  // URL 변화 시 검색 상태 갱신
-  useEffect(() => {
-    const newState = searchParams.get("state") || "all";
-    console.log("Updated state from URL:", newState);
-  }, [searchParams]);
+  // // URL 변화 시 검색 상태 갱신
+  // useEffect(() => {
+  //   const newState = searchParams.get("state") || "all";
+  //   // console.log("Updated state from URL:", newState);
+  // }, [searchParams]);
 
   //요청창 작성 후 버튼 클릭 : returnRequest
   const handleRequestClick = (newRequest) => {
