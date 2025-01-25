@@ -43,6 +43,11 @@ function ReturnList({
     new URLSearchParams(window.location.search).get("type") || "all",
   );
 
+  // URL의 page 값으로 초기화
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(new URLSearchParams(window.location.search).get("page")) || 1,
+  );
+
   //검색 keyword
   const returnSearchKeywords = createListCollection({
     items: [
@@ -61,7 +66,7 @@ function ReturnList({
     ],
   });
 
-  //영어명으로 한국명 찾기
+  //검색 type 영어명으로 한국명 찾기
   const getLabelByValue = (value) => {
     const item = returnSearchKeywords.items.find(
       (item) => item.value === value,
@@ -280,9 +285,13 @@ function ReturnList({
       {/*페이지*/}
       <Center>
         <PaginationRoot
-          onPageChange={handlePageChange}
+          onPageChange={(e) => {
+            handlePageChange(e);
+            setCurrentPage(e.page);
+          }}
           count={count}
           pageSize={10}
+          page={currentPage}
           variant="solid"
         >
           <HStack>
