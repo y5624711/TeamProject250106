@@ -11,7 +11,6 @@ import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [useColumn, setUseColumn] = useState(false);
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
@@ -71,18 +70,11 @@ function Warehouse(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Checkbox
-            onCheckedChange={() => {
-              setUseColumn(!useColumn);
-            }}
-          >
-            전체 조회
-          </Checkbox>
+          <Checkbox>전체 조회</Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
-            useColumn={useColumn}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
           />

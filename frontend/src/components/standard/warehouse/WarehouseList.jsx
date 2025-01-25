@@ -12,7 +12,6 @@ import {
 function WarehouseList({
   warehouseList,
   countWarehouse,
-  useColumn,
   currentPage,
   handlePageChangeClick,
 }) {
@@ -75,18 +74,13 @@ function WarehouseList({
                 >
                   전화번호
                 </Table.ColumnHeader>
-                {useColumn ? (
-                  <Table.ColumnHeader textAlign="center" verticalAlign="middle">
-                    사용 여부
-                  </Table.ColumnHeader>
-                ) : null}
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {warehouseList.map((warehouse) => (
+              {warehouseList.map((warehouse, index) => (
                 <WarehouseListPage
+                  index={(currentPage - 1) * 10 + index}
                   warehouse={warehouse}
-                  useColumn={useColumn}
                   setSelectedWarehouseKey={setSelectedWarehouseKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
                 />
