@@ -20,6 +20,9 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   const [departmentFax, setDepartmentFax] = useState("");
   const [departmentNote, setDepartmentNote] = useState("");
 
+  let disable =
+    departmentName.trim().length > 0 && departmentTel.trim().length > 0;
+
   function resetValue() {
     setDepartmentName("");
     setDepartmentTel("");
@@ -124,7 +127,12 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <Button onClick={handleSaveDepartment}>저장</Button>
+          <Button variant="outline" onClick={handleCloseButton}>
+            취소
+          </Button>
+          <Button onClick={handleSaveDepartment} disabled={!disable}>
+            저장
+          </Button>
         </DialogFooter>
         <DialogCloseTrigger onClick={handleCloseButton} />
       </DialogContent>

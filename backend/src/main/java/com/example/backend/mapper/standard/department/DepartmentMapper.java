@@ -66,6 +66,7 @@ public interface DepartmentMapper {
     @Update("""
             UPDATE TB_DEPARTMST
             SET department_name = #{departmentName},
+                department_code = #{departmentCode},
                 department_tel = #{departmentTel},
                 department_fax = #{departmentFax},
                 department_note = #{departmentNote},
