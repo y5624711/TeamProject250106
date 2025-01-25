@@ -25,6 +25,7 @@ import axios from "axios";
 import Select from "react-select";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function ReturnRequest({ isOpen, onClose, onRequest }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -117,8 +118,8 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     const value = e.target ? e.target.value : e.value;
     setRequestData((prev) => ({ ...prev, [field]: value }));
   };
-  // console.log("requestData", requestData);
 
+  //가맹점 select
   const handleFranchiseChange = (selectedOption) => {
     // console.log("선택", selectedOption);
     setLocalFranchiseName(selectedOption.label);
@@ -129,23 +130,37 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
 
   //반품 요청
   const handleRequestButtonClick = () => {
-    axios
-      .post("/api/return/request", requestData)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          description: data.message.text,
-          type: data.message.type,
+    if (!validate) {
+      axios
+        .post("/api/return/request", requestData)
+        .then((res) => res.data)
+        .then((data) => {
+          toaster.create({
+            description: data.message.text,
+            type: data.message.type,
+          });
+          onRequest(requestData);
+          setRequestData(initialRequestData);
         });
-        onRequest(requestData);
-        setRequestData(initialRequestData);
-      });
+    }
   };
 
   const handleCancel = () => {
     setRequestData(initialRequestData);
     onClose();
   };
+
+  //유효성 검사
+  const validate = () => {
+    return (
+      requestData.businessEmployeeName.trim() !== "" &&
+      requestData.businessEmployeeNo.trim() !== "" &&
+      requestData.franchiseName.trim() !== "" &&
+      requestData.serialNo.trim() !== ""
+    );
+  };
+
+  // console.log("requestData", requestData);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
@@ -263,7 +278,15 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestButtonClick}>신청</Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+          >
+            <Button onClick={handleRequestButtonClick} disabled={!validate}>
+              신청
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
