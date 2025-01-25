@@ -141,7 +141,6 @@ function Return(props) {
         />
         <ReturnApprove
           returnRequestKey={returnRequestKey}
-          setReturnRequestKey={setReturnRequestKey}
           isOpen={approveDialogOpen}
           onClose={() => setApproveDialogOpen(false)}
           onApprove={handleRequestClick}

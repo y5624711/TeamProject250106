@@ -113,3 +113,18 @@ SELECT e.employee_name AS customerConfigurerName, e.employee_no AS customerConfi
 FROM TB_RTN_REQ r
          LEFT JOIN TB_EMPMST e ON r.customer_code = e.employee_workplace_code
 WHERE r.return_request_key = 12;
+
+SELECT *
+FROM TB_RTN_REQ rr
+         LEFT JOIN TB_RTN_APPR ra ON rr.return_request_key = ra.return_request_key
+WHERE return_approve_key IS NOT NULL
+ORDER BY ra.return_request_key;
+
+SELECT serial_no
+FROM TB_INOUT_HIS his
+WHERE franchise_code = 'FRN0000000002'
+EXCEPT
+(SELECT serial_no
+ FROM TB_RTN_REQ
+ WHERE return_consent IS NULL || TB_RTN_REQ.return_consent = true
+     AND franchise_code = 'FRN0000000002');

@@ -27,13 +27,7 @@ import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
 
-function ReturnApprove({
-  isOpen,
-  onClose,
-  onApprove,
-  returnRequestKey,
-  setReturnRequestKey,
-}) {
+function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
   const { id, name } = useContext(AuthenticationContext);
 
   const initialApproveData = {
@@ -52,7 +46,7 @@ function ReturnApprove({
     if (returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
-        // console.log("호출", res.data);
+        console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
@@ -133,8 +127,17 @@ function ReturnApprove({
     );
   };
 
+  // console.log("결과", approveData);
+
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => {
+        onClose(e);
+        setApproveData(initialApproveData);
+      }}
+      size={"lg"}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
