@@ -25,6 +25,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function ReturnApprove({
   isOpen,
@@ -36,8 +37,8 @@ function ReturnApprove({
   const { id, name } = useContext(AuthenticationContext);
 
   const initialApproveData = {
-    customerEmployeeNo: "",
-    customerEmployeeName: "",
+    customerEmployeeNo: id,
+    customerEmployeeName: name,
     customerConfigurerNo: "",
     customerConfigurerName: "",
     returnDate: "",
@@ -122,6 +123,14 @@ function ReturnApprove({
           description: data.message.text,
         });
       });
+  };
+
+  //유효성 검사
+  const validate = () => {
+    return (
+      approveData.customerConfigurerName != null &&
+      approveData.returnDate != null
+    );
   };
 
   return (
@@ -305,7 +314,19 @@ function ReturnApprove({
               <Button onClick={handleDisapproveButton} variant="outline">
                 반려
               </Button>
-              <Button onClick={handleApproveButtonClick}>승인</Button>
+              <Tooltip
+                content="입력을 완료해 주세요."
+                openDelay={100}
+                closeDelay={100}
+                disabled={validate()}
+              >
+                <Button
+                  onClick={handleApproveButtonClick}
+                  disabled={!validate()}
+                >
+                  승인
+                </Button>
+              </Tooltip>
             </HStack>
           )}
 

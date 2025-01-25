@@ -153,14 +153,15 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   //유효성 검사
   const validate = () => {
     return (
-      requestData.businessEmployeeName.trim() !== "" &&
-      requestData.businessEmployeeNo.trim() !== "" &&
-      requestData.franchiseName.trim() !== "" &&
-      requestData.serialNo.trim() !== ""
+      requestData.businessEmployeeName != "" &&
+      requestData.businessEmployeeNo != "" &&
+      requestData.franchiseName != "" &&
+      requestData.serialNo != ""
     );
   };
 
   // console.log("requestData", requestData);
+  // console.log(validate());
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
@@ -282,8 +283,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             content="입력을 완료해 주세요."
             openDelay={100}
             closeDelay={100}
+            disabled={validate()}
           >
-            <Button onClick={handleRequestButtonClick} disabled={!validate}>
+            <Button onClick={handleRequestButtonClick} disabled={!validate()}>
               신청
             </Button>
           </Tooltip>
