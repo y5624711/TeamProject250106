@@ -37,11 +37,13 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     // 검색해도 active, sort, order 값 유지
     const active = searchParams.get("active") ?? "false";
     nextSearchParam.set("active", active);
+    const filter = searchParams.get("filter") ?? "";
 
     const sort = searchParams.get("sort") ?? "";
     const order = searchParams.get("order") ?? "asc";
     nextSearchParam.set("sort", sort);
     nextSearchParam.set("order", order);
+    nextSearchParam.set("filter", filter);
     return nextSearchParam;
   };
 

@@ -167,6 +167,9 @@ export function CommonCodeView({
 
                 <Flex mb={15}>
                   {/*코드 종류 선택*/}
+                  <Text pt={5} mr={5} ml={-1}>
+                    코드 종류 선택
+                  </Text>
                   <SelectViewCode
                     selectOptions={selectOptions}
                     onChange={handleCodeTypeChange}

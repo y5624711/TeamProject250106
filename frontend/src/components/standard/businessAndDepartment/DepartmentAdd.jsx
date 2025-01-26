@@ -69,7 +69,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   return (
     <DialogRoot
       open={isOpen}
-      size={"lg"}
+      size={"md"}
       onOpenChange={() => {
         onCancel();
         resetValue();
@@ -131,7 +131,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
             취소
           </Button>
           <Button onClick={handleSaveDepartment} disabled={!disable}>
-            저장
+            등록
           </Button>
         </DialogFooter>
         <DialogCloseTrigger onClick={handleCloseButton} />

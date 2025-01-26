@@ -104,7 +104,7 @@ export function DepartmentViewAndUpdateDialog({
 
   return (
     <DialogRoot
-      size={"lg"}
+      size={"md"}
       open={isOpen}
       onOpenChange={() => {
         onCancel();

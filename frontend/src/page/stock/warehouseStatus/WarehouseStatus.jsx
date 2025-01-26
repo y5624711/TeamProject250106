@@ -43,7 +43,7 @@ function WarehouseStatus() {
         {/*셀렉트 &&검색창*/}
 
         <Heading size={"xl"} p={2} mb={3}>
-          위치별 재고현황
+          {"물류 관리 > 위치별 재고 현황"}
         </Heading>
 
         <SearchInventory
