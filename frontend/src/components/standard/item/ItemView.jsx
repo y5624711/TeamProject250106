@@ -18,7 +18,7 @@ import { Button } from "../../ui/button.jsx";
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [editedItem, setEditedItem] = useState({
     size: "",
     unit: "",
@@ -129,14 +129,10 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                       <Text fontSize={"xs"} mt={-5}>
                         품목과 담당업체는 수정이 불가능합니다.
                       </Text>
-                      <Field label={"품목 "} required orientation="horizontal">
+                      <Field label={"품목 "} orientation="horizontal">
                         <Input readOnly value={item.itemCommonName} />
                       </Field>
-                      <Field
-                        label={"담당업체"}
-                        required
-                        orientation="horizontal"
-                      >
+                      <Field label={"담당업체"} orientation="horizontal">
                         <Input readOnly value={item.customerName || ""} />
                       </Field>
                       <Field label={"규격"} orientation="horizontal">
@@ -155,7 +151,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                           onChange={handleChange}
                         />
                       </Field>
-                      <Field label={"입고가"} required orientation="horizontal">
+                      <Field label={"입고가"} orientation="horizontal">
                         <Input
                           type="number"
                           name="inputPrice"
@@ -164,7 +160,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                           min="1"
                         />
                       </Field>
-                      <Field label={"출고가"} required orientation="horizontal">
+                      <Field label={"출고가"} orientation="horizontal">
                         <Input
                           type="number"
                           name="outputPrice"
