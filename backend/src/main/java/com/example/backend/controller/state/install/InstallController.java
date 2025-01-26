@@ -21,23 +21,23 @@ public class InstallController {
 
     final InstallService service;
 
-    // 설치 요청 반려
+    // 설치 신청 반려
     @PostMapping("disapprove/{installKey}")
     public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey) {
         // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
         if (service.installDisapprove(installKey)) {
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
+                    "message", Map.of("type", "success", "text", "설치 신청이 반려되었습니다.")
             ));
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 요청 반려를 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "설치 신청 반려를 실패하였습니다.")
             ));
         }
     }
 
 
-    // 설치 요청, 승인 리스트 가져오기
+    // 설치 신청, 승인 리스트 가져오기
     @GetMapping("list")
     public Map<String, Object> getInstallList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -116,7 +116,7 @@ public class InstallController {
         return service.getCustomerEmployee(installKey);
     }
 
-    // 설치 요청에 대한 정보 가져오기
+    // 설치 신청에 대한 정보 가져오기
     @GetMapping("/request/{installKey}")
     public List<Install> getInstallRequestView(@PathVariable int installKey) {
         return service.getInstallRequestView(installKey);
@@ -128,13 +128,13 @@ public class InstallController {
         return service.getInstallItemList();
     }
 
-    // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
+    // 설치 신청 가능한 가맹점, 가맹점 주소 가져오기
     @GetMapping("franchise")
     public List<Map<String, String>> getInstallFranchiseList() {
         return service.getInstallFranchiseList();
     }
 
-    // 설치 요청
+    // 설치 신청
     @PostMapping("request")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install, Authentication authentication) {
@@ -142,11 +142,11 @@ public class InstallController {
             if (service.installRequest(install, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", "설치 요청이 등록되었습니다."),
+                                "text", "설치 신청이 등록되었습니다."),
                         "data", install));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "설치 요청이 실패하였습니다.")));
+                        "message", Map.of("type", "error", "text", "설치 신청이 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.badRequest()

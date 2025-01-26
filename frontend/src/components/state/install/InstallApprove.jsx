@@ -44,7 +44,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     onClose();
   };
 
-  // 설치 요청에 대한 정보 가져오기
+  // 설치 신청에 대한 정보 가져오기
   useEffect(() => {
     if (installKey) {
       axios
@@ -53,7 +53,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           setInstallRequest(res.data[0] || []);
         })
         .catch((error) => {
-          console.error("설치 요청에 대한 정보 오류 발생: ", error);
+          console.error("설치 신청에 대한 정보 오류 발생: ", error);
         });
     }
   }, [installKey]);
@@ -94,7 +94,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
-  // 설치 요청 반려
+  // 설치 신청 반려
   const handleDisapproveClick = () => {
     axios
       .post(`/api/install/disapprove/${installKey}`)
@@ -171,14 +171,14 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.warehouseAddress} readOnly />
                 </Field>
               </HStack>
-              <Field label={"요청 날짜"} orientation="horizontal">
+              <Field label={"신청 날짜"} orientation="horizontal">
                 <Input value={installRequest.installRequestDate} readOnly />
               </Field>
-              <Field label={"요청 비고"} orientation="horizontal">
+              <Field label={"신청 비고"} orientation="horizontal">
                 <Input value={installRequest.installRequestNote} readOnly />
               </Field>
               {installRequest.installRequestConsent != false && (
-                <Box>
+                <Stack gap={"15px"}>
                   <Separator />
                   <Field label={"설치 예정일"} orientation="horizontal">
                     <Input
@@ -249,7 +249,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     </Field>
                   </HStack>
 
-                  <Field label={"비고"} orientation="horizontal">
+                  <Field label={"승인 비고"} orientation="horizontal">
                     <Textarea
                       placeholder="최대 50자"
                       value={installApprove.installApproveNote}
@@ -261,7 +261,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       }
                     />
                   </Field>
-                </Box>
+                </Stack>
               )}
             </Stack>
           </Box>

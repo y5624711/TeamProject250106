@@ -115,7 +115,9 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       >
         <BsArrowCounterclockwise size="25px" />
       </IconButton>
-      <Button onClick={handleSearchClick}>검색</Button>
+      <Button onClick={handleSearchClick} transform="translateX(-75%)">
+        검색
+      </Button>
     </HStack>
   );
 }

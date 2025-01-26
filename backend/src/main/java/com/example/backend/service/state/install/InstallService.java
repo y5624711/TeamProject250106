@@ -27,7 +27,7 @@ public class InstallService {
         return franchiseName && itemCommonName && amount;
     }
 
-    // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
+    // 설치 신청 가능한 가맹점, 가맹점 주소 가져오기
     public List<Map<String, String>> getInstallFranchiseList() {
         return mapper.getInstallFranchiseList();
     }
@@ -37,14 +37,14 @@ public class InstallService {
         return mapper.getInstallItemList();
     }
 
-    // 설치 요청
+    // 설치 신청
     public boolean installRequest(Install install, Authentication authentication) {
         install.setBusinessEmployeeNo(authentication.getName());
         int cnt = mapper.installRequest(install);
         return cnt == 1;
     }
 
-    // 설치 요청에 대한 정보 가져오기
+    // 설치 신청에 대한 정보 가져오기
     public List<Install> getInstallRequestView(int installKey) {
         return mapper.getInstallRequestView(installKey);
     }
@@ -67,9 +67,9 @@ public class InstallService {
     @Transactional
     public boolean installApprove(Install install) {
         try {
-            // 요청 수량 가져오기
+            // 신청 수량 가져오기
             int num = install.getInstallRequestAmount();
-            // 설치 요청에서 수량만큼 시리얼 번호 가져오기
+            // 설치 신청에서 수량만큼 시리얼 번호 가져오기
             List<String> serialList = mapper.getSerials(install.getItemCommonCode(), num);
             if (serialList.size() < num) {
                 throw new IllegalArgumentException("시리얼 번호 수량이 부족합니다." + "num: " + num + ", serial: " + serialList);
@@ -100,7 +100,7 @@ public class InstallService {
                 }
             }
 
-            // 요청 테이블의 승인 여부 true 처리
+            // 신청 테이블의 승인 여부 true 처리
             int updateRequestConsent = mapper.updateRequestConsent(install.getInstallRequestKey());
             if (updateRequestConsent <= 0) {
                 throw new IllegalStateException("승인 여부 변경 오류");
@@ -188,14 +188,14 @@ public class InstallService {
         }
     }
 
-    // 설치 요청, 승인 리스트 가져오기
+    // 설치 신청, 승인 리스트 가져오기
     public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword) {
         Integer offset = (page - 1) * 10;
         return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword),
                 "count", mapper.countAll(state, type, keyword));
     }
 
-    // 설치 요청 반려
+    // 설치 신청 반려
     public boolean installDisapprove(int installKey) {
         int cnt = mapper.installDisapprove(installKey);
         return cnt == 1;
