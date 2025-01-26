@@ -22,7 +22,7 @@ public class ItemService {
                 item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
                         item.getCustomerCode() == null || item.getCustomerCode().trim().isEmpty() ||
                         item.getInputPrice() == null || item.getInputPrice() < 0 ||
-                        item.getOutputPrice() == null || item.getOutputPrice() < 0);
+                        item.getOutputPrice() == null || item.getOutputPrice() < 0 || item.getItemActive() == null);
     }
 
     // 품목 중복 검증

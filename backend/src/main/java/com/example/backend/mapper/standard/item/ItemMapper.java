@@ -131,7 +131,8 @@ public interface ItemMapper {
             output_price = #{item.outputPrice},
             size = #{item.size},
             unit = #{item.unit},
-            item_note = #{item.itemNote}
+            item_note = #{item.itemNote},
+            item_active = #{item.itemActive}
             WHERE item_key = #{itemKey}
             """)
     int editItem(int itemKey, Item item);
