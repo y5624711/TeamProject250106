@@ -38,14 +38,12 @@ export function InstallList({
       { label: "전체", value: "all" },
       { label: "가맹점", value: "franchiseName" },
       { label: "품목", value: "itemCommonName" },
-      { label: "담당 업체", value: "itemCommonName" },
+      { label: "담당 업체", value: "customerName" },
       { label: "출고 번호", value: "outputNo" },
       { label: "신청자", value: "businessEmployeeName" },
       { label: "승인자", value: "customerEmployeeName" },
       { label: "설치 기사", value: "customerInstallerName" },
       { label: "창고", value: "warehouseName" },
-      { label: "날짜", value: "outputPrice" },
-      { label: "상태", value: "state" },
     ],
   });
 
@@ -69,7 +67,10 @@ export function InstallList({
 
   return (
     <Box>
-      <SearchBar searchOptions={searchOptions} />
+      <SearchBar
+        searchOptions={searchOptions}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
       <RadioGroup
         defaultValue={radioValue}
         my={3}

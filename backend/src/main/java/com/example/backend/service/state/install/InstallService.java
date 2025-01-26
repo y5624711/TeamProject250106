@@ -189,10 +189,10 @@ public class InstallService {
     }
 
     // 설치 요청, 승인 리스트 가져오기
-    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state) {
+    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword) {
         Integer offset = (page - 1) * 10;
-        return Map.of("list", mapper.getInstallList(offset, sort, order, state),
-                "count", mapper.countAll(state));
+        return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword),
+                "count", mapper.countAll(state, type, keyword));
     }
 
     // 설치 요청 반려

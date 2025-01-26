@@ -43,8 +43,10 @@ public class InstallController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "") String order,
-            @RequestParam(value = "state", defaultValue = "") String state) {
-        return service.getInstallList(page, sort, order, state);
+            @RequestParam(value = "state", defaultValue = "") String state,
+            @RequestParam(value = "type", defaultValue = "") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+        return service.getInstallList(page, sort, order, state, type, keyword);
     }
 
     // 설치 확인
