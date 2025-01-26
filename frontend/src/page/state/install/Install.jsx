@@ -63,7 +63,7 @@ export function Install() {
   const handleRowClick = (key) => {
     setSelectedInstall(key);
 
-    if (key.state === "대기") {
+    if (key.state === "대기" || key.state === "반려") {
       setApproveDialogOpen(true);
     } else if (key.state === "승인" || key.state === "완료") {
       setConfigurationDialogOpen(true);
