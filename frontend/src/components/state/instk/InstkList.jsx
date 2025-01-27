@@ -89,7 +89,7 @@ export function InstkList() {
             {instkList.map((item, index) => {
               return (
                 <Table.Row
-                  onClick={() => {
+                  onDoubleClick={() => {
                     handleSelectModal(item.inputConsent);
                     setSelectedIndex(index);
                   }}
