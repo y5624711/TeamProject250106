@@ -47,14 +47,8 @@ public class PurchaseController {
 
     // 구매 관리 리스트
     @GetMapping("/list")
-    public Map<String, Object> purchaseList(
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "type", defaultValue = "all") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword,
-            @RequestParam(value = "state", defaultValue = "all") String state,
-            @RequestParam(value = "sort", defaultValue = "COALESCE(purchase_request_date, purchase_approve_date)") String sort,
-            @RequestParam(value = "order", defaultValue = "DESC") String order) {
-        return service.purchaseList(page, type, keyword, state, sort, order);
+    public List<Purchase> list() {
+        return service.purchaseList();
     }
 
     // 구매 승인 팝업 보기
