@@ -31,11 +31,13 @@ public class InstkController {
 
     }
 
-    @GetMapping("detailview/{inputKey}")
+    @GetMapping("detailView/{inputKey}")
     public Instk detailView(@PathVariable int inputKey) {
-//        System.out.println("inputKey = " + inputKey);
+        System.out.println("inputKey = " + inputKey);
 
-        return service.detailView(inputKey);
+
+        return  new Instk();
+//        return service.detailView(inputKey);
 
     }
 

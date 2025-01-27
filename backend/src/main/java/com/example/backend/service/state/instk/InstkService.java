@@ -75,7 +75,8 @@ public class InstkService {
             //입고 테이블 
             mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-
+                
+            //인아웃 히스토리 집어 넣기
 //            inoutHistoryMapper.add()
 
         }

@@ -21,9 +21,10 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const [inputStockNote, setInputStockNote] = useState("");
   console.log("확인창 id",id)
   useEffect(() => {
-    // axios.get("api/instk/detailView");
-    //   요청해서 가져와야하는거 구매승인자,창고주소
+    axios.get(`api/instk/detailView/${instk.inputKey}`);
   }, []);
+
+
 
   // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가 ,입고 상세에 시리얼 번호 로케이션 등등
   const handleAddInstk = () => {
@@ -67,6 +68,15 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
 
             <HStack>
+              <Field label={"주문 요청자 "} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeName} />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeNo} />
+              </Field>
+            </HStack>
+
+            <HStack>
               <Field label={"주문 승인자"} orientation="horizontal">
                 <Input value={instk.requestApprovalEmployeeName} />
               </Field>
@@ -74,14 +84,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
                 <Input readOnly value={instk.requestApprovalEmployeeNo} />
               </Field>
             </HStack>
-            <HStack>
-              <Field label={"구매 요청자 "} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeName} />
-              </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeNo} />
-              </Field>
-            </HStack>
+
 
             <HStack>
               <Field label={"창고 주소"} orientation="horizontal">
