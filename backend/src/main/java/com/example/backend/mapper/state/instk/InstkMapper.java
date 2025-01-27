@@ -135,4 +135,17 @@ SELECT
            WHERE purchase_no=#{inputNo}
            """)
     InstkDetail viewWareHouse(String inputNo);
+
+    // 반품 입고시 창고 주소 가져오는 DTO
+    @Select("""
+             SELECT  APPR.customer_employee_no ,EMPMST.employee_workplace_code, WHMST.warehouse_address
+             FROM TB_RTN_APPR APPR
+             LEFT JOIN TB_EMPMST EMPMST 
+             ON APPR.customer_employee_no=EMPMST.employee_no
+             LEFT JOIN TB_WHMST WHMST
+             ON EMPMST.employee_workplace_code=WHMST.customer_code
+             WHERE APPR.return_no=#{inputNo}
+         
+             """)
+    InstkDetail viewReturnWareHouse(String inputNo);
 }

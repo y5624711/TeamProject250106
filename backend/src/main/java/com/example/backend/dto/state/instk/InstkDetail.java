@@ -7,5 +7,7 @@ public class InstkDetail {
 
     private String warehouseCode ;
     private String warehouseAddress;
+    private String employeeNo;
+    private String employeeWorkPlaceCode;
 
 }

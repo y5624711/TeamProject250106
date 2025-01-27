@@ -19,12 +19,15 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
+  const [instkDetail, setInstkDetail] = useState({});
   console.log("확인창 id",id)
   useEffect(() => {
     axios.get(`api/instk/confirmView/${instk.inputNo}`,{
       params:{
         inputCommonCode:instk.inputCommonCode,
       }
+    }).then((res)=>{
+      setInstkDetail(res.data);
     });
   }, []);
 
@@ -92,10 +95,10 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
 
             <HStack>
               <Field label={"창고 주소"} orientation="horizontal">
-                <Input value={""} />
+                <Input value={instkDetail.warehouseAddress} />
               </Field>
               <Field label={"담당 업체"} orientation="horizontal">
-                <Input value={""} />
+                <Input value={instk.customerName} />
               </Field>
             </HStack>
             <HStack>
@@ -103,10 +106,13 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
                 <Input value={localStorage.getItem("name")} readOnly />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input value={localStorage.getItem("name")} readOnly />
+                <Input value={id} readOnly />
               </Field>
             </HStack>
-            <Field label={"비고"} orientation="horizontal">
+            <Field label={"가입고 비고"} orientation="horizontal">
+              <Textarea value={instk.inputNote}  placeholder={"최대50자"}/>
+            </Field>
+            <Field label={"입고 비고"} orientation="horizontal">
               <Textarea value={inputStockNote}  placeholder={"최대50자"}  onChange={(e)=>{
                 setInputStockNote(e.target.value);
               }} />

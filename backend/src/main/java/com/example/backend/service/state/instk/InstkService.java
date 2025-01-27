@@ -94,17 +94,18 @@ public class InstkService {
         }
     }
 
+    // 반품입고 만들어야함 , 반품 승인 테이블에 창고코드 만들면 하나로 합칠수 있음
     public InstkDetail confirmView(String inputNo, String inputCommonCode) {
-        //창고주소 , 담당업체  로케이션 ?
-
+        System.out.println("inputCommonCode = " + inputCommonCode);
         // 그냥 입고 ,구매승인가서 , 창고 코드 , 창고 코드 가서
-      InstkDetail instkDetail = mapper.viewWareHouse(inputNo);
-      // 반품입고 만들어야함 , 반품 승인 테이블에 창고코드 만들면 하나로 합칠수 있음
-
-
-      return instkDetail;
-
-
-
+        if(inputCommonCode.equals("INSTK")) {
+              InstkDetail instkDetail = mapper.viewWareHouse(inputNo);
+              return instkDetail;
+        }   //     반품 입고
+        else if(inputCommonCode.equals("RETRN")) {
+            InstkDetail instkDetail = mapper.viewReturnWareHouse(inputNo);
+            return instkDetail;
+        }
+        return null;
     }
 }
