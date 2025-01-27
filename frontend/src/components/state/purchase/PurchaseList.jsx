@@ -3,6 +3,7 @@ import {
   Button,
   createListCollection,
   HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -15,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 export function PurchaseList({
   purchaseList,
@@ -37,6 +39,7 @@ export function PurchaseList({
 
   return (
     <Box>
+      {/* 검색창 */}
       <HStack justifyContent="center">
         <SelectRoot
           collection={PurchaseOptionList}
@@ -75,9 +78,24 @@ export function PurchaseList({
             }
           }}
         />
-        <Button onClick={handleSearchClick}>검색</Button>
+
+        {/* 검색 초기화 */}
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={() => {
+            window.location.search = ""; // searchParams 초기화
+          }}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
+        <Button onClick={handleSearchClick} transform="translateX(-75%)">
+          검색
+        </Button>
       </HStack>
 
+      {/* 라디오 */}
       <RadioGroup defaultValue="1" my={6} ml={12}>
         <HStack gap={6}>
           <Radio value="1">전체</Radio>
@@ -87,6 +105,7 @@ export function PurchaseList({
         </HStack>
       </RadioGroup>
 
+      {/* 테이블 */}
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>

@@ -3,6 +3,7 @@ import {
   Button,
   createListCollection,
   HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -17,6 +18,7 @@ import {
 import { Checkbox } from "../../ui/checkbox.jsx";
 import React, { useMemo } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 export function FranchiseList({
   franchiseList,
@@ -113,7 +115,21 @@ export function FranchiseList({
             }
           }}
         />
-        <Button onClick={handleSearchClick}>검색</Button>
+
+        {/* 검색 초기화 */}
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={() => {
+            window.location.search = ""; // searchParams 초기화
+          }}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
+        <Button onClick={handleSearchClick} transform="translateX(-75%)">
+          검색
+        </Button>
       </HStack>
 
       {/* 전체 조회 체크 박스 */}
