@@ -139,8 +139,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             description: data.message.text,
             type: data.message.type,
           });
-          onRequest(requestData);
+          onRequest();
           setRequestData(initialRequestData);
+          onClose();
         })
         .catch((e) => console.error("반품 요청 에러", e));
     }
