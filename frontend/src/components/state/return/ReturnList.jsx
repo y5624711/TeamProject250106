@@ -163,10 +163,10 @@ function ReturnList({
         my={3}
       >
         <HStack gap={6}>
-          <Radio value="all">전체 조회</Radio>
-          <Radio value="request">대기 상태 조회</Radio>
-          <Radio value="approve">승인 상태 조회</Radio>
-          <Radio value="disapprove">반려 상태 조회</Radio>
+          <Radio value="all">전체</Radio>
+          <Radio value="request">대기</Radio>
+          <Radio value="approve">승인</Radio>
+          <Radio value="disapprove">반려</Radio>
         </HStack>
       </RadioGroup>
 
