@@ -96,7 +96,7 @@ export function PurchaseList({
       </HStack>
 
       {/* 라디오 */}
-      <RadioGroup defaultValue="1" my={6} ml={12}>
+      <RadioGroup defaultValue="1" my={6} ml={2}>
         <HStack gap={6}>
           <Radio value="1">전체</Radio>
           <Radio value="2">대기</Radio>

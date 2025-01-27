@@ -74,7 +74,7 @@ export function Purchase() {
         />
         {/* 페이지네이션 */}
         <Center>
-          <PaginationRoot count={count} pageSize={10} variant="solid" mt={3}>
+          <PaginationRoot count={count} pageSize={10} variant="solid" mt={5}>
             <HStack>
               <PaginationPrevTrigger />
               <PaginationItems />
@@ -84,7 +84,9 @@ export function Purchase() {
         </Center>
         {/* 구매 신청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handlePurchaseRequestClick}>구매 신청</Button>
+          <Button onClick={handlePurchaseRequestClick} mt={-11}>
+            구매 신청
+          </Button>
         </Box>
         {/* 구매 다이얼로그 */}
         <PurchaseDialog
