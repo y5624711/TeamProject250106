@@ -1,6 +1,7 @@
 package com.example.backend.service.state.instk;
 
 import com.example.backend.dto.state.instk.Instk;
+import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
@@ -93,11 +94,15 @@ public class InstkService {
         }
     }
 
-    public void confirmView(String inputKey, String inputCommonCode) {
+    public InstkDetail confirmView(String inputNo, String inputCommonCode) {
         //창고주소 , 담당업체  로케이션 ?
 
-//        회순 입고냐 반품입고냐에 따른 동적 처리하는 뭐시기
+        // 그냥 입고 ,구매승인가서 , 창고 코드 , 창고 코드 가서
+      InstkDetail instkDetail = mapper.viewWareHouse(inputNo);
+      // 반품입고 만들어야함 , 반품 승인 테이블에 창고코드 만들면 하나로 합칠수 있음
 
+
+      return instkDetail;
 
 
 

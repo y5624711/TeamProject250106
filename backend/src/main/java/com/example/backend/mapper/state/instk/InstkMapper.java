@@ -1,6 +1,7 @@
 package com.example.backend.mapper.state.instk;
 
 import com.example.backend.dto.state.instk.Instk;
+import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.dto.state.retrieve.Return;
 import org.apache.ibatis.annotations.Insert;
@@ -123,4 +124,15 @@ SELECT
             
             """)
     int addInstk(int inputKey, String inputStockNote, String inputStockEmployeeNo);
+
+
+    // 구매 입고시  창고 주소  TODO 창고 로케이션도 추가로 해야할거 같은데.
+    @Select("""
+           SELECT  AR.warehouse_code ,WHMST.warehouse_address 
+           FROM TB_PURCH_APPR AR
+           LEFT JOIN  TB_WHMST WHMST
+           ON AR.warehouse_code=WHMST.warehouse_code
+           WHERE purchase_no=#{inputNo}
+           """)
+    InstkDetail viewWareHouse(String inputNo);
 }

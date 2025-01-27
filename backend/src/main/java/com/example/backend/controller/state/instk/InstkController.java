@@ -1,6 +1,7 @@
 package com.example.backend.controller.state.instk;
 
 import com.example.backend.dto.state.instk.Instk;
+import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.service.state.instk.InstkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +43,11 @@ public class InstkController {
 
     }
     //확인 상세
-    @GetMapping("confirmView/{inputKey}")
-    public void confirmView(@PathVariable String inputKey ,@RequestParam String inputCommonCode) {
-        System.out.println("inputKey = " + inputKey);
-        System.out.println("inputCommonCode = " + inputCommonCode);
+    @GetMapping("confirmView/{inputNo}")
+    public InstkDetail confirmView(@PathVariable String inputNo , @RequestParam String inputCommonCode) {
 
-        service.confirmView(inputKey,inputCommonCode);
+
+        return service.confirmView(inputNo,inputCommonCode);
 
 
 
