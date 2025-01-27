@@ -28,6 +28,7 @@ import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import Select from "react-select";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function InstallRequest({ isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -261,9 +262,17 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestClick} disabled={!isValid}>
-            신청
-          </Button>
+          {!isValid ? (
+            <Tooltip content="입력을 완료해주세요.">
+              <Button onClick={handleRequestClick} disabled={!isValid}>
+                신청
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button onClick={handleRequestClick} disabled={!isValid}>
+              신청
+            </Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

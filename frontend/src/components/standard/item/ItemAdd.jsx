@@ -23,6 +23,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   const initialItemData = {
@@ -205,9 +206,17 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleAddClick} disabled={!isValid}>
-            등록
-          </Button>
+          {!isValid ? (
+            <Tooltip content="입력을 완료해주세요.">
+              <Button onClick={handleAddClick} disabled={!isValid}>
+                등록
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button onClick={handleAddClick} disabled={!isValid}>
+              등록
+            </Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

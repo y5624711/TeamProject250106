@@ -26,6 +26,7 @@ import {
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -274,9 +275,17 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 <Button variant="outline" onClick={handleDisapproveClick}>
                   반려
                 </Button>
-                <Button onClick={handleApproveClick} disabled={!isValid}>
-                  승인
-                </Button>
+                {!isValid ? (
+                  <Tooltip content="입력을 완료해주세요.">
+                    <Button onClick={handleApproveClick} disabled={!isValid}>
+                      승인
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button onClick={handleApproveClick} disabled={!isValid}>
+                    승인
+                  </Button>
+                )}
               </HStack>
             ) : (
               <Button variant="outline" onClick={handleClose}>

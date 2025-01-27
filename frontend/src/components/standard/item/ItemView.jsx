@@ -15,6 +15,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
@@ -187,9 +188,17 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
               <DialogActionTrigger asChild>
                 <Button variant="outline">취소</Button>
               </DialogActionTrigger>
-              <Button onClick={handleSaveClick} disabled={!isValid}>
-                저장
-              </Button>
+              {!isValid ? (
+                <Tooltip content="입력을 완료해주세요.">
+                  <Button onClick={handleSaveClick} disabled={!isValid}>
+                    저장
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button onClick={handleSaveClick} disabled={!isValid}>
+                  저장
+                </Button>
+              )}
             </HStack>
           </DialogFooter>
           <DialogCloseTrigger />
