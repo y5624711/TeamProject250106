@@ -56,44 +56,42 @@ function CustomerList({
   // console.log(standard.order);
 
   return (
-    <Box px={10}>
-      <Center>
-        {/* 검색창 */}
-        <HStack justifyContent="center" w={"100%"}>
-          <SelectRoot
-            collection={optionList}
-            width={"160px"}
-            value={[search.type]}
-            onValueChange={(oc) => {
-              setSearch({ ...search, type: oc.value[0] });
-            }}
-            size="md"
-          >
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent>
-              {optionList.items.map((option) => (
-                <SelectItem item={option} key={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
+    <Box>
+      {/* 검색창 */}
+      <HStack justifyContent="center" w={"100%"}>
+        <SelectRoot
+          collection={optionList}
+          width={"160px"}
+          value={[search.type]}
+          onValueChange={(oc) => {
+            setSearch({ ...search, type: oc.value[0] });
+          }}
+          size="md"
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {optionList.items.map((option) => (
+              <SelectItem item={option} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
 
-          <Input
-            width="50%"
-            placeholder="검색어를 입력해 주세요"
-            type="text"
-            value={search.keyword}
-            onChange={(e) => {
-              setSearch({ ...search, keyword: e.target.value });
-            }}
-          />
+        <Input
+          width="50%"
+          placeholder="검색어를 입력해 주세요"
+          type="text"
+          value={search.keyword}
+          onChange={(e) => {
+            setSearch({ ...search, keyword: e.target.value });
+          }}
+        />
 
-          <Button onClick={handleSearchClick}>검색</Button>
-        </HStack>
-      </Center>
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
 
       {/* 체크박스 필터 */}
       <Checkbox checked={checkedActive} onChange={toggleCheckedActive} my={3}>
@@ -101,9 +99,9 @@ function CustomerList({
       </Checkbox>
 
       {/*테이블*/}
-      <Table.Root interactive>
+      <Table.Root interactive my={3}>
         <Table.Header>
-          <Table.Row>
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader onClick={() => onHeader("customer_key")}>
               <HStack align={"flex-start"}>
                 <Stack>
