@@ -45,8 +45,18 @@ public class PurchaseService {
     }
 
     // 구매 관리 리스트
-    public List<Purchase> purchaseList() {
-        return mapper.purchaseList();
+    public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order) {
+        // 신청 날짜, 승인 날짜 합치기
+        if ("date".equals(sort)) {
+            sort = "COALESCE(purchase_request_date, purchase_approve_date)";
+        }
+        // SQL의 LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+        // 조회되는 게시물들
+        List<Purchase> purchaseList = mapper.getPurchaseList(offset, type, keyword, state, sort, order);
+        // 전체 게시물 수
+        Integer count = mapper.countPurchaseList(type, keyword, state);
+        return Map.of("purchaseList", purchaseList, "count", count);
     }
 
     // 구매 승인 팝업 보기
