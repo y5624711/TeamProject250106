@@ -96,7 +96,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
 
   return (
     <Box>
-      <Box maxW="500px" mx="auto" p={4}>
+      <Box>
         <Field label="가맹점명" orientation="horizontal" mb={15}>
           <Input
             value={franchiseName}

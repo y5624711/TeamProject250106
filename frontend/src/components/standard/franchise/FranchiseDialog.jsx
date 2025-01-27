@@ -24,7 +24,7 @@ export function FranchiseDialog({
   }, [franchiseKey]);
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose}>
+    <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

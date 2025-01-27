@@ -100,7 +100,7 @@ export function FranchiseView({
 
   return (
     <Box>
-      <Box maxW="500px" mx="auto" p={4}>
+      <Box>
         <Box display="flex" gap={4}>
           <Field label="가맹점명" orientation="horizontal" mb={15}>
             <Input
@@ -114,6 +114,7 @@ export function FranchiseView({
               name="franchiseCode"
               value={franchise.franchiseCode}
               onChange={handleChange}
+              readOnly
             />
           </Field>
         </Box>
