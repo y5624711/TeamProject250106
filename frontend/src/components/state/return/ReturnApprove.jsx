@@ -43,14 +43,14 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
 
   //요청 정보 가져오기
   useEffect(() => {
-    if (returnRequestKey) {
+    if (isOpen && returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
         // console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
-  }, [returnRequestKey]);
+  }, [isOpen, returnRequestKey]);
   // console.log("셋팅", approveData);
 
   //검수 기사 정보 가져오기
