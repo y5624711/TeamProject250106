@@ -9,12 +9,14 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Stack,
   Table,
   TableColumnHeader,
   TableHeader,
 } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import React, { useMemo } from "react";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 export function FranchiseList({
   franchiseList,
@@ -116,7 +118,7 @@ export function FranchiseList({
 
       {/* 전체 조회 체크 박스 */}
       <Checkbox
-        mt={5}
+        mt={3}
         mb={5}
         ml={2}
         checked={checkedActive}
@@ -129,64 +131,103 @@ export function FranchiseList({
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseKey")}>
-              #{" "}
-              {standard.sort === "franchiseKey" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseKey")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>#</Stack>
+                {standard.sort === "franchiseKey" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseName")}
             >
-              가맹점명{" "}
-              {standard.sort === "franchiseName" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>가맹점명</Stack>
+                {standard.sort === "franchiseName" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseNo")}
             >
-              사업자 번호{" "}
-              {standard.sort === "franchiseNo" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>사업자 번호</Stack>
+                {standard.sort === "franchiseNo" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseRep")}
             >
-              대표자{" "}
-              {standard.sort === "franchiseRep" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>대표자</Stack>
+                {standard.sort === "franchiseRep" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseTel")}
             >
-              전화번호{" "}
-              {standard.sort === "franchiseTel" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>전화번호</Stack>
+                {standard.sort === "franchiseTel" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseState")}
             >
-              광역시도{" "}
-              {standard.sort === "franchiseState" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>광역시도</Stack>
+                {standard.sort === "franchiseState" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
               verticalAlign="middle"
               onClick={() => HeaderClick("franchiseCity")}
             >
-              시군{" "}
-              {standard.sort === "franchiseCity" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>시군</Stack>
+                {standard.sort === "franchiseCity" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
           </Table.Row>
         </TableHeader>

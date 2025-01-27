@@ -243,6 +243,7 @@ export function Franchise() {
             count={count}
             pageSize={10}
             variant="solid"
+            mt={5}
           >
             <HStack>
               <PaginationPrevTrigger />
@@ -252,8 +253,10 @@ export function Franchise() {
           </PaginationRoot>
         </Center>
         {/* 가맹점 등록 버튼 */}
-        <Box display="flex" justifyContent="flex-end" mb={4}>
-          <Button onClick={handleAddFranchiseClick}>가맹점 등록</Button>
+        <Box display="flex" justifyContent="flex-end">
+          <Button onClick={handleAddFranchiseClick} mt={-10}>
+            가맹점 등록
+          </Button>
         </Box>
         {/* 다이얼로그 */}
         <FranchiseDialog
