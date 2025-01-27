@@ -95,12 +95,12 @@ function Customer() {
       });
   };
 
-  const handleEditRequest = () => {
-    if (customerKey) {
-      setViewDialogOpen(false);
-      setEditDialogOpen(true);
-    }
-  };
+  // const handleEditRequest = () => {
+  //   if (customerKey) {
+  //     setViewDialogOpen(false);
+  //     setEditDialogOpen(true);
+  //   }
+  // };
 
   //수정 저장 버튼
   const handleEditClick = (customerData) => {
@@ -125,26 +125,26 @@ function Customer() {
       });
   };
 
-  const handleDeleteClick = () => {
-    axios
-      .put(`api/customer/delete/${customerKey}`)
-      .then((res) => res.data)
-      .then((data) => {
-        fetchUpdatedCustomerList();
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-        setViewDialogOpen(false);
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
+  // const handleDeleteClick = () => {
+  //   axios
+  //     .put(`api/customer/delete/${customerKey}`)
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       fetchUpdatedCustomerList();
+  //       toaster.create({
+  //         type: data.message.type,
+  //         description: data.message.text,
+  //       });
+  //       setViewDialogOpen(false);
+  //     })
+  //     .catch((e) => {
+  //       const data = e.response.data;
+  //       toaster.create({
+  //         type: data.message.type,
+  //         description: data.message.text,
+  //       });
+  //     });
+  // };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
@@ -172,6 +172,7 @@ function Customer() {
     if (search.keyword.trim().length > 0) {
       nextSearchParams.set("type", search.type);
       nextSearchParams.set("keyword", search.keyword);
+      nextSearchParams.set("page", 1);
     } else {
       nextSearchParams.delete("type");
       nextSearchParams.delete("keyword");
