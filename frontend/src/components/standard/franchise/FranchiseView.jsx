@@ -3,7 +3,6 @@ import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
 
 export function FranchiseView({
   franchiseKey,
@@ -14,8 +13,6 @@ export function FranchiseView({
 }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
-  const [isReadOnly, setIsReadOnly] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // 입력값이 변경될 때마다 상태를 업데이트
   const handleChange = (e) => {
@@ -26,18 +23,7 @@ export function FranchiseView({
     }));
   };
 
-  // 수정
-  const handleEditClick = () => {
-    setIsReadOnly(false); // 수정 모드 활성화
-  };
-
-  // 취소
-  const handleCancelClick = () => {
-    setFranchise(originalData); // 취소 시 초기값으로 되돌림
-    setIsReadOnly(true); // 수정 모드 취소
-  };
-
-  // 저장
+  // 확인 (수정 후 저장)
   const handleSaveClick = () => {
     axios
       .put(`/api/franchise/edit/${franchiseKey}`, franchise)
@@ -47,7 +33,6 @@ export function FranchiseView({
           type: message.type,
           description: message.text,
         });
-        setIsReadOnly(true); // 저장 후 읽기 모드로 전환
         setOriginalData(franchise); // 저장 후 초기값 갱신
         onSave(franchise); // 부모 컴포넌트로 수정된 데이터 전달
       })
@@ -60,9 +45,9 @@ export function FranchiseView({
       });
   };
 
-  // 삭제 버튼 클릭
-  const handleDeleteClick = () => {
-    setIsDialogOpen(true); // 다이얼로그 열기
+  // 취소
+  const handleCancelClick = () => {
+    onClose();
   };
 
   // 삭제 확인
@@ -122,7 +107,6 @@ export function FranchiseView({
               name="franchiseName"
               value={franchise.franchiseName}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
           <Field label="가맹점 코드" orientation="horizontal" mb={15}>
@@ -130,7 +114,6 @@ export function FranchiseView({
               name="franchiseCode"
               value={franchise.franchiseCode}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
         </Box>
@@ -139,7 +122,6 @@ export function FranchiseView({
             name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
-            readOnly={isReadOnly}
           />
         </Field>
         <Box display="flex" gap={4}>
@@ -148,7 +130,6 @@ export function FranchiseView({
               name="franchiseRep"
               value={franchise.franchiseRep}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
           <Field label="전화번호" orientation="horizontal" mb={15}>
@@ -156,7 +137,6 @@ export function FranchiseView({
               name="franchiseTel"
               value={franchise.franchiseTel}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
         </Box>
@@ -165,7 +145,6 @@ export function FranchiseView({
             name="franchisePost"
             value={franchise.franchisePost}
             onChange={handleChange}
-            readOnly={isReadOnly}
           />
         </Field>
         <Field label="주소" orientation="horizontal" mb={15}>
@@ -173,7 +152,6 @@ export function FranchiseView({
             name="franchiseAddress"
             value={franchise.franchiseAddress}
             onChange={handleChange}
-            readOnly={isReadOnly}
           />
         </Field>
         <Field label="상세 주소" orientation="horizontal" mb={15}>
@@ -181,7 +159,6 @@ export function FranchiseView({
             name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
             onChange={handleChange}
-            readOnly={isReadOnly}
           />
         </Field>
         <Box display="flex" gap={4}>
@@ -190,7 +167,6 @@ export function FranchiseView({
               name="franchiseState"
               value={franchise.franchiseState}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
           <Field label="시군" orientation="horizontal" mb={15}>
@@ -198,7 +174,6 @@ export function FranchiseView({
               name="franchiseCity"
               value={franchise.franchiseCity}
               onChange={handleChange}
-              readOnly={isReadOnly}
             />
           </Field>
         </Box>
@@ -208,41 +183,17 @@ export function FranchiseView({
             value={franchise.franchiseNote}
             onChange={handleChange}
             placeholder="최대 50자"
-            readOnly={isReadOnly}
           />
         </Field>
-        <Box display="flex" justifyContent="space-between" mt={4}>
-          {isReadOnly ? (
-            <>
-              <Button onClick={handleEditClick} colorScheme="blue">
-                수정
-              </Button>
-              {franchise.franchiseActive && (
-                <Button onClick={handleDeleteClick} colorScheme="red">
-                  삭제
-                </Button>
-              )}
-            </>
-          ) : (
-            <>
-              <Button onClick={handleSaveClick} colorScheme="green">
-                저장
-              </Button>
-              <Button onClick={handleCancelClick} colorScheme="gray">
-                취소
-              </Button>
-            </>
-          )}
+        <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
+          <Button onClick={handleCancelClick} variant="outline">
+            취소
+          </Button>
+          <Button onClick={handleSaveClick} colorScheme="green">
+            확인
+          </Button>
         </Box>
       </Box>
-      {/* DialogConfirmation */}
-      <DialogConfirmation
-        isOpen={isDialogOpen}
-        onConfirm={handleDeleteConfirm}
-        onClose={() => setIsDialogOpen(false)}
-        title="삭제 확인"
-        body="정말로 이 가맹점을 삭제하시겠습니까?"
-      />
     </Box>
   );
 }
