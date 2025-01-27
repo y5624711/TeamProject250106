@@ -20,6 +20,7 @@ import { Instk } from "./page/state/instk/Instk.jsx";
 import Stocktaking from "./page/stock/stocktaking/Stocktaking.jsx";
 import InoutHistory from "./page/stock/inoutHistory/InoutHistory.jsx";
 import WarehouseStatus from "./page/stock/warehouseStatus/WarehouseStatus.jsx";
+import MemberInfo from "./page/memberInfo/MemberInfo.jsx";
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Main />,
+      },
+      {
+        path: `info/:id`,
+        element: <MemberInfo />,
       },
       {
         path: "business",

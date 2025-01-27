@@ -67,7 +67,7 @@ function AuthenticationProvider({ children }) {
   let isAdmin = false;
 
   if (userToken.scope) {
-    isAdmin = userToken.scope.split(" ").includes("EMP");
+    isAdmin = userToken.scope.split(" ").includes("BIZ");
     console.log(userToken.scope);
   }
 

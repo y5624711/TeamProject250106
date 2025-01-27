@@ -38,7 +38,7 @@ export function Navbar() {
           Choongang System
         </Heading>
         <Spacer />
-        {isAuthenticated && <NavItem>{name}님 환영합니다</NavItem>}
+        {isAuthenticated && <NavItem path={`/info/${id}`}>내 정보</NavItem>}
 
         {isAuthenticated && (
           <NavItem
