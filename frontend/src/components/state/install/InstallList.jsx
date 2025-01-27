@@ -100,7 +100,7 @@ export function InstallList({
           <Table.Body>
             {installList?.map((install, index) => (
               <Table.Row
-                onClick={() => onRowClick(install)}
+                onDoubleClick={() => onRowClick(install)}
                 style={{
                   cursor: "pointer",
                 }}
