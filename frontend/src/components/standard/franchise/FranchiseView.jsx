@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Spinner } from "@chakra-ui/react";
+import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
@@ -117,127 +117,97 @@ export function FranchiseView({
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
         <Box display="flex" gap={4}>
-          <Field label="직원 사번" mb={4}>
-            <Input
-              name="businessEmployeeNo"
-              value={franchise.businessEmployeeNo}
-              onChange={handleChange}
-              placeholder="직원 사번"
-              readOnly={isReadOnly}
-            />
-          </Field>
-          <Field label="직원 이름" mb={4}>
-            <Input
-              name="businessEmployeeName"
-              value={franchise.businessEmployeeName}
-              onChange={handleChange}
-              placeholder="직원 이름"
-              readOnly={isReadOnly}
-            />
-          </Field>
-        </Box>
-        <Box display="flex" gap={4}>
-          <Field label="가맹점 코드" mb={4}>
-            <Input
-              name="franchiseCode"
-              value={franchise.franchiseCode}
-              onChange={handleChange}
-              placeholder="가맹점 코드"
-              readOnly={isReadOnly}
-            />
-          </Field>
-          <Field label="가맹점명" mb={4}>
+          <Field label="가맹점명" orientation="horizontal" mb={15}>
             <Input
               name="franchiseName"
               value={franchise.franchiseName}
               onChange={handleChange}
-              placeholder="가맹점명"
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="가맹점 코드" orientation="horizontal" mb={15}>
+            <Input
+              name="franchiseCode"
+              value={franchise.franchiseCode}
+              onChange={handleChange}
               readOnly={isReadOnly}
             />
           </Field>
         </Box>
-        <Box display="flex" gap={4}>
-          <Field label="가맹점주" mb={4}>
-            <Input
-              name="franchiseRep"
-              value={franchise.franchiseRep}
-              onChange={handleChange}
-              placeholder="가맹점주"
-              readOnly={isReadOnly}
-            />
-          </Field>
-          <Field label="전화번호" mb={4}>
-            <Input
-              name="franchiseTel"
-              value={franchise.franchiseTel}
-              onChange={handleChange}
-              placeholder="전화번호"
-              readOnly={isReadOnly}
-            />
-          </Field>
-        </Box>
-        <Field label="사업자 번호" mb={4}>
+        <Field label="사업자 번호" orientation="horizontal" mb={15}>
           <Input
             name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
-            placeholder="사업자 번호"
-            readOnly={isReadOnly}
-          />
-        </Field>
-        <Field label="주소" mb={4}>
-          <Input
-            name="franchiseAddress"
-            value={franchise.franchiseAddress}
-            onChange={handleChange}
-            placeholder="주소"
-            readOnly={isReadOnly}
-          />
-        </Field>
-        <Field label="상세 주소" mb={4}>
-          <Input
-            name="franchiseAddressDetail"
-            value={franchise.franchiseAddressDetail}
-            onChange={handleChange}
-            placeholder="상세 주소"
-            readOnly={isReadOnly}
-          />
-        </Field>
-        <Field label="우편번호" mb={4}>
-          <Input
-            name="franchisePost"
-            value={franchise.franchisePost}
-            onChange={handleChange}
-            placeholder="우편 번호"
             readOnly={isReadOnly}
           />
         </Field>
         <Box display="flex" gap={4}>
-          <Field label="광역시도" mb={4}>
+          <Field label="대표자" orientation="horizontal" mb={15}>
             <Input
-              name="franchiseState"
-              value={franchise.franchiseState}
+              name="franchiseRep"
+              value={franchise.franchiseRep}
               onChange={handleChange}
-              placeholder="광역시도"
               readOnly={isReadOnly}
             />
           </Field>
-          <Field label="시군" mb={4}>
+          <Field label="전화번호" orientation="horizontal" mb={15}>
             <Input
-              name="franchiseCity"
-              value={franchise.franchiseCity}
+              name="franchiseTel"
+              value={franchise.franchiseTel}
               onChange={handleChange}
-              placeholder="시군"
               readOnly={isReadOnly}
             />
           </Field>
         </Box>
-        <Field label="비고" mb={4}>
+        <Field label="우편번호" orientation="horizontal" mb={15}>
           <Input
+            name="franchisePost"
+            value={franchise.franchisePost}
+            onChange={handleChange}
+            readOnly={isReadOnly}
+          />
+        </Field>
+        <Field label="주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddress"
+            value={franchise.franchiseAddress}
+            onChange={handleChange}
+            readOnly={isReadOnly}
+          />
+        </Field>
+        <Field label="상세 주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddressDetail"
+            value={franchise.franchiseAddressDetail}
+            onChange={handleChange}
+            readOnly={isReadOnly}
+          />
+        </Field>
+        <Box display="flex" gap={4}>
+          <Field label="광역시도" orientation="horizontal" mb={15}>
+            <Input
+              name="franchiseState"
+              value={franchise.franchiseState}
+              onChange={handleChange}
+              readOnly={isReadOnly}
+            />
+          </Field>
+          <Field label="시군" orientation="horizontal" mb={15}>
+            <Input
+              name="franchiseCity"
+              value={franchise.franchiseCity}
+              onChange={handleChange}
+              readOnly={isReadOnly}
+            />
+          </Field>
+        </Box>
+        <Field label="비고" orientation="horizontal" mb={15}>
+          <Textarea
             name="franchiseNote"
             value={franchise.franchiseNote}
             onChange={handleChange}
-            placeholder="비고"
+            placeholder="최대 50자"
             readOnly={isReadOnly}
           />
         </Field>

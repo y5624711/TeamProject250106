@@ -1,4 +1,4 @@
-import { Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { toaster } from "../../ui/toaster.jsx";
@@ -6,8 +6,6 @@ import { Field } from "../../ui/field.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function FranchiseAdd({ onClose, onSave, onCancel }) {
-  const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
-  const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
   const [franchiseName, setFranchiseName] = useState("");
   const [franchiseRep, setFranchiseRep] = useState("");
@@ -23,8 +21,6 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
   // 유효성 검사
   const validate = () => {
     return (
-      businessEmployeeNo.trim() !== "" &&
-      businessEmployeeName.trim() !== "" &&
       franchiseName.trim() !== "" &&
       franchiseRep.trim() !== "" &&
       franchiseNo.trim() !== "" &&
@@ -44,8 +40,6 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
 
     axios
       .post("/api/franchise/add", {
-        businessEmployeeNo,
-        businessEmployeeName,
         franchiseName,
         franchiseRep,
         franchiseNo,
@@ -72,8 +66,6 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
         if (res.data && res.data.franchiseKey) {
           onSave({
             franchiseKey: res.data.franchiseKey,
-            businessEmployeeNo,
-            businessEmployeeName,
             franchiseName,
             franchiseRep,
             franchiseNo,
@@ -105,95 +97,69 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
   return (
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
-        <Box display="flex" gap={4}>
-          <Field label="직원 사번" mb={4}>
-            <Input
-              value={businessEmployeeNo}
-              onChange={(e) => setBusinessEmployeeNo(e.target.value)}
-              placeholder="직원 사번"
-              required
-            />
-          </Field>
-          <Field label="직원 이름">
-            <Input
-              value={businessEmployeeName}
-              onChange={(e) => setBusinessEmployeeName(e.target.value)}
-              placeholder="직원 이름"
-            />
-          </Field>
-        </Box>
-        <Field label="가맹점명" mb={4}>
+        <Field label="가맹점명" orientation="horizontal" mb={15}>
           <Input
             value={franchiseName}
             onChange={(e) => setFranchiseName(e.target.value)}
-            placeholder="가맹점명"
           />
         </Field>
-        <Box display="flex" gap={4}>
-          <Field label="가맹점주" mb={4}>
-            <Input
-              value={franchiseRep}
-              onChange={(e) => setFranchiseRep(e.target.value)}
-              placeholder="가맹점주"
-            />
-          </Field>
-          <Field label="전화번호" mb={4}>
-            <Input
-              value={franchiseTel}
-              onChange={(e) => setFranchiseTel(e.target.value)}
-              placeholder="전화번호"
-            />
-          </Field>
-        </Box>
-        <Field label="사업자 번호" mb={4}>
+        <Field label="사업자 번호" orientation="horizontal" mb={15}>
           <Input
             value={franchiseNo}
             onChange={(e) => setFranchiseNo(e.target.value)}
-            placeholder="사업자 번호"
-          />
-        </Field>
-        <Field label="주소" mb={4}>
-          <Input
-            value={franchiseAddress}
-            onChange={(e) => setFranchiseAddress(e.target.value)}
-            placeholder="주소"
-          />
-        </Field>
-        <Field label="상세 주소" mb={4}>
-          <Input
-            value={franchiseAddressDetail}
-            onChange={(e) => setFranchiseAddressDetail(e.target.value)}
-            placeholder="상세 주소"
-          />
-        </Field>
-        <Field label="우편번호" mb={4}>
-          <Input
-            value={franchisePost}
-            onChange={(e) => setFranchisePost(e.target.value)}
-            placeholder="우편 번호"
           />
         </Field>
         <Box display="flex" gap={4}>
-          <Field label="광역시도" mb={4}>
+          <Field label="대표자" orientation="horizontal" mb={15}>
             <Input
-              value={franchiseState}
-              onChange={(e) => setFranchiseState(e.target.value)}
-              placeholder="광역시도"
+              value={franchiseRep}
+              onChange={(e) => setFranchiseRep(e.target.value)}
             />
           </Field>
-          <Field label="시군" mb={4}>
+          <Field label="전화번호" orientation="horizontal" mb={15}>
             <Input
-              value={franchiseCity}
-              onChange={(e) => setFranchiseCity(e.target.value)}
-              placeholder="시군"
+              value={franchiseTel}
+              onChange={(e) => setFranchiseTel(e.target.value)}
             />
           </Field>
         </Box>
-        <Field label="비고" mb={4}>
+        <Field label="우편번호" orientation="horizontal" mb={15}>
           <Input
+            value={franchisePost}
+            onChange={(e) => setFranchisePost(e.target.value)}
+          />
+        </Field>
+        <Field label="주소" orientation="horizontal" mb={15}>
+          <Input
+            value={franchiseAddress}
+            onChange={(e) => setFranchiseAddress(e.target.value)}
+          />
+        </Field>
+        <Field label="상세 주소" orientation="horizontal" mb={15}>
+          <Input
+            value={franchiseAddressDetail}
+            onChange={(e) => setFranchiseAddressDetail(e.target.value)}
+          />
+        </Field>
+        <Box display="flex" gap={4}>
+          <Field label="광역시도" orientation="horizontal" mb={15}>
+            <Input
+              value={franchiseState}
+              onChange={(e) => setFranchiseState(e.target.value)}
+            />
+          </Field>
+          <Field label="시군" orientation="horizontal" mb={15}>
+            <Input
+              value={franchiseCity}
+              onChange={(e) => setFranchiseCity(e.target.value)}
+            />
+          </Field>
+        </Box>
+        <Field label="비고" orientation="horizontal" mb={15}>
+          <Textarea
             value={franchiseNote}
             onChange={(e) => setFranchiseNote(e.target.value)}
-            placeholder="비고"
+            placeholder="최대 50자"
           />
         </Field>
         <Box display="flex" gap={4} justifyContent="flex-end">
@@ -206,7 +172,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
             closeDelay={100}
           >
             <Button onClick={handleSaveClick} disabled={!validate()}>
-              신청
+              등록
             </Button>
           </Tooltip>
         </Box>

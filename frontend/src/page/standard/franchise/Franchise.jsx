@@ -215,8 +215,8 @@ export function Franchise() {
     <Box display={"flex"} h={"100vh"}>
       <StandardSideBar />
       <Box flex={"1"} p={4}>
-        <Heading size="md" mb={4}>
-          가맹점 관리
+        <Heading size={"xl"} p={2} mb={3}>
+          기준정보 관리 {">"} 가맹점 관리
         </Heading>
         <FranchiseList
           franchiseList={franchiseList}
@@ -239,7 +239,6 @@ export function Franchise() {
             onPageChange={handlePageChange}
             count={count}
             pageSize={10}
-            // page={Number(searchParams.get("page") || 1)}
             variant="solid"
           >
             <HStack>
@@ -249,9 +248,9 @@ export function Franchise() {
             </HStack>
           </PaginationRoot>
         </Center>
-        {/* 추가 버튼 */}
+        {/* 가맹점 등록 버튼 */}
         <Box display="flex" justifyContent="flex-end" mb={4}>
-          <Button onClick={handleAddFranchiseClick}>추가</Button>
+          <Button onClick={handleAddFranchiseClick}>가맹점 등록</Button>
         </Box>
         {/* 다이얼로그 */}
         <FranchiseDialog
