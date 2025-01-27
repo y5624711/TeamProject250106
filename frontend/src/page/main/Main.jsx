@@ -1,15 +1,10 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Spinner,
-  Stack,
-  Table,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import axios from "axios";
+import { InstlViewList } from "./InstlViewList.jsx";
+import { InstkviewList } from "./InstkviewList.jsx";
+import { BuyList } from "./BuyList.jsx";
 
 function MemberBox({ user }) {
   return (
@@ -26,96 +21,6 @@ function MemberBox({ user }) {
       <Heading fontSize={"30px"}>{user.employeeWorkPlaceName}</Heading>
       <Text fontSize={"16px"}>{user.employeeName} 님 환영합니다.</Text>
     </Stack>
-  );
-}
-
-function BuyList() {
-  return (
-    <Box>
-      <Heading>구매 현황</Heading>
-      <Table.Root size="sm">
-        <Table.Header>
-          <Table.Row bg={"gray.100"}>
-            <Table.ColumnHeader>Product</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell textAlign="end">3</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
-    </Box>
-  );
-}
-
-function InstkviewList() {
-  return (
-    <Box>
-      <Heading>입고 현황</Heading>
-      <Table.Root size="sm">
-        <Table.Header>
-          <Table.Row bg={"gray.100"}>
-            <Table.ColumnHeader>Product2</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell textAlign="end"></Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
-    </Box>
-  );
-}
-
-function InstlViewList() {
-  return (
-    <Box>
-      <Heading>설치 현황</Heading>
-      <Table.Root size="sm">
-        <Table.Header>
-          <Table.Row bg={"gray.100"}>
-            <Table.ColumnHeader>Product2</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell>2</Table.Cell>
-            <Table.Cell textAlign="end"></Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table.Root>
-    </Box>
   );
 }
 
@@ -150,9 +55,8 @@ export function Main() {
 
   return (
     <Flex w="100vw" h="100%">
-      <Box>
-        <MemberBox user={user} />
-      </Box>
+      <MemberBox user={user} />
+
       <Stack w={"60%"} mx={"auto"} gap={10}>
         {/*구매리스트*/}
         <BuyList />

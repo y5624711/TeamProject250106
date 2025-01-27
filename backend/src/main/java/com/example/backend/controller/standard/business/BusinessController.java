@@ -16,13 +16,13 @@ public class BusinessController {
 
 
     @GetMapping("view")
-    private Business view() {
+    public Business view() {
         return service.businessInfo();
     }
 
 
     @PutMapping("update")
-    private ResponseEntity<Map<String, Object>> update(@RequestBody Business business) {
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Business business) {
         if (service.validate(business)) {
             if (service.updateBusiness(business)) {
                 return ResponseEntity.ok().body(Map.of("message",

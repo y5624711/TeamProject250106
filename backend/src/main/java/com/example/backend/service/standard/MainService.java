@@ -18,7 +18,7 @@ public class MainService {
         String str = id.substring(0, 3);
         System.out.println("str = " + str);
         Employee employee = mapper.test(str, id);
-        System.out.println("test = " + employee);
+        System.out.println("employee = " + employee);
 
         return Map.of("id", employee);
     }
