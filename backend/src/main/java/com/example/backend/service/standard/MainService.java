@@ -1,7 +1,7 @@
 package com.example.backend.service.standard;
 
 import com.example.backend.dto.standard.employee.Employee;
-import com.example.backend.mapper.standard.MainMapper;
+import com.example.backend.mapper.standard.main.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

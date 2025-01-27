@@ -1,7 +1,7 @@
 package com.example.backend.service.standard;
 
 import com.example.backend.dto.standard.employee.Employee;
-import com.example.backend.mapper.standard.InfoMapper;
+import com.example.backend.mapper.standard.info.InfoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

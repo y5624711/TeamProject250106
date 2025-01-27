@@ -1,4 +1,4 @@
-package com.example.backend.mapper.standard;
+package com.example.backend.mapper.standard.info;
 
 
 import com.example.backend.dto.standard.employee.Employee;
