@@ -31,7 +31,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
 
   // 품목 상세 정보를 가져오기
   useEffect(() => {
-    if (itemKey) {
+    if (isOpen && itemKey) {
       axios
         .get(`/api/item/view/${itemKey}`)
         .then((res) => {
@@ -42,7 +42,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
           console.error("품목 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [itemKey]);
+  }, [itemKey, isOpen]);
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
