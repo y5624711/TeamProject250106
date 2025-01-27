@@ -157,6 +157,14 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       {/* 승인 여부가 false가 아닌 경우 승인자와 관련 필드 표시 */}
       {purchase.purchaseConsent !== false && (
         <>
+          <Box display="flex" gap={4} mt={15}>
+            <Field label="승인자" orientation="horizontal">
+              <Input value={purchase.customerEmployeeName || name} readOnly />
+            </Field>
+            <Field label="사번" orientation="horizontal">
+              <Input value={purchase.customerEmployeeNo || id} readOnly />
+            </Field>
+          </Box>
           {purchase.purchaseConsent && (
             <Box mt={4}>
               <Field label="승인 날짜" orientation="horizontal" mb={15}>
@@ -167,15 +175,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
               </Field>
             </Box>
           )}
-          <Box display="flex" gap={4} mt={15}>
-            <Field label="승인자" orientation="horizontal" mb={15}>
-              <Input value={purchase.customerEmployeeName || name} readOnly />
-            </Field>
-            <Field label="사번" orientation="horizontal" mb={15}>
-              <Input value={purchase.customerEmployeeNo || id} readOnly />
-            </Field>
-          </Box>
-          <Field label="승인 비고" orientation="horizontal" mb={15}>
+          <Field label="승인 비고" orientation="horizontal" mt={15}>
             <Textarea
               value={purchase.purchaseApproveNote}
               placeholder={"최대 50자"}
