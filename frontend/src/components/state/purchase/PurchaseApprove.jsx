@@ -192,13 +192,23 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         </>
       )}
 
-      {/* 승인 여부가 null일 때만 버튼 표시 */}
+      {/* 승인 여부가 null일 때만 반려/승인 버튼 표시 */}
       {purchase?.purchaseConsent === undefined && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleDisapprove} variant="outline">
             반려
           </Button>
           <Button onClick={handleApprove}>승인</Button>
+        </Box>
+      )}
+
+      {/* 승인 여부가 true 또는 false일 때 닫기 버튼 표시 */}
+      {(purchase?.purchaseConsent === true ||
+        purchase?.purchaseConsent === false) && (
+        <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
+          <Button onClick={onClose} variant="solid">
+            닫기
+          </Button>
         </Box>
       )}
     </Box>
