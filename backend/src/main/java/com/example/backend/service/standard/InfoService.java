@@ -20,4 +20,17 @@ public class InfoService {
     public Employee getId(String id) {
         return mapper.selectById(id);
     }
+
+    public boolean updateId(Employee employee) {
+        int cnt = mapper.updateUserById(employee);
+        return cnt == 1;
+    }
+
+    public boolean validate(Employee employee) {
+        Boolean name = employee.getEmployeeName().trim().length() > 0;
+        Boolean password = employee.getEmployeePassword().trim().length() > 0;
+        Boolean tel = employee.getEmployeeTel().trim().length() > 0;
+
+        return name && password && tel;
+    }
 }

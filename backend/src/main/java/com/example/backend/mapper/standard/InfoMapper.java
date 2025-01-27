@@ -4,6 +4,7 @@ package com.example.backend.mapper.standard;
 import com.example.backend.dto.standard.employee.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface InfoMapper {
@@ -41,4 +42,14 @@ public interface InfoMapper {
             </script>
             """)
     Employee selectById(String id);
+
+    @Update("""
+            UPDATE TB_EMPMST
+            SET employee_name = #{employeeName},
+                employee_password=#{employeePassword},
+                employee_tel=#{employeeTel},
+                employee_note=#{employeeNote}
+            WHERE employee_no = #{employeeNo}
+            """)
+    int updateUserById(Employee employee);
 }

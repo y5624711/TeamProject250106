@@ -15,8 +15,9 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { useNavigate } from "react-router-dom";
 import { Field } from "../../components/ui/field.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
-function NavItem({ children, path, ...rest }) {
+function TextItem({ children, path, ...rest }) {
   const navigate = useNavigate();
 
   return (
@@ -41,7 +42,9 @@ function MemberInfo() {
   // const { id } = useParams();
   const { id } = useContext(AuthenticationContext);
   const [employee, setEmployee] = useState(null);
+  const [empChange, setEmpChange] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // 다이얼로그 상태 관리
 
   useEffect(() => {
     axios
@@ -49,6 +52,7 @@ function MemberInfo() {
       .then((res) => res.data)
       .then((data) => {
         setEmployee(data);
+        setEmpChange(data);
         console.log(data);
         setLoading(false);
       });
@@ -59,24 +63,52 @@ function MemberInfo() {
   }
 
   const handleSaveInfo = () => {
-    axios.put("/api/info/update", {
-      employeeKey: employee.employeeKey,
-      employeeWorkPlaceName: employee.employeeWorkPlaceName,
-      employeeNo: employee.employeeNo,
-      employeeName: employee.employeeName,
-      employeePassword: employee.employeePassword,
-      employeeTel: employee.employeeTel,
-      employeeNote: employee.employeeNote,
-    });
+    axios
+      .put("/api/info/update", {
+        employeeKey: employee.employeeKey,
+        employeeWorkPlaceName: employee.employeeWorkPlaceName,
+        employeeNo: employee.employeeNo,
+        employeeName: employee.employeeName,
+        employeePassword: employee.employeePassword,
+        employeeTel: employee.employeeTel,
+        employeeNote: employee.employeeNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setEmpChange(employee);
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
   const handleClose = () => {
-    setEmployee(null);
+    setEmployee(empChange);
+    setIsDialogOpen(false);
   };
 
   return (
-    <DialogRoot>
+    <DialogRoot
+      onOpenChange={(isOpen) => {
+        setEmployee(empChange);
+      }}
+    >
       <DialogTrigger asChild>
-        <NavItem>내 정보</NavItem>
+        <TextItem
+          onClick={() => {
+            setEmployee(empChange);
+          }}
+        >
+          내 정보
+        </TextItem>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -113,7 +145,6 @@ function MemberInfo() {
                   employeePassword: e.target.value,
                 }))
               }
-              readOnly
             />
           </Field>
           <Field label={"전화번호"} orientation="horizontal" mb={15}>
@@ -147,7 +178,7 @@ function MemberInfo() {
           </DialogActionTrigger>
           <Button onClick={handleSaveInfo}>저장</Button>
         </DialogFooter>
-        <DialogCloseTrigger />
+        <DialogCloseTrigger></DialogCloseTrigger>
       </DialogContent>
     </DialogRoot>
   );
