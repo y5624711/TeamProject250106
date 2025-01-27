@@ -186,11 +186,14 @@ export function Franchise() {
 
   // 정렬 기준 변경 시 URL 파라미터 업데이트
   const handleSortChange = (sortField) => {
-    const nextOrder = standard.order === "ASC" ? "DESC" : "ASC";
+    const nextOrder = standard.order === "asc" ? "desc" : "asc";
     setStandard({ sort: sortField, order: nextOrder });
+
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sortField);
     nextSearchParams.set("order", nextOrder);
+
+    // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParams);
   };
 

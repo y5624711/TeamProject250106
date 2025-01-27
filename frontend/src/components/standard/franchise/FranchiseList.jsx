@@ -26,6 +26,7 @@ export function FranchiseList({
   onFranchiseClick,
   standard,
   setStandard,
+  handleSortChange,
 }) {
   const FranchiseOptionList = createListCollection({
     items: [
@@ -50,6 +51,10 @@ export function FranchiseList({
         sort: column,
         order: "asc",
       });
+    }
+    // 새로운 파라미터를 사용하여 정렬 변경 함수 호출
+    if (handleSortChange) {
+      handleSortChange(column, standard.order);
     }
   };
 
@@ -124,11 +129,7 @@ export function FranchiseList({
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <TableColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => HeaderClick("franchiseKey")}
-            >
+            <TableColumnHeader onClick={() => HeaderClick("franchiseKey")}>
               #{" "}
               {standard.sort === "franchiseKey" &&
                 (standard.order === "asc" ? "↑" : "↓")}
