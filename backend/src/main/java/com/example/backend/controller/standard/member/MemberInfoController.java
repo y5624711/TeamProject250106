@@ -1,7 +1,7 @@
 package com.example.backend.controller.standard.member;
 
 import com.example.backend.dto.standard.employee.Employee;
-import com.example.backend.service.standard.InfoService;
+import com.example.backend.service.standard.info.InfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

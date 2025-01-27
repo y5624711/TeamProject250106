@@ -1,6 +1,6 @@
 package com.example.backend.controller.standard.main;
 
-import com.example.backend.service.standard.MainService;
+import com.example.backend.service.standard.main.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
