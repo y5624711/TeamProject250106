@@ -4,6 +4,8 @@ import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
+import com.example.backend.mapper.state.instk.InstkSubMapper;
+import com.example.backend.mapper.stock.inoutHistory.InoutHistoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ public class InstkService {
     final InstkMapper mapper;
     final ItemMapper itemMapper;
     final CommonMapper commonMapper;
+    final InoutHistoryMapper inoutHistoryMapper;
+    final InstkSubMapper instkSubMapper;
 
     public List<Instk> viewlist() {
          List<Instk> instkList = mapper.viewBuyInList();
@@ -50,6 +54,10 @@ public class InstkService {
 
     public void addInstkProcess(Instk instk) {
 
+        int inputKey = instk.getInputKey();
+        String inputStockNote = instk.getInputNote();
+        String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
+
 
         // 가입고  상태 변환
          int updateChecked =   mapper.updateBuyInConsentByInputKey(instk.getInputKey());
@@ -64,11 +72,20 @@ public class InstkService {
             String insertSerialNo = String.format("%20d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
             int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WH");
             System.out.println("insertItemSub = " + insertItemSub);
+            //입고 테이블 
+            mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
+            //입고 상세 테이블
+
+//            inoutHistoryMapper.add()
+
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
             //현재 위치 창고로 변경
             itemMapper.updateCurrentCommonCodeBySerialNo();
+            // 입고 테이블
+            mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
+            //입고 상세 테이블
             
 
 

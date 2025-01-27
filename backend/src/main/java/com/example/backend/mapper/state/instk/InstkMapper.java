@@ -120,4 +120,12 @@ SELECT
         WHERE input_key = #{inputKey}
        """)
     int updateBuyInConsentByInputKey(int inputKey);
+
+    @Insert("""
+            INSERT INTO TB_INSTK
+            (input_key, customer_employee_no,input_stock_note)
+            VALUES (#{inputKey},#{inputStockEmployeeNo},#{inputStockNote})
+            
+            """)
+    int addInstk(int inputKey, String inputStockNote, String inputStockEmployeeNo);
 }

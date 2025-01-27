@@ -19,7 +19,7 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
-
+  console.log("확인창 id",id)
   useEffect(() => {
     // axios.get("api/instk/detailView");
     //   요청해서 가져와야하는거 구매승인자,창고주소
@@ -30,6 +30,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     axios
       .post("/api/instk/add", {
         inputKey: instk.inputKey,
+        inputStockEmployeeNo:id ,
         inputStockNote: inputStockNote,
         itemCommonName: instk.itemCommonName,
       })

@@ -23,12 +23,14 @@ public class Instk {
     private java.sql.Date inputStockDate;
     private String employeeName;
 
+    // 요청
     private String requestEmployeeNo;
     private String requestEmployeeName;
-
+    //승인
     private String requestApprovalEmployeeNo;
     private String requestApprovalEmployeeName;
-
+    
+    //입고 승인
     private String inputStockEmployeeNo;
     private String inputStockEmployeeName;
 
