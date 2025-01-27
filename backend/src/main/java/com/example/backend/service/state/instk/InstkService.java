@@ -58,14 +58,12 @@ public class InstkService {
         int inputKey = instk.getInputKey();
         String inputStockNote = instk.getInputNote();
         String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
-
-
         // 가입고  상태 변환
          int updateChecked =   mapper.updateBuyInConsentByInputKey(instk.getInputKey());
         System.out.println("updateChecked = " + updateChecked);
 
         // 그냥 입고일때 , TODO 수량만큼  +1, 테이블도 그만큼
-        if(!instk.getInputCommonCode().equals("INSTK")) {
+        if(instk.getInputCommonCode().equals("INSTK")) {
             // 품목 공통코드 조회
             String itemCommonCode = commonMapper.viewCommonCodeByCodeName(instk.getItemCommonName());
             //품목 상세에서 같은 코드 시리얼 넘버 맥스 뭔지 찾아오기
@@ -76,25 +74,26 @@ public class InstkService {
             //입고 테이블 
             mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-                
-            //인아웃 히스토리 집어 넣기
-//            inoutHistoryMapper.add()
+            mapper.addInstkSub(inputKey,insertSerialNo);
+            //인아웃 히스토리 집어 넣기 ,로케이션 키 가져오는거 생각해야함
+//            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
 
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
-            //현재 위치 창고로 변경
+            //현재 위치 창고로 변경 , serialNo 가져오는거 생각해야함
             itemMapper.updateCurrentCommonCodeBySerialNo();
             // 입고 테이블
             mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-            
-
+//            mapper.addInstkSub(inputKey,insertSerialNo);
+            //인아웃 히스토리 집어 넣기
+//            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
 
         }
     }
 
-    // 반품입고 만들어야함 , 반품 승인 테이블에 창고코드 만들면 하나로 합칠수 있음
+    //  반품 승인 테이블에 창고코드 만들면 하나로 합칠수 있음
     public InstkDetail confirmView(String inputNo, String inputCommonCode) {
         System.out.println("inputCommonCode = " + inputCommonCode);
         // 그냥 입고 ,구매승인가서 , 창고 코드 , 창고 코드 가서

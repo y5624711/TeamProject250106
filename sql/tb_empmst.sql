@@ -45,3 +45,5 @@ WHERE  employee_no LIKE 'PAR%' AND employee_no REGEXP '^[A-Za-z]+[0-9]+$';
 
 select customer_code,customer_name
 from TB_CUSTMST;
+
+desc TB_INOUT_HIS;

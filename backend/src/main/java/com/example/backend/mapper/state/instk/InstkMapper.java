@@ -148,4 +148,22 @@ SELECT
          
              """)
     InstkDetail viewReturnWareHouse(String inputNo);
+
+
+    // 입고 상세 추가
+    @Insert("""
+            INSERT  INTO TB_INSTK_SUB
+                   (input_key,serial_no)
+            VALUES 
+             (#{inputKey},#{insertSerialNo})
+           """)
+    int addInstkSub(int inputKey, String insertSerialNo);
+
+    @Insert("""
+            INSERT INTO TB_INOUT_HIS
+            (serial_no, warehouse_code,'IN',customer_employee_no,business_employee_no,inout_history_note,inout_no)
+            VALUES
+            ()
+             """)
+    int addInOutHistoryy();
 }
