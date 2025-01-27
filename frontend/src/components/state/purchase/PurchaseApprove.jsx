@@ -17,7 +17,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 구매 신청 팝업 (승인 팝업) 보기
+  // 구매 신청 팝업 보기
   useEffect(() => {
     if (purchaseRequestKey) {
       axios
@@ -33,13 +33,14 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
     }
   }, [purchaseRequestKey]);
 
-  // 구매 신청 승인하기
+  // 구매 신청 승인하기 (warehouseCode 즉, 창고 정보가 없으면 승인 안됨)
   const handleApprove = () => {
     const updatedPurchase = {
       ...purchase,
       customerEmployeeNo: id,
       customerEmployeeName: name,
       warehouseCode: purchase.warehouseCode,
+      purchaseApproveDate: purchase.purchaseApproveDate,
     };
 
     axios
@@ -108,7 +109,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         </Field>
       ) : null}
 
-      {/* 기존 필드 */}
+      {/* 신청 필드 */}
       <Field label="품목" orientation="horizontal" mb={15}>
         <Input value={purchase.itemCommonName} readOnly />
       </Field>
@@ -136,7 +137,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
         </Field>
       </Box>
-      <Field label="요청 날짜" orientation="horizontal" mb={15}>
+      <Field label="신청 날짜" orientation="horizontal" mb={15}>
         <Input
           value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
           readOnly
@@ -149,39 +150,47 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           placeholder={"최대 50자"}
         />
       </Field>
-      <Separator />
-      <Box display="flex" gap={4} mt={15}>
-        <Field label="승인자" orientation="horizontal" mb={15}>
-          <Input value={purchase.customerEmployeeName || name} readOnly />
-        </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={purchase.customerEmployeeNo || id} readOnly />
-        </Field>
-      </Box>
 
-      {/* 승인 여부에 따라 승인 날짜 추가 */}
-      {purchase.purchaseConsent && (
-        <Field label="승인 날짜" orientation="horizontal" mb={15}>
-          <Input
-            value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
-            readOnly
-          />
-        </Field>
+      {/* 반려일 때는 Separator 숨기기 */}
+      {purchase.purchaseConsent !== false && <Separator />}
+
+      {/* 승인 여부가 false가 아닌 경우 승인자와 관련 필드 표시 */}
+      {purchase.purchaseConsent !== false && (
+        <>
+          {purchase.purchaseConsent && (
+            <Box mt={4}>
+              <Field label="승인 날짜" orientation="horizontal" mb={15}>
+                <Input
+                  value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
+                  readOnly
+                />
+              </Field>
+            </Box>
+          )}
+          <Box display="flex" gap={4} mt={15}>
+            <Field label="승인자" orientation="horizontal" mb={15}>
+              <Input value={purchase.customerEmployeeName || name} readOnly />
+            </Field>
+            <Field label="사번" orientation="horizontal" mb={15}>
+              <Input value={purchase.customerEmployeeNo || id} readOnly />
+            </Field>
+          </Box>
+          <Field label="승인 비고" orientation="horizontal" mb={15}>
+            <Textarea
+              value={purchase.purchaseApproveNote}
+              placeholder={"최대 50자"}
+              onChange={(e) =>
+                purchase.purchaseConsent !== true &&
+                setPurchase({
+                  ...purchase,
+                  purchaseApproveNote: e.target.value,
+                })
+              }
+              readOnly={purchase.purchaseConsent === true}
+            />
+          </Field>
+        </>
       )}
-      <Field label="승인 비고" orientation="horizontal" mb={15}>
-        <Textarea
-          value={purchase.purchaseApproveNote}
-          placeholder={"최대 50자"}
-          onChange={(e) =>
-            !purchase.purchaseConsent &&
-            setPurchase({
-              ...purchase,
-              purchaseApproveNote: e.target.value,
-            })
-          }
-          readOnly={purchase.purchaseConsent}
-        />
-      </Field>
 
       {/* 승인 여부가 null일 때만 버튼 표시 */}
       {purchase?.purchaseConsent === undefined && (
