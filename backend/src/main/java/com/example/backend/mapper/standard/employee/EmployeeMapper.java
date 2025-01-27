@@ -74,7 +74,7 @@ public interface EmployeeMapper {
                          </if>
            
                          <!-- 정렬 조건   -->
-                         ORDER BY
+                        
                          <choose>
                              <when test="convertedSort != null and convertedSort != ''\s
                                                and (convertedSort == 'employee_name'\s
@@ -83,14 +83,16 @@ public interface EmployeeMapper {
                                                or convertedSort == 'employee_workplace_name'\s
                                                 or convertedSort == 'employee_department_name'\s
                                                or convertedSort == 'employee_workplace_code')">
-            
-                                 ${convertedSort}
+                                
+                                ORDER BY  ${convertedSort}
                              </when>
                              <otherwise>
-                                 employee_key
+                              ORDER BY   employee_key
                              </otherwise>
                          </choose>
-                         #{order}
+                        <if test="order != null and (order == 'ASC' or order == 'DESC')">
+                                   ${order}
+                                 </if>
             
                          LIMIT #{offset}, 10
                          </script>
