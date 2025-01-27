@@ -78,10 +78,11 @@ public interface EmployeeMapper {
                          <choose>
                              <when test="convertedSort != null and convertedSort != ''\s
                                                and (convertedSort == 'employee_name'\s
+                                               or convertedSort == 'employee_tel'\s
                                                or convertedSort == 'employee_no'\s
                                                or convertedSort == 'employee_active'\s
                                                or convertedSort == 'employee_workplace_name'\s
-                                                or convertedSort == 'employee_department_name'\s
+                                                 or convertedSort == 'employee_workplace_tel'\s
                                                or convertedSort == 'employee_workplace_code')">
                                 
                                 ORDER BY  ${convertedSort}

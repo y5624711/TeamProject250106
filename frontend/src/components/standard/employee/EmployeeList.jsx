@@ -139,12 +139,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
   const handleSortControl = (sortName) => {
     const convertedOrderName =
-      searchParams.get("order") === "asc" ? "desc" : "asc";
+      searchParams.get("order") === "ASC" ? "DESC" : "ASC";
 
     setSearchParams((prev) => {
       setSort(sortName);
       setOrder(convertedOrderName);
       const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
+      newParams.sort= sortName;
       newParams.order = convertedOrderName;
       return newParams; // 새로운 객체를 반환
     });
