@@ -31,6 +31,7 @@ export function Purchase() {
       .get("/api/purchase/list")
       .then((res) => {
         setPurchaseList(res.data);
+        setCount(res.data.length);
       })
       .catch((error) => {
         console.error("구매 목록 요청 중 오류 발생:", error);
@@ -57,6 +58,19 @@ export function Purchase() {
   // 다이얼로그 닫기
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+  };
+
+  // 구매 신청 후 리스트에 업데이트
+  const handleSave = () => {
+    axios
+      .get("/api/purchase/list")
+      .then((res) => {
+        setPurchaseList(res.data);
+        setCount(res.data.length);
+      })
+      .catch((error) => {
+        console.error("구매 목록 업데이트 중 오류 발생:", error);
+      });
   };
 
   return (
@@ -92,6 +106,7 @@ export function Purchase() {
         <PurchaseDialog
           isOpen={isDialogOpen}
           onClose={handleDialogClose}
+          onSave={handleSave}
           isAddDialogOpen={isAddDialogOpen}
           purchaseRequestKey={purchaseRequestKey}
           purchaseRequestData={purchaseRequestData} // 발주 데이터 전달

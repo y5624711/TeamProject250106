@@ -105,7 +105,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           type: message.type,
           description: message.text,
         });
-
+        onSave();
         onClose();
       })
       .catch((e) => {
