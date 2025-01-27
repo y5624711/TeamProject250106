@@ -148,6 +148,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           value={purchase.purchaseRequestNote}
           readOnly
           placeholder={"최대 50자"}
+          style={{ maxHeight: "100px", overflowY: "auto" }}
         />
       </Field>
 
@@ -187,6 +188,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
                 })
               }
               readOnly={purchase.purchaseConsent === true}
+              style={{ maxHeight: "100px", overflowY: "auto" }}
             />
           </Field>
         </>

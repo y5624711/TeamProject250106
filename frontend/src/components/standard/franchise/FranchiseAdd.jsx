@@ -160,6 +160,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
             value={franchiseNote}
             onChange={(e) => setFranchiseNote(e.target.value)}
             placeholder="최대 50자"
+            style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>
         <Box display="flex" gap={4} justifyContent="flex-end">
