@@ -85,7 +85,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       .catch((err) => {
         console.log("직원 정보를 받는중 오류", err);
       });
-    updateQuery();
+    // updateQuery();
   }, [updateList, searchParams]);
 
   // 리스트 클릭시 , 해당 키 값의 상세 정보를 보여주기 위해서
@@ -217,7 +217,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           {memberList.map((item, index) => (
             <Table.Row
               key={item.employeeKey}
-              onClick={() => {
+              onDoubleClick={() => {
                 handleSelectedItem(item.employeeKey);
                 handleviewModalControl();
               }}
