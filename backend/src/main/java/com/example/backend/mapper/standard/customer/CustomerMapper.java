@@ -86,7 +86,7 @@ public interface CustomerMapper {
             SET customer_name = #{customerName}, item_code = #{itemCode}, 
             customer_rep = #{customerRep}, customer_no = #{customerNo}, 
             customer_tel = #{customerTel}, customer_fax = #{customerFax},
-            customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetail}, 
+            customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetails}, 
             customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
             WHERE customer_key = #{customerKey}    
             """)

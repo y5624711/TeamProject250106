@@ -3,7 +3,6 @@ import CustomerList from "../../../components/standard/customer/CustomerList.jsx
 import axios from "axios";
 import { Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
-import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
@@ -314,13 +313,7 @@ function Customer() {
             onCancel={() => setAddDialogOpen(false)}
             onSave={handleSaveClick}
           />
-          <CustomerView
-            isOpen={viewDialogOpen}
-            customerKey={customerKey}
-            onDelete={handleDeleteClick}
-            onEdit={handleEditRequest}
-            onCancel={() => setViewDialogOpen(false)}
-          />
+
           <CustomerEdit
             isOpen={editDialogOpen}
             customerKey={customerKey}
