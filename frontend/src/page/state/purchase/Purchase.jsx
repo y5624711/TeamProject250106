@@ -28,15 +28,65 @@ export function Purchase() {
   // 구매 관리 리스트 가져오기
   useEffect(() => {
     axios
-      .get("/api/purchase/list")
+      .get("/api/purchase/list", {
+        params: {
+          page: searchParams.get("page") || "1",
+          type: searchParams.get("type") || "all",
+          keyword: searchParams.get("keyword") || "",
+          state: search.state,
+          sort: "purchaseRequestDate",
+          order: "desc",
+        },
+      })
       .then((res) => {
-        setPurchaseList(res.data);
-        setCount(res.data.length);
+        setPurchaseList(res.data.purchaseList);
+        setCount(res.data.count);
       })
       .catch((error) => {
         console.error("구매 목록 요청 중 오류 발생:", error);
       });
-  }, []);
+  }, [searchParams]);
+
+  // 검색 상태를 URLSearchParams에 맞게 업데이트
+  useEffect(() => {
+    const nextSearch = { ...search };
+    if (searchParams.get("type")) {
+      nextSearch.type = searchParams.get("type");
+    } else {
+      nextSearch.type = "all";
+    }
+    if (searchParams.get("keyword")) {
+      nextSearch.keyword = searchParams.get("keyword");
+    } else {
+      nextSearch.keyword = "";
+    }
+    setSearch(nextSearch);
+  }, [searchParams]);
+
+  // 검색 파라미터 업데이트
+  const handleSearchClick = () => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+    if (search.keyword.trim().length > 0) {
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
+      nextSearchParam.set("page", 1);
+    } else {
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
+    }
+    setSearchParams(nextSearchParam);
+  };
+
+  // 페이지네이션
+  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
+  const page = Number(pageParam);
+
+  // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
+  function handlePageChange(e) {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
+  }
 
   // 구매 신청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
@@ -82,13 +132,21 @@ export function Purchase() {
         </Heading>
         <PurchaseList
           purchaseList={purchaseList}
-          onViewClick={handleViewClick}
+          count={count}
           search={search}
           setSearch={setSearch}
+          handleSearchClick={handleSearchClick}
+          onViewClick={handleViewClick}
         />
         {/* 페이지네이션 */}
         <Center>
-          <PaginationRoot count={count} pageSize={10} variant="solid" mt={5}>
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            variant="solid"
+            mt={5}
+          >
             <HStack>
               <PaginationPrevTrigger />
               <PaginationItems />
