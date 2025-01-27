@@ -38,6 +38,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const [installApprove, setInstallApprove] = useState(initialInstallApprove);
   const [installRequest, setInstallRequest] = useState({});
   const [customerEmployeeList, setCustomerEmployeeList] = useState([]);
+  const [isApproved, setIsApproved] = useState(false);
 
   const handleClose = () => {
     setInstallApprove(initialInstallApprove);
@@ -86,7 +87,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        handleClose();
+        setIsApproved(true); // 승인 완료 상태로 변경
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -268,14 +269,20 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         </DialogBody>
         <DialogFooter>
           {installRequest.installRequestConsent != false ? (
-            <HStack>
-              <Button variant="outline" onClick={handleDisapproveClick}>
-                반려
+            !isApproved ? (
+              <HStack>
+                <Button variant="outline" onClick={handleDisapproveClick}>
+                  반려
+                </Button>
+                <Button onClick={handleApproveClick} disabled={!isValid}>
+                  승인
+                </Button>
+              </HStack>
+            ) : (
+              <Button variant="outline" onClick={handleClose}>
+                닫기
               </Button>
-              <Button onClick={handleApproveClick} disabled={!isValid}>
-                승인
-              </Button>
-            </HStack>
+            )
           ) : (
             <Button variant="outline" onClick={handleClose}>
               닫기
