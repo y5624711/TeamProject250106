@@ -24,6 +24,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 function ReturnList({
   returnList,
@@ -179,66 +180,92 @@ function ReturnList({
               textAlign="center"
               onClick={() => handleHeaderClick("franchise_name")}
             >
-              가맹점
-              {sort === "franchise_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                가맹점
+                {sort === "franchise_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("itc.common_code_name")}
             >
-              품목
-              {sort === "itc.common_code_name" &&
-                (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                품목
+                {sort === "itc.common_code_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("customer_name")}
             >
-              담당 업체
-              {sort === "customer_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                담당 업체
+                {sort === "customer_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("serial_no")}
             >
-              시리얼 번호
-              {sort === "serial_no" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                시리얼 번호
+                {sort === "serial_no" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("return_no")}
             >
-              반품 번호
-              {sort === "return_no" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                반품 번호
+                {sort === "return_no" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("business_employee_name")}
+              onClick={() => handleHeaderClick("emb.employee_name")}
             >
-              산청자
-              {sort === "business_employee_name" &&
-                (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                산청자
+                {sort === "emb.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
 
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("emce.employee_name")}
             >
-              승인자
-              {sort === "emce.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                승인자
+                {sort === "emce.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("emcc.employee_name")}
             >
-              검수기사
-              {sort === "emcc.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                검수기사
+                {sort === "emcc.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("date")}
             >
-              날짜{sort === "date" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                날짜
+                {sort === "date" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
