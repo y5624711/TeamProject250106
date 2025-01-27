@@ -40,7 +40,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       customerEmployeeNo: id,
       customerEmployeeName: name,
       warehouseCode: purchase.warehouseCode,
-      purchaseApproveDate: purchase.purchaseApproveDate,
+      purchaseApproveDate: new Date().toISOString(),
     };
 
     axios
@@ -61,7 +61,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
             customerEmployeeNo: id,
             customerEmployeeName: name,
             purchaseNo: res.data.purchaseNo,
-            purchaseApproveDate: res.data.purchaseApproveDate,
+            purchaseApproveDate: new Date().toISOString(),
             purchaseConsent: true,
           }));
         }
