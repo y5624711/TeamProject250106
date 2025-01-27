@@ -121,8 +121,8 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             />
           </Flex>
 
-          <Stack w={"90%"} gap={5} pt={"5"}>
-            <Field label="코드" orientation="horizontal">
+          <Stack w={"90%"} pt={"3"}>
+            <Field label="코드" orientation="horizontal" marginBottom={3}>
               <Input
                 value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
@@ -133,7 +133,6 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
                       ? 5
                       : undefined
                 }
-                marginBottom={15}
               />
             </Field>
             <Field label="코드명" orientation="horizontal" marginBottom={15}>

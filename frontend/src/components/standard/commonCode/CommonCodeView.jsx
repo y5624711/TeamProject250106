@@ -8,6 +8,7 @@ import {
   Input,
   Spacer,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
@@ -32,7 +33,13 @@ export function CommonCodeView({
   setCommonCodeKey,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editCommonCode, setEditCommonCode] = useState(false);
+  const [editCommonCode, setEditCommonCode] = useState({
+    commonCode: "",
+    commonCodeName: "",
+    commonCodeNote: "",
+    commonCodeType: "",
+    commonCodeActive: false,
+  });
 
   const [editedCommonCode, setEditedCommonCode] = useState({
     commonCode: "",
@@ -56,6 +63,7 @@ export function CommonCodeView({
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
           setEditedCommonCode(res.data[0]);
+          setEditCommonCode(res.data[0]);
         })
         .catch((error) => {
           console.error("품목 공통 코드 정보 요청 중 오류 발생: ", error);
@@ -107,7 +115,7 @@ export function CommonCodeView({
 
     const updatedCommonCode = {
       ...editedCommonCode,
-      commonCodeActive: editCommonCode, // 체크박스 상태 반영
+      commonCodeActive: editCommonCode.commonCodeActive, // 체크박스 상태 반영
     };
 
     axios
@@ -119,25 +127,6 @@ export function CommonCodeView({
           type: data.message.type,
         });
         setCommonCodeKey(commonCodeKey);
-        setChange((prev) => !prev);
-        handleClose();
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({ description: message.text, type: message.type });
-      });
-  };
-
-  // 품목 공통 코드 삭제 시 사용여부 false
-  const handleDeleteConfirm = () => {
-    axios
-      .put(`/api/commonCode/delete/${commonCodeKey}`)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          description: data.message.text,
-          type: data.message.type,
-        });
         setChange((prev) => !prev);
         handleClose();
       })
@@ -203,11 +192,12 @@ export function CommonCodeView({
                   />
                 </Field>
                 <Field label={"비고"} orientation="horizontal" mb={15}>
-                  <Input
+                  <Textarea
                     name="commonCodeNote"
                     placeholder="비고"
                     value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
+                    resize={"none"}
                   />
                 </Field>
               </Box>

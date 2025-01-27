@@ -38,7 +38,7 @@ export function BusinessListTable({
             <Table.Row
               key={list.departmentKey || index}
               _hover={{ cursor: "pointer" }}
-              onClick={() => openDialog(list)}
+              onDoubleClick={() => openDialog(list)}
               bg={list.departmentActive ? "white" : "gray.200"}
             >
               <Table.Cell>{index + 1}</Table.Cell>
