@@ -139,4 +139,10 @@ public interface CommonMapper {
     List<Integer> deletedCommonCode();
 
 
+    @Select("""
+            SELECT common_code
+            from TB_SYSCOMM
+            where common_code_name=#{commonCodeName}
+            """)
+    String viewCommonCodeByCodeName(String itemCommonName);
 }

@@ -149,4 +149,30 @@ public interface ItemMapper {
             WHERE item_active = false
             """)
     List<Integer> deletedItem();
+    
+    
+//    코드중 시리얼 넘버 최댓값 가져오기
+    @Select("""
+            SELECT  MAX(serial_no)
+            FROM TB_ITEMSUB
+            WHERE item_common_code = #{commonCode}
+            
+            """)
+    int viewMaxSerialNoByItemCode(String itemCommonCode);
+
+    @Insert("""
+            INSERT INTO TB_ITEMSUB
+            (item_common_code,serial_no,current_common_code)
+            value
+            (#{itemCommonCode},#{insertSerialNo},#{currentCommonCode})
+         
+            """)
+    int addItemSub(String itemCommonCode, String insertSerialNo, String currentCommonCode);
+
+    // 창고로 현재 위치 변경
+    @Update("""
+            UPDATE TB_ITEMSUB
+            SET current_common_code="WH"
+            """)
+    int updateCurrentCommonCodeBySerialNo();
 }

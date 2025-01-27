@@ -18,7 +18,7 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
-  const [inoutHistoryNote, setInoutHistoryNote] = useState("");
+  const [inputStockNote, setInputStockNote] = useState("");
 
   useEffect(() => {
     // axios.get("api/instk/detailView");
@@ -30,7 +30,8 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     axios
       .post("/api/instk/add", {
         inputKey: instk.inputKey,
-
+        inputStockNote: inputStockNote,
+        itemCommonName: instk.itemCommonName,
       })
       .then((res) => {
         console.log(res);
@@ -83,10 +84,10 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
 
             <HStack>
               <Field label={"창고 주소"} orientation="horizontal">
-                <Input value={"경기도 개성시"} />
+                <Input value={""} />
               </Field>
               <Field label={"담당 업체"} orientation="horizontal">
-                <Input value={"면발천국"} />
+                <Input value={""} />
               </Field>
             </HStack>
             <HStack>
@@ -98,7 +99,9 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
               </Field>
             </HStack>
             <Field label={"비고"} orientation="horizontal">
-              <Textarea value={""} placeholder={"최대50자"} />
+              <Textarea value={inputStockNote}  placeholder={"최대50자"}  onChange={(e)=>{
+                setInputStockNote(e.target.value);
+              }} />
             </Field>
           </Stack>
         </DialogBody>
