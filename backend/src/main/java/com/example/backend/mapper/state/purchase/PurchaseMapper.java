@@ -113,4 +113,12 @@ public interface PurchaseMapper {
             WHERE purchase_request_key = #{purchaseRequestKey}
             """)
     int updatePurchaseConsent(Integer purchaseRequestKey);
+
+    // 구매 승인 반려
+    @Update("""
+            UPDATE TB_PURCH_REQ
+            SET purchase_consent = FALSE
+            WHERE purchase_request_key = #{purchaseRequestKey}
+            """)
+    int disapprovePurchase(String purchaseRequestKey);
 }

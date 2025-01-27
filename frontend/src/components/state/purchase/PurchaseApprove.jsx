@@ -23,6 +23,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       axios
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((res) => {
+          console.log("승인 여부 상태:", res.data.purchaseConsent);
           setPurchase(res.data);
           setLoading(false);
         })
@@ -74,8 +75,23 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
   };
 
   // 구매 신청 반려
-  const handleReject = () => {
-    console.log("구매 반려:", purchase);
+  const handleDisapprove = () => {
+    axios
+      .put(`api/purchase/disapprove/${purchaseRequestKey}`)
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      })
+      .catch((e) => {
+        const data = e.response.data;
+        toaster.create({
+          type: data.message.type,
+          description: data.message.text,
+        });
+      });
     onClose();
   };
 
@@ -167,15 +183,13 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         />
       </Field>
 
-      {/* 승인 여부에 따라 버튼 표시 */}
-      {!purchase.purchaseConsent && (
+      {/* 승인 여부가 null일 때만 버튼 표시 */}
+      {purchase?.purchaseConsent === undefined && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
-          <Button onClick={handleReject} colorScheme="red" variant="outline">
+          <Button onClick={handleDisapprove} variant="outline">
             반려
           </Button>
-          <Button onClick={handleApprove} colorScheme="blue">
-            승인
-          </Button>
+          <Button onClick={handleApprove}>승인</Button>
         </Box>
       )}
     </Box>

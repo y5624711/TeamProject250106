@@ -66,4 +66,14 @@ public class PurchaseController {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 신청 승인에 실패하였습니다.")));
         }
     }
+
+    // 구매 승인 반려
+    @PutMapping("/disapprove/{purchaseRequestKey}")
+    public ResponseEntity<Map<String, Object>> disapprovePurchase(@PathVariable String purchaseRequestKey) {
+        if (service.disapprovePurchase(purchaseRequestKey)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 신청이 반려되었습니다.")));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 신청 반려에 실패하였습니다.")));
+        }
+    }
 }

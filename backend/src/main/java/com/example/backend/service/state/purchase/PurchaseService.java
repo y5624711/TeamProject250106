@@ -76,4 +76,9 @@ public class PurchaseService {
 
         return cnt == 1;
     }
+
+    // 구매 승인 반려
+    public boolean disapprovePurchase(String purchaseRequestKey) {
+        return mapper.disapprovePurchase(purchaseRequestKey) == 1;
+    }
 }
