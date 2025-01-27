@@ -37,6 +37,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
     const updatedPurchase = {
       ...purchase,
       customerEmployeeNo: id,
+      customerEmployeeName: name,
       warehouseCode: purchase.warehouseCode,
     };
 
@@ -55,9 +56,11 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         if (res.data.purchaseNo) {
           setPurchase((prevPurchase) => ({
             ...prevPurchase,
+            customerEmployeeNo: id,
+            customerEmployeeName: name,
             purchaseNo: res.data.purchaseNo,
-            purchaseConsent: true,
             purchaseApproveDate: res.data.purchaseApproveDate,
+            purchaseConsent: true,
           }));
         }
       })
@@ -133,10 +136,10 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
       <Separator />
       <Box display="flex" gap={4} mt={15}>
         <Field label="승인자" orientation="horizontal" mb={15}>
-          <Input value={name} readOnly />
+          <Input value={purchase.customerEmployeeName || name} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={id} readOnly />
+          <Input value={purchase.customerEmployeeNo || id} readOnly />
         </Field>
       </Box>
 
@@ -149,7 +152,6 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
           />
         </Field>
       )}
-
       <Field label="승인 비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchase.purchaseApproveNote}
