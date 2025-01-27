@@ -24,7 +24,6 @@ public class InstkService {
 
     public Instk detailView(int inputKey) {
 
-
         //시리얼 번호 목록 
        List<Integer> serialList= mapper.getSerialNoByInputKey(inputKey);
 
@@ -44,7 +43,20 @@ public class InstkService {
 
     }
 
-    public void sibal(Instk instk) {
+   
 
+    public void addInstkProcess(Instk instk) {
+
+
+        // 가입고  상태 변환
+         int updateChecked =   mapper.updateBuyInConsentByInputKey(instk.getInputKey());
+
+
+        System.out.println("updateChecked = " + updateChecked);
+
+
+
+
+        
     }
 }

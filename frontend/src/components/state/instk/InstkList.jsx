@@ -117,10 +117,12 @@ export function InstkList() {
                   <Table.Cell textAlign="center">
                     {item.inputStockDate || item.requestDate}
                   </Table.Cell>
+
+                  {/*TODO 반려 대기 처리 어떻게 변경해야하는데 ..*/}
                   <Table.Cell textAlign="center">
-                    {item.inputConsent === 1
+                    {item.inputConsent === true
                       ? "승인"
-                      : item.inputConsent === 0
+                      : item.inputConsent === false
                         ? "반려"
                         : "대기"}
                   </Table.Cell>

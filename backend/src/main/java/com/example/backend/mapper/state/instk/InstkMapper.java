@@ -6,6 +6,7 @@ import com.example.backend.dto.state.retrieve.Return;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -111,4 +112,12 @@ SELECT
             VALUES ('INSTK', #{employeeNo}, #{purchaseNo}, #{purchaseApproveNote})
             """)
     int addPurchaseInfo(Purchase purchase);
+
+    // 가입고 상태변환
+    @Update("""
+        UPDATE TB_BUYIN
+        SET input_consent = TRUE
+        WHERE input_key = #{inputKey}
+       """)
+    int updateBuyInConsentByInputKey(int inputKey);
 }

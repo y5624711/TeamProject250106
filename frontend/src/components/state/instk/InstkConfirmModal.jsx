@@ -30,6 +30,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     axios
       .post("/api/instk/add", {
         inputKey: instk.inputKey,
+
       })
       .then((res) => {
         console.log(res);

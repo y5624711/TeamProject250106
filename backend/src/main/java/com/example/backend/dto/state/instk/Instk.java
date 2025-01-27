@@ -14,6 +14,7 @@ public class Instk {
     private String businessEmployeeNo;
     private boolean inputConsent;
     private String inputNote;
+    private String inputStockNote;
     private String itemCommonCode;
     private String itemCommonName;
     private String customerName;

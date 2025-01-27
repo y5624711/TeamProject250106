@@ -27,7 +27,7 @@ public class InstkController {
         // 인풋 키만 있으면 됨
         System.out.println("instk = " + instk);
 
-        service.sibal(instk);
+        service.addInstkProcess(instk);
 
     }
 
