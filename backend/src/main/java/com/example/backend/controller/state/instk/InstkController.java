@@ -24,20 +24,32 @@ public class InstkController {
 
     @PostMapping("add")
     public void add(@RequestBody Instk instk) {
-        // 인풋 키만 있으면 됨
+
         System.out.println("instk = " + instk);
 
         service.addInstkProcess(instk);
 
     }
 
+    //승인 상세
     @GetMapping("detailView/{inputKey}")
     public Instk detailView(@PathVariable int inputKey) {
         System.out.println("inputKey = " + inputKey);
 
 
-        return  new Instk();
-//        return service.detailView(inputKey);
+//        return  new Instk();
+        return service.detailView(inputKey);
+
+    }
+    //확인 상세
+    @GetMapping("confirmView/{inputKey}")
+    public void confirmView(@PathVariable String inputKey ,@RequestParam String inputCommonCode) {
+        System.out.println("inputKey = " + inputKey);
+        System.out.println("inputCommonCode = " + inputCommonCode);
+
+        service.confirmView(inputKey,inputCommonCode);
+
+
 
     }
 

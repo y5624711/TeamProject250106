@@ -113,4 +113,5 @@ public interface PurchaseMapper {
             WHERE purchase_request_key = #{purchaseRequestKey}
             """)
     int updatePurchaseConsent(Integer purchaseRequestKey);
+
 }

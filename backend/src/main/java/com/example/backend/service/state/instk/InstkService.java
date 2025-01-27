@@ -5,6 +5,7 @@ import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.instk.InstkSubMapper;
+import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import com.example.backend.mapper.stock.inoutHistory.InoutHistoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class InstkService {
     final CommonMapper commonMapper;
     final InoutHistoryMapper inoutHistoryMapper;
     final InstkSubMapper instkSubMapper;
+    final PurchaseMapper purchaseMapper;
 
     public List<Instk> viewlist() {
          List<Instk> instkList = mapper.viewBuyInList();
@@ -32,13 +34,11 @@ public class InstkService {
     public Instk detailView(int inputKey) {
 
         //시리얼 번호 목록 
-       List<Integer> serialList= mapper.getSerialNoByInputKey(inputKey);
+       List<Integer> serialList= instkSubMapper.getSerialNoByInputKey(inputKey);
 
         System.out.println("serialList = " + serialList);
         //  입고시 비고내용
          String inputStockNote= mapper.getInstkNoteByInputKey(inputKey,serialList.get(0));
-
-
 //
         System.out.println("inputStockNote = " + inputStockNote);
 
@@ -91,5 +91,15 @@ public class InstkService {
 
 
         }
+    }
+
+    public void confirmView(String inputKey, String inputCommonCode) {
+        //창고주소 , 담당업체  로케이션 ?
+
+//        회순 입고냐 반품입고냐에 따른 동적 처리하는 뭐시기
+
+
+
+
     }
 }

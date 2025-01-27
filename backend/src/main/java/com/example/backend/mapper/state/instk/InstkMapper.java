@@ -84,12 +84,7 @@ SELECT
     List<Instk> viewBuyInList();
 
 
-    @Select("""
-                select  serial_no
-                from  TB_INSTK
-                where input_key=#{input_key}
-            """)
-    List<Integer> getSerialNoByInputKey(int inputKey);
+
 
     @Select("""
             select input_stock_note

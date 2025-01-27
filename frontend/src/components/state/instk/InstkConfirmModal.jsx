@@ -21,7 +21,11 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const [inputStockNote, setInputStockNote] = useState("");
   console.log("확인창 id",id)
   useEffect(() => {
-    axios.get(`api/instk/detailView/${instk.inputKey}`);
+    axios.get(`api/instk/confirmView/${instk.inputNo}`,{
+      params:{
+        inputCommonCode:instk.inputCommonCode,
+      }
+    });
   }, []);
 
 
