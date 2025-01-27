@@ -14,6 +14,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function PurchaseRequest({ onSave, onClose }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -26,6 +27,7 @@ export function PurchaseRequest({ onSave, onClose }) {
     inputPrice: 0,
   });
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   // 품목 구분 코드 가져오기
   useEffect(() => {
@@ -42,7 +44,6 @@ export function PurchaseRequest({ onSave, onClose }) {
       axios
         .get(`/api/purchase/customer/${itemData.itemCommonCode}`)
         .then((res) => {
-          // console.log("응답 데이터:", res.data);
           const customerData = res.data[0] || {};
           setItemData((prev) => ({
             ...prev,
@@ -53,8 +54,6 @@ export function PurchaseRequest({ onSave, onClose }) {
         })
         .catch((error) => {
           console.error("협력 업체 정보 로드 중 오류 발생: ", error);
-
-          // 오류 발생 시 상태 초기화
           setItemData((prev) => ({
             ...prev,
             customerName: "",
@@ -64,6 +63,22 @@ export function PurchaseRequest({ onSave, onClose }) {
         });
     }
   }, [itemData.itemCommonCode]);
+
+  // 유효성 검사
+  useEffect(() => {
+    const isValid = validate();
+    setIsButtonDisabled(!isValid);
+  }, [itemData, amount]);
+
+  const validate = () => {
+    const itemCommonCodeValid =
+      itemData.itemCommonCode != null && itemData.itemCommonCode.trim() !== "";
+    const customerCodeValid =
+      itemData.customerCode != null && itemData.customerCode.trim() !== "";
+    const amountValid = amount != null && amount > 0;
+
+    return itemCommonCodeValid && customerCodeValid && amountValid;
+  };
 
   // 수량 변경 시 가격에 수량 곱한 값으로 표시
   const handleAmountChange = (e) => {
@@ -85,8 +100,6 @@ export function PurchaseRequest({ onSave, onClose }) {
         purchaseRequestNote,
       })
       .then((res) => {
-        console.log("응답 데이터:", res);
-
         const message = res.data.message;
         toaster.create({
           type: message.type,
@@ -97,7 +110,6 @@ export function PurchaseRequest({ onSave, onClose }) {
       })
       .catch((e) => {
         console.error("신청 오류:", e);
-
         const message = e.response?.data?.message;
         toaster.create({
           type: message.type,
@@ -113,7 +125,7 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   return (
     <Box>
-      <Field label="품목" orientation="horizontal" required mb={15}>
+      <Field label="품목" orientation="horizontal" mb={15}>
         <SelectRoot
           onValueChange={(e) => {
             const selectedItem = itemCommonCodeList.find(
@@ -148,14 +160,14 @@ export function PurchaseRequest({ onSave, onClose }) {
           </SelectContent>
         </SelectRoot>
       </Field>
-      <Field label="담당 업체" orientation="horizontal" required mb={15}>
+      <Field label="담당 업체" orientation="horizontal" mb={15}>
         <Input
           value={itemData.customerName}
           onChange={(e) => setCustomerName(e.target.value)}
         />
       </Field>
       <Box display="flex" gap={4}>
-        <Field label="수량" orientation="horizontal" required mb={15}>
+        <Field label="수량" orientation="horizontal" mb={15}>
           <Input
             type="number"
             value={amount}
@@ -163,15 +175,15 @@ export function PurchaseRequest({ onSave, onClose }) {
             min={1}
           />
         </Field>
-        <Field label="가격" orientation="horizontal" required mb={15}>
+        <Field label="가격" orientation="horizontal" mb={15}>
           <Input value={itemData.inputPrice * amount} isReadOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="신청자" orientation="horizontal" required mb={15}>
+        <Field label="신청자" orientation="horizontal" mb={15}>
           <Input value={name} />
         </Field>
-        <Field label="사번" orientation="horizontal" required mb={15}>
+        <Field label="사번" orientation="horizontal" mb={15}>
           <Input value={id} />
         </Field>
       </Box>
@@ -186,7 +198,15 @@ export function PurchaseRequest({ onSave, onClose }) {
         <Button variant="outline" onClick={handleCancelClick}>
           취소
         </Button>
-        <Button onClick={handleSaveClick}>신청</Button>
+        <Tooltip
+          content="입력을 완료해 주세요."
+          openDelay={500}
+          closeDelay={100}
+        >
+          <Button onClick={handleSaveClick} disabled={isButtonDisabled}>
+            신청
+          </Button>
+        </Tooltip>
       </Box>
     </Box>
   );

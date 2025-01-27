@@ -1,10 +1,11 @@
 import { Box, Button, Input } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
-export function FranchiseAdd({ onClose, onSave }) {
+export function FranchiseAdd({ onClose, onSave, onCancel }) {
   const [businessEmployeeNo, setBusinessEmployeeNo] = useState("");
   const [businessEmployeeName, setBusinessEmployeeName] = useState("");
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -19,8 +20,28 @@ export function FranchiseAdd({ onClose, onSave }) {
   const [franchiseCity, setFranchiseCity] = useState("");
   const [franchiseNote, setFranchiseNote] = useState("");
 
+  // 유효성 검사
+  const validate = () => {
+    return (
+      businessEmployeeNo.trim() !== "" &&
+      businessEmployeeName.trim() !== "" &&
+      franchiseName.trim() !== "" &&
+      franchiseRep.trim() !== "" &&
+      franchiseNo.trim() !== "" &&
+      franchiseTel.trim() !== "" &&
+      franchiseAddress.trim() !== "" &&
+      franchisePost.trim() !== "" &&
+      franchiseState.trim() !== "" &&
+      franchiseCity.trim() !== ""
+    );
+  };
+
   // 가맹점 등록하기
   const handleSaveClick = () => {
+    if (!validate()) {
+      return;
+    }
+
     axios
       .post("/api/franchise/add", {
         businessEmployeeNo,
@@ -76,11 +97,16 @@ export function FranchiseAdd({ onClose, onSave }) {
       });
   };
 
+  // 취소 버튼 클릭 시 창 닫기
+  const handleCancelClick = () => {
+    onClose();
+  };
+
   return (
     <Box>
       <Box maxW="500px" mx="auto" p={4}>
         <Box display="flex" gap={4}>
-          <Field label="직원 사번" required mb={4}>
+          <Field label="직원 사번" mb={4}>
             <Input
               value={businessEmployeeNo}
               onChange={(e) => setBusinessEmployeeNo(e.target.value)}
@@ -88,7 +114,7 @@ export function FranchiseAdd({ onClose, onSave }) {
               required
             />
           </Field>
-          <Field label="직원 이름" required>
+          <Field label="직원 이름">
             <Input
               value={businessEmployeeName}
               onChange={(e) => setBusinessEmployeeName(e.target.value)}
@@ -96,7 +122,7 @@ export function FranchiseAdd({ onClose, onSave }) {
             />
           </Field>
         </Box>
-        <Field label="가맹점명" required mb={4}>
+        <Field label="가맹점명" mb={4}>
           <Input
             value={franchiseName}
             onChange={(e) => setFranchiseName(e.target.value)}
@@ -104,14 +130,14 @@ export function FranchiseAdd({ onClose, onSave }) {
           />
         </Field>
         <Box display="flex" gap={4}>
-          <Field label="가맹점주" required mb={4}>
+          <Field label="가맹점주" mb={4}>
             <Input
               value={franchiseRep}
               onChange={(e) => setFranchiseRep(e.target.value)}
               placeholder="가맹점주"
             />
           </Field>
-          <Field label="전화번호" required mb={4}>
+          <Field label="전화번호" mb={4}>
             <Input
               value={franchiseTel}
               onChange={(e) => setFranchiseTel(e.target.value)}
@@ -119,14 +145,14 @@ export function FranchiseAdd({ onClose, onSave }) {
             />
           </Field>
         </Box>
-        <Field label="사업자 번호" required mb={4}>
+        <Field label="사업자 번호" mb={4}>
           <Input
             value={franchiseNo}
             onChange={(e) => setFranchiseNo(e.target.value)}
             placeholder="사업자 번호"
           />
         </Field>
-        <Field label="주소" required mb={4}>
+        <Field label="주소" mb={4}>
           <Input
             value={franchiseAddress}
             onChange={(e) => setFranchiseAddress(e.target.value)}
@@ -140,7 +166,7 @@ export function FranchiseAdd({ onClose, onSave }) {
             placeholder="상세 주소"
           />
         </Field>
-        <Field label="우편번호" required mb={4}>
+        <Field label="우편번호" mb={4}>
           <Input
             value={franchisePost}
             onChange={(e) => setFranchisePost(e.target.value)}
@@ -148,14 +174,14 @@ export function FranchiseAdd({ onClose, onSave }) {
           />
         </Field>
         <Box display="flex" gap={4}>
-          <Field label="광역시도" required mb={4}>
+          <Field label="광역시도" mb={4}>
             <Input
               value={franchiseState}
               onChange={(e) => setFranchiseState(e.target.value)}
               placeholder="광역시도"
             />
           </Field>
-          <Field label="시군" required mb={4}>
+          <Field label="시군" mb={4}>
             <Input
               value={franchiseCity}
               onChange={(e) => setFranchiseCity(e.target.value)}
@@ -170,10 +196,20 @@ export function FranchiseAdd({ onClose, onSave }) {
             placeholder="비고"
           />
         </Field>
-        <Button onClick={handleSaveClick}>등록</Button>
-        {/*<Button onClick={onCancel} ml={4}>*/}
-        {/*  취소*/}
-        {/*</Button>*/}
+        <Box display="flex" gap={4} justifyContent="flex-end">
+          <Button onClick={handleCancelClick} variant="outline" ml={4}>
+            취소
+          </Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={500}
+            closeDelay={100}
+          >
+            <Button onClick={handleSaveClick} disabled={!validate()}>
+              신청
+            </Button>
+          </Tooltip>
+        </Box>
       </Box>
     </Box>
   );
