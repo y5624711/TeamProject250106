@@ -3,14 +3,9 @@ import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
-export function FranchiseView({
-  franchiseKey,
-  setViewMode,
-  onClose,
-  onSave,
-  onDelete,
-}) {
+export function FranchiseView({ franchiseKey, onClose, onSave }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
 
@@ -25,54 +20,69 @@ export function FranchiseView({
 
   // 확인 (수정 후 저장)
   const handleSaveClick = () => {
-    axios
-      .put(`/api/franchise/edit/${franchiseKey}`, franchise)
-      .then((res) => {
-        const message = res.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
+    const updatedFranchise = {
+      ...franchise,
+      franchiseActive: franchise.franchiseActive ? 1 : 0, // boolean을 1, 0으로 변환
+    };
+
+    if (updatedFranchise.franchiseActive === 0) {
+      // 비활성화 상태로 저장하려는 경우, 먼저 삭제 처리
+      axios
+        .put(`/api/franchise/delete/${franchiseKey}`)
+        .then(() => {
+          // 수정 처리
+          axios
+            .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
+            .then((res) => {
+              const message = res.data.message;
+              toaster.create({
+                type: message.type,
+                description: message.text,
+              });
+              setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
+              onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
+            })
+            .catch((e) => {
+              const message = e.response.data.message;
+              toaster.create({
+                type: message.type,
+                description: message.text,
+              });
+            });
+        })
+        .catch(() => {
+          // 오류 처리는 계속 유지
+          toaster.create({
+            type: "error",
+            description: "사용 여부 업데이트 실패",
+          });
         });
-        setOriginalData(franchise); // 저장 후 초기값 갱신
-        onSave(franchise); // 부모 컴포넌트로 수정된 데이터 전달
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
+    } else {
+      // 비활성화가 아닌 경우 그냥 수정 처리
+      axios
+        .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
+        .then((res) => {
+          const message = res.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
+          setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
+          onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
+        })
+        .catch((e) => {
+          const message = e.response.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
         });
-      });
+    }
   };
 
   // 취소
   const handleCancelClick = () => {
     onClose();
-  };
-
-  // 삭제 확인
-  const handleDeleteConfirm = () => {
-    axios
-      .put(`/api/franchise/delete/${franchiseKey}`)
-      .then((res) => {
-        const message = res.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-        setViewMode("list");
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
-        });
-      })
-      .finally(() => {
-        onDelete(franchiseKey); // 삭제 처리
-        onClose();
-      });
   };
 
   // 특정 가맹점 조회
@@ -187,13 +197,26 @@ export function FranchiseView({
             style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>
+
+        <Checkbox
+          size={"lg"}
+          checked={franchise.franchiseActive}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            setFranchise((prevFranchise) => ({
+              ...prevFranchise,
+              franchiseActive: checked, // 상태 업데이트
+            }));
+          }}
+        >
+          사용 여부
+        </Checkbox>
+
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleCancelClick} variant="outline">
             취소
           </Button>
-          <Button onClick={handleSaveClick} colorScheme="green">
-            확인
-          </Button>
+          <Button onClick={handleSaveClick}>확인</Button>
         </Box>
       </Box>
     </Box>
