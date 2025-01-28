@@ -173,6 +173,7 @@ public interface ItemMapper {
     @Update("""
             UPDATE TB_ITEMSUB
             SET current_common_code="WH"
+            where serial_no=#{itemSerialNo}
             """)
-    int updateCurrentCommonCodeBySerialNo();
+    int updateCurrentCommonCodeBySerialNo(String itemSerialNo);
 }

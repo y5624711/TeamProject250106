@@ -82,13 +82,17 @@ public class InstkService {
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
             //현재 위치 창고로 변경 , serialNo 가져오는거 생각해야함
-            itemMapper.updateCurrentCommonCodeBySerialNo();
+            String itemSerialNo= mapper.getReturnSerialNo(instk.getInputNo());
+            System.out.println("itemSerialNo = " + itemSerialNo);
+            itemMapper.updateCurrentCommonCodeBySerialNo(itemSerialNo);
             // 입고 테이블
-            mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
+            int inIn = mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-//            mapper.addInstkSub(inputKey,insertSerialNo);
+            int inInsub= mapper.addInstkSub(inputKey,itemSerialNo);
+            System.out.println("inIn = " + inIn);
+            System.out.println("inInsub = " + inInsub);
             //인아웃 히스토리 집어 넣기
-//            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
+//            mapper.addInOutHistoryy(itemSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
 
         }
     }
@@ -108,9 +112,11 @@ public class InstkService {
         return null;
     }
 
+    // 입고 반려
     public boolean[] rejectInstk(int inputKey) {
-
+        //기존 입고삳태
         boolean selectedConsent =mapper.selectedConsent(inputKey);
+        // 업데이트한 입고상태
         int cnt =mapper.rejectInstk(inputKey);
 
 

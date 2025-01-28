@@ -62,7 +62,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
                 {/*    items={["Option 1", "Option 2", "Option 3"]}*/}
                 {/*  />*/}
                 {/*</NativeSelectRoot>*/}
-                <Input readOnly value={"1"} />
+                <Input readOnly value={"요청으로 가져와야함"} />
               </Field>
             </HStack>
 
@@ -76,10 +76,10 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
             <HStack>
               <Field label={"담당 업체"} orientation="horizontal">
-                <Input readOnly value={"담당 업체"} />
+                <Input readOnly value={instk.customerName} />
               </Field>
               <Field label={"창고"} orientation="horizontal">
-                <Input readOnly value={"창고"} />
+                <Input readOnly value={"창고도 가져와야함"} />
               </Field>
             </HStack>
             <HStack>
@@ -93,14 +93,16 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
 
             <Field label={"창고 + 로케이션"} orientation="horizontal">
-              <Input readOnly value={"창고 +로케이션"} />
+              <Input readOnly value={"해야함 "} />
             </Field>
-            <Field label={"입고 날짜"} orientation="horizontal">
+            <Field label={"입고 비고"} orientation="horizontal">
+              <Input readOnly value={instk.inputNote} />
+            </Field>
+            <Field label={"주문 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputStockDate} />
             </Field>
-            <Separator />
-            <Field label={"비고"} orientation="horizontal">
-              <Input readOnly value={""} />
+            <Field label={"입고 비고"} orientation="horizontal">
+              <Input readOnly value={instk.inputStockNote} />
             </Field>
           </Stack>
         </DialogBody>

@@ -39,6 +39,8 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
     axios
       .post("/api/instk/add", {
         inputKey: instk.inputKey,
+        inputNo: instk.inputNo,
+        inputCommonCode: instk.inputCommonCode,
         inputStockEmployeeNo:id ,
         inputStockNote: inputStockNote,
         itemCommonName: instk.itemCommonName,
@@ -139,6 +141,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
                 setInputStockNote(e.target.value);
               }} />
             </Field>
+
           </Stack>
         </DialogBody>
         <DialogFooter>
@@ -156,6 +159,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
             onClick={() => {
               handleRejectInstk();
             }}
+
           >
             반려
           </Button>

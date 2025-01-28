@@ -66,7 +66,7 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "error",
                             "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
         }
-        if(rejectChecked[1]){
+        else if(rejectChecked[1]){
             return  ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."\{instk.getInputKey()}번 주문 반려 되었습니다.")));
@@ -76,8 +76,6 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", STR."\{instk.getInputKey()}번 주문 반려 실패했습니다..")));
         }
-
-
 
     }
 

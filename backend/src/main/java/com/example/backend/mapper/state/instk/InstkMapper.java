@@ -183,4 +183,14 @@ SELECT
             WHERE input_key = #{inputKey}
             """)
     boolean selectedConsent(int inputKey);
+
+    // 회수 번호로 시리얼 번호 가져오기
+    @Select("""
+            SELECT REQ.serial_no
+            FROM TB_RTN_APPR  APPR
+            LEFT JOIN TB_RTN_REQ REQ ON APPR.return_request_key=REQ.return_request_key 
+            WHERE return_no=#{inputNo}
+            """)
+
+    String getReturnSerialNo(String inputNo);
 }
