@@ -1,6 +1,7 @@
 package com.example.backend.mapper.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -155,4 +156,17 @@ public interface StocktakingMapper {
             """)
     Stocktaking view(Integer stocktakingKey);
 
+    @Insert("""
+            INSERT INTO TB_STKTK (
+                                  item_code, 
+                                  warehouse_code, 
+                                  location_key,
+                                  customer_employee_no,
+                                  count_current,
+                                  count_configuration,
+                                  stocktaking_type,
+                                  stocktaking_date)
+            VALUES (#{itemCode}, #{warehouseCode}, #)
+            """)
+    int add(Stocktaking stocktaking);
 }

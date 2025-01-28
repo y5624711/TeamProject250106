@@ -99,7 +99,7 @@ function Warehouse(props) {
 const warehouseOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "창고명", value: "warehouseName" },
+    { label: "창고", value: "warehouseName" },
     { label: "담당 업체", value: "customer" },
     { label: "업체 직원", value: "customerEmployee" },
     { label: "광역 시도", value: "warehouseState" },

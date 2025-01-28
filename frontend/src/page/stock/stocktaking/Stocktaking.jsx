@@ -18,6 +18,8 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
+import { Button } from "../../../components/ui/button.jsx";
+import StocktakingAdd from "../../../components/stock/stocktaking/StocktakingAdd.jsx";
 
 function Stocktaking(props) {
   const [search, setSearch] = useState({
@@ -31,6 +33,7 @@ function Stocktaking(props) {
   );
   const [stocktakingList, setStocktakingList] = useState([]);
   const [countStocktaking, setCountStocktaking] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   // 재고실사 정보 가져오기
   useEffect(() => {
@@ -88,6 +91,18 @@ function Stocktaking(props) {
           <StocktakingList
             stocktakingList={stocktakingList}
             currentPage={currentPage}
+          />
+          <Box>
+            <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
+              실사 등록
+            </Button>
+          </Box>
+          {/*등록 jsx*/}
+          <StocktakingAdd
+            isOpen={isAddDialogOpen}
+            onClose={() => setIsAddDialogOpen(false)}
+            onConfirm={() => setIsAddDialogOpen(false)}
+            title="실사 등록"
           />
         </Stack>
       </HStack>

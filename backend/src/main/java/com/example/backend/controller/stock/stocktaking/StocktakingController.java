@@ -3,6 +3,7 @@ package com.example.backend.controller.stock.stocktaking;
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,5 +25,13 @@ public class StocktakingController {
     @GetMapping("view/{stocktakingKey}")
     public Stocktaking view(@PathVariable Integer stocktakingKey) {
         return service.view(stocktakingKey);
+    }
+
+    @PostMapping("add")
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking) {
+
+        service.add(stocktaking);
+
+        return null;
     }
 }

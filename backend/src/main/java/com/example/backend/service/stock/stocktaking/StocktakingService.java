@@ -24,4 +24,8 @@ public class StocktakingService {
     public Stocktaking view(Integer stocktakingKey) {
         return mapper.view(stocktakingKey);
     }
+
+    public Boolean add(Stocktaking stocktaking) {
+        return mapper.add(stocktaking) == 1;
+    }
 }
