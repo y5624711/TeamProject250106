@@ -3,7 +3,7 @@ import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx"
 import axios from "axios";
 import { Heading, HStack, Spinner, Text } from "@chakra-ui/react";
 
-export function MemberBox() {
+export function MemberInfoText() {
   const { hasAccess, id } = useContext(AuthenticationContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

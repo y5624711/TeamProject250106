@@ -19,7 +19,7 @@ import Return from "./page/state/return/Return.jsx";
 import { Instk } from "./page/state/instk/Instk.jsx";
 import Stocktaking from "./page/stock/stocktaking/Stocktaking.jsx";
 import InoutHistory from "./page/stock/inoutHistory/InoutHistory.jsx";
-import WarehouseStatus from "./page/stock/warehouseStatus/WarehouseStatus.jsx";
+import InventoryStatus from "./page/stock/warehouseStatus/InventoryStatus.jsx";
 import MemberInfo from "./page/memberInfo/MemberInfo.jsx";
 
 axios.interceptors.request.use(function (config) {
@@ -103,7 +103,7 @@ const router = createBrowserRouter([
       },
       {
         path: "warehouseStatus/*",
-        element: <WarehouseStatus />,
+        element: <InventoryStatus />,
       },
     ],
   },

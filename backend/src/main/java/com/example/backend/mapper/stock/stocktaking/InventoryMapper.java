@@ -78,4 +78,10 @@ public interface InventoryMapper {
                  </script>
             """)
     int countAll(String type, String keyword);
+
+    @Select("""
+            SELECT *
+            FROM V_ITEM_CRNT
+            """)
+    List<Inventory> selectGraphList();
 }

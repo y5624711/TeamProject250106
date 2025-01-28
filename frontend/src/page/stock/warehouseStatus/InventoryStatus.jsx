@@ -12,7 +12,7 @@ import { InventoryTable } from "../../../components/stock/warehouseStatus/Invent
 import { SearchInventory } from "../../../components/stock/warehouseStatus/SearchInventory.jsx";
 import { useSearchParams } from "react-router-dom";
 
-function WarehouseStatus() {
+function InventoryStatus() {
   const [inventoryList, setInventoryList] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -78,4 +78,4 @@ function WarehouseStatus() {
   );
 }
 
-export default WarehouseStatus;
+export default InventoryStatus;
