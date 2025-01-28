@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -9,37 +9,59 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, HStack, Input, Separator, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Separator,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
-function ReturnApprove({
-  isOpen,
-  onClose,
-  onApprove,
-  returnRequestKey,
-  setReturnRequestKey,
-}) {
+function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
+  const { id, name } = useContext(AuthenticationContext);
+
   const initialApproveData = {
-    customerEmployeeNo: "",
-    customerEmployeeName: "",
+    customerEmployeeNo: id,
+    customerEmployeeName: name,
     customerConfigurerNo: "",
     customerConfigurerName: "",
     returnDate: "",
     returnApproveNote: "",
   };
   const [approveData, setApproveData] = useState(initialApproveData);
+  const [configurerList, setConfigurerList] = useState([]);
 
   //요청 정보 가져오기
   useEffect(() => {
-    if (returnRequestKey) {
+    if (isOpen && returnRequestKey) {
       setApproveData(initialApproveData);
       axios.get(`/api/return/approve/${returnRequestKey}`).then((res) => {
         // console.log("호출", res.data);
         setApproveData(res.data[0]);
       });
     }
+  }, [isOpen, returnRequestKey]);
+  // console.log("셋팅", approveData);
+
+  //검수 기사 정보 가져오기
+  useEffect(() => {
+    axios
+      .get(`api/return/configurer/${returnRequestKey}`)
+      .then((res) => {
+        // console.log("직원 목록", res.data);
+        setConfigurerList(res.data);
+      })
+      .catch((e) => console.error("검수자 에러", e));
   }, [returnRequestKey]);
 
   //정보 기입 (변화 적용)
@@ -50,19 +72,26 @@ function ReturnApprove({
 
   //반품 승인 정보 전달
   const handleApproveButtonClick = () => {
+    const updatedApproveData = {
+      ...approveData,
+      customerEmployeeName: name,
+      customerEmployeeNo: id,
+    };
+
     axios
-      .post(`api/return/approve`, approveData)
+      .post(`api/return/approve`, updatedApproveData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
           type: data.message.type,
           description: data.message.text,
         });
-        onApprove(approveData);
+        onApprove(updatedApproveData);
         setApproveData(initialApproveData);
         onClose();
       })
       .catch((e) => {
+        console.error(e);
         toaster.create({
           type: message.type,
           description: message.text,
@@ -90,14 +119,33 @@ function ReturnApprove({
       });
   };
 
-  // console.log("셋팅", approveData);
+  //유효성 검사
+  const validate = () => {
+    return (
+      approveData.customerConfigurerName != null &&
+      approveData.returnDate != null
+    );
+  };
+
+  // console.log("결과", approveData);
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => {
+        onClose(e);
+        setApproveData(initialApproveData);
+      }}
+      size={"lg"}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {approveData.returnConsent ? "반품 승인 상세" : "반품 승인"}
+            {approveData.returnConsent === "1"
+              ? "반품 승인 상세"
+              : approveData.returnConsent === "0"
+                ? "반품 반려 상세"
+                : "반품 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
@@ -134,11 +182,14 @@ function ReturnApprove({
             />
           </Field>
           <Field orientation="horizontal" label="신청 비고">
-            {<Input readOnly value={"내용 없음"} /> || (
+            {approveData.returnRequestNote ? (
               <Textarea readOnly value={approveData.returnRequestNote} />
+            ) : (
+              <Input readOnly value={"내용 없음"} />
             )}
           </Field>
-          {approveData.returnConsent ? (
+
+          {approveData.returnConsent === "1" ? (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
@@ -165,11 +216,15 @@ function ReturnApprove({
                 <Input readOnly value={approveData.returnApproveDate} />
               </Field>
               <Field orientation="horizontal" label="승인 비고">
-                {<Input readOnly value={"내용 없음"} /> || (
+                {approveData.returnApproveNote ? (
                   <Textarea readOnly value={approveData.returnApproveNote} />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
                 )}
               </Field>
             </Box>
+          ) : approveData.returnConsent === "0" ? (
+            ""
           ) : (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "10px" }}
@@ -177,36 +232,63 @@ function ReturnApprove({
               <Separator />
               <HStack>
                 <Field orientation="horizontal" label="승인자">
-                  <Input
-                    value={approveData.customerEmployeeName}
-                    // placeholder="홍길동"
-                    onChange={handleApproveInput("customerEmployeeName")}
-                  />
+                  <Input readOnly value={name} />
                 </Field>
                 <Field orientation="horizontal" label="사번">
-                  <Input
-                    value={approveData.customerEmployeeNo}
-                    // placeholder="0000000000000"
-                    onChange={handleApproveInput("customerEmployeeNo")}
-                  />
+                  <Input readOnly value={id} />
                 </Field>
               </HStack>
               <HStack>
-                <Field orientation="horizontal" label="검수기사">
-                  <Input
-                    value={approveData.customerConfigurerName}
-                    // placeholder="홍길동"
-                    onChange={handleApproveInput("customerConfigurerName")}
-                  />
+                <Field label={"검수 기사"} orientation="horizontal">
+                  <SelectRoot
+                    onValueChange={(e) => {
+                      const selectedConfigurer = configurerList.find(
+                        (info) => info.customerConfigurerName === e.value[0],
+                      );
+                      if (selectedConfigurer) {
+                        setApproveData((prev) => ({
+                          ...prev,
+                          customerConfigurerName:
+                            selectedConfigurer.customerConfigurerName || "",
+                          customerConfigurerNo:
+                            selectedConfigurer.customerConfigurerNo || "",
+                        }));
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValueText placeholder={"검수 기사 선택"}>
+                        {approveData.customerConfigurerName}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      maxHeight={"100px"}
+                      style={{
+                        width: "75%",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {configurerList
+                        .filter(
+                          (configurer) => configurer.customerConfigurerName,
+                        )
+                        .map((configurer) => (
+                          <SelectItem
+                            key={configurer.customerConfigurerName}
+                            item={configurer.customerConfigurerName}
+                          >
+                            {configurer.customerConfigurerName}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </SelectRoot>
                 </Field>
-                <Field orientation="horizontal" label="사번">
-                  <Input
-                    value={approveData.customerConfigurerNo}
-                    // placeholder="0000000000000"
-                    onChange={handleApproveInput("customerConfigurerNo")}
-                  />
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={approveData.customerConfigurerNo} readOnly />
                 </Field>
               </HStack>
+
               <Field orientation="horizontal" label="회수 예정일">
                 <Input
                   type="date" // 사용자가 달력으로 날짜 선택 가능
@@ -225,21 +307,32 @@ function ReturnApprove({
           )}
         </DialogBody>
         <DialogFooter>
-          {approveData.returnConsent ? (
+          {approveData.returnConsent === "1" ||
+          approveData.returnConsent === "0" ? (
             <Button onClick={onClose} variant="outline">
-              취소
+              닫기
             </Button>
           ) : (
             <HStack>
-              {/*<Button onClick={onClose} variant="outline">*/}
-              {/*  취소*/}
-              {/*</Button>*/}
               <Button onClick={handleDisapproveButton} variant="outline">
                 반려
               </Button>
-              <Button onClick={handleApproveButtonClick}>승인</Button>
+              <Tooltip
+                content="입력을 완료해 주세요."
+                openDelay={100}
+                closeDelay={100}
+                disabled={validate()}
+              >
+                <Button
+                  onClick={handleApproveButtonClick}
+                  disabled={!validate()}
+                >
+                  승인
+                </Button>
+              </Tooltip>
             </HStack>
           )}
+
           <DialogCloseTrigger />
         </DialogFooter>
       </DialogContent>

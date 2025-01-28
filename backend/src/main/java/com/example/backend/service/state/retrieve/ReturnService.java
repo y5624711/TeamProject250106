@@ -5,12 +5,14 @@ import com.example.backend.mapper.standard.franchise.FranchiseMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -49,13 +51,17 @@ public class ReturnService {
     }
 
     //반품 요청 정보 저장
-    public void addRequest(Return requestInfo) {
+    public boolean addRequest(Return requestInfo) {
+
         //프랜차이즈 이름-> 코드
         String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
 //        System.out.println("프랜차이즈 이름, 코드: " + requestInfo.getFranchiseName() + franchiseCode);
         requestInfo.setFranchiseCode(franchiseCode);
 
-        mapper.addRequest(requestInfo);
+        //요청 정보 작성
+        int count = mapper.addRequest(requestInfo);
+
+        return count == 1;
     }
 
     //요청 정보 조회 (1개)
@@ -96,5 +102,11 @@ public class ReturnService {
     // 가맹점 코드로 시리얼번호 조회
     public List<Return> getSerialNoList(String franchiseCode) {
         return mapper.getSerialNoList(franchiseCode);
+    }
+
+    //검수기사 목록 반환
+    public List<Map<String, Object>> getConfigurerList(String returnRequestKey) {
+//        System.out.println("업체 당 기사 목록: " + mapper.getConfigurerList(returnRequestKey));
+        return mapper.getConfigurerList(returnRequestKey);
     }
 }

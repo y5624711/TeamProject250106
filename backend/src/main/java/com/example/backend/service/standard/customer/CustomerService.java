@@ -50,6 +50,7 @@ public class CustomerService {
 
     //협력사 정보 불러오기
     public Customer viewCustomer(String customerKey) {
+//        System.out.println("customerDetail: " + mapper.viewCustomer(customerKey));
         return mapper.viewCustomer(customerKey);
     }
 
@@ -94,7 +95,7 @@ public class CustomerService {
 
         result = itemList.contains(customer.getItemCode()) || customerNameList.contains(customer.getCustomerName()) ||
                 customerNoList.contains(customer.getCustomerNo()) || customerTelList.contains(customer.getCustomerTel());
-        System.out.println("중복 확인 최종" + result);
+//        System.out.println("중복 확인 최종" + result);
         return result;
     }
 

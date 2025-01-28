@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../../components/standard/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
-import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
@@ -96,12 +95,12 @@ function Customer() {
       });
   };
 
-  const handleEditRequest = () => {
-    if (customerKey) {
-      setViewDialogOpen(false);
-      setEditDialogOpen(true);
-    }
-  };
+  // const handleEditRequest = () => {
+  //   if (customerKey) {
+  //     setViewDialogOpen(false);
+  //     setEditDialogOpen(true);
+  //   }
+  // };
 
   //수정 저장 버튼
   const handleEditClick = (customerData) => {
@@ -126,26 +125,26 @@ function Customer() {
       });
   };
 
-  const handleDeleteClick = () => {
-    axios
-      .put(`api/customer/delete/${customerKey}`)
-      .then((res) => res.data)
-      .then((data) => {
-        fetchUpdatedCustomerList();
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-        setViewDialogOpen(false);
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
+  // const handleDeleteClick = () => {
+  //   axios
+  //     .put(`api/customer/delete/${customerKey}`)
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       fetchUpdatedCustomerList();
+  //       toaster.create({
+  //         type: data.message.type,
+  //         description: data.message.text,
+  //       });
+  //       setViewDialogOpen(false);
+  //     })
+  //     .catch((e) => {
+  //       const data = e.response.data;
+  //       toaster.create({
+  //         type: data.message.type,
+  //         description: data.message.text,
+  //       });
+  //     });
+  // };
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
@@ -173,6 +172,7 @@ function Customer() {
     if (search.keyword.trim().length > 0) {
       nextSearchParams.set("type", search.type);
       nextSearchParams.set("keyword", search.keyword);
+      nextSearchParams.set("page", 1);
     } else {
       nextSearchParams.delete("type");
       nextSearchParams.delete("keyword");
@@ -278,55 +278,51 @@ function Customer() {
   // console.log("p", standard);
 
   return (
-    <Box display={"flex"} h={"100vh"}>
-      <StandardSideBar />
-      <Stack w={"100%"} mx={"auto"}>
-        <Text fontSize="xl" mx={10} my={3}>
-          기준정보 관리 {">"} 협력업체 관리
-        </Text>
+    <Box>
+      <HStack align={"flex-start"} w={"100%"}>
+        <StandardSideBar />
+        <Stack flex={1} p={5}>
+          <Heading size="xl" mb={3} p={2}>
+            기준정보 관리 {">"} 협력업체 관리
+          </Heading>
 
-        <CustomerList
-          customerList={customerList}
-          standard={standard}
-          onHeader={handleStandard}
-          count={count}
-          onRowClick={handleRowClick}
-          handlePageChange={handlePageChange}
-          setSearchParams={setSearchParams}
-          checkedActive={checkedActive}
-          toggleCheckedActive={toggleCheckedActive}
-          search={search}
-          setSearch={setSearch}
-          handleSearchClick={handleSearchClick}
-          handleSearchTypeChange={handleSearchTypeChange}
-        />
-        <Flex justify="flex-end">
-          <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
-            협력업체 등록
-          </Button>
-        </Flex>
-      </Stack>
-      {/*Dialog*/}
-      <div>
-        <CustomerAdd
-          isOpen={addDialogOpen}
-          onCancel={() => setAddDialogOpen(false)}
-          onSave={handleSaveClick}
-        />
-        <CustomerView
-          isOpen={viewDialogOpen}
-          customerKey={customerKey}
-          onDelete={handleDeleteClick}
-          onEdit={handleEditRequest}
-          onCancel={() => setViewDialogOpen(false)}
-        />
-        <CustomerEdit
-          isOpen={editDialogOpen}
-          customerKey={customerKey}
-          onEdit={handleEditClick}
-          onCancel={() => setEditDialogOpen(false)}
-        />
-      </div>
+          <CustomerList
+            customerList={customerList}
+            standard={standard}
+            onHeader={handleStandard}
+            count={count}
+            onRowClick={handleRowClick}
+            handlePageChange={handlePageChange}
+            setSearchParams={setSearchParams}
+            checkedActive={checkedActive}
+            toggleCheckedActive={toggleCheckedActive}
+            search={search}
+            setSearch={setSearch}
+            handleSearchClick={handleSearchClick}
+            handleSearchTypeChange={handleSearchTypeChange}
+          />
+          <Flex justify="flex-end">
+            <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+              협력업체 등록
+            </Button>
+          </Flex>
+        </Stack>
+        {/*Dialog*/}
+        <div>
+          <CustomerAdd
+            isOpen={addDialogOpen}
+            onCancel={() => setAddDialogOpen(false)}
+            onSave={handleSaveClick}
+          />
+
+          <CustomerEdit
+            isOpen={editDialogOpen}
+            customerKey={customerKey}
+            onEdit={handleEditClick}
+            onCancel={() => setEditDialogOpen(false)}
+          />
+        </div>
+      </HStack>
     </Box>
   );
 }

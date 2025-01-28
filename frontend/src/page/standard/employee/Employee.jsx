@@ -24,7 +24,6 @@ export function Employee() {
       <StandardSideBar />
       <Box p={5}>
         <Heading>기준정보관리 {">"} 인사관리</Heading>
-
         <EmployeeList
           onSelect={handleSelectedNo}
           updateList={addCheck}

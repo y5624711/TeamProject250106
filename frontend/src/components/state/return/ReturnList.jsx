@@ -12,24 +12,24 @@ import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Button } from "../../ui/button.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../ui/pagination.jsx";
-import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 function ReturnList({
   returnList,
   onRowClick,
   count,
-  page,
   handlePageChange,
   state,
   onStateChange,
@@ -43,7 +43,11 @@ function ReturnList({
   const [localType, setLocalType] = useState(
     new URLSearchParams(window.location.search).get("type") || "all",
   );
-  const [localTypeName, setLocalTypeName] = useState("");
+
+  // URL의 page 값으로 초기화
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(new URLSearchParams(window.location.search).get("page")) || 1,
+  );
 
   //검색 keyword
   const returnSearchKeywords = createListCollection({
@@ -51,19 +55,19 @@ function ReturnList({
       { label: "전체", value: "all" },
       { label: "가맹점", value: "franchiseName" },
       { label: "품목", value: "itemCommonName" },
+      { label: "담당업체", value: "customerName" },
       { label: "시리얼번호", value: "serialNo" },
       { label: "반품번호", value: "returnNo" },
-      { label: "협력업체", value: "customerName" },
       { label: "신청자", value: "businessEmployeeName" },
-      { label: "신청자사번", value: "businessEmployeeNo" },
+      // { label: "신청자사번", value: "businessEmployeeNo" },
       { label: "승인자", value: "customerEmployeeName" },
-      { label: "승인자사번", value: "customerEmployeeNo" },
+      // { label: "승인자사번", value: "customerEmployeeNo" },
       { label: "검수기사", value: "customerConfigurerName" },
-      { label: "검수기사 사번", value: "customerConfigurerNo" },
+      // { label: "검수기사 사번", value: "customerConfigurerNo" },
     ],
   });
 
-  //영어명으로 한국명 찾기
+  //검색 type 영어명으로 한국명 찾기
   const getLabelByValue = (value) => {
     const item = returnSearchKeywords.items.find(
       (item) => item.value === value,
@@ -71,12 +75,12 @@ function ReturnList({
     return item ? item.label : value;
   };
 
-  console.log("이름", getLabelByValue(localType));
-
+  // console.log("이름", getLabelByValue(localType));
   // console.log("list", returnList);
   // console.log("count", count);
   // console.log("local filters", filters);
   // console.log("state", filters.state);
+  // console.log("page", page);
 
   //검색 버튼 클릭 시
   const handleSearchButton = () => {
@@ -106,7 +110,7 @@ function ReturnList({
 
   // console.log(localType);
   // console.log("name", localTypeName);
-  console.log("type", localType);
+  // console.log("type", localType);
 
   return (
     <Box>
@@ -160,10 +164,10 @@ function ReturnList({
         my={3}
       >
         <HStack gap={6}>
-          <Radio value="all">전체 조회</Radio>
-          <Radio value="request">대기 상태 조회</Radio>
-          <Radio value="approve">승인 상태 조회</Radio>
-          <Radio value="disapprove">반려 상태 조회</Radio>
+          <Radio value="all">전체</Radio>
+          <Radio value="request">대기</Radio>
+          <Radio value="approve">승인</Radio>
+          <Radio value="disapprove">반려</Radio>
         </HStack>
       </RadioGroup>
 
@@ -176,66 +180,92 @@ function ReturnList({
               textAlign="center"
               onClick={() => handleHeaderClick("franchise_name")}
             >
-              가맹점
-              {sort === "franchise_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                가맹점
+                {sort === "franchise_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("itc.common_code_name")}
             >
-              품목
-              {sort === "itc.common_code_name" &&
-                (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                품목
+                {sort === "itc.common_code_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("customer_name")}
             >
-              담당 업체
-              {sort === "customer_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                담당 업체
+                {sort === "customer_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("serial_no")}
             >
-              시리얼 번호
-              {sort === "serial_no" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                시리얼 번호
+                {sort === "serial_no" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("return_no")}
             >
-              반품 번호
-              {sort === "return_no" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                반품 번호
+                {sort === "return_no" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("business_employee_name")}
+              onClick={() => handleHeaderClick("emb.employee_name")}
             >
-              산청자
-              {sort === "business_employee_name" &&
-                (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                산청자
+                {sort === "emb.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
 
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("emce.employee_name")}
             >
-              승인자
-              {sort === "emce.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                승인자
+                {sort === "emce.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("emcc.employee_name")}
             >
-              검수기사
-              {sort === "emcc.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                검수기사
+                {sort === "emcc.employee_name" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleHeaderClick("date")}
             >
-              날짜{sort === "date" && (order === "ASC" ? " ▲" : " ▼")}
+              <HStack alignItems="center" justify="center">
+                날짜
+                {sort === "date" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
           </Table.Row>
@@ -282,11 +312,14 @@ function ReturnList({
       {/*페이지*/}
       <Center>
         <PaginationRoot
-          onPageChange={handlePageChange}
+          onPageChange={(e) => {
+            handlePageChange(e);
+            setCurrentPage(e.page);
+          }}
           count={count}
           pageSize={10}
-          page={page}
-          variant={"solid"}
+          page={currentPage}
+          variant="solid"
         >
           <HStack>
             <PaginationPrevTrigger />

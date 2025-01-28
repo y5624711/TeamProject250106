@@ -21,7 +21,7 @@ public class LoginController {
     private ResponseEntity<Map<String, Object>> siteIn(@RequestBody Employee employee) {
         String token = service.token(employee);
         String name = service.getName(employee.getEmployeeNo());
-        System.out.println("name = " + name);
+//        System.out.println("name = " + name);
         if (token != null) {
             return ResponseEntity.ok().body(Map.of("token", token, "name", name, "message",
                     Map.of("type", "success", "text", name + "님 환영합니다")));

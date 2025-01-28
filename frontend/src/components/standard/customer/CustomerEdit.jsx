@@ -16,20 +16,27 @@ import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 
 function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
-  const [customer, setCustomer] = useState(null);
+  const initialCustomer = {
+    customerFax: "",
+    customerAddressDetails: "",
+    customerNote: "",
+    customerActive: true,
+  };
+  const [customer, setCustomer] = useState(initialCustomer);
 
   //정보 불러오기
   useEffect(() => {
-    if (customerKey) {
+    if (isOpen && customerKey) {
+      setCustomer(initialCustomer);
       axios
         .get(`/api/customer/view/${customerKey}`)
         .then((res) => {
           setCustomer(res.data);
-          // console.log("back 반환", res.data);
+          console.log("back 반환", res.data);
         })
         .catch((error) => console.error("오류 발생", error));
     }
-  }, [customerKey]);
+  }, [isOpen, customerKey]);
   // console.log("key", customerKey);
 
   const handleInputChange = (e) => {
@@ -52,7 +59,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
         open={isOpen}
         onOpenChange={() => {
           onCancel();
-          handleClose();
+          setCustomer(initialCustomer);
         }}
         size={"lg"}
       >
@@ -127,8 +134,8 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                 </Field>
                 <Field orientation="horizontal" label={"상세 주소"}>
                   <Input
-                    name={"customerAddressDetail"}
-                    value={customer.customerAddressDetail}
+                    name={"customerAddressDetails"}
+                    value={customer.customerAddressDetails}
                     onChange={handleInputChange}
                   />
                 </Field>

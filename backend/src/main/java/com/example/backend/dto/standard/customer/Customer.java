@@ -14,7 +14,7 @@ public class Customer {
     private String customerTel;
     private String customerFax;
     private String customerAddress;
-    private String customerAddressDetail;
+    private String customerAddressDetails;
     private String customerPost;
     private Boolean customerActive;
     private String customerNote;
