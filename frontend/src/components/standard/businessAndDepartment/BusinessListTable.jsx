@@ -38,13 +38,13 @@ export function BusinessListTable({
             <Table.Row
               key={list.departmentKey || index}
               _hover={{ cursor: "pointer" }}
-              onClick={() => openDialog(list)}
+              onDoubleClick={() => openDialog(list)}
               bg={list.departmentActive ? "white" : "gray.200"}
             >
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell>{list.departmentName}</Table.Cell>
-              <Table.Cell>{list.departmentTel}</Table.Cell>
-              <Table.Cell>{list.departmentFax}</Table.Cell>
+              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell textAlign="center">{list.departmentName}</Table.Cell>
+              <Table.Cell textAlign="center">{list.departmentTel}</Table.Cell>
+              <Table.Cell textAlign="center">{list.departmentFax}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

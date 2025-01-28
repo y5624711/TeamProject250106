@@ -1,7 +1,6 @@
 import {
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -25,7 +24,6 @@ export function SelectViewCode({ selectOptions, onChange, value }) {
       pb={"10px"}
       onValueChange={handleSelect}
     >
-      <SelectLabel>코드 종류 선택</SelectLabel>
       <SelectTrigger>
         <SelectValueText
           placeholder={value === "SYSTEM" ? "시스템코드" : "물품코드"}

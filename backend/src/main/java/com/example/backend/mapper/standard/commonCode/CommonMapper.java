@@ -93,7 +93,7 @@ public interface CommonMapper {
     @Select("""
             SELECT COUNT(*)
             FROM TB_SYSCOMM
-            WHERE common_code_active = false
+            WHERE common_code_active = true
                  AND (common_code = #{commonCode} OR common_code_name = #{commCodeName})
             """)
     int countByCodeOrName(String commonCode, String commCodeName);

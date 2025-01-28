@@ -1,7 +1,7 @@
-package com.example.backend.service.login;
+package com.example.backend.service.standard.login;
 
 import com.example.backend.dto.standard.employee.Employee;
-import com.example.backend.mapper.login.LoginMapper;
+import com.example.backend.mapper.standard.login.LoginMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;

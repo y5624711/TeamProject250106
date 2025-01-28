@@ -2,6 +2,8 @@ import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
+import MemberInfo from "../../page/memberInfo/MemberInfo.jsx";
+import { MemberInfoText } from "./MemberInfoText.jsx";
 
 function NavItem({ children, path, ...rest }) {
   const navigate = useNavigate();
@@ -38,7 +40,8 @@ export function Navbar() {
           Choongang System
         </Heading>
         <Spacer />
-        {isAuthenticated && <NavItem>{name}님 환영합니다</NavItem>}
+        <MemberInfoText />
+        {isAuthenticated && <MemberInfo />}
 
         {isAuthenticated && (
           <NavItem

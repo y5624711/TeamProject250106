@@ -12,7 +12,7 @@ import { InventoryTable } from "../../../components/stock/warehouseStatus/Invent
 import { SearchInventory } from "../../../components/stock/warehouseStatus/SearchInventory.jsx";
 import { useSearchParams } from "react-router-dom";
 
-function WarehouseStatus() {
+function InventoryStatus() {
   const [inventoryList, setInventoryList] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ function WarehouseStatus() {
         {/*셀렉트 &&검색창*/}
 
         <Heading size={"xl"} p={2} mb={3}>
-          위치별 재고현황
+          {"물류 관리 > 위치별 재고 현황"}
         </Heading>
 
         <SearchInventory
@@ -78,4 +78,4 @@ function WarehouseStatus() {
   );
 }
 
-export default WarehouseStatus;
+export default InventoryStatus;

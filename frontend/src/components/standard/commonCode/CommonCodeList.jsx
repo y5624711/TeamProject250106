@@ -58,7 +58,7 @@ export function CommonCodeList({
             {commonCodeList?.map((item, index) => (
               <Table.Row
                 key={item.commonCodeKey ? item.commonCodeKey : index}
-                onClick={() => {
+                onDoubleClick={() => {
                   console.log("클릭");
                   onRowClick(item.commonCodeKey);
                 }}

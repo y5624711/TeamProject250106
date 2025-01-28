@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import {
   createListCollection,
+  Flex,
   Input,
   Stack,
   Text,
@@ -109,14 +110,19 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             합니다.
           </Text>
 
-          {/*코드 종류 선택*/}
-          <SelectCode
-            selectOptions={selectOptions}
-            onChange={handleCodeTypeChange}
-          />
+          <Flex>
+            <Text pt={6} mr={5} ml={-1}>
+              코드 종류 선택
+            </Text>
+            {/*코드 종류 선택*/}
+            <SelectCode
+              selectOptions={selectOptions}
+              onChange={handleCodeTypeChange}
+            />
+          </Flex>
 
-          <Stack w={"90%"} gap={5} pt={"5"}>
-            <Field label="코드" orientation="horizontal">
+          <Stack w={"90%"} pt={"3"}>
+            <Field label="코드" orientation="horizontal" marginBottom={3}>
               <Input
                 value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
@@ -127,7 +133,6 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
                       ? 5
                       : undefined
                 }
-                marginBottom={15}
               />
             </Field>
             <Field label="코드명" orientation="horizontal" marginBottom={15}>

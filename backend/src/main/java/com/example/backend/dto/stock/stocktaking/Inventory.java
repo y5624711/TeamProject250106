@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class Inventory {
-    private Integer itemCurrentKey;
-    private String itemCode;
+    private String commonCode;
     private String wareHouseCode;
     private String commonCodeName;
     private String wareHouseName;
@@ -13,5 +12,6 @@ public class Inventory {
     private String wareHouseAddress;
     private String wareHouseAddressDetail;
     private String customerName;
+    private String inOutHistoryDate;
     private Integer count;
 }

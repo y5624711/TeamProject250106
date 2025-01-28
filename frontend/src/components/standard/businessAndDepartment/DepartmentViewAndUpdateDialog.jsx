@@ -24,7 +24,7 @@ export function DepartmentViewAndUpdateDialog({
   addCheck,
 }) {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const [saveCheck, setSaveCheck] = useState(false);
+  const [saveCheck, setSaveCheck] = useState(true);
 
   let disable = false;
   if (department !== null) {
@@ -36,44 +36,75 @@ export function DepartmentViewAndUpdateDialog({
   }
 
   const handleUpdate = () => {
-    axios
-      .put("/api/department/update", {
-        departmentKey: department.departmentKey,
-        departmentName: department.departmentName,
-        departmentTel: department.departmentTel,
-        departmentActive: saveCheck,
-        departmentFax: department.departmentFax,
-        departmentNote: department.departmentNote,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        // console.log(departmentList);
-        setAddCheck(!addCheck);
-        const message = data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
+    department.departmentActive = saveCheck;
+    if (department.departmentActive) {
+      axios
+        .put("/api/department/update", {
+          departmentKey: department.departmentKey,
+          departmentCode: department.departmentCode,
+          departmentName: department.departmentName,
+          departmentTel: department.departmentTel,
+          departmentActive: department.departmentActive,
+          departmentFax: department.departmentFax,
+          departmentNote: department.departmentNote,
+        })
+        .then((res) => res.data)
+        .then((data) => {
+          // console.log(departmentList);
+          setAddCheck(!addCheck);
+          const message = data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
+          onCancel();
+        })
+        .catch((e) => {
+          const message = e.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
         });
-        onCancel();
-      })
-      .catch((e) => {
-        const message = e.data.message;
-        toaster.create({
-          type: message.type,
-          description: message.text,
+    } else {
+      axios
+        .put("/api/department/update", {
+          departmentKey: department.departmentKey,
+          departmentCode: "",
+          departmentName: department.departmentName,
+          departmentTel: department.departmentTel,
+          departmentActive: department.departmentActive,
+          departmentFax: department.departmentFax,
+          departmentNote: department.departmentNote,
+        })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log("삭제");
+          setAddCheck(!addCheck);
+          const message = data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
+          onCancel();
+        })
+        .catch((e) => {
+          const message = e.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
         });
-      });
+    }
   };
 
   if (!department) {
     return;
   }
 
-  console.log(saveCheck);
-
   return (
     <DialogRoot
-      size={"lg"}
+      size={"md"}
       open={isOpen}
       onOpenChange={() => {
         onCancel();
@@ -91,6 +122,7 @@ export function DepartmentViewAndUpdateDialog({
               onChange={(e) => {
                 setSaveCheck(e.target.checked);
               }}
+              disabled={!department.departmentActive}
             >
               부서 사용여부
             </Checkbox>
@@ -159,21 +191,14 @@ export function DepartmentViewAndUpdateDialog({
           </Stack>
         </DialogBody>
         <DialogFooter>
+          <Button variant="outline" onClick={() => onCancel()}>
+            취소
+          </Button>
           {department.departmentActive && (
             <>
-              {
-                <>
-                  <Button variant="outline">취소</Button>
-                  <Button disabled={disable} onClick={handleUpdate}>
-                    확인
-                  </Button>
-                  {/*<DeleteDialog*/}
-                  {/*  isOpenDelete={isOpenDelete}*/}
-                  {/*  setIsOpenDelete={setIsOpenDelete}*/}
-                  {/*  handleDeleteClick={handleDeleteClick}*/}
-                  {/*/>*/}
-                </>
-              }
+              <Button disabled={disable} onClick={handleUpdate}>
+                확인
+              </Button>
             </>
           )}
         </DialogFooter>
