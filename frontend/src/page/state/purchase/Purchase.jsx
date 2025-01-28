@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Center, Heading, HStack, Stack } from "@chakra-ui/react";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
+import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
@@ -15,24 +9,12 @@ import { useSearchParams } from "react-router-dom";
 export function Purchase() {
   // URL 쿼리 파라미터 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
-  const state = searchParams.get("state") || "all";
-  const sort = searchParams.get("sort") || "date";
-  const order = searchParams.get("order") || "desc";
-
   // 데이터 및 페이지 관련 상태
   const [purchaseList, setPurchaseList] = useState([]);
   const [count, setCount] = useState(0);
-
-  // 검색 관련 상태
-  const [search, setSearch] = useState({
-    type: "all",
-    keyword: "",
-  });
-
   // 선택된 항목 관련 상태
   const [purchaseRequestKey, setPurchaseRequestKey] = useState(null);
   const [purchaseRequestData, setPurchaseRequestData] = useState(null); // 발주 데이터를 상위 컴포넌트에서 관리
-
   // 다이얼로그 관련 상태
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -55,61 +37,6 @@ export function Purchase() {
     return () => {
       controller.abort();
     };
-  }, [searchParams]);
-
-  // 검색 상태를 URLSearchParams에 맞게 업데이트
-  useEffect(() => {
-    const nextSearch = { ...search };
-    if (searchParams.get("type")) {
-      nextSearch.type = searchParams.get("type");
-    } else {
-      nextSearch.type = "all";
-    }
-    if (searchParams.get("keyword")) {
-      nextSearch.keyword = searchParams.get("keyword");
-    } else {
-      nextSearch.keyword = "";
-    }
-    setSearch(nextSearch);
-  }, [searchParams]);
-
-  // 검색 파라미터 업데이트
-  const handleSearchClick = () => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-    if (search.keyword.trim().length > 0) {
-      nextSearchParam.set("type", search.type);
-      nextSearchParam.set("keyword", search.keyword);
-      nextSearchParam.set("page", 1);
-    } else {
-      nextSearchParam.delete("type");
-      nextSearchParam.delete("keyword");
-    }
-    setSearchParams(nextSearchParam);
-  };
-
-  // 페이지네이션
-  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
-  const page = Number(pageParam);
-
-  // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
-  function handlePageChange(e) {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("page", e.page);
-    setSearchParams(nextSearchParams);
-  }
-
-  // state 변경
-  const handleStateChange = (newState) => {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("state", newState.value); // 새로운 state 값 반영
-    nextSearchParams.set("page", 1); // 상태 변경 시 페이지를 초기화
-    setSearchParams(nextSearchParams);
-  };
-
-  // URL에서 state를 가져와서 상태 업데이트
-  useEffect(() => {
-    const newState = searchParams.get("state") || "all";
-    console.log("Updated state from URL:", newState);
   }, [searchParams]);
 
   // 구매 신청 다이얼로그 열기
@@ -157,30 +84,10 @@ export function Purchase() {
         <PurchaseList
           purchaseList={purchaseList}
           onViewClick={handleViewClick}
-          handleSearchClick={handleSearchClick}
-          page={page}
           count={count}
-          handlePageChange={handlePageChange}
-          onStateChange={handleStateChange}
-          sort={sort}
-          order={order}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
-        {/* 페이지네이션 */}
-        <Center>
-          <PaginationRoot
-            onPageChange={handlePageChange}
-            count={count}
-            pageSize={10}
-            variant="solid"
-            mt={5}
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
-        </Center>
         {/* 구매 신청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
           <Button onClick={handlePurchaseRequestClick} mt={-11}>

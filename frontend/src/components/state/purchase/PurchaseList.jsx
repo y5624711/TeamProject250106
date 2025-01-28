@@ -1,41 +1,37 @@
 import {
   Box,
-  Button,
+  Center,
   createListCollection,
   HStack,
-  IconButton,
-  Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Table,
-  TableColumnHeader,
   TableHeader,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import { BsArrowCounterclockwise } from "react-icons/bs";
+import { SearchBar } from "../../tool/list/SearchBar.jsx";
+import { Pagination } from "../../tool/list/Pagination.jsx";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 export function PurchaseList({
   purchaseList,
   onViewClick,
-  onStateChange,
+  count,
+  searchParams,
+  setSearchParams,
   state,
-  sort,
-  order,
 }) {
-  // URL 쿼리의 'keyword'와 'type'을 초기값으로 설정
-  const [localKeyword, setLocalKeyword] = useState(
-    new URLSearchParams(window.location.search).get("keyword") || "",
-  );
-  const [localType, setLocalType] = useState(
-    new URLSearchParams(window.location.search).get("type") || "all",
-  );
+  // 정렬 헤더
+  const sortInstallOptions = [
+    { key: "purchaseRequestKey", label: "#" },
+    { key: "customerName", label: "담당 업체" },
+    { key: "itemCommonName", label: "품목" },
+    { key: "employeeName", label: "신청자" },
+    { key: "customerEmployeeName", label: "승인자" },
+    { key: "date", label: "날짜" },
+  ];
 
   // 검색 셀렉트
-  const PurchaseOptionList = createListCollection({
+  const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
       { label: "담당 업체", value: "customerName" },
@@ -47,102 +43,51 @@ export function PurchaseList({
     ],
   });
 
-  //영어명으로 한국명 찾기
-  const getLabelByValue = (value) => {
-    const item = PurchaseOptionList.items.find((item) => item.value === value);
-    return item ? item.label : value;
+  // URL에서 "state" 파라미터 값을 가져와 초기값으로 설정
+  const [radioValue, setRadioValue] = useState(
+    searchParams.get("state") || "all",
+  );
+
+  // 상태 변경 (라디오 버튼 선택 시 URL 쿼리 파라미터 갱신)
+  const handleStateChange = (value) => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+
+    nextSearchParam.set("page", "1");
+    nextSearchParam.set("state", value);
+
+    setSearchParams(nextSearchParam);
   };
 
-  // 검색 버튼 클릭
-  const handleSearchClick = () => {
-    const searchParams = new URLSearchParams();
-    searchParams.set("type", localType);
-    searchParams.set("keyword", localKeyword);
-    searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
-    searchParams.set("state", state);
-    searchParams.set("sort", sort);
-    searchParams.set("order", order);
-
-    // URL을 갱신하고 새로고침
-    window.location.search = searchParams.toString();
-  };
-
-  // 헤더 클릭 (정렬)
-  const handleHeaderClick = (columnName) => {
-    // 날짜 컬럼을 클릭하면 기본적으로 ASC로 정렬하도록 설정
-    const nextOrder = sort === columnName && order === "ASC" ? "DESC" : "ASC";
-
-    // URL을 업데이트하고 새로고침
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set("sort", columnName);
-    searchParams.set("order", nextOrder);
-    searchParams.set("page", 1); // 정렬 변경 시 페이지를 초기화
-    window.location.search = searchParams.toString();
-  };
+  // 새로고침 시 검색 파라미터에서 state 값이 있으면 라디오 버튼 상태를 설정
+  useEffect(() => {
+    const stateFromParams = searchParams.get("state") || "all";
+    setRadioValue(stateFromParams);
+  }, [searchParams]);
 
   return (
     <Box>
       {/* 검색창 */}
-      <HStack justifyContent="center">
-        <SelectRoot
-          collection={PurchaseOptionList}
-          width="160px"
-          position="relative"
-          value={getLabelByValue(localType)}
-          onValueChange={(e) => {
-            setLocalType(e.value[0]);
-          }}
-        >
-          <SelectTrigger>
-            <SelectValueText placeholder={getLabelByValue(localType)} />
-          </SelectTrigger>
-          <SelectContent
-            style={{
-              width: "150px",
-              top: "40px",
-              position: "absolute",
-            }}
-          >
-            {PurchaseOptionList.items.map((e) => (
-              <SelectItem item={e} key={e.value} value={e.value}>
-                {e.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-        <Input
-          placeholder="검색어를 입력해 주세요."
-          width="50%"
-          value={localKeyword}
-          onChange={(e) => setLocalKeyword(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearchClick();
-            }
-          }}
-        />
+      <SearchBar searchOptions={searchOptions} />
 
-        {/* 검색 초기화 */}
-        <IconButton
-          transform="translateX(-130%) "
-          style={{ cursor: "pointer" }}
-          variant={"ghost"}
-          onClick={() => {
-            window.location.search = ""; // searchParams 초기화
-          }}
-        >
-          <BsArrowCounterclockwise size="25px" />
-        </IconButton>
-        <Button onClick={handleSearchClick} transform="translateX(-75%)">
-          검색
-        </Button>
-      </HStack>
+      {/* 검색 초기화 */}
+      {/*<IconButton*/}
+      {/*  transform="translateX(-130%) "*/}
+      {/*  style={{ cursor: "pointer" }}*/}
+      {/*  variant={"ghost"}*/}
+      {/*  onClick={() => {*/}
+      {/*    window.location.search = ""; // searchParams 초기화*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <BsArrowCounterclockwise size="25px" />*/}
+      {/*</IconButton>*/}
+      {/*<Button transform="translateX(-75%)">검색</Button>*/}
 
-      {/* 라디오 */}
+      {/* 라디오 버튼 */}
       <RadioGroup
         name={state}
         value={state}
-        onValueChange={onStateChange}
+        defaultValue={radioValue}
+        onValueChange={(value) => handleStateChange(value.value)}
         my={6}
         ml={2}
       >
@@ -153,61 +98,19 @@ export function PurchaseList({
           <Radio value="disapprove">반려</Radio>
         </HStack>
       </RadioGroup>
-
       {/* 테이블 */}
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <TableColumnHeader textAlign="center" verticalAlign="middle">
-              #
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => handleHeaderClick("customer_name")}
-            >
-              담당 업체
-              {sort === "customer_name" && (order === "ASC" ? " ▲" : " ▼")}
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => handleHeaderClick("sys.common_code_name")}
-            >
-              품목
-              {sort === "sys.common_code_name" &&
-                (order === "ASC" ? " ▲" : " ▼")}
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => handleHeaderClick("emp1.employee_name")}
-            >
-              신청자
-              {sort === "emp1.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => handleHeaderClick("emp2.employee_name")}
-            >
-              승인자
-              {sort === "emp2.employee_name" && (order === "ASC" ? " ▲" : " ▼")}
-            </TableColumnHeader>
-            <Table.ColumnHeader
-              textAlign="center"
-              verticalAlign="middle"
-              onClick={() => handleHeaderClick("date")}
-            >
-              날짜
-              {sort === "date" && (order === "ASC" ? " ▲" : " ▼")}
-            </Table.ColumnHeader>
-            <TableColumnHeader textAlign="center" verticalAlign="middle">
-              상태
-            </TableColumnHeader>
+            <Sort
+              sortOptions={sortInstallOptions}
+              onSortChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+            />
+            <Table.Cell textAlign="center">상태</Table.Cell>
           </Table.Row>
         </TableHeader>
-
         <Table.Body>
           {purchaseList && purchaseList.length > 0 ? (
             purchaseList.map((purchase, index) => (
@@ -215,6 +118,7 @@ export function PurchaseList({
                 key={index}
                 onDoubleClick={() => onViewClick(purchase.purchaseRequestKey)}
                 style={{ cursor: "pointer" }}
+                _hover={{ backgroundColor: "gray.200" }}
                 textAlign="center"
                 verticalAlign="middle"
               >
@@ -254,6 +158,18 @@ export function PurchaseList({
           )}
         </Table.Body>
       </Table.Root>
+      {/* 페이지네이션 */}
+      <Center>
+        <Pagination
+          count={count}
+          pageSize={10}
+          onPageChange={(newPage) => {
+            const nextSearchParam = new URLSearchParams(searchParams);
+            nextSearchParam.set("page", newPage);
+            setSearchParams(nextSearchParam);
+          }}
+        />
+      </Center>
     </Box>
   );
 }
