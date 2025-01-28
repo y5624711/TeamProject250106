@@ -30,79 +30,75 @@ SELECT
     CASE 
         WHEN BI.input_consent=TRUE  THEN INS.input_stock_date 
         ELSE NULL
-        END AS  input_stock_date,
+    END AS input_stock_date,
     CASE 
         WHEN BI.input_consent=TRUE  THEN EM3.employee_name 
         ELSE NULL
-        END AS  input_stock_employee_name,
-     CASE 
+    END AS input_stock_employee_name,
+    CASE 
         WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
         ELSE NULL
-        END AS  input_stock_employee_no,
+    END AS input_stock_employee_no,
     CASE 
-        WHEN BI.input_common_code ='INSTK' THEN PRQ.amount 
-       ELSE 1
-       END AS item_amount ,
+        WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount 
+        ELSE 1
+    END AS item_amount,
     CASE
         WHEN BI.input_common_code='INSTK'  THEN PRQ.purchase_request_date 
         WHEN BI.input_common_code='RETRN'  THEN RNRQ.return_request_date
         ELSE NULL
-        END AS request_date
-            FROM TB_BUYIN BI  
+    END AS request_date
+FROM TB_BUYIN BI  
     LEFT JOIN TB_PURCH_APPR PR
-     ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
+        ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
     LEFT JOIN TB_PURCH_REQ PRQ  
-                ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key=PR.purchase_request_key
-                
-     LEFT JOIN TB_RTN_APPR RN
+        ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
+    LEFT JOIN TB_RTN_APPR RN
         ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
-     LEFT JOIN TB_RTN_REQ RNRQ 
-        ON BI.input_common_code ='RETRN' AND RNRQ.return_request_key=RN.return_request_key
-                
-      LEFT JOIN TB_EMPMST EM
+    LEFT JOIN TB_RTN_REQ RNRQ 
+        ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
+    LEFT JOIN TB_EMPMST EM
         ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-    
-      LEFT JOIN TB_EMPMST EM2
+    LEFT JOIN TB_EMPMST EM2
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
-               
-     LEFT JOIN TB_CUSTMST CT ON (CT.customer_code = EM.employee_workplace_code)
-     LEFT JOIN TB_SYSCOMM SC ON SC.common_code = CT.item_code
-     LEFT JOIN TB_SYSCOMM SC2 ON SC2.common_code = BI.input_common_code
-                
-    LEFT JOIN TB_INSTK INS ON( BI.input_consent=true and  INS.input_key=BI.input_key)          
-    -- 시리얼 번호 옮겨서  오류나서 주석
-  -- LEFT JOIN TB_ITEMSUB ITS ON (BI.input_consent=true and ITS.serial_no=INS.serial_no)
-    LEFT JOIN TB_EMPMST EM3 ON(BI.input_consent=true and EM3.employee_no=INS.customer_employee_no)
-         WHERE 1=1
-                   -- 요청상태가 뭐냐에 따른 조회
-        <if test="state == 'request'">
-            AND input_consent IS NULL
-        </if>
-        <if test="state == 'approve'">
-            AND input_consent = TRUE
-        </if>
-        <if test="state == 'reject'">
-            AND input_consent = FALSE
-        </if>
-        <if test="state == 'all'">
-            <!-- no condition -->
-        </if>
-         <if test="keyword != null and keyword != ''">
-                         AND (
-                             BI.input_common_code LIKE CONCAT('%', #{keyword}, '%')                -- BI 테이블의 input_common_code
-                             OR BI.input_no LIKE CONCAT('%', #{keyword}, '%')                     -- BI 테이블의 input_no
---                           OR SC.common_name LIKE CONCAT('%', #{keyword}, '%')                  -- SC 테이블의 item_common_name
-                             OR CT.customer_name LIKE CONCAT('%', #{keyword}, '%')                -- CT 테이블의 customer_name
-                             OR INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%')            -- INS 테이블의 input_stock_date
-                             OR EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 요청 담당자 이름 (EM2 테이블)
-                             OR EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')    
-                         )
-        </if>
-        ORDER BY #{sort} #{order}
-        LIMIT #{offset}, 10    
-      </script>                              
+    LEFT JOIN TB_CUSTMST CT 
+        ON CT.customer_code = EM.employee_workplace_code
+    LEFT JOIN TB_SYSCOMM SC 
+        ON SC.common_code = CT.item_code
+    LEFT JOIN TB_SYSCOMM SC2 
+        ON SC2.common_code = BI.input_common_code
+    LEFT JOIN TB_INSTK INS 
+        ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
+    LEFT JOIN TB_EMPMST EM3 
+        ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
+WHERE 1=1
+    <if test="state == 'request'">
+        AND input_consent IS NULL
+    </if>
+    <if test="state == 'approve'">
+        AND input_consent = TRUE
+    </if>
+    <if test="state == 'reject'">
+        AND input_consent = FALSE
+    </if>
+    <if test="keyword != null and keyword != ''">
+        AND (
+            BI.input_common_code LIKE CONCAT('%', #{keyword}, '%') OR
+            BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
+            SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+            CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
+            INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%') OR
+            EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+            EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+        )
+    </if>
+ORDER BY 
+    CASE WHEN #{sort} = 'default' THEN COALESCE(INS.input_stock_date, RNRQ.return_request_date) END,
+    ${sort} ${order}
+LIMIT #{offset}, 10    
+</script>
 """)
     List<Instk> viewBuyInList(
             @Param("offset") int offset,
@@ -110,6 +106,7 @@ SELECT
             @Param("keyword") String keyword,
             @Param("sort") String sort,
             @Param("order") String order);
+
 
     @Select("""
             select input_stock_note

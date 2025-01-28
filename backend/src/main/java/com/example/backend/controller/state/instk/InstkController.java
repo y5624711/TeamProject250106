@@ -25,7 +25,7 @@ public class InstkController {
             @RequestParam(value = "state", defaultValue = "all") String state,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
-            @RequestParam(value = "sort", defaultValue = "") String sort,
+            @RequestParam(value = "sort", defaultValue = "input_key") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
 

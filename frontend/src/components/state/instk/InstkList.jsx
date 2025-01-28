@@ -69,20 +69,14 @@ export function InstkList() {
   const sortOptions = [
     { key: "input_key", label: "#" },
     { key: "input_common_code", label: "입고 구분" },
-    { key: "input_No", label: "발주 번호" },
+    { key: "input_no", label: "발주 번호" },
     { key: "item_common_name", label: "품목" },
     { key: "customer_name", label: "담당 업체" },
-    { key: "input_price", label: "신청자" },
-    { key: "inputStock_employee_name", label: "승인자" },
+    { key: "request_employee_name", label: "신청자" },
+    { key: "input_stock_employee_name", label: "승인자" },
     { key: "input_stock_date", label: "날짜" },
     { key: "input_consent", label: "상태" },
   ];
-
-
-
-
-
-
 
   return (
     <Box>
