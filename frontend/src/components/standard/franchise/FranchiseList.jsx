@@ -282,7 +282,9 @@ export function FranchiseList({
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan="7">데이터가 없습니다.</Table.Cell>
+              <Table.Cell textAlign="center" colSpan="7">
+                데이터가 없습니다.
+              </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
