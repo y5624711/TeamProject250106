@@ -16,37 +16,35 @@ function Return(props) {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
 
-  const page = searchParams.get("page") || 1;
-  // const type = searchParams.get("type") || "all";
-  // const keyword = searchParams.get("keyword") || "";
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
   const order = searchParams.get("order") || "desc";
 
   //목록 불러오기
-  useEffect(() => {
-    const controller = new AbortController();
+  const fetchReturnList = () => {
     axios
-      .get("/api/return/list", {
-        params: searchParams,
-        signal: controller.signal,
-      })
+      .get("/api/return/list", { params: searchParams })
       .then((res) => res.data)
       .then((data) => {
-        // console.log("반환", data);
         setReturnList(data.returnList);
         setCount(data.count);
-      });
-    return () => {
-      controller.abort();
-    };
+      })
+      .catch((e) => console.error("목록 불러오기 에러", e));
+  };
+
+  // 컴포넌트가 렌더링될 때 목록 불러오기
+  useEffect(() => {
+    fetchReturnList();
   }, [searchParams]);
 
-  // console.log("searchParams", searchParams.toString());
+  // 요청 성공 후 목록 새로고침
+  const handleRequestClick = () => {
+    fetchReturnList();
+  };
 
   //페이지 이동
   function handlePageChange(e) {
-    console.log(e);
+    // console.log(e);
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
@@ -76,17 +74,17 @@ function Return(props) {
     setSearchParams(nextSearchParams);
   };
 
-  // URL 변화 시 검색 상태 갱신
-  useEffect(() => {
-    const newState = searchParams.get("state") || "all";
-    console.log("Updated state from URL:", newState);
-  }, [searchParams]);
+  // // URL 변화 시 검색 상태 갱신
+  // useEffect(() => {
+  //   const newState = searchParams.get("state") || "all";
+  //   // console.log("Updated state from URL:", newState);
+  // }, [searchParams]);
 
-  //요청창 작성 후 버튼 클릭 : returnRequest
-  const handleRequestClick = (newRequest) => {
-    setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
-    setRequestDialogOpen(false);
-  };
+  // //요청창 작성 후 버튼 클릭 : returnRequest
+  // const handleRequestClick = (newRequest) => {
+  //   setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
+  //   setRequestDialogOpen(false);
+  // };
 
   //테이블 행 클릭
   const handleRowClick = (requestKey) => {
@@ -123,7 +121,6 @@ function Return(props) {
           <ReturnList
             returnList={returnList}
             onRowClick={handleRowClick}
-            page={page}
             count={count}
             state={state}
             handlePageChange={handlePageChange}
@@ -145,7 +142,6 @@ function Return(props) {
         />
         <ReturnApprove
           returnRequestKey={returnRequestKey}
-          setReturnRequestKey={setReturnRequestKey}
           isOpen={approveDialogOpen}
           onClose={() => setApproveDialogOpen(false)}
           onApprove={handleRequestClick}

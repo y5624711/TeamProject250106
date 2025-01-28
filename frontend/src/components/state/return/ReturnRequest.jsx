@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -23,20 +23,25 @@ import {
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import Select from "react-select";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function ReturnRequest({ isOpen, onClose, onRequest }) {
+  const { id, name } = useContext(AuthenticationContext);
+  // console.log(id, name);
+
   //반품 요청창 초기상태
   const initialRequestData = {
     serialNo: "",
     itemCommonName: "",
     franchiseName: "",
     customerName: "",
-    businessEmployeeNo: "",
-    businessEmployeeName: "",
+    businessEmployeeNo: id,
+    businessEmployeeName: name,
     returnRequestNote: "",
   };
 
-  const [requestData, setRequestData] = useState(initialRequestData);
   const [serialNo, setSerialNo] = useState("");
   const [franchiseList, setFranchiseList] = useState([]);
   const [localFranchiseName, setLocalFranchiseName] = useState("");
@@ -44,12 +49,19 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   const [serialNoList, setSerialNoList] = useState([
     { value: "", label: "내용 없음" },
   ]);
+  const [requestData, setRequestData] = useState(initialRequestData);
+  // console.log(requestData);
 
-  // console.log("serial no1", requestData.serialNo);
-  // console.log("serial no2", serialNo);
-
-  // 가맹점 목록 가져오기
+  //창 열릴 때 실행
   useEffect(() => {
+    //작성자 초기설정
+    setRequestData((prev) => ({
+      ...prev,
+      businessEmployeeNo: id,
+      businessEmployeeName: name,
+    }));
+
+    // 가맹점 목록 가져오기
     axios.get(`/api/install/franchise`).then((res) => {
       // console.log("호출", res.data);
       const franchiseOptions = res.data.map((franchise) => ({
@@ -58,7 +70,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
       }));
       setFranchiseList(franchiseOptions);
     });
-  }, []);
+  }, [id, name]);
 
   //가맹점이 가진 시리얼 번호 불러오기
   const onFranchiseClick = () => {
@@ -88,7 +100,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   //시리얼 번호로 정보 불러오기
   useEffect(() => {
     if (serialNo) {
-      axios.get(`api/return/serialNo/${serialNo}`).then((res) => {
+      axios.get(`api/return/${serialNo}`).then((res) => {
         // console.log("호출정보", res.data);
         setRequestData((prev) => ({
           ...prev,
@@ -106,8 +118,8 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     const value = e.target ? e.target.value : e.value;
     setRequestData((prev) => ({ ...prev, [field]: value }));
   };
-  // console.log("requestData", requestData);
 
+  //가맹점 select
   const handleFranchiseChange = (selectedOption) => {
     // console.log("선택", selectedOption);
     setLocalFranchiseName(selectedOption.label);
@@ -118,19 +130,40 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
 
   //반품 요청
   const handleRequestButtonClick = () => {
-    axios
-      .post("/api/return/request", requestData)
-      .then((res) => res.data)
-      .then((data) => {
-        onRequest(requestData);
-        setRequestData(initialRequestData);
-      });
+    if (validate()) {
+      axios
+        .post("/api/return/request", requestData)
+        .then((res) => res.data)
+        .then((data) => {
+          toaster.create({
+            description: data.message.text,
+            type: data.message.type,
+          });
+          onRequest();
+          setRequestData(initialRequestData);
+          onClose();
+        })
+        .catch((e) => console.error("반품 요청 에러", e));
+    }
   };
 
   const handleCancel = () => {
     setRequestData(initialRequestData);
     onClose();
   };
+
+  //유효성 검사
+  const validate = () => {
+    return (
+      requestData.businessEmployeeName != "" &&
+      requestData.businessEmployeeNo != "" &&
+      requestData.franchiseName != "" &&
+      requestData.serialNo != ""
+    );
+  };
+
+  // console.log("requestData", requestData);
+  // console.log(validate());
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
@@ -190,9 +223,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 <SelectContent
                   style={{
                     top: "40px",
-                    position: "absolute", // 요소가 다른 컨텐츠를 밀지 않게 설정
-                    zIndex: 100, // 드롭다운이 다른 요소 위에 나타나도록
-                    width: "72.5%", // 드롭다운 너비를 트리거와 동일하게
+                    position: "absolute",
+                    zIndex: 100,
+                    width: "72.5%",
                   }}
                 >
                   {serialNoList.map((option) => (
@@ -202,14 +235,6 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                   )) || "내역 없음"}
                 </SelectContent>
               </SelectRoot>
-              {/*<Input*/}
-              {/*  // placeholder="00000000000000000000"*/}
-              {/*  value={requestData.serialNo}*/}
-              {/*  onChange={handleInput("serialNo")}*/}
-              {/*/>*/}
-              {/*<Button onClick={() => setSerialNo(requestData.serialNo)}>*/}
-              {/*  조회*/}
-              {/*</Button>*/}
             </Field>
             <Field orientation="horizontal" label="품목">
               <Input
@@ -229,16 +254,16 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           <HStack>
             <Field orientation="horizontal" label="신청자">
               <Input
+                readOnly
                 value={requestData.businessEmployeeName}
-                // placeholder="홍길동"
-                onChange={handleInput("businessEmployeeName")}
+                // onChange={handleInput("businessEmployeeName")}
               />
             </Field>
             <Field orientation="horizontal" label="사번">
               <Input
                 value={requestData.businessEmployeeNo}
-                // placeholder="0000000000000"
-                onChange={handleInput("businessEmployeeNo")}
+                readOnly
+                // onChange={handleInput("businessEmployeeNo")}
               />
             </Field>
           </HStack>
@@ -246,7 +271,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             <Textarea
               value={requestData.returnRequestNote}
               placeholder="최대 50자"
-              onChange={handleInput("businessEmployeeName")}
+              onChange={handleInput("returnRequestNote")}
             />
           </Field>
         </DialogBody>
@@ -256,7 +281,16 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestButtonClick}>신청</Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={validate()}
+          >
+            <Button onClick={handleRequestButtonClick} disabled={!validate()}>
+              신청
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

@@ -5,8 +5,6 @@ import com.example.backend.service.state.instk.InstkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/instk")
@@ -14,13 +12,13 @@ public class InstkController {
 
     final InstkService service;
 
-    @GetMapping("list")
-    public List<Instk> viewlist() {
-        List<Instk> list = service.viewlist();
-//        System.out.println("list = " + list);
-        return list;
-
-    }
+//    @GetMapping("list")
+//    public List<Instk> viewlist() {
+//        List<Instk> list = service.viewlist();
+////        System.out.println("list = " + list);
+//        return list;
+//
+//    }
 
     @PostMapping("add")
     public void add(@RequestBody Instk instk) {

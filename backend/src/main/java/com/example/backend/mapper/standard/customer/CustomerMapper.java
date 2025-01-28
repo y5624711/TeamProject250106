@@ -46,7 +46,7 @@ public interface CustomerMapper {
                             OR customer_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>                                
                         <if test="type=='all' or type=='itemName'">
-                            OR item_common_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>                
                         <if test="type=='all' or type=='customerRep'">
                             OR customer_rep LIKE CONCAT('%', #{keyword}, '%')
@@ -86,7 +86,7 @@ public interface CustomerMapper {
             SET customer_name = #{customerName}, item_code = #{itemCode}, 
             customer_rep = #{customerRep}, customer_no = #{customerNo}, 
             customer_tel = #{customerTel}, customer_fax = #{customerFax},
-            customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetail}, 
+            customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetails}, 
             customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
             WHERE customer_key = #{customerKey}    
             """)

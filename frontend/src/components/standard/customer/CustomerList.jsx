@@ -5,12 +5,10 @@ import {
   createListCollection,
   HStack,
   Input,
-  Stack,
   Table,
 } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Button } from "../../ui/button.jsx";
-import { MdOutlineNumbers } from "react-icons/md";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import {
@@ -56,44 +54,42 @@ function CustomerList({
   // console.log(standard.order);
 
   return (
-    <Box px={10}>
-      <Center>
-        {/* 검색창 */}
-        <HStack justifyContent="center" w={"100%"}>
-          <SelectRoot
-            collection={optionList}
-            width={"160px"}
-            value={[search.type]}
-            onValueChange={(oc) => {
-              setSearch({ ...search, type: oc.value[0] });
-            }}
-            size="md"
-          >
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent>
-              {optionList.items.map((option) => (
-                <SelectItem item={option} key={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
+    <Box>
+      {/* 검색창 */}
+      <HStack justifyContent="center" w={"100%"}>
+        <SelectRoot
+          collection={optionList}
+          width={"160px"}
+          value={[search.type]}
+          onValueChange={(oc) => {
+            setSearch({ ...search, type: oc.value[0] });
+          }}
+          size="md"
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {optionList.items.map((option) => (
+              <SelectItem item={option} key={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
 
-          <Input
-            width="50%"
-            placeholder="검색어를 입력해 주세요"
-            type="text"
-            value={search.keyword}
-            onChange={(e) => {
-              setSearch({ ...search, keyword: e.target.value });
-            }}
-          />
+        <Input
+          width="50%"
+          placeholder="검색어를 입력해 주세요"
+          type="text"
+          value={search.keyword}
+          onChange={(e) => {
+            setSearch({ ...search, keyword: e.target.value });
+          }}
+        />
 
-          <Button onClick={handleSearchClick}>검색</Button>
-        </HStack>
-      </Center>
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
 
       {/* 체크박스 필터 */}
       <Checkbox checked={checkedActive} onChange={toggleCheckedActive} my={3}>
@@ -101,87 +97,55 @@ function CustomerList({
       </Checkbox>
 
       {/*테이블*/}
-      <Table.Root interactive>
+      <Table.Root interactive my={3}>
         <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader onClick={() => onHeader("customer_key")}>
-              <HStack align={"flex-start"}>
-                <Stack>
-                  <MdOutlineNumbers />
-                </Stack>
-                <Stack>
-                  {standard.sort === "customer_key" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => onHeader("customer_key")}
+            >
+              <HStack alignItems="center" justify="center">
+                #
+                {standard.sort === "customer_key" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => onHeader("customer_name")}>
-              <HStack align={"flex-start"}>
-                <Stack>업체명</Stack>
-                <Stack>
-                  {standard.sort === "customer_name" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => onHeader("customer_name")}
+            >
+              <HStack alignItems="center" justify="center">
+                업체명
+                {standard.sort === "customer_name" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_no")}>
-              <HStack align={"flex-start"}>
-                <Stack>사업자번호</Stack>
-                <Stack>
-                  {standard.sort === "customer_no" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+              <HStack alignItems="center" justify="center">
+                사업자번호
+                {standard.sort === "customer_no" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
-              <HStack align={"flex-start"}>
-                <Stack>취급 품목</Stack>
-                <Stack>
-                  {standard.sort === "item_common_name" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+              <HStack alignItems="center" justify="center">
+                취급 품목
+                {standard.sort === "item_common_name" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_rep")}>
-              <HStack align={"flex-start"}>
-                <Stack>대표</Stack>
-                <Stack>
-                  {standard.sort === "customer_rep" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+              <HStack alignItems="center" justify="center">
+                대표
+                {standard.sort === "customer_rep" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_tel")}>
-              <HStack align={"flex-start"}>
-                <Stack>전화번호</Stack>
-                <Stack>
-                  {standard.sort === "customer_tel" &&
-                    (standard.order === "asc" ? (
-                      <FaCaretUp />
-                    ) : (
-                      <FaCaretDown />
-                    ))}
-                </Stack>
+              <HStack alignItems="center" justify="center">
+                전화번호
+                {standard.sort === "customer_tel" &&
+                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             {/*<Table.ColumnHeader>*/}
@@ -204,12 +168,14 @@ function CustomerList({
               _hover={{ cursor: "pointer" }}
               bg={customer.customerActive ? "white" : "gray.200"}
             >
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell>{customer.customerName}</Table.Cell>
-              <Table.Cell>{customer.customerNo}</Table.Cell>
-              <Table.Cell>{customer.itemName}</Table.Cell>
-              <Table.Cell>{customer.customerRep}</Table.Cell>
-              <Table.Cell>{customer.customerTel}</Table.Cell>
+              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell textAlign="center">
+                {customer.customerName}
+              </Table.Cell>
+              <Table.Cell textAlign="center">{customer.customerNo}</Table.Cell>
+              <Table.Cell textAlign="center">{customer.itemName}</Table.Cell>
+              <Table.Cell textAlign="center">{customer.customerRep}</Table.Cell>
+              <Table.Cell textAlign="center">{customer.customerTel}</Table.Cell>
               {/*<Table.Cell>*/}
               {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
               {/*</Table.Cell>*/}

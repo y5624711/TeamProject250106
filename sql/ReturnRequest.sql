@@ -57,8 +57,9 @@ WHERE rr.return_request_key = 1;
 
 SELECT serial_no
 FROM TB_INOUT_HIS
-WHERE franchise_code = 'FRN0000000003';
-
-# SELECT serial_no
-# FROM TB_INOUT_HIS
-# WHERE
+WHERE franchise_code = 'FRN0000000003'
+EXCEPT
+(SELECT serial_no
+ FROM TB_RTN_REQ
+ WHERE return_consent IS NULL || TB_RTN_REQ.return_consent = true
+     AND franchise_code = 'FRN0000000003');
