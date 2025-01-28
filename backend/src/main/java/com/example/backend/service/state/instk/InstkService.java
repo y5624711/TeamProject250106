@@ -26,12 +26,12 @@ public class InstkService {
     final InstkSubMapper instkSubMapper;
     final PurchaseMapper purchaseMapper;
 
-    public  Map<String,Object> viewlist(String state, Integer page, String keyword) {
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order) {
         int count = mapper.countByConsent(state,keyword);
         System.out.println("keyword = " + keyword);
         System.out.println("count = " + count);
         int offset = (page - 1) * 10;
-         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword);
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 

@@ -84,7 +84,6 @@ public interface EmployeeMapper {
                                                or convertedSort == 'employee_workplace_name'\s
                                                  or convertedSort == 'employee_workplace_tel'\s
                                                or convertedSort == 'employee_workplace_code')">
-                                
                                 ORDER BY  ${convertedSort}
                              </when>
                              <otherwise>

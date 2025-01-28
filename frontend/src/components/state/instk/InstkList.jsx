@@ -14,6 +14,7 @@ import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import {useSearchParams} from "react-router-dom";
+import {Sort} from "../../tool/list/Sort.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
@@ -29,7 +30,9 @@ export function InstkList() {
       params:{
         state:searchParams.get("state"),
         page:searchParams.get("page"),
-        keyword:searchParams.get("keyword")
+        keyword:searchParams.get("keyword"),
+        sort:searchParams.get("sort"),
+        order:searchParams.get("order")
       }
     }).then((res) => {
       setCount(res.data.count)
@@ -63,13 +66,29 @@ export function InstkList() {
       { label: "상태", value: "inputConsent" },
     ],
   });
+  const sortOptions = [
+    { key: "input_key", label: "#" },
+    { key: "input_common_code", label: "입고 구분" },
+    { key: "input_No", label: "발주 번호" },
+    { key: "item_common_name", label: "품목" },
+    { key: "customer_name", label: "담당 업체" },
+    { key: "input_price", label: "신청자" },
+    { key: "inputStock_employee_name", label: "승인자" },
+    { key: "input_stock_date", label: "날짜" },
+    { key: "input_consent", label: "상태" },
+  ];
+
+
+
+
+
+
 
   return (
     <Box>
-
       <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
       <RadioGroup defaultValue="all"  value={searchParams.get("state")} my={3} onValueChange={(e)=>{
-        setSearchParams({state:e.value});
+        setSearchParams({state:e.value ,page:1});
       }} >
         <HStack gap={6}>
           <Radio value="all">전체</Radio>
@@ -82,21 +101,12 @@ export function InstkList() {
         <Table.Root>
           <Table.Header>
             <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-              <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                입고 구분
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                발주 번호
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                협력 업체
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">신청자</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
             </Table.Row>
           </Table.Header>
           <Table.Body>

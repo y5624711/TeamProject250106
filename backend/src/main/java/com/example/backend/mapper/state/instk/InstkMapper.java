@@ -100,11 +100,16 @@ SELECT
                              OR EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')    
                          )
         </if>
+        ORDER BY #{sort} #{order}
+        LIMIT #{offset}, 10    
       </script>                              
 """)
     List<Instk> viewBuyInList(
             @Param("offset") int offset,
-            String state, String keyword);
+            @Param("state") String state,
+            @Param("keyword") String keyword,
+            @Param("sort") String sort,
+            @Param("order") String order);
 
     @Select("""
             select input_stock_note

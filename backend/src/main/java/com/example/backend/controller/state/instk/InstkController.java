@@ -25,11 +25,11 @@ public class InstkController {
             @RequestParam(value = "state", defaultValue = "all") String state,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
-            @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
+            @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
 
-        Map<String,Object> returnlist = service.viewlist(state,page,keyword);
+        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order);
         return returnlist;
 
     }
