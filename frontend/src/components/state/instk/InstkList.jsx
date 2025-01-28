@@ -13,17 +13,25 @@ import axios from "axios";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import {useSearchParams} from "react-router-dom";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  //페이지 네이션 + 저거 옵션다는거 부터 하자
   useEffect(() => {
-    axios.get("api/instk/list").then((res) => {
+    axios.get("api/instk/list",{
+      params:{
+        state:searchParams.get("state"),
+      }
+    }).then((res) => {
       setInstkList(res.data);
     });
-  }, []);
+  }, [searchParams]);
 
   console.log(instkList, "instklist");
 
@@ -55,12 +63,15 @@ export function InstkList() {
   return (
     <Box>
       <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
-      <RadioGroup defaultValue="1" my={3}>
+      <RadioGroup defaultValue="1" my={3} onValueChange={(e)=>{
+        setSearchParams({state:e.value});
+
+      }} >
         <HStack gap={6}>
-          <Radio value="1">전체</Radio>
-          <Radio value="2">요청</Radio>
-          <Radio value="3">승인</Radio>
-          <Radio value="4">반려</Radio>
+          <Radio value="all">전체</Radio>
+          <Radio value="request">대기</Radio>
+          <Radio value="approve">승인</Radio>
+          <Radio value="reject">반려</Radio>
         </HStack>
       </RadioGroup>
       <Box>

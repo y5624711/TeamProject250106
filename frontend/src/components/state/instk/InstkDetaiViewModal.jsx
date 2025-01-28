@@ -98,7 +98,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             <Field label={"입고 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputNote} />
             </Field>
-            <Field label={"주문 비고"} orientation="horizontal">
+            <Field label={"입고 날짜"} orientation="horizontal">
               <Input readOnly value={instk.inputStockDate} />
             </Field>
             <Field label={"입고 비고"} orientation="horizontal">

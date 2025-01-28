@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -25,8 +26,12 @@ public class InstkService {
     final InstkSubMapper instkSubMapper;
     final PurchaseMapper purchaseMapper;
 
-    public List<Instk> viewlist() {
-         List<Instk> instkList = mapper.viewBuyInList();
+    public List<Instk> viewlist(String state) {
+        System.out.println("state = " + state);
+        int count = mapper.countByConsent(state);
+        System.out.println("count = " + count);
+
+         List<Instk> instkList = mapper.viewBuyInList(state);
 
         return  instkList;
 

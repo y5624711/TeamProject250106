@@ -4,10 +4,7 @@ import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.dto.state.retrieve.Return;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -80,9 +77,23 @@ SELECT
     -- 시리얼 번호 옮겨서  오류나서 주석
   -- LEFT JOIN TB_ITEMSUB ITS ON (BI.input_consent=true and ITS.serial_no=INS.serial_no)
     LEFT JOIN TB_EMPMST EM3 ON(BI.input_consent=true and EM3.employee_no=INS.customer_employee_no)
+         WHERE 1=1
+                   -- 요청상태가 뭐냐에 따른 조회
+        <if test="state == 'request'">
+            AND input_consent IS NULL
+        </if>
+        <if test="state == 'approve'">
+            AND input_consent = TRUE
+        </if>
+        <if test="state == 'reject'">
+            AND input_consent = FALSE
+        </if>
+        <if test="state == 'all'">
+            <!-- no condition -->
+        </if>
       </script>                              
 """)
-    List<Instk> viewBuyInList();
+    List<Instk> viewBuyInList(String state);
 
 
 
@@ -193,4 +204,26 @@ SELECT
             """)
 
     String getReturnSerialNo(String inputNo);
+
+    // 리스트 총 목록수 세기
+    @Select("""
+    <script>
+        SELECT COUNT(input_key)
+        FROM TB_BUYIN
+        WHERE 1=1
+        <if test="state == 'request'">
+            AND input_consent IS NULL
+        </if>
+        <if test="state == 'approve'">
+            AND input_consent = TRUE
+        </if>
+        <if test="state == 'reject'">
+            AND input_consent = FALSE
+        </if>
+        <if test="state == 'all'">
+            <!-- no condition -->
+        </if>
+    </script>
+""")
+    int countByConsent(@Param("state") String state);
 }

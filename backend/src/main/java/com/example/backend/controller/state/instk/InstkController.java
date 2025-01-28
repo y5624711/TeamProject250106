@@ -20,9 +20,16 @@ public class InstkController {
     final InstkService service;
 
     @GetMapping("list")
-    public List<Instk> viewlist() {
-        List<Instk> list = service.viewlist();
-//        System.out.println("list = " + list);
+    public List<Instk> viewlist(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "state", defaultValue = "all") String state,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
+            @RequestParam(value = "order", defaultValue = "DESC") String order
+    ) {
+
+        List<Instk> list = service.viewlist(state);
         return list;
 
     }
