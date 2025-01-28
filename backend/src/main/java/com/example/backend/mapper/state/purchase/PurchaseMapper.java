@@ -74,7 +74,7 @@ public interface PurchaseMapper {
                 AND (
                     <trim prefixOverrides="OR">
                         <if test="type=='all' or type=='employeeNo'">
-                            employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='employeeName'">
                             OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
@@ -127,7 +127,7 @@ public interface PurchaseMapper {
                 AND (
                     <trim prefixOverrides="OR">
                         <if test="type=='all' or type=='employeeNo'">
-                            employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='employeeName'">
                             OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
