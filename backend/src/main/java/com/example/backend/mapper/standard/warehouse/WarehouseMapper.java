@@ -11,41 +11,51 @@ public interface WarehouseMapper {
     //    customer_code를 customer 이름으로 변경
     @Select("""
             <script>
-            SELECT *
-            FROM TB_WHMST
+            SELECT w.warehouse_name,
+                   w.warehouse_key,
+                   w.warehouse_state,
+                   w.warehouse_city,
+                   w.warehouse_tel,
+                   cus.customer_name,
+                   e.employee_name
+            FROM TB_WHMST w 
+                LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+                LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
             WHERE 
                 <if test="searchType == 'all'">
-                    warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR customer_code LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_active LIKE CONCAT('%',#{searchKeyword},'%')
+                    w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
                 </if>
                 <if test="searchType != 'all'">
-                     <choose>
-                         <when test="searchType == 'warehouseName'">
-                             warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'customer'">
-                             customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'customerEmployee'">
-                             customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseState'">
-                             warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseCity'">
-                             warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseActive'">
-                             warehouse_active LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <otherwise>
-                             1 = 0 
-                         </otherwise>
-                     </choose>
+                 <choose>
+                     <when test="searchType == 'warehouse'">
+                         w.warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')   
+                     </when>
+                     <when test="searchType == 'customer'">
+                         w.customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     </when>
+                     <when test="searchType == 'employee'">
+                         w.customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     </when>
+                     <when test="searchType == 'warehouseState'">
+                         warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                     </when>
+                     <when test="searchType == 'warehouseCity'">
+                         warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                     </when>
+                     <otherwise>
+                         1 = 0 
+                     </otherwise>
+                 </choose>
                  </if>
             ORDER BY warehouse_name DESC
             LIMIT #{pageList},10    

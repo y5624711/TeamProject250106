@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -59,10 +65,12 @@ function Warehouse(props) {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack margin="10pt">
-          <Box>창고 관리</Box>
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            창고 관리
+          </Heading>
           {/*검색 jsx*/}
           <WarehouseSearch
             warehouseOptionList={warehouseOptionList}
@@ -99,12 +107,11 @@ function Warehouse(props) {
 const warehouseOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "창고", value: "warehouseName" },
+    { label: "창고", value: "warehouse" },
     { label: "담당 업체", value: "customer" },
-    { label: "업체 직원", value: "customerEmployee" },
+    { label: "업체 직원", value: "employee" },
     { label: "광역 시도", value: "warehouseState" },
     { label: "시군", value: "warehouseCity" },
-    { label: "사용 여부", value: "warehouseActive" },
   ],
 });
 

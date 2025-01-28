@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   createListCollection,
+  Heading,
   HStack,
   Stack,
 } from "@chakra-ui/react";
@@ -57,10 +58,12 @@ function Location(props) {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack margin="10pt">
-          로케이션 관리
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            로케이 관리
+          </Heading>
           <LocationSearch
             locationOptionList={locationOptionList}
             setSearch={setSearch}

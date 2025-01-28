@@ -24,10 +24,10 @@ function WarehouseListPage({
           {warehouse.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {warehouse.customerCode}
+          {warehouse.customerName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {warehouse.customerEmployeeNo}
+          {warehouse.employeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {warehouse.warehouseState}

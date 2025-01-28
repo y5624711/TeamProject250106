@@ -22,9 +22,9 @@ function WarehouseList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root showColumnBorder interactive>
+          <Table.Root interactive>
             <Table.Header>
-              <Table.Row>
+              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
                 <Table.ColumnHeader
                   width="100px"
                   textAlign="center"

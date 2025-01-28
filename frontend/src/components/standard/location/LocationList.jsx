@@ -24,9 +24,9 @@ function LocationList({
     <Box>
       <Stack>
         <Box>
-          <Table.Root interactive showColumnBorder>
+          <Table.Root interactive>
             <Table.Header>
-              <Table.Row>
+              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
                 <Table.ColumnHeader
                   width="100px"
                   textAlign="center"

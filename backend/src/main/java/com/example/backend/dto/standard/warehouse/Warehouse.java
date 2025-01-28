@@ -17,4 +17,9 @@ public class Warehouse {
     private String warehouseCity;
     private Boolean warehouseActive;
     private String warehouseNote;
+
+    //    담당업체명
+    private String customerName;
+    //    직원명
+    private String employeeName;
 }
