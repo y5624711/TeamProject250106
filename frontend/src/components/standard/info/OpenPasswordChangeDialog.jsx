@@ -10,8 +10,8 @@ import {
   DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "../../components/ui/dialog.jsx";
-import { Button } from "../../components/ui/button.jsx";
+} from "../../ui/dialog.jsx";
+import { Button } from "../../ui/button.jsx";
 
 export function OpenPasswordChangeDialog({ employee, setEmployee }) {
   return (

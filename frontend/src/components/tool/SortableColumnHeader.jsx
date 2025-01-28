@@ -4,7 +4,10 @@ import React from "react";
 
 export function SortableColumnHeader({ columnKey, label, sort, handleSort }) {
   return (
-    <Table.ColumnHeader onClick={() => handleSort(columnKey)}>
+    <Table.ColumnHeader
+      onClick={() => handleSort(columnKey)}
+      textAlign="center"
+    >
       <HStack>
         {label}
         {sort.column === columnKey &&

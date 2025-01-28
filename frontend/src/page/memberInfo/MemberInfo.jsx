@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Input, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Input, Spinner, Text, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import {
@@ -159,7 +159,7 @@ function MemberInfo() {
             />
           </Field>
           <Field label={"비고"} orientation="horizontal" mb={15}>
-            <Input
+            <Textarea
               value={employee.employeeNote}
               onChange={(e) =>
                 setEmployee((prev) => ({
@@ -167,6 +167,7 @@ function MemberInfo() {
                   employeeNote: e.target.value,
                 }))
               }
+              resize={"none"}
             />
           </Field>
         </DialogBody>

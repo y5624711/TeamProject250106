@@ -1,69 +1,79 @@
-import { Flex, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
-import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
-import axios from "axios";
-import { InstlViewList } from "./InstlViewList.jsx";
-import { InstkviewList } from "./InstkviewList.jsx";
-import { BuyList } from "./BuyList.jsx";
+import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
+import { MainInstallList } from "../../components/standard/main/MainInstallList.jsx";
+import { MainInstkList } from "../../components/standard/main/MainInstkList.jsx";
+import { MainBuyList } from "../../components/standard/main/MainBuyList.jsx";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
-function MemberBox({ user }) {
+function InventoryGraph() {
+  const data01 = [
+    {
+      name: "Group A",
+      value: 400,
+    },
+    {
+      name: "Group B",
+      value: 300,
+    },
+    {
+      name: "Group C",
+      value: 300,
+    },
+    {
+      name: "Group D",
+      value: 200,
+    },
+    {
+      name: "Group E",
+      value: 278,
+    },
+    {
+      name: "Group F",
+      value: 189,
+    },
+  ];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   return (
-    <Stack
-      w={"300px"}
-      h={"20%"}
-      bg={"gray.200"}
-      display="flex" // Flex 레이아웃
-      flexDirection="column" // 세로 정렬
-      alignItems="center" // 수평 가운데 정렬
-      justifyContent="center" // 수직 가운데 정렬
-      gap={5}
-    >
-      <Heading fontSize={"30px"}>{user.employeeWorkPlaceName}</Heading>
-      <Text fontSize={"16px"}>{user.employeeName} 님 환영합니다.</Text>
-    </Stack>
+    <Box>
+      <Heading>재고 현황</Heading>
+      <ResponsiveContainer mx={"auto"} height={300}>
+        <PieChart>
+          <Pie
+            data={data01}
+            dataKey="value"
+            nameKey="name"
+            innerRadius={20}
+            outerRadius={130}
+            cx="50%"
+            cy="50%"
+            fill="#82ca9d"
+            label
+          >
+            {data01.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </Box>
   );
 }
 
 export function Main() {
-  const { hasAccess, id } = useContext(AuthenticationContext);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // id가 유효한 경우에만 요청 실행
-    if (!id) {
-      return;
-    }
-
-    axios
-      .get(`/api/main/boardMain`, { params: { id } })
-      .then((res) => res.data)
-      .then((data) => {
-        setUser(data.id);
-        console.log(data.id);
-        setLoading(false); // 로딩 상태 해제
-      })
-      .catch((e) => {
-        console.error("Error fetching data:", e);
-        setLoading(false); // 에러 발생 시에도 로딩 상태 해제
-      });
-  }, [id]); // id가 변경될 때만 실행
-
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
-    <Flex w="100vw" h="100%">
-      <MemberBox user={user} />
-
-      <Stack w={"60%"} mx={"auto"} gap={10}>
+    <Flex w="100vw" h="100%" p={5} gap={5}>
+      <Stack w={"40%"}>
+        <InventoryGraph />
+      </Stack>
+      <Stack w={"60%"} gap={10} pt={5}>
         {/*구매리스트*/}
-        <BuyList />
+        <MainBuyList />
         {/*입고리스트*/}
-        <InstkviewList />
+        <MainInstkList />
         {/*설치리스트*/}
-        <InstlViewList />
+        <MainInstallList />
       </Stack>
     </Flex>
   );
