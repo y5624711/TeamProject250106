@@ -157,4 +157,11 @@ public interface WarehouseMapper {
             
             """)
     Integer countAllWarehouse(String searchType, String searchKeyword);
+
+    @Select("""
+            SELECT *
+            FROM TB_WHMST
+            WHERE warehouse_address=#{warehouseAddress} AND warehouse_address_detail=#{warehouseAddressDetail}
+            """)
+    Integer checkWarehouse(String warehoueAddress, String warehouseAddressDetail);
 }

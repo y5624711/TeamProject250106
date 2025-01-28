@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface InstallMapper {
-    // 설치 요청 데이터 추가
+    // 설치 신청 데이터 추가
     @Insert("""
             INSERT INTO TB_INSTL_REQ
             (install_request_key, item_common_code, franchise_code, business_employee_no, customer_code, install_request_amount, install_request_note)
@@ -17,7 +17,7 @@ public interface InstallMapper {
     @Options(keyProperty = "installRequestKey", useGeneratedKeys = true)
     int installRequest(Install install);
 
-    // 설치 요청 가능한 가맹점, 가맹점 주소 가져오기
+    // 설치 신청 가능한 가맹점, 가맹점 주소 가져오기
     @Select("""
             SELECT franchise_code, franchise_name, franchise_address
             FROM TB_FRNCHSMST
@@ -37,11 +37,11 @@ public interface InstallMapper {
             """)
     List<Map<String, Object>> getInstallItemList();
 
-    // 설치 요청에 대한 정보 가져오기
+    // 설치 신청에 대한 정보 가져오기
     @Select("""
-             SELECT f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
+             SELECT DISTINCT i.install_request_key, f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
             i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note, i.install_request_date,
-            i.customer_code
+            i.customer_code, i.install_request_consent
              FROM TB_INSTL_REQ i
              LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
              LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
@@ -81,7 +81,7 @@ public interface InstallMapper {
     @Options(keyProperty = "installApproveKey", useGeneratedKeys = true)
     int installApprove(Install install);
 
-    // 설치 요청에서 수량만큼 시리얼 번호 가져오기
+    // 설치 신청에서 수량만큼 시리얼 번호 가져오기
     @Select("""
             SELECT serial_no
             FROM TB_ITEMSUB
@@ -110,7 +110,7 @@ public interface InstallMapper {
             """)
     int updateItemSubActiveFalse(String serialNo);
 
-    // 요청 테이블의 승인 여부 true 처리
+    // 신청 테이블의 승인 여부 true 처리
     @Update("""
             UPDATE TB_INSTL_REQ
             SET install_request_consent = true
@@ -125,6 +125,7 @@ public interface InstallMapper {
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
             ia.install_approve_consent as consent, ir.install_request_date, ia.install_approve_date,
+            ih.inout_history_date, ih.inout_history_note ,
             GROUP_CONCAT(DISTINCT ts.serial_no) AS serial_numbers
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
@@ -134,6 +135,7 @@ public interface InstallMapper {
             LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
             LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
             LEFT JOIN TB_INSTL_SUB ts ON ia.output_no = ts.output_no
+            LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
             WHERE ia.install_approve_key = #{installKey}
             GROUP BY ia.install_approve_key
             """)
@@ -147,10 +149,18 @@ public interface InstallMapper {
             """)
     int updateItemSubActiveTrue(String serialNo);
 
+    // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
+    @Update("""
+            UPDATE TB_ITEMSUB
+            SET current_common_code = 'FRN'
+            WHERE serial_no = #{serialNo}
+            """)
+    int updateSerialCurrent(String serialNo);
+
     // 승인 테이블에 상태 true로 변경
     @Update("""
             UPDATE TB_INSTL_APPR
-            SET install_approve_consent = true
+            SET install_approve_consent = 1
             WHERE output_no = #{outputNo}
             """)
     int updateApproveConsent(String outputNo);
@@ -160,26 +170,21 @@ public interface InstallMapper {
             SELECT warehouse_code
             FROM TB_INOUT_HIS
             WHERE serial_no = #{serialNo}
+            AND inout_common_code = 'IN'
+            ORDER BY inout_history_key DESC
+            LIMIT 1;
             """)
     String getWarehouseCode(String serialNo);
-
-    // 시리얼 번호 상세에 현재 위치 가맹점으로 변경
-    @Update("""
-            UPDATE TB_ITEMSUB
-            SET current_common_code = 'FRN'
-            WHERE serial_no = #{serialNo}
-            """)
-    int updateSerialCurrent(String serialNo);
 
     // 품목 입출력 테이블에 데이터 추가
     @Insert("""
             INSERT INTO TB_INOUT_HIS
-            (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, location_key, inout_history_note)
-            VALUES (#{serialNo}, #{warehouseCode}, 'OUT', #{customerEmployeeNo}, #{businessEmployeeNo}, #{franchiseCode}, NULL,  #{inoutHistoryNote})
+            (serial_no, inout_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, franchise_code, location_key, inout_history_note)
+            VALUES (#{serialNo}, #{outputNo}, #{warehouseCode}, 'OUT', #{customerEmployeeNo}, #{businessEmployeeNo}, #{franchiseCode}, NULL,  #{inoutHistoryNote})
             """)
     int addOutHistory(Install install);
 
-    // 설치 요청, 승인 리스트 가져오기
+    // 설치 신청, 승인 리스트 가져오기
     @Select("""
             <script>
                 SELECT DISTINCT ir.install_request_key as installRequestKey,
@@ -197,51 +202,22 @@ public interface InstallMapper {
                     e3.employee_name           as customerInstallerName,
                     ia.install_approve_date    as installApproveDate,
                     ir.install_request_date    as installRequestDate,
+                    ih.inout_history_date      as inoutHistoryDate,
                     ia.install_approve_consent as approveConsent,
-                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date),
+                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date, ih.inout_history_date),
                                            ir.install_request_date,
-                                           ia.install_approve_date) AS installDate
-            FROM TB_INSTL_REQ ir
-                LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
-                LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
-                LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
-                LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
-                LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
-                LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
-                LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
-                LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
-            WHERE 1=1
-            <if test="state == 'request'">
-                AND ir.install_request_consent IS NULL
-            </if>
-            <if test="state == 'approve'">
-                AND (ir.install_request_consent = true AND ia.install_approve_consent IS NULL)
-            </if>
-            <if test="state == 'configuration'">
-                AND ia.install_approve_consent = true
-            </if>
-            <if test="state == 'disapprove'">
-                AND (ir.install_request_consent = false OR ia.install_approve_consent = false)
-            </if>
-            
-            <if test="sort != null and sort != ''">
-                ORDER BY ${sort} ${order}
-            </if>
-            <if test="sort == null">
-                ORDER BY ir.install_request_key DESC
-            </if>
-            
-            LIMIT #{offset}, 10
-            </script>
-            """)
-    List<Install> getInstallList(Integer offset, String sort, String order, String state);
-
-    // 총 페이지 수 계산
-    @Select("""
-            <script>
-                SELECT COUNT(*)
+                                           ia.install_approve_date,
+                                           ih.inout_history_date) AS installDate
                 FROM TB_INSTL_REQ ir
-                LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                    LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                    LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+                    LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
+                    LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 신청자 조인
+                    LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
+                    LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+                    LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
+                    LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+                    LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
                 WHERE 1=1
                 <if test="state == 'request'">
                     AND ir.install_request_consent IS NULL
@@ -255,9 +231,116 @@ public interface InstallMapper {
                 <if test="state == 'disapprove'">
                     AND (ir.install_request_consent = false OR ia.install_approve_consent = false)
                 </if>
+            
+                <if test="keyword != null and keyword.trim()!=''">
+                    AND (
+                        <trim prefixOverrides="OR">
+                            <if test="type=='all' or type=='franchiseName'">
+                                f.franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>                
+                            <if test="type=='all' or type=='itemCommonName'">
+                                OR sc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='customerName'">
+                                OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='outputNo'">
+                                OR ia.output_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>                
+                            <if test="type=='all' or type=='businessEmployeeName'">
+                                OR e1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR e1.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='customerEmployeeName'">
+                                OR e2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR e2.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='customerInstallerName'">
+                                OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR e3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="type=='all' or type=='warehouseName'">
+                                OR w.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
+                            </if>         
+                        </trim>
+                    )    
+                </if>
+            
+                <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+                </if>
+                <if test="sort == null">
+                    ORDER BY ir.install_request_key DESC
+                </if>
+            
+            LIMIT #{offset}, 10
             </script>
             """)
-    Integer countAll(String state);
+    List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword);
+
+    // 총 페이지 수 계산
+    @Select("""
+            <script>
+                SELECT COUNT(DISTINCT ir.install_request_key)
+                FROM TB_INSTL_REQ ir
+                LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
+                LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
+                LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no 
+                LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no
+                LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no 
+                LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
+                LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
+                WHERE 1=1
+                <if test="state == 'request'">
+                    AND ir.install_request_consent IS NULL
+                </if>
+                <if test="state == 'approve'">
+                    AND (ir.install_request_consent = true AND ia.install_approve_consent IS NULL)
+                </if>
+                <if test="state == 'configuration'">
+                    AND ia.install_approve_consent = true
+                </if>
+                <if test="state == 'disapprove'">
+                    AND (ir.install_request_consent = false OR ia.install_approve_consent = false)
+                </if>
+            
+                 <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='franchiseName'">
+                            f.franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='itemCommonName'">
+                            OR sc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerName'">
+                            OR c.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='outputNo'">
+                            OR ia.output_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>                
+                        <if test="type=='all' or type=='businessEmployeeName'">
+                            OR e1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR e1.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR e2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR e2.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerInstallerName'">
+                            OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR e3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='warehouseName'">
+                            OR w.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>         
+                    </trim>
+                )    
+            </if>
+            </script>
+            """)
+    Integer countAll(String state, String type, String keyword);
 
     // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
     @Select("""
@@ -266,4 +349,12 @@ public interface InstallMapper {
             WHERE output_no = #{outputNo}
             """)
     List<String> getConfigurationSerials(String outputNo);
+
+    // 설치 신청 반려
+    @Update("""
+            UPDATE TB_INSTL_REQ
+            SET install_request_consent = false
+            WHERE install_request_key = #{installKey}
+            """)
+    int installDisapprove(int installKey);
 }

@@ -1,7 +1,6 @@
 import {
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -21,19 +20,17 @@ export function SelectCode({ selectOptions, onChange }) {
       width="150px"
       collection={selectOptions}
       position="relative"
-      pt={"10px"}
       marginBottom={15}
       marginTop={5}
       onValueChange={handleSelect}
     >
-      <SelectLabel>코드 종류 선택</SelectLabel>
       <SelectTrigger>
         <SelectValueText placeholder="Select Code" />
       </SelectTrigger>
       <SelectContent
         style={{
           width: "150px",
-          top: "70px",
+          top: "30px",
           position: "absolute",
         }}
       >

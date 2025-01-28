@@ -28,6 +28,7 @@ import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import Select from "react-select";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function InstallRequest({ isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -46,7 +47,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
   const [localFranchiseCode, setLocalFranchiseCode] = useState("");
   const [selectedFranchise, setSelectedFranchise] = useState(null);
 
-  // 요청 창 닫히면 초기화
+  // 신청 창 닫히면 초기화
   const handleClose = () => {
     setInstallRequest(initialInstallRequest);
     onClose();
@@ -78,7 +79,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
       .catch((error) => console.error("데이터 로딩 중 오류 발생:", error));
   }, []);
 
-  // 설치 요청하기
+  // 설치 신청하기
   const handleRequestClick = () => {
     axios
       .post("/api/install/request", installRequest)
@@ -128,7 +129,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>설치 요청</DialogTitle>
+          <DialogTitle>설치 신청</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
@@ -220,7 +221,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             {installRequest.installRequestAmount > installRequest.countItem && (
               <Box display="flex">
                 <Heading size="xs" color="red.500" my={-3} ml={"90px"}>
-                  설치 요청 수량이 많습니다.{" "}
+                  설치 신청 수량이 많습니다.{" "}
                 </Heading>
               </Box>
             )}
@@ -261,9 +262,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleRequestClick} disabled={!isValid}>
-            요청
-          </Button>
+          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+            <Button onClick={handleRequestClick} disabled={!isValid}>
+              신청
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

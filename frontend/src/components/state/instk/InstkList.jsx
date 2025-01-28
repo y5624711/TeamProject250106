@@ -13,17 +13,32 @@ import axios from "axios";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import {useSearchParams} from "react-router-dom";
+import {Sort} from "../../tool/list/Sort.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [count, setCount] = useState(0);
+
+  //페이지 네이션 + 저거 옵션다는거 부터 하자
   useEffect(() => {
-    axios.get("api/instk/list").then((res) => {
-      setInstkList(res.data);
+    axios.get("api/instk/list",{
+      params:{
+        state:searchParams.get("state"),
+        page:searchParams.get("page"),
+        keyword:searchParams.get("keyword"),
+        sort:searchParams.get("sort"),
+        order:searchParams.get("order")
+      }
+    }).then((res) => {
+      setCount(res.data.count)
+      setInstkList(res.data.list);
     });
-  }, []);
+  }, [searchParams]);
 
   console.log(instkList, "instklist");
 
@@ -41,55 +56,58 @@ export function InstkList() {
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "입고 구분", value: "itemCommonName" },
-      { label: "발주 번호", value: "customerName" },
-      { label: "품목", value: "size" },
-      { label: "담당 업체", value: "unit" },
-      { label: "날짜", value: "inputPrice" },
-      { label: "신청자", value: "outputPrice" },
-      { label: "승인자", value: "outputPrice" },
-      { label: "상태현황", value: "outputPrice" },
+      { label: "입고 구분", value: "inputCommonCode" },
+      { label: "발주 번호", value: "inputNo" },
+      { label: "품목", value: "itemCommonName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "날짜", value: "inputStockDate" },
+      { label: "신청자", value: "requestEmployeeName" },
+      { label: "승인자", value: "inputStockEmployeeName" },
+      { label: "상태", value: "inputConsent" },
     ],
   });
+  const sortOptions = [
+    { key: "input_key", label: "#" },
+    { key: "input_common_code", label: "입고 구분" },
+    { key: "input_no", label: "발주 번호" },
+    { key: "item_common_name", label: "품목" },
+    { key: "customer_name", label: "담당 업체" },
+    { key: "request_employee_name", label: "신청자" },
+    { key: "input_stock_employee_name", label: "승인자" },
+    { key: "input_stock_date", label: "날짜" },
+    { key: "input_consent", label: "상태" },
+  ];
 
   return (
     <Box>
-      <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
-      <RadioGroup defaultValue="1" my={3}>
+      <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
+      <RadioGroup defaultValue="all"  value={searchParams.get("state")} my={3} onValueChange={(e)=>{
+        setSearchParams({state:e.value ,page:1});
+      }} >
         <HStack gap={6}>
-          <Radio value="1">전체 조회</Radio>
-          <Radio value="2">요청 상태 조회</Radio>
-          <Radio value="3">승인 상태 조회</Radio>
-          <Radio value="4">반려 상태 조회</Radio>
+          <Radio value="all">전체</Radio>
+          <Radio value="request">대기</Radio>
+          <Radio value="approve">승인</Radio>
+          <Radio value="reject">반려</Radio>
         </HStack>
       </RadioGroup>
       <Box>
         <Table.Root>
           <Table.Header>
             <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-              <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                입고 구분
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                발주 번호
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">품목</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">
-                협력 업체
-              </Table.ColumnHeader>
-
-              <Table.ColumnHeader textAlign="center">신청자</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="center">상태</Table.ColumnHeader>
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) =>
+                  setSearchParams(nextSearchParam)
+                }
+              />
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {instkList.map((item, index) => {
               return (
                 <Table.Row
-                  onClick={() => {
+                  onDoubleClick={() => {
                     handleSelectModal(item.inputConsent);
                     setSelectedIndex(index);
                   }}
@@ -117,8 +135,14 @@ export function InstkList() {
                   <Table.Cell textAlign="center">
                     {item.inputStockDate || item.requestDate}
                   </Table.Cell>
+
+                  {/*TODO 반려 대기 처리 어떻게 변경해야하는데 ..*/}
                   <Table.Cell textAlign="center">
-                    {item.inputConsent === true ? "승인" : "대기"}
+                    {item.inputConsent === true
+                      ? "승인"
+                      : item.inputConsent === false
+                        ? "반려"
+                        : "대기"}
                   </Table.Cell>
                 </Table.Row>
               );
@@ -129,7 +153,7 @@ export function InstkList() {
       </Box>
       <Center m={3}>
         <Pagination
-          count={30}
+          count={count}
           pageSize={10}
           onPageChange={(newPage) => {
             const nextSearchParam = new URLSearchParams(searchParams);

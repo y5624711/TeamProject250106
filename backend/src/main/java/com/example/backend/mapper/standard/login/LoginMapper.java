@@ -1,4 +1,4 @@
-package com.example.backend.mapper.login;
+package com.example.backend.mapper.standard.login;
 
 import com.example.backend.dto.standard.employee.Employee;
 import org.apache.ibatis.annotations.Mapper;

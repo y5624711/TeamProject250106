@@ -93,7 +93,7 @@ public interface CommonMapper {
     @Select("""
             SELECT COUNT(*)
             FROM TB_SYSCOMM
-            WHERE common_code_active = false
+            WHERE common_code_active = true
                  AND (common_code = #{commonCode} OR common_code_name = #{commCodeName})
             """)
     int countByCodeOrName(String commonCode, String commCodeName);
@@ -139,4 +139,10 @@ public interface CommonMapper {
     List<Integer> deletedCommonCode();
 
 
+    @Select("""
+            SELECT common_code
+            from TB_SYSCOMM
+            where common_code_name=#{commonCodeName}
+            """)
+    String viewCommonCodeByCodeName(String itemCommonName);
 }

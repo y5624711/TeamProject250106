@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -9,9 +10,11 @@ import {
   SelectValueText,
 } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 export function SearchBar({ onSearchChange, searchOptions }) {
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [search, setSearch] = useState({
     type: "all",
@@ -37,11 +40,24 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     // 검색해도 active, sort, order 값 유지
     const active = searchParams.get("active") ?? "false";
     nextSearchParam.set("active", active);
+    const filter = searchParams.get("filter") ?? "";
+    // const active = searchParams.get("active") ?? "false";
+    // nextSearchParam.set("active", active);
+    // 경로별로 다른 파라미터 추가 (active, state 구분)
+    if (location.pathname.startsWith("/item")) {
+      const active = searchParams.get("active") ?? "false";
+      nextSearchParam.set("active", active);
+    } else if (location.pathname.startsWith("/install")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
+    }
 
     const sort = searchParams.get("sort") ?? "";
     const order = searchParams.get("order") ?? "asc";
     nextSearchParam.set("sort", sort);
     nextSearchParam.set("order", order);
+    nextSearchParam.set("filter", filter);
+    nextSearchParam.set("page", "1"); // 페이지는 1로 리셋
     return nextSearchParam;
   };
 
@@ -50,6 +66,10 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     const nextSearchParam = buildSearchParams();
     setSearchParams(nextSearchParam);
     onSearchChange(nextSearchParam); // 부모에게 전달
+  };
+
+  const handleResetClick = () => {
+    setSearchParams("");
   };
 
   return (
@@ -80,7 +100,6 @@ export function SearchBar({ onSearchChange, searchOptions }) {
           ))}
         </SelectContent>
       </SelectRoot>
-
       <Input
         placeholder="검색어를 입력해 주세요."
         width="50%"
@@ -92,7 +111,17 @@ export function SearchBar({ onSearchChange, searchOptions }) {
           }
         }}
       />
-      <Button onClick={handleSearchClick}>검색</Button>
+      <IconButton
+        transform="translateX(-130%) "
+        style={{ cursor: "pointer" }}
+        variant={"ghost"}
+        onClick={handleResetClick}
+      >
+        <BsArrowCounterclockwise size="25px" />
+      </IconButton>
+      <Button onClick={handleSearchClick} transform="translateX(-75%)">
+        검색
+      </Button>
     </HStack>
   );
 }

@@ -47,7 +47,7 @@ public class FranchiseController {
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "franchise_key") String sort,
-            @RequestParam(value = "order", defaultValue = "asc") String order) {
+            @RequestParam(value = "order", defaultValue = "desc") String order) {
         return service.franchiseList(active, page, type, keyword, sort, order);
     }
 
@@ -80,5 +80,4 @@ public class FranchiseController {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error", "text", "가맹점 비활성화에 실패하였습니다.")));
         }
     }
-
 }

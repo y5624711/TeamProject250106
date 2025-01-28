@@ -15,36 +15,61 @@ import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import error from "eslint-plugin-react/lib/util/error.js";
+import {toaster} from "../../ui/toaster.jsx";
 
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
-  const [inoutHistoryNote, setInoutHistoryNote] = useState("");
-
+  const [inputStockNote, setInputStockNote] = useState("");
+  const [instkDetail, setInstkDetail] = useState({});
+  
+  // 입고 상세
   useEffect(() => {
-    // axios.get("api/instk/detailView");
-    //   요청해서 가져와야하는거 구매승인자,창고주소
+    axios.get(`api/instk/confirmView/${instk.inputNo}`,{
+      params:{
+        inputCommonCode:instk.inputCommonCode,
+      }
+    }).then((res)=>{
+      setInstkDetail(res.data);
+    });
   }, []);
 
-  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가
-  const handleAddInOutHistory = () => {
+  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가 ,입고 상세에 시리얼 번호 로케이션 등등
+  const handleAddInstk = () => {
     axios
       .post("/api/instk/add", {
-        data: {
-          serialNo: "",
-          warehouseCode: "",
-          inoutCommonCode: "",
-          businessEmployeeNo: "",
-          customerEmployeeNo: "",
-          locationKey: "",
-          inoutHistoryNote: "",
-        },
+        inputKey: instk.inputKey,
+        inputNo: instk.inputNo,
+        inputCommonCode: instk.inputCommonCode,
+        inputStockEmployeeNo:id ,
+        inputStockNote: inputStockNote,
+        itemCommonName: instk.itemCommonName,
       })
       .then((res) => {
         console.log(res);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("입고테이블에 추가중 오류 발생했습니다",error)
+      });
   };
 
+  // 입고 반려 메소드
+  const handleRejectInstk = () => {
+    axios.put("/api/instk/reject",{
+      inputKey:instk.inputKey,
+    }).then((res)=>{
+      console.log(res.data);
+      toaster.create({
+        description: res.data.message.text,
+        type:res.data.message.type,
+      })
+    })
+      .catch((error)=>{
+        console.log("입고 반려 중 오류 ",error)
+      }).finally(()=>{
+      setChangeModal();
+    })
+  }
   return (
     <DialogRoot size={"lg"} open={isModalOpen}>
       <DialogContent>
@@ -55,65 +80,75 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           <Stack gap={3}>
             <HStack>
               <Field orientation="horizontal" label={"입고 구분"}>
-                <Input value={instk.inputCommonCodeName} />
+                <Input value={instk.inputCommonCodeName} readOnly />
               </Field>
               <Field label={"주문 번호"} orientation="horizontal">
-                <Input value={instk.inputNo} />
+                <Input value={instk.inputNo} readOnly />
               </Field>
             </HStack>
 
             <HStack>
               <Field orientation="horizontal" label={"품목 명"}>
-                <Input readOnly value={instk.itemCommonName} />
+                <Input readOnly value={instk.itemCommonName} readOnly/>
               </Field>
               <Field label={"수량"} orientation="horizontal">
-                <Input readOnly value={instk.itemAmount} />
+                <Input readOnly value={instk.itemAmount} readOnly/>
+              </Field>
+            </HStack>
+
+            <HStack>
+              <Field label={"주문 요청자 "} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeName} readOnly/>
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input readOnly value={instk.requestEmployeeNo} readOnly/>
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"주문 승인자"} orientation="horizontal">
-                <Input value={instk.requestApprovalEmployeeName} />
+                <Input value={instk.requestApprovalEmployeeName}  readOnly/>
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={instk.requestApprovalEmployeeNo} />
-              </Field>
-            </HStack>
-            <HStack>
-              <Field label={"구매 요청자 "} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeName} />
-              </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeNo} />
+                <Input readOnly value={instk.requestApprovalEmployeeNo}  readOnly/>
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"창고 주소"} orientation="horizontal">
-                <Input value={"경기도 개성시"} />
+                <Input value={instkDetail.warehouseAddress}  readOnly/>
               </Field>
               <Field label={"담당 업체"} orientation="horizontal">
-                <Input value={"면발천국"} />
+                <Input value={instk.customerName}  readOnly/>
               </Field>
             </HStack>
+
             <HStack>
               <Field label={"입고 승인자"} orientation="horizontal">
                 <Input value={localStorage.getItem("name")} readOnly />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input value={localStorage.getItem("name")} readOnly />
+                <Input value={id} readOnly />
               </Field>
             </HStack>
-            <Field label={"비고"} orientation="horizontal">
-              <Textarea value={""} placeholder={"최대50자"} />
+
+            <Field label={"주문 비고"} orientation="horizontal">
+              <Textarea value={instk.inputNote}  placeholder={"최대50자"}/>
             </Field>
+
+            <Field label={"입고 비고"} orientation="horizontal">
+              <Textarea value={inputStockNote}  placeholder={"최대50자"}  onChange={(e)=>{
+                setInputStockNote(e.target.value);
+              }} />
+            </Field>
+
           </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
             <Button
               onClick={() => {
-                handleApprovalClick();
+                handleAddInstk();
               }}
             >
               승인
@@ -122,8 +157,9 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           <Button
             variant="outline"
             onClick={() => {
-              setChangeModal();
+              handleRejectInstk();
             }}
+
           >
             반려
           </Button>
@@ -134,7 +170,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           }}
         />
       </DialogContent>
-      z
+
     </DialogRoot>
   );
 }

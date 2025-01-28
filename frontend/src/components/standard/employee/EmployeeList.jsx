@@ -85,7 +85,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       .catch((err) => {
         console.log("직원 정보를 받는중 오류", err);
       });
-    updateQuery();
+    // updateQuery();
   }, [updateList, searchParams]);
 
   // 리스트 클릭시 , 해당 키 값의 상세 정보를 보여주기 위해서
@@ -139,12 +139,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
   const handleSortControl = (sortName) => {
     const convertedOrderName =
-      searchParams.get("order") === "asc" ? "desc" : "asc";
+      searchParams.get("order") === "ASC" ? "DESC" : "ASC";
 
     setSearchParams((prev) => {
       setSort(sortName);
       setOrder(convertedOrderName);
       const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
+      newParams.sort= sortName;
       newParams.order = convertedOrderName;
       return newParams; // 새로운 객체를 반환
     });
@@ -217,7 +218,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           {memberList.map((item, index) => (
             <Table.Row
               key={item.employeeKey}
-              onClick={() => {
+              onDoubleClick={() => {
                 handleSelectedItem(item.employeeKey);
                 handleviewModalControl();
               }}

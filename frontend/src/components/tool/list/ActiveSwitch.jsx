@@ -13,7 +13,6 @@ export function ActiveSwitch({ onActiveChange }) {
   }, [searchParams]);
 
   const handleSwitchChange = () => {
-    console.log("3");
     const newActive = !active;
     setActive(newActive); // 상태 변경
 

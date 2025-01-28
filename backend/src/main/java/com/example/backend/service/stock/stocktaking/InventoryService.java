@@ -1,10 +1,12 @@
 package com.example.backend.service.stock.stocktaking;
 
+import com.example.backend.dto.stock.stocktaking.Inventory;
 import com.example.backend.mapper.stock.stocktaking.InventoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,6 +23,12 @@ public class InventoryService {
                                        String sortOrder) {
         int offset = (page - 1) * 10;
 
-        return Map.of("list", mapper.selectList(offset, type, keyword, sortColum, sortOrder), "count", mapper.countAll(type, keyword));
+        return Map.of("list", mapper.selectList(offset, type, keyword, sortColum, sortOrder),
+                "count", mapper.countAll(type, keyword));
+    }
+
+    public List<Inventory> getGraphList() {
+
+        return mapper.selectGraphList();
     }
 }

@@ -24,14 +24,16 @@ export function FranchiseDialog({
   }, [franchiseKey]);
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onClose}>
+    <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isAddDialogOpen ? "가맹점 추가" : "가맹점 상세 정보"}
+            {isAddDialogOpen ? "가맹점 등록" : "가맹점 정보"}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           {isAddDialogOpen ? (
             <FranchiseAdd onClose={onClose} onSave={onSave} />
           ) : franchiseKey ? (

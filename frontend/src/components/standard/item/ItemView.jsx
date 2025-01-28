@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
 import {
+  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -14,23 +14,24 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState({
     size: "",
     unit: "",
     inputPrice: "",
     outputPrice: "",
-    itemActive: false,
+    itemActive: "",
     itemNote: "",
   });
 
   // 품목 상세 정보를 가져오기
   useEffect(() => {
-    if (itemKey) {
+    if (isOpen && itemKey) {
       axios
         .get(`/api/item/view/${itemKey}`)
         .then((res) => {
@@ -41,12 +42,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
           console.error("품목 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [itemKey]);
-
-  // 창이 닫히면 수정 상태 취소
-  const handleClose = () => {
-    setIsEditing(false);
-  };
+  }, [itemKey, isOpen]);
 
   // 폼 입력 값 변경 처리
   const handleChange = (e) => {
@@ -56,15 +52,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
       [name]: value,
     }));
   };
-
-  const isValid =
-    item.length > 0 &&
-    item[0].itemCommonName != null &&
-    item[0].customerName != null &&
-    editedItem.inputPrice != null &&
-    editedItem.outputPrice != null &&
-    editedItem.inputPrice !== "" &&
-    editedItem.outputPrice !== "";
 
   // 수정된 품목 데이터 서버로 전송
   const handleSaveClick = () => {
@@ -78,7 +65,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
         });
         // 수정 완료 시 변경된 정보 보여주기
         setItem([{ ...editedItem }]);
-        setIsEditing(false);
         setItemKey(itemKey);
         setChange((prev) => !prev);
       })
@@ -89,23 +75,28 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   };
 
   // 품목 삭제 시 사용여부 false
-  const handleDeleteConfirm = () => {
-    axios
-      .put(`/api/item/delete/${itemKey}`)
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          description: data.message.text,
-          type: data.message.type,
-        });
-        setChange((prev) => !prev);
-        handleClose();
-      })
-      .catch((e) => {
-        const message = e.response.data.message;
-        toaster.create({ description: message.text, type: message.type });
-      });
-  };
+  // const handleDeleteConfirm = () => {
+  //   axios
+  //     .put(`/api/item/delete/${itemKey}`)
+  //     .then((res) => res.data)
+  //     .then((data) => {
+  //       toaster.create({
+  //         description: data.message.text,
+  //         type: data.message.type,
+  //       });
+  //       setChange((prev) => !prev);
+  //     })
+  //     .catch((e) => {
+  //       const message = e.response.data.message;
+  //       toaster.create({ description: message.text, type: message.type });
+  //     });
+  // };
+
+  const isValid =
+    editedItem.inputPrice != null &&
+    editedItem.outputPrice != null &&
+    editedItem.inputPrice !== "" &&
+    editedItem.outputPrice !== "";
 
   return (
     <Box>
@@ -113,7 +104,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
         open={isOpen}
         onOpenChange={() => {
           onClose();
-          handleClose();
         }}
       >
         <DialogContent>
@@ -121,140 +111,100 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
             <DialogTitle>물품 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Box>
-              {item.map((item) => (
-                <Box>
-                  {isEditing ? (
-                    <>
-                      <Text fontSize={"xs"} mt={-5}>
-                        품목과 담당업체는 수정이 불가능합니다.
-                      </Text>
-                      <Field label={"품목 "} required orientation="horizontal">
-                        <Input readOnly value={item.itemCommonName} />
-                      </Field>
-                      <Field
-                        label={"담당업체"}
-                        required
-                        orientation="horizontal"
-                      >
-                        <Input readOnly value={item.customerName || ""} />
-                      </Field>
-                      <Field label={"규격"} orientation="horizontal">
-                        <Input
-                          name="size"
-                          placeholder="규격"
-                          value={editedItem.size}
-                          onChange={handleChange}
-                        />
-                      </Field>
-                      <Field label={"단위"} orientation="horizontal">
-                        <Input
-                          name="unit"
-                          placeholder="단위"
-                          value={editedItem.unit}
-                          onChange={handleChange}
-                        />
-                      </Field>
-                      <Field label={"입고가"} required orientation="horizontal">
-                        <Input
-                          type="number"
-                          name="inputPrice"
-                          value={editedItem.inputPrice}
-                          onChange={handleChange}
-                          min="1"
-                        />
-                      </Field>
-                      <Field label={"출고가"} required orientation="horizontal">
-                        <Input
-                          type="number"
-                          name="outputPrice"
-                          value={editedItem.outputPrice}
-                          onChange={handleChange}
-                          min="1"
-                        />
-                      </Field>
-                      <Field label={"비고"} orientation="horizontal">
-                        <Input
-                          name="itemNote"
-                          placeholder="비고"
-                          value={editedItem.itemNote}
-                          onChange={handleChange}
-                        />
-                      </Field>
-                    </>
-                  ) : (
-                    <>
-                      <Field label={"품목"} orientation="horizontal">
-                        <Input readOnly value={item.itemCommonName} />
-                      </Field>
-                      <Field label={"담당업체"} orientation="horizontal">
-                        <Input readOnly value={item.customerName} />
-                      </Field>
-                      <Field label={"규격"} orientation="horizontal">
-                        <Input readOnly value={item.size} />
-                      </Field>
-                      <Field label={"단위"} orientation="horizontal">
-                        <Input readOnly value={item.unit} />
-                      </Field>
-                      <Field label={"입고가"} orientation="horizontal">
-                        <Input readOnly value={item.inputPrice} />
-                      </Field>
-                      <Field label={"출고가"} orientation="horizontal">
-                        <Input readOnly value={item.outputPrice} />
-                      </Field>
-                      <Field label={"사용여부"} orientation="horizontal">
-                        <Input
-                          readOnly
-                          value={item.itemActive ? "사용" : "미사용"}
-                        />
-                      </Field>
-                      <Field label={"비고"} orientation="horizontal">
-                        <Input readOnly value={item.itemNote} />
-                      </Field>
-                    </>
-                  )}
-                </Box>
-              ))}
-            </Box>
+            {item.map((item) => (
+              <Stack gap={"15px"}>
+                <>
+                  <Text fontSize={"xs"} mt={-5}>
+                    품목과 담당업체는 수정이 불가능합니다.
+                  </Text>
+                  <Field label={"품목 "} orientation="horizontal">
+                    <Input readOnly value={item.itemCommonName} />
+                  </Field>
+                  <Field label={"담당 업체"} orientation="horizontal">
+                    <Input readOnly value={item.customerName || ""} />
+                  </Field>
+                  <Field label={"규격"} orientation="horizontal">
+                    <Input
+                      name="size"
+                      placeholder="규격"
+                      value={editedItem.size}
+                      onChange={handleChange}
+                    />
+                  </Field>
+                  <Field label={"단위"} orientation="horizontal">
+                    <Input
+                      name="unit"
+                      placeholder="단위"
+                      value={editedItem.unit}
+                      onChange={handleChange}
+                    />
+                  </Field>
+                  <Field label={"입고가"} orientation="horizontal">
+                    <Input
+                      type="number"
+                      name="inputPrice"
+                      value={editedItem.inputPrice}
+                      onChange={handleChange}
+                      min="1"
+                    />
+                  </Field>
+                  <Field label={"출고가"} orientation="horizontal">
+                    <Input
+                      type="number"
+                      name="outputPrice"
+                      value={editedItem.outputPrice}
+                      onChange={handleChange}
+                      min="1"
+                    />
+                  </Field>
+                  <Field label={"비고"} orientation="horizontal">
+                    <Input
+                      name="itemNote"
+                      placeholder="비고"
+                      value={editedItem.itemNote}
+                      onChange={handleChange}
+                    />
+                  </Field>
+                  <Field label={"사용 여부"} orientation="horizontal">
+                    <Box ml={"86px"} style={{ position: "absolute" }}>
+                      <Checkbox
+                        name="itemActive"
+                        checked={editedItem.itemActive}
+                        onChange={(e) =>
+                          setEditedItem((prevItem) => ({
+                            ...prevItem,
+                            itemActive: e.target.checked,
+                          }))
+                        }
+                      />
+                    </Box>
+                  </Field>
+                </>
+              </Stack>
+            ))}
           </DialogBody>
           <DialogFooter>
-            {isEditing ? (
-              <HStack>
-                <Button
-                  onClick={handleSaveClick}
-                  disabled={!isValid}
-                  colorPalette={"blue"}
-                >
+            <HStack>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">취소</Button>
+              </DialogActionTrigger>
+              <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+                <Button onClick={handleSaveClick} disabled={!isValid}>
                   저장
                 </Button>
-                <Button onClick={() => setIsEditing(false)}> 수정 취소</Button>
-              </HStack>
-            ) : (
-              <HStack>
-                <Button onClick={() => setIsEditing(true)}>수정</Button>
-                {item[0]?.itemActive && (
-                  <Button
-                    onClick={() => setIsDialogOpen(true)}
-                    colorPalette={"red"}
-                  >
-                    삭제
-                  </Button>
-                )}
-              </HStack>
-            )}
+              </Tooltip>
+            </HStack>
           </DialogFooter>
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
-      <HStack></HStack>
-
-      <DialogConfirmation
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={handleDeleteConfirm}
-        title="삭제 확인"
-        body="해당 품목을 삭제하시겠습니까?"
-      />
+      {/*<DialogConfirmation*/}
+      {/*  isOpen={isDialogOpen}*/}
+      {/*  onClose={() => setIsDialogOpen(false)}*/}
+      {/*  onConfirm={handleDeleteConfirm}*/}
+      {/*  title="삭제 확인"*/}
+      {/*  body="해당 품목을 삭제하시겠습니까?"*/}
+      {/*/>*/}
     </Box>
   );
 }

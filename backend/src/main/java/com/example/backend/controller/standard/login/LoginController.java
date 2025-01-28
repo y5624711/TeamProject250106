@@ -1,7 +1,7 @@
 package com.example.backend.controller.standard.login;
 
 import com.example.backend.dto.standard.employee.Employee;
-import com.example.backend.service.login.LoginService;
+import com.example.backend.service.standard.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

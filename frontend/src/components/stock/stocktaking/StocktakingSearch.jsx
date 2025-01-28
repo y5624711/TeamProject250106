@@ -16,7 +16,6 @@ function StocktakingSearch({
   search,
   handleSearchClick,
 }) {
-  console.log(search);
   return (
     <HStack justifyContent="center">
       <SelectRoot

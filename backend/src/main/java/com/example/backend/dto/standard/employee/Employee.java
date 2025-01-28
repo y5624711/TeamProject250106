@@ -19,7 +19,6 @@ public class Employee {
 
     public static String correctCommonCode(String commonCode) {
         switch (commonCode) {
-            
             case "기본키":
                 return "employee_key";
             case "공통구분":
@@ -28,10 +27,16 @@ public class Employee {
                 return "employee_workplace_code";
             case "기업명":
                 return "employee_workplace_name";
+            case "기업번호":
+                    return "employee_workplace_tel";
             case "부서명":
-                return "D.department_name";
+                return "employee_department_name";
+            case "부서번호":
+                return "employee_workplace_tel";
             case "직원명":
                 return "employee_name";
+            case "직원번호":
+                return "employee_tel";
             case "사번":
                 return "employee_no";
             default:

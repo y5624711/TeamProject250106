@@ -17,7 +17,7 @@ public class DepartmentController {
     final DepartmentService service;
 
     @GetMapping("list")
-    private Map<String, Object> list(
+    public Map<String, Object> list(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "st", defaultValue = "all") String searchType,
             @RequestParam(value = "sk", defaultValue = "") String searchKeyword,
@@ -30,7 +30,7 @@ public class DepartmentController {
     }
 
     @PostMapping("add")
-    private ResponseEntity<Map<String, Object>> addDepartment(@RequestBody Department department) {
+    public ResponseEntity<Map<String, Object>> addDepartment(@RequestBody Department department) {
         if (service.validateDepartment(department)) {
             if (service.checkSameNameCheck(department)) {
                 if (service.addDepartment(department)) {
@@ -54,7 +54,7 @@ public class DepartmentController {
     }
 
     @PutMapping("update")
-    private ResponseEntity<Map<String, Object>> updateDepartment(@RequestBody Department department) {
+    public ResponseEntity<Map<String, Object>> updateDepartment(@RequestBody Department department) {
         if (service.validateDepartment(department)) {
             if (service.updateDepartment(department)) {
                 return ResponseEntity.ok().body(Map.of("message",
@@ -71,7 +71,7 @@ public class DepartmentController {
     }
 
     @PutMapping("delete")
-    private ResponseEntity<Map<String, Object>> deleteDepartment(@RequestBody Department department) {
+    public ResponseEntity<Map<String, Object>> deleteDepartment(@RequestBody Department department) {
         if (service.deleteDepartment(department.getDepartmentKey())) {
             return ResponseEntity.ok().body(Map.of("message",
                     Map.of("type", "success", "text", "삭제 되었습니다.")));
@@ -82,7 +82,7 @@ public class DepartmentController {
     }
 
     @PutMapping("reUseDepartment")
-    private ResponseEntity<Map<String, Object>> reUseDepartment(@RequestBody Department department) {
+    public ResponseEntity<Map<String, Object>> reUseDepartment(@RequestBody Department department) {
         if (service.reUseDepartment(department.getDepartmentKey())) {
             return ResponseEntity.ok().body(Map.of("message",
                     Map.of("type", "success", "text", "해당 부서를 다시 사용합니다.")));
