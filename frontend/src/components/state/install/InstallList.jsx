@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Center,
-  createListCollection,
-  HStack,
-  Table,
-} from "@chakra-ui/react";
+import React from "react";
+import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
-import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { CustomRadioGroup } from "../../tool/list/CustomRadioGroup.jsx";
 
 export function InstallList({
   installList,
@@ -47,23 +41,13 @@ export function InstallList({
     ],
   });
 
-  const [radioValue, setRadioValue] = useState(
-    searchParams.get("state") || "all",
-  );
-
-  const handleStateChange = (value) => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-
-    nextSearchParam.set("page", "1");
-    nextSearchParam.set("state", value);
-    setSearchParams(nextSearchParam);
-  };
-
-  // 새로고침 시 검색 파라미터에서 state 값이 있으면 라디오 버튼 상태를 설정
-  useEffect(() => {
-    const stateFromParams = searchParams.get("state") || "all";
-    setRadioValue(stateFromParams);
-  }, [searchParams]);
+  const radioOptions = [
+    { value: "all", label: "전체" },
+    { value: "request", label: "대기" },
+    { value: "approve", label: "승인" },
+    { value: "configuration", label: "완료" },
+    { value: "disapprove", label: "반려" },
+  ];
 
   return (
     <Box>
@@ -71,19 +55,10 @@ export function InstallList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <RadioGroup
-        defaultValue={radioValue}
-        my={3}
-        onValueChange={(value) => handleStateChange(value.value)}
-      >
-        <HStack gap={6}>
-          <Radio value="all">전체</Radio>
-          <Radio value="request">대기</Radio>
-          <Radio value="approve">승인</Radio>
-          <Radio value="configuration">완료</Radio>
-          <Radio value="disapprove">반려</Radio>
-        </HStack>
-      </RadioGroup>
+      <CustomRadioGroup
+        radioOptions={radioOptions}
+        onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
       <Box>
         <Table.Root>
           <Table.Header>
