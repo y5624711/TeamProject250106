@@ -66,7 +66,7 @@ export function Purchase() {
     axios
       .get("/api/purchase/list")
       .then((res) => {
-        setPurchaseList(res.data);
+        setPurchaseList(res.data.purchaseList);
         setCount(res.data.length);
       })
       .catch((error) => {
