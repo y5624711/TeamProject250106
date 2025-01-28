@@ -40,6 +40,7 @@ public interface PurchaseMapper {
 
     // 구매 관리 리스트
     @Select("""
+            <script>
             SELECT
                 pr.purchase_request_key AS purchaseRequestKey,
                 pr.employee_no AS employeeNo,
@@ -56,8 +57,99 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
+            WHERE
+            <if test="state == 'all'">
+                (1=1 || purchase_consent IS NOT TRUE || purchase_consent IS NOT FALSE)
+            </if>
+            <if test="state == 'request'">
+                purchase_consent IS NULL
+            </if>
+            <if test="state == 'approve'">
+                purchase_consent = TRUE
+            </if>
+            <if test="state == 'disapprove'">
+                purchase_consent = FALSE
+            </if>
+            <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='employeeNo'">
+                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='employeeName'">
+                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerName'">
+                            OR cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeNo'">
+                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='itemCommonName'">
+                            OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                    </trim>
+                    )
+            </if>
+            ORDER BY ${sort} ${order}
+            LIMIT #{offset}, 10
+            </script>
             """)
-    List<Purchase> purchaseList();
+    List<Purchase> getPurchaseList(Integer offset, String type, String keyword, String state, String sort, String order);
+
+    // 총 데이터 개수 (페이지네이션을 위해 사용)
+    @Select("""
+            <script>
+            SELECT COUNT(*)
+            FROM TB_PURCH_REQ pr
+            LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
+            LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
+            LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
+            LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
+            LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
+            WHERE
+            <if test="state == 'all'">
+                (1=1 || purchase_consent IS NOT TRUE || purchase_consent IS NOT FALSE)
+            </if>
+            <if test="state == 'request'">
+                purchase_consent IS NULL
+            </if>
+            <if test="state == 'approve'">
+                purchase_consent = true
+            </if>
+            <if test="state == 'disapprove'">
+                purchase_consent = false
+            </if>
+            <if test="keyword != null and keyword.trim()!=''">
+                AND (
+                    <trim prefixOverrides="OR">
+                        <if test="type=='all' or type=='employeeNo'">
+                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='employeeName'">
+                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerName'">
+                            OR cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeNo'">
+                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='itemCommonName'">
+                            OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                    </trim>
+                    )
+            </if>
+            </script>
+            """)
+    Integer countAll(String type, String keyword, String state);
 
     // 구매 승인 팝업 보기
     @Select("""
@@ -114,4 +206,11 @@ public interface PurchaseMapper {
             """)
     int updatePurchaseConsent(Integer purchaseRequestKey);
 
+    // 구매 승인 반려
+    @Update("""
+            UPDATE TB_PURCH_REQ
+            SET purchase_consent = FALSE
+            WHERE purchase_request_key = #{purchaseRequestKey}
+            """)
+    int disapprovePurchase(String purchaseRequestKey);
 }

@@ -47,8 +47,14 @@ public class PurchaseController {
 
     // 구매 관리 리스트
     @GetMapping("/list")
-    public List<Purchase> list() {
-        return service.purchaseList();
+    public Map<String, Object> purchaseList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "state", defaultValue = "all") String state,
+            @RequestParam(value = "sort", defaultValue = "COALESCE(purchase_request_date, purchase_approve_date)") String sort,
+            @RequestParam(value = "order", defaultValue = "desc") String order) {
+        return service.purchaseList(page, type, keyword, state, sort, order);
     }
 
     // 구매 승인 팝업 보기
@@ -64,6 +70,16 @@ public class PurchaseController {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 신청이 승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
         } else {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 신청 승인에 실패하였습니다.")));
+        }
+    }
+
+    // 구매 승인 반려
+    @PutMapping("/disapprove/{purchaseRequestKey}")
+    public ResponseEntity<Map<String, Object>> disapprovePurchase(@PathVariable String purchaseRequestKey) {
+        if (service.disapprovePurchase(purchaseRequestKey)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 신청이 반려되었습니다.")));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "구매 신청 반려에 실패하였습니다.")));
         }
     }
 }

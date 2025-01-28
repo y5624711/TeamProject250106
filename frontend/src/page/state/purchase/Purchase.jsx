@@ -1,41 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Center, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
 import axios from "axios";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
 import { useSearchParams } from "react-router-dom";
 
 export function Purchase() {
+  // URL 쿼리 파라미터 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState({
-    type: "all",
-    keyword: "",
-  });
-  const [count, setCount] = useState(0);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  // 데이터 및 페이지 관련 상태
   const [purchaseList, setPurchaseList] = useState([]);
+  const [count, setCount] = useState(0);
+  // 선택된 항목 관련 상태
   const [purchaseRequestKey, setPurchaseRequestKey] = useState(null);
   const [purchaseRequestData, setPurchaseRequestData] = useState(null); // 발주 데이터를 상위 컴포넌트에서 관리
+  // 다이얼로그 관련 상태
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   // 구매 관리 리스트 가져오기
   useEffect(() => {
+    const controller = new AbortController();
     axios
-      .get("/api/purchase/list")
+      .get("/api/purchase/list", {
+        params: searchParams,
+        signal: controller.signal,
+      })
       .then((res) => {
-        setPurchaseList(res.data);
+        setPurchaseList(res.data.purchaseList);
+        setCount(res.data.count);
       })
       .catch((error) => {
         console.error("구매 목록 요청 중 오류 발생:", error);
       });
-  }, []);
+    return () => {
+      controller.abort();
+    };
+  }, [searchParams]);
 
   // 구매 신청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
@@ -59,6 +61,19 @@ export function Purchase() {
     setIsDialogOpen(false);
   };
 
+  // 구매 신청 후 리스트에 업데이트
+  const handleSave = () => {
+    axios
+      .get("/api/purchase/list")
+      .then((res) => {
+        setPurchaseList(res.data.purchaseList);
+        setCount(res.data.length);
+      })
+      .catch((error) => {
+        console.error("구매 목록 업데이트 중 오류 발생:", error);
+      });
+  };
+
   return (
     <Box display="flex" h="100vh">
       <StateSideBar />
@@ -69,27 +84,21 @@ export function Purchase() {
         <PurchaseList
           purchaseList={purchaseList}
           onViewClick={handleViewClick}
-          search={search}
-          setSearch={setSearch}
+          count={count}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
-        {/* 페이지네이션 */}
-        <Center>
-          <PaginationRoot count={count} pageSize={10} variant="solid" mt={3}>
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
-        </Center>
         {/* 구매 신청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handlePurchaseRequestClick}>구매 신청</Button>
+          <Button onClick={handlePurchaseRequestClick} mt={-11}>
+            구매 신청
+          </Button>
         </Box>
         {/* 구매 다이얼로그 */}
         <PurchaseDialog
           isOpen={isDialogOpen}
           onClose={handleDialogClose}
+          onSave={handleSave}
           isAddDialogOpen={isAddDialogOpen}
           purchaseRequestKey={purchaseRequestKey}
           purchaseRequestData={purchaseRequestData} // 발주 데이터 전달

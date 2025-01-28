@@ -186,11 +186,14 @@ export function Franchise() {
 
   // 정렬 기준 변경 시 URL 파라미터 업데이트
   const handleSortChange = (sortField) => {
-    const nextOrder = standard.order === "ASC" ? "DESC" : "ASC";
+    const nextOrder = standard.order === "asc" ? "desc" : "asc";
     setStandard({ sort: sortField, order: nextOrder });
+
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sortField);
     nextSearchParams.set("order", nextOrder);
+
+    // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParams);
   };
 
@@ -215,8 +218,8 @@ export function Franchise() {
     <Box display={"flex"} h={"100vh"}>
       <StandardSideBar />
       <Box flex={"1"} p={4}>
-        <Heading size="md" mb={4}>
-          가맹점 관리
+        <Heading size={"xl"} p={2} mb={3}>
+          기준정보 관리 {">"} 가맹점 관리
         </Heading>
         <FranchiseList
           franchiseList={franchiseList}
@@ -239,8 +242,8 @@ export function Franchise() {
             onPageChange={handlePageChange}
             count={count}
             pageSize={10}
-            // page={Number(searchParams.get("page") || 1)}
             variant="solid"
+            mt={5}
           >
             <HStack>
               <PaginationPrevTrigger />
@@ -249,9 +252,11 @@ export function Franchise() {
             </HStack>
           </PaginationRoot>
         </Center>
-        {/* 추가 버튼 */}
-        <Box display="flex" justifyContent="flex-end" mb={4}>
-          <Button onClick={handleAddFranchiseClick}>추가</Button>
+        {/* 가맹점 등록 버튼 */}
+        <Box display="flex" justifyContent="flex-end">
+          <Button onClick={handleAddFranchiseClick} mt={-10}>
+            가맹점 등록
+          </Button>
         </Box>
         {/* 다이얼로그 */}
         <FranchiseDialog

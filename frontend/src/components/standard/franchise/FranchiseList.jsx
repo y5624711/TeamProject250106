@@ -2,19 +2,23 @@ import {
   Box,
   Button,
   createListCollection,
+  HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Stack,
   Table,
   TableColumnHeader,
   TableHeader,
-  TableRow,
 } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import React, { useMemo } from "react";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 export function FranchiseList({
   franchiseList,
@@ -26,17 +30,16 @@ export function FranchiseList({
   onFranchiseClick,
   standard,
   setStandard,
+  handleSortChange,
 }) {
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "사업자 번호", value: "franchiseNo" },
       { label: "가맹점명", value: "franchiseName" },
-      { label: "가맹점주", value: "franchiseRep" },
+      { label: "사업자 번호", value: "franchiseNo" },
+      { label: "대표자", value: "franchiseRep" },
       { label: "광역시도", value: "franchiseState" },
       { label: "시군", value: "franchiseCity" },
-      { label: "직원 사번", value: "businessEmployeeNo" },
-      { label: "직원 이름", value: "businessEmployeeName" },
     ],
   });
 
@@ -52,6 +55,10 @@ export function FranchiseList({
         sort: column,
         order: "asc",
       });
+    }
+    // 새로운 파라미터를 사용하여 정렬 변경 함수 호출
+    if (handleSortChange) {
+      handleSortChange(column, standard.order);
     }
   };
 
@@ -69,14 +76,16 @@ export function FranchiseList({
 
   return (
     <Box>
-      <Box display="flex" alignItems="center">
+      {/* 검색창 */}
+      <HStack justifyContent="center">
         <SelectRoot
           collection={FranchiseOptionList}
+          width="160px"
+          position="relative"
           value={[search.type]}
           onValueChange={(oc) => {
             setSearch({ ...search, type: oc.value[0] });
           }}
-          width="150px"
         >
           <SelectTrigger>
             <SelectValueText />
@@ -84,6 +93,7 @@ export function FranchiseList({
           <SelectContent
             style={{
               width: "150px",
+              top: "40px",
               position: "absolute",
             }}
           >
@@ -95,77 +105,147 @@ export function FranchiseList({
           </SelectContent>
         </SelectRoot>
         <Input
+          placeholder="검색어를 입력해 주세요."
+          width="50%"
           value={search.keyword}
           onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
-          placeholder="검색어 입력해 주세요."
-          width="300px"
-          marginLeft="10px"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearchClick();
             }
           }}
         />
-        <Button onClick={handleSearchClick} marginLeft="10px" width="80px">
+
+        {/* 검색 초기화 */}
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={() => {
+            window.location.search = ""; // searchParams 초기화
+          }}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
+        <Button onClick={handleSearchClick} transform="translateX(-75%)">
           검색
         </Button>
-      </Box>
-      <Checkbox mt={3} checked={checkedActive} onChange={toggleCheckedActive}>
-        삭제 내역 포함 보기
+      </HStack>
+
+      {/* 전체 조회 체크 박스 */}
+      <Checkbox
+        mt={3}
+        mb={5}
+        ml={2}
+        checked={checkedActive}
+        onChange={toggleCheckedActive}
+      >
+        전체 조회
       </Checkbox>
+
+      {/* 테이블 */}
       <Table.Root interactive>
         <TableHeader>
-          <TableRow>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseKey")}>
-              #{" "}
-              {standard.sort === "franchiseKey" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseName")}>
-              가맹점명{" "}
-              {standard.sort === "franchiseName" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseRep")}>
-              가맹점주{" "}
-              {standard.sort === "franchiseRep" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseNo")}>
-              사업자 번호{" "}
-              {standard.sort === "franchiseNo" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseTel")}>
-              전화번호{" "}
-              {standard.sort === "franchiseTel" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseState")}>
-              광역시도{" "}
-              {standard.sort === "franchiseState" &&
-                (standard.order === "asc" ? "↑" : "↓")}
-            </TableColumnHeader>
-            <TableColumnHeader onClick={() => HeaderClick("franchiseCity")}>
-              시군{" "}
-              {standard.sort === "franchiseCity" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseKey")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>#</Stack>
+                {standard.sort === "franchiseKey" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
-              onClick={() => HeaderClick("businessEmployeeNo")}
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseName")}
             >
-              직원 사번{" "}
-              {standard.sort === "businessEmployeeNo" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>가맹점명</Stack>
+                {standard.sort === "franchiseName" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
             <TableColumnHeader
-              onClick={() => HeaderClick("businessEmployeeName")}
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseNo")}
             >
-              직원 이름{" "}
-              {standard.sort === "businessEmployeeName" &&
-                (standard.order === "asc" ? "↑" : "↓")}
+              <HStack alignItems="center" justify="center">
+                <Stack>사업자 번호</Stack>
+                {standard.sort === "franchiseNo" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
             </TableColumnHeader>
-          </TableRow>
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseRep")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>대표자</Stack>
+                {standard.sort === "franchiseRep" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseTel")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>전화번호</Stack>
+                {standard.sort === "franchiseTel" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseState")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>광역시도</Stack>
+                {standard.sort === "franchiseState" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              verticalAlign="middle"
+              onClick={() => HeaderClick("franchiseCity")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>시군</Stack>
+                {standard.sort === "franchiseCity" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+          </Table.Row>
         </TableHeader>
         <Table.Body>
           {sortedFranchiseList.length > 0 ? (
@@ -173,26 +253,38 @@ export function FranchiseList({
               <Table.Row
                 key={index}
                 onDoubleClick={() => onFranchiseClick(franchise.franchiseKey)}
-                style={{
-                  cursor: "pointer",
-                  backgroundColor:
-                    franchise.franchiseActive === false ? "#EAEAEA" : "white",
-                }}
+                bg={franchise.franchiseActive ? "white" : "gray.100"}
+                _hover={{ backgroundColor: "gray.200" }}
+                cursor="pointer"
               >
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{franchise.franchiseName}</Table.Cell>
-                <Table.Cell>{franchise.franchiseRep}</Table.Cell>
-                <Table.Cell>{franchise.franchiseNo}</Table.Cell>
-                <Table.Cell>{franchise.franchiseTel}</Table.Cell>
-                <Table.Cell>{franchise.franchiseState}</Table.Cell>
-                <Table.Cell>{franchise.franchiseCity}</Table.Cell>
-                <Table.Cell>{franchise.businessEmployeeNo}</Table.Cell>
-                <Table.Cell>{franchise.businessEmployeeName}</Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseNo}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseRep}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseTel}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseState}
+                </Table.Cell>
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {franchise.franchiseCity}
+                </Table.Cell>
               </Table.Row>
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan="9">데이터가 없습니다.</Table.Cell>
+              <Table.Cell textAlign="center" colSpan="7">
+                데이터가 없습니다.
+              </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
