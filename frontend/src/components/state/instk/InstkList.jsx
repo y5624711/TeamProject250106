@@ -21,15 +21,19 @@ export function InstkList() {
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [count, setCount] = useState(0);
 
   //페이지 네이션 + 저거 옵션다는거 부터 하자
   useEffect(() => {
     axios.get("api/instk/list",{
       params:{
         state:searchParams.get("state"),
+        page:searchParams.get("page"),
+        keyword:searchParams.get("keyword")
       }
     }).then((res) => {
-      setInstkList(res.data);
+      setCount(res.data.count)
+      setInstkList(res.data.list);
     });
   }, [searchParams]);
 
@@ -49,23 +53,23 @@ export function InstkList() {
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "입고 구분", value: "itemCommonName" },
-      { label: "발주 번호", value: "customerName" },
-      { label: "품목", value: "size" },
-      { label: "담당 업체", value: "unit" },
-      { label: "날짜", value: "inputPrice" },
-      { label: "신청자", value: "outputPrice" },
-      { label: "승인자", value: "outputPrice" },
-      { label: "상태현황", value: "outputPrice" },
+      { label: "입고 구분", value: "inputCommonCode" },
+      { label: "발주 번호", value: "inputNo" },
+      { label: "품목", value: "itemCommonName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "날짜", value: "inputStockDate" },
+      { label: "신청자", value: "requestEmployeeName" },
+      { label: "승인자", value: "inputStockEmployeeName" },
+      { label: "상태", value: "inputConsent" },
     ],
   });
 
   return (
     <Box>
-      <SearchBar onSearchChange={"sibal"} searchOptions={searchOptions} />
-      <RadioGroup defaultValue="1" my={3} onValueChange={(e)=>{
-        setSearchParams({state:e.value});
 
+      <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
+      <RadioGroup defaultValue="all"  value={searchParams.get("state")} my={3} onValueChange={(e)=>{
+        setSearchParams({state:e.value});
       }} >
         <HStack gap={6}>
           <Radio value="all">전체</Radio>
@@ -89,7 +93,6 @@ export function InstkList() {
               <Table.ColumnHeader textAlign="center">
                 협력 업체
               </Table.ColumnHeader>
-
               <Table.ColumnHeader textAlign="center">신청자</Table.ColumnHeader>
               <Table.ColumnHeader textAlign="center">승인자</Table.ColumnHeader>
               <Table.ColumnHeader textAlign="center">날짜</Table.ColumnHeader>
@@ -146,7 +149,7 @@ export function InstkList() {
       </Box>
       <Center m={3}>
         <Pagination
-          count={30}
+          count={count}
           pageSize={10}
           onPageChange={(newPage) => {
             const nextSearchParam = new URLSearchParams(searchParams);

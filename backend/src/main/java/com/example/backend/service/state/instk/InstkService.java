@@ -26,14 +26,16 @@ public class InstkService {
     final InstkSubMapper instkSubMapper;
     final PurchaseMapper purchaseMapper;
 
-    public List<Instk> viewlist(String state) {
-        System.out.println("state = " + state);
-        int count = mapper.countByConsent(state);
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword) {
+        int count = mapper.countByConsent(state,keyword);
+        System.out.println("keyword = " + keyword);
         System.out.println("count = " + count);
+        int offset = (page - 1) * 10;
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword);
 
-         List<Instk> instkList = mapper.viewBuyInList(state);
+         Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 
-        return  instkList;
+        return  returnMap;
 
     }
 
@@ -82,7 +84,6 @@ public class InstkService {
             mapper.addInstkSub(inputKey,insertSerialNo);
             //인아웃 히스토리 집어 넣기 ,로케이션 키 가져오는거 생각해야함
 //            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
-
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {

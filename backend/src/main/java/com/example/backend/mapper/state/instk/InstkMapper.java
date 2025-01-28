@@ -50,8 +50,6 @@ SELECT
         END AS request_date
             FROM TB_BUYIN BI  
     LEFT JOIN TB_PURCH_APPR PR
-        
-        
      ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
     LEFT JOIN TB_PURCH_REQ PRQ  
                 ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key=PR.purchase_request_key
@@ -91,12 +89,22 @@ SELECT
         <if test="state == 'all'">
             <!-- no condition -->
         </if>
+         <if test="keyword != null and keyword != ''">
+                         AND (
+                             BI.input_common_code LIKE CONCAT('%', #{keyword}, '%')                -- BI 테이블의 input_common_code
+                             OR BI.input_no LIKE CONCAT('%', #{keyword}, '%')                     -- BI 테이블의 input_no
+--                           OR SC.common_name LIKE CONCAT('%', #{keyword}, '%')                  -- SC 테이블의 item_common_name
+                             OR CT.customer_name LIKE CONCAT('%', #{keyword}, '%')                -- CT 테이블의 customer_name
+                             OR INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%')            -- INS 테이블의 input_stock_date
+                             OR EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 요청 담당자 이름 (EM2 테이블)
+                             OR EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')    
+                         )
+        </if>
       </script>                              
 """)
-    List<Instk> viewBuyInList(String state);
-
-
-
+    List<Instk> viewBuyInList(
+            @Param("offset") int offset,
+            String state, String keyword);
 
     @Select("""
             select input_stock_note
@@ -205,25 +213,62 @@ SELECT
 
     String getReturnSerialNo(String inputNo);
 
-    // 리스트 총 목록수 세기
+    // 리스트 총행 세기
     @Select("""
     <script>
-        SELECT COUNT(input_key)
-        FROM TB_BUYIN
+        SELECT COUNT(BI.input_key)
+        FROM TB_BUYIN BI
+        LEFT JOIN TB_PURCH_APPR PR
+            ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
+        LEFT JOIN TB_PURCH_REQ PRQ
+            ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
+        LEFT JOIN TB_RTN_APPR RN
+            ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
+        LEFT JOIN TB_RTN_REQ RNRQ
+            ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
+        LEFT JOIN TB_EMPMST EM
+            ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
+            OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
+        LEFT JOIN TB_EMPMST EM2
+            ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
+            OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
+        LEFT JOIN TB_CUSTMST CT 
+            ON CT.customer_code = EM.employee_workplace_code
+        LEFT JOIN TB_SYSCOMM SC 
+            ON SC.common_code = CT.item_code
+        LEFT JOIN TB_SYSCOMM SC2 
+            ON SC2.common_code = BI.input_common_code
+        LEFT JOIN TB_INSTK INS 
+            ON BI.input_consent = TRUE AND INS.input_key = BI.input_key
+        LEFT JOIN TB_EMPMST EM3 
+            ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
         WHERE 1=1
+        <!-- state 조건 -->
         <if test="state == 'request'">
-            AND input_consent IS NULL
+            AND BI.input_consent IS NULL
         </if>
         <if test="state == 'approve'">
-            AND input_consent = TRUE
+            AND BI.input_consent = TRUE
         </if>
         <if test="state == 'reject'">
-            AND input_consent = FALSE
+            AND BI.input_consent = FALSE
         </if>
         <if test="state == 'all'">
-            <!-- no condition -->
+            <!-- 아무 조건도 추가하지 않음 -->
+        </if>
+        <!-- keyword 조건 -->
+        <if test="keyword != null and keyword != ''">
+            AND (
+                BI.input_common_code LIKE CONCAT('%', #{keyword}, '%')                -- BI 테이블의 input_common_code
+                OR BI.input_no LIKE CONCAT('%', #{keyword}, '%')                     -- BI 테이블의 input_no
+--                OR SC.common_name LIKE CONCAT('%', #{keyword}, '%')                  -- SC 테이블의 item_common_name
+                OR CT.customer_name LIKE CONCAT('%', #{keyword}, '%')                -- CT 테이블의 customer_name
+                OR INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%')            -- INS 테이블의 input_stock_date
+                OR EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 요청 담당자 이름 (EM2 테이블)
+                OR EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 재고 담당자 이름 (EM3 테이블)
+            )
         </if>
     </script>
 """)
-    int countByConsent(@Param("state") String state);
+    int countByConsent(@Param("state") String state , String keyword);
 }

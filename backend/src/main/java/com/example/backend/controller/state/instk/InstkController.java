@@ -20,7 +20,7 @@ public class InstkController {
     final InstkService service;
 
     @GetMapping("list")
-    public List<Instk> viewlist(
+    public Map<String,Object> viewlist(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "state", defaultValue = "all") String state,
             @RequestParam(value = "type", defaultValue = "all") String type,
@@ -29,8 +29,8 @@ public class InstkController {
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
 
-        List<Instk> list = service.viewlist(state);
-        return list;
+        Map<String,Object> returnlist = service.viewlist(state,page,keyword);
+        return returnlist;
 
     }
 
