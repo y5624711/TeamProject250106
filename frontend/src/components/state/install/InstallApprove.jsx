@@ -270,28 +270,16 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         </DialogBody>
         <DialogFooter>
           {installRequest.installRequestConsent != false ? (
-            !isApproved ? (
-              <HStack>
-                <Button variant="outline" onClick={handleDisapproveClick}>
-                  반려
-                </Button>
-                {!isValid ? (
-                  <Tooltip content="입력을 완료해주세요.">
-                    <Button onClick={handleApproveClick} disabled={!isValid}>
-                      승인
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  <Button onClick={handleApproveClick} disabled={!isValid}>
-                    승인
-                  </Button>
-                )}
-              </HStack>
-            ) : (
-              <Button variant="outline" onClick={handleClose}>
-                닫기
+            <HStack>
+              <Button variant="outline" onClick={handleDisapproveClick}>
+                반려
               </Button>
-            )
+              <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+                <Button onClick={handleApproveClick} disabled={!isValid}>
+                  승인
+                </Button>
+              </Tooltip>
+            </HStack>
           ) : (
             <Button variant="outline" onClick={handleClose}>
               닫기

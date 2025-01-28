@@ -262,17 +262,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          {!isValid ? (
-            <Tooltip content="입력을 완료해주세요.">
-              <Button onClick={handleRequestClick} disabled={!isValid}>
-                신청
-              </Button>
-            </Tooltip>
-          ) : (
+          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
             <Button onClick={handleRequestClick} disabled={!isValid}>
               신청
             </Button>
-          )}
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

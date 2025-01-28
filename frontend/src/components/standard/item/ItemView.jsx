@@ -188,17 +188,11 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
               <DialogActionTrigger asChild>
                 <Button variant="outline">취소</Button>
               </DialogActionTrigger>
-              {!isValid ? (
-                <Tooltip content="입력을 완료해주세요.">
-                  <Button onClick={handleSaveClick} disabled={!isValid}>
-                    저장
-                  </Button>
-                </Tooltip>
-              ) : (
+              <Tooltip content="입력을 완료해주세요." disabled={isValid}>
                 <Button onClick={handleSaveClick} disabled={!isValid}>
                   저장
                 </Button>
-              )}
+              </Tooltip>
             </HStack>
           </DialogFooter>
           <DialogCloseTrigger />
