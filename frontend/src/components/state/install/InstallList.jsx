@@ -77,11 +77,11 @@ export function InstallList({
         onValueChange={(value) => handleStateChange(value.value)}
       >
         <HStack gap={6}>
-          <Radio value="all">전체 조회</Radio>
-          <Radio value="request">대기 상태 조회</Radio>
-          <Radio value="approve">승인 상태 조회</Radio>
-          <Radio value="configuration">완료 상태 조회</Radio>
-          <Radio value="disapprove">반려 상태 조회</Radio>
+          <Radio value="all">전체</Radio>
+          <Radio value="request">대기</Radio>
+          <Radio value="approve">승인</Radio>
+          <Radio value="configuration">완료</Radio>
+          <Radio value="disapprove">반려</Radio>
         </HStack>
       </RadioGroup>
       <Box>
