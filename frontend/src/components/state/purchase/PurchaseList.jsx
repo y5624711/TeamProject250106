@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   createListCollection,
   HStack,
   IconButton,
@@ -18,20 +17,11 @@ import {
 import React, { useState } from "react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../ui/pagination.jsx";
 
 export function PurchaseList({
   purchaseList,
   onViewClick,
   onStateChange,
-  handlePageChange,
-  page,
-  count,
   state,
   sort,
   order,
@@ -264,24 +254,6 @@ export function PurchaseList({
           )}
         </Table.Body>
       </Table.Root>
-
-      {/* 페이지네이션 */}
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChange}
-          count={count}
-          pageSize={10}
-          page={page}
-          variant={"solid"}
-          mt={5}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
     </Box>
   );
 }
