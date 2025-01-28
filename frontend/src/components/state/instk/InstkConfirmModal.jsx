@@ -15,11 +15,14 @@ import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import error from "eslint-plugin-react/lib/util/error.js";
 
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
   const [instkDetail, setInstkDetail] = useState({});
+  
+  // 입고 상세
   useEffect(() => {
     axios.get(`api/instk/confirmView/${instk.inputNo}`,{
       params:{
@@ -42,9 +45,25 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
       .then((res) => {
         console.log(res);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("입고테이블에 추가중 오류 발생했습니다",error)
+      });
   };
 
+  // 입고 반려 메소드
+  const handleRejectInstk = () => {
+    axios.put("/api/instk/reject",{
+      inputKey:instk.inputKey
+    }).then((res)=>{
+      console.log(res.data)
+
+    })
+      .catch((error)=>{
+        console.log("입고 반려 중 오류 ",error)
+      }).finally(()=>{
+      setChangeModal();
+    })
+  }
   return (
     <DialogRoot size={"lg"} open={isModalOpen}>
       <DialogContent>
@@ -131,7 +150,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           <Button
             variant="outline"
             onClick={() => {
-              setChangeModal();
+              handleRejectInstk();
             }}
           >
             반려
@@ -143,7 +162,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           }}
         />
       </DialogContent>
-      z
+
     </DialogRoot>
   );
 }

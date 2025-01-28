@@ -1,6 +1,6 @@
 import {
   Box,
-  createListCollection,
+  createListCollection, Flex,
   Heading,
   HStack,
   Input,
@@ -312,7 +312,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         )}
       </Stack>
 
-      <Box display={"flex"} mt={4}>
+
+      <Box display={"flex"} mt={4} justify={"flex-end"}>
         <Button onClick={handleSubmit} disabled={checkNameLength()}>
           {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
         </Button>

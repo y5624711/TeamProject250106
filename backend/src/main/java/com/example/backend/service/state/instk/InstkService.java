@@ -107,4 +107,10 @@ public class InstkService {
         }
         return null;
     }
+
+    public boolean rejectInstk(int inputKey) {
+        int cnt =mapper.rejectInstk(inputKey);
+
+        return  cnt ==1;
+    }
 }

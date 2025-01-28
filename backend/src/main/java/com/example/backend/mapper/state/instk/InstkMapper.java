@@ -166,4 +166,13 @@ SELECT
             ()
              """)
     int addInOutHistoryy();
+
+
+    // 입고 반려 버튼 클릭시 거절
+    @Update("""
+            UPDATE TB_BUYIN
+            SET input_consent=FALSE
+            WHERE input_key = #{inputKey}
+            """)
+    int rejectInstk(int inputKey);
 }
