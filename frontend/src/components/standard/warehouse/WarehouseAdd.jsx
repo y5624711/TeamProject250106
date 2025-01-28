@@ -12,6 +12,7 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { Box, Input } from "@chakra-ui/react";
 import axios from "axios";
+import { toaster } from "../../ui/toaster.jsx";
 
 export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
   const [warehouseCode, setWarehouseCode] = useState();
@@ -28,20 +29,32 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
   const [warehouseNote, setWarehouseNote] = useState("");
 
   const handleSaveClick = () => {
-    axios.post(`/api/warehouse/add`, {
-      warehouseCode,
-      warehouseName,
-      customerCode,
-      warehouseAddress,
-      warehouseAddressDetail,
-      warehousePost,
-      warehouseState,
-      warehouseCity,
-      customerEmployeeNo,
-      warehouseTel,
-      warehouseActive,
-      warehouseNote,
-    });
+    axios
+      .post(`/api/warehouse/add`, {
+        warehouseCode,
+        warehouseName,
+        customerCode,
+        warehouseAddress,
+        warehouseAddressDetail,
+        warehousePost,
+        warehouseState,
+        warehouseCity,
+        customerEmployeeNo,
+        warehouseTel,
+        warehouseActive,
+        warehouseNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
   };
 
   return (

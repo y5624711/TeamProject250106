@@ -15,6 +15,7 @@ public class Stocktaking {
     private Integer countConfiguration;
     private LocalDateTime stocktakingDate;
 
+
     //    창고명
     private String warehouseName;
     //    품목명
@@ -31,8 +32,6 @@ public class Stocktaking {
     private String employeeTel;
     //    비고
     private String stocktakingNote;
-    //    차이 수량
-    private String countDifference;
     //    실사 유형
     private String stocktakingType;
 
