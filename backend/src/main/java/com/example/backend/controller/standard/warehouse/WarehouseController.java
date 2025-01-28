@@ -23,12 +23,12 @@ public class WarehouseController {
     }
 
     @GetMapping("view/{warehouseKey}")
-    public Warehouse view(@PathVariable Integer warehouseKey) {
-        return service.view(warehouseKey);
+    public Warehouse viewWarehouse(@PathVariable Integer warehouseKey) {
+        return service.viewWarehouse(warehouseKey);
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Warehouse warehouse) {
+    public ResponseEntity<Map<String, Object>> addWarehouse(@RequestBody Warehouse warehouse) {
 
         // 창고 입력 검증
         if (!service.validate(warehouse)) {
@@ -45,7 +45,7 @@ public class WarehouseController {
         }
 
 //        창고 등록 시도
-        if (service.add(warehouse)) {
+        if (service.addWarehouse(warehouse)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
                             "text", warehouse.getWarehouseKey() + "번 창고가 등록되었습니다."),

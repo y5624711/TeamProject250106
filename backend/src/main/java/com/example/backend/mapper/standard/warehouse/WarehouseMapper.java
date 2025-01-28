@@ -68,37 +68,7 @@ public interface WarehouseMapper {
             FROM TB_WHMST
             WHERE warehouse_key=#{warehouseKey}
             """)
-    Warehouse view(Integer warehouseKey);
-
-    @Insert("""
-            INSERT INTO TB_WHMST
-            (warehouse_code, 
-             warehouse_name,
-             customer_code,
-             warehouse_address,
-             warehouse_address_detail,
-             warehouse_post,
-             warehouse_state,
-             warehouse_city,
-             customer_employee_no,
-             warehouse_tel,
-             warehouse_active,
-             warehouse_note)
-            VALUES
-            (#{warehouseCode},
-             #{warehouseName},
-             #{customerCode},
-             #{warehouseAddress},
-             #{warehouseAddressDetail},
-             #{warehousePost},
-             #{warehouseState},
-             #{warehouseCity},
-             #{customerEmployeeNo},
-             #{warehouseTel},
-             #{warehouseActive},
-             #{warehouseNote})
-            """)
-    int add(Warehouse warehouse);
+    Warehouse viewWarehouse(Integer warehouseKey);
 
     @Update("""
             UPDATE TB_WHMST
@@ -174,4 +144,45 @@ public interface WarehouseMapper {
             WHERE warehouse_address=#{warehouseAddress} AND warehouse_address_detail=#{warehouseAddressDetail}
             """)
     Integer checkWarehouse(String warehoueAddress, String warehouseAddressDetail);
+
+    //창고 코드 최대값
+    @Select("""
+                <script>
+               SELECT COALESCE(MAX(CAST(SUBSTRING(warehouse_code, 4) AS UNSIGNED)), 0) AS maxNumber
+                FROM TB_WHMST
+                WHERE warehouse_code LIKE CONCAT(#{whs}, '%')
+                AND warehouse_code REGEXP '^[A-Za-z]+[0-9]+$'
+                </script>
+            """)
+    Integer viewMaxWarehouseCode(String whs);
+
+    @Insert("""
+            INSERT INTO TB_WHMST
+            (warehouse_code, 
+             warehouse_name,
+             customer_code,
+             warehouse_address,
+             warehouse_address_detail,
+             warehouse_post,
+             warehouse_state,
+             warehouse_city,
+             customer_employee_no,
+             warehouse_tel,
+             warehouse_active,
+             warehouse_note)
+            VALUES
+            (#{warehouseCode},
+             #{warehouseName},
+             #{customerCode},
+             #{warehouseAddress},
+             #{warehouseAddressDetail},
+             #{warehousePost},
+             #{warehouseState},
+             #{warehouseCity},
+             #{customerEmployeeNo},
+             #{warehouseTel},
+             #{warehouseActive},
+             #{warehouseNote})
+            """)
+    int addWarehouse(Warehouse warehouse);
 }

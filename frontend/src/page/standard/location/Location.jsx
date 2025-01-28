@@ -62,7 +62,7 @@ function Location(props) {
         <StandardSideBar />
         <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
-            로케이 관리
+            기준정보 관리 {">"} 로케이션 관리
           </Heading>
           <LocationSearch
             locationOptionList={locationOptionList}

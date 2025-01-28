@@ -69,7 +69,7 @@ function Warehouse(props) {
         <StandardSideBar />
         <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
-            창고 관리
+            기준정보 관리 {">"} 창고 관리
           </Heading>
           {/*검색 jsx*/}
           <WarehouseSearch

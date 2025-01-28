@@ -14,6 +14,23 @@ public class WarehouseService {
 
     final WarehouseMapper mapper;
 
+    //창고 등록
+    public Boolean addWarehouse(Warehouse warehouse) {
+        String whs = "WHS";
+
+        // 0 또는 숫자 조회
+        Integer maxNo = mapper.viewMaxWarehouseCode(whs);
+
+        //  부족한 자리수 만큼  0 채우기
+        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+
+        String newWarehouseCode = whs + newNumber;
+        warehouse.setWarehouseCode(newWarehouseCode);
+
+        int count = mapper.addWarehouse(warehouse);
+        return count == 1;
+    }
+
     public Map<String, Object> list(String searchType, String searchKeyword, Integer page) {
         Integer pageList = (page - 1) * 10;
         List<Warehouse> list = mapper.list(searchType, searchKeyword, pageList);
@@ -22,12 +39,8 @@ public class WarehouseService {
         return Map.of("list", list, "count", countWarehouse);
     }
 
-    public Warehouse view(Integer warehouseKey) {
-        return mapper.view(warehouseKey);
-    }
-
-    public Boolean add(Warehouse warehouse) {
-        return mapper.add(warehouse) == 1;
+    public Warehouse viewWarehouse(Integer warehouseKey) {
+        return mapper.viewWarehouse(warehouseKey);
     }
 
 
@@ -42,8 +55,7 @@ public class WarehouseService {
     // 창고 정보가 다 입력됐는지 확인
     public boolean validate(Warehouse warehouse) {
         return !(
-                warehouse.getWarehouseCode() == null || warehouse.getWarehouseCode().trim().isEmpty() ||
-                        warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||
+                warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||
                         warehouse.getWarehouseName() == null || warehouse.getWarehouseName().trim().isEmpty() ||
                         warehouse.getCustomerEmployeeNo() == null || warehouse.getCustomerEmployeeNo().trim().isEmpty() ||
                         warehouse.getWarehouseAddress() == null || warehouse.getWarehouseAddress().trim().isEmpty() ||
