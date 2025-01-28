@@ -3,7 +3,7 @@ import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Stack } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 
-export function CustomRadioGroup({ radioOptions, onRadioChange }) {
+export function StateRadioGroup({ radioOptions, onRadioChange }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, setState] = useState(searchParams.get("state") || "all");
 

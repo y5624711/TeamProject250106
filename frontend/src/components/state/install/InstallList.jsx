@@ -3,7 +3,7 @@ import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
-import { CustomRadioGroup } from "../../tool/list/CustomRadioGroup.jsx";
+import { StateRadioGroup } from "../../tool/list/StateRadioGroup.jsx";
 
 export function InstallList({
   installList,
@@ -55,7 +55,7 @@ export function InstallList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <CustomRadioGroup
+      <StateRadioGroup
         radioOptions={radioOptions}
         onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
