@@ -49,7 +49,7 @@ public class InstallController {
         return service.getInstallList(page, sort, order, state, type, keyword);
     }
 
-    // 설치 확인
+    // 설치 완료
     @PostMapping("configuration")
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
         // 비고 추가, 검수 테이블에 추가
@@ -57,17 +57,17 @@ public class InstallController {
             // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
             if (service.addOutHistory(install)) {
                 return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success", "text", "설치 확인 및 품목 입출력 테이블에 추가되었습니다."),
+                        "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
                         "data", install
                 ));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "품목 입출력 테이블에 추가 실패하였습니다.")
+                        "message", Map.of("type", "error", "text", "해당 품목의 출고 처리 중 오류가 발생했습니다.")
                 ));
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 완료가 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
             ));
         }
     }
