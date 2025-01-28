@@ -62,7 +62,7 @@ export function ItemList({
             {itemList?.map((item, index) => (
               <Table.Row
                 key={item.itemKey}
-                onClick={() => onRowClick(item.itemKey)}
+                onDoubleClick={() => onRowClick(item.itemKey)}
                 style={{
                   cursor: "pointer",
                 }}

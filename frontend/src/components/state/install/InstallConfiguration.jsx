@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -36,9 +35,11 @@ export function InstallConfiguration({
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
+  const [isConfiguration, setIsConfiguration] = useState(false);
 
   const handleClose = () => {
     setInoutHistoryNote("");
+    setIsConfiguration(false);
     onClose();
   };
 
@@ -52,13 +53,13 @@ export function InstallConfiguration({
           setInstallData(data);
         })
         .catch((error) => {
-          console.error("설치 요청 정보 오류 발생: ", error);
+          console.error("설치 신청 정보 오류 발생: ", error);
         });
     }
   }, [installKey]);
 
   const handleConfigurationClick = () => {
-    // 설치 확인 요청
+    // 설치 확인 신청
     const configurationData = {
       outputNo: installData.outputNo,
       // 협력일체 직원(승인자), 본사 직원(신청자), 가맹점 코드,
@@ -66,6 +67,7 @@ export function InstallConfiguration({
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
       inoutHistoryNote,
+      serialNumbers: installData.serialNumbers,
     };
     axios
       .post("/api/install/configuration", configurationData)
@@ -76,7 +78,7 @@ export function InstallConfiguration({
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        handleClose();
+        setIsConfiguration(true);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -96,7 +98,9 @@ export function InstallConfiguration({
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>설치 완료</DialogTitle>
+          <DialogTitle>
+            {installData.inoutHistoryDate ? "설치 완료 상세" : "설치 완료"}
+          </DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={"15px"}>
@@ -157,28 +161,36 @@ export function InstallConfiguration({
                 </SelectRoot>
               </Field>
             </HStack>
-            <Field label={"완료 비고"} orientation="horizontal">
-              <Textarea
-                value={inoutHistoryNote}
-                placeholder="최대 50자"
-                onChange={(e) => setInoutHistoryNote(e.target.value)}
-              />
-            </Field>
-            {installData.consent && (
-              <Field label={"설치 날짜"} orientation="horizontal">
-                <Input
-                  value={"test"}
-                  onChange={(e) => setSerialNote(e.target.value)}
+            {!installData.inoutHistoryDate && (
+              <Field label={"완료 비고"} orientation="horizontal">
+                <Textarea
+                  value={inoutHistoryNote}
+                  placeholder="최대 50자"
+                  onChange={(e) => setInoutHistoryNote(e.target.value)}
                 />
               </Field>
+            )}
+            {installData.inoutHistoryDate && (
+              <Stack gap={"15px"}>
+                <Field label={"설치 날짜"} orientation="horizontal">
+                  <Input value={installData.inoutHistoryDate} />
+                </Field>
+                <Field label={"설치 비고"} orientation="horizontal">
+                  <Input value={installData.inoutHistoryNote} />
+                </Field>
+              </Stack>
             )}
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">취소</Button>
-          </DialogActionTrigger>
-          <Button onClick={handleConfigurationClick}>완료</Button>
+          <Button variant="outline" onClick={handleClose}>
+            {!installData.inoutHistoryDate && !isConfiguration
+              ? "취소"
+              : "닫기"}
+          </Button>
+          {!installData.inoutHistoryDate && !isConfiguration && (
+            <Button onClick={handleConfigurationClick}>완료</Button>
+          )}
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

@@ -30,7 +30,10 @@ export function Install() {
           let state = null;
 
           if (!item.installApproveKey) {
-            if (!item.requestConsent) {
+            if (
+              item.requestConsent === null ||
+              item.requestConsent === undefined
+            ) {
               state = "대기";
             } else if (item.requestConsent === true) {
               state = "승인";
@@ -53,14 +56,14 @@ export function Install() {
         setCount(res.data.count);
       })
       .catch((error) => {
-        console.error("품목 목록 요청 중 오류 발생: ", error);
+        console.error("품목 목록 신청 중 오류 발생: ", error);
       });
   }, [searchParams, change]);
 
   const handleRowClick = (key) => {
     setSelectedInstall(key);
 
-    if (key.state === "대기") {
+    if (key.state === "대기" || key.state === "반려") {
       setApproveDialogOpen(true);
     } else if (key.state === "승인" || key.state === "완료") {
       setConfigurationDialogOpen(true);
@@ -84,7 +87,7 @@ export function Install() {
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button onClick={() => setRequestDialogOpen(true)} size="lg">
-              설치 요청
+              설치 신청
             </Button>
           </Box>
         </Stack>

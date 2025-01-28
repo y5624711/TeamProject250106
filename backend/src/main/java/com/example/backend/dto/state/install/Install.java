@@ -35,9 +35,7 @@ public class Install {
     private String serialNo;
     private LocalDate installApproveDate;
     private String customerEmployeeName;
-    private String serialNote;
     private String serialNumbers;
-    private String serialNotes;
     private Integer installConfigurationKey;
     private Boolean installConfiguration;
     private String warehouseCode;
@@ -45,5 +43,5 @@ public class Install {
     private Boolean requestConsent;
     private Boolean approveConsent;
     private Integer countItem;
-
+    private LocalDate inoutHistoryDate;
 }

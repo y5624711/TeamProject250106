@@ -23,6 +23,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   const initialItemData = {
@@ -125,7 +126,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap="15px">
-            <Field label={"품목"} required orientation="horizontal">
+            <Field label={"품목"} orientation="horizontal">
               <SelectRoot
                 onValueChange={(e) => {
                   const selectedItem = itemCommonCodeList.find(
@@ -159,7 +160,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 </SelectContent>
               </SelectRoot>
             </Field>
-            <Field label={"담당 업체"} required orientation="horizontal">
+            <Field label={"담당 업체"} orientation="horizontal">
               <Input readOnly value={itemData.customerName} />
             </Field>
             <Field label="규격" orientation="horizontal">
@@ -174,7 +175,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 onChange={handleInputChange("unit")}
               />
             </Field>
-            <Field label="입고가" required orientation="horizontal">
+            <Field label="입고가" orientation="horizontal">
               <Input
                 type="number"
                 value={itemData.inputPrice}
@@ -182,7 +183,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 min="1"
               />
             </Field>
-            <Field label="출고가" required orientation="horizontal">
+            <Field label="출고가" orientation="horizontal">
               <Input
                 type="number"
                 value={itemData.outputPrice}
@@ -205,9 +206,11 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleAddClick} disabled={!isValid}>
-            등록
-          </Button>
+          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+            <Button onClick={handleAddClick} disabled={!isValid}>
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
