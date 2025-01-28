@@ -35,9 +35,11 @@ export function InstallConfiguration({
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
+  const [isConfiguration, setIsConfiguration] = useState(false);
 
   const handleClose = () => {
     setInoutHistoryNote("");
+    setIsConfiguration(false);
     onClose();
   };
 
@@ -76,7 +78,7 @@ export function InstallConfiguration({
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        handleClose();
+        setIsConfiguration(true);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -182,9 +184,11 @@ export function InstallConfiguration({
         </DialogBody>
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>
-            {!installData.inoutHistoryDate ? "취소" : "닫기"}
+            {!installData.inoutHistoryDate && !isConfiguration
+              ? "취소"
+              : "닫기"}
           </Button>
-          {!installData.inoutHistoryDate && (
+          {!installData.inoutHistoryDate && !isConfiguration && (
             <Button onClick={handleConfigurationClick}>완료</Button>
           )}
         </DialogFooter>

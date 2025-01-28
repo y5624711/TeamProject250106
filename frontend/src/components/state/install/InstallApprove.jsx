@@ -43,6 +43,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
 
   const handleClose = () => {
     setInstallApprove(initialInstallApprove);
+    setIsApproved(false);
     onClose();
   };
 
@@ -107,7 +108,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        handleClose();
+        setIsApproved(true);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -269,7 +270,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          {installRequest.installRequestConsent != false ? (
+          {installRequest.installRequestConsent != false && !isApproved ? (
             <HStack>
               <Button variant="outline" onClick={handleDisapproveClick}>
                 반려
