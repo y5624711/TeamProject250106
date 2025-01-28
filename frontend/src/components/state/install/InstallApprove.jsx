@@ -80,6 +80,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자)
       ...installApprove,
     };
+
     axios
       .post("/api/install/approve", approveData)
       .then((res) => res.data)
@@ -120,6 +121,17 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     installApprove.installScheduleDate &&
     installApprove.customerInstallerName &&
     installApprove.customerInstallerNo;
+
+  // 현재 날짜보다 설치 예정일이 이전인지 확인
+  const isDateValid = (scheduleDate) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 오늘 날짜 기준
+    const selectedDate = new Date(scheduleDate);
+    return selectedDate >= today; // 현재 날짜와 비교
+  };
+  // 설치 예정일이 유효한지 체크하는 변수
+  const isDateInvalid = isDateValid(installApprove.installScheduleDate);
+  console.log(isDateInvalid);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
@@ -203,8 +215,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                             (selectedCE) =>
                               selectedCE.customer_installer_name === e.value[0],
                           );
-                          console.log(selectedCE.customer_installer_name);
-                          console.log(selectedCE.customer_installer_no);
                           if (selectedCE) {
                             setInstallApprove((prev) => ({
                               ...prev,
@@ -251,7 +261,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       />
                     </Field>
                   </HStack>
-
                   <Field label={"승인 비고"} orientation="horizontal">
                     <Textarea
                       placeholder="최대 50자"
@@ -275,8 +284,20 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               <Button variant="outline" onClick={handleDisapproveClick}>
                 반려
               </Button>
-              <Tooltip content="입력을 완료해주세요." disabled={isValid}>
-                <Button onClick={handleApproveClick} disabled={!isValid}>
+              <Tooltip
+                content={
+                  !isValid
+                    ? "입력을 완료해주세요" // 입력이 완료되지 않은 경우
+                    : !isDateInvalid
+                      ? "설치 예정일은 오늘 이후로 설정해야 합니다." // 설치 예정일이 오늘 이전인 경우
+                      : ""
+                }
+                disabled={isValid && isDateInvalid}
+              >
+                <Button
+                  onClick={handleApproveClick}
+                  disabled={!isValid || !isDateInvalid}
+                >
                   승인
                 </Button>
               </Tooltip>
