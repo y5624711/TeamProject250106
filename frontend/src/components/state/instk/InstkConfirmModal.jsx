@@ -16,6 +16,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import error from "eslint-plugin-react/lib/util/error.js";
+import {toaster} from "../../ui/toaster.jsx";
 
 export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
@@ -53,10 +54,13 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   // 입고 반려 메소드
   const handleRejectInstk = () => {
     axios.put("/api/instk/reject",{
-      inputKey:instk.inputKey
+      inputKey:instk.inputKey,
     }).then((res)=>{
-      console.log(res.data)
-
+      console.log(res.data);
+      toaster.create({
+        description: res.data.message.text,
+        type:res.data.message.type,
+      })
     })
       .catch((error)=>{
         console.log("입고 반려 중 오류 ",error)

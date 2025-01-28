@@ -108,9 +108,12 @@ public class InstkService {
         return null;
     }
 
-    public boolean rejectInstk(int inputKey) {
+    public boolean[] rejectInstk(int inputKey) {
+
+        boolean selectedConsent =mapper.selectedConsent(inputKey);
         int cnt =mapper.rejectInstk(inputKey);
 
-        return  cnt ==1;
+
+        return  new boolean[] {selectedConsent,cnt==1};
     }
 }

@@ -175,4 +175,12 @@ SELECT
             WHERE input_key = #{inputKey}
             """)
     int rejectInstk(int inputKey);
+
+    //  입고키 기준 입고 상태 가져오는 쿼리
+    @Select("""
+            SELECT  input_consent
+            FROM TB_BUYIN
+            WHERE input_key = #{inputKey}
+            """)
+    boolean selectedConsent(int inputKey);
 }
