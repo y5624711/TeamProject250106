@@ -64,8 +64,23 @@ public interface WarehouseMapper {
     List<Warehouse> list(String searchType, String searchKeyword, Integer pageList);
 
     @Select("""
-            SELECT *
-            FROM TB_WHMST
+            SELECT 
+                w.warehouse_name,
+                w.warehouse_code,
+                cus.customer_name,
+                w.warehouse_tel
+                e.employee_name,
+                w.customer_employee_no,
+                w.warehouse_state,
+                w.warehouse_city,
+                w.warehouse_address,
+                w.warehouse_post,
+                w.warehouse_address_detail,
+                w.warehouse_note,
+                w.warehouse_active
+            FROM TB_WHMST w 
+                LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+                LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
             WHERE warehouse_key=#{warehouseKey}
             """)
     Warehouse viewWarehouse(Integer warehouseKey);
