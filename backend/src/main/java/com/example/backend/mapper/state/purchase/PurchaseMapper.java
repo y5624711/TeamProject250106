@@ -73,23 +73,19 @@ public interface PurchaseMapper {
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
-                        <if test="type=='all' or type=='employeeNo'">
-                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='employeeName'">
-                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerName'">
-                            OR cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='customerEmployeeNo'">
-                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='customerEmployeeName'">
-                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='itemCommonName'">
                             OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='employeeName'">
+                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )
@@ -126,23 +122,19 @@ public interface PurchaseMapper {
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
-                        <if test="type=='all' or type=='employeeNo'">
-                            pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='employeeName'">
-                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
                         <if test="type=='all' or type=='customerName'">
-                            OR cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='customerEmployeeNo'">
-                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>
-                        <if test="type=='all' or type=='customerEmployeeName'">
-                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            cus.customer_name LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='itemCommonName'">
                             OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='employeeName'">
+                            OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR pr.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='customerEmployeeName'">
+                            OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )

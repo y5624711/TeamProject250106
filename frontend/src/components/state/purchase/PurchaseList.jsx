@@ -37,9 +37,7 @@ export function PurchaseList({
       { label: "담당 업체", value: "customerName" },
       { label: "품목", value: "itemCommonName" },
       { label: "신청자", value: "employeeName" },
-      { label: "신청자 사번", value: "employeeNo" },
       { label: "승인자", value: "customerEmployeeName" },
-      { label: "승인자 사번", value: "customerEmployeeNo" },
     ],
   });
 

@@ -22,7 +22,11 @@ export function PurchaseDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isAddDialogOpen ? "구매 신청" : "구매 승인"}
+            {isAddDialogOpen
+              ? "구매 신청"
+              : purchaseRequestKey
+                ? "구매 승인 상세"
+                : "구매 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
