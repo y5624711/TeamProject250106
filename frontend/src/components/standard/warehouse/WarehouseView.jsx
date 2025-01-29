@@ -5,15 +5,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
   return (
     <Box width="350px">
       창고 코드
-      <Input
-        value={warehouseDetail.warehouseCode}
-        onChange={(e) =>
-          setWarehouseDetail({
-            ...warehouseDetail,
-            warehouseCode: e.target.value,
-          })
-        }
-      />
+      <Input value={warehouseDetail.warehouseCode} readOnly />
       창고명
       <Input
         value={warehouseDetail.warehouseName}

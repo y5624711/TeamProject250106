@@ -34,7 +34,6 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   function handleCheckClick() {
     axios.put(`/api/warehouse/edit`, {
       warehouseKey,
-      warehouseCode: warehouseDetail.warehouseCode,
       warehouseName: warehouseDetail.warehouseName,
       customerCode: warehouseDetail.customerCode,
       warehouseAddress: warehouseDetail.warehouseAddress,

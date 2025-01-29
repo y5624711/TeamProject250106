@@ -87,8 +87,7 @@ public interface WarehouseMapper {
 
     @Update("""
             UPDATE TB_WHMST
-            SET warehouse_code=#{warehouseCode},
-                warehouse_name=#{warehouseName},
+            SET warehouse_name=#{warehouseName},
                 customer_code=#{customerCode},
                 warehouse_address=#{warehouseAddress},
                 warehouse_address_detail=#{warehouseAddressDetail},
