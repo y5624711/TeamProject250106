@@ -12,7 +12,11 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
+export function PurchaseApprove({
+  onClose,
+  purchaseRequestKey,
+  setPurchaseConsent,
+}) {
   const { id, name } = useContext(AuthenticationContext);
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,6 +29,7 @@ export function PurchaseApprove({ isOpen, onClose, purchaseRequestKey }) {
         .then((res) => {
           console.log("승인 여부 상태:", res.data.purchaseConsent);
           setPurchase(res.data);
+          setPurchaseConsent(res.data.purchaseConsent); // 승인 상태 전달
           setLoading(false);
         })
         .catch((error) => {
