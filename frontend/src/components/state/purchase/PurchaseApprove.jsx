@@ -13,9 +13,9 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
 export function PurchaseApprove({
-  onClose,
   purchaseRequestKey,
   setPurchaseConsent,
+  onClose,
 }) {
   const { id, name } = useContext(AuthenticationContext);
   const [purchase, setPurchase] = useState(null);
@@ -46,6 +46,7 @@ export function PurchaseApprove({
       customerEmployeeName: name,
       warehouseCode: purchase.warehouseCode,
       purchaseApproveDate: new Date().toISOString(),
+      purchaseConsent: true,
     };
 
     axios
@@ -61,6 +62,7 @@ export function PurchaseApprove({
         });
 
         if (res.data.purchaseNo) {
+          setPurchaseConsent(true); // 즉시 상태 변경 (타이틀 업데이트 반영)
           setPurchase((prevPurchase) => ({
             ...prevPurchase,
             customerEmployeeNo: id,

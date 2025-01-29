@@ -26,9 +26,11 @@ export function PurchaseDialog({
           <DialogTitle>
             {isAddDialogOpen
               ? "구매 신청"
-              : purchaseConsent
+              : purchaseConsent === true
                 ? "구매 승인 상세"
-                : "구매 승인"}
+                : purchaseConsent === false
+                  ? "구매 반려 상세"
+                  : "구매 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
@@ -39,8 +41,8 @@ export function PurchaseDialog({
           ) : purchaseRequestKey ? (
             <PurchaseApprove
               purchaseRequestKey={purchaseRequestKey}
-              onClose={onClose}
               setPurchaseConsent={setPurchaseConsent} // 승인 상태 전달
+              onClose={onClose}
             />
           ) : (
             "구매 신청이 없습니다."
