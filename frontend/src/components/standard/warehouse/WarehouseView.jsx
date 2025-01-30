@@ -3,19 +3,21 @@ import { Box, Input } from "@chakra-ui/react";
 
 function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
   return (
-    <Box width="350px">
-      창고 코드
-      <Input value={warehouseDetail.warehouseCode} readOnly />
-      창고명
-      <Input
-        value={warehouseDetail.warehouseName}
-        onChange={(e) =>
-          setWarehouseDetail({
-            ...warehouseDetail,
-            warehouseName: e.target.value,
-          })
-        }
-      />
+    <Box>
+      <Box display="flex" gap={4}>
+        창고 코드
+        <Input value={warehouseDetail.warehouseCode} readOnly />
+        창고명
+        <Input
+          value={warehouseDetail.warehouseName}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehouseName: e.target.value,
+            })
+          }
+        />
+      </Box>
       담당 업체
       <Input
         value={warehouseDetail.customerCode}

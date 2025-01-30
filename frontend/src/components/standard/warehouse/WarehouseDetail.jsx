@@ -46,6 +46,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
       warehouseActive: warehouseDetail.warehouseActive,
       warehouseNote: warehouseDetail.warehouseNote,
     });
+    onClosed();
   }
 
   return (
@@ -77,8 +78,8 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           onConfirm={handleCheckClick}
-          title="수정 확인"
-          body="변경 내용을 저장하시겠습니까?"
+          title="확인"
+          body="변경된 사항은 저장됩니다."
         />
       </DialogContent>
     </DialogRoot>

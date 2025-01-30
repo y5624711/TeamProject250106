@@ -20,7 +20,8 @@ function InoutHistoryView({ inoutHistoryKey }) {
     <Box>
       <Center>
         <Stack gap={4}>
-          {inoutHistoryDetail.inoutCommonCode === "in" ? (
+          {inoutHistoryDetail.inoutCommonCode === "in" ||
+          inoutHistoryDetail.inoutCommonCode === "IN" ? (
             <Box w={795}>
               입출 구분
               <Input value="입고" readOnly />
