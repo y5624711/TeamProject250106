@@ -5,6 +5,7 @@ function WarehouseListPage({
   location,
   setIsDetailDialogOpen,
   setSelectedLocationKey,
+  index,
 }) {
   return (
     <>
@@ -17,10 +18,10 @@ function WarehouseListPage({
         }}
       >
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {location.locationKey}
+          {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {location.warehouseCode}
+          {location.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {location.row}
@@ -32,7 +33,7 @@ function WarehouseListPage({
           {location.shelf}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {location.itemCommonCode}
+          {location.itemCommonName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {location.locationNote}

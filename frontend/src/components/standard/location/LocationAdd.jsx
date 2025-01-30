@@ -40,7 +40,7 @@ function LocationAdd({ isOpen, onConfirm, onClose, title }) {
         </DialogHeader>
         <DialogBody>
           <Box>
-            창고명
+            창고 코드
             <Input
               type={"text"}
               value={warehouseCode}

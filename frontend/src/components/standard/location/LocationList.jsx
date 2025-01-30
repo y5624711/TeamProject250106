@@ -39,7 +39,7 @@ function LocationList({
                   textAlign="center"
                   verticalAlign="middle"
                 >
-                  창고명
+                  창고
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
                   width="150px"
@@ -79,8 +79,9 @@ function LocationList({
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {locationList.map((location) => (
+              {locationList.map((location, index) => (
                 <LocationListPage
+                  index={(currentPage - 1) * 10 + index}
                   location={location}
                   setSelectedLocationKey={setSelectedLocationKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}

@@ -11,6 +11,6 @@ public class Location {
     private String col;
     private Integer shelf;
     private String itemCommonCode;
-    private String itemName;
+    private String itemCommonName;
     private String locationNote;
 }
