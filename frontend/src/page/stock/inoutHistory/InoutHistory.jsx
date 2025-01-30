@@ -87,7 +87,7 @@ function InoutHistory(props) {
           />
           <RadioGroup
             value={value}
-            my={1}
+            my={3}
             onValueChange={(e) => setValue(e.value)}
           >
             {/*TODO: Radio 기능 넣기*/}

@@ -127,6 +127,7 @@ public interface InoutHistoryMapper {
                 h.inout_history_date,
                 h.inout_history_note,
                 w.warehouse_name,
+                w.warehouse_address,
                 itsb.item_common_code itemCode,
                 itcm.item_common_name itemName,
                 fr.franchise_name,

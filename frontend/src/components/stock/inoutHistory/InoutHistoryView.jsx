@@ -42,7 +42,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
           <Input value={inoutHistoryDetail.warehouseName} readOnly />
         </Field>
         <Field label="창고 주소" orientation="horizontal" mb={15}>
-          <Input value={inoutHistoryDetail.warehouse_address} />
+          <Input value={inoutHistoryDetail.warehouseAddress} readOnly />
         </Field>
       </Box>
       {inoutHistoryDetail.inoutCommonCode === "in" ||

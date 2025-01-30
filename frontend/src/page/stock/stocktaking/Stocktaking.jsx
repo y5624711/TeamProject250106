@@ -86,14 +86,14 @@ function Stocktaking(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Box h={7}></Box>
+          <Box h={11}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
             stocktakingList={stocktakingList}
             currentPage={currentPage}
             setSearchParams={setSearchParams}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
               실사 등록
             </Button>

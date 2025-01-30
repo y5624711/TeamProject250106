@@ -31,7 +31,9 @@ function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
           <DialogActionTrigger>
-            <Button onClick={onClosed}>확인</Button>
+            <Button variant="outline" onClick={onClosed}>
+              닫기
+            </Button>
           </DialogActionTrigger>
         </DialogFooter>
       </DialogContent>
