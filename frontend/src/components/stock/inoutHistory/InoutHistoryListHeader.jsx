@@ -1,7 +1,18 @@
 import React from "react";
 import { Table } from "@chakra-ui/react";
 
-function InoutHistoryListHeader(props) {
+function InoutHistoryListHeader({ setSearchParams }) {
+  // 정렬 헤더
+  const sortOptions = [
+    { key: "locationKey", label: "#" },
+    { key: "warehouseName", label: "창고" },
+    { key: "row", label: "행" },
+    { key: "col", label: "열" },
+    { key: "shelf", label: "단" },
+    { key: "itemCommonName", label: "품목" },
+    { key: "locationNote", label: "비고" },
+  ];
+
   return (
     <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader

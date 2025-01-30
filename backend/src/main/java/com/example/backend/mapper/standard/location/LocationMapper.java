@@ -26,9 +26,11 @@ public interface LocationMapper {
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             LEFT JOIN TB_ITEMCOMM itc ON l.item_common_code=itc.item_common_code
-            WHERE 
+            WHERE 1=1
                     <if test="searchType == 'all'">
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR itc.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.row LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
@@ -37,8 +39,9 @@ public interface LocationMapper {
                     </if>
                     <if test="searchType != 'all'">
                          <choose>
-                             <when test="searchType == 'warehouseName'">
+                             <when test="searchType == 'warehouse'">
                                  l.warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                              OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                              </when>
                              <when test="searchType == 'row'">
                                  l.row LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -49,15 +52,16 @@ public interface LocationMapper {
                              <when test="searchType == 'shelf'">
                                  l.shelf LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
-                             <when test="searchType == 'itemName'">
+                             <when test="searchType == 'item'">
                                  l.item_common_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                              OR itc.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                              </when>
-                             <when test="searchType == 'locationNote'">
+                             <when test="searchType == 'note'">
                                  l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <otherwise>
-                                 1 = 0 
-                             </otherwise>
+                            i${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </otherwise>
                          </choose>
                      </if>
                 <if test="sort != null and sort != ''">

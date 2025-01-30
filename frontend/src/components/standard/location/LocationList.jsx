@@ -16,7 +16,6 @@ function LocationList({
   countLocation,
   currentPage,
   handlePageChangeClick,
-  searchParams,
   setSearchParams,
 }) {
   const navigate = useNavigate();

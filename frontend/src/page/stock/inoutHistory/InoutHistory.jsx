@@ -28,7 +28,7 @@ function InoutHistory(props) {
   const navigate = useNavigate();
   const [inoutHistoryList, setInoutHistoryList] = useState([]);
   const [countInoutHistory, setCountInoutHistory] = useState("");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
@@ -101,6 +101,7 @@ function InoutHistory(props) {
           <InoutHistoryList
             inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
+            setSearchParams={setSearchParams}
           />
         </Stack>
       </HStack>

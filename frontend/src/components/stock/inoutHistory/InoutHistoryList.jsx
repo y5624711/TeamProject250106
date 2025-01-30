@@ -4,7 +4,7 @@ import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
 import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 import InoutHistoryListHeader from "./InoutHistoryListHeader.jsx";
 
-function InoutHistoryList({ currentPage, inoutHistoryList }) {
+function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedInoutHistory, setSelectedInoutHistory] = useState(null);
 
@@ -15,7 +15,7 @@ function InoutHistoryList({ currentPage, inoutHistoryList }) {
           <Table.Root interactive>
             <Table.Header>
               {/* 테이블 헤더 */}
-              <InoutHistoryListHeader />
+              <InoutHistoryListHeader setSearchParams={setSearchParams} />
             </Table.Header>
             <Table.Body>
               {/* 각 입출내역 */}
