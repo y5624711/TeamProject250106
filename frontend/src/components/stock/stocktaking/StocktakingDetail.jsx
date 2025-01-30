@@ -15,14 +15,16 @@ import StockTakingView from "./StockTakingView.jsx";
 
 function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed} size="xl">
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
             <Box>{stocktakingKey} 입출 상세</Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           {/* 재고실사 팝업창 내용 */}
           <StockTakingView stocktakingKey={stocktakingKey} />
         </DialogBody>

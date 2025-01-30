@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Center, HStack, Input, Stack } from "@chakra-ui/react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
+import { Field } from "../../ui/field.jsx";
 
 function InoutHistoryView({ inoutHistoryKey }) {
   const [inoutHistoryDetail, setInoutHistoryDetail] = useState([]);
@@ -18,85 +19,68 @@ function InoutHistoryView({ inoutHistoryKey }) {
 
   return (
     <Box>
-      <Center>
-        <Stack gap={4}>
-          {inoutHistoryDetail.inoutCommonCode === "in" ||
-          inoutHistoryDetail.inoutCommonCode === "IN" ? (
-            <Box w={795}>
-              입출 구분
-              <Input value="입고" readOnly />
-            </Box>
-          ) : (
-            <Box w={795}>
-              입출 구분
-              <Input value="출고" readOnly />
-            </Box>
-          )}
-          <HStack>
-            <Stack w={370}>
-              품목
-              <Input value={inoutHistoryDetail.itemName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              시리얼
-              <Input value={inoutHistoryDetail.serialNo} readOnly />
-            </Stack>
-          </HStack>
-          <HStack>
-            <Stack w={370}>
-              창고
-              <Input value={inoutHistoryDetail.warehouseName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              창고 주소
-              <Input value={inoutHistoryDetail.warehouse_address} />
-            </Stack>
-          </HStack>
-          {inoutHistoryDetail.inoutCommonCode === "in" ? (
-            <Box w={795}>
-              로케이션
-              <Input value={inoutHistoryDetail.locationKey} readOnly />
-            </Box>
-          ) : (
-            <Box w={795}>
-              가맹점
-              <Input value={inoutHistoryDetail.franchiseName} readOnly />
-            </Box>
-          )}
-          <HStack>
-            <Stack w={370}>
-              본사직원
-              <Input value={inoutHistoryDetail.businessEmployeeName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              사번
-              <Input value={inoutHistoryDetail.businessEmployeeNo} readOnly />
-            </Stack>
-          </HStack>
-          <HStack>
-            <Stack w={370}>
-              협력 업체 직원
-              <Input value={inoutHistoryDetail.customerEmployeeName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              사번
-              <Input value={inoutHistoryDetail.customerEmployeeNo} readOnly />
-            </Stack>
-          </HStack>
-          <Box w={795}>
-            날짜
-            <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
-          </Box>
-          <Box w={795}>
-            비고
-            <Input value={inoutHistoryDetail.inoutHistoryNote} readOnly />
-          </Box>
-        </Stack>
-      </Center>
+      {inoutHistoryDetail.inoutCommonCode === "in" ||
+      inoutHistoryDetail.inoutCommonCode === "IN" ? (
+        <Field label="입출 구분" orientation="horizontal" mb={15}>
+          <Input value="입고" readOnly />
+        </Field>
+      ) : (
+        <Field label="입출 구분" orientation="horizontal" mb={15}>
+          <Input value="출고" readOnly />
+        </Field>
+      )}
+      <Box display="flex" gap={4}>
+        <Field label="품목" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.itemName} readOnly />
+        </Field>
+        <Field label="시리얼" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.serialNo} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="창고" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.warehouseName} readOnly />
+        </Field>
+        <Field label="창고 주소" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.warehouse_address} />
+        </Field>
+      </Box>
+      {inoutHistoryDetail.inoutCommonCode === "in" ||
+      inoutHistoryDetail.inoutCommonCode === "IN" ? (
+        <Field label="로케이션" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.locationKey} readOnly />
+        </Field>
+      ) : (
+        <Field label="가맹점" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.franchiseName} readOnly />
+        </Field>
+      )}
+      <Box display="flex" gap={4}>
+        <Field label="본사 직원" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.businessEmployeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.businessEmployeeNo} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="협력업체 직원" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.customerEmployeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.customerEmployeeNo} readOnly />
+        </Field>
+      </Box>
+      <Field label="날짜" orientation="horizontal" mb={15}>
+        <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
+      </Field>
+      <Field label="비고" orientation="horizontal" mb={15}>
+        <Textarea
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          value={inoutHistoryDetail.inoutHistoryNote}
+          readOnly
+        />
+      </Field>
     </Box>
   );
 }

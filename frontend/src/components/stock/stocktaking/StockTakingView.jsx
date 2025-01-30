@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Center, HStack, Input, Stack } from "@chakra-ui/react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
+import { Field } from "../../ui/field.jsx";
 
 function StockTakingView({ stocktakingKey }) {
   const [stocktakingDetail, setStocktakingDetail] = useState([]);
@@ -19,65 +20,47 @@ function StockTakingView({ stocktakingKey }) {
   // size 로 키워서 예쁘게 보기
   return (
     <Box>
-      <Center>
-        <Stack gap={4}>
-          <HStack>
-            <Stack w={370}>
-              창고
-              <Input value={stocktakingDetail.warehouseName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              로케이션
-              <Input value={stocktakingDetail.location} />
-            </Stack>
-          </HStack>
-
-          <HStack>
-            <Stack w={370}>
-              품목명
-              <Input value={stocktakingDetail.itemName} readOnly />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              담당 업체
-              <Input value={stocktakingDetail.customerName} readOnly />
-            </Stack>
-          </HStack>
-
-          <HStack>
-            <Stack w={370}>
-              전산 수량
-              <Input value={stocktakingDetail.countCurrent} />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              실제 수량
-              <Input value={stocktakingDetail.countConfiguration} />
-            </Stack>
-          </HStack>
-
-          <HStack>
-            <Stack w={370}>
-              담당자
-              <Input value={stocktakingDetail.customerEmployeeName} />
-            </Stack>
-            <Box w={10} />
-            <Stack w={370}>
-              사번
-              <Input value={stocktakingDetail.customerEmployeeNo} />
-            </Stack>
-          </HStack>
-          <Box w={795}>
-            실사 날짜
-            <Input value={stocktakingDetail.stocktakingDate} />
-          </Box>
-          <Box w={795}>
-            비고
-            <Input value={stocktakingDetail.stocktakingNote} />
-          </Box>
-        </Stack>
-      </Center>
+      <Box display="flex" gap={4}>
+        <Field label="창고" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.warehouseName} readOnly />
+        </Field>
+        <Field label="로케이션" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.location} />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="품목" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.itemName} readOnly />
+        </Field>
+        <Field label="담당 업체" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.customerName} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="전산 수량" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.countCurrent} />
+        </Field>
+        <Field label="실제 수량" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.countConfiguration} />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="담당자" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.customerEmployeeName} />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={stocktakingDetail.customerEmployeeNo} />
+        </Field>
+      </Box>
+      <Field label="실사 날짜" orientation="horizontal" mb={15}>
+        <Input value={stocktakingDetail.stocktakingDate} />
+      </Field>
+      <Field label="비고" orientation="horizontal" mb={15}>
+        <Textarea
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          value={stocktakingDetail.stocktakingNote}
+        />
+      </Field>
     </Box>
   );
 }
