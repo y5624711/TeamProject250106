@@ -5,7 +5,6 @@ import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -31,12 +30,47 @@ public class WarehouseService {
         return count == 1;
     }
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page) {
-        Integer pageList = (page - 1) * 10;
-        List<Warehouse> list = mapper.list(searchType, searchKeyword, pageList);
-        Integer countWarehouse = mapper.countAllWarehouse(searchType, searchKeyword);
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order) {
 
-        return Map.of("list", list, "count", countWarehouse);
+        Integer pageList = (page - 1) * 10;
+        sort = resolveType(toSnakeCase(sort));
+
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.countAllWarehouse(searchType, searchKeyword));
+    }
+
+    // camelCase를 snake_case로 변환하는 로직
+    private String toSnakeCase(String camelCase) {
+        if (camelCase == null || camelCase.isEmpty()) {
+            return camelCase; // null 이거나 빈 문자열은 그대로 반환
+        }
+        return camelCase
+                .replaceAll("([a-z])([A-Z])", "$1_$2") // 소문자 뒤 대문자에 언더스코어 추가
+                .toLowerCase(); // 전체를 소문자로 변환
+    }
+
+    // type 값에 따라 해당하는 SQL 필드명으로 변경
+    private String resolveType(String type) {
+        if (type == null || type.isEmpty() || type.equals("all")) {
+            return null;
+        }
+        switch (type) {
+            case "warehouse_key":
+                return "w.warehouse_key";
+            case "warehouse_name":
+                return "w.warehouse_name";
+            case "customer_name":
+                return "cus.customer_name";
+            case "employee_name":
+                return "e.employee_name";
+            case "warehouse_state":
+                return "w.warehouse_state";
+            case "warehouse_city":
+                return "w.warehouse_city";
+            case "warehouse_tel":
+                return "w.warehouse_tel";
+            default:
+                throw new IllegalArgumentException("Invalid type: " + type);
+        }
     }
 
     public Warehouse viewWarehouse(Integer warehouseKey) {

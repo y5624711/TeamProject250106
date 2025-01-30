@@ -20,9 +20,8 @@ public class LocationService {
         Integer pageList = (page - 1) * 10;
         searchType = resolveType(toSnakeCase(searchType));
         sort = resolveType(toSnakeCase(sort));
-        Integer countLocation = mapper.countAllLocation(searchType, searchKeyword);
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", countLocation);
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.countAllLocation(searchType, searchKeyword));
     }
 
     // camelCase를 snake_case로 변환하는 로직

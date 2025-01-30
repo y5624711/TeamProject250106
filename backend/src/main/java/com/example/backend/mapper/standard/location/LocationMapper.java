@@ -60,7 +60,7 @@ public interface LocationMapper {
                                  l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <otherwise>
-                            i${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                            ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
                         </otherwise>
                          </choose>
                      </if>
@@ -85,42 +85,47 @@ public interface LocationMapper {
     @Select("""
             <script>
             SELECT COUNT(*)
-            FROM TB_LOCMST
-            WHERE 
+            FROM TB_LOCMST l
+            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_ITEMCOMM itc ON l.item_common_code=itc.item_common_code
+            WHERE 1=1
                     <if test="searchType == 'all'">
-                        warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
-                     OR row LIKE CONCAT('%',#{searchKeyword},'%')
-                     OR col LIKE CONCAT('%',#{searchKeyword},'%')
-                     OR shelf LIKE CONCAT('%',#{searchKeyword},'%')
-                     OR item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
-                     OR location_note LIKE CONCAT('%',#{searchKeyword},'%')
+                        l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR itc.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR l.row LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR l.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR l.location_note LIKE CONCAT('%',#{searchKeyword},'%')
                     </if>
                     <if test="searchType != 'all'">
                          <choose>
-                             <when test="searchType == 'warehouseName'">
-                                 warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                             <when test="searchType == 'warehouse'">
+                                 l.warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                              OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                              </when>
                              <when test="searchType == 'row'">
-                                 row LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 l.row LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <when test="searchType == 'col'">
-                                 col LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 l.col LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <when test="searchType == 'shelf'">
-                                 shelf LIKE CONCAT('%', #{searchKeyword}, '%')
+                                 l.shelf LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
-                             <when test="searchType == 'itemName'">
-                                 item_common_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                             <when test="searchType == 'item'">
+                                 l.item_common_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                              OR itc.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                              </when>
-                             <when test="searchType == 'locationNote'">
-                                 location_note LIKE CONCAT('%', #{searchKeyword}, '%')
+                             <when test="searchType == 'note'">
+                                 l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <otherwise>
-                                 1 = 0 
-                             </otherwise>
+                            ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                        </otherwise>
                          </choose>
                      </if>
-            ORDER BY warehouse_code DESC
             </script>
             """)
     Integer countAllLocation(String searchType, String searchKeyword);

@@ -23,6 +23,7 @@ public class LocationController {
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
                                     @RequestParam(value = "order", defaultValue = "") String order) {
+        System.out.println(searchKeyword);
         return service.list(searchType, searchKeyword, page, sort, order);
     }
 

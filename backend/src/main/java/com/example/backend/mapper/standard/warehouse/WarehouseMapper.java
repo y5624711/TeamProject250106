@@ -57,11 +57,17 @@ public interface WarehouseMapper {
                      </otherwise>
                  </choose>
                  </if>
-            ORDER BY warehouse_name DESC
+            ORDER BY 
+                 <if test="sort != null and sort != ''">
+                    ${sort} ${order}
+                </if>
+                <if test="sort == null">
+                   w.warehouse_name DESC
+                </if>
             LIMIT #{pageList},10    
             </script>
             """)
-    List<Warehouse> list(String searchType, String searchKeyword, Integer pageList);
+    List<Warehouse> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
 
     @Select("""
             SELECT 

@@ -22,7 +22,7 @@ function Warehouse(props) {
     keyword: "",
   });
   const [warehouseList, setWarehouseList] = useState([]);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [countWarehouse, setCountWarehouse] = useState("");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(
@@ -85,6 +85,7 @@ function Warehouse(props) {
             warehouseList={warehouseList}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
+            setSearchParams={setSearchParams}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
