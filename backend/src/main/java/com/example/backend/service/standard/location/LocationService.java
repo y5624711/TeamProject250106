@@ -18,7 +18,6 @@ public class LocationService {
     public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order) {
 
         Integer pageList = (page - 1) * 10;
-        searchType = resolveType(toSnakeCase(searchType));
         sort = resolveType(toSnakeCase(sort));
 
         return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.countAllLocation(searchType, searchKeyword));

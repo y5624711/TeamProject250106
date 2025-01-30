@@ -26,7 +26,7 @@ public interface LocationMapper {
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             LEFT JOIN TB_ITEMCOMM itc ON l.item_common_code=itc.item_common_code
-            WHERE 1=1
+            WHERE 
                     <if test="searchType == 'all'">
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -60,15 +60,16 @@ public interface LocationMapper {
                                  l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <otherwise>
-                            ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                           1 = 0
                         </otherwise>
                          </choose>
                      </if>
+                ORDER BY
                 <if test="sort != null and sort != ''">
-                    ORDER BY ${sort} ${order}
+                    ${sort} ${order}
                 </if>
                 <if test="sort == null">
-                    ORDER BY l.warehouse_code DESC
+                    l.warehouse_code DESC
                 </if>
             LIMIT #{pageList},10    
             
@@ -88,7 +89,7 @@ public interface LocationMapper {
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             LEFT JOIN TB_ITEMCOMM itc ON l.item_common_code=itc.item_common_code
-            WHERE 1=1
+            WHERE 
                     <if test="searchType == 'all'">
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -122,7 +123,7 @@ public interface LocationMapper {
                                  l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
                              </when>
                              <otherwise>
-                            ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                            1 = 0
                         </otherwise>
                          </choose>
                      </if>
