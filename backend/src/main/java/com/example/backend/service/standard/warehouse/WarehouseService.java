@@ -78,8 +78,8 @@ public class WarehouseService {
     }
 
 
-    public void edit(Warehouse warehouse) {
-        mapper.edit(warehouse);
+    public Boolean edit(Warehouse warehouse) {
+        return mapper.edit(warehouse) == 1;
     }
 
     public void delete(Integer warehouseKey) {
