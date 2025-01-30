@@ -39,11 +39,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const [installApprove, setInstallApprove] = useState(initialInstallApprove);
   const [installRequest, setInstallRequest] = useState({});
   const [customerEmployeeList, setCustomerEmployeeList] = useState([]);
-  const [isApproved, setIsApproved] = useState(false);
+  const [isApproved, setIsApproved] = useState(null);
 
   const handleClose = () => {
     setInstallApprove(initialInstallApprove);
-    setIsApproved(false);
+    setIsApproved(null);
     onClose();
   };
 
@@ -101,7 +101,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   // 설치 신청 반려
   const handleDisapproveClick = () => {
     axios
-      .post(`/api/install/disapprove/${installKey}`)
+      .put(`/api/install/disapprove/${installKey}`)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -109,7 +109,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           type: data.message.type,
         });
         setChange((prev) => !prev);
-        setIsApproved(true);
+        setIsApproved(false);
       })
       .catch((e) => {
         const message = e.response?.data?.message;

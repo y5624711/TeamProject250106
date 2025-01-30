@@ -22,7 +22,7 @@ public class InstallController {
     final InstallService service;
 
     // 설치 신청 반려
-    @PostMapping("disapprove/{installKey}")
+    @PutMapping("disapprove/{installKey}")
     public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey) {
         // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
         if (service.installDisapprove(installKey)) {
