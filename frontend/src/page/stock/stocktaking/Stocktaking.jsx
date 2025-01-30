@@ -27,7 +27,7 @@ function Stocktaking(props) {
     keyword: "",
   });
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
@@ -91,6 +91,7 @@ function Stocktaking(props) {
           <StocktakingList
             stocktakingList={stocktakingList}
             currentPage={currentPage}
+            setSearchParams={setSearchParams}
           />
           <Box>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>

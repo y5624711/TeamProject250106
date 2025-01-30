@@ -73,11 +73,17 @@ public interface StocktakingMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY s.stocktaking_date DESC
+            ORDER BY 
+             <if test="sort != null and sort != ''">
+                ${sort} ${order}
+            </if>
+            <if test="sort == null">
+               s.stocktaking_date DESC
+            </if>
             LIMIT #{pageList},10
             </script>
             """)
-    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList);
+    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
 
     @Select("""
             <script>
@@ -129,7 +135,6 @@ public interface StocktakingMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY s.stocktaking_date DESC
             </script>
             """)
     Integer count(String searchType, String searchKeyword);

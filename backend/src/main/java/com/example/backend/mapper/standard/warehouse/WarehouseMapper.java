@@ -153,7 +153,6 @@ public interface WarehouseMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY warehouse_name DESC
             </script>
             
             """)
