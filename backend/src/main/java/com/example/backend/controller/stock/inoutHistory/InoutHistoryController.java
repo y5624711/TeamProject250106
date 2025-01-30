@@ -18,9 +18,10 @@ public class InoutHistoryController {
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
+                                    @RequestParam(value = "state", defaultValue = "") String state,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
                                     @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.list(page, searchKeyword, searchType, sort, order);
+        return service.list(page, searchKeyword, searchType, sort, order, state);
     }
 
     @PostMapping("add")

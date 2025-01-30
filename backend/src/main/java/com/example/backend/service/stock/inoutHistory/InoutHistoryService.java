@@ -13,10 +13,10 @@ public class InoutHistoryService {
 
     final InoutHistoryMapper mapper;
 
-    public Map<String, Object> list(Integer page, String searchKeyword, String searchType, String sort, String order) {
+    public Map<String, Object> list(Integer page, String searchKeyword, String searchType, String sort, String order, String state) {
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
-        return Map.of("list", mapper.list(pageList, searchKeyword, searchType, sort, order), "count", mapper.count(searchKeyword, searchType));
+        return Map.of("list", mapper.list(pageList, searchKeyword, searchType, sort, order, state), "count", mapper.count(searchKeyword, searchType, state));
     }
 
     // camelCase를 snake_case로 변환하는 로직
