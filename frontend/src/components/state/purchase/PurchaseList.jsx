@@ -66,20 +66,6 @@ export function PurchaseList({
     <Box>
       {/* 검색창 */}
       <SearchBar searchOptions={searchOptions} />
-
-      {/* 검색 초기화 */}
-      {/*<IconButton*/}
-      {/*  transform="translateX(-130%) "*/}
-      {/*  style={{ cursor: "pointer" }}*/}
-      {/*  variant={"ghost"}*/}
-      {/*  onClick={() => {*/}
-      {/*    window.location.search = ""; // searchParams 초기화*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <BsArrowCounterclockwise size="25px" />*/}
-      {/*</IconButton>*/}
-      {/*<Button transform="translateX(-75%)">검색</Button>*/}
-
       {/* 라디오 버튼 */}
       <RadioGroup
         name={state}
@@ -120,25 +106,23 @@ export function PurchaseList({
                 textAlign="center"
                 verticalAlign="middle"
               >
-                <Table.Cell textAlign="center" verticalAlign="middle">
-                  {index + 1}
-                </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
                   {purchase.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {purchase.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {purchase.employeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {purchase.customerEmployeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {purchase.purchaseRequestDate}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {purchase.purchaseConsent == 1
                     ? "승인"
                     : purchase.purchaseConsent == 0

@@ -149,7 +149,6 @@ export function FranchiseList({
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseKey")}
             >
               <HStack alignItems="center" justify="center">
@@ -163,7 +162,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseName")}
             >
               <HStack alignItems="center" justify="center">
@@ -177,7 +175,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseNo")}
             >
               <HStack alignItems="center" justify="center">
@@ -191,7 +188,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseRep")}
             >
               <HStack alignItems="center" justify="center">
@@ -205,7 +201,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseTel")}
             >
               <HStack alignItems="center" justify="center">
@@ -219,7 +214,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseState")}
             >
               <HStack alignItems="center" justify="center">
@@ -233,7 +227,6 @@ export function FranchiseList({
             </TableColumnHeader>
             <TableColumnHeader
               textAlign="center"
-              verticalAlign="middle"
               onClick={() => HeaderClick("franchiseCity")}
             >
               <HStack alignItems="center" justify="center">
@@ -251,31 +244,29 @@ export function FranchiseList({
           {sortedFranchiseList.length > 0 ? (
             sortedFranchiseList.map((franchise, index) => (
               <Table.Row
-                key={index}
+                key={franchise.franchiseKey}
                 onDoubleClick={() => onFranchiseClick(franchise.franchiseKey)}
-                bg={franchise.franchiseActive ? "white" : "gray.100"}
+                style={{ cursor: "pointer" }}
+                bg={franchise.franchiseActive === false ? "gray.100" : "white"} // undefined일 경우 기본값 white
                 _hover={{ backgroundColor: "gray.200" }}
-                cursor="pointer"
               >
-                <Table.Cell textAlign="center" verticalAlign="middle">
-                  {index + 1}
-                </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
                   {franchise.franchiseName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseNo}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseRep}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseTel}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseState}
                 </Table.Cell>
-                <Table.Cell textAlign="center" verticalAlign="middle">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseCity}
                 </Table.Cell>
               </Table.Row>
