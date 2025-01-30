@@ -35,7 +35,7 @@ export function FranchiseList({
   const FranchiseOptionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "가맹점명", value: "franchiseName" },
+      { label: "가맹점", value: "franchiseName" },
       { label: "사업자 번호", value: "franchiseNo" },
       { label: "대표자", value: "franchiseRep" },
       { label: "광역시도", value: "franchiseState" },
@@ -165,7 +165,7 @@ export function FranchiseList({
               onClick={() => HeaderClick("franchiseName")}
             >
               <HStack alignItems="center" justify="center">
-                <Stack>가맹점명</Stack>
+                <Stack>가맹점</Stack>
                 {standard.sort === "franchiseName" && (
                   <Stack>
                     {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
