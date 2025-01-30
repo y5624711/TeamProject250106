@@ -22,7 +22,10 @@ public interface WarehouseMapper {
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                 LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
             WHERE 
+                <if test="active == false"> w.warehouse_active = 1</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
+                <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
                 <if test="searchType == 'all'">
+                AND(
                     w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
@@ -31,29 +34,40 @@ public interface WarehouseMapper {
                  OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
+                )
                 </if>
                 <if test="searchType != 'all'">
                  <choose>
                      <when test="searchType == 'warehouse'">
+                    AND(
                          w.warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
                       OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')   
+                        )
                      </when>
                      <when test="searchType == 'customer'">
+                    AND(
                          w.customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
                       OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        )
                      </when>
                      <when test="searchType == 'employee'">
+                    AND(
                          w.customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
                       OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        )
                      </when>
                      <when test="searchType == 'warehouseState'">
+                    AND(
                          warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
                      </when>
                      <when test="searchType == 'warehouseCity'">
+                    AND(
                          warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
                      </when>
                      <otherwise>
-                         1 = 0 
+                       AND  ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
                      </otherwise>
                  </choose>
                  </if>
@@ -67,7 +81,7 @@ public interface WarehouseMapper {
             LIMIT #{pageList},10    
             </script>
             """)
-    List<Warehouse> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
+    List<Warehouse> list(String searchType, String searchKeyword, Integer pageList, String sort, String order, Boolean active);
 
     @Select("""
             SELECT 
@@ -120,43 +134,57 @@ public interface WarehouseMapper {
             SELECT COUNT(*)
             FROM TB_WHMST
             WHERE 
+                <if test="active == false">warehouse_active = 1</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
+                <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
                 <if test="searchType == 'all'">
+                AND(
                     warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
                  OR warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
                  OR warehouse_active LIKE CONCAT('%',#{searchKeyword},'%')
+                )
                 </if>
                 <if test="searchType != 'all'">
                      <choose>
-                         <when test="searchType == 'warehouseName'">
-                             warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'customer'">
-                             customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'customerEmployee'">
-                             customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseState'">
-                             warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseCity'">
-                             warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <when test="searchType == 'warehouseActive'">
-                             warehouse_active LIKE CONCAT('%', #{searchKeyword}, '%')
-                         </when>
-                         <otherwise>
-                             1 = 0 
-                         </otherwise>
+                         <when test="searchType == 'warehouse'">
+                    AND(
+                         w.warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')   
+                        )
+                     </when>
+                     <when test="searchType == 'customer'">
+                    AND(
+                         w.customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        )
+                     </when>
+                     <when test="searchType == 'employee'">
+                    AND(
+                         w.customer_employee_no LIKE CONCAT('%', #{searchKeyword}, '%')
+                      OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        )
+                     </when>
+                     <when test="searchType == 'warehouseState'">
+                    AND(
+                         warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
+                     </when>
+                     <when test="searchType == 'warehouseCity'">
+                    AND(
+                         warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
+                     </when>
+                     <otherwise>
+                       AND  ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
+                     </otherwise>
                      </choose>
                  </if>
             </script>
             
             """)
-    Integer countAllWarehouse(String searchType, String searchKeyword);
+    Integer countAllWarehouse(String searchType, String searchKeyword, Boolean active);
 
     @Select("""
             SELECT *

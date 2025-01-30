@@ -30,12 +30,12 @@ public class WarehouseService {
         return count == 1;
     }
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order) {
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Boolean active) {
 
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.countAllWarehouse(searchType, searchKeyword));
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, active), "count", mapper.countAllWarehouse(searchType, searchKeyword, active));
     }
 
     // camelCase를 snake_case로 변환하는 로직

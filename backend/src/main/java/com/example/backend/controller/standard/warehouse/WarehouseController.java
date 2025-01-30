@@ -20,8 +20,9 @@ public class WarehouseController {
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
-                                    @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.list(searchType, searchKeyword, page, sort, order);
+                                    @RequestParam(value = "order", defaultValue = "") String order,
+                                    @RequestParam(value = "active", defaultValue = "false") Boolean active) {
+        return service.list(searchType, searchKeyword, page, sort, order, active);
     }
 
     @GetMapping("view/{warehouseKey}")
