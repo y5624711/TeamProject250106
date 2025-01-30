@@ -76,7 +76,7 @@ function Location(props) {
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="120px" onClick={() => setIsAddDialogOpen(true)}>
               새 로케이션 등록
             </Button>

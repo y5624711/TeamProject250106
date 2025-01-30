@@ -86,7 +86,7 @@ function Warehouse(props) {
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
               새 창고 등록
             </Button>
