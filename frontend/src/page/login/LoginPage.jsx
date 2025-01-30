@@ -1,11 +1,12 @@
 import { Box, Flex, Image, Input, Stack, Text } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button.jsx";
-import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
-import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Field } from "../../components/ui/field.jsx";
-import { useNavigate } from "react-router-dom";
+import { PasswordInput } from "../../components/ui/password-input.jsx";
+import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
+import axios from "axios";
 
 export function LoginPage() {
   const [id, setId] = useState("");
@@ -77,24 +78,15 @@ export function LoginPage() {
               Choongang System
             </Text>
             <Stack gap={7} w="300px">
-              <Field
-                // label="아이디"
-                whiteSpace="nowrap"
-                orientation="horizontal"
-              >
+              <Field>
                 <Input
                   placeholder="아이디"
                   value={id}
                   onChange={(e) => setId(e.target.value)}
                 />
               </Field>
-
-              <Field
-                // label="비밀번호"
-                whiteSpace="nowrap"
-                orientation="horizontal"
-              >
-                <Input
+              <Field>
+                <PasswordInput
                   placeholder="비밀번호"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
