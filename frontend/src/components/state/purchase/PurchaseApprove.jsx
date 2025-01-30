@@ -215,7 +215,7 @@ export function PurchaseApprove({
       {(purchase?.purchaseConsent === true ||
         purchase?.purchaseConsent === false) && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
-          <Button onClick={onClose} variant="solid">
+          <Button variant="outline" onClick={onClose}>
             닫기
           </Button>
         </Box>
