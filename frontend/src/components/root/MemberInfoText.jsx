@@ -3,7 +3,7 @@ import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx"
 import axios from "axios";
 import { Heading, HStack, Spinner, Text } from "@chakra-ui/react";
 
-export function MemberInfoText() {
+export function MemberInfoText({ updateCheck, setUpdateCheck }) {
   const { hasAccess, id } = useContext(AuthenticationContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,14 +18,13 @@ export function MemberInfoText() {
       .then((res) => res.data)
       .then((data) => {
         setUser(data.id);
-        console.log(data.id);
         setLoading(false); // 로딩 상태 해제
       })
       .catch((e) => {
         console.error("Error fetching data:", e);
         setLoading(false); // 에러 발생 시에도 로딩 상태 해제
       });
-  }, [id]); // id가 변경될 때만 실행
+  }, [id, updateCheck]); // id가 변경될 때만 실행
 
   if (loading) {
     return <Spinner />;

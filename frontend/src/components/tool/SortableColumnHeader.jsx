@@ -8,7 +8,7 @@ export function SortableColumnHeader({ columnKey, label, sort, handleSort }) {
       onClick={() => handleSort(columnKey)}
       textAlign="center"
     >
-      <HStack>
+      <HStack justify="center" align="center" width="100%">
         {label}
         {sort.column === columnKey &&
           (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}

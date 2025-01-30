@@ -1,11 +1,9 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function MainBuyList() {
   const [purchaseList, setPurchaseList] = useState([]);
-  const { id } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios

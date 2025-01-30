@@ -38,13 +38,11 @@ function TextItem({ children, path, ...rest }) {
   );
 }
 
-function MemberInfo() {
-  // const { id } = useParams();
+function MemberInfo({ updateCheck, setUpdateCheck }) {
   const { id } = useContext(AuthenticationContext);
   const [employee, setEmployee] = useState(null);
   const [empChange, setEmpChange] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // 다이얼로그 상태 관리
 
   useEffect(() => {
     axios
@@ -53,8 +51,8 @@ function MemberInfo() {
       .then((data) => {
         setEmployee(data);
         setEmpChange(data);
-        console.log(data);
         setLoading(false);
+        setUpdateCheck(false);
       });
   }, []);
 
@@ -81,6 +79,7 @@ function MemberInfo() {
           description: message.text,
         });
         setEmpChange(employee);
+        setUpdateCheck(!updateCheck);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -92,7 +91,6 @@ function MemberInfo() {
   };
   const handleClose = () => {
     setEmployee(empChange);
-    setIsDialogOpen(false);
   };
 
   return (
