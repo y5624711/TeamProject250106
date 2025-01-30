@@ -104,6 +104,14 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     setLocalFranchiseName(selectedOption.label);
     setLocalFranchiseCode(selectedOption.value);
     setSelectedFranchise(selectedOption);
+
+    // 선택 즉시 installRequest 업데이트
+    setInstallRequest((prev) => ({
+      ...prev,
+      franchiseName: selectedOption.label,
+      franchiseCode: selectedOption.value,
+      franchiseAddress: selectedOption.address || "",
+    }));
   };
 
   // 가맹점 클릭 시
