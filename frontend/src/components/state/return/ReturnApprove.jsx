@@ -40,6 +40,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
   };
   const [approveData, setApproveData] = useState(initialApproveData);
   const [configurerList, setConfigurerList] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0); //새로고침용
 
   //요청 정보 가져오기
   useEffect(() => {
@@ -50,7 +51,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
         setApproveData(res.data[0]);
       });
     }
-  }, [isOpen, returnRequestKey]);
+  }, [isOpen, returnRequestKey, refreshKey]);
   // console.log("셋팅", approveData);
 
   //검수 기사 정보 가져오기
@@ -87,8 +88,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           description: data.message.text,
         });
         onApprove(updatedApproveData);
-        setApproveData(initialApproveData);
-        onClose();
+        setRefreshKey((prevKey) => prevKey + 1);
       })
       .catch((e) => {
         console.error(e);
@@ -154,14 +154,33 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           <Field orientation="horizontal" label="가맹점">
             <Input readOnly value={approveData.franchiseName} />
           </Field>
-          <HStack>
-            <Field orientation="horizontal" label="품목">
-              <Input readOnly value={approveData.itemCommonName} />
-            </Field>
-            <Field orientation="horizontal" label="시리얼 번호">
-              <Input readOnly defaultValue={approveData.serialNo} />
-            </Field>
-          </HStack>
+          {approveData.returnConsent === "1" ? (
+            <Box
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
+              <HStack>
+                <Field orientation="horizontal" label="반품 번호">
+                  <Input readOnly value={approveData.returnNo} />
+                </Field>
+                <Field orientation="horizontal" label="시리얼 번호">
+                  <Input readOnly defaultValue={approveData.serialNo} />
+                </Field>
+              </HStack>
+              <Field orientation="horizontal" label="품목">
+                <Input readOnly value={approveData.itemCommonName} />
+              </Field>
+            </Box>
+          ) : (
+            <HStack>
+              <Field orientation="horizontal" label="품목">
+                <Input readOnly value={approveData.itemCommonName} />
+              </Field>
+              <Field orientation="horizontal" label="시리얼 번호">
+                <Input readOnly defaultValue={approveData.serialNo} />
+              </Field>
+            </HStack>
+          )}
+
           <HStack>
             <Field orientation="horizontal" label="신청자">
               <Input readOnly value={approveData.businessEmployeeName} />
@@ -191,7 +210,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
 
           {approveData.returnConsent === "1" ? (
             <Box
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
               <HStack>
                 <Field orientation="horizontal" label="승인자">
@@ -227,7 +246,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             ""
           ) : (
             <Box
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
               <Separator />
               <HStack>
