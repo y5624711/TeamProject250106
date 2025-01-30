@@ -96,11 +96,17 @@ public interface InoutHistoryMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY h.inout_history_date DESC
+            ORDER BY 
+             <if test="sort != null and sort != ''">
+                ${sort} ${order}
+            </if>
+            <if test="sort == null">
+               h.inout_history_date DESC
+            </if>
             LIMIT #{pageList},10
             </script>
             """)
-    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType);
+    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType, String sort, String order);
 
     @Insert("""
             INSERT INTO TB_INOUT_HIS()
@@ -207,7 +213,6 @@ public interface InoutHistoryMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY h.inout_history_date DESC
             </script>
             """)
     Integer count(String searchKeyword, String searchType);
