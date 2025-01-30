@@ -50,7 +50,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   }
 
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -59,7 +59,9 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
             </Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           <Box>
             <WarehouseView
               warehouseDetail={warehouseDetail}
