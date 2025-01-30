@@ -68,7 +68,7 @@ public interface WarehouseMapper {
                 w.warehouse_name,
                 w.warehouse_code,
                 cus.customer_name,
-                w.warehouse_tel
+                w.warehouse_tel,
                 e.employee_name,
                 w.customer_employee_no,
                 w.warehouse_state,
