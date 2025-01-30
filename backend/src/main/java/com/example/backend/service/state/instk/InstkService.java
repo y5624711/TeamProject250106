@@ -4,6 +4,7 @@ import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
+import com.example.backend.mapper.standard.location.LocationMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.instk.InstkSubMapper;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
@@ -24,7 +25,7 @@ public class InstkService {
     final CommonMapper commonMapper;
     final InoutHistoryMapper inoutHistoryMapper;
     final InstkSubMapper instkSubMapper;
-    final PurchaseMapper purchaseMapper;
+    final LocationMapper locationMapper;
 
     public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order) {
         int count = mapper.countByConsent(state,keyword);
@@ -76,14 +77,17 @@ public class InstkService {
             //품목 상세에서 같은 코드 시리얼 넘버 맥스 뭔지 찾아오기
             Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
             String insertSerialNo = String.format("%20d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
-            int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WH");
+            int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
             System.out.println("insertItemSub = " + insertItemSub);
-            //입고 테이블 
+            //입고 테이블
             mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
+
             //입고 상세 테이블
             mapper.addInstkSub(inputKey,insertSerialNo);
-            //인아웃 히스토리 집어 넣기 ,로케이션 키 가져오는거 생각해야함
-//            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
+
+            String wareHouseCode=mapper.viewLocationKey(instk.getInputStockEmployeeNo());
+//            인아웃 히스토리 집어 넣기 ,로케이션 키 가져오는거 생각해야함
+//            mapper.addInOutHistoryy(insertSerialNo,wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),"IN00000004");
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
@@ -95,8 +99,7 @@ public class InstkService {
             int inIn = mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
             int inInsub= mapper.addInstkSub(inputKey,itemSerialNo);
-            System.out.println("inIn = " + inIn);
-            System.out.println("inInsub = " + inInsub);
+
             //인아웃 히스토리 집어 넣기
 //            mapper.addInOutHistoryy(itemSerialNo,wareHouseCode,customerEmployeeNo,businessEmployeeNO,inoutHistoryNote,inoutNo);
 

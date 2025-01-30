@@ -273,4 +273,11 @@ LIMIT #{offset}, 10
     </script>
 """)
     int countByConsent(@Param("state") String state , String keyword);
+
+
+    @Select("""
+            SELECT *
+            FROM 
+            """)
+    String viewLocationKey(String inputStockEmployeeNo);
 }

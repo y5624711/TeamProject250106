@@ -81,9 +81,18 @@ export function InstkList() {
   return (
     <Box>
       <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
-      <RadioGroup defaultValue="all"  value={searchParams.get("state")} my={3} onValueChange={(e)=>{
-        setSearchParams({state:e.value ,page:1});
-      }} >
+      <RadioGroup
+        defaultValue="all"
+        value={searchParams.get("state")}
+        my={3}
+        onValueChange={(e) => {
+          setSearchParams((prev) => ({
+            ...Object.fromEntries(prev.entries()), // 기존 searchParams의 깊은 복사
+            state: e.value,
+            page: 1,
+          }));
+        }}
+      >
         <HStack gap={6}>
           <Radio value="all">전체</Radio>
           <Radio value="request">대기</Radio>
