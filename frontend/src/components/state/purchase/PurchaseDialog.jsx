@@ -16,6 +16,7 @@ export function PurchaseDialog({
   onSave,
   isAddDialogOpen,
   purchaseRequestKey,
+  onUpdateList,
 }) {
   const [purchaseConsent, setPurchaseConsent] = useState(null);
 
@@ -41,7 +42,8 @@ export function PurchaseDialog({
           ) : purchaseRequestKey ? (
             <PurchaseApprove
               purchaseRequestKey={purchaseRequestKey}
-              setPurchaseConsent={setPurchaseConsent} // 승인 상태 전달
+              setPurchaseConsent={setPurchaseConsent}
+              onUpdateList={onUpdateList}
               onClose={onClose}
             />
           ) : (

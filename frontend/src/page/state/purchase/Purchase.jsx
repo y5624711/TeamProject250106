@@ -62,12 +62,19 @@ export function Purchase() {
   };
 
   // 구매 신청 후 리스트에 업데이트
-  const handleSave = () => {
+  const handleSave = (newPurchaseData) => {
+    // 새로 추가된 구매 데이터 반영
+    setPurchaseList((prevList) => [...prevList, newPurchaseData]);
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  // 구매 승인 또는 반려 후 리스트 업데이트
+  const handleUpdateList = () => {
     axios
-      .get("/api/purchase/list")
+      .get("/api/purchase/list", { params: searchParams })
       .then((res) => {
         setPurchaseList(res.data.purchaseList);
-        setCount(res.data.length);
+        setCount(res.data.count);
       })
       .catch((error) => {
         console.error("구매 목록 업데이트 중 오류 발생:", error);
@@ -99,6 +106,7 @@ export function Purchase() {
           isOpen={isDialogOpen}
           onClose={handleDialogClose}
           onSave={handleSave}
+          onUpdateList={handleUpdateList}
           isAddDialogOpen={isAddDialogOpen}
           purchaseRequestKey={purchaseRequestKey}
           purchaseRequestData={purchaseRequestData} // 발주 데이터 전달

@@ -15,6 +15,7 @@ import { toaster } from "../../ui/toaster.jsx";
 export function PurchaseApprove({
   purchaseRequestKey,
   setPurchaseConsent,
+  onUpdateList,
   onClose,
 }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -27,7 +28,6 @@ export function PurchaseApprove({
       axios
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((res) => {
-          console.log("승인 여부 상태:", res.data.purchaseConsent);
           setPurchase(res.data);
           setPurchaseConsent(res.data.purchaseConsent); // 승인 상태 전달
           setLoading(false);
@@ -62,7 +62,8 @@ export function PurchaseApprove({
         });
 
         if (res.data.purchaseNo) {
-          setPurchaseConsent(true); // 즉시 상태 변경 (타이틀 업데이트 반영)
+          // 리스트 상태 즉시 업데이트
+          setPurchaseConsent(true); // 상태 변경
           setPurchase((prevPurchase) => ({
             ...prevPurchase,
             customerEmployeeNo: id,
@@ -71,6 +72,9 @@ export function PurchaseApprove({
             purchaseApproveDate: new Date().toISOString(),
             purchaseConsent: true,
           }));
+
+          // 리스트 갱신 함수 호출
+          onUpdateList();
         }
       })
       .catch((e) => {
@@ -92,6 +96,16 @@ export function PurchaseApprove({
           type: data.message.type,
           description: data.message.text,
         });
+
+        // 리스트 상태 즉시 업데이트
+        setPurchaseConsent(false);
+        setPurchase((prevPurchase) => ({
+          ...prevPurchase,
+          purchaseConsent: false,
+        }));
+
+        // 리스트 갱신 함수 호출
+        onUpdateList();
       })
       .catch((e) => {
         const data = e.response.data;
@@ -100,7 +114,7 @@ export function PurchaseApprove({
           description: data.message.text,
         });
       });
-    onClose();
+    onClose(); // 반려 후 다이얼로그 닫기
   };
 
   if (loading) {
