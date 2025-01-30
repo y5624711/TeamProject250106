@@ -17,6 +17,7 @@ function InoutHistoryListPage({
           setSelectedInoutHistory(inoutHistory.inoutHistoryKey);
           setIsDetailDialogOpen(true);
         }}
+        _hover={{ backgroundColor: "gray.200" }}
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
         <Table.Cell textAlign="center" verticalAlign="middle">

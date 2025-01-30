@@ -17,7 +17,8 @@ public interface WarehouseMapper {
                    w.warehouse_city,
                    w.warehouse_tel,
                    cus.customer_name,
-                   e.employee_name
+                   e.employee_name,
+                   w.warehouse_active
             FROM TB_WHMST w 
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                 LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no

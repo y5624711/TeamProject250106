@@ -16,6 +16,7 @@ function WarehouseListPage({
           setIsDetailDialogOpen(true);
           setSelectedLocationKey(location.locationKey);
         }}
+        _hover={{ backgroundColor: "gray.200" }}
       >
         <Table.Cell textAlign="center" verticalAlign="middle">
           {index + 1}
