@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Input, Stack, Text } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button.jsx";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
@@ -46,50 +46,73 @@ export function LoginPage() {
   }
 
   return (
-    <Flex
-      w="100vw"
-      h="100vh"
-      justifyContent="center"
-      alignItems="center"
-      bg="gray.100" // 배경색 추가 (선택 사항)
-    >
+    <Flex w="100vw" h="100vh" justifyContent="center" alignItems="center">
       <Box textAlign="center">
-        <Text pb={5} fontSize={"30px"} fontWeight={"bold"}>
-          Choongang System
-        </Text>
         <Box
-          w="500px"
-          h="400px"
-          border="1px solid black"
+          w="900px"
+          h="550px"
           bg="white"
           display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center" // 가운데 정렬
+          flexDirection="row"
+          alignItems="center"
+          boxShadow="2xl"
         >
-          <Stack gap={10} w={"300px"}>
-            <Field
-              label={"로그인"}
-              whiteSpace={"nowrap"}
-              orientation="horizontal"
-            >
-              <Input value={id} onChange={(e) => setId(e.target.value)} />
-            </Field>
+          {/* 왼쪽: 이미지 (반을 꽉 채우도록 설정) */}
+          <Box w="50%" h="100%">
+            <Image
+              src="/Login.png"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
+          </Box>
+          {/* 오른쪽: 입력 필드 */}
+          <Box
+            w="50%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+          >
+            <Text fontSize={"30px"} fontWeight={"bold"} mb={10}>
+              Choongang System
+            </Text>
+            <Stack gap={7} w="300px">
+              <Field
+                // label="아이디"
+                whiteSpace="nowrap"
+                orientation="horizontal"
+              >
+                <Input
+                  placeholder="아이디"
+                  value={id}
+                  onChange={(e) => setId(e.target.value)}
+                />
+              </Field>
 
-            <Field
-              label={"비밀번호"}
-              whiteSpace={"nowrap"}
-              orientation="horizontal"
-            >
-              <Input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Field>
-            <Button w={"50%"} mx={"auto"} onClick={handleLoginClick}>
-              로그인
-            </Button>
-          </Stack>
+              <Field
+                // label="비밀번호"
+                whiteSpace="nowrap"
+                orientation="horizontal"
+              >
+                <Input
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleLoginClick()}
+                />
+              </Field>
+              <Button
+                w="50%"
+                mx="auto"
+                bg="#0000FF"
+                color="white"
+                _hover={{ bg: "#0000CC" }}
+                onClick={handleLoginClick}
+              >
+                로그인
+              </Button>
+            </Stack>
+          </Box>
         </Box>
       </Box>
     </Flex>
