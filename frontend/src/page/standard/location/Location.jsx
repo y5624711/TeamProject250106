@@ -37,6 +37,11 @@ function Location(props) {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
+  }, [searchParams]);
+
   function handleSearchClick() {
     const searchInfo = {
       type: search.type,
