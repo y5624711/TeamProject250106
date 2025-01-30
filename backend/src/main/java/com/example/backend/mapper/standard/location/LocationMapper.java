@@ -60,12 +60,17 @@ public interface LocationMapper {
                              </otherwise>
                          </choose>
                      </if>
-            ORDER BY l.warehouse_code DESC
+                <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+                </if>
+                <if test="sort == null">
+                    ORDER BY l.warehouse_code DESC
+                </if>
             LIMIT #{pageList},10    
             
             </script>
             """)
-    List<Location> list(String searchType, String searchKeyword, Integer pageList);
+    List<Location> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
 
     @Insert("""
             INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, item_common_code, location_note)

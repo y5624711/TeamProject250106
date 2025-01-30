@@ -9,16 +9,30 @@ import {
 } from "../../ui/pagination.jsx";
 import LocationDetail from "./LocationDetail.jsx";
 import LocationListPage from "./LocationListPage.jsx";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 function LocationList({
   locationList,
   countLocation,
   currentPage,
   handlePageChangeClick,
+  searchParams,
+  setSearchParams,
 }) {
   const navigate = useNavigate();
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedLocationKey, setSelectedLocationKey] = useState(null);
+
+  // 정렬 헤더
+  const sortOptions = [
+    { key: "locationKey", label: "#" },
+    { key: "warehouseName", label: "창고" },
+    { key: "row", label: "행" },
+    { key: "col", label: "열" },
+    { key: "shelf", label: "단" },
+    { key: "itemCommonName", label: "품목" },
+    { key: "locationNote", label: "비고" },
+  ];
 
   return (
     <Box>
@@ -27,55 +41,12 @@ function LocationList({
           <Table.Root interactive>
             <Table.Header>
               <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-                <Table.ColumnHeader
-                  width="100px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  #
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  창고
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  행
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  열
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  단
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  품목명
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  비고
-                </Table.ColumnHeader>
+                <Sort
+                  sortOptions={sortOptions}
+                  onSortChange={(nextSearchParam) =>
+                    setSearchParams(nextSearchParam)
+                  }
+                />
               </Table.Row>
             </Table.Header>
             <Table.Body>

@@ -21,7 +21,7 @@ function Location(props) {
     keyword: "",
   });
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [countLocation, setCountLocation] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [currentPage, setCurrentPage] = useState(
@@ -80,6 +80,8 @@ function Location(props) {
             locationList={locationList}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="120px" onClick={() => setIsAddDialogOpen(true)}>
