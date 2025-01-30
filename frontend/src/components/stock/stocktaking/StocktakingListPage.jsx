@@ -35,7 +35,7 @@ function StocktakingListPage({
           {stocktaking.countConfiguration}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.countConfiguration - stocktaking.countCurrent}
+          {stocktaking.countDifference}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.warehouseName}

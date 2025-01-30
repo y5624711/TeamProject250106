@@ -15,7 +15,8 @@ public class Stocktaking {
     private Integer countConfiguration;
     private LocalDateTime stocktakingDate;
 
-
+    //    수량 차이
+    private Integer countDifference;
     //    창고명
     private String warehouseName;
     //    품목명
