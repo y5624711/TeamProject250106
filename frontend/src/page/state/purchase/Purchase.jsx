@@ -39,33 +39,17 @@ export function Purchase() {
     };
   }, [searchParams]);
 
-  // 구매 신청 다이얼로그 열기
-  const handlePurchaseRequestClick = () => {
-    setIsAddDialogOpen(true);
-    setIsDialogOpen(true);
-  };
-
-  // 구매 승인 다이얼로그 열기
-  const handleViewClick = (key) => {
-    const selectedData = purchaseList.find(
-      (item) => item.purchaseRequestKey === key,
-    );
-    setPurchaseRequestKey(key);
-    setPurchaseRequestData(selectedData); // 해당 발주 데이터를 설정
-    setIsAddDialogOpen(false); // 구매 승인 다이얼로그 열기
-    setIsDialogOpen(true);
-  };
-
-  // 다이얼로그 닫기
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-  };
-
-  // 구매 신청 후 리스트에 업데이트
-  const handleSave = (newPurchaseData) => {
-    // 새로 추가된 구매 데이터 반영
-    setPurchaseList((prevList) => [...prevList, newPurchaseData]);
-    setCount((prevCount) => prevCount + 1);
+  // 구매 신청 후 리스트 업데이트
+  const handleSave = () => {
+    axios
+      .get("/api/purchase/list")
+      .then((res) => {
+        setPurchaseList(res.data.purchaseList);
+        setCount(res.data.count);
+      })
+      .catch((error) => {
+        console.error("구매 목록 업데이트 중 오류 발생:", error);
+      });
   };
 
   // 구매 승인 또는 반려 후 리스트 업데이트
@@ -79,6 +63,28 @@ export function Purchase() {
       .catch((error) => {
         console.error("구매 목록 업데이트 중 오류 발생:", error);
       });
+  };
+
+  // 구매 신청 다이얼로그 열기
+  const handlePurchaseRequestClick = () => {
+    setIsAddDialogOpen(true);
+    setIsDialogOpen(true);
+  };
+
+  // 구매 승인 다이얼로그 열기
+  const handleViewClick = (key) => {
+    const selectedData = purchaseList.find(
+      (item) => item.purchaseRequestKey === key,
+    );
+    setPurchaseRequestKey(key);
+    setPurchaseRequestData(selectedData); // 해당 발주 데이터를 설정
+    setIsAddDialogOpen(false);
+    setIsDialogOpen(true);
+  };
+
+  // 다이얼로그 닫기
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
   };
 
   return (
@@ -104,12 +110,12 @@ export function Purchase() {
         {/* 구매 다이얼로그 */}
         <PurchaseDialog
           isOpen={isDialogOpen}
-          onClose={handleDialogClose}
-          onSave={handleSave}
-          onUpdateList={handleUpdateList}
           isAddDialogOpen={isAddDialogOpen}
           purchaseRequestKey={purchaseRequestKey}
           purchaseRequestData={purchaseRequestData} // 발주 데이터 전달
+          onSave={handleSave}
+          onClose={handleDialogClose}
+          onUpdateList={handleUpdateList}
         />
       </Stack>
     </Box>
