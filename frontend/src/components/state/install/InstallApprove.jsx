@@ -89,6 +89,21 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           description: data.message.text,
           type: data.message.type,
         });
+        // ✅ 승인 후 바로 installAppr 데이터 다시 요청
+        return axios.get(`/api/install/approveData/${installKey}`);
+      })
+      .then((res) => {
+        // 기존 installApprove 상태를 유지하면서 새로운 데이터만 업데이트
+        setInstallApprove((prev) => ({
+          ...prev,
+          outputNo: res.data.outputNo,
+          installApproveDate: res.data.installApproveDate,
+          // 기존 설치기사 정보 유지
+          customerInstallerName: prev.customerInstallerName,
+          customerInstallerNo: prev.customerInstallerNo,
+          installScheduleDate: prev.installScheduleDate,
+          installApproveNote: prev.installApproveNote,
+        }));
         setChange((prev) => !prev);
         setIsApproved(true); // 승인 완료 상태로 변경
       })
@@ -131,7 +146,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   };
   // 설치 예정일이 유효한지 체크하는 변수
   const isDateInvalid = isDateValid(installApprove.installScheduleDate);
-  console.log(isDateInvalid);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
@@ -146,6 +160,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         <DialogBody>
           <Box>
             <Stack gap={"15px"}>
+              {isApproved == true && (
+                <Field label={"출고 번호"} orientation="horizontal">
+                  <Input value={installApprove.outputNo} readOnly />
+                </Field>
+              )}
               <Field label={"가맹점"} orientation="horizontal">
                 <Input value={installRequest.franchiseName} readOnly />
               </Field>
@@ -261,6 +280,14 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       />
                     </Field>
                   </HStack>
+                  {isApproved == true && (
+                    <Field label={"승인 날짜"} orientation="horizontal">
+                      <Input
+                        value={installApprove.installApproveDate}
+                        readOnly
+                      />
+                    </Field>
+                  )}
                   <Field label={"승인 비고"} orientation="horizontal">
                     <Textarea
                       placeholder="최대 50자"

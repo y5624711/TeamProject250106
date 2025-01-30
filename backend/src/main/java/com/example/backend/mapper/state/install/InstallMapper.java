@@ -357,4 +357,11 @@ public interface InstallMapper {
             WHERE install_request_key = #{installKey}
             """)
     int installDisapprove(int installKey);
+
+    @Select("""
+            SELECT output_no, install_approve_date
+            FROM TB_INSTL_APPR
+            WHERE install_request_key = #{installKey}
+            """)
+    Install getInstallApproveData(int installKey);
 }
