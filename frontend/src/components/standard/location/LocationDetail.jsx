@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -9,75 +8,75 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, Center, HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
-import LocationEdit from "./LocationEdit.jsx";
 import LocationView from "./LocationView.jsx";
+import axios from "axios";
+import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
 
 function LocationDetail({ isOpened, onClosed, locationKey }) {
-  const [isEditing, setIsEditing] = useState(false);
+  const [locationDetail, setLocationDetail] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  function handleEditClick() {
-    setIsEditing(!isEditing);
-  }
+  useEffect(() => {
+    if (locationKey) {
+      axios
+        .get(`/api/location/view/${locationKey}`)
+        .then((res) => {
+          setLocationDetail(res.data);
+        })
+        .catch((error) => {
+          console.error("로케이션 상세 정보 요청 중 오류 발생: ", error);
+        });
+    }
+  }, [locationKey]);
 
-  function handleDeleteClick() {
-    axios.delete(`/api/location/delete/${locationKey}`);
+  function handleCheckClick() {
+    axios.put(`/api/location/edit`, {
+      locationKey,
+      warehouseCode: locationDetail.warehouseCode,
+      itemCommonCode: locationDetail.itemCommonCode,
+      locationNote: locationDetail.locationNote,
+    });
+    onClosed();
   }
 
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>
-              {isEditing ? (
-                <Box>{locationKey}번 로케이션 수정하기</Box>
-              ) : (
-                <Box>{locationKey}번 로케이션 상세보기</Box>
-              )}
-            </Box>
+            <Box>로케이션 상세</Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           <Box>
-            {isEditing ? (
-              <Box>
-                <LocationEdit
-                  locationKey={locationKey}
-                  setIsEditing={setIsEditing}
-                  isEditing={isEditing}
-                />
-              </Box>
-            ) : (
-              <Box>
-                <LocationView locationKey={locationKey} />
-                <Box>
-                  <Center>
-                    <HStack>
-                      <Button onClick={handleEditClick}>수정</Button>
-                      <Button onClick={() => setIsDialogOpen(true)}>
-                        삭제
-                      </Button>
-                    </HStack>
-                  </Center>
-                </Box>
-                <DialogConfirmation
-                  isOpen={isDialogOpen}
-                  onClose={() => setIsDialogOpen(false)}
-                  onConfirm={handleDeleteClick}
-                  title="삭제 확인"
-                  body="정말로 이 항목을 삭제하시겠습니까?"
-                />
-              </Box>
-            )}
+            <LocationView
+              locationDetail={locationDetail}
+              setLocationDetail={setLocationDetail}
+            />
           </Box>
         </DialogBody>
         <DialogFooter>
+          <Box>
+            <HStack>
+              <Button variant="outline" onClick={onClosed}>
+                취소
+              </Button>
+              <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
+            </HStack>
+          </Box>
           <DialogCloseTrigger onClick={onClosed} />
         </DialogFooter>
+        <DialogEditConfirmation
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onConfirm={handleCheckClick}
+          title="확인"
+          body="변경된 사항은 저장됩니다."
+        />
       </DialogContent>
     </DialogRoot>
   );

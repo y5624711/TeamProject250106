@@ -115,15 +115,28 @@ public interface LocationMapper {
     Integer countAllLocation(String searchType, String searchKeyword);
 
     @Select("""
-            SELECT *
-            FROM TB_LOCMST
-            WHERE location_key=#{locationKey}
+            <script>
+            SELECT 
+                l.warehouse_code,
+                l.row,
+                l.col,
+                l.shelf,
+                l.location_key,
+                l.item_common_code,
+                l.location_note,
+                w.warehouse_name,
+                itc.item_common_name
+            FROM TB_LOCMST l
+            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_ITEMCOMM itc ON l.item_common_code=itc.item_common_code
+            WHERE l.location_key=#{locationKey}
+            </script>
             """)
     Location view(Integer locationKey);
 
     @Update("""
-                    UPDATE TB_LOCMST
-                    SET warehouse_code=#{warehouseCode}, row=#{row}, col=#{col}, shelf=#{shelf}, item_common_code=#{itemCommonCode}, location_note=#{locationNote}
+            UPDATE TB_LOCMST
+            SET warehouse_code=#{warehouseCode},item_common_code=#{itemCommonCode}, location_note=#{locationNote}
             WHERE location_key=#{locationKey}
             """)
     int edit(Location location);

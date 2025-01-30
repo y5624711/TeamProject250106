@@ -72,7 +72,9 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
           <HStack>
-            <Button onClick={onClosed}>닫기</Button>
+            <Button variant="outline" onClick={onClosed}>
+              취소
+            </Button>
             <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
           </HStack>
         </DialogFooter>
