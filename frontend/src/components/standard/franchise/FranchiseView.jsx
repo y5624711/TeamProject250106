@@ -5,7 +5,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { Checkbox } from "../../ui/checkbox.jsx";
 
-export function FranchiseView({ franchiseKey, onClose, onSave }) {
+export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
 
@@ -49,7 +49,7 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
       axios
         .put(`/api/franchise/delete/${franchiseKey}`)
         .then(() => {
-          // 수정 처리
+          // 수정 처리 (삭제 후 수정)
           axios
             .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
             .then((res) => {
@@ -59,7 +59,8 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
                 description: message.text,
               });
               setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-              onSave(updatedFranchise, franchiseKey); // 부모 컴포넌트로 수정된 데이터와 가맹점 키 전달
+              onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
+              onDelete(franchiseKey); // 삭제 후 리스트에서 제거
             })
             .catch((e) => {
               const message = e.response.data.message;
@@ -86,7 +87,7 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
             description: message.text,
           });
           setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-          onSave(updatedFranchise, franchiseKey); // 부모 컴포넌트로 수정된 데이터와 가맹점 키 전달
+          onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
         })
         .catch((e) => {
           const message = e.response.data.message;
