@@ -2,15 +2,14 @@ import {
   Box,
   Center,
   createListCollection,
-  HStack,
   Table,
   TableHeader,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import React from "react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
+import { StateRadioGroup } from "../../tool/list/StateRadioGroup.jsx";
 
 export function PurchaseList({
   purchaseList,
@@ -18,10 +17,9 @@ export function PurchaseList({
   count,
   searchParams,
   setSearchParams,
-  state,
 }) {
   // 정렬 헤더
-  const sortInstallOptions = [
+  const sortOptions = [
     { key: "purchaseRequestKey", label: "#" },
     { key: "customerName", label: "담당 업체" },
     { key: "itemCommonName", label: "품목" },
@@ -30,7 +28,7 @@ export function PurchaseList({
     { key: "date", label: "날짜" },
   ];
 
-  // 검색 셀렉트
+  // 검색 옵션
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
@@ -41,53 +39,53 @@ export function PurchaseList({
     ],
   });
 
-  // URL에서 "state" 파라미터 값을 가져와 초기값으로 설정
-  const [radioValue, setRadioValue] = useState(
-    searchParams.get("state") || "all",
-  );
+  // 라디오 옵션
+  const radioOptions = [
+    { value: "all", label: "전체" },
+    { value: "request", label: "대기" },
+    { value: "approve", label: "승인" },
+    { value: "disapprove", label: "반려" },
+  ];
 
-  // 상태 변경 (라디오 버튼 선택 시 URL 쿼리 파라미터 갱신)
-  const handleStateChange = (value) => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-
-    nextSearchParam.set("page", "1");
-    nextSearchParam.set("state", value);
-
-    setSearchParams(nextSearchParam);
-  };
-
-  // 새로고침 시 검색 파라미터에서 state 값이 있으면 라디오 버튼 상태를 설정
-  useEffect(() => {
-    const stateFromParams = searchParams.get("state") || "all";
-    setRadioValue(stateFromParams);
-  }, [searchParams]);
+  // // URL에서 "state" 파라미터 값을 가져와 초기값으로 설정
+  // const [radioValue, setRadioValue] = useState(
+  //   searchParams.get("state") || "all",
+  // );
+  //
+  // // 상태 변경 (라디오 버튼 선택 시 URL 쿼리 파라미터 갱신)
+  // const handleStateChange = (value) => {
+  //   const nextSearchParam = new URLSearchParams(searchParams);
+  //
+  //   nextSearchParam.set("page", "1");
+  //   nextSearchParam.set("state", value);
+  //
+  //   setSearchParams(nextSearchParam);
+  // };
+  //
+  // // 새로고침 시 검색 파라미터에서 state 값이 있으면 라디오 버튼 상태를 설정
+  // useEffect(() => {
+  //   const stateFromParams = searchParams.get("state") || "all";
+  //   setRadioValue(stateFromParams);
+  // }, [searchParams]);
 
   return (
     <Box>
-      {/* 검색창 */}
-      <SearchBar searchOptions={searchOptions} />
-      {/* 라디오 버튼 */}
-      <RadioGroup
-        name={state}
-        value={state}
-        defaultValue={radioValue}
-        onValueChange={(value) => handleStateChange(value.value)}
-        my={6}
-        ml={2}
-      >
-        <HStack gap={6}>
-          <Radio value="all">전체</Radio>
-          <Radio value="request">대기</Radio>
-          <Radio value="approve">승인</Radio>
-          <Radio value="disapprove">반려</Radio>
-        </HStack>
-      </RadioGroup>
+      {/* 검색 */}
+      <SearchBar
+        searchOptions={searchOptions}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
+      {/* 라디오 */}
+      <StateRadioGroup
+        radioOptions={radioOptions}
+        onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
       {/* 테이블 */}
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Sort
-              sortOptions={sortInstallOptions}
+              sortOptions={sortOptions}
               onSortChange={(nextSearchParam) =>
                 setSearchParams(nextSearchParam)
               }
