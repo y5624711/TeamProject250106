@@ -87,6 +87,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
         onOpenChange={() => {
           onClose();
         }}
+        size={"lg"}
       >
         <DialogContent>
           <DialogHeader>

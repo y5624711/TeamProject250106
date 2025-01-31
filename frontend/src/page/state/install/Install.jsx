@@ -86,7 +86,11 @@ export function Install() {
             setSearchParams={setSearchParams}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button onClick={() => setRequestDialogOpen(true)} size="lg">
+            <Button
+              onClick={() => setRequestDialogOpen(true)}
+              size="lg"
+              mt={"-65px"}
+            >
               설치 요청
             </Button>
           </Box>
