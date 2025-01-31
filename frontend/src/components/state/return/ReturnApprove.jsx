@@ -313,6 +313,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   type="date" // 사용자가 달력으로 날짜 선택 가능
                   value={approveData.returnDate || ""}
                   onChange={handleApproveInput("returnDate")}
+                  min={new Date().toISOString().split("T")[0]}
                 />
               </Field>
               <Field orientation="horizontal" label="승인 비고">

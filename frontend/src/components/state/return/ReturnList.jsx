@@ -137,6 +137,11 @@ function ReturnList({
           value={localKeyword}
           onChange={(e) => setLocalKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요."
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchButton();
+            }
+          }}
         />
         <IconButton
           transform="translateX(-130%) "
