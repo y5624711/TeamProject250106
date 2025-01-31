@@ -224,6 +224,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         })
                       }
                       type={"date"}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                   </Field>
                   <HStack>
