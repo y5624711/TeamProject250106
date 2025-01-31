@@ -11,6 +11,7 @@ CREATE TABLE TB_LOCMST
     location_note  VARCHAR(50) NULL
 );
 
+
 ALTER TABLE TB_LOCMST
     ADD COLUMN located BOOLEAN DEFAULT FALSE;
 
@@ -20,4 +21,25 @@ WHERE shelf = 1;
 
 DELETE
 FROM TB_LOCMST
-WHERE warehouse_code = 12;
+WHERE warehouse_code = 'WHS0000000001';
+
+INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, located, location_note)
+SELECT 'WHS0000000003' AS warehouse_code,
+       r.num           AS row,
+       c.num           AS col,
+       s.num           AS shelf,
+       FALSE           AS located,
+       NULL            AS location_note
+FROM (SELECT 1 AS num
+      UNION ALL
+      SELECT 2
+      UNION ALL
+      SELECT 3
+      UNION ALL
+      SELECT 4
+      UNION ALL
+      SELECT 5) s
+         CROSS JOIN
+     (SELECT 1 AS num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) c
+         CROSS JOIN
+     (SELECT 1 AS num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) r;
