@@ -55,6 +55,7 @@ export function ItemList({
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
+                defaultSortKey={"itemKey"}
               />
             </Table.Row>
           </Table.Header>

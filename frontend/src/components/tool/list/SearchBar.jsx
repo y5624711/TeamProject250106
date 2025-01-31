@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { HStack, IconButton, Input } from "@chakra-ui/react";
 import {
-  HStack,
-  IconButton,
-  Input,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@chakra-ui/react";
+} from "../../ui/select.jsx";
 import { Button } from "../../ui/button.jsx";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { BsArrowCounterclockwise } from "react-icons/bs";
@@ -73,7 +71,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
   };
 
   return (
-    <HStack justifyContent="center">
+    <HStack justifyContent="center" w={"100%"}>
       <SelectRoot
         collection={searchOptions}
         width="160px"
@@ -86,13 +84,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
         <SelectTrigger>
           <SelectValueText />
         </SelectTrigger>
-        <SelectContent
-          style={{
-            width: "150px",
-            top: "40px",
-            position: "absolute",
-          }}
-        >
+        <SelectContent>
           {searchOptions?.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}

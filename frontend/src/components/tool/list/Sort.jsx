@@ -4,16 +4,19 @@ import { HStack, Table } from "@chakra-ui/react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 // 정렬 컴포넌트
-export function Sort({ sortOptions, onSortChange }) {
+export function Sort({ sortOptions, onSortChange, defaultSortKey }) {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // 기본값 설정: sort가 없으면 defaultSortKey, order가 없으면 'desc'
+  const sort = searchParams.get("sort") || defaultSortKey;
+  const order = searchParams.get("order") || "desc";
 
   // 정렬 처리 함수
   const handleSort = (key) => {
-    const currentOrder = searchParams.get("order") || "asc";
-    const nextOrder =
-      searchParams.get("sort") === key && currentOrder === "asc"
-        ? "desc"
-        : "asc";
+    const currentOrder = order;
+    const nextOrder = sort === key && currentOrder === "desc" ? "asc" : "desc";
+    // nextOrder를 계산한 후에 출력
+    console.log(key, nextOrder); // 여기서 key와 nextOrder를 출력
 
     // URLSearchParams를 이용해 정렬 파라미터 업데이트
     const nextSearchParams = new URLSearchParams(searchParams);
@@ -28,17 +31,17 @@ export function Sort({ sortOptions, onSortChange }) {
 
   return (
     <>
-      {sortOptions.map((sort) => (
+      {sortOptions.map((sortOption) => (
         <Table.ColumnHeader
           textAlign="center"
-          key={sort.key}
-          onClick={() => handleSort(sort.key)}
+          key={sortOption.key}
+          onClick={() => handleSort(sortOption.key)}
           style={{ cursor: "pointer" }}
         >
           <HStack justify="center" align="center" width="100%">
-            {sort.label}
-            {searchParams.get("sort") === sort.key ? (
-              searchParams.get("order") === "asc" ? (
+            {sortOption.label}
+            {sort === sortOption.key ? (
+              order === "asc" ? (
                 <FaCaretUp />
               ) : (
                 <FaCaretDown />

@@ -188,7 +188,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               >
                 <SelectTrigger>
                   <SelectValueText>
-                    {installRequest.itemCommonName}
+                    {installRequest.itemCommonName || "품목 선택"}
                   </SelectValueText>
                 </SelectTrigger>
                 <SelectContent
@@ -235,7 +235,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             )}
             <Field label="가맹점 주소" orientation="horizontal">
               <Input
-                placeholder="가맹점 주소"
                 value={installRequest.franchiseAddress}
                 onChange={handleInputChange("franchiseAddress")}
               />
@@ -260,6 +259,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                 value={installRequest.installRequestNote}
                 placeholder="최대 50자"
                 onChange={handleInputChange("installRequestNote")}
+                maxHeight={"100px"}
               />
             </Field>
           </Stack>

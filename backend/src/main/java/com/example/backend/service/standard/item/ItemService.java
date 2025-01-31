@@ -19,10 +19,10 @@ public class ItemService {
     // 품목 정보가 다 입력됐는지 확인
     public boolean validate(Item item) {
         return !(
-                item.getItemCommonCode() == null || item.getItemCommonCode().trim().isEmpty() ||
-                        item.getCustomerCode() == null || item.getCustomerCode().trim().isEmpty() ||
+                item.getItemCommonName() == null || item.getItemCommonName().trim().isEmpty() ||
+                        item.getCustomerName() == null || item.getCustomerName().trim().isEmpty() ||
                         item.getInputPrice() == null || item.getInputPrice() < 0 ||
-                        item.getOutputPrice() == null || item.getOutputPrice() < 0 || item.getItemActive() == null);
+                        item.getOutputPrice() == null || item.getOutputPrice() < 0);
     }
 
     // 품목 중복 검증

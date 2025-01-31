@@ -171,6 +171,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               <Field label={"가맹점 주소"} orientation="horizontal">
                 <Input value={installRequest.franchiseAddress} readOnly />
               </Field>
+
               <HStack>
                 <Field label={"품목"} orientation="horizontal">
                   <Input value={installRequest.itemCommonName} readOnly />
@@ -179,6 +180,9 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.installRequestAmount} readOnly />
                 </Field>
               </HStack>
+              <Field label={"창고"} orientation="horizontal">
+                <Input value={installRequest.warehouseName} readOnly />
+              </Field>
               <HStack spacing={4}>
                 <Field label={"신청자"} orientation="horizontal">
                   <Input value={installRequest.businessEmployeeName} readOnly />
@@ -187,33 +191,24 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.businessEmployeeNo} readOnly />
                 </Field>
               </HStack>
-              {installRequest.installRequestConsent != false && (
-                <HStack>
-                  <Field label={"승인자"} orientation="horizontal">
-                    <Input value={name} readOnly />
-                  </Field>
-                  <Field label={"사번"} orientation="horizontal">
-                    <Input value={id} readOnly />
-                  </Field>
-                </HStack>
-              )}
-              <HStack>
-                <Field label={"창고"} orientation="horizontal">
-                  <Input value={installRequest.warehouseName} readOnly />
-                </Field>
-                <Field label={"창고 주소"} orientation="horizontal">
-                  <Input value={installRequest.warehouseAddress} readOnly />
-                </Field>
-              </HStack>
+              {/*<HStack>*/}
+              {/*  <Field label={"주소"} orientation="horizontal">*/}
+              {/*    <Input value={installRequest.warehouseAddress} readOnly />*/}
+              {/*  </Field>*/}
+              {/*</HStack>*/}
               <Field label={"신청 날짜"} orientation="horizontal">
                 <Input value={installRequest.installRequestDate} readOnly />
               </Field>
               <Field label={"신청 비고"} orientation="horizontal">
-                <Input value={installRequest.installRequestNote} readOnly />
+                <Textarea
+                  value={installRequest.installRequestNote}
+                  readOnly
+                  maxHeight={"80px"}
+                />
               </Field>
+              {installApprove.installApproveConsent == null && <Separator />}
               {installRequest.installRequestConsent != false && (
                 <Stack gap={"15px"}>
-                  <Separator />
                   <Field label={"설치 예정일"} orientation="horizontal">
                     <Input
                       value={installApprove.installScheduleDate}
@@ -224,6 +219,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         })
                       }
                       type={"date"}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                   </Field>
                   <HStack>
@@ -247,7 +243,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       >
                         <SelectTrigger>
                           <SelectValueText>
-                            {installApprove.customerInstallerName}
+                            {installApprove.customerInstallerName ||
+                              "설치 기사 선택"}
                           </SelectValueText>
                         </SelectTrigger>
                         <SelectContent
@@ -280,6 +277,16 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       />
                     </Field>
                   </HStack>
+                  {installRequest.installRequestConsent != false && (
+                    <HStack>
+                      <Field label={"승인자"} orientation="horizontal">
+                        <Input value={name} readOnly />
+                      </Field>
+                      <Field label={"사번"} orientation="horizontal">
+                        <Input value={id} readOnly />
+                      </Field>
+                    </HStack>
+                  )}
                   {isApproved == true && (
                     <Field label={"승인 날짜"} orientation="horizontal">
                       <Input
@@ -298,6 +305,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                           installApproveNote: e.target.value,
                         })
                       }
+                      maxHeight={"80px"}
                     />
                   </Field>
                 </Stack>
