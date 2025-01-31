@@ -18,6 +18,7 @@ public class EmployeeService {
 
     public boolean addEmployee(Employee employee) {
         String workPlace= employee.getEmployeeWorkPlaceCode().substring(0,3);
+
         // 0 또는 숫자 조회
         Integer maxNo = mapper.viewMaxEmployeeNo(workPlace);
         //  부족한 자리수 만큼  0 채우기
@@ -67,9 +68,6 @@ public class EmployeeService {
         return cnt == 1;
     }
 
-//    public int viewMaxEmployeeNo() {
-//
-//        return mapper.viewMaxEmployeeNo(employee.getEmployeeCommonCode());
-//    }
+
 
 }

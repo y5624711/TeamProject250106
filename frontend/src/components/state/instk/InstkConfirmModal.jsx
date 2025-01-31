@@ -44,6 +44,8 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
         inputStockEmployeeNo:id ,
         inputStockNote: inputStockNote,
         itemCommonName: instk.itemCommonName,
+        employeeWorkPlaceCode:instkDetail.employeeWorkPlaceCode,
+        requestEmployeeNo: instk.requestEmployeeNo,
       })
       .then((res) => {
         console.log(res);
@@ -70,6 +72,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
       setChangeModal();
     })
   }
+  console.log(instk,instkDetail)
   return (
     <DialogRoot size={"lg"} open={isModalOpen}>
       <DialogContent>

@@ -179,6 +179,7 @@ public interface EmployeeMapper {
                 </script>
             """)
     Integer viewMaxEmployeeNo(String employeeCommonCode);
+
 }
 
 

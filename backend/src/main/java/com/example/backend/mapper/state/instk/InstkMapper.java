@@ -203,7 +203,7 @@ LIMIT #{offset}, 10
             FROM TB_BUYIN
             WHERE input_key = #{inputKey}
             """)
-    boolean selectedConsent(int inputKey);
+    Boolean selectedConsent(int inputKey);
 
     // 회수 번호로 시리얼 번호 가져오기
     @Select("""
@@ -273,4 +273,11 @@ LIMIT #{offset}, 10
     </script>
 """)
     int countByConsent(@Param("state") String state , String keyword);
+
+
+    @Select("""
+            SELECT *
+            FROM 
+            """)
+    String viewLocationKey(String inputStockEmployeeNo);
 }

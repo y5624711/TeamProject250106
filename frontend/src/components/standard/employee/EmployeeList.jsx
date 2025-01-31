@@ -201,12 +201,18 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         />
         <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
-      <Switch
+      <Checkbox
         checked={isActiveVisible}
-        onCheckedChange={() => {
-          handleVisible();
-        }}
-      />
+        onCheckedChange={(e) =>   handleVisible()}
+      >
+        삭제 정보
+      </Checkbox>
+      {/*<Switch*/}
+      {/*  checked={isActiveVisible}*/}
+      {/*  onCheckedChange={() => {*/}
+      {/*    handleVisible();*/}
+      {/*  }}*/}
+      {/*/>*/}
       <Table.Root>
         <Table.Header>
           <SortColumnHeader
