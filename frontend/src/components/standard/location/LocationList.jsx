@@ -29,7 +29,7 @@ function LocationList({
     { key: "row", label: "행" },
     { key: "col", label: "열" },
     { key: "shelf", label: "단" },
-    { key: "itemCommonName", label: "품목" },
+    { key: "itemCommonName", label: "재고 여부" },
     { key: "locationNote", label: "비고" },
   ];
 

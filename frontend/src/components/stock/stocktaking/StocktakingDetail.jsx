@@ -9,7 +9,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import StockTakingView from "./StockTakingView.jsx";
 
@@ -31,9 +31,12 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
           <DialogActionTrigger>
-            <Button variant="outline" onClick={onClosed}>
-              닫기
-            </Button>
+            <HStack>
+              <Button variant="outline" onClick={onClosed}>
+                닫기
+              </Button>
+              <Button>확인</Button>
+            </HStack>
           </DialogActionTrigger>
         </DialogFooter>
       </DialogContent>

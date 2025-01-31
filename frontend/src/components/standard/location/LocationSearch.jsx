@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Input } from "@chakra-ui/react";
+import { HStack, IconButton, Input } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import {
   SelectContent,
@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 function LocationSearch({
   locationOptionList,
@@ -45,8 +46,20 @@ function LocationSearch({
             handleSearchClick();
           }
         }}
-      ></Input>
-      <Button onClick={handleSearchClick}>검색</Button>
+      />
+      <IconButton
+        transform="translateX(-130%) "
+        style={{ cursor: "pointer" }}
+        variant={"ghost"}
+        onClick={() => {
+          window.location.search = ""; // searchParams 초기화
+        }}
+      >
+        <BsArrowCounterclockwise size="25px" />
+      </IconButton>
+      <Button onClick={handleSearchClick} transform="translateX(-75%)">
+        검색
+      </Button>
     </HStack>
   );
 }
