@@ -104,6 +104,8 @@ function Stocktaking(props) {
             onClose={() => setIsAddDialogOpen(false)}
             onConfirm={() => setIsAddDialogOpen(false)}
             title="실사 등록"
+            setStocktakingList={setStocktakingList}
+            searchParams={searchParams}
           />
         </Stack>
       </HStack>

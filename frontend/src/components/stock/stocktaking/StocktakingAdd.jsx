@@ -15,23 +15,32 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 
-function StocktakingAdd({ isOpen, onConfirm, onClose, title }) {
+function StocktakingAdd({
+  isOpen,
+  onConfirm,
+  onClose,
+  title,
+  setStocktakingList,
+  searchParams,
+}) {
   const [warehouseCode, setWarehouseCode] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [countCurrent, setCountCurrent] = useState("");
   const [countConfiguration, setCountConfiguration] = useState("");
   const [customerEmployeeNo, setCustomerEmployeeNo] = useState("");
-  const [stocktakingNote, setStocktakingNote] = useState();
+  const [stocktakingNote, setStocktakingNote] = useState("");
+  const [stocktakingType, setStocktakingType] = useState("");
 
   const handleSaveClick = () => {
     axios
       .post(`/api/stocktaking/add`, {
         warehouseCode,
-        itemCommonCode,
+        itemCode,
         countCurrent,
         countConfiguration,
         customerEmployeeNo,
         stocktakingNote,
+        stocktakingType,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -41,8 +50,13 @@ function StocktakingAdd({ isOpen, onConfirm, onClose, title }) {
         });
       })
       .catch((e) => {
-        const message = e.response?.data?.message;
+        const message = e?.data?.message;
         toaster.create({ description: message.text, type: message.type });
+      });
+    axios
+      .get(`/api/stocktaking/list?${searchParams.toString()}`)
+      .then((res) => {
+        setStocktakingList(res.data.list);
       });
   };
 
@@ -97,6 +111,13 @@ function StocktakingAdd({ isOpen, onConfirm, onClose, title }) {
               type={"text"}
               value={stocktakingNote}
               onChange={(e) => setStocktakingNote(e.target.value)}
+            />
+          </Field>
+          <Field label="실사 유형" orientation="horizontal" mb={15}>
+            <Input
+              type={"text"}
+              value={stocktakingType}
+              onChange={(e) => setStocktakingType(e.target.value)}
             />
           </Field>
           {/*  TODO: 실사유형 radio로 체크  */}

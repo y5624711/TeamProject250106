@@ -167,13 +167,12 @@ public interface StocktakingMapper {
             INSERT INTO TB_STKTK (
                                   item_code, 
                                   warehouse_code, 
-                                  location_key,
                                   customer_employee_no,
                                   count_current,
                                   count_configuration,
                                   stocktaking_type,
                                   stocktaking_date)
-            VALUES (#{itemCode}, #{warehouseCode}, #)
+            VALUES (#{itemCode}, #{warehouseCode}, #{customerEmployeeNo}, #{countCurrent}, #{countConfiguration}, #{stocktakingType}, #{stocktakingDate})
             """)
     int add(Stocktaking stocktaking);
 }

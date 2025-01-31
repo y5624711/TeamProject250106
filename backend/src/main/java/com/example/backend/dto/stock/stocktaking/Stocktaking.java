@@ -34,6 +34,6 @@ public class Stocktaking {
     //    비고
     private String stocktakingNote;
     //    실사 유형
-    private String stocktakingType;
+    private Boolean stocktakingType;
 
 }
