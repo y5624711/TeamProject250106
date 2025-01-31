@@ -122,7 +122,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>물품 등록</DialogTitle>
+          <DialogTitle>품목 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap="15px">
@@ -140,7 +140,9 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValueText>{itemData.itemCommonName}</SelectValueText>
+                  <SelectValueText>
+                    {itemData.itemCommonName || "품목 선택"}
+                  </SelectValueText>
                 </SelectTrigger>
                 <SelectContent
                   style={{
