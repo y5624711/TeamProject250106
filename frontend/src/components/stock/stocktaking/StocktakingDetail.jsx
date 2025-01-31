@@ -19,7 +19,7 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>{stocktakingKey} 입출 상세</Box>
+            <Box>실사 상세</Box>
           </DialogTitle>
         </DialogHeader>
         <DialogBody
@@ -31,7 +31,9 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
           <DialogActionTrigger>
-            <Button onClick={onClosed}>확인</Button>
+            <Button variant="outline" onClick={onClosed}>
+              닫기
+            </Button>
           </DialogActionTrigger>
         </DialogFooter>
       </DialogContent>
