@@ -24,8 +24,22 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
   const [warehouseCity, setWarehouseCity] = useState("");
   const [customerEmployeeNo, setCustomerEmployeeNo] = useState("");
   const [warehouseTel, setWarehouseTel] = useState("");
-  const [warehouseActive, setWarehouseActive] = useState("");
+  const [warehouseActive, setWarehouseActive] = useState(true);
   const [warehouseNote, setWarehouseNote] = useState("");
+
+  const resetState = () => {
+    setWarehouseName("");
+    setCustomerCode("");
+    setWarehouseAddress("");
+    setWarehouseAddressDetail("");
+    setWarehousePost("");
+    setWarehouseState("");
+    setWarehouseCity("");
+    setCustomerEmployeeNo("");
+    setWarehouseTel("");
+    setWarehouseNote("");
+    setWarehouseActive(true);
+  };
 
   const handleSaveClick = () => {
     axios
@@ -53,6 +67,7 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
         const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
+    resetState();
   };
 
   return (
