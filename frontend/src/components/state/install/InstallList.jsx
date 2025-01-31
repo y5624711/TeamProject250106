@@ -68,6 +68,7 @@ export function InstallList({
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
+                defaultSortKey={"installDate"}
               />
               <Table.Cell textAlign="center">상태</Table.Cell>
             </Table.Row>
@@ -105,9 +106,7 @@ export function InstallList({
                   {install.warehouseName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {!install.installApproveKey
-                    ? install.installRequestDate
-                    : install.inoutHistoryDate || install.installApproveDate}
+                  {install.installDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.state}</Table.Cell>
               </Table.Row>

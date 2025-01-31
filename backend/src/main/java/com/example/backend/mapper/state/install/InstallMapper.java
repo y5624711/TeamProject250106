@@ -270,10 +270,12 @@ public interface InstallMapper {
                     ORDER BY ${sort} ${order}
                 </if>
                 <if test="sort == null">
-                    ORDER BY ir.install_request_key DESC
+                    ORDER BY COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date, ih.inout_history_date),
+                                     ir.install_request_date,
+                                     ia.install_approve_date,
+                                     ih.inout_history_date) DESC
                 </if>
-            
-            LIMIT #{offset}, 10
+                LIMIT #{offset}, 10
             </script>
             """)
     List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword);
