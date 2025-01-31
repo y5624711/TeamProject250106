@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
@@ -88,36 +88,38 @@ export function Purchase() {
   };
 
   return (
-    <Box display="flex" h="100vh">
-      <StateSideBar />
-      <Stack flex="1" p={5}>
-        <Heading size={"xl"} p={2} mb={3}>
-          구매 / 설치 관리 {">"} 구매 관리
-        </Heading>
-        <PurchaseList
-          purchaseList={purchaseList}
-          onViewClick={handleViewClick}
-          count={count}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-        />
-        {/* 구매 요청 버튼 */}
-        <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handlePurchaseRequestClick} mt={-14}>
-            구매 요청
-          </Button>
-        </Box>
-        {/* 구매 다이얼로그 */}
-        <PurchaseDialog
-          isOpen={isDialogOpen}
-          isAddDialogOpen={isAddDialogOpen}
-          purchaseRequestKey={purchaseRequestKey}
-          purchaseRequestData={purchaseRequestData} // 발주 데이터 전달
-          onSave={handleSave}
-          onClose={handleDialogClose}
-          onUpdateList={handleUpdateList}
-        />
-      </Stack>
+    <Box>
+      <HStack align={"flex-start"} w={"100%"}>
+        <StateSideBar />
+        <Stack flex={1} p={5} pb={0}>
+          <Heading size={"xl"} mb={3} p={2}>
+            구매 / 설치 관리 {">"} 구매 관리
+          </Heading>
+          <PurchaseList
+            purchaseList={purchaseList}
+            onViewClick={handleViewClick}
+            count={count}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
+          {/* 구매 요청 버튼 */}
+          <Flex justify="flex-end">
+            <Button onClick={handlePurchaseRequestClick} mt={-16}>
+              구매 요청
+            </Button>
+          </Flex>
+          {/* 구매 다이얼로그 */}
+          <PurchaseDialog
+            isOpen={isDialogOpen}
+            isAddDialogOpen={isAddDialogOpen}
+            purchaseRequestKey={purchaseRequestKey}
+            purchaseRequestData={purchaseRequestData} // 발주 데이터 전달
+            onSave={handleSave}
+            onClose={handleDialogClose}
+            onUpdateList={handleUpdateList}
+          />
+        </Stack>
+      </HStack>
     </Box>
   );
 }

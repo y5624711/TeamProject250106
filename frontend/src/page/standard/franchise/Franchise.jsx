@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Center, Heading, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -212,59 +220,61 @@ export function Franchise() {
   };
 
   return (
-    <Box display={"flex"} h={"100vh"}>
-      <StandardSideBar />
-      <Box flex={"1"} p={4}>
-        <Heading size={"xl"} p={2} mb={3}>
-          기준정보 관리 {">"} 가맹점 관리
-        </Heading>
-        <FranchiseList
-          franchiseList={franchiseList}
-          count={count}
-          search={search}
-          setSearch={setSearch}
-          checkedActive={checkedActive}
-          setCheckedActive={setCheckedActive}
-          toggleCheckedActive={toggleCheckedActive}
-          handlePageChange={handlePageChange}
-          handleSearchClick={handleSearchClick}
-          handleSortChange={handleSortChange}
-          standard={standard}
-          setStandard={setStandard}
-          onFranchiseClick={handleFranchiseClick}
-        />
-        {/* 페이지네이션 */}
-        <Center>
-          <PaginationRoot
-            onPageChange={handlePageChange}
+    <Box>
+      <HStack align={"flex-start"} w={"100%"}>
+        <StandardSideBar />
+        <Stack flex={1} p={5} pb={0}>
+          <Heading size={"xl"} p={2} mb={3}>
+            기준정보 관리 {">"} 가맹점 관리
+          </Heading>
+          <FranchiseList
+            franchiseList={franchiseList}
             count={count}
-            pageSize={10}
-            variant="solid"
-            mt={5}
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
-        </Center>
-        {/* 가맹점 등록 버튼 */}
-        <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handleAddFranchiseClick} mt={-9}>
-            가맹점 등록
-          </Button>
-        </Box>
-        {/* 다이얼로그 */}
-        <FranchiseDialog
-          franchiseKey={franchiseKey}
-          isOpen={isDialogOpen || isAddDialogOpen}
-          isAddDialogOpen={isAddDialogOpen}
-          onSave={handleSave}
-          onDelete={handleDelete}
-          onClose={handleDialogClose}
-        />
-      </Box>
+            search={search}
+            setSearch={setSearch}
+            checkedActive={checkedActive}
+            setCheckedActive={setCheckedActive}
+            toggleCheckedActive={toggleCheckedActive}
+            handlePageChange={handlePageChange}
+            handleSearchClick={handleSearchClick}
+            handleSortChange={handleSortChange}
+            standard={standard}
+            setStandard={setStandard}
+            onFranchiseClick={handleFranchiseClick}
+          />
+          {/* 페이지네이션 */}
+          <Center>
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={count}
+              pageSize={10}
+              variant="solid"
+              mt={5}
+            >
+              <HStack>
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </HStack>
+            </PaginationRoot>
+          </Center>
+          {/* 가맹점 등록 버튼 */}
+          <Flex justify="flex-end">
+            <Button onClick={handleAddFranchiseClick} mt={-12}>
+              가맹점 등록
+            </Button>
+          </Flex>
+          {/* 다이얼로그 */}
+          <FranchiseDialog
+            franchiseKey={franchiseKey}
+            isOpen={isDialogOpen || isAddDialogOpen}
+            isAddDialogOpen={isAddDialogOpen}
+            onSave={handleSave}
+            onDelete={handleDelete}
+            onClose={handleDialogClose}
+          />
+        </Stack>
+      </HStack>
     </Box>
   );
 }
