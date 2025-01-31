@@ -48,6 +48,7 @@ export function InstallList({
     { value: "configuration", label: "완료" },
     { value: "disapprove", label: "반려" },
   ];
+  console.log(installList?.installDate);
 
   return (
     <Box>
