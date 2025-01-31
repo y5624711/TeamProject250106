@@ -25,24 +25,25 @@ import {
   PaginationRoot,
 } from "../../ui/pagination.jsx";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import { useSearchParams } from "react-router-dom";
 
 function ReturnList({
   returnList,
-  onRowClick,
   count,
+  onRowClick,
   handlePageChange,
   state,
   onStateChange,
   sort,
   order,
 }) {
-  // 검색 keyword와 type 상태 관리
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // 검색 및 정렬 관련 상태 관리
   const [localKeyword, setLocalKeyword] = useState(
-    new URLSearchParams(window.location.search).get("keyword") || "",
+    searchParams.get("keyword") || "",
   );
-  const [localType, setLocalType] = useState(
-    new URLSearchParams(window.location.search).get("type") || "all",
-  );
+  const [localType, setLocalType] = useState(searchParams.get("type") || "all");
 
   // URL의 page 값으로 초기화
   const [currentPage, setCurrentPage] = useState(
@@ -72,42 +73,28 @@ function ReturnList({
     return item ? item.label : value;
   };
 
-  // console.log("이름", getLabelByValue(localType));
-  // console.log("list", returnList);
-  // console.log("count", count);
-  // console.log("local filters", filters);
-  // console.log("state", filters.state);
-  // console.log("page", page);
-
-  //검색 버튼 클릭 시
-  const handleSearchButton = () => {
-    const searchParams = new URLSearchParams();
-    searchParams.set("type", localType);
-    searchParams.set("keyword", localKeyword);
-    searchParams.set("page", 1); // 검색 결과는 항상 첫 페이지로 이동
-    searchParams.set("state", state);
-    searchParams.set("sort", sort);
-    searchParams.set("order", order);
-
-    // URL을 갱신하고 새로고침
-    window.location.search = searchParams.toString();
+  // 검색 실행
+  const handleSearch = () => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("type", localType);
+    newParams.set("keyword", localKeyword);
+    newParams.set("page", "1"); // 검색 시 첫 페이지로 초기화
+    setSearchParams(newParams);
   };
 
-  // 헤더 클릭 처리 : 정렬
-  const handleHeaderClick = (columnName) => {
-    const nextOrder = sort === columnName && order === "ASC" ? "DESC" : "ASC";
+  // 정렬 처리
+  const handleSort = (columnName) => {
+    const currentSort = searchParams.get("sort");
+    const currentOrder = searchParams.get("order") || "ASC";
+    const nextOrder =
+      currentSort === columnName && currentOrder === "ASC" ? "DESC" : "ASC";
 
-    // URL을 업데이트하고 새로고침
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set("sort", columnName);
-    searchParams.set("order", nextOrder);
-    searchParams.set("page", 1); // 정렬 변경 시 페이지를 초기화
-    window.location.search = searchParams.toString();
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("sort", columnName);
+    newParams.set("order", nextOrder);
+    newParams.set("page", "1"); // 정렬 변경 시 페이지 초기화
+    setSearchParams(newParams);
   };
-
-  // console.log(localType);
-  // console.log("name", localTypeName);
-  // console.log("type", localType);
 
   return (
     <Box>
@@ -137,23 +124,17 @@ function ReturnList({
           value={localKeyword}
           onChange={(e) => setLocalKeyword(e.target.value)}
           placeholder="검색어를 입력해 주세요."
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearchButton();
-            }
-          }}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
         <IconButton
           transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
           variant={"ghost"}
-          onClick={() => {
-            window.location.search = ""; // searchParams 초기화
-          }}
+          onClick={() => setSearchParams(new URLSearchParams())}
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
-        <Button onClick={handleSearchButton} transform="translateX(-75%)">
+        <Button onClick={handleSearch} transform="translateX(-75%)">
           검색
         </Button>
       </HStack>
@@ -180,7 +161,7 @@ function ReturnList({
             <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("franchise_name")}
+              onClick={() => handleSort("franchise_name")}
             >
               <HStack alignItems="center" justify="center">
                 가맹점
@@ -190,7 +171,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("itc.common_code_name")}
+              onClick={() => handleSort("itc.common_code_name")}
             >
               <HStack alignItems="center" justify="center">
                 품목
@@ -200,7 +181,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("customer_name")}
+              onClick={() => handleSort("customer_name")}
             >
               <HStack alignItems="center" justify="center">
                 담당 업체
@@ -210,7 +191,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("serial_no")}
+              onClick={() => handleSort("serial_no")}
             >
               <HStack alignItems="center" justify="center">
                 시리얼 번호
@@ -220,7 +201,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("return_no")}
+              onClick={() => handleSort("return_no")}
             >
               <HStack alignItems="center" justify="center">
                 반품 번호
@@ -230,7 +211,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("emb.employee_name")}
+              onClick={() => handleSort("emb.employee_name")}
             >
               <HStack alignItems="center" justify="center">
                 산청자
@@ -241,7 +222,7 @@ function ReturnList({
 
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("emce.employee_name")}
+              onClick={() => handleSort("emce.employee_name")}
             >
               <HStack alignItems="center" justify="center">
                 승인자
@@ -251,7 +232,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("emcc.employee_name")}
+              onClick={() => handleSort("emcc.employee_name")}
             >
               <HStack alignItems="center" justify="center">
                 검수기사
@@ -261,7 +242,7 @@ function ReturnList({
             </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleHeaderClick("date")}
+              onClick={() => handleSort("date")}
             >
               <HStack alignItems="center" justify="center">
                 날짜
