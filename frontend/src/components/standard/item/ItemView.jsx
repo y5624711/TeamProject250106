@@ -74,24 +74,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
       });
   };
 
-  // 품목 삭제 시 사용여부 false
-  // const handleDeleteConfirm = () => {
-  //   axios
-  //     .put(`/api/item/delete/${itemKey}`)
-  //     .then((res) => res.data)
-  //     .then((data) => {
-  //       toaster.create({
-  //         description: data.message.text,
-  //         type: data.message.type,
-  //       });
-  //       setChange((prev) => !prev);
-  //     })
-  //     .catch((e) => {
-  //       const message = e.response.data.message;
-  //       toaster.create({ description: message.text, type: message.type });
-  //     });
-  // };
-
   const isValid =
     editedItem.inputPrice != null &&
     editedItem.outputPrice != null &&
@@ -170,12 +152,13 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                       <Checkbox
                         name="itemActive"
                         checked={editedItem.itemActive}
-                        onChange={(e) =>
-                          setEditedItem((prevItem) => ({
-                            ...prevItem,
-                            itemActive: e.target.checked,
-                          }))
-                        }
+                        // onChange={(e) =>
+                        //   setEditedItem((prevItem) => ({
+                        //     ...prevItem,
+                        //     itemActive: e.target.checked,
+                        //   }))
+                        // }
+                        readOnly
                       />
                     </Box>
                   </Field>
