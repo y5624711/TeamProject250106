@@ -56,6 +56,15 @@ function MemberInfo({ updateCheck, setUpdateCheck }) {
       });
   }, []);
 
+  let disable = false;
+  if (employee !== null) {
+    disable = !(
+      employee.employeeName.trim().length > 0 &&
+      employee.employeePassword > 0 &&
+      employee.employeeTel
+    );
+  }
+
   if (loading) {
     return <Spinner />;
   }
@@ -175,7 +184,9 @@ function MemberInfo({ updateCheck, setUpdateCheck }) {
               닫기
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleSaveInfo}>저장</Button>
+          <Button onClick={handleSaveInfo} disabled={disable}>
+            저장
+          </Button>
         </DialogFooter>
         <DialogCloseTrigger></DialogCloseTrigger>
       </DialogContent>
