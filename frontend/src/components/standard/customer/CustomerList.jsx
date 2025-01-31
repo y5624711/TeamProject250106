@@ -113,7 +113,7 @@ function CustomerList({
       </Checkbox>
 
       {/*테이블*/}
-      <Table.Root interactive my={3}>
+      <Table.Root interactive my={3} style={{ cursor: "pointer" }}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
@@ -123,7 +123,7 @@ function CustomerList({
               <HStack alignItems="center" justify="center">
                 #
                 {standard.sort === "customer_key" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
@@ -133,35 +133,35 @@ function CustomerList({
               <HStack alignItems="center" justify="center">
                 업체명
                 {standard.sort === "customer_name" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_no")}>
               <HStack alignItems="center" justify="center">
                 사업자번호
                 {standard.sort === "customer_no" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
               <HStack alignItems="center" justify="center">
                 취급 품목
                 {standard.sort === "item_common_name" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_rep")}>
               <HStack alignItems="center" justify="center">
                 대표
                 {standard.sort === "customer_rep" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_tel")}>
               <HStack alignItems="center" justify="center">
                 전화번호
                 {standard.sort === "customer_tel" &&
-                  (standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                  (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
             {/*<Table.ColumnHeader>*/}

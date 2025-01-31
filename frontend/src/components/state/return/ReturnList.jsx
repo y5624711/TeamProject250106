@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -96,6 +96,11 @@ function ReturnList({
     setSearchParams(newParams);
   };
 
+  useEffect(() => {
+    setLocalKeyword(searchParams.get("keyword") || "");
+    setLocalType(searchParams.get("type") || "all");
+  }, [searchParams]);
+
   return (
     <Box>
       {/*검색*/}
@@ -155,10 +160,19 @@ function ReturnList({
       </RadioGroup>
 
       {/*리스트*/}
-      <Table.Root interactive my={3}>
+      <Table.Root interactive my={3} style={{ cursor: "pointer" }}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <Table.ColumnHeader textAlign="center">#</Table.ColumnHeader>
+            <Table.ColumnHeader
+              textAlign="center"
+              onClick={() => handleSort("rr.return_request_key")}
+            >
+              <HStack alignItems="center" justify="center">
+                #
+                {sort === "rr.return_request_key" &&
+                  (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
+              </HStack>
+            </Table.ColumnHeader>
             <Table.ColumnHeader
               textAlign="center"
               onClick={() => handleSort("franchise_name")}

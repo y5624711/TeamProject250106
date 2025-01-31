@@ -33,7 +33,7 @@ function Customer() {
       .get(`/api/customer/list`, {
         params: {
           sort: "",
-          order: "ASC",
+          order: "DESC",
           page: "1",
           type: "all",
           keyword: "",
@@ -149,7 +149,7 @@ function Customer() {
       .get(`/api/customer/list`, {
         params: {
           sort: searchParams.get("sort") || "customer_key",
-          order: searchParams.get("order") || "asc",
+          order: searchParams.get("order") || "DESC",
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
@@ -219,10 +219,10 @@ function Customer() {
   //정렬 기준
   function handleStandard(sort) {
     const currentSort = searchParams.get("sort");
-    const currentOrder = searchParams.get("order");
+    const currentOrder = searchParams.get("order") || "ASC";
 
     const newOrder =
-      currentSort === sort && currentOrder === "asc" ? "desc" : "asc";
+      currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sort);
@@ -231,9 +231,10 @@ function Customer() {
     setSearchParams(nextSearchParams);
   }
 
+  //정렬 기호 표시 변경
   useEffect(() => {
     const sort = searchParams.get("sort") || "customer_key";
-    const order = searchParams.get("order") || "asc";
+    const order = searchParams.get("order") || "DESC";
     setStandard({ sort, order });
   }, [searchParams]);
 

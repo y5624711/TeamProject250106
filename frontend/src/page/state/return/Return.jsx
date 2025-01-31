@@ -18,7 +18,7 @@ function Return(props) {
 
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
-  const order = searchParams.get("order") || "desc";
+  const order = searchParams.get("order") || "DESC";
 
   //목록 불러오기
   const fetchReturnList = () => {
