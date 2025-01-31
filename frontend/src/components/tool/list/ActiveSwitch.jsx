@@ -28,7 +28,7 @@ export function ActiveSwitch({ onActiveChange }) {
 
   return (
     <Checkbox my={3} checked={active} onChange={handleSwitchChange}>
-      전체 조회
+      미사용 포함 조회
     </Checkbox>
   );
 }

@@ -248,7 +248,7 @@ function Customer() {
     <Box>
       <HStack align={"flex-start"} w={"100%"}>
         <StandardSideBar />
-        <Stack flex={1} p={5}>
+        <Stack flex={1} p={5} pb={0}>
           <Heading size="xl" mb={3} p={2}>
             기준정보 관리 {">"} 협력업체 관리
           </Heading>
