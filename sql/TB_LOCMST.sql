@@ -24,7 +24,7 @@ FROM TB_LOCMST
 WHERE warehouse_code = 'WHS0000000001';
 
 INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, located, location_note)
-SELECT 'WHS0000000003' AS warehouse_code,
+SELECT 'WHS0000000002' AS warehouse_code,
        r.num           AS row,
        c.num           AS col,
        s.num           AS shelf,

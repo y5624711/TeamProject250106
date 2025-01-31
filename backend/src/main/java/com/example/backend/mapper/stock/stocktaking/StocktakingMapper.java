@@ -151,6 +151,7 @@ public interface StocktakingMapper {
                    s.stocktaking_date,
                    w.warehouse_name,
                    w.customer_code,
+                   s.stocktaking_type,
                    itcm.item_common_name itemName,
                    cus.customer_name,
                    emp.employee_name customerEmployeeName

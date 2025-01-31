@@ -52,6 +52,15 @@ function StockTakingView({ stocktakingKey }) {
           <Input value={stocktakingDetail.customerEmployeeNo} />
         </Field>
       </Box>
+      <Field label="실사 유형" orientation="horizontal" mb={15}>
+        <Input
+          value={
+            stocktakingDetail.stocktakingType === false
+              ? "비정기 실사"
+              : "정기 실사"
+          }
+        />
+      </Field>
       <Field label="실사 날짜" orientation="horizontal" mb={15}>
         <Input value={stocktakingDetail.stocktakingDate} />
       </Field>
