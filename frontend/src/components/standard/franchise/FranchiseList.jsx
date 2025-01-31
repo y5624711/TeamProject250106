@@ -148,10 +148,14 @@ export function FranchiseList({
             >
               <HStack alignItems="center" justify="center">
                 <Stack>#</Stack>
-                {standard.sort === "franchiseKey" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
+                {standard.sort === "franchiseKey" ? (
+                  standard.order === "asc" ? (
+                    <FaCaretUp />
+                  ) : (
+                    <FaCaretDown />
+                  )
+                ) : (
+                  <FaCaretDown /> // 기본값
                 )}
               </HStack>
             </TableColumnHeader>
