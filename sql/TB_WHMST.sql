@@ -24,6 +24,11 @@ VALUES ('WH5438332', 'COE3311823', '경기남부A', 'GSA001', '01001807060',
         '경기도 수원시', '수원역 앞 분식집 지하 1층', '3333', '경기도', '수원시',
         true, '아웃터파크');
 
+SELECT *
+FROM TB_WHMST
+WHERE warehouse_address = 13
+  AND warehouse_address_detail = 13;
+
 DELETE
 FROM TB_WHMST
 WHERE warehouse_key = 6;

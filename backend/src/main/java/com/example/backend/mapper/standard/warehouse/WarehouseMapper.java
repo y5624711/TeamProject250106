@@ -188,11 +188,11 @@ public interface WarehouseMapper {
     Integer countAllWarehouse(String searchType, String searchKeyword, Boolean active);
 
     @Select("""
-            SELECT *
+            SELECT COUNT(*)
             FROM TB_WHMST
             WHERE warehouse_address=#{warehouseAddress} AND warehouse_address_detail=#{warehouseAddressDetail}
             """)
-    Integer checkWarehouse(String warehoueAddress, String warehouseAddressDetail);
+    Integer checkWarehouse(String warehouseAddress, String warehouseAddressDetail);
 
     //창고 코드 최대값
     @Select("""
