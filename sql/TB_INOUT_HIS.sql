@@ -10,14 +10,40 @@ CREATE TABLE TB_INOUT_HIS
     business_employee_no VARCHAR(13) NOT NULL,
     franchise_code       VARCHAR(13) NULL,
     location_key         INT         NULL,
-    inout_history_date   DATETIME    NULL DEFAULT NOW(),
-    inout_history_note   VARCHAR(50) NULL
+    inout_history_date   DATETIME DEFAULT NOW(),
+    inout_history_note   VARCHAR(50) NULL,
+    inout_no             VARCHAR(13),
+    FOREIGN KEY (serial_no) REFERENCES TB_ITEMSUB (serial_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (warehouse_code) REFERENCES TB_WHMST (warehouse_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (inout_common_code) REFERENCES TB_SYSCOMM (common_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (customer_employee_no) REFERENCES TB_EMPMST (employee_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (business_employee_no) REFERENCES TB_EMPMST (employee_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (franchise_code) REFERENCES TB_FRNCHSMST (franchise_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (location_key) REFERENCES TB_LOCMST (location_key)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
+DESC TB_EMPMST;
+
+SHOW CREATE TABLE TB_EMPMST;
+
 INSERT INTO TB_INOUT_HIS (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no,
-                          franchise_code, count_current, inout_history_note)
+                          franchise_code, inout_history_note)
 VALUES ('00000000000000000009', 'WH4328332', '', 'CUSEMP0000020', 'BIZEMP0000004',
-        'FRN0000000002', '1', '이상 없음');
+        'FRN0000000002', '이상 없음');
 
 SELECT h.inout_history_key,
        h.serial_no,

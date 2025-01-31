@@ -8,9 +8,13 @@ CREATE TABLE TB_LOCMST
     col            VARCHAR(2)  NOT NULL,
     shelf          INT         NOT NULL,
     located        BOOLEAN DEFAULT FALSE,
-    location_note  VARCHAR(50) NULL
+    location_note  VARCHAR(50) NULL,
+    FOREIGN KEY (warehouse_code) REFERENCES TB_WHMST (warehouse_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
+DROP TABLE TB_INOUT_HIS;
 
 ALTER TABLE TB_LOCMST
     ADD COLUMN located BOOLEAN DEFAULT FALSE;
@@ -24,7 +28,7 @@ FROM TB_LOCMST
 WHERE warehouse_code = 'WHS0000000001';
 
 INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, located, location_note)
-SELECT 'WHS0000000002' AS warehouse_code,
+SELECT 'WHS0000000001' AS warehouse_code,
        r.num           AS row,
        c.num           AS col,
        s.num           AS shelf,

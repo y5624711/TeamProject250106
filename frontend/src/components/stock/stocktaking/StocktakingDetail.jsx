@@ -11,7 +11,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Box, HStack } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
-import StockTakingView from "./StockTakingView.jsx";
+import StocktakingView from "./StocktakingView.jsx";
 
 function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
   return (
@@ -26,7 +26,7 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
           {/* 재고실사 팝업창 내용 */}
-          <StockTakingView stocktakingKey={stocktakingKey} />
+          <StocktakingView stocktakingKey={stocktakingKey} />
         </DialogBody>
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
