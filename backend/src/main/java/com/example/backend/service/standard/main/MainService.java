@@ -2,6 +2,7 @@ package com.example.backend.service.standard.main;
 
 import com.example.backend.dto.standard.employee.Employee;
 import com.example.backend.dto.state.install.Install;
+import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.mapper.standard.main.MainMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,9 @@ public class MainService {
 
     public List<Install> getInstallList(Authentication auth) {
         return mapper.selectInstallList(auth.getName());
+    }
+
+    public List<Instk> getInstkList(Authentication auth) {
+        return mapper.selectInstkList(auth.getName());
     }
 }

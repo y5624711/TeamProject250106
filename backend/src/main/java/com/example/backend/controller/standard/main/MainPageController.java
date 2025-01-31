@@ -1,6 +1,7 @@
 package com.example.backend.controller.standard.main;
 
 import com.example.backend.dto.state.install.Install;
+import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.service.standard.main.MainService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class MainPageController {
     @PreAuthorize("isAuthenticated()")
     public List<Install> installList(Authentication auth) {
         return service.getInstallList(auth);
+    }
+
+    @GetMapping("instkList")
+    @PreAuthorize("isAuthenticated()")
+    public List<Instk> instakList(Authentication auth) {
+        return service.getInstkList(auth);
     }
 
 }
