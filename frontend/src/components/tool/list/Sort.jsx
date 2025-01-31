@@ -15,8 +15,6 @@ export function Sort({ sortOptions, onSortChange, defaultSortKey }) {
   const handleSort = (key) => {
     const currentOrder = order;
     const nextOrder = sort === key && currentOrder === "desc" ? "asc" : "desc";
-    // nextOrder를 계산한 후에 출력
-    console.log(key, nextOrder); // 여기서 key와 nextOrder를 출력
 
     // URLSearchParams를 이용해 정렬 파라미터 업데이트
     const nextSearchParams = new URLSearchParams(searchParams);

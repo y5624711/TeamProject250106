@@ -36,11 +36,8 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       nextSearchParam.delete("keyword");
     }
     // 검색해도 active, sort, order 값 유지
-    const active = searchParams.get("active") ?? "false";
-    nextSearchParam.set("active", active);
     const filter = searchParams.get("filter") ?? "";
-    // const active = searchParams.get("active") ?? "false";
-    // nextSearchParam.set("active", active);
+
     // 경로별로 다른 파라미터 추가 (active, state 구분)
     if (location.pathname.startsWith("/item")) {
       const active = searchParams.get("active") ?? "false";
