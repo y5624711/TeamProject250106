@@ -145,7 +145,8 @@ export function PurchaseRequest({ onSave, onClose }) {
           </SelectTrigger>
           <SelectContent
             style={{
-              width: "280px",
+              width: "85%",
+              top: "40px",
               position: "absolute",
             }}
           >

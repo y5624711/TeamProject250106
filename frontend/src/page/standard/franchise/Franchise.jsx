@@ -251,7 +251,7 @@ export function Franchise() {
         </Center>
         {/* 가맹점 등록 버튼 */}
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handleAddFranchiseClick} mt={-10}>
+          <Button onClick={handleAddFranchiseClick} mt={-9}>
             가맹점 등록
           </Button>
         </Box>

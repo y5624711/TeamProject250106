@@ -143,19 +143,19 @@ export function PurchaseApprove({
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="신청자" orientation="horizontal" mb={15}>
-          <Input value={purchase.employeeName} readOnly />
-        </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={purchase.employeeNo} readOnly />
-        </Field>
-      </Box>
-      <Box display="flex" gap={4}>
         <Field label="담당 업체" orientation="horizontal" mb={15}>
           <Input value={purchase.customerName} readOnly />
         </Field>
         <Field label="창고" orientation="horizontal" mb={15}>
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="신청자" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeNo} readOnly />
         </Field>
       </Box>
       <Field label="신청 날짜" orientation="horizontal" mb={15}>
@@ -168,13 +168,12 @@ export function PurchaseApprove({
         <Textarea
           value={purchase.purchaseRequestNote}
           readOnly
-          placeholder={"최대 50자"}
           style={{ maxHeight: "100px", overflowY: "auto" }}
         />
       </Field>
 
-      {/* 반려일 때는 Separator 숨기기 */}
-      {purchase.purchaseConsent !== false && <Separator />}
+      {/* 승인 여부가 승인/반려이면 숨기고, 승인 여부가 정해지지 않은 경우에만 표시 */}
+      {purchase.purchaseConsent === undefined && <Separator />}
 
       {/* 승인 여부가 false가 아닌 경우 승인자와 관련 필드 표시 */}
       {purchase.purchaseConsent !== false && (
