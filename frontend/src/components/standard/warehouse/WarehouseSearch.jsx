@@ -1,14 +1,13 @@
 import React from "react";
+import { HStack, Input } from "@chakra-ui/react";
+import { Button } from "../../ui/button.jsx";
 import {
-  HStack,
-  Input,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
+} from "../../ui/select.jsx";
 
 function WarehouseSearch({
   warehouseOptionList,
@@ -22,19 +21,13 @@ function WarehouseSearch({
         collection={warehouseOptionList}
         defaultValue={["all"]}
         width="160px"
-        position="relative"
         onValueChange={(oc) => setSearch({ ...search, type: oc.value })}
+        size="md"
       >
         <SelectTrigger>
           <SelectValueText />
         </SelectTrigger>
-        <SelectContent
-          style={{
-            width: "150px",
-            top: "40px",
-            position: "absolute",
-          }}
-        >
+        <SelectContent>
           {warehouseOptionList.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}
