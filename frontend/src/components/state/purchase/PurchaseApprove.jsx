@@ -168,7 +168,6 @@ export function PurchaseApprove({
         <Textarea
           value={purchase.purchaseRequestNote}
           readOnly
-          placeholder={"최대 50자"}
           style={{ maxHeight: "100px", overflowY: "auto" }}
         />
       </Field>
