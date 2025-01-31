@@ -4,10 +4,17 @@ CREATE TABLE TB_INSTL_APPR
     install_request_key   INT         NOT NULL,
     customer_employee_no  VARCHAR(13) NOT NULL,
     customer_installer_no VARCHAR(13) NOT NULL,
-    output_no             VARCHAR(13) NOT NULL,
+    output_no             VARCHAR(13) NOT NULL UNIQUE,
     install_schedule_date DATE,
     install_approve_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    install_approve_note  VARCHAR(50)
+    install_approve_note  VARCHAR(50),
+
+    CONSTRAINT fk_install_request_key FOREIGN KEY (install_request_key)
+        REFERENCES TB_INSTL_REQ (install_request_key),
+    CONSTRAINT fk_install_approve_employee FOREIGN KEY (customer_employee_no)
+        REFERENCES TB_EMPMST (employee_no),
+    CONSTRAINT fk_install_approve_installer FOREIGN KEY (customer_installer_no)
+        REFERENCES TB_EMPMST (employee_no)
 );
 
 ALTER TABLE TB_INSTL_APPR
@@ -43,4 +50,5 @@ FROM TB_INSTL_REQ ir
          LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
 ORDER BY installDate asc;
 
+DROP TABLE TB_INSTL_APPR;
 

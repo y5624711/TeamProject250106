@@ -6,7 +6,10 @@ CREATE TABLE TB_ITEMSUB
     item_common_code VARCHAR(5)  NOT NULL,
     serial_no        VARCHAR(20) NOT NULL UNIQUE,
     item_sub_active  BOOLEAN DEFAULT TRUE,
-    item_sub_note    VARCHAR(50)
+    item_sub_note    VARCHAR(50),
+
+    CONSTRAINT fk_item_sub FOREIGN KEY (item_common_code)
+        REFERENCES TB_SYSCOMM (common_code) ON UPDATE CASCADE
 );
 
 INSERT INTO TB_ITEMSUB
@@ -35,3 +38,5 @@ ORDER BY binary (item_common_name);
 
 SELECT item_common_code
 FROM TB_ITEMMST;
+
+DROP TABLE TB_ITEMSUB;
