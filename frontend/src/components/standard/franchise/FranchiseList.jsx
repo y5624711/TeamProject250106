@@ -131,11 +131,11 @@ export function FranchiseList({
       <Checkbox
         mt={3}
         mb={5}
-        ml={2}
+        ml={3}
         checked={checkedActive}
         onChange={toggleCheckedActive}
       >
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
 
       {/* 테이블 */}
