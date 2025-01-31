@@ -40,13 +40,11 @@ public class InstkService {
     public Instk detailView(int inputKey) {
 
         //시리얼 번호 목록 
-       List<Integer> serialList= instkSubMapper.getSerialNoByInputKey(inputKey);
-
+       List<String> serialList= instkSubMapper.getSerialNoByInputKey(inputKey);
         System.out.println("serialList = " + serialList);
         //  입고시 비고내용
          String inputStockNote= mapper.getInstkNoteByInputKey(inputKey,serialList.get(0));
 //
-        System.out.println("inputStockNote = " + inputStockNote);
 
       Instk instk = new Instk();
       instk.setInputNote(inputStockNote);
@@ -77,7 +75,7 @@ public class InstkService {
             String itemCommonCode = commonMapper.viewCommonCodeByCodeName(instk.getItemCommonName());
             //품목 상세에서 같은 코드 시리얼 넘버 맥스 뭔지 찾아오기
             Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
-            String insertSerialNo = String.format("%20d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+            String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
             int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
             //입고 테이블
            int insertInstk= mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);

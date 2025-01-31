@@ -54,9 +54,8 @@ public class InstkController {
     }
 
     //승인 상세
-    @GetMapping("detailView/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey) {
-        System.out.println("inputKey = " + inputKey);
+    @GetMapping("detailview/{inputKey}")
+    public Instk detailView(@PathVariable int inputKey  ) {
 
 
 //        return  new Instk();

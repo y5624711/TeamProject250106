@@ -25,7 +25,7 @@ import axios from "axios";
 
 export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
-  const [detailData, setDetailData] = useState();
+  const [detailData, setDetailData] = useState({ serialList: [] });
 
   const items = ["Option 1", "Option 2", "Option 3"];
 
@@ -35,6 +35,8 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
       setDetailData(res.data);
     });
   }, []);
+
+  console.log(detailData.serialList[0]);
 
   return (
     <DialogRoot size={"lg"} open={isModalOpen}>
@@ -57,12 +59,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
               <Field label={"시리얼 번호"} orientation="horizontal">
-                {/*<NativeSelectRoot>*/}
-                {/*  <NativeSelectField*/}
-                {/*    items={["Option 1", "Option 2", "Option 3"]}*/}
-                {/*  />*/}
-                {/*</NativeSelectRoot>*/}
-                <Input readOnly value={"요청으로 가져와야함"} />
+                <Input readOnly value={detailData?.serialList?.[0] || ""} />
               </Field>
             </HStack>
 
@@ -92,10 +89,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
               </Field>
             </HStack>
 
-            <Field label={"창고 + 로케이션"} orientation="horizontal">
-              <Input readOnly value={"해야함 "} />
-            </Field>
-            <Field label={"입고 비고"} orientation="horizontal">
+            <Field label={"승인 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputNote} />
             </Field>
             <Field label={"입고 날짜"} orientation="horizontal">

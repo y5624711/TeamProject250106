@@ -111,9 +111,9 @@ LIMIT #{offset}, 10
     @Select("""
             select input_stock_note
             from  TB_INSTK
-            where   serial_no=#{serialNo}
+            where   input_key=#{inputKey}
             """)
-    String getInstkNoteByInputKey(int inputKey, Integer serialNo);
+    String getInstkNoteByInputKey(int inputKey, String serialNo);
 
     @Insert("""
             INSERT INTO TB_BUYIN

@@ -34,6 +34,6 @@ public class Instk {
     private String inputStockEmployeeNo;
     private String inputStockEmployeeName;
 
-    private List<Integer> serialList;
+    private List<String> serialList;
 
 }
