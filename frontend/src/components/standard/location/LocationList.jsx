@@ -29,8 +29,7 @@ function LocationList({
     { key: "row", label: "행" },
     { key: "col", label: "열" },
     { key: "shelf", label: "단" },
-    { key: "itemCommonName", label: "품목" },
-    { key: "locationNote", label: "비고" },
+    { key: "located", label: "재고 여부" },
   ];
 
   return (
@@ -51,7 +50,7 @@ function LocationList({
             <Table.Body>
               {locationList.map((location, index) => (
                 <LocationListPage
-                  index={(currentPage - 1) * 10 + index}
+                  index={index}
                   location={location}
                   setSelectedLocationKey={setSelectedLocationKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}

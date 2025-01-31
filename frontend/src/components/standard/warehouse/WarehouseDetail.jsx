@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -20,19 +21,18 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
-    if (warehouseKey) {
-      axios
-        .get(`/api/warehouse/view/${warehouseKey}`)
-        .then((res) => {
-          setWarehouseDetail(res.data);
-        })
-        .catch((error) => {
-          console.error("창고 상세 정보 요청 중 오류 발생: ", error);
-        });
-    }
+    axios
+      .get(`/api/warehouse/view/${warehouseKey}`)
+      .then((res) => {
+        setWarehouseDetail(res.data);
+      })
+      .catch((error) => {
+        console.error("창고 상세 정보 요청 중 오류 발생: ", error);
+      });
   }, [warehouseKey]);
 
   function handleCheckClick() {
+    console.log(warehouseKey);
     axios
       .put(`/api/warehouse/edit`, {
         warehouseKey,
@@ -86,14 +86,14 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={onClosed} />
-          <HStack>
-            <Button variant="outline" onClick={onClosed}>
-              취소
-            </Button>
-            <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
-          </HStack>
+          <DialogActionTrigger asChild>
+            <HStack>
+              <Button variant="outline">취소</Button>
+              <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
+            </HStack>
+          </DialogActionTrigger>
         </DialogFooter>
+        <DialogCloseTrigger onClick={onClosed} />
         <DialogEditConfirmation
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}

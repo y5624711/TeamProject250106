@@ -10,7 +10,9 @@ function StocktakingListPage({
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
+        style={{
+          cursor: "pointer",
+        }}
         key={stocktaking.stocktakingKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);
@@ -40,7 +42,7 @@ function StocktakingListPage({
           {stocktaking.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.stocktakingType}
+          {stocktaking.stocktakingType === false ? "비정기" : "정기"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.customerEmployeeName}

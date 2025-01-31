@@ -87,15 +87,17 @@ public class WarehouseService {
     }
 
     // 창고 정보가 다 입력됐는지 확인
-    public boolean validate(Warehouse warehouse) {
-        return !(
-                warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||
-                        warehouse.getWarehouseName() == null || warehouse.getWarehouseName().trim().isEmpty() ||
-                        warehouse.getCustomerEmployeeNo() == null || warehouse.getCustomerEmployeeNo().trim().isEmpty() ||
-                        warehouse.getWarehouseAddress() == null || warehouse.getWarehouseAddress().trim().isEmpty() ||
-                        warehouse.getWarehousePost() == null || warehouse.getWarehousePost().trim().isEmpty() ||
-                        warehouse.getWarehouseState() == null || warehouse.getWarehouseState().trim().isEmpty() ||
-                        warehouse.getWarehouseCity() == null || warehouse.getWarehouseCity().trim().isEmpty());
+    public Boolean validate(Warehouse warehouse) {
+        System.out.println(warehouse.getCustomerCode());
+        return
+                !(
+                        warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||
+                                warehouse.getWarehouseName() == null || warehouse.getWarehouseName().trim().isEmpty() ||
+                                warehouse.getCustomerEmployeeNo() == null || warehouse.getCustomerEmployeeNo().trim().isEmpty() ||
+                                warehouse.getWarehouseAddress() == null || warehouse.getWarehouseAddress().trim().isEmpty() ||
+                                warehouse.getWarehousePost() == null || warehouse.getWarehousePost().trim().isEmpty() ||
+                                warehouse.getWarehouseState() == null || warehouse.getWarehouseState().trim().isEmpty() ||
+                                warehouse.getWarehouseCity() == null || warehouse.getWarehouseCity().trim().isEmpty());
     }
 
     // 창고 중복 검증
@@ -103,6 +105,6 @@ public class WarehouseService {
         String warehouseAddress = warehouse.getWarehouseAddress();
         String warehouseAddressDetail = warehouse.getWarehouseAddressDetail();
         Integer check = mapper.checkWarehouse(warehouseAddress, warehouseAddressDetail);
-        return check == 1;
+        return check == 0;
     }
 }

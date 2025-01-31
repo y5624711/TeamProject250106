@@ -41,7 +41,7 @@ function StocktakingList({ stocktakingList, currentPage, setSearchParams }) {
               {/* 재고실사 각각의 내용*/}
               {stocktakingList.map((stocktaking, index) => (
                 <StocktakingListPage
-                  index={(currentPage - 1) * 10 + index}
+                  index={index}
                   stocktaking={stocktaking}
                   setSelectedStocktaking={setSelectedStocktaking}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}

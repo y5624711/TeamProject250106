@@ -6,12 +6,13 @@ function InoutHistoryListPage({
   setSelectedInoutHistory,
   setIsDetailDialogOpen,
   index,
-  page,
 }) {
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
+        style={{
+          cursor: "pointer",
+        }}
         key={inoutHistory.inoutHistoryKey}
         onDoubleClick={() => {
           setSelectedInoutHistory(inoutHistory.inoutHistoryKey);
@@ -21,7 +22,7 @@ function InoutHistoryListPage({
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {(page - 1) * 10 + index + 1}
+          {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.inoutCommonCode === "in" ||

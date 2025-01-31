@@ -10,7 +10,6 @@ public class Location {
     private String row;
     private String col;
     private Integer shelf;
-    private String itemCommonCode;
-    private String itemCommonName;
+    private Boolean located;
     private String locationNote;
 }
