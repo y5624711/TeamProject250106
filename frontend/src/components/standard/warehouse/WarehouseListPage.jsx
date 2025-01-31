@@ -10,7 +10,6 @@ function WarehouseListPage({
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
         key={warehouse.warehouseKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);
@@ -18,6 +17,9 @@ function WarehouseListPage({
         }}
         _hover={{ backgroundColor: "gray.200" }}
         bg={warehouse.warehouseActive ? "white" : "gray.100"}
+        style={{
+          cursor: "pointer",
+        }}
       >
         <Table.Cell textAlign="center" verticalAlign="middle">
           {index + 1}

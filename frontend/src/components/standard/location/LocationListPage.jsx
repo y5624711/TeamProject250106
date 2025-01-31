@@ -10,7 +10,9 @@ function WarehouseListPage({
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
+        style={{
+          cursor: "pointer",
+        }}
         key={location.locationKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);

@@ -10,7 +10,9 @@ function InoutHistoryListPage({
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
+        style={{
+          cursor: "pointer",
+        }}
         key={inoutHistory.inoutHistoryKey}
         onDoubleClick={() => {
           setSelectedInoutHistory(inoutHistory.inoutHistoryKey);

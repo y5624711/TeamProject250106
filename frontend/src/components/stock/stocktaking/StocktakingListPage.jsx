@@ -10,7 +10,9 @@ function StocktakingListPage({
   return (
     <>
       <Table.Row
-        style={{ height: "50px" }}
+        style={{
+          cursor: "pointer",
+        }}
         key={stocktaking.stocktakingKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);
