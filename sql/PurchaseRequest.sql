@@ -7,7 +7,11 @@ CREATE TABLE TB_PURCH_REQ
     amount                INT         NOT NULL,
     purchase_request_date TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     purchase_consent      BOOLEAN     DEFAULT NULL,
-    purchase_request_note VARCHAR(50) DEFAULT NULL
+    purchase_request_note VARCHAR(50) DEFAULT NULL,
+    CONSTRAINT fk_employee_no FOREIGN KEY (employee_no) REFERENCES TB_EMPMST (employee_no),
+    CONSTRAINT fk_item_common_code FOREIGN KEY (item_common_code) REFERENCES TB_SYSCOMM (common_code)
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_customer_code FOREIGN KEY (customer_code) REFERENCES TB_CUSTMST (customer_code)
 );
 
 DROP TABLE TB_PURCH_REQ;

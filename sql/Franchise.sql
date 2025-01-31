@@ -1,7 +1,7 @@
 CREATE TABLE TB_FRNCHSMST
 (
     franchise_key            INT AUTO_INCREMENT PRIMARY KEY,
-    franchise_code           VARCHAR(13) NOT NULL,
+    franchise_code           VARCHAR(13) NOT NULL UNIQUE,
     franchise_name           VARCHAR(30) NOT NULL,
     franchise_rep            VARCHAR(5)  NOT NULL,
     franchise_no             VARCHAR(13) NOT NULL,
@@ -19,7 +19,3 @@ DROP TABLE TB_FRNCHSMST;
 
 SELECT *
 FROM TB_FRNCHSMST;
-
-ALTER TABLE TB_FRNCHSMST
-    DROP COLUMN business_employee_no,
-    DROP COLUMN business_employee_name;
