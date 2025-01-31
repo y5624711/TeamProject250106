@@ -104,7 +104,11 @@ export function Purchase() {
           />
           {/* 구매 요청 버튼 */}
           <Flex justify="flex-end">
-            <Button onClick={handlePurchaseRequestClick} mt={-16}>
+            <Button
+              size={"lg"}
+              mt={"-65px"}
+              onClick={handlePurchaseRequestClick}
+            >
               구매 요청
             </Button>
           </Flex>
