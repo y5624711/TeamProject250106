@@ -1,14 +1,13 @@
 import React from "react";
+import { HStack, Input } from "@chakra-ui/react";
+import { Button } from "../../ui/button.jsx";
 import {
-  HStack,
-  Input,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
+} from "../../ui/select.jsx";
 
 function InoutHistorySearch({
   setSearch,
@@ -20,21 +19,15 @@ function InoutHistorySearch({
     <HStack justifyContent="center">
       <SelectRoot
         collection={inoutHistoryOptionList}
+        size="md"
         defaultValue={["all"]}
         width="160px"
-        position="relative"
         onValueChange={(oc) => setSearch({ ...search, type: oc.value[0] })}
       >
         <SelectTrigger>
           <SelectValueText />
         </SelectTrigger>
-        <SelectContent
-          style={{
-            width: "150px",
-            top: "40px",
-            position: "absolute",
-          }}
-        >
+        <SelectContent>
           {inoutHistoryOptionList.items.map((option) => (
             <SelectItem item={option} key={option.value}>
               {option.label}

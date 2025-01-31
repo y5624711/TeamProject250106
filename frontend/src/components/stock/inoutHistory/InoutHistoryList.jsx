@@ -45,7 +45,6 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
                   inoutHistory={inoutHistory}
                   setSelectedInoutHistory={setSelectedInoutHistory}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
-                  page={currentPage}
                 />
               ))}
             </Table.Body>

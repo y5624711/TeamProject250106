@@ -51,7 +51,7 @@ function LocationList({
             <Table.Body>
               {locationList.map((location, index) => (
                 <LocationListPage
-                  index={(currentPage - 1) * 10 + index}
+                  index={index}
                   location={location}
                   setSelectedLocationKey={setSelectedLocationKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}

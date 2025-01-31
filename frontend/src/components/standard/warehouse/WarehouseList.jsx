@@ -49,7 +49,7 @@ function WarehouseList({
             <Table.Body>
               {warehouseList.map((warehouse, index) => (
                 <WarehouseListPage
-                  index={(currentPage - 1) * 10 + index}
+                  index={index}
                   warehouse={warehouse}
                   setSelectedWarehouseKey={setSelectedWarehouseKey}
                   setIsDetailDialogOpen={setIsDetailDialogOpen}
