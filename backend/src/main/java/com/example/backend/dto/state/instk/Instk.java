@@ -12,7 +12,7 @@ public class Instk {
     private String inputCommonCodeName;
     private String inputNo;
     private String businessEmployeeNo;
-    private boolean inputConsent;
+    private Boolean inputConsent;
     private String inputNote;
     private String inputStockNote;
     private String itemCommonCode;
