@@ -13,7 +13,6 @@ function Customer() {
   const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
@@ -157,13 +156,13 @@ function Customer() {
   };
 
   // 검색 타입 변경 처리 및 URL 업데이트
-  const handleSearchTypeChange = (type) => {
-    setSearch((prev) => ({ ...prev, type }));
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("type", type);
-    setSearchParams(nextSearchParams);
-  };
+  // const handleSearchTypeChange = (type) => {
+  //   setSearch((prev) => ({ ...prev, type }));
+  //
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   nextSearchParams.set("type", type);
+  //   setSearchParams(nextSearchParams);
+  // };
 
   // 검색 실행 처리 및 URL 업데이트
   const handleSearchClick = () => {
@@ -277,6 +276,10 @@ function Customer() {
 
   // console.log("p", standard);
 
+  const handleResetClick = () => {
+    setSearchParams("");
+  };
+
   return (
     <Box>
       <HStack align={"flex-start"} w={"100%"}>
@@ -299,7 +302,7 @@ function Customer() {
             search={search}
             setSearch={setSearch}
             handleSearchClick={handleSearchClick}
-            handleSearchTypeChange={handleSearchTypeChange}
+            onReset={handleResetClick}
           />
           <Flex justify="flex-end">
             <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>

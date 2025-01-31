@@ -4,6 +4,7 @@ import {
   Center,
   createListCollection,
   HStack,
+  IconButton,
   Input,
   Table,
 } from "@chakra-ui/react";
@@ -18,6 +19,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 function CustomerList({
   customerList,
@@ -31,7 +33,7 @@ function CustomerList({
   setSearch,
   handleSearchClick,
   toggleCheckedActive,
-  handleSearchTypeChange,
+  onReset,
 }) {
   const totalPages = Math.ceil(count / 10);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -86,13 +88,27 @@ function CustomerList({
           onChange={(e) => {
             setSearch({ ...search, keyword: e.target.value });
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchClick();
+            }
+          }}
         />
-
-        <Button onClick={handleSearchClick}>검색</Button>
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={onReset}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
+        <Button onClick={handleSearchClick} transform="translateX(-75%)">
+          검색
+        </Button>
       </HStack>
 
       {/* 체크박스 필터 */}
-      <Checkbox checked={checkedActive} onChange={toggleCheckedActive} my={3}>
+      <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
         전체 조회
       </Checkbox>
 
