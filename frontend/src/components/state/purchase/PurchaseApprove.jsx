@@ -143,19 +143,19 @@ export function PurchaseApprove({
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="신청자" orientation="horizontal" mb={15}>
-          <Input value={purchase.employeeName} readOnly />
-        </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={purchase.employeeNo} readOnly />
-        </Field>
-      </Box>
-      <Box display="flex" gap={4}>
         <Field label="담당 업체" orientation="horizontal" mb={15}>
           <Input value={purchase.customerName} readOnly />
         </Field>
         <Field label="창고" orientation="horizontal" mb={15}>
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="신청자" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input value={purchase.employeeNo} readOnly />
         </Field>
       </Box>
       <Field label="신청 날짜" orientation="horizontal" mb={15}>
