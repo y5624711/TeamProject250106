@@ -2,12 +2,12 @@ import { Box, Heading, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export function MainInstallList() {
+export function MainInstallList({ company }) {
   const [installList, setInstallList] = useState([]);
 
   useEffect(() => {
     axios
-      .get("/api/main/installList")
+      .get("/api/main/installList", { params: { company } })
       .then((res) => res.data)
       .then((data) => {
         const formattedList = data.map((item) => {
@@ -45,6 +45,7 @@ export function MainInstallList() {
     { label: "가맹점" },
     { label: "품목" },
     { label: "협력업체" },
+    { label: "신청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
@@ -71,6 +72,9 @@ export function MainInstallList() {
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {row.businessEmployeeName}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.customerEmployeeName}
                 </Table.Cell>

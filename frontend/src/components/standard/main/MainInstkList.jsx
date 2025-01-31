@@ -2,12 +2,12 @@ import { Box, Heading, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export function MainInstkList() {
+export function MainInstkList({ company }) {
   const [mainInstkList, setMainInstkList] = useState([]);
 
   useEffect(() => {
     axios
-      .get("/api/main/instkList")
+      .get("/api/main/instkList", { params: { company } })
       .then((res) => res.data)
       .then((data) => {
         console.log(data);
@@ -21,6 +21,7 @@ export function MainInstkList() {
     { label: "발주 번호" },
     { label: "품목" },
     { label: "담당 업체" },
+    { label: "신청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },

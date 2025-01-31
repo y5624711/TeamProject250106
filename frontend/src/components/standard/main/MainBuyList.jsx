@@ -2,23 +2,24 @@ import { Box, Heading, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export function MainBuyList() {
+export function MainBuyList({ company }) {
   const [purchaseList, setPurchaseList] = useState([]);
 
   useEffect(() => {
     axios
-      .get("/api/main/purList")
+      .get("/api/main/purList", { params: { company } })
       .then((res) => res.data)
       .then((data) => {
         setPurchaseList(data);
         console.log(data);
       });
-  }, []);
+  }, [company]);
 
   const columnHeaders = [
     { label: "#" },
     { label: "담당 업체" },
     { label: "품목" },
+    { label: "신청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
@@ -44,6 +45,7 @@ export function MainBuyList() {
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
+                <Table.Cell textAlign="center">{row.employeeName}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.customerEmployeeName}
                 </Table.Cell>
@@ -61,7 +63,7 @@ export function MainBuyList() {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={6} style={{ textAlign: "center" }}>
+              <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
                 신청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

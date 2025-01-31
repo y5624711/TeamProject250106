@@ -24,7 +24,6 @@ public class LoginService {
 
         Employee db = mapper.selectById(employee.getEmployeeNo());
         List<String> auths = mapper.selectAuthByCommonCode(employee.getEmployeeNo());
-        System.out.println("auths = " + auths);
         String authString = auths.stream().collect(Collectors.joining(" "));
 
         if (db != null) {
@@ -48,5 +47,16 @@ public class LoginService {
 
     public String getName(String employeeNo) {
         return mapper.selectByIdSearchName(employeeNo);
+    }
+
+    public String getCompany(Employee employee) {
+        List<String> auths = mapper.selectAuthByCommonCode(employee.getEmployeeNo());
+        String authString = auths.stream().collect(Collectors.joining(" "));
+
+        if (authString.equals("CUS")) {
+            return mapper.selectCompanyByCode(employee.getEmployeeNo());
+        } else {
+            return mapper.selectBusinessByCode(employee.getEmployeeNo());
+        }
     }
 }

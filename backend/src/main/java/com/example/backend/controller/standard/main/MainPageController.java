@@ -28,14 +28,31 @@ public class MainPageController {
 
     @GetMapping("purList")
     @PreAuthorize("isAuthenticated()")
-    public List<Purchase> purchaseList(Authentication auth) {
-        return service.getPurchaseList(auth);
+    public List<Purchase> purchaseList(Authentication auth,
+                                       @RequestParam(value = "company", required = false) String company) {
+        // 구매신청자와 신청받은 업체 구분
+        if (service.checkBuyRequester(auth)) {
+            return service.getPurChaseListByRequester(auth);
+        } else {
+            return service.getPurchaseListByCustomer(company);
+        }
+
     }
 
     @GetMapping("installList")
     @PreAuthorize("isAuthenticated()")
-    public List<Install> installList(Authentication auth) {
-        return service.getInstallList(auth);
+    public List<Install> installList(Authentication auth,
+                                     @RequestParam(value = "company", required = false) String company) {
+        if (service.checkInstallRequester(auth)) {
+            //요청자
+            System.out.println("요청자");
+            return service.getInstallListByRequester(auth);
+
+        } else {
+            //업체
+            System.out.println("업체");
+            return service.getInstallListByCustomer(company);
+        }
     }
 
     @GetMapping("instkList")

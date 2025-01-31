@@ -35,7 +35,7 @@ export function LoginPage() {
           description: data.message.text,
         });
         navigate("/");
-        authentication.login(data.token, data.name);
+        authentication.login(data.token, data.name, data.company);
       })
       .catch((e) => {
         const message = e.response.data.message;

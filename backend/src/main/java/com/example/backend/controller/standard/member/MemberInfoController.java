@@ -19,7 +19,6 @@ public class MemberInfoController {
     @GetMapping("{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Employee> getMemberInfo(@PathVariable String id, Authentication auth) {
-        System.out.println("auth = " + auth.getName());
         if (service.hasAccess(id, auth)) {
             return ResponseEntity.ok(service.getId(id));
         } else {
