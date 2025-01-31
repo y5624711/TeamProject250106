@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
+  HStack,
   Input,
   Separator,
   Spinner,
@@ -134,30 +135,30 @@ export function PurchaseApprove({
       <Field label="품목" orientation="horizontal" mb={15}>
         <Input value={purchase.itemCommonName} readOnly />
       </Field>
-      <Box display="flex" gap={4}>
+      <HStack>
         <Field label="수량" orientation="horizontal" mb={15}>
           <Input value={purchase.amount} readOnly />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
           <Input value={purchase?.totalPrice || "N/A"} readOnly />
         </Field>
-      </Box>
-      <Box display="flex" gap={4}>
+      </HStack>
+      <HStack>
         <Field label="담당 업체" orientation="horizontal" mb={15}>
           <Input value={purchase.customerName} readOnly />
         </Field>
         <Field label="창고" orientation="horizontal" mb={15}>
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
         </Field>
-      </Box>
-      <Box display="flex" gap={4}>
+      </HStack>
+      <HStack>
         <Field label="요청자" orientation="horizontal" mb={15}>
           <Input value={purchase.employeeName} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
           <Input value={purchase.employeeNo} readOnly />
         </Field>
-      </Box>
+      </HStack>
       <Field label="요청 날짜" orientation="horizontal" mb={15}>
         <Input
           value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}

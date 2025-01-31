@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Input,
+  Spinner,
+  Textarea,
+} from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
@@ -73,7 +80,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   return (
     <Box>
       <Box>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="가맹점" orientation="horizontal" mb={15}>
             <Input
               name="franchiseName"
@@ -89,7 +96,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               readOnly
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="사업자 번호" orientation="horizontal" mb={15}>
           <Input
             name="franchiseNo"
@@ -97,7 +104,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             onChange={handleChange}
           />
         </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="대표자" orientation="horizontal" mb={15}>
             <Input
               name="franchiseRep"
@@ -112,7 +119,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               onChange={handleChange}
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="우편번호" orientation="horizontal" mb={15}>
           <Input
             name="franchisePost"
@@ -134,7 +141,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             onChange={handleChange}
           />
         </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="광역시도" orientation="horizontal" mb={15}>
             <Input
               name="franchiseState"
@@ -149,7 +156,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               onChange={handleChange}
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             name="franchiseNote"
