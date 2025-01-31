@@ -106,6 +106,11 @@ export function BusinessDepartmentList() {
     setAddCheck(!addCheck);
   };
 
+  const handleResetClick = () => {
+    setSearchParams("");
+    setSort({ column: "", order: "desc" });
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -118,6 +123,7 @@ export function BusinessDepartmentList() {
         setSearch={setSearch}
         searchParams={searchParams}
         setSearchParams={setSearchParams}
+        handleReset={handleResetClick}
       />
 
       <Checkbox
@@ -126,7 +132,7 @@ export function BusinessDepartmentList() {
         onCheckedChange={toggleCheckActive}
         whiteSpace={"nowrap"}
       >
-        삭제된 부서 포함하기
+        전체 조회
       </Checkbox>
 
       {/*리스트*/}

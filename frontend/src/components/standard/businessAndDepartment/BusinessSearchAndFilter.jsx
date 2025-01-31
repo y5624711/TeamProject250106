@@ -1,20 +1,26 @@
 import {
   createListCollection,
   HStack,
+  IconButton,
   Input,
+} from "@chakra-ui/react";
+import { Button } from "../../ui/button.jsx";
+import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
+} from "../../ui/select.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
+import React from "react";
 
 export function BusinessSearchAndFilter({
   search,
   setSearch,
   searchParams,
   setSearchParams,
+  handleReset,
 }) {
   /*검색타입*/
   const optionList = createListCollection({
@@ -58,16 +64,15 @@ export function BusinessSearchAndFilter({
         onValueChange={(sel) => {
           setSearch({ ...search, type: sel.value[0] });
         }}
-        width="150px"
+        width="160px"
         position="relative"
       >
         <SelectTrigger>
           <SelectValueText />
         </SelectTrigger>
         <SelectContent
+          w={"100%"}
           style={{
-            width: "100px",
-            top: "40px",
             position: "absolute",
           }}
         >
@@ -89,6 +94,14 @@ export function BusinessSearchAndFilter({
         placeholder={"검색어를 입력해 주세요"}
         onKeyDown={handlePressKey}
       />
+      <IconButton
+        variant={"ghost"}
+        style={{ cursor: "pointer" }}
+        transform="translateX(-130%) "
+        onClick={handleReset}
+      >
+        <BsArrowCounterclockwise size="25px" />
+      </IconButton>
       <Button onClick={handleSearchClick}>검색</Button>
     </HStack>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import axios from "axios";
-import { Button } from "../../../components/ui/button.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { CommonCodeList } from "../../../components/standard/commonCode/CommonCodeList.jsx";
 import { CommonCodeAdd } from "../../../components/standard/commonCode/CommonCodeAdd.jsx";
@@ -59,15 +58,9 @@ export function CommonCode() {
               commonCodeList={commonCodeList}
               searchParams={searchParams}
               setSearchParams={setSearchParams}
+              setAddDialogOpen={setAddDialogOpen}
               onRowClick={handleRowClick}
             />
-            <Button
-              onClick={() => setAddDialogOpen(true)}
-              size="lg"
-              float={"right"}
-            >
-              코드 등록
-            </Button>
           </Box>
         </Stack>
         <CommonCodeView

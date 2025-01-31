@@ -25,12 +25,12 @@ export function SelectCode({ selectOptions, onChange }) {
       onValueChange={handleSelect}
     >
       <SelectTrigger>
-        <SelectValueText placeholder="Select Code" />
+        <SelectValueText placeholder="코드 구분 선택" />
       </SelectTrigger>
       <SelectContent
         style={{
           width: "150px",
-          top: "30px",
+          top: "35px",
           position: "absolute",
         }}
       >

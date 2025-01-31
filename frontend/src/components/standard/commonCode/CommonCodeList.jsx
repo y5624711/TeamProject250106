@@ -1,10 +1,17 @@
 import React from "react";
-import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Flex,
+  HStack,
+  Table,
+} from "@chakra-ui/react";
 import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
+import { Button } from "../../ui/button.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -12,6 +19,7 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
+  setAddDialogOpen,
 }) {
   // 검색 옵션
   const searchOptions = createListCollection({
@@ -84,17 +92,26 @@ export function CommonCodeList({
             ))}
           </Table.Body>
         </Table.Root>
-        <Center pt={5}>
-          <Pagination
-            count={count}
-            pageSize={10}
-            onPageChange={(newPage) => {
-              const nextSearchParam = new URLSearchParams(searchParams);
-              nextSearchParam.set("page", newPage);
-              setSearchParams(nextSearchParam);
-            }}
-          />
-        </Center>
+        <Flex justify="center" pt={5}>
+          <HStack w={"100%"}>
+            <Pagination
+              count={count}
+              pageSize={10}
+              onPageChange={(newPage) => {
+                const nextSearchParam = new URLSearchParams(searchParams);
+                nextSearchParam.set("page", newPage);
+                setSearchParams(nextSearchParam);
+              }}
+            />
+            <Button
+              size="lg"
+              float={"right"}
+              onClick={() => setAddDialogOpen(true)}
+            >
+              코드 등록
+            </Button>
+          </HStack>
+        </Flex>
       </Box>
     </Box>
   );

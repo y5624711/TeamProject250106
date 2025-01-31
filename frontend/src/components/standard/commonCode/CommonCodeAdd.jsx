@@ -111,8 +111,8 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           </Text>
 
           <Flex>
-            <Text pt={6} mr={5} ml={-1}>
-              코드 종류 선택
+            <Text pt={6} mr={7} ml={-1}>
+              코드 구분
             </Text>
             {/*코드 종류 선택*/}
             <SelectCode
