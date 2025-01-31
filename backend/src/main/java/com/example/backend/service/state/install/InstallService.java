@@ -205,4 +205,8 @@ public class InstallService {
         int cnt = mapper.installDisapprove(installKey);
         return cnt == 1;
     }
+
+    public Install getInstallApproveData(int installKey) {
+        return mapper.getInstallApproveData(installKey);
+    }
 }

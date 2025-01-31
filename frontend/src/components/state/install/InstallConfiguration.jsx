@@ -35,11 +35,11 @@ export function InstallConfiguration({
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
-  const [isConfiguration, setIsConfiguration] = useState(false);
+  const [isConfiguration, setIsConfiguration] = useState(null);
 
   const handleClose = () => {
     setInoutHistoryNote("");
-    setIsConfiguration(false);
+    setIsConfiguration(null);
     onClose();
   };
 
@@ -77,6 +77,11 @@ export function InstallConfiguration({
           description: data.message.text,
           type: data.message.type,
         });
+        // 설치 완료 후 최신 데이터 갱신
+        return axios.get(`/api/install/approve/${installKey}`);
+      })
+      .then((res) => {
+        setInstallData(res.data || []); // 새로운 데이터로 업데이트
         setChange((prev) => !prev);
         setIsConfiguration(true);
       })
@@ -93,7 +98,6 @@ export function InstallConfiguration({
   if (!installData) {
     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
   }
-  console.log(installData);
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
@@ -161,35 +165,34 @@ export function InstallConfiguration({
                 </SelectRoot>
               </Field>
             </HStack>
-            {!installData.inoutHistoryDate && (
-              <Field label={"완료 비고"} orientation="horizontal">
-                <Textarea
-                  value={inoutHistoryNote}
-                  placeholder="최대 50자"
-                  onChange={(e) => setInoutHistoryNote(e.target.value)}
-                />
+            <Field label={"완료 비고"} orientation="horizontal">
+              <Textarea
+                value={inoutHistoryNote}
+                placeholder="최대 50자"
+                onChange={(e) => setInoutHistoryNote(e.target.value)}
+              />
+            </Field>
+            {isConfiguration == true && (
+              <Field label={"완료 날짜"} orientation="horizontal">
+                <Input value={installData.inoutHistoryDate} readOnly />
               </Field>
-            )}
-            {installData.inoutHistoryDate && (
-              <Stack gap={"15px"}>
-                <Field label={"설치 날짜"} orientation="horizontal">
-                  <Input value={installData.inoutHistoryDate} />
-                </Field>
-                <Field label={"설치 비고"} orientation="horizontal">
-                  <Input value={installData.inoutHistoryNote} />
-                </Field>
-              </Stack>
             )}
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
-            {!installData.inoutHistoryDate && !isConfiguration
-              ? "취소"
-              : "닫기"}
-          </Button>
-          {!installData.inoutHistoryDate && !isConfiguration && (
-            <Button onClick={handleConfigurationClick}>완료</Button>
+          {installData?.inoutHistoryDate ? (
+            // 이미 설치 완료된 경우
+            <Button variant="outline" onClick={handleClose}>
+              닫기
+            </Button>
+          ) : (
+            // 설치 완료되지 않은 경우
+            <HStack>
+              <Button variant="outline" onClick={handleClose}>
+                취소
+              </Button>
+              <Button onClick={handleConfigurationClick}>완료</Button>
+            </HStack>
           )}
         </DialogFooter>
         <DialogCloseTrigger />
