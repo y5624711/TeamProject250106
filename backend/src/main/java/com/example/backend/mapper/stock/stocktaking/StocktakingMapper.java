@@ -18,6 +18,7 @@ public interface StocktakingMapper {
                    s.customer_employee_no,
                    s.count_current,
                    s.count_configuration,
+                   s.count_difference,
                    s.stocktaking_type,
                    s.stocktaking_date,
                    w.warehouse_name,
@@ -72,11 +73,17 @@ public interface StocktakingMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY s.stocktaking_date DESC
+            ORDER BY 
+             <if test="sort != null and sort != ''">
+                ${sort} ${order}
+            </if>
+            <if test="sort == null">
+               s.stocktaking_date DESC
+            </if>
             LIMIT #{pageList},10
             </script>
             """)
-    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList);
+    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
 
     @Select("""
             <script>
@@ -128,7 +135,6 @@ public interface StocktakingMapper {
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY s.stocktaking_date DESC
             </script>
             """)
     Integer count(String searchType, String searchKeyword);
@@ -141,6 +147,7 @@ public interface StocktakingMapper {
                    s.customer_employee_no,
                    s.count_current,
                    s.count_configuration,
+                   s.count_difference,
                    s.stocktaking_date,
                    w.warehouse_name,
                    w.customer_code,
@@ -160,13 +167,12 @@ public interface StocktakingMapper {
             INSERT INTO TB_STKTK (
                                   item_code, 
                                   warehouse_code, 
-                                  location_key,
                                   customer_employee_no,
                                   count_current,
                                   count_configuration,
                                   stocktaking_type,
                                   stocktaking_date)
-            VALUES (#{itemCode}, #{warehouseCode}, #)
+            VALUES (#{itemCode}, #{warehouseCode}, #{customerEmployeeNo}, #{countCurrent}, #{countConfiguration}, #{stocktakingType}, #{stocktakingDate})
             """)
     int add(Stocktaking stocktaking);
 }

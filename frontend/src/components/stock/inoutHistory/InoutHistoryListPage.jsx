@@ -17,13 +17,17 @@ function InoutHistoryListPage({
           setSelectedInoutHistory(inoutHistory.inoutHistoryKey);
           setIsDetailDialogOpen(true);
         }}
+        _hover={{ backgroundColor: "gray.200" }}
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
         <Table.Cell textAlign="center" verticalAlign="middle">
           {(page - 1) * 10 + index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.inoutCommonCode === "in" ? "입고" : "출고"}
+          {inoutHistory.inoutCommonCode === "in" ||
+          inoutHistory.inoutCommonCode === "IN"
+            ? "입고"
+            : "출고"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.itemName}

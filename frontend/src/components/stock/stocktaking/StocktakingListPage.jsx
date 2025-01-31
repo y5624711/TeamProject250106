@@ -16,9 +16,8 @@ function StocktakingListPage({
           setIsDetailDialogOpen(true);
           setSelectedStocktaking(stocktaking.stocktakingKey);
         }}
+        _hover={{ backgroundColor: "gray.200" }}
       >
-        {/* TODO: stocktakingKey 대신 index 주기 */}
-
         <Table.Cell textAlign="center" verticalAlign="middle">
           {index + 1}
         </Table.Cell>
@@ -35,7 +34,7 @@ function StocktakingListPage({
           {stocktaking.countConfiguration}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.countConfiguration - stocktaking.countCurrent}
+          {stocktaking.countDifference}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.warehouseName}
@@ -47,7 +46,7 @@ function StocktakingListPage({
           {stocktaking.customerEmployeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {stocktaking.stocktakingDate.slice(0, 10)}
+          {stocktaking.stocktakingDate}
         </Table.Cell>
       </Table.Row>
     </>

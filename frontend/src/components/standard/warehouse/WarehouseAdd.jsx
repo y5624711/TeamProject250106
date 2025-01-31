@@ -15,7 +15,6 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
 export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
-  const [warehouseCode, setWarehouseCode] = useState();
   const [warehouseName, setWarehouseName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [warehouseAddress, setWarehouseAddress] = useState("");
@@ -31,7 +30,6 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
   const handleSaveClick = () => {
     axios
       .post(`/api/warehouse/add`, {
-        warehouseCode,
         warehouseName,
         customerCode,
         warehouseAddress,
@@ -65,13 +63,7 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
         </DialogHeader>
         <DialogBody>
           <Box>
-            창고 코드 (후에 자동생성으로 변경)
-            <Input
-              type={"text"}
-              value={warehouseCode}
-              onChange={(e) => setWarehouseCode(e.target.value)}
-            />
-            창고명 (창고코드 자동생성)
+            창고
             <Input
               type={"text"}
               value={warehouseName}

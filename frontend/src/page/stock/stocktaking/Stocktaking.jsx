@@ -27,7 +27,7 @@ function Stocktaking(props) {
     keyword: "",
   });
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
@@ -86,13 +86,14 @@ function Stocktaking(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Box h={7}></Box>
+          <Box h={11}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
             stocktakingList={stocktakingList}
             currentPage={currentPage}
+            setSearchParams={setSearchParams}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
               실사 등록
             </Button>
@@ -103,6 +104,8 @@ function Stocktaking(props) {
             onClose={() => setIsAddDialogOpen(false)}
             onConfirm={() => setIsAddDialogOpen(false)}
             title="실사 등록"
+            setStocktakingList={setStocktakingList}
+            searchParams={searchParams}
           />
         </Stack>
       </HStack>

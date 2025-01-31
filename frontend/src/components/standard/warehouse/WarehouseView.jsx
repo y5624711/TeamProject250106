@@ -1,50 +1,157 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Box, Input } from "@chakra-ui/react";
+import React from "react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
+import { Field } from "../../ui/field.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
-function WarehouseView({ warehouseKey }) {
-  const [warehouseDetail, setWarehouseDetail] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`/api/warehouse/view/${warehouseKey}`)
-      .then((res) => {
-        setWarehouseDetail(res.data);
-      })
-      .catch((error) => {
-        console.error("창고 상세 정보 요청 중 오류 발생: ", error);
-      });
-  }, []);
+function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
   return (
-    <Box width="350px">
-      <Box>
-        창고 코드
-        <Input value={warehouseDetail.warehouseCode} readOnly />
-        창고명
-        <Input value={warehouseDetail.warehouseName} readOnly />
-        담당 업체
-        <Input value={warehouseDetail.customerCode} readOnly />
-        주소
-        <Input value={warehouseDetail.warehouseAddress} readOnly />
-        상세 주소
-        <Input value={warehouseDetail.warehouseAddressDetail} readOnly />
-        우편 번호
-        <Input value={warehouseDetail.warehousePost} readOnly />
-        광역 시도
-        <Input value={warehouseDetail.warehouseState} readOnly />
-        시군
-        <Input value={warehouseDetail.warehouseCity} readOnly />
-        관리자명
-        <Input value={warehouseDetail.customerEmployeeNo} readOnly />
-        전화번호
-        <Input value={warehouseDetail.warehouseTel} readOnly />
-        {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
-        사용 여부
-        <Input value={warehouseDetail.warehouseActive} readOnly />
-        비고
-        <Input value={warehouseDetail.warehouseNote} readOnly />
+    <Box>
+      <Box display="flex" gap={4}>
+        <Field label="창고" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.warehouseName}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehouseName: e.target.value,
+              })
+            }
+          />
+        </Field>
+        <Field label="창고 코드" orientation="horizontal" mb={15}>
+          <Input value={warehouseDetail.warehouseCode} readOnly />
+        </Field>
       </Box>
-      <br />
+      <Box display="flex" gap={4}>
+        <Field label="담당 업체" orientation="horizontal" mb={15}>
+          <Input value={warehouseDetail.customerName} readOnly />
+        </Field>
+        <Field label="업체 코드" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.customerCode}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                customerCode: e.target.value,
+              })
+            }
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="전화번호" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.warehouseTel}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehouseTel: e.target.value,
+              })
+            }
+          />
+        </Field>
+        <Field label="우편번호" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.warehousePost}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehousePost: e.target.value,
+              })
+            }
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="관리자" orientation="horizontal" mb={15}>
+          <Input value={warehouseDetail.employeeName} readOnly />
+        </Field>
+        <Field label="사번" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.customerEmployeeNo}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                customerEmployeeNo: e.target.value,
+              })
+            }
+          />
+        </Field>
+      </Box>
+      <Box display="flex" gap={4}>
+        <Field label="광역시도" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.warehouseState}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehouseState: e.target.value,
+              })
+            }
+          />
+        </Field>
+        <Field label="시군" orientation="horizontal" mb={15}>
+          <Input
+            value={warehouseDetail.warehouseCity}
+            onChange={(e) =>
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehouseCity: e.target.value,
+              })
+            }
+          />
+        </Field>
+      </Box>
+      <Field label="주소" orientation="horizontal" mb={15}>
+        <Input
+          value={warehouseDetail.warehouseAddress}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehouseAddress: e.target.value,
+            })
+          }
+        />
+      </Field>
+      <Field label="상세 주소" orientation="horizontal" mb={15}>
+        <Input
+          value={warehouseDetail.warehouseAddressDetail}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehouseAddressDetail: e.target.value,
+            })
+          }
+        />
+      </Field>
+      <Field label="비고" orientation="horizontal" mb={15}>
+        <Textarea
+          placeholder="최대 50자"
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          value={warehouseDetail.warehouseNote}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehouseNote: e.target.value,
+            })
+          }
+        />
+      </Field>
+      {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
+
+      <Checkbox
+        size={"lg"}
+        checked={warehouseDetail.warehouseActive}
+        onChange={(e) => {
+          const checked = e.target.checked;
+          setWarehouseDetail({
+            ...warehouseDetail,
+            warehouseActive: checked,
+          });
+        }}
+      >
+        사용 여부
+      </Checkbox>
     </Box>
   );
 }

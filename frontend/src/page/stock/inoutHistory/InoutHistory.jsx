@@ -12,23 +12,24 @@ import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHist
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
-import { Radio, RadioGroup } from "../../../components/ui/radio.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
+import { StateRadioGroup } from "../../../components/tool/list/StateRadioGroup.jsx";
 
 function InoutHistory(props) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    state: "all",
   });
   const navigate = useNavigate();
   const [inoutHistoryList, setInoutHistoryList] = useState([]);
   const [countInoutHistory, setCountInoutHistory] = useState("");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
@@ -63,7 +64,11 @@ function InoutHistory(props) {
   function handlePageChangeClick(e) {
     const pageNumber = { page: e.page };
     const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+      state: search.state,
+    };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(
       `/inoutHistory/list?${searchQuery.toString()}&${pageQuery.toString()}`,
@@ -85,22 +90,22 @@ function InoutHistory(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <RadioGroup
-            value={value}
-            my={1}
-            onValueChange={(e) => setValue(e.value)}
-          >
-            {/*TODO: Radio 기능 넣기*/}
-            <HStack gap={6}>
-              <Radio value="inout">전체 내역</Radio>
-              <Radio value="storage">입고 내역</Radio>
-              <Radio value="retrieval">출고 내역</Radio>
-            </HStack>
-          </RadioGroup>
+          <StateRadioGroup
+            radioOptions={radioOptions}
+            onRadioChange={(nextSearchParam) => {
+              setSearchParams(nextSearchParam);
+              setSearch({
+                type: search.type,
+                keyword: search.keyword,
+                state: nextSearchParam.toString(),
+              });
+            }}
+          />
           {/*리스트 jsx*/}
           <InoutHistoryList
             inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
+            setSearchParams={setSearchParams}
           />
         </Stack>
       </HStack>
@@ -122,6 +127,12 @@ function InoutHistory(props) {
     </Box>
   );
 }
+
+const radioOptions = [
+  { value: "all", label: "전체 내역" },
+  { value: "storage", label: "입고 내역" },
+  { value: "retrieval", label: "출고 내역" },
+];
 
 const inoutHistoryOptionList = createListCollection({
   items: [

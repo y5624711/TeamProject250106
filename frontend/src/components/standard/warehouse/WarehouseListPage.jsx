@@ -16,6 +16,8 @@ function WarehouseListPage({
           setIsDetailDialogOpen(true);
           setSelectedWarehouseKey(warehouse.warehouseKey);
         }}
+        _hover={{ backgroundColor: "gray.200" }}
+        bg={warehouse.warehouseActive ? "white" : "gray.100"}
       >
         <Table.Cell textAlign="center" verticalAlign="middle">
           {index + 1}
@@ -24,10 +26,10 @@ function WarehouseListPage({
           {warehouse.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {warehouse.customerCode}
+          {warehouse.customerName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {warehouse.customerEmployeeNo}
+          {warehouse.employeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {warehouse.warehouseState}

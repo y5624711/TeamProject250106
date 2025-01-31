@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, createListCollection, HStack, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  createListCollection,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -11,12 +17,16 @@ import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [checkedActive, setCheckedActive] = useState(false);
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    sort: "",
+    active: checkedActive,
+    order: "",
   });
   const [warehouseList, setWarehouseList] = useState([]);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [countWarehouse, setCountWarehouse] = useState("");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(
@@ -30,7 +40,7 @@ function Warehouse(props) {
       setCountWarehouse(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams]);
+  }, [searchParams, checkedActive]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -42,6 +52,9 @@ function Warehouse(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      active: checkedActive,
+      order: search.order,
     };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(`/warehouse/list?${searchQuery.toString()}`);
@@ -50,19 +63,36 @@ function Warehouse(props) {
   function handlePageChangeClick(e) {
     const pageNumber = { page: e.page };
     const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+      sort: search.sort,
+      active: checkedActive,
+      order: search.order,
+    };
     const searchQuery = new URLSearchParams(searchInfo);
     navigate(
       `/warehouse/list?${searchQuery.toString()}&${pageQuery.toString()}`,
     );
   }
 
+  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
+  const toggleCheckedActive = () => {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    setSearchParams(nextSearchParams);
+  };
+
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack margin="10pt">
-          <Box>창고 관리</Box>
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            기준정보 관리 {">"} 창고 관리
+          </Heading>
           {/*검색 jsx*/}
           <WarehouseSearch
             warehouseOptionList={warehouseOptionList}
@@ -70,15 +100,22 @@ function Warehouse(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Checkbox>전체 조회</Checkbox>
+          <Checkbox
+            checked={checkedActive}
+            onChange={toggleCheckedActive}
+            my={3}
+          >
+            전체 조회
+          </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
             countWarehouse={countWarehouse}
             warehouseList={warehouseList}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
+            setSearchParams={setSearchParams}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
               새 창고 등록
             </Button>
@@ -99,12 +136,11 @@ function Warehouse(props) {
 const warehouseOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "창고", value: "warehouseName" },
+    { label: "창고", value: "warehouse" },
     { label: "담당 업체", value: "customer" },
-    { label: "업체 직원", value: "customerEmployee" },
+    { label: "업체 직원", value: "employee" },
     { label: "광역 시도", value: "warehouseState" },
     { label: "시군", value: "warehouseCity" },
-    { label: "사용 여부", value: "warehouseActive" },
   ],
 });
 

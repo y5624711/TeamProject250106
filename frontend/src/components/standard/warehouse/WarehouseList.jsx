@@ -8,72 +8,42 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 function WarehouseList({
   warehouseList,
   countWarehouse,
   currentPage,
   handlePageChangeClick,
+  setSearchParams,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
+
+  // 정렬 헤더
+  const sortOptions = [
+    { key: "warehouseKey", label: "#" },
+    { key: "warehouseName", label: "창고" },
+    { key: "customerName", label: "담당 업체" },
+    { key: "employeeName", label: "관리자" },
+    { key: "warehouseState", label: "광역시도" },
+    { key: "warehouseCity", label: "시군" },
+    { key: "warehouseTel", label: "전화번호" },
+  ];
 
   return (
     <Box>
       <Stack>
         <Box>
-          <Table.Root showColumnBorder interactive>
+          <Table.Root interactive>
             <Table.Header>
-              <Table.Row>
-                <Table.ColumnHeader
-                  width="100px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  #
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  창고명
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  담당 업체
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  업체 직원
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  광역 시도
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="150px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  시군
-                </Table.ColumnHeader>
-                <Table.ColumnHeader
-                  width="200px"
-                  textAlign="center"
-                  verticalAlign="middle"
-                >
-                  전화번호
-                </Table.ColumnHeader>
+              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+                <Sort
+                  sortOptions={sortOptions}
+                  onSortChange={(nextSearchParam) =>
+                    setSearchParams(nextSearchParam)
+                  }
+                />
               </Table.Row>
             </Table.Header>
             <Table.Body>

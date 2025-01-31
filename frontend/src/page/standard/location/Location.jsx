@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   createListCollection,
+  Heading,
   HStack,
   Stack,
 } from "@chakra-ui/react";
@@ -20,7 +21,7 @@ function Location(props) {
     keyword: "",
   });
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [countLocation, setCountLocation] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [currentPage, setCurrentPage] = useState(
@@ -34,6 +35,11 @@ function Location(props) {
       setCountLocation(res.data.count);
     });
     window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
   }, [searchParams]);
 
   function handleSearchClick() {
@@ -57,23 +63,28 @@ function Location(props) {
 
   return (
     <Box>
-      <HStack align="flex-start">
+      <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack margin="10pt">
-          로케이션 관리
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            기준정보 관리 {">"} 로케이션 관리
+          </Heading>
           <LocationSearch
             locationOptionList={locationOptionList}
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
           />
+          <Box h={11}></Box>
           <LocationList
             countLocation={countLocation}
             locationList={locationList}
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
           />
-          <Box>
+          <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="120px" onClick={() => setIsAddDialogOpen(true)}>
               새 로케이션 등록
             </Button>
@@ -94,11 +105,12 @@ function Location(props) {
 const locationOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "창고명", value: "warehouseName" },
+    { label: "창고", value: "warehouse" },
     { label: "행", value: "row" },
     { label: "열", value: "col" },
     { label: "단", value: "shelf" },
-    { label: "품목명", value: "itemName" },
+    { label: "품목", value: "item" },
+    { label: "비고", value: "note" },
   ],
 });
 

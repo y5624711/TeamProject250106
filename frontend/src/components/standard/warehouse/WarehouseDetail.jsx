@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -8,13 +8,65 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Button } from "../../ui/button.jsx";
-import { Box, Center, HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
+import { Button } from "../../ui/button.jsx";
+import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
+import axios from "axios";
+import { toaster } from "../../ui/toaster.jsx";
 
 export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [warehouseDetail, setWarehouseDetail] = useState([]);
+
+  useEffect(() => {
+    if (warehouseKey) {
+      axios
+        .get(`/api/warehouse/view/${warehouseKey}`)
+        .then((res) => {
+          setWarehouseDetail(res.data);
+        })
+        .catch((error) => {
+          console.error("창고 상세 정보 요청 중 오류 발생: ", error);
+        });
+    }
+  }, [warehouseKey]);
+
+  function handleCheckClick() {
+    axios
+      .put(`/api/warehouse/edit`, {
+        warehouseKey,
+        warehouseName: warehouseDetail.warehouseName,
+        customerCode: warehouseDetail.customerCode,
+        warehouseAddress: warehouseDetail.warehouseAddress,
+        warehouseAddressDetail: warehouseDetail.warehouseAddressDetail,
+        warehousePost: warehouseDetail.warehousePost,
+        warehouseState: warehouseDetail.warehouseState,
+        warehouseCity: warehouseDetail.warehouseCity,
+        customerEmployeeNo: warehouseDetail.customerEmployeeNo,
+        warehouseTel: warehouseDetail.warehouseTel,
+        warehouseActive: warehouseDetail.warehouseActive,
+        warehouseNote: warehouseDetail.warehouseNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        onClosed();
+      })
+      .catch((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+      });
+  }
+
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -23,22 +75,32 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
             </Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
           <Box>
-            <WarehouseView warehouseKey={warehouseKey} />
-            <Box>
-              <Center>
-                <HStack>
-                  <Button>확인</Button>
-                  <Button onClick={onClosed}>닫기</Button>
-                </HStack>
-              </Center>
-            </Box>
+            <WarehouseView
+              warehouseDetail={warehouseDetail}
+              setWarehouseDetail={setWarehouseDetail}
+            />
           </Box>
         </DialogBody>
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
+          <HStack>
+            <Button variant="outline" onClick={onClosed}>
+              취소
+            </Button>
+            <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
+          </HStack>
         </DialogFooter>
+        <DialogEditConfirmation
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onConfirm={handleCheckClick}
+          title="확인"
+          body="변경된 사항은 저장됩니다."
+        />
       </DialogContent>
     </DialogRoot>
   );

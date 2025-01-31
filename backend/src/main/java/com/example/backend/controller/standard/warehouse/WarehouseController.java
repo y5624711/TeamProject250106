@@ -18,20 +18,23 @@ public class WarehouseController {
     @GetMapping("list")
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
-                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword) {
-        return service.list(searchType, searchKeyword, page);
+                                    @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
+                                    @RequestParam(value = "sort", defaultValue = "") String sort,
+                                    @RequestParam(value = "order", defaultValue = "") String order,
+                                    @RequestParam(value = "active", defaultValue = "false") Boolean active) {
+        return service.list(searchType, searchKeyword, page, sort, order, active);
     }
 
     @GetMapping("view/{warehouseKey}")
-    public Warehouse view(@PathVariable Integer warehouseKey) {
-        return service.view(warehouseKey);
+    public Warehouse viewWarehouse(@PathVariable Integer warehouseKey) {
+        return service.viewWarehouse(warehouseKey);
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Warehouse warehouse) {
+    public ResponseEntity<Map<String, Object>> addWarehouse(@RequestBody Warehouse warehouse) {
 
         // 창고 입력 검증
-        if (!service.validate(warehouse)) {
+        if (service.validate(warehouse)) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
             ));
@@ -45,7 +48,7 @@ public class WarehouseController {
         }
 
 //        창고 등록 시도
-        if (service.add(warehouse)) {
+        if (service.addWarehouse(warehouse)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
                             "text", warehouse.getWarehouseKey() + "번 창고가 등록되었습니다."),
@@ -60,8 +63,27 @@ public class WarehouseController {
     }
 
     @PutMapping("edit")
-    public void edit(@RequestBody Warehouse warehouse) {
-        service.edit(warehouse);
+    public ResponseEntity<Map<String, Map<String, String>>> edit(@RequestBody Warehouse warehouse) {
+
+        // 창고 입력 검증
+        if (service.validate(warehouse)) {
+            if (service.edit(warehouse)) {
+                return ResponseEntity.ok(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "창고 정보를 수정하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "창고 수정 중 문제가 발생하였습니다..")));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+            ));
+        }
+
+
     }
 
     @DeleteMapping("delete/{warehouseKey}")

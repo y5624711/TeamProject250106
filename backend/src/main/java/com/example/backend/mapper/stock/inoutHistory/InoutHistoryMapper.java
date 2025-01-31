@@ -38,8 +38,18 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-            WHERE
+            WHERE 1=1
+                <if test="state == 'storage'">
+                  AND (h.inout_common_code = 'in' OR h.inout_common_code = 'IN')
+                </if>
+                <if test="state == 'retrieval'">
+                  AND (h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                </if>
+                <if test="state == 'all'">
+                   AND (h.inout_common_code = 'in' OR h.inout_common_code = 'IN' OR h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                </if>
                 <if test="searchType == 'all'">
+                AND(
                     h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
@@ -54,53 +64,78 @@ public interface InoutHistoryMapper {
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.inout_history_date LIKE CONCAT('%',#{searchKeyword},'%')
+                 )
                 </if>
                 <if test="searchType != 'all'">
                      <choose>
                          <when test="searchType == 'serialNo'">
+                         AND(
                              h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'item'">
+                         AND(
                              itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'customer'">
+                         AND(
                              cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'warehouse'">
+                         AND(
                              w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'franchise'">
+                         AND(
                              fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'businessEmployee'">
+                         AND(
                              bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'customerEmployee'">
+                         AND(
                              cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'employeeNumber'">
+                         AND(
                              h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'date'">
+                         AND(
                              h.inout_history_date LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <otherwise>
-                             1 = 0 
+                            AND  ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY h.inout_history_date DESC
+            ORDER BY 
+             <if test="sort != null and sort != ''">
+                ${sort} ${order}
+            </if>
+            <if test="sort == null">
+               h.inout_history_date DESC
+            </if>
             LIMIT #{pageList},10
             </script>
             """)
-    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType);
+    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType, String sort, String order, String state);
 
     @Insert("""
             INSERT INTO TB_INOUT_HIS()
@@ -121,6 +156,7 @@ public interface InoutHistoryMapper {
                 h.inout_history_date,
                 h.inout_history_note,
                 w.warehouse_name,
+                w.warehouse_address,
                 itsb.item_common_code itemCode,
                 itcm.item_common_name itemName,
                 fr.franchise_name,
@@ -149,8 +185,18 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-            WHERE
+            WHERE 1=1
+                <if test="state == 'storage'">
+                   AND(h.inout_common_code = 'in' OR h.inout_common_code = 'IN')
+                </if>
+                <if test="state == 'retrieval'">
+                   AND(h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                </if>
+                <if test="state == 'all'">
+                    AND(h.inout_common_code = 'in' OR h.inout_common_code = 'IN' OR h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                </if>
                 <if test="searchType == 'all'">
+                AND(
                     h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
@@ -165,50 +211,68 @@ public interface InoutHistoryMapper {
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.inout_history_date LIKE CONCAT('%',#{searchKeyword},'%')
+                 )
                 </if>
                 <if test="searchType != 'all'">
                      <choose>
                          <when test="searchType == 'serialNo'">
+                         AND(
                              h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'item'">
+                         AND(
                              itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'customer'">
+                         AND(
                              cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'warehouse'">
+                         AND(
                              w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'franchise'">
+                         AND(
                              fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'businessEmployee'">
+                         AND(
                              bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'customerEmployee'">
+                         AND(
                              cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'employeeNumber'">
+                         AND(
                              h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                           OR h.business_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <when test="searchType == 'date'">
+                         AND(
                              h.inout_history_date LIKE CONCAT('%',#{searchKeyword},'%')
+                            )
                          </when>
                          <otherwise>
-                             1 = 0 
+                            AND  ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
                          </otherwise>
                      </choose>
                  </if>
-            ORDER BY h.inout_history_date DESC
             </script>
             """)
-    Integer count(String searchKeyword, String searchType);
+    Integer count(String searchKeyword, String searchType, String state);
 }

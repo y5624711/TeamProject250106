@@ -15,7 +15,7 @@ import InoutHistoryView from "./InoutHistoryView.jsx";
 
 function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed} size="xl">
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -31,7 +31,9 @@ function InoutHistoryDetail({ inoutHistoryKey, isOpened, onClosed }) {
         <DialogFooter>
           <DialogCloseTrigger onClick={onClosed} />
           <DialogActionTrigger>
-            <Button onClick={onClosed}>확인</Button>
+            <Button variant="outline" onClick={onClosed}>
+              닫기
+            </Button>
           </DialogActionTrigger>
         </DialogFooter>
       </DialogContent>

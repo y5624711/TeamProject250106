@@ -11,3 +11,7 @@ CREATE TABLE TB_LOCMST
     location_note    VARCHAR(50) NULL
 );
 
+
+DELETE
+FROM TB_LOCMST
+WHERE warehouse_code = 12;
