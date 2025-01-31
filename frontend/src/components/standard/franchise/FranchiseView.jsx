@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
-import axios from "axios";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import axios from "axios";
 
 export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
@@ -166,21 +166,19 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>
-
-        <Checkbox
-          size={"lg"}
-          checked={franchise.franchiseActive}
-          onChange={(e) => {
-            const checked = e.target.checked;
-            setFranchise((prevFranchise) => ({
-              ...prevFranchise,
-              franchiseActive: checked, // 상태 업데이트
-            }));
-          }}
-        >
-          사용 여부
-        </Checkbox>
-
+        <Field label="사용 여부" orientation="horizontal">
+          <Checkbox
+            style={{ marginRight: "550px" }}
+            checked={franchise.franchiseActive}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setFranchise((prevFranchise) => ({
+                ...prevFranchise,
+                franchiseActive: checked, // 상태 업데이트
+              }));
+            }}
+          />
+        </Field>
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleCancelClick} variant="outline">
             취소
