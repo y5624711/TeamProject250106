@@ -5,16 +5,18 @@ import {
   HStack,
   IconButton,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Stack,
   Table,
   TableColumnHeader,
   TableHeader,
 } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import React, { useMemo } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
@@ -90,13 +92,7 @@ export function FranchiseList({
           <SelectTrigger>
             <SelectValueText />
           </SelectTrigger>
-          <SelectContent
-            style={{
-              width: "150px",
-              top: "40px",
-              position: "absolute",
-            }}
-          >
+          <SelectContent>
             {FranchiseOptionList.items.map((option) => (
               <SelectItem item={option} key={option.value}>
                 {option.label}
