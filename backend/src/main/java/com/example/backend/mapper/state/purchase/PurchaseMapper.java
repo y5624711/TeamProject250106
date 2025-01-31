@@ -50,7 +50,8 @@ public interface PurchaseMapper {
                 emp2.employee_name AS customerEmployeeName,
                 sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
-                pr.purchase_consent AS purchaseConsent
+                pr.purchase_consent AS purchaseConsent,
+                pa.purchase_approve_date AS purchaseApproveDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no

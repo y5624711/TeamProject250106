@@ -118,7 +118,7 @@ export function PurchaseList({
                   {purchase.customerEmployeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {purchase.purchaseRequestDate}
+                  {purchase.purchaseApproveDate || purchase.purchaseRequestDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {purchase.purchaseConsent == 1
