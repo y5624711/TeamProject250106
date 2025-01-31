@@ -38,9 +38,6 @@ function WarehouseListPage({
         <Table.Cell textAlign="center" verticalAlign="middle">
           {location.itemCommonName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
-          {location.locationNote}
-        </Table.Cell>
       </Table.Row>
     </>
   );

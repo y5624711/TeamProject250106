@@ -7,7 +7,7 @@ function LocationView({ locationDetail, setLocationDetail }) {
     locationDetail.row +
     " - " +
     locationDetail.col +
-    " -  " +
+    " - " +
     locationDetail.shelf;
 
   return (
