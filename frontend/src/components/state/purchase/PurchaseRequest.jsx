@@ -202,7 +202,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         </Button>
         <Tooltip
           content="입력을 완료해 주세요."
-          openDelay={500}
+          openDelay={100}
           closeDelay={100}
         >
           <Button onClick={handleSaveClick} disabled={isButtonDisabled}>
