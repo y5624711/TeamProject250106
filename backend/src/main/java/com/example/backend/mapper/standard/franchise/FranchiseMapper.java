@@ -135,8 +135,8 @@ public interface FranchiseMapper {
             UPDATE TB_FRNCHSMST
             SET franchise_code = #{franchiseCode}, franchise_name = #{franchiseName}, franchise_rep = #{franchiseRep},
                 franchise_no = #{franchiseNo}, franchise_tel = #{franchiseTel}, franchise_address = #{franchiseAddress}, franchise_address_detail = #{franchiseAddressDetail},
-                franchise_post = #{franchisePost}, franchise_state = #{franchiseState}, franchise_city = #{franchiseCity}, franchise_note = #{franchiseNote}
-                WHERE franchise_key = #{franchiseKey}
+                franchise_post = #{franchisePost}, franchise_state = #{franchiseState}, franchise_city = #{franchiseCity}, franchise_active = #{franchiseActive}, franchise_note = #{franchiseNote}
+            WHERE franchise_key = #{franchiseKey}
             """)
     int editFranchise(Franchise franchise);
 

@@ -37,66 +37,28 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
     }));
   };
 
-  // 확인 (수정 후 저장)
+  // // 확인 (수정 후 저장)
   const handleSaveClick = () => {
-    const updatedFranchise = {
-      ...franchise,
-      franchiseActive: franchise.franchiseActive ? 1 : 0, // boolean을 1, 0으로 변환
-    };
-
-    if (updatedFranchise.franchiseActive === 0) {
-      // 비활성화 상태로 저장하려는 경우, 먼저 삭제 처리
-      axios
-        .put(`/api/franchise/delete/${franchiseKey}`)
-        .then(() => {
-          // 수정 처리 (삭제 후 수정)
-          axios
-            .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
-            .then((res) => {
-              const message = res.data.message;
-              toaster.create({
-                type: message.type,
-                description: message.text,
-              });
-              setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-              onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
-              onDelete(franchiseKey); // 삭제 후 리스트에서 제거
-            })
-            .catch((e) => {
-              const message = e.response.data.message;
-              toaster.create({
-                type: message.type,
-                description: message.text,
-              });
-            });
-        })
-        .catch(() => {
-          toaster.create({
-            type: "error",
-            description: "사용 여부 업데이트 실패",
-          });
+    axios
+      .put(`/api/franchise/edit/${franchiseKey}`, franchise)
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    } else {
-      // 비활성화가 아닌 경우 그냥 수정 처리
-      axios
-        .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
-        .then((res) => {
-          const message = res.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
-          setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-          onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
-        })
-        .catch((e) => {
-          const message = e.response.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
+        setOriginalData(franchise); // 저장 후 초기값 갱신
+        onSave(franchise); // 부모 컴포넌트로 수정된 데이터 전달
+        onDelete(franchiseKey); // 삭제 후 리스트에서 제거
+        onClose(franchiseKey); // 창 닫기
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    }
+      });
   };
 
   // 취소
