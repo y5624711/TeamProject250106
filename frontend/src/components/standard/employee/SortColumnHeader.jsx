@@ -5,7 +5,7 @@ import React, { useState } from "react";
 
 export function SortColumnHeader({ handleSortControl, searchParams }) {
   return (
-    <Table.Row>
+    <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader
         onClick={() => {
           handleSortControl("기본키");

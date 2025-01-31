@@ -181,13 +181,19 @@ LIMIT #{offset}, 10
     int addInstkSub(int inputKey, String insertSerialNo);
 
     @Insert("""
-            INSERT INTO TB_INOUT_HIS
-            (serial_no, warehouse_code,'IN',customer_employee_no,business_employee_no,inout_history_note,inout_no)
-            VALUES
-            ()
-             """)
-    int addInOutHistoryy();
-
+    INSERT INTO TB_INOUT_HIS
+    (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no)
+    VALUES
+    (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo})
+""")
+    int addInOutHistory(
+            @Param("serialNo") String serialNo,
+            @Param("inoutCommonCode") String inoutCommonCode,      // 순서 변경
+            @Param("warehouseCode") String warehouseCode,          // 순서 변경
+            @Param("customerEmployeeNo") String customerEmployeeNo,
+            @Param("businessEmployeeNo") String businessEmployeeNo,
+            @Param("inoutHistoryNote") String inoutHistoryNote,
+            @Param("inoutNo") String inoutNo);
 
     // 입고 반려 버튼 클릭시 거절
     @Update("""
@@ -212,7 +218,6 @@ LIMIT #{offset}, 10
             LEFT JOIN TB_RTN_REQ REQ ON APPR.return_request_key=REQ.return_request_key 
             WHERE return_no=#{inputNo}
             """)
-
     String getReturnSerialNo(String inputNo);
 
     // 리스트 총행 세기
@@ -275,9 +280,12 @@ LIMIT #{offset}, 10
     int countByConsent(@Param("state") String state , String keyword);
 
 
+    // 입고 승인자의 사번을 창고 코드 조회 해오기
     @Select("""
-            SELECT *
-            FROM 
+            SELECT W.warehouse_code
+            FROM TB_EMPMST EM
+            LEFT JOIN TB_WHMST W ON EM.employee_workplace_code = W.customer_code
+            WHERE EM.employee_no = #{inputStockEmployeeNo}
             """)
-    String viewLocationKey(String inputStockEmployeeNo);
+    String viewWareHouseCode(String inputStockEmployeeNo);
 }

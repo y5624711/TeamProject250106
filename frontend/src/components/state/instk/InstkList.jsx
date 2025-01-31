@@ -13,8 +13,8 @@ import axios from "axios";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import {useSearchParams} from "react-router-dom";
-import {Sort} from "../../tool/list/Sort.jsx";
+import { useSearchParams } from "react-router-dom";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
@@ -26,18 +26,20 @@ export function InstkList() {
 
   //페이지 네이션 + 저거 옵션다는거 부터 하자
   useEffect(() => {
-    axios.get("api/instk/list",{
-      params:{
-        state:searchParams.get("state"),
-        page:searchParams.get("page"),
-        keyword:searchParams.get("keyword"),
-        sort:searchParams.get("sort"),
-        order:searchParams.get("order")
-      }
-    }).then((res) => {
-      setCount(res.data.count)
-      setInstkList(res.data.list);
-    });
+    axios
+      .get("api/instk/list", {
+        params: {
+          state: searchParams.get("state"),
+          page: searchParams.get("page"),
+          keyword: searchParams.get("keyword"),
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
+        },
+      })
+      .then((res) => {
+        setCount(res.data.count);
+        setInstkList(res.data.list);
+      });
   }, [searchParams]);
 
   console.log(instkList, "instklist");
@@ -80,10 +82,12 @@ export function InstkList() {
 
   return (
     <Box>
-      <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
+      <SearchBar
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+        searchOptions={searchOptions}
+      />
       <RadioGroup
-        defaultValue="all"
-        value={searchParams.get("state")}
+        value={searchParams.get("state") || "all"}
         my={3}
         onValueChange={(e) => {
           setSearchParams((prev) => ({
