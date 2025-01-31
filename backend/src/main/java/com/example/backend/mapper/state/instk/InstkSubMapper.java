@@ -15,6 +15,6 @@ public interface InstkSubMapper {
                 from  TB_INSTK_SUB
                 where input_key=#{input_key}
             """)
-    List<Integer> getSerialNoByInputKey(int inputKey);
+    List<String> getSerialNoByInputKey(int inputKey);
 
 }

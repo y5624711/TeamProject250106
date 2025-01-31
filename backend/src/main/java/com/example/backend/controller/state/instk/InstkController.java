@@ -35,18 +35,27 @@ public class InstkController {
     }
 
     @PostMapping("add")
-    public void add(@RequestBody Instk instk) {
+    public ResponseEntity<Map<String, Object>>  add(@RequestBody Instk instk) {
 
         System.out.println("instk = " + instk);
 
-        service.addInstkProcess(instk);
+        boolean success = service.addInstkProcess(instk);
+
+        if(success){
+            return  ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "success",
+                            "text", STR."\{instk.getInputKey()}번 승인 처리  했습니다.")));
+        }else {
+            return  ResponseEntity.ok()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", STR."\{instk.getInputKey()}번 승인 실패  했습니다.")));
+        }
 
     }
 
     //승인 상세
-    @GetMapping("detailView/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey) {
-        System.out.println("inputKey = " + inputKey);
+    @GetMapping("detailview/{inputKey}")
+    public Instk detailView(@PathVariable int inputKey  ) {
 
 
 //        return  new Instk();

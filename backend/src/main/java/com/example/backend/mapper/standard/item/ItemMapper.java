@@ -159,7 +159,7 @@ public interface ItemMapper {
             WHERE item_common_code = #{commonCode}
             
             """)
-    int viewMaxSerialNoByItemCode(String itemCommonCode);
+    Integer viewMaxSerialNoByItemCode(String itemCommonCode);
 
     @Insert("""
             INSERT INTO TB_ITEMSUB

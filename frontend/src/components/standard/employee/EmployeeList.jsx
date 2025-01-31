@@ -145,7 +145,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       setSort(sortName);
       setOrder(convertedOrderName);
       const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
-      newParams.sort= sortName;
+      newParams.sort = sortName;
       newParams.order = convertedOrderName;
       return newParams; // 새로운 객체를 반환
     });
@@ -203,16 +203,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       </HStack>
       <Checkbox
         checked={isActiveVisible}
-        onCheckedChange={(e) =>   handleVisible()}
+        onCheckedChange={(e) => handleVisible()}
       >
-        삭제 정보
+        전체 조회
       </Checkbox>
-      {/*<Switch*/}
-      {/*  checked={isActiveVisible}*/}
-      {/*  onCheckedChange={() => {*/}
-      {/*    handleVisible();*/}
-      {/*  }}*/}
-      {/*/>*/}
       <Table.Root>
         <Table.Header>
           <SortColumnHeader
