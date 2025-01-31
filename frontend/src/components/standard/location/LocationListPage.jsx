@@ -1,5 +1,6 @@
 import React from "react";
-import { Table } from "@chakra-ui/react";
+import { Box, Table } from "@chakra-ui/react";
+import { BsCheckSquareFill, BsSquare } from "react-icons/bs";
 
 function WarehouseListPage({
   location,
@@ -36,7 +37,15 @@ function WarehouseListPage({
           {location.shelf}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {location.itemCommonName}
+          {location.located === true ? (
+            <Box display="flex" justifyContent="center">
+              <BsCheckSquareFill />
+            </Box>
+          ) : (
+            <Box display="flex" justifyContent="center">
+              <BsSquare />
+            </Box>
+          )}
         </Table.Cell>
       </Table.Row>
     </>

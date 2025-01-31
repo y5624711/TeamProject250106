@@ -7,12 +7,16 @@ CREATE TABLE TB_LOCMST
     row            VARCHAR(2)  NOT NULL,
     col            VARCHAR(2)  NOT NULL,
     shelf          INT         NOT NULL,
-    located        BOOLEAN,
+    located        BOOLEAN DEFAULT FALSE,
     location_note  VARCHAR(50) NULL
 );
 
 ALTER TABLE TB_LOCMST
-    DROP COLUMN item_common_code;
+    ADD COLUMN located BOOLEAN DEFAULT FALSE;
+
+UPDATE TB_LOCMST
+SET located = true
+WHERE shelf = 1;
 
 DELETE
 FROM TB_LOCMST

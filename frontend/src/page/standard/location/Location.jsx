@@ -31,6 +31,7 @@ function Location(props) {
   // 로케이션 정보 가져오기
   useEffect(() => {
     axios.get(`/api/location/list?${searchParams.toString()}`).then((res) => {
+      console.log(res.data.list);
       setLocationList(res.data.list);
       setCountLocation(res.data.count);
     });

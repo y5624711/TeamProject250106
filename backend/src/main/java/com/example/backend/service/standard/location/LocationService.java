@@ -49,6 +49,8 @@ public class LocationService {
                 return "l.col";
             case "shelf":
                 return "l.shelf";
+            case "located":
+                return "l.located";
             case "location_note":
                 return "l.location_note";
             default:
