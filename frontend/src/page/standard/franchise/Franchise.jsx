@@ -202,6 +202,11 @@ export function Franchise() {
     setSearchParams(nextSearchParams);
   };
 
+  // 검색 초기화
+  const handleResetClick = () => {
+    setSearchParams("");
+  };
+
   // 가맹점 등록 버튼 클릭 시 다이얼로그 열림
   const handleAddFranchiseClick = () => {
     setIsAddDialogOpen(true);
@@ -232,11 +237,12 @@ export function Franchise() {
             count={count}
             search={search}
             setSearch={setSearch}
+            handleSearchClick={handleSearchClick}
+            onReset={handleResetClick}
             checkedActive={checkedActive}
             setCheckedActive={setCheckedActive}
             toggleCheckedActive={toggleCheckedActive}
             handlePageChange={handlePageChange}
-            handleSearchClick={handleSearchClick}
             handleSortChange={handleSortChange}
             standard={standard}
             setStandard={setStandard}

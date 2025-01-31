@@ -27,6 +27,7 @@ export function FranchiseList({
   search,
   setSearch,
   handleSearchClick,
+  onReset,
   checkedActive,
   toggleCheckedActive,
   onFranchiseClick,
@@ -114,12 +115,10 @@ export function FranchiseList({
 
         {/* 검색 초기화 */}
         <IconButton
-          transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
+          transform="translateX(-130%) "
           variant={"ghost"}
-          onClick={() => {
-            window.location.search = ""; // searchParams 초기화
-          }}
+          onClick={onReset}
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
