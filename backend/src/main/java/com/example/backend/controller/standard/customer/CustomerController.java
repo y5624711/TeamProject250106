@@ -53,7 +53,7 @@ public class CustomerController {
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "customer_key") String sort,
-            @RequestParam(value = "order", defaultValue = "asc") String order
+            @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
 
 

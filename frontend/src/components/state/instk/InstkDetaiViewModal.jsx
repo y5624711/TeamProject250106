@@ -7,17 +7,9 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import {
-  HStack,
-  Input,
-  NativeSelectField,
-  NativeSelectRoot,
-  Separator,
-  Stack,
-} from "@chakra-ui/react";
+import { HStack, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
@@ -64,7 +56,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
 
             <HStack>
-              <Field label={"주문 신청자"} orientation="horizontal">
+              <Field label={"주문 요청자"} orientation="horizontal">
                 <Input readOnly value={instk.requestEmployeeName} />
               </Field>
               <Field label={"사번"} orientation="horizontal">

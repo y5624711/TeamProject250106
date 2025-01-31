@@ -23,7 +23,7 @@ export function PurchaseList({
     { key: "purchaseRequestKey", label: "#" },
     { key: "customerName", label: "담당 업체" },
     { key: "itemCommonName", label: "품목" },
-    { key: "employeeName", label: "신청자" },
+    { key: "employeeName", label: "요청자" },
     { key: "customerEmployeeName", label: "승인자" },
     { key: "date", label: "날짜" },
   ];
@@ -34,7 +34,7 @@ export function PurchaseList({
       { label: "전체", value: "all" },
       { label: "담당 업체", value: "customerName" },
       { label: "품목", value: "itemCommonName" },
-      { label: "신청자", value: "employeeName" },
+      { label: "요청자", value: "employeeName" },
       { label: "승인자", value: "customerEmployeeName" },
     ],
   });

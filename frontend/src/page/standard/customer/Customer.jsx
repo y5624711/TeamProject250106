@@ -13,12 +13,11 @@ function Customer() {
   const [customerKey, setCustomerKey] = useState(null);
   const [count, setCount] = useState(0);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1,
-  );
+  // const [currentPage, setCurrentPage] = useState(
+  //   parseInt(searchParams.get("page")) || 1,
+  // );
   const [checkedActive, setCheckedActive] = useState(
     searchParams.get("active") === "true",
   );
@@ -34,7 +33,7 @@ function Customer() {
       .get(`/api/customer/list`, {
         params: {
           sort: "",
-          order: "ASC",
+          order: "DESC",
           page: "1",
           type: "all",
           keyword: "",
@@ -95,13 +94,6 @@ function Customer() {
       });
   };
 
-  // const handleEditRequest = () => {
-  //   if (customerKey) {
-  //     setViewDialogOpen(false);
-  //     setEditDialogOpen(true);
-  //   }
-  // };
-
   //수정 저장 버튼
   const handleEditClick = (customerData) => {
     // console.log(customer);
@@ -125,27 +117,6 @@ function Customer() {
       });
   };
 
-  // const handleDeleteClick = () => {
-  //   axios
-  //     .put(`api/customer/delete/${customerKey}`)
-  //     .then((res) => res.data)
-  //     .then((data) => {
-  //       fetchUpdatedCustomerList();
-  //       toaster.create({
-  //         type: data.message.type,
-  //         description: data.message.text,
-  //       });
-  //       setViewDialogOpen(false);
-  //     })
-  //     .catch((e) => {
-  //       const data = e.response.data;
-  //       toaster.create({
-  //         type: data.message.type,
-  //         description: data.message.text,
-  //       });
-  //     });
-  // };
-
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
@@ -153,15 +124,6 @@ function Customer() {
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
-    setSearchParams(nextSearchParams);
-  };
-
-  // 검색 타입 변경 처리 및 URL 업데이트
-  const handleSearchTypeChange = (type) => {
-    setSearch((prev) => ({ ...prev, type }));
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("type", type);
     setSearchParams(nextSearchParams);
   };
 
@@ -187,7 +149,7 @@ function Customer() {
       .get(`/api/customer/list`, {
         params: {
           sort: searchParams.get("sort") || "customer_key",
-          order: searchParams.get("order") || "asc",
+          order: searchParams.get("order") || "DESC",
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
@@ -249,18 +211,18 @@ function Customer() {
     setSearchParams(nextSearchParams);
   }
 
-  useEffect(() => {
-    const pageParam = Number(searchParams.get("page") || "1");
-    setCurrentPage(page);
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const pageParam = Number(searchParams.get("page") || "1");
+  //   setCurrentPage(page);
+  // }, [searchParams]);
 
-  //정렬 기즌
+  //정렬 기준
   function handleStandard(sort) {
     const currentSort = searchParams.get("sort");
-    const currentOrder = searchParams.get("order");
+    const currentOrder = searchParams.get("order") || "ASC";
 
     const newOrder =
-      currentSort === sort && currentOrder === "asc" ? "desc" : "asc";
+      currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sort);
@@ -269,13 +231,18 @@ function Customer() {
     setSearchParams(nextSearchParams);
   }
 
+  //정렬 기호 표시 변경
   useEffect(() => {
     const sort = searchParams.get("sort") || "customer_key";
-    const order = searchParams.get("order") || "asc";
+    const order = searchParams.get("order") || "DESC";
     setStandard({ sort, order });
   }, [searchParams]);
 
   // console.log("p", standard);
+
+  const handleResetClick = () => {
+    setSearchParams("");
+  };
 
   return (
     <Box>
@@ -299,10 +266,14 @@ function Customer() {
             search={search}
             setSearch={setSearch}
             handleSearchClick={handleSearchClick}
-            handleSearchTypeChange={handleSearchTypeChange}
+            onReset={handleResetClick}
           />
           <Flex justify="flex-end">
-            <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+            <Button
+              onClick={() => setAddDialogOpen(true)}
+              size={"lg"}
+              transform="translateY(-180%)"
+            >
               협력업체 등록
             </Button>
           </Flex>

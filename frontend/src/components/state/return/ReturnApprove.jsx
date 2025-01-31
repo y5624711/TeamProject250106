@@ -182,7 +182,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           )}
 
           <HStack>
-            <Field orientation="horizontal" label="신청자">
+            <Field orientation="horizontal" label="요청자">
               <Input readOnly value={approveData.businessEmployeeName} />
             </Field>
             <Field orientation="horizontal" label="사번">
@@ -193,14 +193,14 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           <Field orientation="horizontal" label="담당 업체">
             <Input readOnly value={approveData.customerName} />
           </Field>
-          <Field orientation="horizontal" label="신청 날짜">
+          <Field orientation="horizontal" label="요청 날짜">
             <Input
               readOnly
               type={"date"}
               value={approveData.returnRequestDate}
             />
           </Field>
-          <Field orientation="horizontal" label="신청 비고">
+          <Field orientation="horizontal" label="요청 비고">
             {approveData.returnRequestNote ? (
               <Textarea readOnly value={approveData.returnRequestNote} />
             ) : (
@@ -313,6 +313,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   type="date" // 사용자가 달력으로 날짜 선택 가능
                   value={approveData.returnDate || ""}
                   onChange={handleApproveInput("returnDate")}
+                  min={new Date().toISOString().split("T")[0]}
                 />
               </Field>
               <Field orientation="horizontal" label="승인 비고">

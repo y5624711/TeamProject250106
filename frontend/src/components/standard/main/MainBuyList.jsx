@@ -19,7 +19,7 @@ export function MainBuyList({ company }) {
     { label: "#" },
     { label: "담당 업체" },
     { label: "품목" },
-    { label: "신청자" },
+    { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
@@ -64,7 +64,7 @@ export function MainBuyList({ company }) {
           ) : (
             <Table.Row>
               <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
-                신청내역이 없습니다.
+                요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>
           )}

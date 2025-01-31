@@ -26,7 +26,7 @@ export function PurchaseDialog({
         <DialogHeader>
           <DialogTitle>
             {isAddDialogOpen
-              ? "구매 신청"
+              ? "구매 요청"
               : purchaseConsent === true
                 ? "구매 승인 상세"
                 : purchaseConsent === false
@@ -47,7 +47,7 @@ export function PurchaseDialog({
               onClose={onClose}
             />
           ) : (
-            "구매 신청이 없습니다."
+            "구매 요청이 없습니다."
           )}
         </DialogBody>
         <DialogCloseTrigger />

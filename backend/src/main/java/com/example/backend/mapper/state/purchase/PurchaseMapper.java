@@ -29,7 +29,7 @@ public interface PurchaseMapper {
             """)
     List<Item> getCustomerName(String itemCommonCode);
 
-    // 구매 신청
+    // 구매 요청
     @Insert("""
             INSERT INTO TB_PURCH_REQ
             (employee_no, item_common_code, customer_code, amount, purchase_request_note)

@@ -18,7 +18,7 @@ function Return(props) {
 
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
-  const order = searchParams.get("order") || "desc";
+  const order = searchParams.get("order") || "DESC";
 
   //목록 불러오기
   const fetchReturnList = () => {
@@ -50,22 +50,6 @@ function Return(props) {
     setSearchParams(nextSearchParams);
   }
 
-  // //검색
-  // function handleSearchClick() {
-  //   const nextSearchParams = new URLSearchParams(searchParams);
-  //   if (keyword.trim().length > 0) {
-  //     //검색 입력
-  //     nextSearchParams.set("type", type);
-  //     nextSearchParams.set("type", keyword);
-  //     nextSearchParams.set("page", 1);
-  //     setSearchParams(nextSearchParams);
-  //   } else {
-  //     //기본
-  //     nextSearchParams.delete("type");
-  //     nextSearchParams.delete("keyword");
-  //   }
-  // }
-
   // state 변경 핸들러
   const handleStateChange = (newState) => {
     const nextSearchParams = new URLSearchParams(searchParams);
@@ -74,41 +58,12 @@ function Return(props) {
     setSearchParams(nextSearchParams);
   };
 
-  // // URL 변화 시 검색 상태 갱신
-  // useEffect(() => {
-  //   const newState = searchParams.get("state") || "all";
-  //   // console.log("Updated state from URL:", newState);
-  // }, [searchParams]);
-
-  // //요청창 작성 후 버튼 클릭 : returnRequest
-  // const handleRequestClick = (newRequest) => {
-  //   setReturnList((prevReturnList) => [newRequest, ...prevReturnList]);
-  //   setRequestDialogOpen(false);
-  // };
-
   //테이블 행 클릭
   const handleRowClick = (requestKey) => {
     // console.log(requestKey);
     setReturnRequestKey(requestKey);
     setApproveDialogOpen(true);
   };
-
-  // //정렬
-  // const handleSortOrder = () => {
-  //   const currentSort = searchParams.get("sort");
-  //   const currentOrder = searchParams.get("order");
-  //
-  //   const newOrder =
-  //     currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
-  //
-  //   const nextSearchParams = new URLSearchParams(searchParams);
-  //   nextSearchParams.set("sort", sort);
-  //   nextSearchParams.set("order", newOrder);
-  //
-  //   setSearchParams(nextSearchParams);
-  // };
-
-  // console.log("list", returnList);
 
   return (
     <Box>
@@ -120,18 +75,20 @@ function Return(props) {
           </Heading>
           <ReturnList
             returnList={returnList}
-            onRowClick={handleRowClick}
             count={count}
+            onRowClick={handleRowClick}
             state={state}
             handlePageChange={handlePageChange}
             onStateChange={handleStateChange}
             sort={sort}
             order={order}
-            searchParams={searchParams}
           />
           <Flex justify="flex-end">
-            <Button onClick={() => setRequestDialogOpen(true)}>
-              반품 신청
+            <Button
+              onClick={() => setRequestDialogOpen(true)}
+              transform="translateY(-110%)"
+            >
+              반품 요청
             </Button>
           </Flex>
         </Stack>

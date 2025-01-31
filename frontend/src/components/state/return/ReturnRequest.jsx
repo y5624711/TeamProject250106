@@ -169,7 +169,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
     <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>반품 신청</DialogTitle>
+          <DialogTitle>반품 요청</DialogTitle>
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
@@ -252,7 +252,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             />
           </Field>
           <HStack>
-            <Field orientation="horizontal" label="신청자">
+            <Field orientation="horizontal" label="요청자">
               <Input
                 readOnly
                 value={requestData.businessEmployeeName}
@@ -288,7 +288,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             disabled={validate()}
           >
             <Button onClick={handleRequestButtonClick} disabled={!validate()}>
-              신청
+              요청
             </Button>
           </Tooltip>
         </DialogFooter>
