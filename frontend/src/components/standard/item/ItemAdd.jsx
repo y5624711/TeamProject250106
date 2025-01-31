@@ -40,10 +40,9 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   const [itemCommonCodeList, setItemCommonCodeList] = useState([]);
   const [itemData, setItemData] = useState(initialItemData);
 
-  // 창이 닫히면 입력 내용 초기화
   const handleClose = () => {
-    setItemData(initialItemData);
-    onClose();
+    setItemData(initialItemData); // 데이터 초기화
+    onClose(); // 다이얼로그 닫기
   };
 
   const handleInputChange = (field) => (e) => {
@@ -57,31 +56,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
       .get("/api/item/commonCode")
       .then((res) => setItemCommonCodeList(res.data))
       .catch((error) => console.error("데이터 로딩 중 오류 발생:", error));
-  }, []);
-
-  // 품목 선택 시 협력업체 이름 가져오기
-  useEffect(() => {
-    if (itemData.itemCommonCode) {
-      axios
-        .get(`/api/item/customer/${itemData.itemCommonCode}`)
-        .then((res) => {
-          const customerData = res.data[0] || {};
-          setItemData((prev) => ({
-            ...prev,
-            customerName: customerData.customerName || "없음",
-            customerCode: customerData.customerCode || "",
-          }));
-        })
-        .catch((error) => {
-          console.error("협력업체 정보 로드 중 오류 발생: ", error);
-          setItemData((prev) => ({
-            ...prev,
-            customerName: "",
-            customerCode: "",
-          }));
-        });
-    }
-  }, [itemData.itemCommonCode]);
+  }, [isOpen]);
 
   // 유효성 검증을 계산된 값으로 정의
   const isValid =
@@ -128,15 +103,20 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
           <Stack gap="15px">
             <Field label={"품목"} orientation="horizontal">
               <SelectRoot
-                onValueChange={(e) => {
+                onValueChange={(selectedName) => {
                   const selectedItem = itemCommonCodeList.find(
-                    (item) => item.item_common_name === e.value[0],
+                    (item) => item.itemCommonName === selectedName.value[0],
                   );
-                  setItemData((prev) => ({
-                    ...prev,
-                    itemCommonName: selectedItem?.item_common_name,
-                    itemCommonCode: selectedItem?.item_common_code || "",
-                  }));
+
+                  if (selectedItem) {
+                    setItemData((prev) => ({
+                      ...prev,
+                      itemCommonName: selectedItem?.itemCommonName,
+                      itemCommonCode: selectedItem?.itemCommonCode || "",
+                      customerName: selectedItem.customerName,
+                      customerCode: selectedItem.customerCode,
+                    }));
+                  }
                 }}
               >
                 <SelectTrigger>
@@ -153,10 +133,10 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 >
                   {itemCommonCodeList.map((item) => (
                     <SelectItem
-                      key={item.item_common_code}
-                      item={item.item_common_name}
+                      key={item.itemCommonCode}
+                      item={item.itemCommonName}
                     >
-                      {item.item_common_name}
+                      {item.itemCommonName}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -208,7 +188,12 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+          <Tooltip
+            content="입력을 완료해주세요."
+            disabled={isValid}
+            openDelay={100}
+            closeDelay={100}
+          >
             <Button onClick={handleAddClick} disabled={!isValid}>
               등록
             </Button>

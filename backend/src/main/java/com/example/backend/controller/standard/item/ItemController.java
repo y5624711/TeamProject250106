@@ -84,15 +84,9 @@ public class ItemController {
         return service.getItemList(page, active, type, keyword, sort, order);
     }
 
-    // 품목을 취급하는 협력업체 이름 가져오기
-    @GetMapping("customer/{itemCommonCode}")
-    public List<Item> getCustomerName(@PathVariable String itemCommonCode) {
-        return service.getCustomerName(itemCommonCode);
-    }
-
     // 품목 구분 코드 리스트 가져오기
     @GetMapping("commonCode")
-    public List<Map<String, String>> getItemCommonCode() {
+    public List<Item> getItemCommonCode() {
         return service.getItemCommonCode();
     }
 

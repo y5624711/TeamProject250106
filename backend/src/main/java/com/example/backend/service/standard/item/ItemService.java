@@ -38,15 +38,9 @@ public class ItemService {
     }
 
     // 품목 구분 코드 가져오기
-    public List<Map<String, String>> getItemCommonCode() {
+    public List<Item> getItemCommonCode() {
         return mapper.getItemCommonCode();
     }
-
-    // 품목을 취급하는 협력업체 이름 가져오기
-    public List<Item> getCustomerName(String itemCommonCode) {
-        return mapper.getCustomerName(itemCommonCode);
-    }
-
 
     // 품목 리스트 가져오기
     public Map<String, Object> getItemList(Integer page, Boolean active, String type, String keyword, String sort, String order) {
