@@ -269,7 +269,11 @@ function Customer() {
             onReset={handleResetClick}
           />
           <Flex justify="flex-end">
-            <Button onClick={() => setAddDialogOpen(true)} size={"lg"}>
+            <Button
+              onClick={() => setAddDialogOpen(true)}
+              size={"lg"}
+              transform="translateY(-180%)"
+            >
               협력업체 등록
             </Button>
           </Flex>
