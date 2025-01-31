@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import { ItemList } from "../../../components/standard/item/ItemList.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
@@ -47,10 +47,10 @@ export function Item() {
     <Box>
       <HStack align="flex-start" w="100%">
         <StandardSideBar />
-        <Stack flex={1}>
-          <Text fontSize="xl" p={2} mb={3}>
+        <Stack flex={1} p={5}>
+          <Heading fontSize="xl" p={2} mb={3}>
             기준정보 관리 {">"} 품목 관리
-          </Text>
+          </Heading>
           <ItemList
             count={count}
             itemList={itemList}
