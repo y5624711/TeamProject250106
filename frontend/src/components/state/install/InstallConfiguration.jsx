@@ -118,19 +118,19 @@ export function InstallConfiguration({
               <Input value={installData.itemCommonName} readOnly />
             </Field>
             <HStack>
-              <Field label={"신청자"} orientation="horizontal">
-                <Input value={installData.businessEmployeeName} readOnly />
-              </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input value={installData.businessEmployeeNo} readOnly />
-              </Field>
-            </HStack>
-            <HStack>
               <Field label={"설치 기사"} orientation="horizontal">
                 <Input value={installData.customerInstallerName} readOnly />
               </Field>
               <Field label={"사번"} orientation="horizontal">
                 <Input value={installData.customerInstallerNo} readOnly />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={"신청자"} orientation="horizontal">
+                <Input value={installData.businessEmployeeName} readOnly />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={installData.businessEmployeeNo} readOnly />
               </Field>
             </HStack>
             <Field label={"승인 날짜"} orientation="horizontal">
@@ -139,7 +139,7 @@ export function InstallConfiguration({
             <Field label={"승인 비고"} orientation="horizontal">
               <Input value={installData.installApproveNote} readOnly />
             </Field>
-            <Separator />
+            {installData.installApproveConsent && <Separator />}
             <HStack>
               <Field label={"출고 번호"} orientation="horizontal">
                 <Input value={installData.outputNo} readOnly />
@@ -170,9 +170,10 @@ export function InstallConfiguration({
                 value={inoutHistoryNote}
                 placeholder="최대 50자"
                 onChange={(e) => setInoutHistoryNote(e.target.value)}
+                maxHeight={"100px"}
               />
             </Field>
-            {isConfiguration == true && (
+            {installData.installApproveConsent == true && (
               <Field label={"완료 날짜"} orientation="horizontal">
                 <Input value={installData.inoutHistoryDate} readOnly />
               </Field>
