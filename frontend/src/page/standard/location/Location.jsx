@@ -109,7 +109,6 @@ const locationOptionList = createListCollection({
     { label: "행", value: "row" },
     { label: "열", value: "col" },
     { label: "단", value: "shelf" },
-    { label: "품목", value: "item" },
     { label: "비고", value: "note" },
   ],
 });
