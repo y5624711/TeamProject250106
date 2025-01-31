@@ -122,13 +122,13 @@ public class InstkService {
     }
 
     // 입고 반려
-    public boolean[] rejectInstk(int inputKey) {
+    public Boolean[] rejectInstk(int inputKey) {
         //기존 입고삳태
-        boolean selectedConsent =mapper.selectedConsent(inputKey);
+        Boolean selectedConsent =mapper.selectedConsent(inputKey);
         // 업데이트한 입고상태
         int cnt =mapper.rejectInstk(inputKey);
 
 
-        return  new boolean[] {selectedConsent,cnt==1};
+        return  new Boolean[] {selectedConsent,cnt==1};
     }
 }

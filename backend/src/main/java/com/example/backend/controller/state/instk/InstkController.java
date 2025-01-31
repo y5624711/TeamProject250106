@@ -65,15 +65,15 @@ public class InstkController {
     public ResponseEntity<Map<String, Object>> rejectInstk(@RequestBody Instk instk) {
         System.out.println("instk.getInputKey() = " + instk.getInputKey());
 
-        boolean rejectChecked[] =  service.rejectInstk(instk.getInputKey());
+        Boolean rejectChecked[] =  service.rejectInstk(instk.getInputKey());
         // 반려 상태 true일때
         // 0번이 , 기존 상태 ,1번이 업데이트 된 상태
-        if(!rejectChecked[0]){
+        if(!rejectChecked[0] && rejectChecked[0]!=null){
             return  ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "error",
                             "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
         }
-        else if(rejectChecked[1]){
+        else if(rejectChecked[1] && rejectChecked[0]==null){
             return  ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."\{instk.getInputKey()}번 주문 반려 되었습니다.")));
