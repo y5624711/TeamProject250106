@@ -1,8 +1,9 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SidebarItem({ children, path, ...rest }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box
@@ -12,6 +13,7 @@ function SidebarItem({ children, path, ...rest }) {
       px="4"
       _hover={{ bgColor: "gray.200", cursor: "pointer" }}
       onClick={() => path && navigate(path)}
+      bg={location.pathname === path ? "gray.200" : "transparent"} // 현재 경로와 일치하면 배경색 변경
       {...rest}
     >
       <Text fontWeight="medium" color="gray.700">
@@ -40,10 +42,9 @@ export function StateSideBar() {
           alignItems="center" // 세로 방향 가운데 정렬
         >
           <Text fontWeight="bold" color={"white"} fontSize={"22px"}>
-            구매 / 설치 관리
+            구매/설치 관리
           </Text>
         </Box>
-
         <Stack spacing="2" mt="4">
           <SidebarItem path="/purchase">구매 관리</SidebarItem>
           <SidebarItem path="/instk">입고 관리</SidebarItem>

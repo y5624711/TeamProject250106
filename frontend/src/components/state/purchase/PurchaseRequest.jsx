@@ -9,12 +9,12 @@ import {
   SelectValueText,
   Textarea,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
 import { Field } from "../../ui/field.jsx";
-import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
-import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export function PurchaseRequest({ onSave, onClose }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -176,15 +176,15 @@ export function PurchaseRequest({ onSave, onClose }) {
           />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={itemData.inputPrice * amount} isReadOnly />
+          <Input value={itemData.inputPrice * amount} readOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
         <Field label="신청자" orientation="horizontal" mb={15}>
-          <Input value={name} />
+          <Input value={name} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={id} />
+          <Input value={id} readOnly />
         </Field>
       </Box>
       <Field label="신청 비고" orientation="horizontal" mb={15}>

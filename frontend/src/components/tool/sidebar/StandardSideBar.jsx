@@ -1,8 +1,9 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SidebarItem({ children, path, ...rest }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box
@@ -12,6 +13,7 @@ function SidebarItem({ children, path, ...rest }) {
       px="4"
       _hover={{ bgColor: "gray.200", cursor: "pointer" }}
       onClick={() => path && navigate(path)}
+      bg={location.pathname === path ? "gray.200" : "transparent"} // 현재 경로와 일치하면 배경색 변경
       {...rest}
     >
       <Text fontWeight="medium" color="gray.700">
@@ -24,12 +26,11 @@ function SidebarItem({ children, path, ...rest }) {
 export function StandardSideBar() {
   return (
     <Flex>
-      {/*StandardSideBar 영역*/}
       <Box
         w="220px"
         pb="4"
         bg="gray.100"
-        h={"100vh"} // <  화면 길이 계산해서 100%
+        h={"100vh"} // 화면 길이 계산해서 100%
         borderRight="1px solid"
         borderColor="gray.200"
       >
@@ -44,7 +45,6 @@ export function StandardSideBar() {
             기준정보 관리
           </Text>
         </Box>
-
         <Stack spacing="2" mt="4">
           <SidebarItem path="/business">사업장/부서 관리</SidebarItem>
           <SidebarItem path="/employee">인사 관리</SidebarItem>
@@ -53,7 +53,7 @@ export function StandardSideBar() {
           <SidebarItem path="/item">품목 관리</SidebarItem>
           <SidebarItem path="/warehouse">창고 관리</SidebarItem>
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
-          <SidebarItem path="/commonCode/item">공통코드 </SidebarItem>
+          <SidebarItem path="/commonCode/item">공통 코드</SidebarItem>
         </Stack>
       </Box>
     </Flex>

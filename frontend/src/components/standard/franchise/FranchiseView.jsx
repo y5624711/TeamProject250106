@@ -5,9 +5,28 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { Checkbox } from "../../ui/checkbox.jsx";
 
-export function FranchiseView({ franchiseKey, onClose, onSave }) {
+export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
+
+  // 특정 가맹점 조회
+  useEffect(() => {
+    const franchiseData = () => {
+      axios
+        .get(`/api/franchise/view/${franchiseKey}`)
+        .then((response) => {
+          setFranchise(response.data);
+          setOriginalData(response.data);
+        })
+        .catch((error) => {
+          console.error("가맹점 데이터를 가져오는 데 실패했습니다:", error);
+        });
+    };
+
+    if (franchiseKey) {
+      franchiseData();
+    }
+  }, [franchiseKey]);
 
   // 입력값이 변경될 때마다 상태를 업데이트
   const handleChange = (e) => {
@@ -30,7 +49,7 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
       axios
         .put(`/api/franchise/delete/${franchiseKey}`)
         .then(() => {
-          // 수정 처리
+          // 수정 처리 (삭제 후 수정)
           axios
             .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
             .then((res) => {
@@ -41,6 +60,7 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
               });
               setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
               onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
+              onDelete(franchiseKey); // 삭제 후 리스트에서 제거
             })
             .catch((e) => {
               const message = e.response.data.message;
@@ -51,7 +71,6 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
             });
         })
         .catch(() => {
-          // 오류 처리는 계속 유지
           toaster.create({
             type: "error",
             description: "사용 여부 업데이트 실패",
@@ -85,25 +104,6 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
     onClose();
   };
 
-  // 특정 가맹점 조회
-  useEffect(() => {
-    const franchiseData = () => {
-      axios
-        .get(`/api/franchise/view/${franchiseKey}`)
-        .then((response) => {
-          setFranchise(response.data);
-          setOriginalData(response.data);
-        })
-        .catch((error) => {
-          console.error("가맹점 데이터를 가져오는 데 실패했습니다:", error);
-        });
-    };
-
-    if (franchiseKey) {
-      franchiseData();
-    }
-  }, [franchiseKey]);
-
   if (!franchise) {
     return <Spinner />;
   }
@@ -112,7 +112,7 @@ export function FranchiseView({ franchiseKey, onClose, onSave }) {
     <Box>
       <Box>
         <Box display="flex" gap={4}>
-          <Field label="가맹점명" orientation="horizontal" mb={15}>
+          <Field label="가맹점" orientation="horizontal" mb={15}>
             <Input
               name="franchiseName"
               value={franchise.franchiseName}

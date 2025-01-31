@@ -6,7 +6,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import React from "react";
+import React, { useState } from "react";
 import { PurchaseRequest } from "./PurchaseRequest.jsx";
 import { PurchaseApprove } from "./PurchaseApprove.jsx";
 
@@ -16,13 +16,22 @@ export function PurchaseDialog({
   onSave,
   isAddDialogOpen,
   purchaseRequestKey,
+  onUpdateList,
 }) {
+  const [purchaseConsent, setPurchaseConsent] = useState(null);
+
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isAddDialogOpen ? "구매 신청" : "구매 승인"}
+            {isAddDialogOpen
+              ? "구매 신청"
+              : purchaseConsent === true
+                ? "구매 승인 상세"
+                : purchaseConsent === false
+                  ? "구매 반려 상세"
+                  : "구매 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody
@@ -33,6 +42,8 @@ export function PurchaseDialog({
           ) : purchaseRequestKey ? (
             <PurchaseApprove
               purchaseRequestKey={purchaseRequestKey}
+              setPurchaseConsent={setPurchaseConsent}
+              onUpdateList={onUpdateList}
               onClose={onClose}
             />
           ) : (

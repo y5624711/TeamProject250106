@@ -34,11 +34,48 @@ export function Franchise() {
   const [franchiseKey, setFranchiseKey] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 새로운 가맹점 정보 추가 또는 수정
+  // 가맹점 리스트 가져오기
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get("/api/franchise/list", {
+        params: {
+          // active: searchParams.get("active") || "false",
+          active: checkedActive,
+          page: searchParams.get("page") || "1",
+          type: searchParams.get("type") || "all",
+          keyword: searchParams.get("keyword") || "",
+          sort: searchParams.get("sort") || standard.sort,
+          order: searchParams.get("order") || standard.order,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        setCount(data.count);
+        setFranchiseList(data.franchiseList);
+        setIsLoading(false);
+      });
+  }, [searchParams, standard, checkedActive]);
+
+  // 검색 상태를 URLSearchParams에 맞게 업데이트
+  useEffect(() => {
+    const nextSearch = { ...search };
+    if (searchParams.get("type")) {
+      nextSearch.type = searchParams.get("type");
+    } else {
+      nextSearch.type = "all";
+    }
+    if (searchParams.get("keyword")) {
+      nextSearch.keyword = searchParams.get("keyword");
+    } else {
+      nextSearch.keyword = "";
+    }
+    setSearch(nextSearch);
+  }, [searchParams]);
+
+  // 새로운 가맹점 추가 또는 수정
   const handleSave = (newFranchise) => {
     if (newFranchise?.franchiseKey) {
-      console.log("가맹점 수정 또는 추가:", newFranchise);
-
       setFranchiseList((prevList) => {
         // 가맹점 수정 처리
         const index = prevList.findIndex(
@@ -78,7 +115,6 @@ export function Franchise() {
 
   // 가맹점 삭제
   const handleDelete = (franchiseKey) => {
-    // 해당 franchiseKey를 가진 가맹점을 리스트에서 제거
     setFranchiseList((prevList) => {
       return prevList.filter((item) => item.franchiseKey !== franchiseKey);
     });
@@ -105,45 +141,6 @@ export function Franchise() {
         setIsLoading(false);
       });
   };
-
-  // 가맹점 리스트 가져오기
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get("/api/franchise/list", {
-        params: {
-          // active: searchParams.get("active") || "false",
-          active: checkedActive,
-          page: searchParams.get("page") || "1",
-          type: searchParams.get("type") || "all",
-          keyword: searchParams.get("keyword") || "",
-          sort: searchParams.get("sort") || standard.sort,
-          order: searchParams.get("order") || standard.order,
-        },
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        setCount(data.count);
-        setFranchiseList(data.franchiseList);
-        setIsLoading(false);
-      });
-  }, [searchParams, standard, checkedActive]);
-
-  // 검색 상태를 URLSearchParams에 맞게 업데이트
-  useEffect(() => {
-    const nextSearch = { ...search };
-    if (searchParams.get("type")) {
-      nextSearch.type = searchParams.get("type");
-    } else {
-      nextSearch.type = "all";
-    }
-    if (searchParams.get("keyword")) {
-      nextSearch.keyword = searchParams.get("keyword");
-    } else {
-      nextSearch.keyword = "";
-    }
-    setSearch(nextSearch);
-  }, [searchParams]);
 
   // 검색 파라미터 업데이트
   const handleSearchClick = () => {
@@ -197,15 +194,15 @@ export function Franchise() {
     setSearchParams(nextSearchParams);
   };
 
-  // 가맹점 클릭 시 상세 보기
+  // 가맹점 등록 버튼 클릭 시 다이얼로그 열림
+  const handleAddFranchiseClick = () => {
+    setIsAddDialogOpen(true);
+  };
+
+  // 해당 가맹점 클릭 시 뷰 다이얼로그 열림
   const handleFranchiseClick = (key) => {
     setFranchiseKey(key);
     setIsDialogOpen(true);
-  };
-
-  // 추가 버튼 클릭 시 add 다이얼로그
-  const handleAddFranchiseClick = () => {
-    setIsAddDialogOpen(true);
   };
 
   // 다이얼로그 닫기
@@ -260,12 +257,12 @@ export function Franchise() {
         </Box>
         {/* 다이얼로그 */}
         <FranchiseDialog
-          isOpen={isDialogOpen || isAddDialogOpen}
-          onClose={handleDialogClose}
           franchiseKey={franchiseKey}
+          isOpen={isDialogOpen || isAddDialogOpen}
           isAddDialogOpen={isAddDialogOpen}
           onSave={handleSave}
           onDelete={handleDelete}
+          onClose={handleDialogClose}
         />
       </Box>
     </Box>
