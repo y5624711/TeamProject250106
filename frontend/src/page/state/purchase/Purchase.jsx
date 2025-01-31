@@ -103,7 +103,7 @@ export function Purchase() {
         />
         {/* 구매 신청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={handlePurchaseRequestClick} mt={-11}>
+          <Button onClick={handlePurchaseRequestClick} mt={-14}>
             구매 신청
           </Button>
         </Box>
