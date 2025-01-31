@@ -70,7 +70,7 @@ export function MainInstkList() {
           ) : (
             <Table.Row>
               <Table.Cell colSpan={8} textAlign="center">
-                신청내역이 없습니다.
+                요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>
           )}

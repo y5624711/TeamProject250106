@@ -53,11 +53,11 @@ public class ReturnController {
 
         if (service.addRequest(requestInfo)) {
             return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "신청하였습니다."),
+                    Map.of("type", "success", "text", "요청하였습니다."),
                     "data", requestInfo));
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "신청에 실패하였습니다.")));
+                    "message", Map.of("type", "error", "text", "요청에 실패하였습니다.")));
         }
     }
 
@@ -74,7 +74,7 @@ public class ReturnController {
         return service.getConfigurerList(returnRequestKey);
     }
 
-    //반품 승인 + 가입고 신청
+    //반품 승인 + 가입고 요청
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo) {

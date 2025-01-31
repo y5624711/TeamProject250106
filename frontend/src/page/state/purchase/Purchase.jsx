@@ -39,7 +39,7 @@ export function Purchase() {
     };
   }, [searchParams]);
 
-  // 구매 신청 후 리스트 업데이트
+  // 구매 요청 후 리스트 업데이트
   const handleSave = () => {
     axios
       .get("/api/purchase/list")
@@ -65,7 +65,7 @@ export function Purchase() {
       });
   };
 
-  // 구매 신청 다이얼로그 열기
+  // 구매 요청 다이얼로그 열기
   const handlePurchaseRequestClick = () => {
     setIsAddDialogOpen(true);
     setIsDialogOpen(true);
@@ -101,10 +101,10 @@ export function Purchase() {
           searchParams={searchParams}
           setSearchParams={setSearchParams}
         />
-        {/* 구매 신청 버튼 */}
+        {/* 구매 요청 버튼 */}
         <Box display="flex" justifyContent="flex-end">
           <Button onClick={handlePurchaseRequestClick} mt={-11}>
-            구매 신청
+            구매 요청
           </Button>
         </Box>
         {/* 구매 다이얼로그 */}

@@ -53,16 +53,16 @@ export function InstallConfiguration({
           setInstallData(data);
         })
         .catch((error) => {
-          console.error("설치 신청 정보 오류 발생: ", error);
+          console.error("설치 요청 정보 오류 발생: ", error);
         });
     }
   }, [installKey]);
 
   const handleConfigurationClick = () => {
-    // 설치 확인 신청
+    // 설치 확인 요청
     const configurationData = {
       outputNo: installData.outputNo,
-      // 협력일체 직원(승인자), 본사 직원(신청자), 가맹점 코드,
+      // 협력일체 직원(승인자), 본사 직원(요청자), 가맹점 코드,
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
@@ -118,7 +118,7 @@ export function InstallConfiguration({
               <Input value={installData.itemCommonName} readOnly />
             </Field>
             <HStack>
-              <Field label={"신청자"} orientation="horizontal">
+              <Field label={"요청자"} orientation="horizontal">
                 <Input value={installData.businessEmployeeName} readOnly />
               </Field>
               <Field label={"사번"} orientation="horizontal">

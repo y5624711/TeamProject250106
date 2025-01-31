@@ -131,7 +131,7 @@ function Return(props) {
           />
           <Flex justify="flex-end">
             <Button onClick={() => setRequestDialogOpen(true)}>
-              반품 신청
+              반품 요청
             </Button>
           </Flex>
         </Stack>

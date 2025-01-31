@@ -22,7 +22,7 @@ export function PurchaseApprove({
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 구매 신청 팝업 보기
+  // 구매 요청 팝업 보기
   useEffect(() => {
     if (purchaseRequestKey) {
       axios
@@ -38,7 +38,7 @@ export function PurchaseApprove({
     }
   }, [purchaseRequestKey]);
 
-  // 구매 신청 승인하기 (warehouseCode 즉, 창고 정보가 없으면 승인 안됨)
+  // 구매 요청 승인하기 (warehouseCode 즉, 창고 정보가 없으면 승인 안됨)
   const handleApprove = () => {
     const updatedPurchase = {
       ...purchase,
@@ -86,7 +86,7 @@ export function PurchaseApprove({
       });
   };
 
-  // 구매 신청 반려
+  // 구매 요청 반려
   const handleDisapprove = () => {
     axios
       .put(`api/purchase/disapprove/${purchaseRequestKey}`)
@@ -130,7 +130,7 @@ export function PurchaseApprove({
         </Field>
       ) : null}
 
-      {/* 신청 필드 */}
+      {/* 요청 필드 */}
       <Field label="품목" orientation="horizontal" mb={15}>
         <Input value={purchase.itemCommonName} readOnly />
       </Field>
@@ -143,7 +143,7 @@ export function PurchaseApprove({
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="신청자" orientation="horizontal" mb={15}>
+        <Field label="요청자" orientation="horizontal" mb={15}>
           <Input value={purchase.employeeName} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
@@ -158,13 +158,13 @@ export function PurchaseApprove({
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
         </Field>
       </Box>
-      <Field label="신청 날짜" orientation="horizontal" mb={15}>
+      <Field label="요청 날짜" orientation="horizontal" mb={15}>
         <Input
           value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
           readOnly
         />
       </Field>
-      <Field label="신청 비고" orientation="horizontal" mb={15}>
+      <Field label="요청 비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchase.purchaseRequestNote}
           readOnly

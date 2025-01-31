@@ -38,7 +38,7 @@ public class PurchaseService {
         return mapper.getCustomerName(itemCommonCode);
     }
 
-    // 구매 신청
+    // 구매 요청
     public boolean purchaseRequest(Purchase purchase) {
         int cnt = mapper.purchaseRequest(purchase);
         return cnt == 1;
@@ -46,7 +46,7 @@ public class PurchaseService {
 
     // 구매 관리 리스트
     public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order) {
-        // 신청 날짜, 승인 날짜 합치기
+        // 요청 날짜, 승인 날짜 합치기
         if ("date".equals(sort)) {
             sort = "COALESCE(purchase_request_date, purchase_approve_date)";
         }

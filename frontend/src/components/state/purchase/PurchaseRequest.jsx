@@ -86,7 +86,7 @@ export function PurchaseRequest({ onSave, onClose }) {
     setAmount(value >= 1 ? value : 1);
   };
 
-  // 구매 신청하기
+  // 구매 요청하기
   const handleSaveClick = () => {
     const requestAmount = amount && amount > 0 ? amount : 1; // 수량 기본값 1로 설정
     axios
@@ -109,7 +109,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         onClose();
       })
       .catch((e) => {
-        console.error("신청 오류:", e);
+        console.error("요청 오류:", e);
         const message = e.response?.data?.message;
         toaster.create({
           type: message.type,
@@ -180,14 +180,14 @@ export function PurchaseRequest({ onSave, onClose }) {
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="신청자" orientation="horizontal" mb={15}>
+        <Field label="요청자" orientation="horizontal" mb={15}>
           <Input value={name} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
           <Input value={id} readOnly />
         </Field>
       </Box>
-      <Field label="신청 비고" orientation="horizontal" mb={15}>
+      <Field label="요청 비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchaseRequestNote}
           onChange={(e) => setPurchaseRequestNote(e.target.value)}
@@ -205,7 +205,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           closeDelay={100}
         >
           <Button onClick={handleSaveClick} disabled={isButtonDisabled}>
-            신청
+            요청
           </Button>
         </Tooltip>
       </Box>

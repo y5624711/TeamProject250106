@@ -47,7 +47,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     onClose();
   };
 
-  // 설치 신청에 대한 정보 가져오기
+  // 설치 요청에 대한 정보 가져오기
   useEffect(() => {
     if (installKey) {
       axios
@@ -56,7 +56,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           setInstallRequest(res.data[0] || []);
         })
         .catch((error) => {
-          console.error("설치 신청에 대한 정보 오류 발생: ", error);
+          console.error("설치 요청에 대한 정보 오류 발생: ", error);
         });
     }
   }, [installKey]);
@@ -113,7 +113,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
-  // 설치 신청 반려
+  // 설치 요청 반려
   const handleDisapproveClick = () => {
     axios
       .put(`/api/install/disapprove/${installKey}`)
@@ -180,7 +180,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 </Field>
               </HStack>
               <HStack spacing={4}>
-                <Field label={"신청자"} orientation="horizontal">
+                <Field label={"요청자"} orientation="horizontal">
                   <Input value={installRequest.businessEmployeeName} readOnly />
                 </Field>
                 <Field label={"사번"} orientation="horizontal">
@@ -205,10 +205,10 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.warehouseAddress} readOnly />
                 </Field>
               </HStack>
-              <Field label={"신청 날짜"} orientation="horizontal">
+              <Field label={"요청 날짜"} orientation="horizontal">
                 <Input value={installRequest.installRequestDate} readOnly />
               </Field>
-              <Field label={"신청 비고"} orientation="horizontal">
+              <Field label={"요청 비고"} orientation="horizontal">
                 <Input value={installRequest.installRequestNote} readOnly />
               </Field>
               {installRequest.installRequestConsent != false && (

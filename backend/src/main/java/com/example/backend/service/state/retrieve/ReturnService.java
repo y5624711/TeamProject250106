@@ -71,7 +71,7 @@ public class ReturnService {
         return mapper.getRequestInfo(returnRequestKey);
     }
 
-    //반품 요청 승인 + 가입고 신청
+    //반품 요청 승인 + 가입고 요청
     public boolean addApprove(Return approveInfo) {
         //1. 요청의 승인여부 변경
         mapper.changeConsent(approveInfo.getReturnRequestKey());

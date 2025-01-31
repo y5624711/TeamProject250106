@@ -2,7 +2,6 @@ import {
   Box,
   Center,
   createListCollection,
-  Heading,
   HStack,
   Table,
 } from "@chakra-ui/react";
@@ -13,8 +12,8 @@ import axios from "axios";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import {useSearchParams} from "react-router-dom";
-import {Sort} from "../../tool/list/Sort.jsx";
+import { useSearchParams } from "react-router-dom";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);
@@ -26,18 +25,20 @@ export function InstkList() {
 
   //페이지 네이션 + 저거 옵션다는거 부터 하자
   useEffect(() => {
-    axios.get("api/instk/list",{
-      params:{
-        state:searchParams.get("state"),
-        page:searchParams.get("page"),
-        keyword:searchParams.get("keyword"),
-        sort:searchParams.get("sort"),
-        order:searchParams.get("order")
-      }
-    }).then((res) => {
-      setCount(res.data.count)
-      setInstkList(res.data.list);
-    });
+    axios
+      .get("api/instk/list", {
+        params: {
+          state: searchParams.get("state"),
+          page: searchParams.get("page"),
+          keyword: searchParams.get("keyword"),
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
+        },
+      })
+      .then((res) => {
+        setCount(res.data.count);
+        setInstkList(res.data.list);
+      });
   }, [searchParams]);
 
   console.log(instkList, "instklist");
@@ -61,7 +62,7 @@ export function InstkList() {
       { label: "품목", value: "itemCommonName" },
       { label: "담당 업체", value: "customerName" },
       { label: "날짜", value: "inputStockDate" },
-      { label: "신청자", value: "requestEmployeeName" },
+      { label: "요청자", value: "requestEmployeeName" },
       { label: "승인자", value: "inputStockEmployeeName" },
       { label: "상태", value: "inputConsent" },
     ],
@@ -72,7 +73,7 @@ export function InstkList() {
     { key: "input_no", label: "발주 번호" },
     { key: "item_common_name", label: "품목" },
     { key: "customer_name", label: "담당 업체" },
-    { key: "request_employee_name", label: "신청자" },
+    { key: "request_employee_name", label: "요청자" },
     { key: "input_stock_employee_name", label: "승인자" },
     { key: "input_stock_date", label: "날짜" },
     { key: "input_consent", label: "상태" },
@@ -80,7 +81,10 @@ export function InstkList() {
 
   return (
     <Box>
-      <SearchBar onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)} searchOptions={searchOptions} />
+      <SearchBar
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+        searchOptions={searchOptions}
+      />
       <RadioGroup
         defaultValue="all"
         value={searchParams.get("state")}

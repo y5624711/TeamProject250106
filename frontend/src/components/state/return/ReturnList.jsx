@@ -58,12 +58,9 @@ function ReturnList({
       { label: "담당업체", value: "customerName" },
       { label: "시리얼번호", value: "serialNo" },
       { label: "반품번호", value: "returnNo" },
-      { label: "신청자", value: "businessEmployeeName" },
-      // { label: "신청자사번", value: "businessEmployeeNo" },
+      { label: "요청자", value: "businessEmployeeName" },
       { label: "승인자", value: "customerEmployeeName" },
-      // { label: "승인자사번", value: "customerEmployeeNo" },
       { label: "검수기사", value: "customerConfigurerName" },
-      // { label: "검수기사 사번", value: "customerConfigurerNo" },
     ],
   });
 
