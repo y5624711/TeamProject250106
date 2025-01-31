@@ -2,14 +2,17 @@ import {
   Box,
   Center,
   createListCollection,
+  HStack,
+  Stack,
   Table,
+  TableColumnHeader,
   TableHeader,
 } from "@chakra-ui/react";
-import React from "react";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
 import { StateRadioGroup } from "../../tool/list/StateRadioGroup.jsx";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import React, { useMemo } from "react";
 
 export function PurchaseList({
   purchaseList,
@@ -17,17 +20,10 @@ export function PurchaseList({
   count,
   searchParams,
   setSearchParams,
+  standard,
+  setStandard,
+  handleSortChange,
 }) {
-  // 정렬 헤더
-  const sortOptions = [
-    { key: "purchaseRequestKey", label: "#" },
-    { key: "customerName", label: "담당 업체" },
-    { key: "itemCommonName", label: "품목" },
-    { key: "employeeName", label: "요청자" },
-    { key: "customerEmployeeName", label: "승인자" },
-    { key: "date", label: "날짜" },
-  ];
-
   // 검색 옵션
   const searchOptions = createListCollection({
     items: [
@@ -68,6 +64,37 @@ export function PurchaseList({
   //   setRadioValue(stateFromParams);
   // }, [searchParams]);
 
+  // 정렬 기준 변경
+  const HeaderClick = (column) => {
+    if (standard.sort === column) {
+      setStandard({
+        sort: column,
+        order: standard.order === "asc" ? "desc" : "asc",
+      });
+    } else {
+      setStandard({
+        sort: column,
+        order: "asc",
+      });
+    }
+    // 새로운 파라미터를 사용하여 정렬 변경 함수 호출
+    if (handleSortChange) {
+      handleSortChange(column, standard.order);
+    }
+  };
+
+  // 정렬된 데이터 반환
+  const sortedPurchaseList = useMemo(() => {
+    return [...purchaseList].sort((a, b) => {
+      const aValue = a[standard.sort];
+      const bValue = b[standard.sort];
+
+      if (aValue < bValue) return standard.order === "asc" ? -1 : 1;
+      if (aValue > bValue) return standard.order === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [purchaseList, standard]);
+
   return (
     <Box>
       {/* 검색 */}
@@ -84,18 +111,90 @@ export function PurchaseList({
       <Table.Root interactive>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <Sort
-              sortOptions={sortOptions}
-              onSortChange={(nextSearchParam) =>
-                setSearchParams(nextSearchParam)
-              }
-            />
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("purchaseRequestKey")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>#</Stack>
+                {standard.sort === "purchaseRequestKey" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("customerName")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>담당 업체</Stack>
+                {standard.sort === "customerName" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("itemCommonName")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>품목</Stack>
+                {standard.sort === "itemCommonName" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("employeeNo")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>요청자</Stack>
+                {standard.sort === "employeeNo" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("customerEmployeeNo")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>신청자</Stack>
+                {standard.sort === "customerEmployeeNo" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
+            <TableColumnHeader
+              textAlign="center"
+              onClick={() => HeaderClick("date")}
+            >
+              <HStack alignItems="center" justify="center">
+                <Stack>날짜</Stack>
+                {standard.sort === "date" && (
+                  <Stack>
+                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
+                  </Stack>
+                )}
+              </HStack>
+            </TableColumnHeader>
             <Table.Cell textAlign="center">상태</Table.Cell>
           </Table.Row>
         </TableHeader>
         <Table.Body>
-          {purchaseList && purchaseList.length > 0 ? (
-            purchaseList.map((purchase, index) => (
+          {sortedPurchaseList.length > 0 ? (
+            sortedPurchaseList.map((purchase, index) => (
               <Table.Row
                 key={index}
                 onDoubleClick={() => onViewClick(purchase.purchaseRequestKey)}
