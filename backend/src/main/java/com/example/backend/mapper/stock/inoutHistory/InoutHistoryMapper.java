@@ -25,7 +25,7 @@ public interface InoutHistoryMapper {
                 h.inout_history_note,
                 w.warehouse_name,
                 itsb.item_common_code itemCode,
-                itcm.item_common_name itemName,
+                itcm.common_code_name itemName,
                 fr.franchise_name,
                 cusemp.employee_name customerEmployeeName,
                 bizemp.employee_name businessEmployeeName,
@@ -34,16 +34,16 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
-                 LEFT JOIN TB_ITEMCOMM itcm ON itsb.item_common_code = itcm.item_common_code
+                 LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
             WHERE 1=1
                 <if test="state == 'storage'">
-                  AND (h.inout_common_code = 'in' OR h.inout_common_code = 'IN')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
                 <if test="state == 'retrieval'">
-                  AND (h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                  AND (h.inout_common_code = 'INSTL' )
                 </if>
                 <if test="state == 'all'">
                    AND (h.inout_common_code = 'in' OR h.inout_common_code = 'IN' OR h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
@@ -51,7 +51,7 @@ public interface InoutHistoryMapper {
                 <if test="searchType == 'all'">
                 AND(
                     h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
@@ -75,7 +75,7 @@ public interface InoutHistoryMapper {
                          </when>
                          <when test="searchType == 'item'">
                          AND(
-                             itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                             itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>
@@ -158,14 +158,14 @@ public interface InoutHistoryMapper {
                 w.warehouse_name,
                 w.warehouse_address,
                 itsb.item_common_code itemCode,
-                itcm.item_common_name itemName,
+                itcm.common_code_name itemName,
                 fr.franchise_name,
                 cusemp.employee_name customerEmployeeName,
                 bizemp.employee_name businessEmployeeName
             FROM TB_INOUT_HIS h
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
-                 LEFT JOIN TB_ITEMCOMM itcm ON itsb.item_common_code = itcm.item_common_code
+                 LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
@@ -181,16 +181,16 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
-                 LEFT JOIN TB_ITEMCOMM itcm ON itsb.item_common_code = itcm.item_common_code
+                 LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
             WHERE 1=1
                 <if test="state == 'storage'">
-                   AND(h.inout_common_code = 'in' OR h.inout_common_code = 'IN')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
                 <if test="state == 'retrieval'">
-                   AND(h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
+                  AND (h.inout_common_code = 'INSTL' )
                 </if>
                 <if test="state == 'all'">
                     AND(h.inout_common_code = 'in' OR h.inout_common_code = 'IN' OR h.inout_common_code = 'out' OR h.inout_common_code = 'OUT')
@@ -198,7 +198,7 @@ public interface InoutHistoryMapper {
                 <if test="searchType == 'all'">
                 AND(
                     h.serial_no LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
@@ -222,7 +222,7 @@ public interface InoutHistoryMapper {
                          </when>
                          <when test="searchType == 'item'">
                          AND(
-                             itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                             itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR itsb.item_common_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>

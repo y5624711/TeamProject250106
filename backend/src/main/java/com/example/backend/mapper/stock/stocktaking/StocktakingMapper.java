@@ -14,7 +14,6 @@ public interface StocktakingMapper {
             SELECT s.stocktaking_key,
                    s.item_code,
                    s.warehouse_code,
-                   s.location_key,
                    s.customer_employee_no,
                    s.count_current,
                    s.count_configuration,
@@ -23,19 +22,19 @@ public interface StocktakingMapper {
                    s.stocktaking_date,
                    w.warehouse_name,
                    w.customer_code,
-                   itcm.item_common_name itemName,
+                   itcm.common_code_name itemName,
                    cus.customer_name,
                    emp.employee_name customerEmployeeName
             FROM TB_STKTK s
                 LEFT JOIN TB_WHMST w ON s.warehouse_code=w.warehouse_code
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
-                LEFT JOIN TB_ITEMCOMM itcm ON s.item_code=itcm.item_common_code
+                LEFT JOIN TB_SYSCOMM itcm ON s.item_code=itcm.common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
             WHERE
                 <if test="searchType == 'all'">
                     w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -51,7 +50,7 @@ public interface StocktakingMapper {
                           OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                          </when>
                          <when test="searchType == 'item'">
-                             itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                             itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
                          </when>
                          <when test="searchType == 'warehouse'">
@@ -91,13 +90,13 @@ public interface StocktakingMapper {
             FROM TB_STKTK s
                 LEFT JOIN TB_WHMST w ON s.warehouse_code=w.warehouse_code
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
-                LEFT JOIN TB_ITEMCOMM itcm ON s.item_code=itcm.item_common_code
+                LEFT JOIN TB_SYSCOMM itcm ON s.item_code=itcm.common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
             WHERE
                 <if test="searchType == 'all'">
                     w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -113,7 +112,7 @@ public interface StocktakingMapper {
                           OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                          </when>
                          <when test="searchType == 'item'">
-                             itcm.item_common_name LIKE CONCAT('%',#{searchKeyword},'%')
+                             itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
                          </when>
                          <when test="searchType == 'warehouse'">
@@ -143,7 +142,6 @@ public interface StocktakingMapper {
             SELECT s.stocktaking_key,
                    s.item_code,
                    s.warehouse_code,
-                   s.location_key,
                    s.customer_employee_no,
                    s.count_current,
                    s.count_configuration,
@@ -152,13 +150,13 @@ public interface StocktakingMapper {
                    w.warehouse_name,
                    w.customer_code,
                    s.stocktaking_type,
-                   itcm.item_common_name itemName,
+                   itcm.common_code_name itemName,
                    cus.customer_name,
                    emp.employee_name customerEmployeeName
             FROM TB_STKTK s 
                 LEFT JOIN TB_WHMST w ON s.warehouse_code=w.warehouse_code
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
-                LEFT JOIN TB_ITEMCOMM itcm ON s.item_code=itcm.item_common_code
+                LEFT JOIN TB_SYSCOMM itcm ON s.item_code=itcm.common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
             WHERE stocktaking_key=#{stocktakingKey}
             """)
