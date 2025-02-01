@@ -50,16 +50,14 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", STR."\{instk.getInputKey()}번 승인 실패  했습니다.")));
         }
-
     }
 
     //승인 상세
     @GetMapping("detailview/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey  ) {
+    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName ,@RequestParam String inputNo  ) {
 
-
-//        return  new Instk();
-        return service.detailView(inputKey);
+        System.out.println("inputNo = " + inputNo);
+        return service.detailView(inputKey,inputCommonCodeName,inputNo);
 
     }
     //확인 상세

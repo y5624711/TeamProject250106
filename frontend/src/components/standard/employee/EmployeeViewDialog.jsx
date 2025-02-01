@@ -22,8 +22,10 @@ export function EmployeeViewDialog({
     modalChange();
   };
 
+  console.log(modalChange)
+
   return (
-    <DialogRoot open={isModalOpen}>
+    <DialogRoot open={isModalOpen}  onOpenChange={modalChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

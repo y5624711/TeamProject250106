@@ -61,10 +61,10 @@ export function InstkList() {
       { label: "발주 번호", value: "inputNo" },
       { label: "품목", value: "itemCommonName" },
       { label: "담당 업체", value: "customerName" },
-      { label: "날짜", value: "inputStockDate" },
+      // { label: "날짜", value: "inputStockDate" },
       { label: "요청자", value: "requestEmployeeName" },
       { label: "승인자", value: "inputStockEmployeeName" },
-      { label: "상태", value: "inputConsent" },
+      // { label: "상태", value: "inputConsent" },
     ],
   });
   const sortOptions = [
@@ -112,6 +112,7 @@ export function InstkList() {
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
+                defaultSortKey={"input_stock_date"}
               />
             </Table.Row>
           </Table.Header>
@@ -178,6 +179,7 @@ export function InstkList() {
         <InstkConfirmModal
           isModalOpen={isApproveModalOpen}
           setChangeModal={handleApproveModal}
+          changeDetailModal={handleDetailViewModal}
           instk={instkList[selectedIndex]}
         />
       )}

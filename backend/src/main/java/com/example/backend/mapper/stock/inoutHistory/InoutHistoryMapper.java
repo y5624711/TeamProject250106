@@ -3,9 +3,11 @@ package com.example.backend.mapper.stock.inoutHistory;
 import com.example.backend.dto.stock.inoutHistory.InoutHistory;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface InoutHistoryMapper {
@@ -275,4 +277,12 @@ public interface InoutHistoryMapper {
             </script>
             """)
     Integer count(String searchKeyword, String searchType, String state);
+
+    // 시리얼 번호랑 로케이션키 가져오기
+    @Select("""
+        SELECT serial_no, location_key
+        FROM TB_INOUT_HIS
+        WHERE inout_no = #{inoutNo}
+        """)
+    Map<String, Integer> getSerialNoAndLocationKeyByInputNo(@Param("inoutNo") String inoutNo);
 }

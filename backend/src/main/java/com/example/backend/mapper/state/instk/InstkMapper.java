@@ -111,9 +111,9 @@ LIMIT #{offset}, 10
     @Select("""
             select input_stock_note
             from  TB_INSTK
-            where   input_key=#{inputKey}
+            where  input_key=#{inputKey}
             """)
-    String getInstkNoteByInputKey(int inputKey, String serialNo);
+    String getInstkNoteByInputKey(int inputKey);
 
     @Insert("""
             INSERT INTO TB_BUYIN
@@ -303,4 +303,25 @@ LIMIT #{offset}, 10
             WHERE EM.employee_no = #{inputStockEmployeeNo}
             """)
     String viewWareHouseCode(String inputStockEmployeeNo);
+
+    // 일반입고  창고이름
+    @Select("""
+            SELECT  WHM.warehouse_name
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no=BI.input_no
+            LEFT JOIN TB_WHMST  WHM  ON WHM.warehouse_code=APPR.warehouse_code
+            WHERE BI.input_key=#{inputKey} 
+            """)
+    String viewWareHouseName(int inputKey);
+
+    //반품입고 창고이름
+    @Select("""
+            SELECT  WHM.warehouse_name
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
+            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=APPR.customer_code
+             """)
+    
+    String viewReturnWareHouseName(int inputKey);
 }

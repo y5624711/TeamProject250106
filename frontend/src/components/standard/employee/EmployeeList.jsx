@@ -190,9 +190,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                   {code.label}
                 </SelectItem>
               ))}
-
-
-
             </SelectContent>
           </SelectRoot>
         </Box>
@@ -292,6 +289,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         onChange={onChange}
         onSelect={onSelect}
       />
+
       <EmployeeViewDialog
         isModalOpen={isviewModalOpen}
         modalChange={handleviewModalControl}

@@ -9,7 +9,17 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { HStack, Input, Stack } from "@chakra-ui/react";
+import {
+  createListCollection,
+  HStack,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Stack
+} from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
@@ -18,20 +28,34 @@ import axios from "axios";
 export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
   const { id } = useContext(AuthenticationContext);
   const [detailData, setDetailData] = useState({ serialList: [] });
+  const [serialLocationList, setSerialLocationList] = useState(null);
 
   const items = ["Option 1", "Option 2", "Option 3"];
 
   useEffect(() => {
-    axios.get(`/api/instk/detailview/${instk.inputKey}`).then((res) => {
+    axios.get(`/api/instk/detailview/${instk.inputKey}`,{
+      params:{
+        inputCommonCodeName:instk.inputCommonCodeName,
+        inputNo:instk.inputNo,
+      }
+
+    }).then((res) => {
       console.log(res.data);
       setDetailData(res.data);
+      // const formattedList = createListCollection({
+      //   items: res.data.map((item) => ({
+      //     label: item.customerName,
+      //     value: item.customerCode,
+      //   })),
+      // });
+      // setCodeList(formattedList);
     });
   }, []);
 
-  console.log(detailData.serialList[0]);
+  console.log(detailData.serialLocationList);
 
   return (
-    <DialogRoot size={"lg"} open={isModalOpen}>
+    <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>입고 상세</DialogTitle>
@@ -51,7 +75,30 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
               <Field label={"시리얼 번호"} orientation="horizontal">
-                <Input readOnly value={detailData?.serialList?.[0] || ""} />
+                {/*<SelectRoot*/}
+                {/*  collection={frameworks}*/}
+                {/*  value={formData.workPlace}*/}
+                {/*  onValueChange={handleSelectChange}*/}
+                {/*  position="relative"*/}
+                {/*>*/}
+                {/*  <SelectTrigger>*/}
+                {/*    <SelectValueText placeholder={"선택 해 주세요"} />*/}
+                {/*  </SelectTrigger>*/}
+                {/*  <SelectContent*/}
+                {/*    style={{*/}
+                {/*      width: "100%",*/}
+                {/*      top: "40px",*/}
+                {/*      position: "absolute",*/}
+                {/*    }}*/}
+                {/*  >*/}
+                {/*    {frameworks.items.map((code, index) => (*/}
+                {/*      <SelectItem item={code} key={index}>*/}
+                {/*        {code.label}*/}
+                {/*      </SelectItem>*/}
+                {/*    ))}*/}
+                {/*  </SelectContent>*/}
+                {/*</SelectRoot>*/}
+                <Input readOnly value={detailData?.serialLocationList?.[0].serialNo || ""} />
               </Field>
             </HStack>
 
@@ -68,19 +115,17 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
                 <Input readOnly value={instk.customerName} />
               </Field>
               <Field label={"창고"} orientation="horizontal">
-                <Input readOnly value={"창고도 가져와야함"} />
+                <Input readOnly value={detailData.wareHouseName} />
               </Field>
             </HStack>
             <HStack>
-              <Field label={"주문 승인자"} orientation="horizontal">
+              <Field label={"입고 승인자"} orientation="horizontal">
                 <Input readOnl value={instk.inputStockEmployeeName} />
               </Field>
-
               <Field label={"사번"} orientation="horizontal">
                 <Input readOnl value={instk.inputStockEmployeeNo} />
               </Field>
             </HStack>
-
             <Field label={"승인 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputNote} />
             </Field>
@@ -93,15 +138,14 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
           </Stack>
         </DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
             <Button
+              variant="outline"
               onClick={() => {
                 setChangeModal();
               }}
             >
-              취소
+              닫기
             </Button>
-          </DialogActionTrigger>
         </DialogFooter>
         <DialogCloseTrigger
           onClick={() => {
