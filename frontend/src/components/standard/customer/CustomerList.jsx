@@ -36,7 +36,7 @@ function CustomerList({
   onReset,
 }) {
   const totalPages = Math.ceil(count / 10);
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  // const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   // console.log("commonCodeList", customerList);
   // console.log(customerKey);
   // console.log(checkedActive);
@@ -109,7 +109,7 @@ function CustomerList({
 
       {/* 체크박스 필터 */}
       <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
 
       {/*테이블*/}

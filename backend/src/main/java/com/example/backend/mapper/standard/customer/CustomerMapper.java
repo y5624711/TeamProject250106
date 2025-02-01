@@ -19,7 +19,7 @@ public interface CustomerMapper {
              customer_tel, customer_fax, customer_address, customer_address_details, 
              customer_post, customer_note)
             VALUES (#{customerName},#{customerCode},#{itemCode}, #{customerRep}, #{customerNo}, 
-                    #{customerTel}, #{customerFax}, #{customerAddress}, #{customerAddressDetail}, 
+                    #{customerTel}, #{customerFax}, #{customerAddress}, #{customerAddressDetails}, 
                     #{customerPost}, #{customerNote})
             """)
     int addCustomer(Customer customer);
