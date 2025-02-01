@@ -48,22 +48,25 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
   };
   const [warehouseAdd, setWarehouseAdd] = useState(initialWarehouseAdd);
 
-  // 요청 창 닫히면 초기화
-  const handleClose = () => {
-    setWarehouseAdd(initialWarehouseAdd);
+  const resetState = () => {
     setWarehouseName("");
-    setCustomerName("");
     setCustomerCode("");
     setCustomerName("");
-    setCustomerEmployeeNo("");
-    setWarehouseTel("");
+    setWarehouseAddress("");
+    setWarehouseAddressDetail("");
     setWarehousePost("");
     setWarehouseState("");
     setWarehouseCity("");
-    setWarehouseAddress("");
-    setWarehouseAddressDetail("");
+    setCustomerEmployeeNo("");
+    setWarehouseTel("");
     setWarehouseNote("");
     setWarehouseActive(true);
+  };
+
+  // 요청 창 닫히면 초기화
+  const handleClose = () => {
+    setWarehouseAdd(initialWarehouseAdd);
+    resetState();
     onClose();
   };
 
@@ -90,20 +93,6 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
       });
     }
   }, [customerCode]);
-
-  const resetState = () => {
-    setWarehouseName("");
-    setCustomerCode("");
-    setWarehouseAddress("");
-    setWarehouseAddressDetail("");
-    setWarehousePost("");
-    setWarehouseState("");
-    setWarehouseCity("");
-    setCustomerEmployeeNo("");
-    setWarehouseTel("");
-    setWarehouseNote("");
-    setWarehouseActive(true);
-  };
 
   // 담당업체 변경 시 관리자 컬렉션 생성
   const handleCustomerChange = (selectedOption) => {
@@ -173,6 +162,11 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
       });
     resetState();
   };
+  useEffect(() => {
+    if (!isOpen) {
+      handleClose(); // 다이얼로그가 닫히면 항상 초기화
+    }
+  }, [isOpen]);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">

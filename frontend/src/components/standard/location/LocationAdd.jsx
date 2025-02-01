@@ -62,6 +62,7 @@ function LocationAdd({ isOpen, onClose, title }) {
   // 요청 창 닫히면 초기화
   const handleClose = () => {
     setLocationAdd(initialLocationAdd);
+    resetState();
     onClose();
   };
 
@@ -99,6 +100,12 @@ function LocationAdd({ isOpen, onClose, title }) {
       });
     resetState();
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleClose(); // 다이얼로그가 닫히면 항상 초기화
+    }
+  }, [isOpen]);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
@@ -164,7 +171,7 @@ function LocationAdd({ isOpen, onClose, title }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={onClose} />
+          <DialogCloseTrigger onClick={handleClose} />
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={handleClose}>
               취소
