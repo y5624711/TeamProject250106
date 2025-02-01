@@ -9,6 +9,7 @@ import axios from "axios";
 export function Purchase() {
   // URL 쿼리 파라미터 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
+  const [state, setState] = useState(searchParams.get("state") || "all");
   // 데이터 및 페이지 관련 상태
   const [purchaseList, setPurchaseList] = useState([]);
   const [count, setCount] = useState(0);
@@ -119,6 +120,7 @@ export function Purchase() {
             count={count}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
+            state={state}
             handleSortChange={handleSortChange}
             standard={standard}
             setStandard={setStandard}
