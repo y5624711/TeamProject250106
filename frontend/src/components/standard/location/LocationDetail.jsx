@@ -12,12 +12,10 @@ import { Box, HStack } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import LocationView from "./LocationView.jsx";
 import axios from "axios";
-import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 
 function LocationDetail({ isOpened, onClosed, locationKey }) {
   const [locationDetail, setLocationDetail] = useState([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -82,6 +80,7 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
             <LocationView
               locationDetail={locationDetail}
               setLocationDetail={setLocationDetail}
+              locationKey={locationKey}
             />
           </Box>
         </DialogBody>
@@ -91,18 +90,11 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
               <Button variant="outline" onClick={handleClose}>
                 취소
               </Button>
-              <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
+              <Button onClick={handleCheckClick}>확인</Button>
             </HStack>
           </Box>
           <DialogCloseTrigger onClick={handleClose} />
         </DialogFooter>
-        <DialogEditConfirmation
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-          onConfirm={handleCheckClick}
-          title="확인"
-          body="변경된 사항은 저장됩니다."
-        />
       </DialogContent>
     </DialogRoot>
   );

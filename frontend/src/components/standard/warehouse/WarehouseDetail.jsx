@@ -12,12 +12,10 @@ import {
 import { Box, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
 import { Button } from "../../ui/button.jsx";
-import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
 export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
@@ -56,7 +54,6 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           description: data.message.text,
           type: data.message.type,
         });
-        onClosed();
       })
       .catch((res) => res.data)
       .then((data) => {
@@ -93,18 +90,11 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
               <Button variant="outline" onClick={onClosed}>
                 취소
               </Button>
-              <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
+              <Button onClick={handleCheckClick}>확인</Button>
             </HStack>
           </DialogActionTrigger>
         </DialogFooter>
         <DialogCloseTrigger onClick={onClosed} />
-        <DialogEditConfirmation
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-          onConfirm={handleCheckClick}
-          title="확인"
-          body="변경된 사항은 저장됩니다."
-        />
       </DialogContent>
     </DialogRoot>
   );
