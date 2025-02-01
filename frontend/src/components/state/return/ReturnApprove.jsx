@@ -180,7 +180,9 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
               </Field>
             </HStack>
           )}
-
+          <Field orientation="horizontal" label="담당 업체">
+            <Input readOnly value={approveData.customerName} />
+          </Field>
           <HStack>
             <Field orientation="horizontal" label="요청자">
               <Input readOnly value={approveData.businessEmployeeName} />
@@ -189,10 +191,6 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
               <Input readOnly value={approveData.businessEmployeeNo} />
             </Field>
           </HStack>
-
-          <Field orientation="horizontal" label="담당 업체">
-            <Input readOnly value={approveData.customerName} />
-          </Field>
           <Field orientation="horizontal" label="요청 날짜">
             <Input
               readOnly
