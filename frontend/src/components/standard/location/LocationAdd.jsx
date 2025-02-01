@@ -14,6 +14,7 @@ import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
+import { toaster } from "../../ui/toaster.jsx";
 
 function LocationAdd({ isOpen, onClose, title }) {
   const [warehouseCode, setWarehouseCode] = useState("");
@@ -27,7 +28,7 @@ function LocationAdd({ isOpen, onClose, title }) {
   const initialLocationAdd = {
     warehouseName: "",
     warehouseCode: "",
-    warehouseNote: "",
+    locationNote: "",
     row: "",
     col: "",
     shelf: "",
@@ -84,7 +85,18 @@ function LocationAdd({ isOpen, onClose, title }) {
         shelf,
         locationNote,
       })
-      .then(handleClose);
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        handleClose();
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
     resetState();
   };
 
@@ -152,7 +164,7 @@ function LocationAdd({ isOpen, onClose, title }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={handleClose} />
+          <DialogCloseTrigger onClick={onClose} />
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={handleClose}>
               취소

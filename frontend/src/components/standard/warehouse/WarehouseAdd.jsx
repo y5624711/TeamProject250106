@@ -51,6 +51,19 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
   // 요청 창 닫히면 초기화
   const handleClose = () => {
     setWarehouseAdd(initialWarehouseAdd);
+    setWarehouseName("");
+    setCustomerName("");
+    setCustomerCode("");
+    setCustomerName("");
+    setCustomerEmployeeNo("");
+    setWarehouseTel("");
+    setWarehousePost("");
+    setWarehouseState("");
+    setWarehouseCity("");
+    setWarehouseAddress("");
+    setWarehouseAddressDetail("");
+    setWarehouseNote("");
+    setWarehouseActive(true);
     onClose();
   };
 
@@ -289,7 +302,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogCloseTrigger onClick={onClose} />
+          <DialogCloseTrigger onClick={handleClose} />
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={handleClose}>
               취소
