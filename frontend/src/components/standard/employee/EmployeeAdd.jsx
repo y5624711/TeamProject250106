@@ -12,13 +12,14 @@ import {
   SelectValueText,
   Stack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import * as PropTypes from "prop-types";
 import { SelectViewComp } from "./SelectViewComp.jsx";
+import {Checkbox} from "../../ui/checkbox.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -31,6 +32,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     note: "",
     workPlace: "",
     departMent: "",
+    employeeActive:false,
   });
 
   const frameworks = createListCollection({
@@ -71,6 +73,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           workPlace: res.data.employeeWorkPlaceCode || "",
           note: res.data.employeeNote || "",
           name: res.data.employeeName || "",
+          employeeActive:res.data.employeeActive || false,
         });
       });
   };
@@ -128,6 +131,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeNote: formData.note,
         employeeDepartment: formData.department,
         employeePassword: formData.password,
+        employeeActive:formData.employeeActive,
       };
 
       axios
@@ -212,6 +216,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     return isValid;
   };
 
+
+  
   return (
     <Box>
       <Stack spacing={15}>
@@ -267,7 +273,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+            readOnly={viewKey !== -1 }
           />
         </Field>
         {viewKey !== -1 && (
@@ -287,7 +293,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             placeholder={"전화번호"}
             value={formData.tel}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+
           />
         </Field>
         <Field label={"비고"} orientation="horizontal">
@@ -296,7 +302,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             placeholder={"최대 50 글자"}
             value={formData.note}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+
           />
         </Field>
         {viewKey !== -1 && (
@@ -306,19 +312,36 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
               placeholder={"비밀번호"}
               value={formData.password}
               onChange={handleInputChange}
-              readOnly={viewKey !== -1 && !isEditMode}
+
             />
+          </Field>
+        )}
+        {viewKey !== -1 && (
+          <Field label={"사용 여부"} orientation="horizontal">
+            <Box ml={"86px"} style={{ position: "absolute" }}>
+              <Checkbox
+                name="employeeActive"
+                checked={formData.employeeActive}
+                onCheckedChange={(e) =>
+                  setFormData((prevItem) => ({
+                    ...prevItem,
+                    employeeActive: e.checked,
+                  }))
+                }
+              />
+            </Box>
           </Field>
         )}
       </Stack>
 
 
+
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={handleSubmit} disabled={checkNameLength()}>
-          {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
+          {viewKey === -1 ? "회원 등록" : "저장" }
         </Button>
 
-        {viewKey !== -1 && isEditMode && (
+        {viewKey !== -1 &&  (
           <Button onClick={handleCancel} ml={2}>
             취소
           </Button>

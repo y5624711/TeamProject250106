@@ -116,14 +116,12 @@ public interface EmployeeMapper {
 
     @Update("""
                 UPDATE TB_EMPMST
-                SET 
-                    employee_common_code = #{employeeCommonCode},
-                    employee_workplace_code = #{employeeWorkPlaceCode},
-                    employee_no = #{employeeNo},
+                SET                
                     employee_password = #{employeePassword},
                     employee_tel = #{employeeTel},
                     employee_note = #{employeeNote},
-                    employee_name = #{employeeName}
+                    employee_name = #{employeeName} ,
+                    employee_active=#{employeeActive}
                 WHERE employee_key = #{employeeKey}
             """)
     int editEmployeeByKey(Employee employee);
