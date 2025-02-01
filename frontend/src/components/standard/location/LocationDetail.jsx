@@ -18,6 +18,12 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
   const [locationDetail, setLocationDetail] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // 요청 창 닫히면 초기화
+  const handleClose = () => {
+    setLocationDetail([]);
+    onClosed();
+  };
+
   useEffect(() => {
     if (locationKey) {
       axios
@@ -29,7 +35,7 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
           console.error("로케이션 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [locationKey]);
+  }, [locationKey, onClosed]);
 
   function handleCheckClick() {
     axios.put(`/api/location/edit`, {
@@ -40,6 +46,12 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
     });
     onClosed();
   }
+
+  useEffect(() => {
+    if (!isOpened) {
+      handleClose(); // 다이얼로그가 닫히면 항상 초기화
+    }
+  }, [isOpened]);
 
   return (
     <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
@@ -62,13 +74,13 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
         <DialogFooter>
           <Box>
             <HStack>
-              <Button variant="outline" onClick={onClosed}>
+              <Button variant="outline" onClick={handleClose}>
                 취소
               </Button>
               <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
             </HStack>
           </Box>
-          <DialogCloseTrigger onClick={onClosed} />
+          <DialogCloseTrigger onClick={handleClose} />
         </DialogFooter>
         <DialogEditConfirmation
           isOpen={isDialogOpen}
