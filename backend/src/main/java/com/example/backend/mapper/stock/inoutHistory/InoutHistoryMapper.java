@@ -43,10 +43,10 @@ public interface InoutHistoryMapper {
                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
                 <if test="state == 'retrieval'">
-                  AND (h.inout_common_code = 'INSTL' )
+                  AND (h.inout_common_code = 'OUT' )
                 </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'INSTL')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
                 </if>
                 <if test="searchType == 'all'">
                 AND(
@@ -190,10 +190,10 @@ public interface InoutHistoryMapper {
                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
                 <if test="state == 'retrieval'">
-                  AND (h.inout_common_code = 'INSTL' )
+                  AND (h.inout_common_code = 'OUT' )
                 </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'INSTL')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
                 </if>
                 <if test="searchType == 'all'">
                 AND(

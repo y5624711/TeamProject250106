@@ -19,7 +19,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
 
   return (
     <Box>
-      {inoutHistoryDetail.inoutCommonCode === "INSTL" ? (
+      {inoutHistoryDetail.inoutCommonCode === "OUT" ? (
         <Field label="입출 구분" orientation="horizontal" mb={15}>
           <Input value="출고" readOnly />
         </Field>

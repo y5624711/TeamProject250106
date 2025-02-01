@@ -25,7 +25,7 @@ function InoutHistoryListPage({
           {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.inoutCommonCode === "INSTL"
+          {inoutHistory.inoutCommonCode === "OUT"
             ? "출고"
             : inoutHistory.inoutCommonCode === "RETRN"
               ? "회수"
