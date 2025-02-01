@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -32,7 +31,6 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
   }, [warehouseKey, onClosed]);
 
   function handleCheckClick() {
-    console.log(warehouseKey);
     axios
       .put(`/api/warehouse/edit`, {
         warehouseKey,
@@ -86,14 +84,12 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
-            <HStack>
-              <Button variant="outline" onClick={onClosed}>
-                취소
-              </Button>
-              <Button onClick={handleCheckClick}>확인</Button>
-            </HStack>
-          </DialogActionTrigger>
+          <HStack>
+            <Button variant="outline" onClick={onClosed}>
+              취소
+            </Button>
+            <Button onClick={handleCheckClick}>확인</Button>
+          </HStack>
         </DialogFooter>
         <DialogCloseTrigger onClick={onClosed} />
       </DialogContent>

@@ -14,7 +14,7 @@ import LocationView from "./LocationView.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-function LocationDetail({ isOpened, onClosed, locationKey }) {
+function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
   const [locationDetail, setLocationDetail] = useState([]);
 
   // 요청 창 닫히면 초기화
@@ -34,14 +34,13 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
           console.error("로케이션 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [locationKey, onClosed]);
+  }, [locationKey, onClosed, refresh]);
 
   function handleCheckClick() {
     axios
       .put(`/api/location/edit`, {
         locationKey,
-        warehouseCode: locationDetail.warehouseCode,
-        itemCommonCode: locationDetail.itemCommonCode,
+        located: locationDetail.located,
         locationNote: locationDetail.locationNote,
       })
       .then((res) => res.data)
@@ -50,13 +49,12 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
           description: data.message.text,
           type: data.message.type,
         });
-        handleClose();
+        refresh();
       })
       .catch((e) => {
         const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
-    setLocationDetail([]);
   }
 
   useEffect(() => {

@@ -136,7 +136,7 @@ public interface LocationMapper {
 
     @Update("""
             UPDATE TB_LOCMST
-            SET warehouse_code=#{warehouseCode}, location_note=#{locationNote}, located=#{located}
+            SET location_note=#{locationNote}, located=#{located}
             WHERE location_key=#{locationKey}
             """)
     Integer edit(Location location);

@@ -17,6 +17,7 @@ function LocationList({
   currentPage,
   handlePageChangeClick,
   setSearchParams,
+  refresh,
 }) {
   const navigate = useNavigate();
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -79,6 +80,7 @@ function LocationList({
           locationKey={selectedLocationKey}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
+          refresh={refresh}
         />
       </Stack>
     </Box>
