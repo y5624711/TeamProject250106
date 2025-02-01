@@ -30,7 +30,7 @@ public interface LoginMapper {
     String selectByIdSearchName(String employeeNo);
 
     @Select("""
-            SELECT b.customer_name
+            SELECT a.employee_workplace_code
             FROM TB_EMPMST a
                      JOIN TB_CUSTMST b ON a.employee_workplace_code = b.customer_code
             WHERE a.employee_no = #{employeeNo}
@@ -38,7 +38,7 @@ public interface LoginMapper {
     String selectCompanyByCode(String employeeNo);
 
     @Select("""
-            SELECT c.business_name
+            SELECT c.business_code
             FROM TB_EMPMST a
                      JOIN TB_DEPARTMST b ON a.employee_workplace_code = b.department_code
                      JOIN TB_BIZMST c ON b.department_common_code = c.business_common_code

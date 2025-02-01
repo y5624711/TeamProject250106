@@ -22,8 +22,9 @@ public class MainPageController {
     final MainService service;
 
     @GetMapping("boardMain")
-    public Map<String, Object> getEmployee(@RequestParam(required = false) String id) {
-        return service.getEmployee(id);
+    @PreAuthorize("isAuthenticated()")
+    public Map<String, Object> getEmployee(Authentication auth) {
+        return service.getEmployee(auth.getName());
     }
 
     @GetMapping("purList")
@@ -36,7 +37,6 @@ public class MainPageController {
         } else {
             return service.getPurchaseListByCustomer(company);
         }
-
     }
 
     @GetMapping("installList")
@@ -45,20 +45,24 @@ public class MainPageController {
                                      @RequestParam(value = "company", required = false) String company) {
         if (service.checkInstallRequester(auth)) {
             //요청자
-            System.out.println("요청자");
             return service.getInstallListByRequester(auth);
 
         } else {
             //업체
-            System.out.println("업체");
             return service.getInstallListByCustomer(company);
         }
     }
 
     @GetMapping("instkList")
     @PreAuthorize("isAuthenticated()")
-    public List<Instk> instakList(Authentication auth) {
-        return service.getInstkList(auth);
+    public List<Instk> instakList(Authentication auth, @RequestParam(value = "company", required = false) String company) {
+        if (service.checkInstkRequester(auth)) {
+            //요청자
+            return service.getInstkList(auth);
+        } else {
+            //업체
+            return service.getInstkListByCustomer(company);
+        }
     }
 
 }

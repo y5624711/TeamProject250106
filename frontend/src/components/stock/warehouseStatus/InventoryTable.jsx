@@ -36,13 +36,15 @@ export function InventoryTable({
       <Table.Body>
         {inventoryList.map((item, index) => (
           <Table.Row key={item.inoutHistoryNote || index}>
-            <Table.Cell>{index + 1}</Table.Cell>
-            <Table.Cell>{item.wareHouseName}</Table.Cell>
-            <Table.Cell>{item.wareHouseCity}</Table.Cell>
-            <Table.Cell>{item.wareHouseAddress}</Table.Cell>
-            <Table.Cell>{item.wareHouseAddressDetail}</Table.Cell>
-            <Table.Cell>{item.customerName}</Table.Cell>
-            <Table.Cell>{item.commonCodeName}</Table.Cell>
+            <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+            <Table.Cell textAlign="center">{item.wareHouseName}</Table.Cell>
+            <Table.Cell textAlign="center">{item.wareHouseCity}</Table.Cell>
+            <Table.Cell textAlign="center">{item.wareHouseAddress}</Table.Cell>
+            <Table.Cell textAlign="center">
+              {item.wareHouseAddressDetail}
+            </Table.Cell>
+            <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
+            <Table.Cell textAlign="center">{item.commonCodeName}</Table.Cell>
             <Table.Cell textAlign="end">{item.count}</Table.Cell>
           </Table.Row>
         ))}

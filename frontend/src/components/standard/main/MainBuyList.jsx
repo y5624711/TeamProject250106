@@ -26,9 +26,9 @@ export function MainBuyList({ company }) {
   ];
 
   return (
-    <Box>
+    <Box whiteSpace={"nowrap"}>
       <Heading mb={3}>구매 현황</Heading>
-      <Table.Root size="sm">
+      <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
           <Table.Row bg={"gray.100"}>
             {columnHeaders.map((col, index) => (
@@ -53,9 +53,9 @@ export function MainBuyList({ company }) {
                   {row.purchaseRequestDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {row.purchaseConsent === 1
+                  {row.purchaseConsent == 1
                     ? "승인"
-                    : row.purchaseConsent === 0
+                    : row.purchaseConsent == 0
                       ? "반려"
                       : "대기"}
                 </Table.Cell>
@@ -63,7 +63,10 @@ export function MainBuyList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
+              <Table.Cell
+                colSpan={7}
+                style={{ textAlign: "center", height: "150px" }}
+              >
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

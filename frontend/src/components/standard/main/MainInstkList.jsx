@@ -19,16 +19,16 @@ export function MainInstkList({ company }) {
     { label: "#" },
     { label: "입고 구분" },
     { label: "발주 번호" },
-    { label: "품목" },
     { label: "담당 업체" },
-    { label: "신청자" },
+    { label: "품목" },
+    { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
   ];
 
   return (
-    <Box>
+    <Box whiteSpace={"nowrap"}>
       <Heading mb={3}>입고 현황</Heading>
       <Table.Root size="sm">
         <Table.Header>
@@ -49,10 +49,13 @@ export function MainInstkList({ company }) {
                   {item.inputCommonCodeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{item.inputNo}</Table.Cell>
+                <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.requestEmployeeName}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.inputStockEmployeeName}
                 </Table.Cell>
@@ -70,7 +73,10 @@ export function MainInstkList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={8} textAlign="center">
+              <Table.Cell
+                colSpan={9}
+                style={{ textAlign: "center", height: "150px" }}
+              >
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

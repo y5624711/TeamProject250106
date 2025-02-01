@@ -43,18 +43,19 @@ export function MainInstallList({ company }) {
   const columnHeaders = [
     { label: "#" },
     { label: "가맹점" },
+    { label: "출고번호" },
     { label: "품목" },
-    { label: "협력업체" },
-    { label: "신청자" },
+    { label: "담당업체" },
+    { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
   ];
 
   return (
-    <Box>
+    <Box whiteSpace={"nowrap"}>
       <Heading mb={3}>설치 현황</Heading>
-      <Table.Root size="sm">
+      <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
           <Table.Row bg={"gray.100"}>
             {columnHeaders.map((col, index) => (
@@ -70,6 +71,7 @@ export function MainInstallList({ company }) {
               <Table.Row key={index}>
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
+                <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">
@@ -88,7 +90,10 @@ export function MainInstallList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
+              <Table.Cell
+                colSpan={9}
+                style={{ textAlign: "center", height: "150px" }}
+              >
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>
