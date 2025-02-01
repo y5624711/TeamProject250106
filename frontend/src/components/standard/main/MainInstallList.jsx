@@ -1,9 +1,11 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function MainInstallList({ company }) {
   const [installList, setInstallList] = useState([]);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     axios
@@ -66,7 +68,11 @@ export function MainInstallList({ company }) {
         <Table.Body>
           {installList.length > 0 ? (
             installList.map((row, index) => (
-              <Table.Row key={index}>
+              <Table.Row
+                key={index}
+                onDoubleClick={() => navigate("/install")}
+                title="더블클릭시 해당 페이지로 이동합니다"
+              >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>

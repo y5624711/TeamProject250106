@@ -1,9 +1,11 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function MainInstkList({ company }) {
   const [mainInstkList, setMainInstkList] = useState([]);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     axios
@@ -42,7 +44,11 @@ export function MainInstkList({ company }) {
         <Table.Body>
           {mainInstkList.length > 0 ? (
             mainInstkList.map((item, index) => (
-              <Table.Row key={index}>
+              <Table.Row
+                key={index}
+                onDoubleClick={() => navigate("/instk")}
+                title="더블클릭시 해당 페이지로 이동합니다"
+              >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.inputCommonCodeName}

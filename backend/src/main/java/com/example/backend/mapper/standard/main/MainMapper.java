@@ -68,9 +68,10 @@ public interface MainMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
-            WHERE cus.customer_code =#{company}
-            ORDER BY pr.purchase_request_date DESC
-            LIMIT 0,3
+            WHERE emp2.employee_workplace_code =#{company}
+            ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+            LIMIT 3
             """)
     List<Purchase> selectPurchaseListByCustomer(String company);
 
@@ -101,7 +102,8 @@ public interface MainMapper {
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
             WHERE emp1.employee_no =#{name}
-            ORDER BY pr.purchase_request_date DESC
+            ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
             LIMIT 0,3
             """)
     List<Purchase> selectPurchaseListByRequester(String name);

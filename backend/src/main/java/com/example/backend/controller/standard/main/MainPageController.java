@@ -35,6 +35,7 @@ public class MainPageController {
         if (service.checkBuyRequester(auth)) {
             return service.getPurChaseListByRequester(auth);
         } else {
+            System.out.println("구매받음");
             return service.getPurchaseListByCustomer(company);
         }
     }

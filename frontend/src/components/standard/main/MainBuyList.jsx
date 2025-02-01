@@ -1,9 +1,11 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function MainBuyList({ company }) {
   const [purchaseList, setPurchaseList] = useState([]);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     axios
@@ -11,6 +13,7 @@ export function MainBuyList({ company }) {
       .then((res) => res.data)
       .then((data) => {
         setPurchaseList(data);
+        console.log(data);
       });
   }, [company]);
 
@@ -40,7 +43,11 @@ export function MainBuyList({ company }) {
         <Table.Body>
           {purchaseList.length > 0 ? (
             purchaseList.map((row, index) => (
-              <Table.Row key={index}>
+              <Table.Row
+                key={index}
+                onDoubleClick={() => navigate("/purchase")}
+                title="더블클릭시 해당 페이지로 이동합니다"
+              >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
