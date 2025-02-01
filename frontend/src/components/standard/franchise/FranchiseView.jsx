@@ -127,20 +127,6 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             onChange={handleChange}
           />
         </Field>
-        <Field label="주소" orientation="horizontal" mb={15}>
-          <Input
-            name="franchiseAddress"
-            value={franchise.franchiseAddress}
-            onChange={handleChange}
-          />
-        </Field>
-        <Field label="상세 주소" orientation="horizontal" mb={15}>
-          <Input
-            name="franchiseAddressDetail"
-            value={franchise.franchiseAddressDetail}
-            onChange={handleChange}
-          />
-        </Field>
         <HStack>
           <Field label="광역시도" orientation="horizontal" mb={15}>
             <Input
@@ -157,6 +143,20 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             />
           </Field>
         </HStack>
+        <Field label="주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddress"
+            value={franchise.franchiseAddress}
+            onChange={handleChange}
+          />
+        </Field>
+        <Field label="상세 주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddressDetail"
+            value={franchise.franchiseAddressDetail}
+            onChange={handleChange}
+          />
+        </Field>
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             name="franchiseNote"
