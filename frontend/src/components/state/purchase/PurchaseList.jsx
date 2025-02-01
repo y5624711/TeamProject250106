@@ -168,7 +168,7 @@ export function PurchaseList({
               onClick={() => HeaderClick("customerEmployeeNo")}
             >
               <HStack alignItems="center" justify="center">
-                <Stack>신청자</Stack>
+                <Stack>승인자</Stack>
                 {standard.sort === "customerEmployeeNo" && (
                   <Stack>
                     {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
