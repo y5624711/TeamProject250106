@@ -61,6 +61,7 @@ public class MainPageController {
             return service.getInstkList(auth);
         } else {
             //업체
+            System.out.println("company = " + company);
             return service.getInstkListByCustomer(company);
         }
     }

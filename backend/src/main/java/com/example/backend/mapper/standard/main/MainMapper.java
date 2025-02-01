@@ -74,6 +74,14 @@ public interface MainMapper {
             """)
     List<Purchase> selectPurchaseListByCustomer(String company);
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_PURCH_REQ
+            WHERE employee_no=#{id};
+            """)
+    int selectCheckPurchByRequester(String id);
+
+
     // 구매 관리 리스트
     @Select("""
             SELECT
@@ -172,13 +180,6 @@ public interface MainMapper {
             """)
     List<Install> selectInstallListByRequester(String id);
 
-
-    @Select("""
-            SELECT COUNT(*)
-            FROM TB_PURCH_REQ
-            WHERE employee_no=#{id};
-            """)
-    int selectCheckPurchByRequester(String id);
 
     @Select("""
             SELECT COUNT(*)
@@ -316,7 +317,7 @@ public interface MainMapper {
                     ON INS.input_key = BI.input_key  -- 수정
                 LEFT JOIN TB_EMPMST EM3
                     ON EM3.employee_no = INS.customer_employee_no  -- 수정
-            WHERE EM2.employee_workplace_code = #{company}
+            WHERE CT.customer_code = #{company}
             ORDER BY     COALESCE(INS.input_stock_date, RNRQ.return_request_date) DESC,
                          BI.input_key DESC  -- 또는 다른 고유값 사용
             LIMIT 3;  -- 수정

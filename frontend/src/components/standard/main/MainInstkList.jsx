@@ -11,6 +11,7 @@ export function MainInstkList({ company }) {
       .then((res) => res.data)
       .then((data) => {
         console.log(data);
+        console.log("컴퍼니", company);
         setMainInstkList(data);
       });
   }, []);

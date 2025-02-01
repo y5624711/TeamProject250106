@@ -1,4 +1,12 @@
-import { Box, Flex, Heading, Separator, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Separator,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { MainInstallList } from "../../components/standard/main/MainInstallList.jsx";
 import { MainInstkList } from "../../components/standard/main/MainInstkList.jsx";
 import { MainBuyList } from "../../components/standard/main/MainBuyList.jsx";
@@ -19,6 +27,10 @@ export function Main() {
         setCompanyStatus(data.companyStatus);
       });
   }, []);
+
+  if (!company) {
+    return <Spinner />;
+  }
 
   return (
     <Flex w="100%" p={6} justify="center" align="center">
