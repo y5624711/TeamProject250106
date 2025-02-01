@@ -34,6 +34,7 @@ function CustomerList({
   handleSearchClick,
   toggleCheckedActive,
   onReset,
+  onNewClick,
 }) {
   const totalPages = Math.ceil(count / 10);
   // const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -209,12 +210,14 @@ function CustomerList({
             handlePageChange(newPage);
           }}
         />
-        {/*{pages.map((page) => (*/}
-        {/*  <Button key={page} onClick={() => handlePageChange({ page })}>*/}
-        {/*    {page}*/}
-        {/*  </Button>*/}
-        {/*))}*/}
       </Center>
+
+      {/*협력사 등록*/}
+      <Box display="flex" justifyContent="flex-end">
+        <Button onClick={onNewClick} size={"lg"} mt={-63}>
+          협력업체 등록
+        </Button>
+      </Box>
     </Box>
   );
 }

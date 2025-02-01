@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomerList from "../../../components/standard/customer/CustomerList.jsx";
 import axios from "axios";
-import { Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
@@ -270,16 +270,8 @@ function Customer() {
             setSearch={setSearch}
             handleSearchClick={handleSearchClick}
             onReset={handleResetClick}
+            onNewClick={() => setAddDialogOpen(true)}
           />
-          <Flex justify="flex-end">
-            <Button
-              onClick={() => setAddDialogOpen(true)}
-              size={"lg"}
-              transform="translateY(-180%)"
-            >
-              협력업체 등록
-            </Button>
-          </Flex>
         </Stack>
         {/*Dialog*/}
         <div>
