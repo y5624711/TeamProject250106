@@ -48,6 +48,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
         itemCommonName: instk.itemCommonName,
         employeeWorkPlaceCode: instkDetail.employeeWorkPlaceCode,
         requestEmployeeNo: instk.requestEmployeeNo,
+        itemAmount: instk.itemAmount,
       })
       .then((res) => {
         console.log(res);

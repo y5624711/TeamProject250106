@@ -7,9 +7,4 @@ CREATE  TABLE TB_BUYIN (
     input_note VARCHAR(50)
 );
 
-
-alter  table TB_BUYIN input_consent DEFAULT NULL;
-ALTER TABLE TB_BUYIN
-    ALTER COLUMN input_consent DROP DEFAULT;
-
 DESC TB_BUYIN;

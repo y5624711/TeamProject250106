@@ -173,10 +173,25 @@ LIMIT #{offset}, 10
 
     // 입고 상세 추가
     @Insert("""
+             <script>
+                    -- 1. 빈 로케이션 찾기
+                    WITH SelectedLocation AS (
+                        SELECT location_key
+                        FROM TB_LOCMST
+                        WHERE located = FALSE
+                        ORDER BY row ASC, col ASC, shelf ASC
+                        LIMIT 1
+                    )
+                    -- 2. 찾은 로케이션을 사용 처리
+                    UPDATE TB_LOCMST
+                    SET located = TRUE
+                    WHERE location_key = (SELECT location_key FROM SelectedLocation);
+
             INSERT  INTO TB_INSTK_SUB
-                   (input_key,serial_no)
+                   (input_key,serial_no,)
             VALUES 
-             (#{inputKey},#{insertSerialNo})
+             (#{inputKey},#{insertSerialNo}, (SELECT location_key FROM SelectedLocation))
+             </script>
            """)
     int addInstkSub(int inputKey, String insertSerialNo);
 
