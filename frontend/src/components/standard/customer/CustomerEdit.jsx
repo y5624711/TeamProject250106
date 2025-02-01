@@ -149,7 +149,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                   <Checkbox
                     transform="translateX(-2590%)"
                     name={"customerActive"}
-                    isChecked={customer.customerActive}
+                    checked={customer.customerActive}
                     onChange={(e) => {
                       console.log(
                         "체크박스 변경 전 값:",
