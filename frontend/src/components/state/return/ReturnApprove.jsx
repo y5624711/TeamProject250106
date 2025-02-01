@@ -319,6 +319,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   value={approveData.returnApproveNote}
                   placeholder="최대 50자"
                   onChange={handleApproveInput("returnApproveNote")}
+                  maxHeight={"100px"}
                 />
               </Field>
             </Box>

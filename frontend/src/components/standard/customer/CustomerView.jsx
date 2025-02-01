@@ -134,6 +134,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                   name={"customerNote"}
                   value={customer.customerNote}
                   onChange={handleInputChange}
+                  resize="none"
                 />
               </Field>
             </Stack>

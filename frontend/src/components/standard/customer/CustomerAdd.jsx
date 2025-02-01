@@ -220,6 +220,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               <Textarea
                 value={customerNote}
                 onChange={(e) => setCustomerNote(e.target.value)}
+                maxHeight={"100px"}
               />
             </Field>
           </Stack>
