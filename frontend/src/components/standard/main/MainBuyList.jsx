@@ -11,7 +11,6 @@ export function MainBuyList({ company }) {
       .then((res) => res.data)
       .then((data) => {
         setPurchaseList(data);
-        console.log(data);
       });
   }, [company]);
 

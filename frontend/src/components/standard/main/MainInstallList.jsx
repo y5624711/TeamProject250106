@@ -34,7 +34,6 @@ export function MainInstallList({ company }) {
 
           return { ...item, state };
         });
-        console.log(data);
         setInstallList(formattedList || []);
       });
   }, []);

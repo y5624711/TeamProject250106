@@ -10,8 +10,6 @@ export function MainInstkList({ company }) {
       .get("/api/main/instkList", { params: { company } })
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
-        console.log("컴퍼니", company);
         setMainInstkList(data);
       });
   }, []);
