@@ -13,6 +13,7 @@ import { Button } from "../../ui/button.jsx";
 import LocationView from "./LocationView.jsx";
 import axios from "axios";
 import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
+import { toaster } from "../../ui/toaster.jsx";
 
 function LocationDetail({ isOpened, onClosed, locationKey }) {
   const [locationDetail, setLocationDetail] = useState([]);
@@ -38,13 +39,26 @@ function LocationDetail({ isOpened, onClosed, locationKey }) {
   }, [locationKey, onClosed]);
 
   function handleCheckClick() {
-    axios.put(`/api/location/edit`, {
-      locationKey,
-      warehouseCode: locationDetail.warehouseCode,
-      itemCommonCode: locationDetail.itemCommonCode,
-      locationNote: locationDetail.locationNote,
-    });
-    onClosed();
+    axios
+      .put(`/api/location/edit`, {
+        locationKey,
+        warehouseCode: locationDetail.warehouseCode,
+        itemCommonCode: locationDetail.itemCommonCode,
+        locationNote: locationDetail.locationNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        handleClose();
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
+    setLocationDetail([]);
   }
 
   useEffect(() => {
