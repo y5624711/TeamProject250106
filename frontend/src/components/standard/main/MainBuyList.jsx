@@ -26,7 +26,7 @@ export function MainBuyList({ company }) {
   ];
 
   return (
-    <Box whiteSpace={"nowrap"}>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
       <Heading mb={3}>구매 현황</Heading>
       <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
@@ -63,10 +63,7 @@ export function MainBuyList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell
-                colSpan={7}
-                style={{ textAlign: "center", height: "150px" }}
-              >
+              <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

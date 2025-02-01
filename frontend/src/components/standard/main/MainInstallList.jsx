@@ -52,7 +52,7 @@ export function MainInstallList({ company }) {
   ];
 
   return (
-    <Box whiteSpace={"nowrap"}>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
       <Heading mb={3}>설치 현황</Heading>
       <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
@@ -89,10 +89,7 @@ export function MainInstallList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell
-                colSpan={9}
-                style={{ textAlign: "center", height: "150px" }}
-              >
+              <Table.Cell colSpan={9} style={{ textAlign: "center" }}>
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

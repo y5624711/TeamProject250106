@@ -68,7 +68,7 @@ export function Main() {
         </Box>
 
         {/* 메인 컨텐츠 리스트 */}
-        <Stack w="100%" gap={7}>
+        <Stack w="100%">
           {/* 구매 리스트 */}
           <MainBuyList company={company} />
           {/* 입고 리스트 */}
