@@ -337,15 +337,17 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
 
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
+        {viewKey !== -1 &&  (
+          <Button onClick={handleCancel} mr={2} variant="outline">
+            취소
+          </Button>
+        )}
+
         <Button onClick={handleSubmit} disabled={checkNameLength()}>
           {viewKey === -1 ? "회원 등록" : "저장" }
         </Button>
 
-        {viewKey !== -1 &&  (
-          <Button onClick={handleCancel} ml={2}>
-            취소
-          </Button>
-        )}
+
         {/*{viewKey !== -1 && (*/}
         {/*  <Button onClick={handleDelete} ml={2}>*/}
         {/*    회원 삭제*/}

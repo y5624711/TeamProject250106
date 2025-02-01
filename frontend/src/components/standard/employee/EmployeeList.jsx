@@ -158,10 +158,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
-  console.log(memberList);
+
   return (
-    <Box h={"100vh"} p={10}>
+    <Box  p={5}>
       <HStack
+        justifyContent="center" w={"100%"}
         style={{
           alignItems: "flex-start",
         }}
