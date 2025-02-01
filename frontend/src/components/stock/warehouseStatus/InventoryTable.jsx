@@ -20,7 +20,7 @@ export function InventoryTable({
   ];
 
   return (
-    <Table.Root>
+    <Table.Root mt={6}>
       <Table.Header>
         <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
           <SortInventoryTableColumnHeader

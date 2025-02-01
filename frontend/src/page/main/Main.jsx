@@ -2,7 +2,7 @@ import {
   Box,
   Flex,
   Heading,
-  Separator,
+  Image,
   Spinner,
   Stack,
   Text,
@@ -36,35 +36,59 @@ export function Main() {
     <Flex w="100%" p={6} justify="center" align="center">
       <Flex w="100%" justify="center" gap={20}>
         {/* 왼쪽 박스 */}
-        <Box bg="gray.100" w={"300px"} whiteSpace={"nowrap"} p={"10"}>
-          <Stack gap={6} justify="center" align="center">
-            {isAdmin ? (
-              <>
-                <Heading fontSize={"40px"}>
-                  {companyStatus.businessName || ""}
-                </Heading>
-                <Text fontSize={"16px"}>
-                  {companyStatus.businessAddress || ""}{" "}
-                </Text>
-              </>
-            ) : (
-              <>
-                <Heading fontSize={"40px"}>
-                  {companyStatus.customerName || ""}
-                </Heading>
-                <Text fontSize={"16px"}>
-                  {companyStatus.customerAddress || ""}{" "}
-                  {companyStatus.customerAddressDetails || ""}
-                </Text>
-              </>
-            )}
-          </Stack>
-          <Separator size="lg" mt={5} mb={5} />
-          <Stack justify="center" align="center">
-            <Text fontSize={"22px"}>{user.employeeName} 님 환영합니다</Text>
-            <Text fontSize={"16px"}>No. {user.employeeNo}</Text>
-            <Text fontSize={"16px"}>Tel. {user.employeeTel}</Text>
-          </Stack>
+        <Box
+          position="relative"
+          minW="300px"
+          h="600px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          textAlign="center"
+          mt={10}
+        >
+          {/* 배경 이미지 */}
+          <Image
+            src="/mainInfo.jpg"
+            alt="background"
+            objectFit="cover"
+            w="100%"
+            h="100%"
+            position="absolute"
+            opacity="0.4"
+            zIndex="-1"
+          />
+
+          {/* 텍스트 박스 */}
+          <Box position="relative" color="black" fontWeight="bold">
+            <Stack spacing={4} align="center">
+              {isAdmin ? (
+                <>
+                  <Heading fontSize="40px">
+                    {companyStatus.businessName || ""}
+                  </Heading>
+                  <Text fontSize="16px">
+                    {companyStatus.businessAddress || ""}
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Heading fontSize="40px">
+                    {companyStatus.customerName || ""}
+                  </Heading>
+                  <Text fontSize="16px">
+                    {companyStatus.customerAddress || ""}{" "}
+                    {companyStatus.customerAddressDetails || ""}
+                  </Text>
+                </>
+              )}
+            </Stack>
+
+            <Stack justify="center" align="center" mt={6}>
+              <Text fontSize="25px">{user.employeeName} 님 환영합니다</Text>
+              <Text fontSize="16px">No. {user.employeeNo}</Text>
+              <Text fontSize="16px">Tel. {user.employeeTel}</Text>
+            </Stack>
+          </Box>
         </Box>
 
         {/* 메인 컨텐츠 리스트 */}
@@ -76,7 +100,7 @@ export function Main() {
           {/* 설치 리스트 */}
           <MainInstallList company={company} />
         </Stack>
-        <Box w={"300px"} p={"10"} />
+        <Box w={"320px"} p={"10"} />
       </Flex>
     </Flex>
   );
