@@ -32,11 +32,11 @@ public class LocationController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Location location) {
         try {
-            // 창고 입력 검증
+            // 로케이션 입력 검증
             if (service.validate(location)) {
                 // 중복 체크
                 if (service.duplicate(location)) {
-//        창고 등록 시도
+//        로케이션 등록 시도
                     if (service.add(location)) {
                         return ResponseEntity.ok().body(Map.of(
                                 "message", Map.of("type", "success",
@@ -74,8 +74,24 @@ public class LocationController {
 
     @PutMapping("edit")
     public ResponseEntity<Map<String, Object>> edit(@RequestBody Location location) {
-        service.edit(location);
-        return null;
+        try {
+            if (service.edit(location)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "로케이션이 수정되었습니다."),
+                        "data", location
+                ));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "로케이션 수정에 실패하였습니다.")
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "수정에 실패했습니다.")));
+        }
+
     }
 
     //    창고 정보 컬렉션으로 불러오기

@@ -139,7 +139,7 @@ public interface LocationMapper {
             SET warehouse_code=#{warehouseCode}, location_note=#{locationNote}, located=#{located}
             WHERE location_key=#{locationKey}
             """)
-    int edit(Location location);
+    Integer edit(Location location);
 
     @Select("""
             SELECT warehouse_code, warehouse_name 

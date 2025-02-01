@@ -67,8 +67,8 @@ public class LocationService {
         return mapper.view(locationKey);
     }
 
-    public void edit(Location location) {
-        mapper.edit(location);
+    public Boolean edit(Location location) {
+        return mapper.edit(location) == 1;
     }
 
     public List<Location> getLocationWarehouseList() {
