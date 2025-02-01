@@ -1,5 +1,6 @@
 package com.example.backend.mapper.standard.warehouse;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
 import org.apache.ibatis.annotations.*;
 
@@ -77,7 +78,7 @@ public interface WarehouseMapper {
                     ${sort} ${order}
                 </if>
                 <if test="sort == null">
-                   w.warehouse_name DESC
+                   w.warehouse_name ASC
                 </if>
             LIMIT #{pageList},10    
             </script>
@@ -234,4 +235,17 @@ public interface WarehouseMapper {
              #{warehouseNote})
             """)
     int addWarehouse(Warehouse warehouse);
+
+    @Select("""
+            SELECT *
+            FROM TB_CUSTMST
+            """)
+    List<Customer> getWarehouseCustomerList();
+
+    @Select("""
+            SELECT employee_no customerEmployeeNo, employee_name employeeName
+            FROM TB_EMPMST
+            WHERE employee_workplace_code=#{customerCode}
+            """)
+    List<Warehouse> getWarehouseEmployeeList(String customerCode);
 }

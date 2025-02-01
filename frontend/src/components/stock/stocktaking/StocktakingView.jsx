@@ -25,7 +25,7 @@ function StocktakingView({ stocktakingKey }) {
           <Input value={stocktakingDetail.warehouseName} readOnly />
         </Field>
         <Field label="로케이션" orientation="horizontal" mb={15}>
-          <Input value={stocktakingDetail.location} />
+          <Input value={stocktakingDetail.location} readOnly />
         </Field>
       </Box>
       <Box display="flex" gap={4}>

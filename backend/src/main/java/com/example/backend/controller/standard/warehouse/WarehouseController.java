@@ -1,11 +1,13 @@
 package com.example.backend.controller.standard.warehouse;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.service.standard.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -92,8 +94,20 @@ public class WarehouseController {
 
     }
 
-    @DeleteMapping("delete/{warehouseKey}")
-    public void delete(@PathVariable Integer warehouseKey) {
-        service.delete(warehouseKey);
+//    @DeleteMapping("delete/{warehouseKey}")
+    //  public void delete(@PathVariable Integer warehouseKey) {
+    //    service.delete(warehouseKey);
+    //}
+
+    // 협력업체 리스트 가져오기
+    @GetMapping("customer")
+    public List<Customer> customerList() {
+        return service.getWarehouseCustomerList();
+    }
+
+    // 관리자 리스트 가져오기
+    @GetMapping("employee/{customerCode}")
+    public List<Warehouse> employeeList(@PathVariable String customerCode) {
+        return service.getWarehouseEmployeeList(customerCode);
     }
 }
