@@ -36,7 +36,7 @@ function Location(props) {
       setCountLocation(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams]);
+  }, [searchParams, isAddDialogOpen]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;

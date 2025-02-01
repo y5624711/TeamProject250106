@@ -16,7 +16,7 @@ import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 
-export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
+export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
   const [warehouseAddress, setWarehouseAddress] = useState("");
@@ -299,7 +299,6 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
             variant="solid"
             onClick={() => {
               handleSaveClick();
-              onConfirm();
             }}
           >
             저장

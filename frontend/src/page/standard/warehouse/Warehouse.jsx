@@ -36,11 +36,12 @@ function Warehouse(props) {
   // 창고 정보 가져오기
   useEffect(() => {
     axios.get(`/api/warehouse/list?${searchParams.toString()}`).then((res) => {
+      console.log(res.data.list);
       setWarehouseList(res.data.list);
       setCountWarehouse(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams, checkedActive]);
+  }, [searchParams, checkedActive, isAddDialogOpen]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -124,7 +125,6 @@ function Warehouse(props) {
           <WarehouseAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            onConfirm={() => setIsAddDialogOpen(false)}
             title="새 창고 등록"
           />
         </Stack>
