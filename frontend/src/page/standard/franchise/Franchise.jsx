@@ -156,11 +156,12 @@ export function Franchise() {
     if (search.keyword.trim().length > 0) {
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("keyword", search.keyword);
-      nextSearchParam.set("page", 1);
+      nextSearchParam.set("page", "1"); // 1 페이지로 설정
     } else {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
     }
+    // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParam);
   };
 
@@ -175,6 +176,7 @@ export function Franchise() {
     } else {
       nextSearchParams.set("active", "false");
     }
+    nextSearchParams.set("page", "1"); // 페이지를 1로 리셋
     setSearchParams(nextSearchParams);
   };
 
@@ -186,6 +188,7 @@ export function Franchise() {
   function handlePageChange(e) {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
+
     setSearchParams(nextSearchParams);
   }
 
@@ -197,14 +200,16 @@ export function Franchise() {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sortField);
     nextSearchParams.set("order", nextOrder);
+    nextSearchParams.set("page", "1"); // 1페이지로 설정
 
-    // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParams);
   };
 
   // 검색 초기화
   const handleResetClick = () => {
-    setSearchParams("");
+    const nextSearchParams = new URLSearchParams();
+    nextSearchParams.set("page", "1"); // 1페이지로 설정
+    setSearchParams(nextSearchParams);
   };
 
   // 가맹점 등록 버튼 클릭 시 다이얼로그 열림
@@ -253,6 +258,7 @@ export function Franchise() {
             <PaginationRoot
               onPageChange={handlePageChange}
               count={count}
+              page={page}
               pageSize={10}
               variant="solid"
               size={"md"}
