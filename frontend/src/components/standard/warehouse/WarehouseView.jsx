@@ -145,7 +145,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         <Box ml={"86px"} style={{ position: "absolute" }}>
           <Checkbox
             checked={warehouseDetail.warehouseActive}
-            onChange={(e) => {
+            onClick={(e) => {
               setWarehouseDetail({
                 ...warehouseDetail,
                 warehouseActive: e.target.checked,
