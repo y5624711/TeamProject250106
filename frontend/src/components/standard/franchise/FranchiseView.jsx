@@ -160,7 +160,6 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             name="franchiseNote"
-            placeholder="최대 50자"
             value={franchise.franchiseNote}
             onChange={handleChange}
             style={{ maxHeight: "100px", overflowY: "auto" }}
