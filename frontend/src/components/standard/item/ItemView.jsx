@@ -174,7 +174,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
               </DialogActionTrigger>
               <Tooltip content="입력을 완료해주세요." disabled={isValid}>
                 <Button onClick={handleSaveClick} disabled={!isValid}>
-                  저장
+                  확인
                 </Button>
               </Tooltip>
             </HStack>

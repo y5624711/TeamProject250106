@@ -123,7 +123,7 @@ public interface ItemMapper {
             output_price = #{item.outputPrice},
             size = #{item.size},
             unit = #{item.unit},
-            item_note = #{item.itemNote},
+            item_note = #{item.itemNote}
             WHERE item_key = #{itemKey}
             """)
     int editItem(int itemKey, Item item);
@@ -134,13 +134,6 @@ public interface ItemMapper {
             WHERE item_active = false
             """)
     List<String> getUsedItemCommonCode();
-
-    @Select("""
-            SELECT item_key
-            FROM TB_ITEMMST
-            WHERE item_active = false
-            """)
-    List<Integer> deletedItem();
 
 
     //    코드중 시리얼 넘버 최댓값 가져오기
