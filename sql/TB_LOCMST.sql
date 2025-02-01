@@ -25,7 +25,7 @@ WHERE shelf = 1;
 
 DELETE
 FROM TB_LOCMST
-WHERE warehouse_code = 'WHS0000000001';
+WHERE warehouse_code = 'WHS0000000007';
 
 INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, located, location_note)
 SELECT 'WHS0000000005' AS warehouse_code,

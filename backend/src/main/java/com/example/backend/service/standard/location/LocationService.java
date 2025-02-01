@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -68,5 +69,9 @@ public class LocationService {
 
     public void edit(Location location) {
         mapper.edit(location);
+    }
+
+    public List<Location> getLocationWarehouseList() {
+        return mapper.getLocationWarehouseList();
     }
 }

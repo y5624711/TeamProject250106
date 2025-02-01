@@ -140,4 +140,10 @@ public interface LocationMapper {
             WHERE location_key=#{locationKey}
             """)
     int edit(Location location);
+
+    @Select("""
+            SELECT warehouse_code, warehouse_name 
+            FROM TB_WHMST
+            """)
+    List<Location> getLocationWarehouseList();
 }

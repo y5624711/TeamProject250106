@@ -36,7 +36,6 @@ function Warehouse(props) {
   // 창고 정보 가져오기
   useEffect(() => {
     axios.get(`/api/warehouse/list?${searchParams.toString()}`).then((res) => {
-      console.log(res.data.list);
       setWarehouseList(res.data.list);
       setCountWarehouse(res.data.count);
     });

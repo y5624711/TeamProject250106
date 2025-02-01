@@ -36,9 +36,13 @@ FROM TB_WHMST
 WHERE warehouse_address = 13
   AND warehouse_address_detail = 13;
 
+UPDATE TB_WHMST
+SET warehouse_active= false
+WHERE warehouse_name = '제주A';
+
 DELETE
 FROM TB_WHMST
-WHERE warehouse_key = 6;
+WHERE warehouse_name = '제주A';
 
 SELECT *
 FROM TB_WHMST;

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,4 +43,9 @@ public class LocationController {
         service.edit(location);
     }
 
+    //    창고 정보 컬렉션으로 불러오기
+    @GetMapping("warehouse")
+    public List<Location> warehouseList() {
+        return service.getLocationWarehouseList();
+    }
 }

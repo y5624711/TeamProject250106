@@ -31,7 +31,6 @@ function Location(props) {
   // 로케이션 정보 가져오기
   useEffect(() => {
     axios.get(`/api/location/list?${searchParams.toString()}`).then((res) => {
-      console.log(res.data.list);
       setLocationList(res.data.list);
       setCountLocation(res.data.count);
     });
@@ -94,7 +93,6 @@ function Location(props) {
           <LocationAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            onConfirm={() => setIsAddDialogOpen(false)}
             title="새 로케이션 등록"
           />
         </Stack>
