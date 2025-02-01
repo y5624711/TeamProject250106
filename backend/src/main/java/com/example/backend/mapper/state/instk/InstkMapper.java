@@ -196,19 +196,31 @@ LIMIT #{offset}, 10
     int addInstkSub(int inputKey, String insertSerialNo);
 
     @Insert("""
-    INSERT INTO TB_INOUT_HIS
-    (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no)
-    VALUES
-    (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo})
+    <script>
+        -- 1. 시리얼 번호를 기반으로 location_key 찾기
+        WITH SerialLocation AS (
+            SELECT location_key
+            FROM TB_INSTK_SUB
+            WHERE serial_no = #{serialNo} and input_key=#{inputKey}
+            LIMIT 1
+        )
+        
+        -- 2. 입출고 이력 추가
+        INSERT INTO TB_INOUT_HIS
+        (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no, location_key)
+        VALUES
+        (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo}, 
+        (SELECT location_key FROM SerialLocation));
+    </script>
 """)
     int addInOutHistory(
             @Param("serialNo") String serialNo,
-            @Param("inoutCommonCode") String inoutCommonCode,      // 순서 변경
-            @Param("warehouseCode") String warehouseCode,          // 순서 변경
+            @Param("inoutCommonCode") String inoutCommonCode,
+            @Param("warehouseCode") String warehouseCode,
             @Param("customerEmployeeNo") String customerEmployeeNo,
             @Param("businessEmployeeNo") String businessEmployeeNo,
             @Param("inoutHistoryNote") String inoutHistoryNote,
-            @Param("inoutNo") String inoutNo);
+            @Param("inoutNo") String inoutNo, int inputKey);
 
     // 입고 반려 버튼 클릭시 거절
     @Update("""

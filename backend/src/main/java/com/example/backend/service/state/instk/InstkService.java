@@ -69,6 +69,8 @@ public class InstkService {
          int updateChecked =   mapper.updateBuyInConsentByInputKey(inputKey);
         System.out.println("updateChecked = " + updateChecked);
 
+        boolean  checked=true ;
+
         // 그냥 입고일때 , TODO 수량만큼  +1, 테이블도 그만큼
         if(instk.getInputCommonCode().equals("INSTK")) {
             // 품목 공통코드 조회
@@ -81,6 +83,7 @@ public class InstkService {
 
             //주문 수량 만큼 반복해야하는것들
             for (int i = 0; i < itemAmount; i++) {
+
                 // 품목 상세에서 시리얼 넘버 최대값 가져오기
                 Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
                 // 시리얼 번호 생성 (20자리)
@@ -100,8 +103,9 @@ public class InstkService {
                         instk.getInputStockEmployeeNo(),
                         instk.getRequestEmployeeNo(),
                         instk.getInputStockNote(),
-                        inoutNo
-                );
+                        inoutNo,
+                        inputKey);
+                checked &= (insertItemSub == 1) & (insertItstkSub == 1) & (inInoutHistory == 1);
             }
 
 //            //품목 상세에서  시리얼 넘버 맥스 뭔지 찾아오기
@@ -118,7 +122,7 @@ public class InstkService {
 //          int inInoutHistory=  mapper.addInOutHistory(insertSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
 
             // 다 들어갔는지 체크하는거 필요함
-            return (insertItemSub==1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
+            return checked;
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
@@ -136,7 +140,7 @@ public class InstkService {
             //인아웃 히스토리 집어 넣기
 
             
-            int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
+            int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo ,inputKey);
 
             return (currentCommonCode == 1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
         }
