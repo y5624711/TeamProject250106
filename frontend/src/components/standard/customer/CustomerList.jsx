@@ -108,7 +108,7 @@ function CustomerList({
       </HStack>
 
       {/* 체크박스 필터 */}
-      <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
+      <Checkbox checked={checkedActive} onChange={toggleCheckedActive} mt={3}>
         미사용 포함 조회
       </Checkbox>
 

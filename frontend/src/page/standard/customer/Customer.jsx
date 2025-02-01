@@ -15,12 +15,7 @@ function Customer() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [currentPage, setCurrentPage] = useState(
-  //   parseInt(searchParams.get("page")) || 1,
-  // );
-  const [checkedActive, setCheckedActive] = useState(
-    searchParams.get("active") === "true",
-  );
+  const [checkedActive, setCheckedActive] = useState(false);
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
     keyword: searchParams.get("key") ?? "",
@@ -119,12 +114,11 @@ function Customer() {
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
-    const nextValue = !checkedActive;
-    setCheckedActive(nextValue);
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", nextValue.toString());
-    setSearchParams(nextSearchParams);
+    setSearchParams((prev) => {
+      const nextValue = !(prev.get("active") === "true");
+      prev.set("active", nextValue.toString());
+      return prev;
+    });
   };
 
   // 검색 실행 처리 및 URL 업데이트
@@ -142,9 +136,12 @@ function Customer() {
 
     setSearchParams(nextSearchParams);
   };
+  // console.log("out checkedActive", checkedActive);
 
   // 업데이트 데이터 불러오기
   const fetchUpdatedCustomerList = () => {
+    // console.log("in checkedActive", checkedActive);
+
     axios
       .get(`/api/customer/list`, {
         params: {
@@ -178,9 +175,15 @@ function Customer() {
       searchParams.get("keyword")
     ) {
       fetchUpdatedCustomerList();
-      console.log("second");
+      // console.log("second");
     }
-  }, [searchParams, checkedActive]);
+  }, [searchParams]);
+
+  // checkbox 변화에 따라 표 업데이트
+  useEffect(() => {
+    fetchUpdatedCustomerList();
+    // console.log("call", checkedActive);
+  }, [checkedActive]);
 
   useEffect(() => {
     const nextSearch = { ...search };
@@ -236,12 +239,13 @@ function Customer() {
     const sort = searchParams.get("sort") || "customer_key";
     const order = searchParams.get("order") || "DESC";
     setStandard({ sort, order });
+    setCheckedActive(searchParams.get("active") === "true");
   }, [searchParams]);
 
   // console.log("p", standard);
 
   const handleResetClick = () => {
-    setSearchParams("");
+    setSearchParams();
   };
 
   return (
