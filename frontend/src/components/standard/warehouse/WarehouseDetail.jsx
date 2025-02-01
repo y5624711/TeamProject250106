@@ -21,15 +21,17 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`/api/warehouse/view/${warehouseKey}`)
-      .then((res) => {
-        setWarehouseDetail(res.data);
-      })
-      .catch((error) => {
-        console.error("창고 상세 정보 요청 중 오류 발생: ", error);
-      });
-  }, [warehouseKey]);
+    if (warehouseKey) {
+      axios
+        .get(`/api/warehouse/view/${warehouseKey}`)
+        .then((res) => {
+          setWarehouseDetail(res.data);
+        })
+        .catch((error) => {
+          console.error("창고 상세 정보 요청 중 오류 발생: ", error);
+        });
+    }
+  }, [warehouseKey, onClosed]);
 
   function handleCheckClick() {
     console.log(warehouseKey);
@@ -66,7 +68,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   }
 
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed} size={"lg"}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -88,7 +90,9 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
         <DialogFooter>
           <DialogActionTrigger asChild>
             <HStack>
-              <Button variant="outline">취소</Button>
+              <Button variant="outline" onClick={onClosed}>
+                취소
+              </Button>
               <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
             </HStack>
           </DialogActionTrigger>

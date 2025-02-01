@@ -67,13 +67,15 @@ export function WarehouseAdd({ isOpen, onConfirm, onClose, title }) {
 
   // 관리자 정보 가져오기
   useEffect(() => {
-    axios.get(`/api/warehouse/employee/${customerCode}`).then((res) => {
-      const employeeOptions = res.data.map((employee) => ({
-        value: employee.customerEmployeeNo,
-        label: employee.employeeName,
-      }));
-      setEmployeeList(employeeOptions);
-    });
+    if (customerCode) {
+      axios.get(`/api/warehouse/employee/${customerCode}`).then((res) => {
+        const employeeOptions = res.data.map((employee) => ({
+          value: employee.customerEmployeeNo,
+          label: employee.employeeName,
+        }));
+        setEmployeeList(employeeOptions);
+      });
+    }
   }, [customerCode]);
 
   const resetState = () => {
