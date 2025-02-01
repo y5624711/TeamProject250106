@@ -77,6 +77,7 @@ export function Purchase() {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", sortField);
     nextSearchParams.set("order", nextOrder);
+    nextSearchParams.set("page", "1"); // 1 페이지로 초기화
 
     // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParams);
