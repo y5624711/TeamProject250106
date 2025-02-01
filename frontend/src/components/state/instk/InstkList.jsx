@@ -5,7 +5,7 @@ import {
   HStack,
   Table,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
@@ -22,9 +22,11 @@ export function InstkList() {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  //페이지 네이션 + 저거 옵션다는거 부터 하자
-  useEffect(() => {
+
+  const refreshData = useCallback(() => {
+    setIsLoading(true);
     axios
       .get("api/instk/list", {
         params: {
@@ -38,8 +40,16 @@ export function InstkList() {
       .then((res) => {
         setCount(res.data.count);
         setInstkList(res.data.list);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [searchParams]);
+  //페이지 네이션 + 저거 옵션다는거 부터 하자
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   console.log(instkList, "instklist");
 
@@ -52,6 +62,10 @@ export function InstkList() {
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
     checkState === true ? handleDetailViewModal() : handleApproveModal();
+  };
+  const handleApprovalSuccess = async () => {
+    await refreshData(); // 데이터 새로고침
+    handleDetailViewModal(); // 상세 모달 열기
   };
 
   const searchOptions = createListCollection({
@@ -179,7 +193,7 @@ export function InstkList() {
         <InstkConfirmModal
           isModalOpen={isApproveModalOpen}
           setChangeModal={handleApproveModal}
-          changeDetailModal={handleDetailViewModal}
+          onApprovalSuccess={handleApprovalSuccess}
           instk={instkList[selectedIndex]}
         />
       )}
@@ -189,6 +203,7 @@ export function InstkList() {
           isModalOpen={isDetailViewModalOpen}
           setChangeModal={handleDetailViewModal}
           instk={instkList[selectedIndex]}
+          isLoading={isLoading}
         />
       )}
     </Box>

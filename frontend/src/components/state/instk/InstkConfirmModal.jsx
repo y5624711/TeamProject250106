@@ -18,7 +18,7 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 import error from "eslint-plugin-react/lib/util/error.js";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,changeDetailModal}) {
+export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprovalSuccess }) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
   const [instkDetail, setInstkDetail] = useState({});
@@ -56,12 +56,13 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,changeDe
           description: res.data.message.text,
           type: res.data.message.type,
         });
+        setChangeModal();
+        onApprovalSuccess(); // 승인 성공 후 콜백 실행
       })
       .catch((error) => {
         console.log("입고테이블에 추가중 오류 발생했습니다", error);
       }).finally(()=>{
-      changeDetailModal();
-      setChangeModal();
+
     });
   };
 

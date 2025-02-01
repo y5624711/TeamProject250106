@@ -10,6 +10,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import {
+  Center,
   createListCollection,
   HStack,
   Input,
@@ -17,7 +18,7 @@ import {
   SelectItem,
   SelectRoot,
   SelectTrigger,
-  SelectValueText,
+  SelectValueText, Spinner,
   Stack
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
@@ -25,7 +26,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 
-export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
+export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoading  }) {
   const { id } = useContext(AuthenticationContext);
   const [detailData, setDetailData] = useState({ serialList: [] });
   const [serialLocationList, setSerialLocationList] = useState(null);
@@ -60,7 +61,14 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
         <DialogHeader>
           <DialogTitle>입고 상세</DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        {isLoading ? (
+            <DialogBody>
+              <Center p={4}>
+                <Spinner /> {/* 또는 다른 로딩 인디케이터 */}
+              </Center>
+            </DialogBody>
+          ):(
+          <DialogBody>
           <Stack gap={15}>
             <HStack>
               <Field orientation="horizontal" label={"입고 구분 명"}>
@@ -136,7 +144,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk }) {
               <Input readOnly value={instk.inputStockNote} />
             </Field>
           </Stack>
-        </DialogBody>
+        </DialogBody>)}
         <DialogFooter>
             <Button
               variant="outline"
