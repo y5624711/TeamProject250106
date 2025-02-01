@@ -214,7 +214,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   return (
     <Box>
-      <Stack spacing={4}>
+      <Stack spacing={15}>
         <Field orientation="horizontal" label={"소속 구분"}>
           <SelectRoot
             collection={frameworks}
@@ -252,7 +252,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         )}
         {viewKey !== -1 && (
-          <Field label={"소속 코드"} required orientation="horizontal">
+          <Field label={"소속 코드"}  orientation="horizontal">
             <Input
               name="workPlace"
               placeholder={"소속 코드 / 소속 명"}
@@ -262,7 +262,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             />
           </Field>
         )}
-        <Field label={"직원"} required orientation="horizontal">
+        <Field label={"직원"}  orientation="horizontal">
           <Input
             name="name"
             value={formData.name}
@@ -313,7 +313,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       </Stack>
 
 
-      <Box display={"flex"} mt={4} justify={"flex-end"}>
+      <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={handleSubmit} disabled={checkNameLength()}>
           {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
         </Button>
@@ -323,12 +323,11 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             취소
           </Button>
         )}
-
-        {viewKey !== -1 && (
-          <Button onClick={handleDelete} ml={2}>
-            회원 삭제
-          </Button>
-        )}
+        {/*{viewKey !== -1 && (*/}
+        {/*  <Button onClick={handleDelete} ml={2}>*/}
+        {/*    회원 삭제*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </Box>
     </Box>
   );

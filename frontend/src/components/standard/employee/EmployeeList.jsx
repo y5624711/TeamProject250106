@@ -175,7 +175,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
-              <SelectValueText placeholder={"선택해 주세요"} />
+              <SelectValueText placeholder={"전체"} />
             </SelectTrigger>
             <SelectContent
               style={{
@@ -189,11 +189,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                   {code.label}
                 </SelectItem>
               ))}
+
+
+
             </SelectContent>
           </SelectRoot>
         </Box>
         <Input
-          placeholder={"검색어를 입력해주세요"}
+          placeholder={"검색어를 입력해주세요."}
           value={keyword}
           onChange={(e) => {
             setKeyword(e.target.value);
