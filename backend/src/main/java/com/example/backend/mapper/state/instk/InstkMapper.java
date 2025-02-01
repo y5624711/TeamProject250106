@@ -170,49 +170,37 @@ LIMIT #{offset}, 10
              """)
     InstkDetail viewReturnWareHouse(String inputNo);
 
-
-    // 입고 상세 추가
-    @Insert("""
-             <script>
-                    -- 1. 빈 로케이션 찾기
-                    WITH SelectedLocation AS (
-                        SELECT location_key
-                        FROM TB_LOCMST
-                        WHERE located = FALSE
-                        ORDER BY row ASC, col ASC, shelf ASC
-                        LIMIT 1
-                    )
-                    -- 2. 찾은 로케이션을 사용 처리
-                    UPDATE TB_LOCMST
-                    SET located = TRUE
-                    WHERE location_key = (SELECT location_key FROM SelectedLocation);
-
-            INSERT  INTO TB_INSTK_SUB
-                   (input_key,serial_no,)
-            VALUES 
-             (#{inputKey},#{insertSerialNo}, (SELECT location_key FROM SelectedLocation))
-             </script>
-           """)
-    int addInstkSub(int inputKey, String insertSerialNo);
-
+    //입고 상세시 발생해야하는 일들 처리
     @Insert("""
     <script>
-        -- 1. 시리얼 번호를 기반으로 location_key 찾기
-        WITH SerialLocation AS (
-            SELECT location_key
-            FROM TB_INSTK_SUB
-            WHERE serial_no = #{serialNo} and input_key=#{inputKey}
-            LIMIT 1
-        )
-        
-        -- 2. 입출고 이력 추가
-        INSERT INTO TB_INOUT_HIS
-        (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no, location_key)
-        VALUES
-        (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo}, 
-        (SELECT location_key FROM SerialLocation));
+        -- 1. 사용 가능한 location_key 찾기
+        SELECT location_key INTO @selected_location
+        FROM TB_LOCMST 
+        WHERE located = FALSE AND warehouse_code = #{warehouseCode}
+        ORDER BY row ASC, col ASC, shelf ASC 
+        LIMIT 1;
+
+        -- 2. 찾은 location_key를 업데이트
+        UPDATE TB_LOCMST
+        SET located = TRUE
+        WHERE location_key = @selected_location;
+
+        -- 3. 동일한 location_key를 사용하여 INSERT 실행
+        INSERT INTO TB_INSTK_SUB (input_key, serial_no, location_key)
+        VALUES (#{inputKey}, #{insertSerialNo}, @selected_location);
     </script>
 """)
+    int addInstkSub(@Param("inputKey") int inputKey, @Param("insertSerialNo") String insertSerialNo, @Param("warehouseCode") String warehouseCode);
+
+    @Insert("""
+            <script>
+                 INSERT INTO TB_INOUT_HIS
+                 (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no, location_key)
+                 VALUES
+                 (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo},
+                 (SELECT location_key FROM TB_INSTK_SUB WHERE serial_no = #{serialNo} AND input_key = #{inputKey} LIMIT 1));
+             </script>
+            """)
     int addInOutHistory(
             @Param("serialNo") String serialNo,
             @Param("inoutCommonCode") String inoutCommonCode,

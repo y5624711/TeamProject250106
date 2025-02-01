@@ -93,7 +93,7 @@ public class InstkService {
                 int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
 
                 // 입고 상세 테이블 추가
-                int insertItstkSub = mapper.addInstkSub(inputKey, insertSerialNo);
+                int insertItstkSub = mapper.addInstkSub(inputKey, insertSerialNo ,wareHouseCode);
 
                 // 입고 승인자의 창고 코드 기반으로 이력 추가
                 int inInoutHistory = mapper.addInOutHistory(
@@ -136,10 +136,10 @@ public class InstkService {
             // 입고 테이블
             int insertInstk = mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-            int insertItstkSub= mapper.addInstkSub(inputKey,itemSerialNo);
+            int insertItstkSub= mapper.addInstkSub(inputKey,itemSerialNo, wareHouseCode);
             //인아웃 히스토리 집어 넣기
 
-            
+            // 인풋
             int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo ,inputKey);
 
             return (currentCommonCode == 1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
