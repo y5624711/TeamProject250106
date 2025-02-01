@@ -15,7 +15,7 @@ import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
+export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
@@ -54,6 +54,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           description: data.message.text,
           type: data.message.type,
         });
+        refresh();
       })
       .catch((res) => res.data)
       .then((data) => {

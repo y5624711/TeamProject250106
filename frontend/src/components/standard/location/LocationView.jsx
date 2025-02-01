@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 
 function LocationView({ locationDetail, setLocationDetail, locationKey }) {
-  const [location, setLocation] = useState("");
-
-  useEffect(() => {
-    if (locationDetail.row === null) {
-      setLocation("");
-    } else {
-      setLocation(
-        locationDetail.row +
-          " - " +
-          locationDetail.col +
-          " - " +
-          locationDetail.shelf,
-      );
-    }
-  }, [locationKey]);
+  const location =
+    locationDetail.row +
+    " - " +
+    locationDetail.col +
+    " - " +
+    locationDetail.shelf;
 
   return (
     <Box>

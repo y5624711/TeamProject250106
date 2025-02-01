@@ -32,6 +32,11 @@ function Warehouse(props) {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
+  const [reborn, setReborn] = useState(false);
+
+  function refresh() {
+    setReborn(!reborn);
+  }
 
   // 창고 정보 가져오기
   useEffect(() => {
@@ -40,7 +45,7 @@ function Warehouse(props) {
       setCountWarehouse(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams, checkedActive, isAddDialogOpen]);
+  }, [searchParams, checkedActive, isAddDialogOpen, reborn]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -114,6 +119,7 @@ function Warehouse(props) {
             currentPage={currentPage}
             handlePageChangeClick={handlePageChangeClick}
             setSearchParams={setSearchParams}
+            refresh={refresh}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
