@@ -34,7 +34,7 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
           console.error("로케이션 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [locationKey, onClosed, refresh]);
+  }, [locationKey, onClosed]);
 
   function handleCheckClick() {
     axios
