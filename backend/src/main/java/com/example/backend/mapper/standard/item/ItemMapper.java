@@ -1,5 +1,6 @@
 package com.example.backend.mapper.standard.item;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.item.Item;
 import org.apache.ibatis.annotations.*;
 
@@ -118,6 +119,13 @@ public interface ItemMapper {
             """)
     int deleteItem(int itemKey);
 
+    @Update("""
+            UPDATE TB_ITEMMST
+            SET item_active = #{customerActive}
+            WHERE customer_code = #{customerCode}
+            """)
+    int editItemActive(Customer customer);
+
     @Select("""
             SELECT customer_name, customer_code
             FROM TB_CUSTMST
@@ -150,9 +158,9 @@ public interface ItemMapper {
             WHERE item_active = false
             """)
     List<Integer> deletedItem();
-    
-    
-//    코드중 시리얼 넘버 최댓값 가져오기
+
+
+    //    코드중 시리얼 넘버 최댓값 가져오기
     @Select("""
             SELECT  MAX(serial_no)
             FROM TB_ITEMSUB
@@ -166,7 +174,7 @@ public interface ItemMapper {
             (item_common_code,serial_no,current_common_code)
             value
             (#{itemCommonCode},#{insertSerialNo},#{currentCommonCode})
-         
+            
             """)
     int addItemSub(String itemCommonCode, String insertSerialNo, String currentCommonCode);
 
@@ -177,4 +185,5 @@ public interface ItemMapper {
             where serial_no=#{itemSerialNo}
             """)
     int updateCurrentCommonCodeBySerialNo(String itemSerialNo);
+
 }

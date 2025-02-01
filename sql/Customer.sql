@@ -31,3 +31,10 @@ SELECT item_code
 FROM TB_CUSTMST
 WHERE customer_active = TRUE;
 
+UPDATE TB_ITEMMST
+SET item_active = 0
+WHERE customer_code = 'CUS0000000011';
+
+SELECT *
+FROM TB_ITEMMST
+WHERE customer_code = 'CUS0000000011';

@@ -3,6 +3,7 @@ package com.example.backend.service.standard.customer;
 import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.mapper.standard.customer.CustomerMapper;
+import com.example.backend.mapper.standard.item.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomerService {
     final CustomerMapper mapper;
+    final ItemMapper itemMapper;
 
     //협력업체 등록
     public Boolean addCustomer(Customer customer) {
@@ -54,15 +56,43 @@ public class CustomerService {
         return mapper.viewCustomer(customerKey);
     }
 
-    //협력사 사용여부 = false
+    //협력사 사용여부 = false (사용 안 함)
     public Boolean deleteCustomer(String customerKey) {
         int count = mapper.deleteCustomer(customerKey);
         return count == 1;
     }
 
+    //
+    public boolean checkActive(Customer customer) {
+        //1. active에 변화가 있는지 확인
+        Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
+        String activeCustomer = "";
+
+        //2 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
+        if (oldActive != customer.getCustomerActive()) {
+            activeCustomer = mapper.getItemCustomer(customer.getItemCode());
+        }
+//        System.out.println("복구: " + customer.getCustomerCode());
+//        System.out.println("activeCustomer: " + activeCustomer);
+
+        return activeCustomer == null || activeCustomer.equals(customer.getCustomerCode());
+    }
+
+
     //협력사 정보 수정
     public Boolean editCustomer(Customer customer) {
+        //현재 active 확인
+        Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
+        // active 수정 시
+        if (customer.getCustomerActive() != oldActive) {
+            // customerActive = false 이면 itemActive = false
+            mapper.editCustomerActive(customer);
+            itemMapper.editItemActive(customer);
+        }
+
+        // active 외 수정
         int cnt = mapper.editCustomer(customer);
+
         return cnt >= 1;
     }
 
@@ -107,4 +137,5 @@ public class CustomerService {
 //        System.out.println("결과" + deletedCustomerKey.contains(customerKey));
         return deletedCustomerKey.contains(customerKey);
     }
+
 }

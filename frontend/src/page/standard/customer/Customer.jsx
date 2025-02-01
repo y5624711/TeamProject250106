@@ -41,9 +41,9 @@ function Customer() {
         setCount(count);
         console.log("initial");
         // 초기 customerKey 설정
-        if (customerList.length > 0) {
-          setCustomerKey(customerList[0].customerKey);
-        }
+        // if (customerList.length > 0) {
+        //   setCustomerKey(customerList[0].customerKey);
+        // }
       })
       .catch((error) => {
         console.error("초기 고객 목록 불러오기 오류:", error);
@@ -101,7 +101,6 @@ function Customer() {
           type: data.message.type,
           description: data.message.text,
         });
-        setEditDialogOpen(false);
       })
       .catch((e) => {
         const data = e.response.data;
@@ -158,9 +157,9 @@ function Customer() {
         setCustomerList(customerList);
         setCount(count);
         // update시 customerKey 설정
-        if (customerList.length > 0) {
-          setCustomerKey(customerList[0].customerKey);
-        }
+        // if (customerList.length > 0) {
+        //   setCustomerKey(customerList[0].customerKey);
+        // }
       })
       .catch((error) => {
         console.error("업데이트 고객 목록 불러오기 오류:", error);

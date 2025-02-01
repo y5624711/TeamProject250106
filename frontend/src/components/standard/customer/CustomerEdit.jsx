@@ -27,7 +27,6 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
   //정보 불러오기
   useEffect(() => {
     if (isOpen && customerKey) {
-      setCustomer(initialCustomer);
       axios
         .get(`/api/customer/view/${customerKey}`)
         .then((res) => {
@@ -150,8 +149,13 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                   <Checkbox
                     transform="translateX(-2590%)"
                     name={"customerActive"}
-                    checked={customer.customerActive}
+                    isChecked={customer.customerActive}
                     onChange={(e) => {
+                      console.log(
+                        "체크박스 변경 전 값:",
+                        customer.customerActive,
+                      );
+                      console.log("체크박스 변경 후 값:", e.target.checked);
                       const { checked } = e.target; // 체크 여부 가져오기
                       setCustomer((prevCustomer) => ({
                         ...prevCustomer,

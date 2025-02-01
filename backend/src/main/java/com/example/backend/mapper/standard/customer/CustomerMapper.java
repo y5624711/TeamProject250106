@@ -87,7 +87,7 @@ public interface CustomerMapper {
             customer_rep = #{customerRep}, customer_no = #{customerNo}, 
             customer_tel = #{customerTel}, customer_fax = #{customerFax},
             customer_address = #{customerAddress}, customer_address_details = #{customerAddressDetails}, 
-            customer_post = #{customerPost}, customer_active = #{customerActive}, customer_note = #{customerNote}
+            customer_post = #{customerPost}, customer_note = #{customerNote}
             WHERE customer_key = #{customerKey}    
             """)
     int editCustomer(Customer customer);
@@ -200,4 +200,26 @@ public interface CustomerMapper {
             WHERE customer_active=false
             """)
     List<String> getDeletedCustomer();
+
+    @Select("""
+            SELECT customer_active
+            FROM TB_CUSTMST
+            WHERE customer_code = #{customer_code}
+            """)
+    Boolean getOldActive(String customerCode);
+
+    @Update("""
+            UPDATE TB_CUSTMST
+            SET customer_active = #{customerActive}
+            WHERE customer_key = #{customerKey}
+            """)
+    int editCustomerActive(Customer customer);
+
+    @Select("""
+            SELECT customer_code
+            FROM TB_CUSTMST
+            WHERE item_code = #{itemCode}
+              AND customer_active = TRUE
+            """)
+    String getItemCustomer(String itemCode);
 }
