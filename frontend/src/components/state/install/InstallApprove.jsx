@@ -286,7 +286,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   )}
                   <Field label={"승인 비고"} orientation="horizontal">
                     <Textarea
-                      placeholder="최대 50자"
+                      placeholder={isApproved ? "" : "최대 50자"}
                       value={installApprove.installApproveNote}
                       onChange={(e) =>
                         setInstallApprove({
@@ -295,6 +295,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         })
                       }
                       maxHeight={"40px"}
+                      readOnly={isApproved}
                     />
                   </Field>
                 </Stack>

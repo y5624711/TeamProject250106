@@ -168,9 +168,10 @@ export function InstallConfiguration({
             <Field label={"완료 비고"} orientation="horizontal">
               <Textarea
                 value={inoutHistoryNote}
-                placeholder="최대 50자"
+                placeholder={installData?.inoutHistoryDate ? "" : "최대 50자"}
                 onChange={(e) => setInoutHistoryNote(e.target.value)}
                 maxHeight={"100px"}
+                readOnly={!!installData?.inoutHistoryDate}
               />
             </Field>
             {installData.installApproveConsent == true && (
