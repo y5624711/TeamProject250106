@@ -5,7 +5,7 @@ import {
   Button,
   createListCollection,
   Flex,
-  HStack,
+  HStack, IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -30,6 +30,7 @@ import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import { Switch } from "../../ui/switch.jsx";
 import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
+import {BsArrowCounterclockwise} from "react-icons/bs";
 
 EmployeeViewDialog.propTypes = {};
 
@@ -158,6 +159,16 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
+  const handleResetClick = () => {
+    setSearchParams({});
+    setSearchParams({}); // 검색 파라미터 초기화
+    setPage(1); // 페이지 1로 초기화
+    setSort("all"); // 기본 정렬 설정
+    setIsActiveVisible(false); // 기본 활성 상태 설정
+    setKeyword(""); // 검색어 초기화
+    setType("all"); // 기본 타입 설정
+    setOrder("desc"); // 기본 정렬 순서 설정
+  };
 
   return (
     <Box  p={5} >
@@ -201,6 +212,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             setKeyword(e.target.value);
           }}
         />
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={handleResetClick}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
         <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
       <Checkbox
@@ -286,7 +305,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               setIsModalOpen(true);
             }}
           >
-            추가
+            직원 등록
           </Button>
 
 

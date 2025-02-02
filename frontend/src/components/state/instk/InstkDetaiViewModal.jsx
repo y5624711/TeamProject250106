@@ -145,9 +145,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
                   </SelectRoot>
                 </Field>
               )}
-
             </HStack>
-
             <HStack>
               <Field label={"주문 요청자"} orientation="horizontal">
                 <Input readOnly value={instk.requestEmployeeName} />
