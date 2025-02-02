@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -179,7 +179,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
           <Box>
-            <Field label="창고 이름" orientation="horizontal" mb={15}>
+            <Field label="창고" orientation="horizontal" mb={15}>
               <Input
                 type={"text"}
                 value={warehouseName}
@@ -233,22 +233,20 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 }}
               />
             </Field>
-            <Box display="flex" gap={4}>
-              <Field label="전화번호" orientation="horizontal" mb={15}>
-                <Input
-                  type={"text"}
-                  value={warehouseTel}
-                  onChange={(e) => setWarehouseTel(e.target.value)}
-                />
-              </Field>
-              <Field label="우편 번호" orientation="horizontal" mb={15}>
-                <Input
-                  type={"text"}
-                  value={warehousePost}
-                  onChange={(e) => setWarehousePost(e.target.value)}
-                />
-              </Field>
-            </Box>
+            <Field label="전화번호" orientation="horizontal" mb={15}>
+              <Input
+                type={"text"}
+                value={warehouseTel}
+                onChange={(e) => setWarehouseTel(e.target.value)}
+              />
+            </Field>
+            <Field label="우편 번호" orientation="horizontal" mb={15}>
+              <Input
+                type={"text"}
+                value={warehousePost}
+                onChange={(e) => setWarehousePost(e.target.value)}
+              />
+            </Field>
             <Box display="flex" gap={4}>
               <Field label="광역 시도" orientation="horizontal" mb={15}>
                 <Input
@@ -281,7 +279,9 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
             </Field>
             {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
             <Field label="비고" orientation="horizontal" mb={15}>
-              <Input
+              <Textarea
+                style={{ maxHeight: "100px", overflowY: "auto" }}
+                placeholder="최대 50자"
                 type={"text"}
                 value={warehouseNote}
                 onChange={(e) => setWarehouseNote(e.target.value)}
@@ -302,7 +302,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               handleSaveClick();
             }}
           >
-            저장
+            등록
           </Button>
         </DialogFooter>
       </DialogContent>
