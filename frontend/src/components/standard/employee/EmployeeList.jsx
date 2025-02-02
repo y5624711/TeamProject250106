@@ -205,7 +205,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Box>
         <Input
           w={"50%"}
-          placeholder={"검색어를 입력해주세요."}
+          placeholder={"검색어를 입력해 주세요."}
           value={keyword}
           onChange={(e) => {
             setKeyword(e.target.value);
@@ -303,8 +303,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           >
             직원 등록
           </Button>
-
-
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}

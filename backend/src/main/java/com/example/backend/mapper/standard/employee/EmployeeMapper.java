@@ -108,9 +108,27 @@ public interface EmployeeMapper {
 
 
     @Select("""
-                    select * from TB_EMPMST
-                    WHERE employee_key = #{viewKey} 
-            """)
+            SELECT  
+                E.employee_key,
+                E.employee_name,
+                E.employee_tel,
+                E.employee_no,
+                E.employee_workplace_code,
+                E.employee_common_code,
+                E.employee_password,
+                E.employee_active,
+                E.employee_note,
+                CASE
+                    WHEN E.employee_common_code = 'EMP' THEN D.department_name
+                    ELSE NULL
+                END AS  department_name
+            FROM TB_EMPMST E
+            LEFT JOIN TB_DEPARTMST D 
+                ON E.employee_workplace_code = D.department_code
+                 AND E.employee_common_code = 'EMP'
+            WHERE E.employee_key = #{viewKey}
+            """
+    )
     Employee getOneEmployeeByKey(int viewKey);
 
 

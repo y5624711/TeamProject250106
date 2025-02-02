@@ -14,6 +14,7 @@ public class Employee {
     private String employeeTel;
     private String employeeWorkPlaceTel;
     private String employeeNote;
+    private String departmentName;
     private boolean employeeActive;
 
 
