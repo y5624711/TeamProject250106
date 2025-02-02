@@ -15,6 +15,7 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
@@ -169,6 +170,19 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
     }
   }, [isOpen]);
 
+  //유효성 검사
+  const validate = () => {
+    return (
+      warehouseName != "" &&
+      customerCode != "" &&
+      customerEmployeeNo != "" &&
+      warehousePost != "" &&
+      warehouseState != "" &&
+      warehouseCity != "" &&
+      warehouseAddress != ""
+    );
+  };
+
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -296,14 +310,22 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button
-            variant="solid"
-            onClick={() => {
-              handleSaveClick();
-            }}
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={validate()}
           >
-            등록
-          </Button>
+            <Button
+              variant="solid"
+              onClick={() => {
+                handleSaveClick();
+              }}
+              disabled={!validate()}
+            >
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>

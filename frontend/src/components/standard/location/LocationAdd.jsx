@@ -15,6 +15,7 @@ import axios from "axios";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function LocationAdd({ isOpen, onClose, title }) {
   const [warehouseCode, setWarehouseCode] = useState("");
@@ -107,6 +108,11 @@ function LocationAdd({ isOpen, onClose, title }) {
     }
   }, [isOpen]);
 
+  //유효성 검사
+  const validate = () => {
+    return warehouseCode != "" && row != "" && col != "" && shelf != "";
+  };
+
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -178,14 +184,22 @@ function LocationAdd({ isOpen, onClose, title }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button
-            variant="solid"
-            onClick={() => {
-              handleSaveClick();
-            }}
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={validate()}
           >
-            등록
-          </Button>
+            <Button
+              variant="solid"
+              onClick={() => {
+                handleSaveClick();
+              }}
+              disabled={!validate()}
+            >
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>

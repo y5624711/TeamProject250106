@@ -16,6 +16,7 @@ import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function StocktakingAdd({
   isOpen,
@@ -89,7 +90,6 @@ function StocktakingAdd({
       });
     }
   }, [warehouseCode]);
-  2;
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {
@@ -187,6 +187,19 @@ function StocktakingAdd({
     }
   }, [isOpen]);
 
+  //유효성 검사
+  const validate = () => {
+    return (
+      warehouseCode != "" &&
+      itemCode != "" &&
+      countCurrent !== null &&
+      countCurrent !== undefined && // ✅ 0도 유효한 값이므로 null/undefined만 체크
+      countConfiguration !== null &&
+      countConfiguration !== undefined &&
+      countConfiguration !== ""
+    );
+  };
+
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -270,8 +283,8 @@ function StocktakingAdd({
               <Field label="실사 유형" orientation="horizontal" mb={15}>
                 <Box ml={"86px"} style={{ position: "absolute" }}>
                   <RadioGroup
-                    value={stocktakingType.toString()} // ✅ true/false를 문자열로 변환하여 반영
-                    onChange={(value) => setStocktakingType(value === "true")} // ✅ "true"면 true, 아니면 false
+                    defaultValue="true" // ✅ Boolean 값을 문자열로 변환
+                    onChange={(e) => setStocktakingType(e.target.value)} // ✅ 문자열을 다시 Boolean으로 변환
                   >
                     <HStack gap="6">
                       <Radio value="true">정기 실사</Radio>
@@ -297,17 +310,22 @@ function StocktakingAdd({
               취소
             </Button>
           </DialogActionTrigger>
-          {/*<Tooltip content="입력을 완료해주세요." disabled={isValid}>*/}
-          <Button
-            variant="solid"
-            onClick={() => {
-              handleSaveClick();
-            }}
-            // disabled={!isValid}
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={validate()}
           >
-            등록
-          </Button>
-          {/*</Tooltip>*/}
+            <Button
+              variant="solid"
+              onClick={() => {
+                handleSaveClick();
+              }}
+              disabled={!validate()}
+            >
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
