@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Center, Stack, Table } from "@chakra-ui/react";
+import { Box, Stack, Table } from "@chakra-ui/react";
 import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
 import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
@@ -23,7 +23,7 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
   ];
 
   return (
-    <Box>
+    <Box mt={-2}>
       <Stack>
         <Box>
           <Table.Root interactive>
@@ -50,7 +50,6 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
             </Table.Body>
           </Table.Root>
         </Box>
-        <Center></Center>
         {/*입출내역 더블클릭 시 뜨는 팝업창*/}
         <InoutHistoryDetail
           inoutHistoryKey={selectedInoutHistory}

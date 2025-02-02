@@ -18,7 +18,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../../components/ui/pagination.jsx";
-import { StateRadioGroup } from "../../../components/tool/list/StateRadioGroup.jsx";
+import { StockRadioGroup } from "../../../components/stock/StockRadioGroup.jsx";
 
 function InoutHistory(props) {
   const [search, setSearch] = useState({
@@ -90,7 +90,7 @@ function InoutHistory(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <StateRadioGroup
+          <StockRadioGroup
             radioOptions={radioOptions}
             onRadioChange={(nextSearchParam) => {
               setSearchParams(nextSearchParam);
