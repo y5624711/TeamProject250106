@@ -137,8 +137,8 @@ const radioOptions = [
 const inoutHistoryOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "시리얼 번호", value: "serialNo" },
     { label: "품목", value: "item" },
+    { label: "시리얼 번호", value: "serialNo" },
     { label: "담당 업체", value: "customer" },
     { label: "창고", value: "warehouse" },
     { label: "가맹점", value: "franchise" },

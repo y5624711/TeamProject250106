@@ -135,8 +135,8 @@ const stocktakingOptionList = createListCollection({
     { label: "담당 업체", value: "customer" },
     { label: "품목", value: "item" },
     { label: "창고", value: "warehouse" },
-    { label: "담당자", value: "customerEmployee" },
     { label: "실사 유형", value: "type" },
+    { label: "담당자", value: "customerEmployee" },
   ],
 });
 
