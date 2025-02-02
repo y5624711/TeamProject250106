@@ -145,7 +145,6 @@ const inoutHistoryOptionList = createListCollection({
     { label: "본사 직원", value: "businessEmployee" },
     { label: "협력업체 직원", value: "customerEmployee" },
     { label: "사번", value: "employeeNumber" },
-    { label: "날짜", value: "date" },
   ],
 });
 
