@@ -7,11 +7,12 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
   return (
     <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader
+        textAlign="center"
         onClick={() => {
           handleSortControl("기본키");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           #
           {searchParams.get("sort") === "기본키" ? (
             searchParams.get("order") === "ASC" ? (
@@ -29,7 +30,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           handleSortControl("소속구분");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           소속 구분
           {searchParams.get("sort") === "소속구분" ? (
             searchParams.get("order") === "ASC" ? (
@@ -47,7 +48,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           handleSortControl("기업명", "ASC");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           기업
           {searchParams.get("sort") === "기업명" ? (
             searchParams.get("order") === "ASC" ? (
@@ -65,7 +66,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           handleSortControl("기업번호");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           기업 번호
           {searchParams.get("sort") === "기업번호" ? (
             searchParams.get("order") === "ASC" ? (
@@ -78,48 +79,48 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           )}
         </HStack>
       </Table.ColumnHeader>
-      <Table.ColumnHeader
-        onClick={() => {
-          handleSortControl("부서명");
-        }}
-      >
-        <HStack>
-          부서
-          {searchParams.get("sort") === "부서명" ? (
-            searchParams.get("order") === "ASC" ? (
-              <FaCaretUp />
-            ) : (
-              <FaCaretDown />
-            )
-          ) : (
-            ""
-          )}
-        </HStack>
-      </Table.ColumnHeader>
-      <Table.ColumnHeader
-        onClick={() => {
-          handleSortControl("부서번호");
-        }}
-      >
-        <HStack>
-          부서 번호
-          {searchParams.get("sort") === "부서번호" ? (
-            searchParams.get("order") === "ASC" ? (
-              <FaCaretUp />
-            ) : (
-              <FaCaretDown />
-            )
-          ) : (
-            ""
-          )}
-        </HStack>
-      </Table.ColumnHeader>
+      {/*<Table.ColumnHeader*/}
+      {/*  onClick={() => {*/}
+      {/*    handleSortControl("부서명");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <HStack justify="center" align="center" width="100%">*/}
+      {/*    부서*/}
+      {/*    {searchParams.get("sort") === "부서명" ? (*/}
+      {/*      searchParams.get("order") === "ASC" ? (*/}
+      {/*        <FaCaretUp />*/}
+      {/*      ) : (*/}
+      {/*        <FaCaretDown />*/}
+      {/*      )*/}
+      {/*    ) : (*/}
+      {/*      ""*/}
+      {/*    )}*/}
+      {/*  </HStack>*/}
+      {/*</Table.ColumnHeader>*/}
+      {/*<Table.ColumnHeader*/}
+      {/*  onClick={() => {*/}
+      {/*    handleSortControl("부서번호");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <HStack justify="center" align="center" width="100%">*/}
+      {/*    부서 번호*/}
+      {/*    {searchParams.get("sort") === "부서번호" ? (*/}
+      {/*      searchParams.get("order") === "ASC" ? (*/}
+      {/*        <FaCaretUp />*/}
+      {/*      ) : (*/}
+      {/*        <FaCaretDown />*/}
+      {/*      )*/}
+      {/*    ) : (*/}
+      {/*      ""*/}
+      {/*    )}*/}
+      {/*  </HStack>*/}
+      {/*</Table.ColumnHeader>*/}
       <Table.ColumnHeader
         onClick={() => {
           handleSortControl("직원명");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           직원
           {searchParams.get("sort") === "직원명" ? (
             searchParams.get("order") === "ASC" ? (
@@ -137,7 +138,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           handleSortControl("직원전화번호");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           직원 전화번호
           {searchParams.get("sort") === "직원전화번호" ? (
             searchParams.get("order") === "ASC" ? (
@@ -155,7 +156,7 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           handleSortControl("사번");
         }}
       >
-        <HStack>
+        <HStack justify="center" align="center" width="100%">
           사번{" "}
           {searchParams.get("sort") === "사번" ? (
             searchParams.get("order") === "ASC" ? (

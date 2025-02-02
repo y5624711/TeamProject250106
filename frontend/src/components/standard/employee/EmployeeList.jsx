@@ -219,13 +219,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
-        <Button onClick={handleSearchButton}>검색</Button>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)"
+        >검색</Button>
       </HStack>
       <Checkbox
         checked={isActiveVisible}
         onCheckedChange={(e) => handleVisible()}
       >
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
       <Table.Root interactive>
         <Table.Header>
@@ -265,10 +266,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               </Table.Cell>
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeTel} </Table.Cell>
-
-
-
-
               <Table.Cell> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
