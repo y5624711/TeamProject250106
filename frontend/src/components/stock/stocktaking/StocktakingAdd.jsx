@@ -127,6 +127,10 @@ function StocktakingAdd({
     }));
   };
 
+  // 유효성 검증
+  const isValid =
+    warehouseCode && itemCode && countCurrent && countConfiguration;
+
   // 물품 변경
   const handleItemChange = (selectedOption) => {
     setItemName(selectedOption.label);
@@ -291,14 +295,17 @@ function StocktakingAdd({
               취소
             </Button>
           </DialogActionTrigger>
+          {/*<Tooltip content="입력을 완료해주세요." disabled={isValid}>*/}
           <Button
             variant="solid"
             onClick={() => {
               handleSaveClick();
             }}
+            // disabled={!isValid}
           >
             저장
           </Button>
+          {/*</Tooltip>*/}
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
