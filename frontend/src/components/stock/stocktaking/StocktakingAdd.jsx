@@ -9,12 +9,13 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, HStack, Input } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
+import { Radio, RadioGroup } from "../../ui/radio.jsx";
 
 function StocktakingAdd({
   isOpen,
@@ -259,13 +260,26 @@ function StocktakingAdd({
                 onChange={(e) => setStocktakingNote(e.target.value)}
               />
             </Field>
-            <Field label="실사 유형" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={stocktakingType}
-                onChange={(e) => setStocktakingType(e.target.value)}
-              />
-            </Field>
+            <Box display="flex" gap={4}>
+              <Field label="실사 유형" orientation="horizontal" mb={15}>
+                <Box ml={"86px"} style={{ position: "absolute" }}>
+                  <RadioGroup
+                    value={stocktakingType.toString()} // ✅ true/false를 문자열로 변환하여 반영
+                    onChange={(value) => setStocktakingType(value === "true")} // ✅ "true"면 true, 아니면 false
+                  >
+                    <HStack gap="6">
+                      <Radio value="true">정기 실사</Radio>
+                      <Radio value="false">비정기 실사</Radio>
+                    </HStack>
+                  </RadioGroup>
+                </Box>
+                {/*<Input*/}
+                {/*  type={"text"}*/}
+                {/*  value={stocktakingType}*/}
+                {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
+                {/*/>*/}
+              </Field>
+            </Box>
           </Box>
 
           {/*  TODO: 실사유형 radio로 체크  */}
