@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
-  Center,
   createListCollection,
   Heading,
   HStack,
@@ -12,12 +11,6 @@ import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHist
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
 import { StockRadioGroup } from "../../../components/stock/StockRadioGroup.jsx";
 
 function InoutHistory(props) {
@@ -106,24 +99,11 @@ function InoutHistory(props) {
             inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
             setSearchParams={setSearchParams}
+            handlePageChangeClick={handlePageChangeClick}
+            countInoutHistory={countInoutHistory}
           />
         </Stack>
       </HStack>
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChangeClick}
-          count={countInoutHistory}
-          pageSize={10}
-          siblingCount={2}
-          defaultPage={currentPage}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
     </Box>
   );
 }

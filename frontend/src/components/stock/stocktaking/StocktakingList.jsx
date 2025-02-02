@@ -1,10 +1,22 @@
 import React, { useState } from "react";
-import { Box, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
 import StocktakingListPage from "./StocktakingListPage.jsx";
 import StocktakingDetail from "./StocktakingDetail.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
 
-function StocktakingList({ stocktakingList, currentPage, setSearchParams }) {
+function StocktakingList({
+  stocktakingList,
+  currentPage,
+  setSearchParams,
+  handlePageChangeClick,
+  countStocktaking,
+}) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedStocktaking, setSelectedStocktaking] = useState(null);
 
@@ -50,6 +62,24 @@ function StocktakingList({ stocktakingList, currentPage, setSearchParams }) {
             </Table.Body>
           </Table.Root>
         </Box>
+        <Center p={4}>
+          <PaginationRoot
+            onPageChange={handlePageChangeClick}
+            count={countStocktaking}
+            pageSize={10}
+            // page={page}
+            siblingCount={2}
+            defaultPage={currentPage}
+            variant="solid"
+            size={"md"}
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
         {/* 더블클릭 시 뜨는 팝업창 */}
         <StocktakingDetail
           stocktakingKey={selectedStocktaking}

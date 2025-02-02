@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
-  Center,
   createListCollection,
   Heading,
   HStack,
@@ -12,12 +11,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import StocktakingAdd from "../../../components/stock/stocktaking/StocktakingAdd.jsx";
 
@@ -93,9 +86,15 @@ function Stocktaking(props) {
             stocktakingList={stocktakingList}
             currentPage={currentPage}
             setSearchParams={setSearchParams}
+            countStocktaking={countStocktaking}
+            handlePageChangeClick={handlePageChangeClick}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
+            <Button
+              size={"lg"}
+              mt={"-65px"}
+              onClick={() => setIsAddDialogOpen(true)}
+            >
               실사 등록
             </Button>
           </Box>
@@ -109,23 +108,6 @@ function Stocktaking(props) {
           />
         </Stack>
       </HStack>
-
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChangeClick}
-          count={countStocktaking}
-          pageSize={10}
-          // page={page}
-          siblingCount={2}
-          defaultPage={currentPage}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
     </Box>
   );
 }
