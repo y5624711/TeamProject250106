@@ -32,10 +32,30 @@ public class StocktakingController {
 
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking) {
+        try {
+            // 실사 입력 검증
+            if (service.validate(stocktaking)) {
+                if (service.add(stocktaking)) {
+                    return ResponseEntity.ok(Map.of("message",
+                            Map.of("type", "success",
+                                    "text", "실사를 등록하였습니다.")));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message",
+                                    Map.of("type", "error",
+                                            "text", "실사 등록 중 문제가 발생하였습니다..")));
+                }
+            } else {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "작성에 실패했습니다.")));
+        }
 
-        service.add(stocktaking);
-
-        return null;
     }
 
     @GetMapping("warehouse")

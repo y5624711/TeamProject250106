@@ -90,7 +90,6 @@ public class WarehouseService {
 
     // 창고 정보가 다 입력됐는지 확인
     public Boolean validate(Warehouse warehouse) {
-        System.out.println(warehouse.getCustomerCode());
         return
                 !(
                         warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||

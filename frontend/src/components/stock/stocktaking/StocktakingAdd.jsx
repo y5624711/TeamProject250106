@@ -149,12 +149,12 @@ function StocktakingAdd({
           type: data.message.type,
         });
         handleClose();
+        onClose();
       })
       .catch((e) => {
-        const message = e?.data?.message;
+        const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
-    onClose();
   };
 
   useEffect(() => {

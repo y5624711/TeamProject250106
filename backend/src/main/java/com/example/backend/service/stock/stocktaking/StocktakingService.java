@@ -77,4 +77,15 @@ public class StocktakingService {
     public List<Stocktaking> getStocktakingItemList(String warehouseCode) {
         return mapper.getStocktakingItemList(warehouseCode);
     }
+
+    public Boolean validate(Stocktaking stocktaking) {
+        return
+                !(
+                        stocktaking.getWarehouseCode() == null || stocktaking.getWarehouseCode().trim().isEmpty() ||
+                                stocktaking.getItemCode() == null || stocktaking.getItemCode().trim().isEmpty() ||
+                                stocktaking.getCountCurrent() == null ||
+                                stocktaking.getCountConfiguration() == null ||
+                                stocktaking.getStocktakingType() == null ||
+                                stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
+    }
 }
