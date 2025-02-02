@@ -3,6 +3,7 @@ package com.example.backend.service.stock.stocktaking;
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -73,8 +74,11 @@ public class StocktakingService {
         return mapper.add(stocktaking) == 1;
     }
 
-    public List<Stocktaking> getStocktakingWarehouseList() {
-        return mapper.getStocktakingWarehouseList();
+    public List<Stocktaking> getStocktakingWarehouseList(Authentication auth) {
+
+        String customerCode = mapper.getCustomerCode(auth.getName());
+
+        return mapper.getStocktakingWarehouseList(customerCode);
     }
 
     public List<Stocktaking> getStocktakingItemList(String warehouseCode) {

@@ -91,6 +91,7 @@ function StocktakingAdd({
       });
     }
   }, [warehouseCode]);
+  2;
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {

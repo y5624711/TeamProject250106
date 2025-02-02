@@ -4,6 +4,8 @@ import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +33,8 @@ public class StocktakingController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking, Authentication auth) {
         try {
             // 실사 입력 검증
             if (service.validate(stocktaking)) {
@@ -58,9 +61,10 @@ public class StocktakingController {
 
     }
 
+    // 창고 목록 불러오기
     @GetMapping("warehouse")
-    public List<Stocktaking> warehouseList() {
-        return service.getStocktakingWarehouseList();
+    public List<Stocktaking> warehouseList(Authentication auth) {
+        return service.getStocktakingWarehouseList(auth);
     }
 
     @GetMapping("item/{warehouseCode}")
