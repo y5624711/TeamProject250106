@@ -10,10 +10,10 @@ export function BusinessListTable({
 }) {
   // 컬럼 배열 정의
   const columnsList = [
-    { key: "department_code", label: "부서번호" },
+    { key: "department_code", label: "#" },
     { key: "department_name", label: "부서명" },
     { key: "department_tel", label: "전화번호" },
-    { key: "department_fax", label: "팩스번호" },
+    { key: "department_fax", label: "팩스" },
   ];
 
   return (

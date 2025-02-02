@@ -5,32 +5,30 @@ import {
   Button,
   createListCollection,
   Flex,
-  HStack, IconButton,
+  HStack,
+  IconButton,
   Input,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Stack,
   Table,
 } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaArrowUp } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
-import { FaArrowDown } from "react-icons/fa6";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
-import { Switch } from "../../ui/switch.jsx";
 import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
-import {BsArrowCounterclockwise} from "react-icons/bs";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 EmployeeViewDialog.propTypes = {};
 
@@ -170,9 +168,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   };
 
   return (
-    <Box  p={5} >
+    <Box p={5}>
       <HStack
-        justifyContent="center" w={"100%"}
+        justifyContent="center"
+        w={"100%"}
         style={{
           alignItems: "flex-start",
         }}
@@ -249,7 +248,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell>
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
-                  : "(주)중앙컴퍼니"}
+                  : "(주) 중앙 컴퍼니"}
               </Table.Cell>
               <Table.Cell>{item.employeeWorkPlaceTel}</Table.Cell>
               <Table.Cell>
@@ -266,9 +265,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeTel} </Table.Cell>
 
-
-
-
               <Table.Cell> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
@@ -276,38 +272,37 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex  justify="space-between" mt={"20px"}>
-        <Box/>
+      <Flex justify="space-between" mt={"20px"}>
+        <Box />
 
-          <Box>
-            <PaginationRoot
-              onPageChange={handlePageChange}
-              count={count}
-              pageSize={10}
-              page={page}
-              defaultPage={page}
-              variant={"solid"}
-            >
-              <PaginationPrevTrigger>
-                <FaArrowLeft />
-              </PaginationPrevTrigger>
-              <PaginationItems />
-              <PaginationNextTrigger>
-                <FaArrowRight />
-              </PaginationNextTrigger>
-            </PaginationRoot>
-          </Box>
-
-          <Button
-            display="flex" justifyContent="flex-end"
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
+        <Box>
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            page={page}
+            defaultPage={page}
+            variant={"solid"}
           >
-            직원 등록
-          </Button>
+            <PaginationPrevTrigger>
+              <FaArrowLeft />
+            </PaginationPrevTrigger>
+            <PaginationItems />
+            <PaginationNextTrigger>
+              <FaArrowRight />
+            </PaginationNextTrigger>
+          </PaginationRoot>
+        </Box>
 
-
+        <Button
+          display="flex"
+          justifyContent="flex-end"
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          직원 등록
+        </Button>
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}

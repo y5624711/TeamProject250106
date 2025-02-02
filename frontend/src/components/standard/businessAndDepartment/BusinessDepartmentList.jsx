@@ -126,7 +126,6 @@ export function BusinessDepartmentList() {
       />
 
       <Checkbox
-        variant={"subtle"}
         checked={active}
         onCheckedChange={toggleCheckActive}
         whiteSpace={"nowrap"}
@@ -145,7 +144,7 @@ export function BusinessDepartmentList() {
       />
       <Box pt={5}>
         <Button float={"right"} onClick={() => setIsAddOpen(true)}>
-          부서 추가
+          부서 등록
         </Button>
 
         {/*페이지네이션*/}

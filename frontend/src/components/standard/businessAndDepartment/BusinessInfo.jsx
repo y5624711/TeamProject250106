@@ -41,32 +41,34 @@ export function BusinessInfo({
   };
 
   return (
-    <Box p={5} bg={"gray.200"}>
+    <Box p={5} bg="rgba(200, 200, 200, 0.3)">
       <Box>
         <Flex>
-          <Heading>사업장 정보</Heading>
+          <Heading>{business.businessName}</Heading>
           <Spacer />
           <Box pt={3}>
-            <Button onClick={handleSave}>저장</Button>
+            <Button mt={-4} mb={5} size="sm" onClick={handleSave}>
+              저장
+            </Button>
           </Box>
         </Flex>
         <Stack>
           <HStack gap={5}>
-            <Field label={"회사명"}>
+            {/*<Field label={"회사명"} orientation="horizontal">*/}
+            {/*  <Input*/}
+            {/*    variant="filled"*/}
+            {/*    value={business.businessName}*/}
+            {/*    onChange={(e) =>*/}
+            {/*      setBusiness((prev) => ({*/}
+            {/*        ...prev,*/}
+            {/*        businessName: e.target.value,*/}
+            {/*      }))*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*</Field>*/}
+            <Field label={"대표자"} orientation="horizontal" mb={3}>
               <Input
-                variant="subtle"
-                value={business.businessName}
-                onChange={(e) =>
-                  setBusiness((prev) => ({
-                    ...prev,
-                    businessName: e.target.value,
-                  }))
-                }
-              />
-            </Field>
-            <Field label={"대표"}>
-              <Input
-                variant="subtle"
+                variant="filled"
                 value={business.businessRep || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -76,9 +78,9 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label={"사업자번호"}>
+            <Field label={"사업자 번호"} orientation="horizontal" mb={3}>
               <Input
-                variant="subtle"
+                variant="filled"
                 value={business.businessNo || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -90,9 +92,9 @@ export function BusinessInfo({
             </Field>
           </HStack>
           <HStack gap={5}>
-            <Field label={"대표 전화번호"}>
+            <Field label={"전화번호"} orientation="horizontal" mb={3}>
               <Input
-                variant="subtle"
+                variant="filled"
                 value={business.businessTel || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -102,9 +104,9 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label={"팩스번호"}>
+            <Field label={"팩스"} orientation="horizontal" mb={3}>
               <Input
-                variant="subtle"
+                variant="filled"
                 value={business.businessFax || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({
@@ -115,9 +117,9 @@ export function BusinessInfo({
               />
             </Field>
           </HStack>
-          <Field label={"주소"}>
+          <Field label={"주소"} orientation="horizontal">
             <Input
-              variant="subtle"
+              variant="filled"
               value={business.businessAddress || ""}
               onChange={(e) =>
                 setBusiness((prev) => ({

@@ -46,7 +46,7 @@ export function MainBuyList({ company }) {
               <Table.Row
                 key={index}
                 onDoubleClick={() => navigate("/purchase")}
-                title="더블클릭시 해당 페이지로 이동합니다"
+                title="더블 클릭시 해당 페이지로 이동합니다."
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
