@@ -219,7 +219,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                 </Field>
               </HStack>
               <HStack>
-                <Field orientation="horizontal" label="검수기사">
+                <Field orientation="horizontal" label="검수 기사">
                   <Input readOnly value={approveData.customerConfigurerName} />
                 </Field>
                 <Field orientation="horizontal" label="사번">

@@ -186,7 +186,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
             </Field>
           </HStack>
           <HStack>
-            <Field orientation="horizontal" label={"전화 번호"}>
+            <Field orientation="horizontal" label={"전화번호"}>
               <Input
                 value={customerTel}
                 onChange={(e) => setCustomerTel(e.target.value)}

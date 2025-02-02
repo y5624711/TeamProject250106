@@ -56,12 +56,12 @@ function ReturnList({
       { label: "전체", value: "all" },
       { label: "가맹점", value: "franchiseName" },
       { label: "품목", value: "itemCommonName" },
-      { label: "담당업체", value: "customerName" },
-      { label: "시리얼번호", value: "serialNo" },
-      { label: "반품번호", value: "returnNo" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "시리얼 번호", value: "serialNo" },
+      { label: "반품 번호", value: "returnNo" },
       { label: "요청자", value: "businessEmployeeName" },
       { label: "승인자", value: "customerEmployeeName" },
-      { label: "검수기사", value: "customerConfigurerName" },
+      { label: "검수 기사", value: "customerConfigurerName" },
     ],
   });
 
@@ -229,7 +229,7 @@ function ReturnList({
               onClick={() => handleSort("emb.employee_name")}
             >
               <HStack alignItems="center" justify="center">
-                산청자
+                청자
                 {sort === "emb.employee_name" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
@@ -250,7 +250,7 @@ function ReturnList({
               onClick={() => handleSort("emcc.employee_name")}
             >
               <HStack alignItems="center" justify="center">
-                검수기사
+                검수 기사
                 {sort === "emcc.employee_name" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>

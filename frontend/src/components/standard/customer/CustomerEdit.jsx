@@ -108,7 +108,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                   </Field>
                 </HStack>
                 <HStack>
-                  <Field orientation="horizontal" label={"전화 번호"}>
+                  <Field orientation="horizontal" label={"전화번호"}>
                     <Input
                       name="customerTel"
                       value={customer.customerTel}
