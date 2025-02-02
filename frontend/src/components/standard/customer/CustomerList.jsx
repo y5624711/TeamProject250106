@@ -113,7 +113,7 @@ function CustomerList({
         mb={5}
         ml={3}
         checked={checkedActive}
-        onChange={toggleCheckedActive}
+        onCheckedChange={toggleCheckedActive}
       >
         미사용 포함 조회
       </Checkbox>

@@ -157,17 +157,16 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                     transform="translateX(-2590%)"
                     name={"customerActive"}
                     checked={customer.customerActive}
-                    onChange={(e) => {
-                      console.log(
-                        "체크박스 변경 전 값:",
-                        customer.customerActive,
-                      );
-                      console.log("체크박스 변경 후 값:", e.target.checked);
-                      const { checked } = e.target; // 체크 여부 가져오기
+                    onCheckedChange={(e) => {
+                      // console.log("체크박스 변경 전 값:", customer.customerActive);
+                      // console.log("체크박스 변경 후 값:", e);
+                      const checked =
+                        e.checked !== undefined ? e.checked : e.target.checked;
                       setCustomer((prevCustomer) => ({
                         ...prevCustomer,
                         customerActive: checked, // 상태 업데이트
                       }));
+                      // console.log("그 후?", checked);
                     }}
                   />
                 </Field>
