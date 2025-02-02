@@ -16,6 +16,7 @@ public interface PurchaseMapper {
                    sys.common_code_name AS item_common_name
             FROM TB_CUSTMST cus
             LEFT JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
+            WHERE cus.customer_active = 1  -- 협력 업체에서 사용중인 것만 가져오기
             ORDER BY BINARY(item_common_name)
             """)
     List<Map<String, Object>> getItemCommonCodeList();
