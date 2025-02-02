@@ -81,7 +81,10 @@ function InoutHistoryView({ inoutHistoryKey }) {
         </Field>
       </Box>
       <Field label="날짜" orientation="horizontal" mb={15}>
-        <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
+        <Input
+          value={inoutHistoryDetail.inoutHistoryDate?.slice(0, 10) || ""}
+          readOnly
+        />
       </Field>
       <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea

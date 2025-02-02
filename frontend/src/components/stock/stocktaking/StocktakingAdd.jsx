@@ -9,7 +9,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, HStack, Input } from "@chakra-ui/react";
+import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -258,7 +258,9 @@ function StocktakingAdd({
             </Box>
 
             <Field label="비고" orientation="horizontal" mb={15}>
-              <Input
+              <Textarea
+                style={{ maxHeight: "100px", overflowY: "auto" }}
+                placeholder="최대 50자"
                 type={"text"}
                 value={stocktakingNote}
                 onChange={(e) => setStocktakingNote(e.target.value)}
@@ -303,7 +305,7 @@ function StocktakingAdd({
             }}
             // disabled={!isValid}
           >
-            저장
+            등록
           </Button>
           {/*</Tooltip>*/}
         </DialogFooter>

@@ -81,7 +81,7 @@ function InoutHistory(props) {
         <StockSideBar />
         <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
-            물류 관리 {">"} 물품입출내역
+            물류 관리 {">"} 물품 입출내역
           </Heading>
           {/* 검색 jsx */}
           <InoutHistorySearch
