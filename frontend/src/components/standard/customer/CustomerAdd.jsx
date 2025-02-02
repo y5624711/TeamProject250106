@@ -10,7 +10,6 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Stack,
   Textarea,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
@@ -129,101 +128,101 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
         <DialogHeader>
           <DialogTitle>협력 업체 등록</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <Stack gap={2}>
-            <Field orientation="horizontal" label={"협력 업체"}>
-              <Input
-                required
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-              />
-            </Field>
-            <Field label={"취급 품목"} orientation={"horizontal"}>
-              <SelectRoot
-                onValueChange={(e) => {
-                  setItemName(e.value);
-                  const selectedItem = itemCodeList.find(
-                    (item) => item.commonCodeName == e.value,
-                  );
-                  // console.log("내부", selectedItem);
-                  if (selectedItem) {
-                    setItemCode(selectedItem.commonCode); // 선택된 품목 코드 설정
-                  }
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+        >
+          <Field orientation="horizontal" label={"협력 업체"}>
+            <Input
+              required
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+            />
+          </Field>
+          <Field label={"취급 품목"} orientation={"horizontal"}>
+            <SelectRoot
+              onValueChange={(e) => {
+                setItemName(e.value);
+                const selectedItem = itemCodeList.find(
+                  (item) => item.commonCodeName == e.value,
+                );
+                // console.log("내부", selectedItem);
+                if (selectedItem) {
+                  setItemCode(selectedItem.commonCode); // 선택된 품목 코드 설정
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValueText>{itemName || "품목 선택"}</SelectValueText>
+              </SelectTrigger>
+              <SelectContent
+                style={{
+                  position: "absolute",
+                  zIndex: 100,
+                  width: "87%",
+                  top: "40px",
                 }}
               >
-                <SelectTrigger>
-                  <SelectValueText>{itemName || "품목 선택"}</SelectValueText>
-                </SelectTrigger>
-                <SelectContent
-                  style={{
-                    position: "absolute",
-                    zIndex: 100,
-                    width: "87%",
-                    top: "40px",
-                  }}
-                >
-                  {myItems.items.map((item) => (
-                    <SelectItem key={item.value} item={item.label}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
-            <HStack>
-              <Field orientation="horizontal" label={"대표자"}>
-                <Input
-                  value={customerRep}
-                  onChange={(e) => setCustomerRep(e.target.value)}
-                />
-              </Field>
-              <Field orientation="horizontal" label={"사업자 번호"}>
-                <Input
-                  value={customerNo}
-                  onChange={(e) => setCustomerNo(e.target.value)}
-                />
-              </Field>
-            </HStack>
-            <HStack>
-              <Field orientation="horizontal" label={"전화 번호"}>
-                <Input
-                  value={customerTel}
-                  onChange={(e) => setCustomerTel(e.target.value)}
-                />
-              </Field>
-              <Field orientation="horizontal" label={"팩스 번호"}>
-                <Input
-                  value={customerFax}
-                  onChange={(e) => setCustomerFax(e.target.value)}
-                />
-              </Field>
-            </HStack>
-            <Field orientation="horizontal" label={"우편 번호"}>
+                {myItems.items.map((item) => (
+                  <SelectItem key={item.value} item={item.label}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+          </Field>
+          <HStack>
+            <Field orientation="horizontal" label={"대표자"}>
               <Input
-                value={customerPost}
-                onChange={(e) => setCustomerPost(e.target.value)}
+                value={customerRep}
+                onChange={(e) => setCustomerRep(e.target.value)}
               />
             </Field>
-            <Field orientation="horizontal" label={"주소"}>
+            <Field orientation="horizontal" label={"사업자 번호"}>
               <Input
-                value={customerAddress}
-                onChange={(e) => setCustomerAddress(e.target.value)}
+                value={customerNo}
+                onChange={(e) => setCustomerNo(e.target.value)}
               />
             </Field>
-            <Field orientation="horizontal" label={"상세 주소"}>
+          </HStack>
+          <HStack>
+            <Field orientation="horizontal" label={"전화 번호"}>
               <Input
-                value={customerAddressDetails}
-                onChange={(e) => setCustomerAddressDetails(e.target.value)}
+                value={customerTel}
+                onChange={(e) => setCustomerTel(e.target.value)}
               />
             </Field>
-            <Field orientation="horizontal" label={"비고"}>
-              <Textarea
-                value={customerNote}
-                onChange={(e) => setCustomerNote(e.target.value)}
-                maxHeight={"100px"}
+            <Field orientation="horizontal" label={"팩스 번호"}>
+              <Input
+                value={customerFax}
+                onChange={(e) => setCustomerFax(e.target.value)}
               />
             </Field>
-          </Stack>
+          </HStack>
+          <Field orientation="horizontal" label={"우편 번호"}>
+            <Input
+              value={customerPost}
+              onChange={(e) => setCustomerPost(e.target.value)}
+            />
+          </Field>
+          <Field orientation="horizontal" label={"주소"}>
+            <Input
+              value={customerAddress}
+              onChange={(e) => setCustomerAddress(e.target.value)}
+            />
+          </Field>
+          <Field orientation="horizontal" label={"상세 주소"}>
+            <Input
+              value={customerAddressDetails}
+              onChange={(e) => setCustomerAddressDetails(e.target.value)}
+            />
+          </Field>
+          <Field orientation="horizontal" label={"비고"}>
+            <Textarea
+              value={customerNote}
+              onChange={(e) => setCustomerNote(e.target.value)}
+              maxHeight={"100px"}
+            />
+          </Field>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>

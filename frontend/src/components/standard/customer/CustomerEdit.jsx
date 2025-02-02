@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import {
   DialogActionTrigger,
@@ -68,7 +68,13 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
           </DialogHeader>
           <DialogBody>
             {customer ? (
-              <Stack gap={2}>
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
+                }}
+              >
                 <HStack>
                   <Field orientation="horizontal" label={"업체명"}>
                     <Input
@@ -143,6 +149,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                     name={"customerNote"}
                     value={customer.customerNote}
                     onChange={handleInputChange}
+                    maxHeight={"100px"}
                   />
                 </Field>
                 <Field orientation="horizontal" label={"사용 여부"}>
@@ -164,7 +171,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                     }}
                   />
                 </Field>
-              </Stack>
+              </Box>
             ) : (
               <p>고객 정보를 불러오는 중입니다...</p>
             )}

@@ -192,15 +192,15 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             </Field>
           </HStack>
           <Field orientation="horizontal" label="요청 날짜">
-            <Input
-              readOnly
-              type={"date"}
-              value={approveData.returnRequestDate}
-            />
+            <Input readOnly value={approveData.returnRequestDate} />
           </Field>
           <Field orientation="horizontal" label="요청 비고">
             {approveData.returnRequestNote ? (
-              <Textarea readOnly value={approveData.returnRequestNote} />
+              <Textarea
+                readOnly
+                value={approveData.returnRequestNote}
+                maxHeight={"100px"}
+              />
             ) : (
               <Input readOnly value={"내용 없음"} />
             )}
@@ -234,7 +234,11 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
               </Field>
               <Field orientation="horizontal" label="승인 비고">
                 {approveData.returnApproveNote ? (
-                  <Textarea readOnly value={approveData.returnApproveNote} />
+                  <Textarea
+                    readOnly
+                    value={approveData.returnApproveNote}
+                    maxHeight={"100px"}
+                  />
                 ) : (
                   <Input readOnly value={"내용 없음"} />
                 )}
