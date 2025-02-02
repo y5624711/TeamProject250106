@@ -80,7 +80,7 @@ function Location(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Box h={11}></Box>
+          <Box h={9}></Box>
           <LocationList
             countLocation={countLocation}
             locationList={locationList}
