@@ -147,7 +147,7 @@ export function BusinessDepartmentList() {
         openDialog={handleOpenDialog}
       />
       <Box pt={5}>
-        <Button float={"right"} onClick={() => setIsAddOpen(true)}>
+        <Button float={"right"} onClick={() => setIsAddOpen(true)} size="lg">
           부서 추가
         </Button>
 

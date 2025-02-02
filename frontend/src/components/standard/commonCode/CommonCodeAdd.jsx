@@ -27,8 +27,8 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템코드", value: "SYSTEM" },
-      { label: "물품코드", value: "ITEM" },
+      { label: "시스템 코드", value: "SYSTEM" },
+      { label: "물품 코드", value: "ITEM" },
     ],
   });
 
@@ -103,7 +103,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     <DialogRoot open={isOpen} onOpenChange={handleClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>물품 등록</DialogTitle>
+          <DialogTitle>코드 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5}>
@@ -145,6 +145,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
             <Field label="비고" orientation="horizontal">
               <Textarea
                 resize={"none"}
+                maxLength={50}
                 placeholder="비고"
                 value={codeData.commonCodeNote || ""}
                 onChange={handleInputChange("commonCodeNote")}

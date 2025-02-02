@@ -7,13 +7,14 @@ export function SortInventoryTableColumnHeader({
   searchParams,
   setSearchParams,
   onSortChange,
+  defaultSortKey,
 }) {
+  // 기본 정렬 값 설정
+  const sortColum = searchParams.get("sortColum") || defaultSortKey;
+  const sortOrder = searchParams.get("sortOrder") || "desc";
+
   const handleSort = (key) => {
-    const currentOrder = searchParams.get("sortOrder") || "asc";
-    const nextOrder =
-      searchParams.get("sortColum") === key && currentOrder === "asc"
-        ? "desc"
-        : "asc";
+    const nextOrder = sortColum === key && sortOrder === "asc" ? "desc" : "asc";
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sortColum", key);
@@ -21,10 +22,10 @@ export function SortInventoryTableColumnHeader({
 
     console.log(nextSearchParams.get("sortColum"));
     console.log(nextSearchParams.get("sortOrder"));
+
     onSortChange(nextSearchParams);
     setSearchParams(nextSearchParams);
   };
-
   return (
     <>
       {columnsList.map((sort) => (
@@ -36,8 +37,8 @@ export function SortInventoryTableColumnHeader({
         >
           <HStack justify="center" align="center" width="100%">
             {sort.label}
-            {searchParams.get("sortColum") === sort.key ? (
-              searchParams.get("sortOrder") === "asc" ? (
+            {sortColum === sort.key ? (
+              sortOrder === "asc" ? (
                 <FaCaretUp />
               ) : (
                 <FaCaretDown />

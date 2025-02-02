@@ -42,8 +42,8 @@ export function CommonCodeView({
 
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템코드", value: "SYSTEM" },
-      { label: "물품코드", value: "ITEM" },
+      { label: "시스템 코드", value: "SYSTEM" },
+      { label: "물품 코드", value: "ITEM" },
     ],
   });
 

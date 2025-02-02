@@ -102,7 +102,9 @@ export function BusinessSearchAndFilter({
       >
         <BsArrowCounterclockwise size="25px" />
       </IconButton>
-      <Button onClick={handleSearchClick}>검색</Button>
+      <Button onClick={handleSearchClick} transform="translateX(-70%) ">
+        검색
+      </Button>
     </HStack>
   );
 }

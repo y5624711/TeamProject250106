@@ -59,12 +59,13 @@ function InventoryStatus() {
           setSearchParams={setSearchParams}
         />
 
-        <Center>
+        <Center mt={2}>
           <PaginationRoot
             count={count}
             pageSize={10}
             page={page}
             variant="solid"
+            size={"md"}
           >
             <HStack>
               <PaginationPrevTrigger />

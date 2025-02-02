@@ -28,7 +28,7 @@ export function ActiveSwitch({ onActiveChange }) {
 
   return (
     <Checkbox
-      mt={3}
+      mt={5}
       mb={5}
       ml={3}
       checked={active}

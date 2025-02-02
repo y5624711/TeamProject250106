@@ -28,11 +28,15 @@ public interface InventoryMapper {
                                 <if test="type == 'all' or type == 'itemName'">
                                     OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>
+                                <if test="type == 'all' or type == 'warehouseAddress'">
+                                    OR warehouse_address LIKE CONCAT('%', #{keyword}, '%')
+                                </if>
                             </if>
                         </trim>
                     </where>
                         ORDER BY
                             <choose>
+                                <when test="sortColum == 'inOutHistoryDate'">inout_history_date</when>
                                 <when test="sortColum == 'wareHouseName'">warehouse_name</when>
                                 <when test="sortColum == 'wareHouseCity'">warehouse_city</when>
                                 <when test="sortColum == 'wareHouseAddress'">warehouse_address</when>

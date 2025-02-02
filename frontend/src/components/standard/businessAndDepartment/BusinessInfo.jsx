@@ -64,7 +64,7 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label={"대표"}>
+            <Field label={"대표자"}>
               <Input
                 variant="subtle"
                 value={business.businessRep || ""}

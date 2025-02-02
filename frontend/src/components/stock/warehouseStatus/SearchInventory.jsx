@@ -1,15 +1,19 @@
 import {
   createListCollection,
   HStack,
+  IconButton,
   Input,
+} from "@chakra-ui/react";
+import { Button } from "../../ui/button.jsx";
+import React, { useEffect } from "react";
+import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "@chakra-ui/react";
-import { Button } from "../../ui/button.jsx";
-import React, { useEffect } from "react";
+} from "../../ui/select.jsx";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 export function SearchInventory({
   search,
@@ -20,10 +24,11 @@ export function SearchInventory({
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "창고명", value: "wareHouseName" },
-      { label: "업체명", value: "customerName" },
-      { label: "품명", value: "itemName" },
+      { label: "창고", value: "wareHouseName" },
       { label: "광역시도", value: "warehouseCity" },
+      { label: "시군", value: "warehouseAddress" },
+      { label: "협력업체", value: "customerName" },
+      { label: "품목", value: "itemName" },
     ],
   });
 
@@ -70,6 +75,9 @@ export function SearchInventory({
     }
   };
 
+  const handleResetClick = () => {
+    setSearchParams("");
+  };
   return (
     <HStack justifyContent="center">
       <SelectRoot
@@ -86,8 +94,7 @@ export function SearchInventory({
         </SelectTrigger>
         <SelectContent
           style={{
-            width: "100px",
-            top: "40px",
+            width: "150px",
             position: "absolute",
           }}
         >
@@ -105,10 +112,20 @@ export function SearchInventory({
         onChange={(e) => {
           setSearch({ ...search, keyword: e.target.value.trim() });
         }}
-        placeholder={"검색어를 입력해 주세요"}
+        placeholder={"검색어를 입력해 주세요."}
         onKeyDown={handlePressKey}
       />
-      <Button onClick={handleSearch}>검색</Button>
+      <IconButton
+        transform="translateX(-130%) "
+        style={{ cursor: "pointer" }}
+        variant={"ghost"}
+        onClick={handleResetClick}
+      >
+        <BsArrowCounterclockwise size="25px" />
+      </IconButton>
+      <Button onClick={handleSearch} transform="translateX(-70%) ">
+        검색
+      </Button>
     </HStack>
   );
 }

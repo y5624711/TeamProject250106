@@ -60,6 +60,7 @@ export function CommonCode() {
               setSearchParams={setSearchParams}
               setAddDialogOpen={setAddDialogOpen}
               onRowClick={handleRowClick}
+              defaultSortKey={"commonCodeKey"}
             />
           </Box>
         </Stack>

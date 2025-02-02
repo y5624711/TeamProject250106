@@ -25,8 +25,8 @@ export function CommonCodeList({
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "품목코드", value: "commonCode" },
-      { label: "품목명", value: "commonCodeName" },
+      { label: "코드", value: "commonCode" },
+      { label: "코드명", value: "commonCodeName" },
     ],
   });
 
@@ -44,7 +44,7 @@ export function CommonCodeList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <Flex gap={5} alignItems="center" mt={2} mb={2}>
+      <Flex gap={5} alignItems="center" mb={1}>
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
