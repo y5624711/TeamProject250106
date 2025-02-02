@@ -35,7 +35,7 @@ export function StandardSideBar() {
         borderColor="gray.200"
       >
         <Box
-          bgColor={"steelBlue"}
+          bgColor={"#8BBCFF"}
           h={"70px"}
           display="flex"
           justifyContent="center" // 가로 방향 가운데 정렬
@@ -53,7 +53,7 @@ export function StandardSideBar() {
           <SidebarItem path="/item">품목 관리</SidebarItem>
           <SidebarItem path="/warehouse">창고 관리</SidebarItem>
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
-          <SidebarItem path="/commonCode/item">공통 코드</SidebarItem>
+          <SidebarItem path="/commonCode/item">공통 코드 관리</SidebarItem>
         </Stack>
       </Box>
     </Flex>
