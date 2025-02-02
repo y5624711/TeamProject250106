@@ -220,8 +220,11 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
 
-    const isValid = formData.name.trim() > 0 && formData.name.length < 6 &&formData.selectedCommonCode&&formData.workPlace;
-
+  const isValid =
+    formData.name.trim().length > 0 &&  // 공백만 있는 경우 방지
+    formData.name.length < 6 &&         // 이름 길이 제한
+    !!formData.selectedCommonCode &&    // 존재 여부 확인 (불리언 변환)
+    !!formData.workPlace;               // 존재 여부 확인 (불리언 변환)
 
 
 

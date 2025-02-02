@@ -149,14 +149,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       return newParams; // 새로운 객체를 반환
     });
   };
+  // 등록 모달창
   const handleModalControl = () => {
     setIsModalOpen(!isModalOpen);
   };
-
+  
+  // 상세 모달창
   const handleviewModalControl = () => {
     setIsviewModalOpen(!isviewModalOpen);
   };
-
+  
+  //파람지우기
   const handleResetClick = () => {
     setSearchParams({}); // 검색 파라미터 초기화
     setPage(1); // 페이지 1로 초기화
@@ -200,6 +203,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               ))}
             </SelectContent>
           </SelectRoot>
+
         </Box>
         <Input
           w={"50%"}
