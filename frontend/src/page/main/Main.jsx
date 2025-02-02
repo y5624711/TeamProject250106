@@ -44,7 +44,7 @@ export function Main() {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          mt={10}
+          mt={3}
         >
           {/* 배경 이미지 */}
           <Image
@@ -109,7 +109,7 @@ export function Main() {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          mt={10}
+          mt={3}
         >
           {/* 배경 이미지 */}
           <Image
