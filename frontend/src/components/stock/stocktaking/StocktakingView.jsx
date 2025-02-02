@@ -20,14 +20,10 @@ function StocktakingView({ stocktakingKey }) {
   // size 로 키워서 예쁘게 보기
   return (
     <Box>
-      <Box display="flex" gap={4}>
-        <Field label="창고" orientation="horizontal" mb={15}>
-          <Input value={stocktakingDetail.warehouseName} readOnly />
-        </Field>
-        <Field label="로케이션" orientation="horizontal" mb={15}>
-          <Input value={stocktakingDetail.location} readOnly />
-        </Field>
-      </Box>
+      <Field label="창고" orientation="horizontal" mb={15}>
+        <Input value={stocktakingDetail.warehouseName} readOnly />
+      </Field>
+
       <Box display="flex" gap={4}>
         <Field label="품목" orientation="horizontal" mb={15}>
           <Input value={stocktakingDetail.itemName} readOnly />

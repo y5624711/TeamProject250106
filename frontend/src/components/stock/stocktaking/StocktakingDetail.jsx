@@ -35,7 +35,6 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
               <Button variant="outline" onClick={onClosed}>
                 닫기
               </Button>
-              <Button>확인</Button>
             </HStack>
           </DialogActionTrigger>
         </DialogFooter>
