@@ -5,6 +5,7 @@ import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,8 @@ public class StocktakingService {
     }
 
     public Boolean add(Stocktaking stocktaking) {
+        stocktaking.setStocktakingDate(LocalDateTime.now());
+
         return mapper.add(stocktaking) == 1;
     }
 
