@@ -68,7 +68,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   return (
     <DialogRoot
       open={isOpen}
-      size={"md"}
+      size={"lg"}
       onOpenChange={() => {
         onCancel();
         resetValue();

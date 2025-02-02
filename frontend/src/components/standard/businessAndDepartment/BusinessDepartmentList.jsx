@@ -15,7 +15,10 @@ export function BusinessDepartmentList() {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sort, setSort] = useState({ column: "", order: "desc" });
+  const [sort, setSort] = useState({
+    column: "department_code",
+    order: "desc",
+  });
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [addCheck, setAddCheck] = useState(false);
 

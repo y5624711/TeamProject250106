@@ -61,6 +61,7 @@ export function CommonCodeList({
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
+                defaultSortKey={"commonCodeKey"}
               />
             </Table.Row>
           </Table.Header>

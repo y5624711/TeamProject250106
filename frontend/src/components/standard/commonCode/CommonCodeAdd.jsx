@@ -100,7 +100,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   };
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleClose}>
+    <DialogRoot open={isOpen} onOpenChange={handleClose} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>물품 등록</DialogTitle>
