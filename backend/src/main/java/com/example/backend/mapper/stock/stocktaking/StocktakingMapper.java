@@ -169,9 +169,8 @@ public interface StocktakingMapper {
                                   customer_employee_no,
                                   count_current,
                                   count_configuration,
-                                  stocktaking_type,
-                                  stocktaking_date)
-            VALUES (#{itemCode}, #{warehouseCode}, #{customerEmployeeNo}, #{countCurrent}, #{countConfiguration}, #{stocktakingType}, #{stocktakingDate})
+                                  stocktaking_type)
+            VALUES (#{itemCode}, #{warehouseCode}, #{customerEmployeeNo}, #{countCurrent}, #{countConfiguration}, #{stocktakingType})
             """)
     int add(Stocktaking stocktaking);
 

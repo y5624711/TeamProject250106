@@ -196,11 +196,6 @@ function StocktakingAdd({
                 }}
               />
               <Button onClick={onWarehouseClick}>조회</Button>
-              <Input
-                type={"text"}
-                value={warehouseCode}
-                onChange={(e) => setWarehouseCode(e.target.value)}
-              />
             </Field>
             <Field label="품목" orientation="horizontal" mb={15}>
               <Select
