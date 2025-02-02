@@ -54,8 +54,9 @@ export function Main() {
             w="100%"
             h="100%"
             position="absolute"
-            opacity="0.4"
+            opacity="0.5"
             zIndex="-1"
+            filter="brightness(80%) contrast(120%) sepia(20%)" // ✅ 색상 조절
           />
 
           {/* 텍스트 박스 */}
@@ -100,7 +101,29 @@ export function Main() {
           {/* 설치 리스트 */}
           <MainInstallList company={company} />
         </Stack>
-        <Box w={"320px"} p={"10"} />
+        <Box
+          position="relative"
+          minW="400px"
+          h="600px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          textAlign="center"
+          mt={10}
+        >
+          {/* 배경 이미지 */}
+          <Image
+            src="/main2.jpg"
+            alt="background"
+            objectFit="cover"
+            w="100%"
+            h="100%"
+            position="absolute"
+            opacity="0.4"
+            zIndex="-1"
+            filter="brightness(60%) contrast(120%) sepia(10%)"
+          />
+        </Box>
       </Flex>
     </Flex>
   );
