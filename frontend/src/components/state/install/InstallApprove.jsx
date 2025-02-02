@@ -280,7 +280,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     <Field label={"승인 날짜"} orientation="horizontal">
                       <Input
                         value={installApprove.installApproveDate}
-                        readOnly
+                        readOnly={isApproved}
                       />
                     </Field>
                   )}
