@@ -38,7 +38,7 @@ export function Main() {
         {/* 왼쪽 박스 */}
         <Box
           position="relative"
-          minW="300px"
+          minW="400px"
           h="600px"
           display="flex"
           alignItems="center"
