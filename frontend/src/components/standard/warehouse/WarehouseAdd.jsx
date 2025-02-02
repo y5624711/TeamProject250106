@@ -162,6 +162,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
       });
     resetState();
   };
+
   useEffect(() => {
     if (!isOpen) {
       handleClose(); // 다이얼로그가 닫히면 항상 초기화
