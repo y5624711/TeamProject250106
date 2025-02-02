@@ -245,28 +245,28 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               }}
               bg={item.employeeActive ? "white" : "gray.100"}
             >
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
-              <Table.Cell>
+              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeWorkPlaceCode} </Table.Cell>
+              <Table.Cell textAlign="center">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주)중앙컴퍼니"}
-              </Table.Cell>
-              <Table.Cell>{item.employeeWorkPlaceTel}</Table.Cell>
-              <Table.Cell>
-                {/*협력업체는 부서가 없어서 */}
-                {item.employeeCommonCode === "CUS"
-                  ? ""
-                  : item.employeeWorkPlaceName}
-              </Table.Cell>
-              <Table.Cell>
-                {item.employeeCommonCode === "CUS"
-                  ? ""
-                  : item.employeeWorkPlaceTel}
-              </Table.Cell>
-              <Table.Cell> {item.employeeName} </Table.Cell>
-              <Table.Cell> {item.employeeTel} </Table.Cell>
-              <Table.Cell> {item.employeeNo} </Table.Cell>
+              </Table.Cell  >
+              <Table.Cell textAlign="center">{item.employeeWorkPlaceTel}</Table.Cell>
+              {/*<Table.Cell textAlign="center">*/}
+              {/*  /!*협력업체는 부서가 없어서 *!/*/}
+              {/*  {item.employeeCommonCode === "CUS"*/}
+              {/*    ? ""*/}
+              {/*    : item.employeeWorkPlaceName}*/}
+              {/*</Table.Cell >*/}
+              {/*<Table.Cell textAlign="center">*/}
+              {/*  {item.employeeCommonCode === "CUS"*/}
+              {/*    ? ""*/}
+              {/*    : item.employeeWorkPlaceTel}*/}
+              {/*</Table.Cell>*/}
+              <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeTel} </Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
           {memberList.length === 0 && <Box> 조회 결과 x</Box>}
