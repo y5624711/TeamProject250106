@@ -211,10 +211,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const isCommonCodeSelectedCheck =
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
-  const checkNameLength = () => {
-    const isValid = formData.name.trim() > 0 && formData.name.length < 6;
-    return isValid;
-  };
+
+    const isValid = formData.name.trim() > 0 && formData.name.length < 6 &&formData.selectedCommonCode&&formData.workPlace;
+
+
 
 
   
@@ -343,7 +343,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Button>
         )}
 
-        <Button onClick={handleSubmit} disabled={checkNameLength()}>
+        <Button onClick={handleSubmit} disabled={isValid}>
           {viewKey === -1 ? "회원 등록" : "저장" }
         </Button>
 

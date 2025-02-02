@@ -160,7 +160,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
 
   return (
-    <Box  p={5}>
+    <Box  p={5} >
       <HStack
         justifyContent="center" w={"100%"}
         style={{
@@ -194,6 +194,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           </SelectRoot>
         </Box>
         <Input
+          w={"50%"}
           placeholder={"검색어를 입력해주세요."}
           value={keyword}
           onChange={(e) => {
@@ -208,7 +209,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       >
         전체 조회
       </Checkbox>
-      <Table.Root>
+      <Table.Root interactive>
         <Table.Header>
           <SortColumnHeader
             handleSortControl={handleSortControl}
@@ -246,6 +247,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               </Table.Cell>
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeTel} </Table.Cell>
+
+
+
+
               <Table.Cell> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
@@ -253,8 +258,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex justify="center">
-        <HStack gap={30}>
+      <Flex  justify="space-between" mt={"20px"}>
+        <Box/>
+
           <Box>
             <PaginationRoot
               onPageChange={handlePageChange}
@@ -273,14 +279,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               </PaginationNextTrigger>
             </PaginationRoot>
           </Box>
+
           <Button
+            display="flex" justifyContent="flex-end"
             onClick={() => {
               setIsModalOpen(true);
             }}
           >
-            추가버튼
+            추가
           </Button>
-        </HStack>
+
+
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}

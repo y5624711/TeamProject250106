@@ -46,7 +46,6 @@ export function SelectViewComp({ formData, handleSelectChange }) {
     return <div>로딩 중...</div>;
   }
 
-  console.log(handleSelectChange, "handle뭐시기");
   return (
     <>
       {checkCommonCode === "CUS" && (

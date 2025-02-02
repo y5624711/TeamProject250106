@@ -57,14 +57,15 @@ FROM TB_BUYIN BI
         ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
     LEFT JOIN TB_RTN_REQ RNRQ 
         ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
-    LEFT JOIN TB_EMPMST EM        -- 요청 승인자
+    LEFT JOIN TB_EMPMST EM        
         ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-    LEFT JOIN TB_EMPMST EM2        -- 요청자
+    LEFT JOIN TB_EMPMST EM2        
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
     LEFT JOIN TB_CUSTMST CT  
-        ON CT.customer_code = EM.employee_workplace_code
+         ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
+        OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)    
     LEFT JOIN TB_SYSCOMM SC 
         ON SC.common_code = CT.item_code
     LEFT JOIN TB_SYSCOMM SC2 
@@ -84,15 +85,36 @@ WHERE 1=1
         AND input_consent = FALSE
     </if>
     <if test="keyword != null and keyword != ''">
-        AND (
-            BI.input_common_code LIKE CONCAT('%', #{keyword}, '%') OR
-            BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
-            SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
-            CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
-            INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%') OR
-            EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-            EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-        )
+        <choose>
+            <when test="type == 'input_common_code_name'">
+                AND SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_no'">
+                AND BI.input_no LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'item_common_name'">
+                AND SC.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'customer_name'">
+                AND CT.customer_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'request_employee_name'">
+                AND EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_stock_employee_name'">
+                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (
+                    SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
+                    SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </otherwise>
+        </choose>
     </if>
 ORDER BY 
     CASE WHEN #{sort} = 'default' THEN COALESCE(INS.input_stock_date, RNRQ.return_request_date) END,
@@ -105,7 +127,8 @@ LIMIT #{offset}, 10
             @Param("state") String state,
             @Param("keyword") String keyword,
             @Param("sort") String sort,
-            @Param("order") String order, String type);
+            @Param("order") String order,
+            @Param("type")String type);
 
 
     @Select("""
@@ -320,7 +343,8 @@ LIMIT #{offset}, 10
             FROM TB_BUYIN BI
             LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
             LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
-            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=APPR.customer_code
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
+            WHERE BI.input_key=#{inputKey} 
              """)
     
     String viewReturnWareHouseName(int inputKey);

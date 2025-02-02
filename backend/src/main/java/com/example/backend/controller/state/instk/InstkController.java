@@ -28,7 +28,7 @@ public class InstkController {
             @RequestParam(value = "sort", defaultValue = "input_key") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
-
+        System.out.println("type = " + type);
         Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order,type);
         return returnlist;
 

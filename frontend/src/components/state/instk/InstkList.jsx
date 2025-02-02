@@ -35,6 +35,7 @@ export function InstkList() {
           keyword: searchParams.get("keyword"),
           sort: searchParams.get("sort"),
           order: searchParams.get("order"),
+          type:searchParams.get("type"),
         },
       })
       .then((res) => {

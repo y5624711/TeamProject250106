@@ -22,7 +22,7 @@ export function Employee() {
   return (
     <Box display={"flex"}>
       <StandardSideBar />
-      <Box p={5}>
+      <Box p={5} w={"100%"}>
         <Heading>기준정보관리 {">"} 인사관리</Heading>
         <EmployeeList
           onSelect={handleSelectedNo}

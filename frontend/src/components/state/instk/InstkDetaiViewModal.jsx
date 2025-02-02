@@ -25,35 +25,67 @@ import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
+import Select from "react-select";
 
 export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoading  }) {
   const { id } = useContext(AuthenticationContext);
   const [detailData, setDetailData] = useState({ serialList: [] });
-  const [serialLocationList, setSerialLocationList] = useState(null);
+  const [serialLocationList, setSerialLocationList] = useState([]);
+  const [item, setItem] = useState(null);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [selectLocationKey, setSelectLocationKey] = useState();
 
-  const items = ["Option 1", "Option 2", "Option 3"];
 
   useEffect(() => {
-    axios.get(`/api/instk/detailview/${instk.inputKey}`,{
-      params:{
-        inputCommonCodeName:instk.inputCommonCodeName,
-        inputNo:instk.inputNo,
+    if (!instk?.inputKey) return; // instk가 없으면 실행 안 함
+
+    setIsDataLoading(true); // 데이터 로딩 시작
+
+    axios.get(`/api/instk/detailview/${instk.inputKey}`, {
+      params: {
+        inputCommonCodeName: instk.inputCommonCodeName,
+        inputNo: instk.inputNo,
       }
+    })
+      .then((res) => {
+        setDetailData(res.data);
+        const list = res.data?.serialLocationList || [];
+        console.log(list,"list");
+        if (list.length > 0) {
+          const formattedList = createListCollection({
+            items: list.map((item) => ({
+              label: `${item.serialNo}`,
+              value: item.locationKey,
+            })),
+          });
+          setSerialLocationList(formattedList);
+        } else {
+          setSerialLocationList([]); // 빈 배열로 설정하여 오류 방지
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        setSerialLocationList(null); // 에러 발생 시 리스트 초기화
+      })
+      .finally(() => {
+        setIsDataLoading(false); // 데이터 로딩 완료
+      });
+  }, [instk]); // instk가 변경될 때마다 실행
 
-    }).then((res) => {
-      console.log(res.data);
-      setDetailData(res.data);
-      // const formattedList = createListCollection({
-      //   items: res.data.map((item) => ({
-      //     label: item.customerName,
-      //     value: item.customerCode,
-      //   })),
-      // });
-      // setCodeList(formattedList);
-    });
-  }, []);
+  if (isLoading || isDataLoading) {
+    return <Input readOnly value="로딩 중..." />;
+  }
+  console.log(detailData?.serialLocationList,"77번라인")
+  console.log(serialLocationList,"시리얼 로케");
 
-  console.log(detailData.serialLocationList);
+  console.log(selectLocationKey,"로케키")
+
+  const handleSerialChange = (e) => {
+    console.log(e)
+    setItem(e.value);
+    setSelectLocationKey(e.value);
+
+  };
 
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
@@ -86,34 +118,34 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
               <Field orientation="horizontal" label={"품목 명"}>
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
-              {instk.inputConsent &&
-              <Field label={"시리얼 번호"} orientation="horizontal">
-                {/*<SelectRoot*/}
-                {/*  collection={frameworks}*/}
-                {/*  value={formData.workPlace}*/}
-                {/*  onValueChange={handleSelectChange}*/}
-                {/*  position="relative"*/}
-                {/*>*/}
-                {/*  <SelectTrigger>*/}
-                {/*    <SelectValueText placeholder={"선택 해 주세요"} />*/}
-                {/*  </SelectTrigger>*/}
-                {/*  <SelectContent*/}
-                {/*    style={{*/}
-                {/*      width: "100%",*/}
-                {/*      top: "40px",*/}
-                {/*      position: "absolute",*/}
-                {/*    }}*/}
-                {/*  >*/}
-                {/*    {frameworks.items.map((code, index) => (*/}
-                {/*      <SelectItem item={code} key={index}>*/}
-                {/*        {code.label}*/}
-                {/*      </SelectItem>*/}
-                {/*    ))}*/}
-                {/*  </SelectContent>*/}
-                {/*</SelectRoot>*/}
-                <Input readOnly value={detailData?.serialLocationList?.[0].serialNo || ""} />
-              </Field>
-              }
+              {instk.inputConsent &&  ( // 오류 방지
+                <Field label={"시리얼 번호"} orientation="horizontal">
+                  <SelectRoot
+                    collection={serialLocationList}
+                    value={item||""}
+                    onValueChange={handleSerialChange}
+                    position="relative"
+                  >
+                    <SelectTrigger>
+                      <SelectValueText placeholder={"전체"} />
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        width: "100%",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {serialLocationList.items.map((code, index) => (
+                        <SelectItem item={code} key={index}>
+                          {code.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                </Field>
+              )}
+
             </HStack>
 
             <HStack>
@@ -128,8 +160,9 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
               <Field label={"담당 업체"} orientation="horizontal">
                 <Input readOnly value={instk.customerName} />
               </Field>
-              <Field label={"창고"} orientation="horizontal">
-                <Input readOnly value={detailData.wareHouseName} />
+              <Field label={"창고 정보"} orientation="horizontal">
+                <Input readOnly
+                       value={`${detailData.wareHouseName} (Location Key: ${selectLocationKey || ''})`}/>
               </Field>
             </HStack>
             {instk.inputConsent &&
