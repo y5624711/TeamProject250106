@@ -105,7 +105,7 @@ LIMIT #{offset}, 10
             @Param("state") String state,
             @Param("keyword") String keyword,
             @Param("sort") String sort,
-            @Param("order") String order);
+            @Param("order") String order, String type);
 
 
     @Select("""
@@ -292,7 +292,7 @@ LIMIT #{offset}, 10
         </if>
     </script>
 """)
-    int countByConsent(@Param("state") String state , String keyword);
+    int countByConsent(@Param("state") String state , String keyword, String type);
 
 
     // 입고 승인자의 사번을 창고 코드 조회 해오기

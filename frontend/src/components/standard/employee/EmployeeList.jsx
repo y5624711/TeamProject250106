@@ -109,7 +109,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setPage(e.page);
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      newParams.set("page", page); // "active" 키에 새로운 값 설정
       return newParams;
     });
   }
@@ -133,7 +133,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       { label: "부서", value: "부서명" },
       { label: "직원", value: "직원명" },
       { label: "사번", value: "사번" },
-      { label: "계약여부", value: "계약여부" },
+      // { label: "계약여부", value: "계약여부" },
     ],
   });
 

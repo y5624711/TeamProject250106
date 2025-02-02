@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +27,10 @@ public class InstkService {
     final InstkSubMapper instkSubMapper;
     final LocationMapper locationMapper;
 
-    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order) {
-        int count = mapper.countByConsent(state,keyword);
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type) {
+        int count = mapper.countByConsent(state,keyword,type);
         int offset = (page - 1) * 10;
-         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order);
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 

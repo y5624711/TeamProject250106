@@ -29,7 +29,7 @@ public class InstkController {
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
 
-        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order);
+        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order,type);
         return returnlist;
 
     }

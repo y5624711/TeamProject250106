@@ -61,7 +61,7 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    checkState === true ? handleDetailViewModal() : handleApproveModal();
+    checkState === true  ? handleDetailViewModal():(checkState===false ?handleDetailViewModal() : handleApproveModal());
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
@@ -71,13 +71,13 @@ export function InstkList() {
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "입고 구분", value: "inputCommonCode" },
-      { label: "발주 번호", value: "inputNo" },
-      { label: "품목", value: "itemCommonName" },
-      { label: "담당 업체", value: "customerName" },
+      { label: "입고 구분", value: "input_common_code" },
+      { label: "발주 번호", value: "input_no" },
+      { label: "품목", value: "item_common_name" },
+      { label: "담당 업체", value: "customer_name" },
       // { label: "날짜", value: "inputStockDate" },
-      { label: "요청자", value: "requestEmployeeName" },
-      { label: "승인자", value: "inputStockEmployeeName" },
+      { label: "요청자", value: "request_employee_name" },
+      { label: "승인자", value: "input_stock_employee_name" },
       // { label: "상태", value: "inputConsent" },
     ],
   });
@@ -162,8 +162,6 @@ export function InstkList() {
                   <Table.Cell textAlign="center">
                     {item.inputStockDate || item.requestDate}
                   </Table.Cell>
-
-                  {/*TODO 반려 대기 처리 어떻게 변경해야하는데 ..*/}
                   <Table.Cell textAlign="center">
                     {item.inputConsent === true
                       ? "승인"

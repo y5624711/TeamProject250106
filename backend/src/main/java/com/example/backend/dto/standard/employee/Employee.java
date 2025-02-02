@@ -28,15 +28,31 @@ public class Employee {
             case "기업명":
                 return "employee_workplace_name";
             case "기업번호":
-                    return "employee_workplace_tel";
+                 return "employee_workplace_tel";
             case "부서명":
-                return "employee_department_name";
+                return "department_name";
             case "부서번호":
                 return "employee_workplace_tel";
             case "직원명":
                 return "employee_name";
             case "직원번호":
                 return "employee_tel";
+            case "사번":
+                return "employee_no";
+            default:
+                return "all";
+        }
+    }
+    public static String correctType(String commonCode) {
+        switch (commonCode) {
+            case "소속구분":
+                return "employee_workplace_code";
+            case "기업명":
+                return "employee_workplace_name";
+            case "부서명":
+                return "department_name";
+            case "직원명":
+                return "employee_name";
             case "사번":
                 return "employee_no";
             default:

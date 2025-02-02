@@ -59,7 +59,11 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>입고 상세</DialogTitle>
+          <DialogTitle>
+            {instk.inputConsent == true
+              ? "입고 상세"
+              : "입고 반려"}
+          </DialogTitle>
         </DialogHeader>
         {isLoading ? (
             <DialogBody>
@@ -82,6 +86,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
               <Field orientation="horizontal" label={"품목 명"}>
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
+              {instk.inputConsent &&
               <Field label={"시리얼 번호"} orientation="horizontal">
                 {/*<SelectRoot*/}
                 {/*  collection={frameworks}*/}
@@ -108,6 +113,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
                 {/*</SelectRoot>*/}
                 <Input readOnly value={detailData?.serialLocationList?.[0].serialNo || ""} />
               </Field>
+              }
             </HStack>
 
             <HStack>
@@ -126,6 +132,7 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
                 <Input readOnly value={detailData.wareHouseName} />
               </Field>
             </HStack>
+            {instk.inputConsent &&
             <HStack>
               <Field label={"입고 승인자"} orientation="horizontal">
                 <Input readOnl value={instk.inputStockEmployeeName} />
@@ -134,15 +141,21 @@ export function InstkDetaiViewModal({ isModalOpen, setChangeModal, instk,isLoadi
                 <Input readOnl value={instk.inputStockEmployeeNo} />
               </Field>
             </HStack>
+            }
             <Field label={"승인 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputNote} />
             </Field>
+            {instk.inputConsent &&
             <Field label={"입고 날짜"} orientation="horizontal">
               <Input readOnly value={instk.inputStockDate} />
             </Field>
+            }
+            {instk.inputConsent &&
             <Field label={"입고 비고"} orientation="horizontal">
               <Input readOnly value={instk.inputStockNote} />
             </Field>
+            }
+
           </Stack>
         </DialogBody>)}
         <DialogFooter>
