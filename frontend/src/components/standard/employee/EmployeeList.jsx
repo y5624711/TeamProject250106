@@ -160,7 +160,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   };
 
   const handleResetClick = () => {
-    setSearchParams({});
     setSearchParams({}); // 검색 파라미터 초기화
     setPage(1); // 페이지 1로 초기화
     setSort("all"); // 기본 정렬 설정
