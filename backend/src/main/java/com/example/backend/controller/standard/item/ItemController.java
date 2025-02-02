@@ -111,7 +111,7 @@ public class ItemController {
         if (service.addItem(item)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
-                            "text", item.getItemKey() + "번 품목이 등록되었습니다."),
+                            "text", " 새 품목이 등록되었습니다."),
                     "data", item
             ));
         } else {
