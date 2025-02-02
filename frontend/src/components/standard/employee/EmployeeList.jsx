@@ -221,6 +221,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         >검색</Button>
       </HStack>
       <Checkbox
+        my={3}
         checked={isActiveVisible}
         onCheckedChange={(e) => handleVisible()}
       >

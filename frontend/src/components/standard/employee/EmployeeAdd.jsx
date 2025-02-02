@@ -20,6 +20,7 @@ import { Field } from "../../ui/field.jsx";
 import * as PropTypes from "prop-types";
 import { SelectViewComp } from "./SelectViewComp.jsx";
 import {Checkbox} from "../../ui/checkbox.jsx";
+import {Tooltip} from "../../ui/tooltip.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -358,10 +359,20 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             취소
           </Button>
 
+        <Tooltip
+          content="입력을 완료해주세요."
+          disabled={isValid}
+          openDelay={100}
+          closeDelay={100}
+        >
+          <Button onClick={handleSubmit} disabled={!isValid}>
+            등록
+          </Button>
+        </Tooltip>
 
-        <Button onClick={handleSubmit} disabled={isValid}>
-          {viewKey === -1 ? "회원 등록" : "저장" }
-        </Button>
+        {/*<Button onClick={handleSubmit} disabled={isValid}>*/}
+        {/*  {viewKey === -1 ? "회원 등록" : "저장" }*/}
+        {/*</Button>*/}
 
 
         {/*{viewKey !== -1 && (*/}
