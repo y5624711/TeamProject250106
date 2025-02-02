@@ -91,7 +91,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>물품 정보</DialogTitle>
+            <DialogTitle>품목 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
             {item.map((item) => (

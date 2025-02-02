@@ -31,13 +31,13 @@ export function CommonCode() {
       });
   }, [searchParams, change]);
 
-  // 물품 코드 등록 시 리스트 변경, 다이얼로그 닫기
+  // 품목 코드 등록 시 리스트 변경, 다이얼로그 닫기
   const handleAddCommonCode = (newItem) => {
     setCommonCodeList((prevItems) => [newItem, ...prevItems]);
     setAddDialogOpen(false);
   };
 
-  // 물품 선택 시 해당 물품 보여주기
+  // 품목 선택 시 해당 품목 보여주기
   const handleRowClick = (item) => {
     setCommonCodeKey(item);
     setViewDialogOpen(true);

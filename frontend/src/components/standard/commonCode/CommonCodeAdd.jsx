@@ -28,7 +28,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
     items: [
       { label: "시스템코드", value: "SYSTEM" },
-      { label: "물품코드", value: "ITEM" },
+      { label: "품목코드", value: "ITEM" },
     ],
   });
 
@@ -103,7 +103,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     <DialogRoot open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>물품 등록</DialogTitle>
+          <DialogTitle>품목 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5}>

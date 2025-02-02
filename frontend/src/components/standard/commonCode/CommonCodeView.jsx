@@ -44,7 +44,7 @@ export function CommonCodeView({
   const selectOptions = createListCollection({
     items: [
       { label: "시스템코드", value: "SYSTEM" },
-      { label: "물품코드", value: "ITEM" },
+      { label: "품목코드", value: "ITEM" },
     ],
   });
 
@@ -168,19 +168,19 @@ export function CommonCodeView({
                   </Checkbox>
                 </Flex>
 
-                <Field label={"물품 코드"} orientation="horizontal" mb={15}>
+                <Field label={"품목 코드"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCode"
-                    placeholder="물품 코드"
+                    placeholder="품목 코드"
                     value={editedCommonCode.commonCode || ""}
                     onChange={handleChange}
                     maxLength={3}
                   />
                 </Field>
-                <Field label={"물품명"} orientation="horizontal" mb={15}>
+                <Field label={"품목명"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCodeName"
-                    placeholder="물품명"
+                    placeholder="품목명"
                     value={editedCommonCode.commonCodeName || ""}
                     onChange={handleChange}
                   />
