@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,5 +36,15 @@ public class StocktakingController {
         service.add(stocktaking);
 
         return null;
+    }
+
+    @GetMapping("warehouse")
+    public List<Stocktaking> warehouseList() {
+        return service.getStocktakingWarehouseList();
+    }
+
+    @GetMapping("item/{warehouseCode}")
+    public List<Stocktaking> itemList(@PathVariable String warehouseCode) {
+        return service.getStocktakingItemList(warehouseCode);
     }
 }

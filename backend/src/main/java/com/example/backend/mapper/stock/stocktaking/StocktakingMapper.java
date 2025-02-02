@@ -174,4 +174,19 @@ public interface StocktakingMapper {
             VALUES (#{itemCode}, #{warehouseCode}, #{customerEmployeeNo}, #{countCurrent}, #{countConfiguration}, #{stocktakingType}, #{stocktakingDate})
             """)
     int add(Stocktaking stocktaking);
+
+    @Select("""
+            SELECT warehouse_name, warehouse_code
+            FROM TB_WHMST
+            """)
+    List<Stocktaking> getStocktakingWarehouseList();
+
+    @Select("""
+            SELECT i.item_common_code itemCode, s.common_code_name itemName
+            FROM TB_WHMST w 
+            LEFT JOIN TB_ITEMMST i ON w.customer_code=i.customer_code
+            LEFT JOIN TB_SYSCOMM s ON i.item_common_code=s.common_code
+            WHERE w.warehouse_code=#{warehouseCode}
+            """)
+    List<Stocktaking> getStocktakingItemList(String warehouseCode);
 }

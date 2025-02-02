@@ -18,7 +18,6 @@ import Select from "react-select";
 
 function StocktakingAdd({
   isOpen,
-  onConfirm,
   onClose,
   title,
   setStocktakingList,
@@ -155,7 +154,7 @@ function StocktakingAdd({
         const message = e?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
-    resetState();
+    onClose();
   };
 
   useEffect(() => {
@@ -278,7 +277,6 @@ function StocktakingAdd({
             variant="solid"
             onClick={() => {
               handleSaveClick();
-              onConfirm();
             }}
           >
             저장

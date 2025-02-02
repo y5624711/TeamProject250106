@@ -5,6 +5,7 @@ import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -67,5 +68,13 @@ public class StocktakingService {
 
     public Boolean add(Stocktaking stocktaking) {
         return mapper.add(stocktaking) == 1;
+    }
+
+    public List<Stocktaking> getStocktakingWarehouseList() {
+        return mapper.getStocktakingWarehouseList();
+    }
+
+    public List<Stocktaking> getStocktakingItemList(String warehouseCode) {
+        return mapper.getStocktakingItemList(warehouseCode);
     }
 }
