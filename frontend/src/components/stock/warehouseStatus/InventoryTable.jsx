@@ -36,7 +36,10 @@ export function InventoryTable({
       </Table.Header>
       <Table.Body>
         {inventoryList.map((item, index) => (
-          <Table.Row key={item.inoutHistoryNote || index}>
+          <Table.Row
+            key={item.inoutHistoryNote || index}
+            _hover={{ backgroundColor: "gray.200" }}
+          >
             <Table.Cell textAlign="center">{index + 1}</Table.Cell>
             <Table.Cell textAlign="center">{item.wareHouseName}</Table.Cell>
             <Table.Cell textAlign="center">{item.wareHouseCity}</Table.Cell>
