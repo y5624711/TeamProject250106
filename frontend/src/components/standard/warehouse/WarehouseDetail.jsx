@@ -54,12 +54,9 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
         });
         refresh();
       })
-      .catch((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          description: data.message.text,
-          type: data.message.type,
-        });
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
       });
   }
 
