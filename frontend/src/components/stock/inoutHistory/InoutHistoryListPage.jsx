@@ -25,10 +25,11 @@ function InoutHistoryListPage({
           {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.inoutCommonCode === "in" ||
-          inoutHistory.inoutCommonCode === "IN"
-            ? "입고"
-            : "출고"}
+          {inoutHistory.inoutCommonCode === "OUT"
+            ? "출고"
+            : inoutHistory.inoutCommonCode === "RETRN"
+              ? "회수"
+              : "입고"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.itemName}

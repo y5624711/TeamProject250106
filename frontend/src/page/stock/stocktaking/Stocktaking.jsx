@@ -44,7 +44,7 @@ function Stocktaking(props) {
         setCountStocktaking(res.data.count);
       });
     window.scrollTo(0, 0);
-  }, [searchParams]);
+  }, [searchParams, isAddDialogOpen]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -102,7 +102,6 @@ function Stocktaking(props) {
           <StocktakingAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            onConfirm={() => setIsAddDialogOpen(false)}
             title="실사 등록"
             setStocktakingList={setStocktakingList}
             searchParams={searchParams}

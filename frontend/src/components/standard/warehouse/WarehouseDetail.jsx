@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -12,27 +11,26 @@ import {
 import { Box, HStack } from "@chakra-ui/react";
 import WarehouseView from "./WarehouseView.jsx";
 import { Button } from "../../ui/button.jsx";
-import { DialogEditConfirmation } from "../../tool/DialogEditConfirmation.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`/api/warehouse/view/${warehouseKey}`)
-      .then((res) => {
-        setWarehouseDetail(res.data);
-      })
-      .catch((error) => {
-        console.error("창고 상세 정보 요청 중 오류 발생: ", error);
-      });
-  }, [warehouseKey]);
+    if (warehouseKey) {
+      axios
+        .get(`/api/warehouse/view/${warehouseKey}`)
+        .then((res) => {
+          setWarehouseDetail(res.data);
+        })
+        .catch((error) => {
+          console.error("창고 상세 정보 요청 중 오류 발생: ", error);
+        });
+    }
+  }, [warehouseKey, onClosed]);
 
   function handleCheckClick() {
-    console.log(warehouseKey);
     axios
       .put(`/api/warehouse/edit`, {
         warehouseKey,
@@ -54,7 +52,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           description: data.message.text,
           type: data.message.type,
         });
-        onClosed();
+        refresh();
       })
       .catch((res) => res.data)
       .then((data) => {
@@ -66,7 +64,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
   }
 
   return (
-    <DialogRoot open={isOpened} onOpenChange={onClosed} size={"lg"}>
+    <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -86,21 +84,14 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey }) {
           </Box>
         </DialogBody>
         <DialogFooter>
-          <DialogActionTrigger asChild>
-            <HStack>
-              <Button variant="outline">취소</Button>
-              <Button onClick={() => setIsDialogOpen(true)}>확인</Button>
-            </HStack>
-          </DialogActionTrigger>
+          <HStack>
+            <Button variant="outline" onClick={onClosed}>
+              취소
+            </Button>
+            <Button onClick={handleCheckClick}>확인</Button>
+          </HStack>
         </DialogFooter>
         <DialogCloseTrigger onClick={onClosed} />
-        <DialogEditConfirmation
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-          onConfirm={handleCheckClick}
-          title="확인"
-          body="변경된 사항은 저장됩니다."
-        />
       </DialogContent>
     </DialogRoot>
   );

@@ -1,10 +1,12 @@
 package com.example.backend.service.standard.warehouse;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -88,7 +90,6 @@ public class WarehouseService {
 
     // 창고 정보가 다 입력됐는지 확인
     public Boolean validate(Warehouse warehouse) {
-        System.out.println(warehouse.getCustomerCode());
         return
                 !(
                         warehouse.getCustomerCode() == null || warehouse.getCustomerCode().trim().isEmpty() ||
@@ -106,5 +107,14 @@ public class WarehouseService {
         String warehouseAddressDetail = warehouse.getWarehouseAddressDetail();
         Integer check = mapper.checkWarehouse(warehouseAddress, warehouseAddressDetail);
         return check == 0;
+    }
+
+    // 협력업체 리스트 가져오기
+    public List<Customer> getWarehouseCustomerList() {
+        return mapper.getWarehouseCustomerList();
+    }
+
+    public List<Warehouse> getWarehouseEmployeeList(String customerCode) {
+        return mapper.getWarehouseEmployeeList(customerCode);
     }
 }

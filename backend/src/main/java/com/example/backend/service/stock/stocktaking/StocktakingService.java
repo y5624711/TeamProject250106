@@ -3,8 +3,11 @@ package com.example.backend.service.stock.stocktaking;
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -66,6 +69,47 @@ public class StocktakingService {
     }
 
     public Boolean add(Stocktaking stocktaking) {
+        stocktaking.setStocktakingDate(LocalDateTime.now());
+
+
         return mapper.add(stocktaking) == 1;
+    }
+
+    public List<Stocktaking> getStocktakingWarehouseList(Authentication auth) {
+
+        String customerCode = mapper.getCustomerCode(auth.getName());
+
+        return mapper.getStocktakingWarehouseList(customerCode);
+    }
+
+    public List<Stocktaking> getStocktakingItemList(String warehouseCode) {
+        return mapper.getStocktakingItemList(warehouseCode);
+    }
+
+    public Boolean validate(Stocktaking stocktaking, Authentication auth) {
+        stocktaking.setCustomerEmployeeNo(auth.getName());
+
+        return
+                !(
+                        stocktaking.getWarehouseCode() == null || stocktaking.getWarehouseCode().trim().isEmpty() ||
+                                stocktaking.getItemCode() == null || stocktaking.getItemCode().trim().isEmpty() ||
+                                stocktaking.getCountCurrent() == null ||
+                                stocktaking.getCountConfiguration() == null ||
+                                stocktaking.getStocktakingType() == null ||
+                                stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
+    }
+
+    public Integer getStocktakingCountCurrent(String warehouseCode, String itemCode) {
+
+        // 전체 개수 가져오기
+        Integer all = mapper.getStocktakingAll(warehouseCode, itemCode);
+
+        // 출고 개수 가져오기
+        Integer out = mapper.getStocktakingOut(warehouseCode, itemCode);
+
+
+        Integer countCurrent = all - out - out;
+
+        return countCurrent;
     }
 }

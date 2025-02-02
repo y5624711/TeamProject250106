@@ -16,6 +16,7 @@ function WarehouseList({
   currentPage,
   handlePageChangeClick,
   setSearchParams,
+  refresh,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedWarehouseKey, setSelectedWarehouseKey] = useState(null);
@@ -78,6 +79,7 @@ function WarehouseList({
           warehouseKey={selectedWarehouseKey}
           isOpened={isDetailDialogOpen}
           onClosed={() => setIsDetailDialogOpen(false)}
+          refresh={refresh}
         />
       </Stack>
     </Box>

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -58,15 +59,40 @@ public class LocationService {
         }
     }
 
-    public void add(Location location) {
-        mapper.add(location);
+    public Boolean add(Location location) {
+        return mapper.add(location) == 1;
     }
 
     public Location view(Integer locationKey) {
         return mapper.view(locationKey);
     }
 
-    public void edit(Location location) {
-        mapper.edit(location);
+    public Boolean edit(Location location) {
+        return mapper.edit(location) == 1;
+    }
+
+    public List<Location> getLocationWarehouseList() {
+        return mapper.getLocationWarehouseList();
+    }
+
+    // 로케이션 정보가 다 입력됐는지 확인
+    public Boolean validate(Location location) {
+        return
+                !(
+                        location.getWarehouseCode() == null || location.getWarehouseCode().trim().isEmpty() ||
+                                location.getRow() == null || location.getRow().trim().isEmpty() ||
+                                location.getCol() == null || location.getCol().trim().isEmpty() ||
+                                location.getShelf() == null || location.getShelf() == 0);
+    }
+
+    // 로케이션 중복 검증
+    public boolean duplicate(Location location) {
+        String warehouseCode = location.getWarehouseCode();
+        System.out.println(warehouseCode);
+        String row = location.getRow();
+        String col = location.getCol();
+        Integer shelf = location.getShelf();
+        Integer check = mapper.checkLocation(warehouseCode, row, col, shelf);
+        return check == 0;
     }
 }

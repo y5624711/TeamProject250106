@@ -19,14 +19,17 @@ function InoutHistoryView({ inoutHistoryKey }) {
 
   return (
     <Box>
-      {inoutHistoryDetail.inoutCommonCode === "in" ||
-      inoutHistoryDetail.inoutCommonCode === "IN" ? (
+      {inoutHistoryDetail.inoutCommonCode === "OUT" ? (
         <Field label="입출 구분" orientation="horizontal" mb={15}>
-          <Input value="입고" readOnly />
+          <Input value="출고" readOnly />
+        </Field>
+      ) : inoutHistoryDetail.inoutCommonCode === "RETRN" ? (
+        <Field label="입출 구분" orientation="horizontal" mb={15}>
+          <Input value="회수 입고" readOnly />
         </Field>
       ) : (
         <Field label="입출 구분" orientation="horizontal" mb={15}>
-          <Input value="출고" readOnly />
+          <Input value="일반 입고" readOnly />
         </Field>
       )}
       <Box display="flex" gap={4}>
@@ -45,14 +48,13 @@ function InoutHistoryView({ inoutHistoryKey }) {
           <Input value={inoutHistoryDetail.warehouseAddress} readOnly />
         </Field>
       </Box>
-      {inoutHistoryDetail.inoutCommonCode === "in" ||
-      inoutHistoryDetail.inoutCommonCode === "IN" ? (
-        <Field label="로케이션" orientation="horizontal" mb={15}>
-          <Input value={inoutHistoryDetail.locationKey} readOnly />
-        </Field>
-      ) : (
+      {inoutHistoryDetail.inoutCommonCode === "INSTL" ? (
         <Field label="가맹점" orientation="horizontal" mb={15}>
           <Input value={inoutHistoryDetail.franchiseName} readOnly />
+        </Field>
+      ) : (
+        <Field label="로케이션" orientation="horizontal" mb={15}>
+          <Input value={inoutHistoryDetail.locationKey} readOnly />
         </Field>
       )}
       <Box display="flex" gap={4}>

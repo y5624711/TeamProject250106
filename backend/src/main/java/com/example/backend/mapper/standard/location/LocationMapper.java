@@ -73,7 +73,7 @@ public interface LocationMapper {
             INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, location_note)
             VALUES ( #{warehouseCode}, #{row}, #{col}, #{shelf}, #{locationNote} )
             """)
-    int add(Location location);
+    Integer add(Location location);
 
     @Select("""
             <script>
@@ -136,8 +136,21 @@ public interface LocationMapper {
 
     @Update("""
             UPDATE TB_LOCMST
-            SET warehouse_code=#{warehouseCode}, location_note=#{locationNote}, located=#{located}
+            SET location_note=#{locationNote}, located=#{located}
             WHERE location_key=#{locationKey}
             """)
-    int edit(Location location);
+    Integer edit(Location location);
+
+    @Select("""
+            SELECT warehouse_code, warehouse_name 
+            FROM TB_WHMST
+            """)
+    List<Location> getLocationWarehouseList();
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_LOCMST
+            WHERE warehouse_code=#{warehouseCode} AND row=#{row} AND col=#{col} AND shelf=#{shelf}
+            """)
+    Integer checkLocation(String warehouseCode, String row, String col, Integer shelf);
 }

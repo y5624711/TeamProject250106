@@ -1,11 +1,13 @@
 package com.example.backend.controller.standard.warehouse;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.service.standard.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -70,30 +72,48 @@ public class WarehouseController {
 
     @PutMapping("edit")
     public ResponseEntity<Map<String, Map<String, String>>> edit(@RequestBody Warehouse warehouse) {
+        try {
 
-        // 창고 입력 검증
-        if (service.validate(warehouse)) {
-            if (service.edit(warehouse)) {
-                return ResponseEntity.ok(Map.of("message",
-                        Map.of("type", "success",
-                                "text", "창고 정보를 수정하였습니다.")));
+            // 창고 입력 검증
+            if (service.validate(warehouse)) {
+                if (service.edit(warehouse)) {
+                    return ResponseEntity.ok(Map.of("message",
+                            Map.of("type", "success",
+                                    "text", "창고 정보를 수정하였습니다.")));
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message",
+                                    Map.of("type", "error",
+                                            "text", "창고 수정 중 문제가 발생하였습니다..")));
+                }
             } else {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("message",
-                                Map.of("type", "error",
-                                        "text", "창고 수정 중 문제가 발생하였습니다..")));
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                ));
             }
-        } else {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
-            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "수정에 실패했습니다.")));
         }
 
 
     }
 
-    @DeleteMapping("delete/{warehouseKey}")
-    public void delete(@PathVariable Integer warehouseKey) {
-        service.delete(warehouseKey);
+//    @DeleteMapping("delete/{warehouseKey}")
+    //  public void delete(@PathVariable Integer warehouseKey) {
+    //    service.delete(warehouseKey);
+    //}
+
+    // 협력업체 리스트 가져오기
+    @GetMapping("customer")
+    public List<Customer> customerList() {
+        return service.getWarehouseCustomerList();
+    }
+
+    // 관리자 리스트 가져오기
+    @GetMapping("employee/{customerCode}")
+    public List<Warehouse> employeeList(@PathVariable String customerCode) {
+        return service.getWarehouseEmployeeList(customerCode);
     }
 }

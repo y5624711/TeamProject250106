@@ -1,8 +1,9 @@
 import React from "react";
 import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
-function LocationView({ locationDetail, setLocationDetail }) {
+function LocationView({ locationDetail, setLocationDetail, locationKey }) {
   const location =
     locationDetail.row +
     " - " +
@@ -44,7 +45,17 @@ function LocationView({ locationDetail, setLocationDetail }) {
         />
       </Field>
       <Field label="재고 여부" orientation="horizontal" mb={15}>
-        <Input value={locationDetail.itemCommonName} readOnly />
+        <Box ml={"86px"} style={{ position: "absolute" }}>
+          <Checkbox
+            checked={locationDetail.located}
+            onClick={(e) => {
+              setLocationDetail({
+                ...locationDetail,
+                located: e.target.checked,
+              });
+            }}
+          />
+        </Box>
       </Field>
     </Box>
   );

@@ -35,6 +35,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
                 customerCode: e.target.value,
               })
             }
+            readOnly
           />
         </Field>
       </Box>
@@ -75,6 +76,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
                 customerEmployeeNo: e.target.value,
               })
             }
+            readOnly
           />
         </Field>
       </Box>
@@ -139,20 +141,19 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         />
       </Field>
       {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
-
-      <Checkbox
-        size={"lg"}
-        checked={warehouseDetail.warehouseActive}
-        onChange={(e) => {
-          const checked = e.target.checked;
-          setWarehouseDetail({
-            ...warehouseDetail,
-            warehouseActive: checked,
-          });
-        }}
-      >
-        사용 여부
-      </Checkbox>
+      <Field label="사용 여부" orientation="horizontal" mb={15}>
+        <Box ml={"86px"} style={{ position: "absolute" }}>
+          <Checkbox
+            checked={warehouseDetail.warehouseActive}
+            onClick={(e) => {
+              setWarehouseDetail({
+                ...warehouseDetail,
+                warehouseActive: e.target.checked,
+              });
+            }}
+          />
+        </Box>
+      </Field>
     </Box>
   );
 }

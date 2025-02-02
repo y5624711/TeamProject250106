@@ -27,16 +27,20 @@ function Location(props) {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
+  const [reborn, setReborn] = useState(false);
+
+  function refresh() {
+    setReborn(!reborn);
+  }
 
   // 로케이션 정보 가져오기
   useEffect(() => {
     axios.get(`/api/location/list?${searchParams.toString()}`).then((res) => {
-      console.log(res.data.list);
       setLocationList(res.data.list);
       setCountLocation(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams]);
+  }, [searchParams, isAddDialogOpen, reborn]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -84,6 +88,7 @@ function Location(props) {
             handlePageChangeClick={handlePageChangeClick}
             setSearchParams={setSearchParams}
             searchParams={searchParams}
+            refresh={refresh}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button width="120px" onClick={() => setIsAddDialogOpen(true)}>
@@ -94,7 +99,6 @@ function Location(props) {
           <LocationAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            onConfirm={() => setIsAddDialogOpen(false)}
             title="새 로케이션 등록"
           />
         </Stack>
