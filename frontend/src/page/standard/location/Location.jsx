@@ -103,7 +103,7 @@ function Location(props) {
           <LocationAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            title="새 로케이션 등록"
+            title="로케이션 등록"
           />
         </Stack>
       </HStack>

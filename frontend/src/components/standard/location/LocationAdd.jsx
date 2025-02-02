@@ -9,7 +9,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { Field } from "../../ui/field.jsx";
@@ -162,8 +162,9 @@ function LocationAdd({ isOpen, onClose, title }) {
               </Field>
             </Box>
             <Field label="비고" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
+              <Textarea
+                placeholder="최대 50자"
+                style={{ maxHeight: "100px", overflowY: "auto" }}
                 value={locationNote}
                 onChange={(e) => setLocationNote(e.target.value)}
               />
@@ -183,7 +184,7 @@ function LocationAdd({ isOpen, onClose, title }) {
               handleSaveClick();
             }}
           >
-            저장
+            등록
           </Button>
         </DialogFooter>
       </DialogContent>
