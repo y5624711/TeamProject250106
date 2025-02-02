@@ -24,6 +24,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
@@ -218,6 +219,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
           </Field>
           <Field orientation="horizontal" label={"비고"}>
             <Textarea
+              placeholder="최대 50자"
               value={customerNote}
               onChange={(e) => setCustomerNote(e.target.value)}
               maxHeight={"100px"}
@@ -231,7 +233,16 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleSaveClick}>등록</Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={isValid}
+          >
+            <Button onClick={handleSaveClick} disabled={!isValid}>
+              등록
+            </Button>
+          </Tooltip>
           <DialogCloseTrigger />
         </DialogFooter>
       </DialogContent>

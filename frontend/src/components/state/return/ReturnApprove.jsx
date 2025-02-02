@@ -195,15 +195,15 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             <Input readOnly value={approveData.returnRequestDate} />
           </Field>
           <Field orientation="horizontal" label="요청 비고">
-            {approveData.returnRequestNote ? (
-              <Textarea
-                readOnly
-                value={approveData.returnRequestNote}
-                maxHeight={"100px"}
-              />
-            ) : (
-              <Input readOnly value={"내용 없음"} />
-            )}
+            {/*{approveData.returnRequestNote ? (*/}
+            <Textarea
+              readOnly
+              value={approveData.returnRequestNote}
+              maxHeight={"100px"}
+            />
+            {/*) : (*/}
+            {/*  <Input readOnly value={"내용 없음"} />*/}
+            {/*)}*/}
           </Field>
 
           {approveData.returnConsent === "1" ? (
@@ -233,15 +233,15 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                 <Input readOnly value={approveData.returnApproveDate} />
               </Field>
               <Field orientation="horizontal" label="승인 비고">
-                {approveData.returnApproveNote ? (
-                  <Textarea
-                    readOnly
-                    value={approveData.returnApproveNote}
-                    maxHeight={"100px"}
-                  />
-                ) : (
-                  <Input readOnly value={"내용 없음"} />
-                )}
+                {/*{approveData.returnApproveNote ? (*/}
+                <Textarea
+                  readOnly
+                  value={approveData.returnApproveNote}
+                  maxHeight={"100px"}
+                />
+                {/*) : (*/}
+                {/*  <Input readOnly value={"내용 없음"} />*/}
+                {/*)}*/}
               </Field>
             </Box>
           ) : approveData.returnConsent === "0" ? (

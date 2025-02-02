@@ -149,10 +149,10 @@ function CustomerList({
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => onHeader("item_common_name")}>
+            <Table.ColumnHeader onClick={() => onHeader("common_code_name")}>
               <HStack alignItems="center" justify="center">
                 취급 품목
-                {standard.sort === "item_common_name" &&
+                {standard.sort === "common_code_name" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
