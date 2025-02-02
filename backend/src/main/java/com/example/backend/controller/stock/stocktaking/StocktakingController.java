@@ -37,7 +37,7 @@ public class StocktakingController {
     public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking, Authentication auth) {
         try {
             // 실사 입력 검증
-            if (service.validate(stocktaking)) {
+            if (service.validate(stocktaking, auth)) {
                 if (service.add(stocktaking)) {
                     return ResponseEntity.ok(Map.of("message",
                             Map.of("type", "success",

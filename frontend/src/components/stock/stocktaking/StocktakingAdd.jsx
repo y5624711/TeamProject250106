@@ -29,7 +29,6 @@ function StocktakingAdd({
   const [itemCode, setItemCode] = useState("");
   const [countCurrent, setCountCurrent] = useState("");
   const [countConfiguration, setCountConfiguration] = useState("");
-  const [customerEmployeeNo, setCustomerEmployeeNo] = useState("");
   const [stocktakingNote, setStocktakingNote] = useState("");
   const [stocktakingType, setStocktakingType] = useState(true);
   const initialStocktakingAdd = {
@@ -41,7 +40,6 @@ function StocktakingAdd({
     countConfiguration: "",
     stocktakingNote: "",
     stocktakingType: true,
-    customerEmployeeNo: "",
   };
   const [stocktakingAdd, setStocktakingAdd] = useState(initialStocktakingAdd);
   const [warehouseList, setWarehouseList] = useState([]);
@@ -56,7 +54,6 @@ function StocktakingAdd({
     setItemCode("");
     setCountCurrent("");
     setCountConfiguration("");
-    setCustomerEmployeeNo("");
     setStocktakingNote("");
     setStocktakingType(true);
   };
@@ -161,7 +158,6 @@ function StocktakingAdd({
         itemCode,
         countCurrent,
         countConfiguration,
-        customerEmployeeNo,
         stocktakingNote,
         stocktakingType,
       })
@@ -255,13 +251,7 @@ function StocktakingAdd({
                 />
               </Field>
             </Box>
-            <Field label="담당자 사번" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={customerEmployeeNo}
-                onChange={(e) => setCustomerEmployeeNo(e.target.value)}
-              />
-            </Field>
+
             <Field label="비고" orientation="horizontal" mb={15}>
               <Input
                 type={"text"}

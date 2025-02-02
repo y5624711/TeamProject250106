@@ -71,6 +71,7 @@ public class StocktakingService {
     public Boolean add(Stocktaking stocktaking) {
         stocktaking.setStocktakingDate(LocalDateTime.now());
 
+
         return mapper.add(stocktaking) == 1;
     }
 
@@ -85,7 +86,9 @@ public class StocktakingService {
         return mapper.getStocktakingItemList(warehouseCode);
     }
 
-    public Boolean validate(Stocktaking stocktaking) {
+    public Boolean validate(Stocktaking stocktaking, Authentication auth) {
+        stocktaking.setCustomerEmployeeNo(auth.getName());
+
         return
                 !(
                         stocktaking.getWarehouseCode() == null || stocktaking.getWarehouseCode().trim().isEmpty() ||
