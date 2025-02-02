@@ -49,7 +49,7 @@ export function CommonCode() {
         <StandardSideBar />
         <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
-            기준정보 관리 {">"}공통 코드 관리
+            기준정보 관리 {">"} 공통 코드 관리
           </Heading>
           <Box>
             {/* CommonCodeList 감싸는 컨테이너 */}
