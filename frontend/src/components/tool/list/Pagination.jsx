@@ -32,6 +32,7 @@ export function Pagination({ count, pageSize, onPageChange }) {
         pageSize={pageSize}
         page={currentPage}
         variant="solid"
+        size={"md"}
       >
         <HStack>
           <PaginationPrevTrigger />

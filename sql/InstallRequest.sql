@@ -8,7 +8,16 @@ CREATE TABLE TB_INSTL_REQ
     install_request_amount  INT         NOT NULL,
     install_request_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     install_request_consent BOOLEAN,
-    install_request_note    VARCHAR(50)
+    install_request_note    VARCHAR(50),
+
+    CONSTRAINT fk_install_request_common FOREIGN KEY (item_common_code)
+        REFERENCES TB_SYSCOMM (common_code) ON UPDATE CASCADE,
+    CONSTRAINT fk_install_request_franchise FOREIGN KEY (franchise_code)
+        REFERENCES TB_FRNCHSMST (franchise_code),
+    CONSTRAINT fk_install_request_business FOREIGN KEY (business_employee_no)
+        REFERENCES TB_EMPMST (employee_no),
+    CONSTRAINT fk_install_request_customer FOREIGN KEY (customer_code)
+        REFERENCES TB_CUSTMST (customer_code)
 );
 SELECT i.install_request_key,
        f.franchise_name,
@@ -49,3 +58,5 @@ FROM TB_INSTL_APPR ia
          LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
          LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
          LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code;
+
+DROP TABLE TB_INSTL_REQ;

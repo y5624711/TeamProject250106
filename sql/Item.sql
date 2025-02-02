@@ -8,7 +8,13 @@ CREATE TABLE TB_ITEMMST
     size             VARCHAR(20),
     unit             VARCHAR(10),
     item_active      BOOLEAN DEFAULT true,
-    item_note        VARCHAR(50)
+    item_note        VARCHAR(50),
+    -- 외래 키 설정
+    CONSTRAINT fk_item_common FOREIGN KEY (item_common_code)
+        REFERENCES TB_SYSCOMM (common_code) ON UPDATE CASCADE,
+
+    CONSTRAINT fk_customer FOREIGN KEY (customer_code)
+        REFERENCES TB_CUSTMST (customer_code)
 );
 
 drop table TB_ITEMMST;

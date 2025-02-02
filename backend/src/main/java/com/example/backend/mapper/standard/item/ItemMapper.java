@@ -5,7 +5,6 @@ import com.example.backend.dto.standard.item.Item;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface ItemMapper {
@@ -18,13 +17,13 @@ public interface ItemMapper {
     int addItem(Item item);
 
     @Select("""
-            SELECT c.item_code AS item_common_code, sc.common_code_name as item_common_name
+            SELECT c.item_code AS item_common_code, sc.common_code_name as item_common_name, c.customer_code, c.customer_name
             FROM TB_CUSTMST c LEFT JOIN TB_SYSCOMM sc ON c.item_code = sc.common_code
             WHERE c.item_code NOT IN (SELECT item_common_code FROM TB_ITEMMST)
             AND c.customer_active = 1
             ORDER BY binary(item_common_name)
             """)
-    List<Map<String, String>> getItemCommonCode();
+    List<Item> getItemCommonCode();
 
     @Select("""
             <script>
@@ -139,8 +138,7 @@ public interface ItemMapper {
             output_price = #{item.outputPrice},
             size = #{item.size},
             unit = #{item.unit},
-            item_note = #{item.itemNote},
-            item_active = #{item.itemActive}
+            item_note = #{item.itemNote}
             WHERE item_key = #{itemKey}
             """)
     int editItem(int itemKey, Item item);
@@ -151,13 +149,6 @@ public interface ItemMapper {
             WHERE item_active = false
             """)
     List<String> getUsedItemCommonCode();
-
-    @Select("""
-            SELECT item_key
-            FROM TB_ITEMMST
-            WHERE item_active = false
-            """)
-    List<Integer> deletedItem();
 
 
     //    코드중 시리얼 넘버 최댓값 가져오기

@@ -42,27 +42,27 @@ public class ItemController {
     }
 
     // 품목 삭제하기
-    @PutMapping("/delete/{itemKey}")
-    public ResponseEntity<Map<String, Object>> deleteItem(
-            @PathVariable int itemKey) {
-        // 이미 삭제된 품목인지 검증
-        if (service.deletedItem(itemKey)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 삭제된 품목입니다.")
-            ));
-        }
-
-        if (service.deleteItem(itemKey)) {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{itemKey}번 품목이 삭제되었습니다.")));
-
-        } else {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "품목 삭제 중 문제가 발생하였습니다.")));
-        }
-    }
+//    @PutMapping("/delete/{itemKey}")
+//    public ResponseEntity<Map<String, Object>> deleteItem(
+//            @PathVariable int itemKey) {
+//        // 이미 삭제된 품목인지 검증
+//        if (service.deletedItem(itemKey)) {
+//            return ResponseEntity.badRequest().body(Map.of(
+//                    "message", Map.of("type", "error", "text", "이미 삭제된 품목입니다.")
+//            ));
+//        }
+//
+//        if (service.deleteItem(itemKey)) {
+//            return ResponseEntity.ok()
+//                    .body(Map.of("message", Map.of("type", "success",
+//                            "text", STR."\{itemKey}번 품목이 삭제되었습니다.")));
+//
+//        } else {
+//            return ResponseEntity.internalServerError()
+//                    .body(Map.of("message", Map.of("type", "error",
+//                            "text", "품목 삭제 중 문제가 발생하였습니다.")));
+//        }
+//    }
 
     // 품목 1개의 정보 가져오기
     @GetMapping("view/{itemKey}")
@@ -84,15 +84,9 @@ public class ItemController {
         return service.getItemList(page, active, type, keyword, sort, order);
     }
 
-    // 품목을 취급하는 협력업체 이름 가져오기
-    @GetMapping("customer/{itemCommonCode}")
-    public List<Item> getCustomerName(@PathVariable String itemCommonCode) {
-        return service.getCustomerName(itemCommonCode);
-    }
-
     // 품목 구분 코드 리스트 가져오기
     @GetMapping("commonCode")
-    public List<Map<String, String>> getItemCommonCode() {
+    public List<Item> getItemCommonCode() {
         return service.getItemCommonCode();
     }
 
@@ -117,7 +111,7 @@ public class ItemController {
         if (service.addItem(item)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
-                            "text", item.getItemKey() + "번 품목이 등록되었습니다."),
+                            "text", " 새 품목이 등록되었습니다."),
                     "data", item
             ));
         } else {

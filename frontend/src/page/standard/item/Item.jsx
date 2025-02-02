@@ -59,7 +59,7 @@ export function Item() {
             setItemKey={setItemKey}
             onRowClick={handleRowClick}
           />
-          <Box display="flex" justifyContent="flex-end" mb={4}>
+          <Box display="flex" justifyContent="flex-end" mt={"-65px"}>
             <Button onClick={() => setAddDialogOpen(true)} size="lg">
               품목 등록
             </Button>

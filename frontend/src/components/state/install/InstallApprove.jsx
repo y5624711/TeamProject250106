@@ -59,7 +59,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           console.error("설치 요청에 대한 정보 오류 발생: ", error);
         });
     }
-  }, [installKey]);
+  }, [installKey, isApproved]);
 
   // 설치기사 정보 가져오기
   useEffect(() => {
@@ -137,24 +137,16 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     installApprove.customerInstallerName &&
     installApprove.customerInstallerNo;
 
-  // 현재 날짜보다 설치 예정일이 이전인지 확인
-  const isDateValid = (scheduleDate) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // 오늘 날짜 기준
-    const selectedDate = new Date(scheduleDate);
-    return selectedDate >= today; // 현재 날짜와 비교
-  };
-  // 설치 예정일이 유효한지 체크하는 변수
-  const isDateInvalid = isDateValid(installApprove.installScheduleDate);
-
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {installRequest.installRequestConsent != false
-              ? "설치 승인"
-              : "설치 승인 반려"}
+            {installRequest.installRequestConsent === false
+              ? "설치 승인 반려"
+              : isApproved
+                ? "설치 승인 상세"
+                : "설치 승인"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
@@ -165,12 +157,14 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installApprove.outputNo} readOnly />
                 </Field>
               )}
-              <Field label={"가맹점"} orientation="horizontal">
-                <Input value={installRequest.franchiseName} readOnly />
-              </Field>
-              <Field label={"가맹점 주소"} orientation="horizontal">
-                <Input value={installRequest.franchiseAddress} readOnly />
-              </Field>
+              <HStack>
+                <Field label={"가맹점"} orientation="horizontal">
+                  <Input value={installRequest.franchiseName} readOnly />
+                </Field>
+                <Field label={"주소"} orientation="horizontal">
+                  <Input value={installRequest.franchiseAddress} readOnly />
+                </Field>
+              </HStack>
               <HStack>
                 <Field label={"품목"} orientation="horizontal">
                   <Input value={installRequest.itemCommonName} readOnly />
@@ -190,11 +184,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.businessEmployeeNo} readOnly />
                 </Field>
               </HStack>
-              {/*<HStack>*/}
-              {/*  <Field label={"주소"} orientation="horizontal">*/}
-              {/*    <Input value={installRequest.warehouseAddress} readOnly />*/}
-              {/*  </Field>*/}
-              {/*</HStack>*/}
+
               <Field label={"요청 날짜"} orientation="horizontal">
                 <Input value={installRequest.installRequestDate} readOnly />
               </Field>
@@ -202,10 +192,10 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 <Textarea
                   value={installRequest.installRequestNote}
                   readOnly
-                  maxHeight={"80px"}
+                  maxHeight={"40px"}
                 />
               </Field>
-              {installApprove.installApproveConsent == null && <Separator />}
+              {installRequest.installRequestConsent == null && <Separator />}
               {installRequest.installRequestConsent != false && (
                 <Stack gap={"15px"}>
                   <Field label={"설치 예정일"} orientation="horizontal">
@@ -296,7 +286,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   )}
                   <Field label={"승인 비고"} orientation="horizontal">
                     <Textarea
-                      placeholder="최대 50자"
+                      placeholder={isApproved ? "" : "최대 50자"}
                       value={installApprove.installApproveNote}
                       onChange={(e) =>
                         setInstallApprove({
@@ -304,7 +294,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                           installApproveNote: e.target.value,
                         })
                       }
-                      maxHeight={"80px"}
+                      maxHeight={"40px"}
+                      readOnly={isApproved}
                     />
                   </Field>
                 </Stack>
@@ -318,20 +309,8 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               <Button variant="outline" onClick={handleDisapproveClick}>
                 반려
               </Button>
-              <Tooltip
-                content={
-                  !isValid
-                    ? "입력을 완료해주세요" // 입력이 완료되지 않은 경우
-                    : !isDateInvalid
-                      ? "설치 예정일은 오늘 이후로 설정해야 합니다." // 설치 예정일이 오늘 이전인 경우
-                      : ""
-                }
-                disabled={isValid && isDateInvalid}
-              >
-                <Button
-                  onClick={handleApproveClick}
-                  disabled={!isValid || !isDateInvalid}
-                >
+              <Tooltip content={"입력을 완료해주세요"} disabled={isValid}>
+                <Button onClick={handleApproveClick} disabled={!isValid}>
                   승인
                 </Button>
               </Tooltip>

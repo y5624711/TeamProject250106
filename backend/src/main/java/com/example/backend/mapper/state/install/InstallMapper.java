@@ -31,7 +31,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.item_common_code = c.item_code
             LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
             LEFT JOIN TB_ITEMSUB it ON i.item_common_code = it.item_common_code
-            WHERE it.current_common_code = 'WH'
+            WHERE it.current_common_code = 'WHS'
             AND it.item_sub_active = 1
             GROUP BY i.item_common_code
             """)
@@ -87,7 +87,7 @@ public interface InstallMapper {
             FROM TB_ITEMSUB
             WHERE item_common_code = #{itemCommonCode}
               AND item_sub_active = 1
-              AND current_common_code='WH'
+              AND current_common_code='WHS'
             ORDER BY item_sub_key DESC
             LIMIT #{num}
             """)
@@ -170,7 +170,7 @@ public interface InstallMapper {
             SELECT warehouse_code
             FROM TB_INOUT_HIS
             WHERE serial_no = #{serialNo}
-            AND inout_common_code = 'IN'
+            AND inout_common_code IN ('INSTK', 'RETURN')
             ORDER BY inout_history_key DESC
             LIMIT 1;
             """)

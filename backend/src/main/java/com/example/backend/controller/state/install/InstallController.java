@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,21 +58,38 @@ public class InstallController {
 
     // 설치 완료
     @PostMapping("configuration")
+    @Transactional
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
-        // 비고 추가, 검수 테이블에 추가
-        if (service.installConfiguration(install)) {
-            // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
-            if (service.addOutHistory(install)) {
-                return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
-                        "data", install
-                ));
-            } else {
-                return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "해당 품목의 출고 처리 중 오류가 발생했습니다.")
-                ));
+        try {
+            // 검수 테이블 추가 & 품목 입출력 테이블 추가를 하나의 트랜잭션으로 처리
+            if (!service.installConfiguration(install) || !service.addOutHistory(install)) {
+                throw new RuntimeException("설치 또는 출고 처리 중 오류 발생");
             }
-        } else {
+
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
+                    "data", install
+            ));
+//
+//            // 비고 추가, 검수 테이블에 추가
+//            if (service.installConfiguration(install)) {
+//                // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
+//                if (service.addOutHistory(install)) {
+//                    return ResponseEntity.ok().body(Map.of(
+//                            "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
+//                            "data", install
+//                    ));
+//                } else {
+//                    return ResponseEntity.internalServerError().body(Map.of(
+//                            "message", Map.of("type", "error", "text", "해당 품목의 출고 처리 중 오류가 발생했습니다.")
+//                    ));
+//                }
+//            } else {
+//                return ResponseEntity.internalServerError().body(Map.of(
+//                        "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
+//                ));
+//            }
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
                     "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
             ));
@@ -91,7 +109,7 @@ public class InstallController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "설치 데이터를 가져오는 중 오류가 발생했습니다.", "error", e.getMessage()));
+                    .body(Map.of("message", "설치 데이터를 가져오는 중 오류가 발생했습니다."));
         }
     }
 

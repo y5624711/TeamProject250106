@@ -38,15 +38,9 @@ public class ItemService {
     }
 
     // 품목 구분 코드 가져오기
-    public List<Map<String, String>> getItemCommonCode() {
+    public List<Item> getItemCommonCode() {
         return mapper.getItemCommonCode();
     }
-
-    // 품목을 취급하는 협력업체 이름 가져오기
-    public List<Item> getCustomerName(String itemCommonCode) {
-        return mapper.getCustomerName(itemCommonCode);
-    }
-
 
     // 품목 리스트 가져오기
     public Map<String, Object> getItemList(Integer page, Boolean active, String type, String keyword, String sort, String order) {
@@ -100,17 +94,16 @@ public class ItemService {
     }
 
     // 이미 삭제된 품목인지 검증
-    public boolean deletedItem(int itemKey) {
-        List<Integer> deletedItemList = mapper.deletedItem();
-        return deletedItemList.contains(itemKey);
-    }
-
-
-    // 품목 삭제하기
-    public boolean deleteItem(int itemKey) {
-        int cnt = mapper.deleteItem(itemKey);
-        return cnt == 1;
-    }
+//    public boolean deletedItem(int itemKey) {
+//        List<Integer> deletedItemList = mapper.deletedItem();
+//        return deletedItemList.contains(itemKey);
+//    }
+//
+//    // 품목 삭제하기
+//    public boolean deleteItem(int itemKey) {
+//        int cnt = mapper.deleteItem(itemKey);
+//        return cnt == 1;
+//    }
 
     // 품목 수정하기
     public boolean editItem(int itemKey, Item item) {
