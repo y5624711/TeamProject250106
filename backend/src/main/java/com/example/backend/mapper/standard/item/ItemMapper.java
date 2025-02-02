@@ -155,7 +155,6 @@ public interface ItemMapper {
     @Select("""
             SELECT  MAX(serial_no)
             FROM TB_ITEMSUB
-            WHERE item_common_code = #{commonCode}
             
             """)
     Integer viewMaxSerialNoByItemCode(String itemCommonCode);
@@ -169,10 +168,11 @@ public interface ItemMapper {
             """)
     int addItemSub(String itemCommonCode, String insertSerialNo, String currentCommonCode);
 
+
     // 창고로 현재 위치 변경
     @Update("""
             UPDATE TB_ITEMSUB
-            SET current_common_code="WH"
+            SET current_common_code="WHS"
             where serial_no=#{itemSerialNo}
             """)
     int updateCurrentCommonCodeBySerialNo(String itemSerialNo);

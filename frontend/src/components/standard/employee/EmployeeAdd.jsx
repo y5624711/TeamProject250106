@@ -12,13 +12,14 @@ import {
   SelectValueText,
   Stack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import * as PropTypes from "prop-types";
 import { SelectViewComp } from "./SelectViewComp.jsx";
+import {Checkbox} from "../../ui/checkbox.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -31,6 +32,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     note: "",
     workPlace: "",
     departMent: "",
+    employeeActive:false,
   });
 
   const frameworks = createListCollection({
@@ -71,6 +73,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           workPlace: res.data.employeeWorkPlaceCode || "",
           note: res.data.employeeNote || "",
           name: res.data.employeeName || "",
+          employeeActive:res.data.employeeActive || false,
         });
       });
   };
@@ -128,6 +131,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeNote: formData.note,
         employeeDepartment: formData.department,
         employeePassword: formData.password,
+        employeeActive:formData.employeeActive,
       };
 
       axios
@@ -207,14 +211,16 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const isCommonCodeSelectedCheck =
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
-  const checkNameLength = () => {
-    const isValid = formData.name.trim() > 0 && formData.name.length < 6;
-    return isValid;
-  };
 
+    const isValid = formData.name.trim() > 0 && formData.name.length < 6 &&formData.selectedCommonCode&&formData.workPlace;
+
+
+
+
+  
   return (
     <Box>
-      <Stack spacing={4}>
+      <Stack spacing={15}>
         <Field orientation="horizontal" label={"소속 구분"}>
           <SelectRoot
             collection={frameworks}
@@ -252,7 +258,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         )}
         {viewKey !== -1 && (
-          <Field label={"소속 코드"} required orientation="horizontal">
+          <Field label={"소속 코드"}  orientation="horizontal">
             <Input
               name="workPlace"
               placeholder={"소속 코드 / 소속 명"}
@@ -262,12 +268,12 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             />
           </Field>
         )}
-        <Field label={"직원"} required orientation="horizontal">
+        <Field label={"직원"}  orientation="horizontal">
           <Input
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+            readOnly={viewKey !== -1 }
           />
         </Field>
         {viewKey !== -1 && (
@@ -287,7 +293,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             placeholder={"전화번호"}
             value={formData.tel}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+
           />
         </Field>
         <Field label={"비고"} orientation="horizontal">
@@ -296,7 +302,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             placeholder={"최대 50 글자"}
             value={formData.note}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 && !isEditMode}
+
           />
         </Field>
         {viewKey !== -1 && (
@@ -306,29 +312,47 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
               placeholder={"비밀번호"}
               value={formData.password}
               onChange={handleInputChange}
-              readOnly={viewKey !== -1 && !isEditMode}
+
             />
+          </Field>
+        )}
+        {viewKey !== -1 && (
+          <Field label={"사용 여부"} orientation="horizontal">
+            <Box ml={"86px"} style={{ position: "absolute" }}>
+              <Checkbox
+                name="employeeActive"
+                checked={formData.employeeActive}
+                onCheckedChange={(e) =>
+                  setFormData((prevItem) => ({
+                    ...prevItem,
+                    employeeActive: e.checked,
+                  }))
+                }
+              />
+            </Box>
           </Field>
         )}
       </Stack>
 
 
-      <Box display={"flex"} mt={4} justify={"flex-end"}>
-        <Button onClick={handleSubmit} disabled={checkNameLength()}>
-          {viewKey === -1 ? "회원 등록" : isEditMode ? "저장" : "수정하기"}
-        </Button>
 
-        {viewKey !== -1 && isEditMode && (
-          <Button onClick={handleCancel} ml={2}>
+      <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
+        {viewKey !== -1 &&  (
+          <Button onClick={handleCancel} mr={2} variant="outline">
             취소
           </Button>
         )}
 
-        {viewKey !== -1 && (
-          <Button onClick={handleDelete} ml={2}>
-            회원 삭제
-          </Button>
-        )}
+        <Button onClick={handleSubmit} disabled={isValid}>
+          {viewKey === -1 ? "회원 등록" : "저장" }
+        </Button>
+
+
+        {/*{viewKey !== -1 && (*/}
+        {/*  <Button onClick={handleDelete} ml={2}>*/}
+        {/*    회원 삭제*/}
+        {/*  </Button>*/}
+        {/*)}*/}
       </Box>
     </Box>
   );

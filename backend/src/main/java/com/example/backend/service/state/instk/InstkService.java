@@ -2,6 +2,7 @@ package com.example.backend.service.state.instk;
 
 import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.instk.InstkDetail;
+import com.example.backend.dto.state.instk.InstkSerialLocation;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
 import com.example.backend.mapper.standard.location.LocationMapper;
@@ -26,10 +27,10 @@ public class InstkService {
     final InstkSubMapper instkSubMapper;
     final LocationMapper locationMapper;
 
-    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order) {
-        int count = mapper.countByConsent(state,keyword);
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type) {
+        int count = mapper.countByConsent(state,keyword,type);
         int offset = (page - 1) * 10;
-         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order);
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 
@@ -37,18 +38,28 @@ public class InstkService {
 
     }
 
-    public Instk detailView(int inputKey) {
+    public Instk detailView(int inputKey, String inputCommonCodeName, String inputNo) {
 
         //시리얼 번호 목록 
-       List<String> serialList= instkSubMapper.getSerialNoByInputKey(inputKey);
-        System.out.println("serialList = " + serialList);
+        List<InstkSerialLocation>  serialLocationList= instkSubMapper.getSerialNoByInputKey(inputKey);
+        String inoutNo=  "IN" + inputNo.substring(2);
+
+//      Map<String,Integer> map= inoutHistoryMapper.getSerialNoAndLocationKeyByInputNo(inoutNo);
         //  입고시 비고내용
-         String inputStockNote= mapper.getInstkNoteByInputKey(inputKey,serialList.get(0));
-//
+         String inputStockNote= mapper.getInstkNoteByInputKey(inputKey);
+        String warehouseName="";
+
+         if(inputCommonCodeName.equals("입고")) {
+             warehouseName = mapper.viewWareHouseName(inputKey);
+         }else {
+             warehouseName=mapper.viewReturnWareHouseName(inputKey);
+         }
 
       Instk instk = new Instk();
       instk.setInputNote(inputStockNote);
-      instk.setSerialList(serialList);
+      instk.setSerialLocationList(serialLocationList);
+      instk.setWareHouseName(warehouseName);
+        System.out.println("instk = " + instk);
       return instk;
 
     }
@@ -67,43 +78,76 @@ public class InstkService {
         String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());
         // 가입고  상태 변환
          int updateChecked =   mapper.updateBuyInConsentByInputKey(inputKey);
-        System.out.println("updateChecked = " + updateChecked);
+
+        boolean  checked=true ;
 
         // 그냥 입고일때 , TODO 수량만큼  +1, 테이블도 그만큼
         if(instk.getInputCommonCode().equals("INSTK")) {
             // 품목 공통코드 조회
             String itemCommonCode = commonMapper.viewCommonCodeByCodeName(instk.getItemCommonName());
-            //품목 상세에서 같은 코드 시리얼 넘버 맥스 뭔지 찾아오기
-            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
-            String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
-            int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
             //입고 테이블
-           int insertInstk= mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
-            //입고 상세 테이블
-            int insertItstkSub=mapper.addInstkSub(inputKey,insertSerialNo);
-            //입고 승인자 일하는 창고 코드 가져오기
-          int inInoutHistory=  mapper.addInOutHistory(insertSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
+            int insertInstk= mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
 
-            return (insertItemSub==1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
+            // String 타입의 itemAmount를 int로 변환
+            int itemAmount = Integer.parseInt(instk.getItemAmount()); // 숫자로 변환
+
+            //주문 수량 만큼 반복해야하는것들
+            for (int i = 0; i < itemAmount; i++) {
+
+                // 품목 상세에서 시리얼 넘버 최대값 가져오기
+                Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
+                // 시리얼 번호 생성 (20자리)
+                String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+
+                // item_sub 테이블에 추가
+                int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
+
+                // 입고 상세 테이블 추가
+                int insertItstkSub = mapper.addInstkSub(inputKey, insertSerialNo ,wareHouseCode);
+
+                // 입고 승인자의 창고 코드 기반으로 이력 추가
+                int inInoutHistory = mapper.addInOutHistory(
+                        insertSerialNo,
+                        inputCommonCode.trim(),
+                        wareHouseCode,
+                        instk.getInputStockEmployeeNo(),
+                        instk.getRequestEmployeeNo(),
+                        instk.getInputStockNote(),
+                        inoutNo,
+                        inputKey);
+                checked &= (insertItemSub == 1) & (insertItstkSub == 1) & (inInoutHistory == 1);
+            }
+
+//            //품목 상세에서  시리얼 넘버 맥스 뭔지 찾아오기
+//            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
+//            //시리얼 번호 최대로
+//            String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+//
+//            int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
+//
+//
+//            //입고 상세 테이블
+//            int insertItstkSub=mapper.addInstkSub(inputKey,insertSerialNo);
+//            //입고 승인자 일하는 창고 코드 가져오기
+//          int inInoutHistory=  mapper.addInOutHistory(insertSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
+
+            // 다 들어갔는지 체크하는거 필요함
+            return checked;
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
-            //현재 위치 창고로 변경 , serialNo 가져오는거 생각해야함
+            //시리얼 번호 가져오기
             String itemSerialNo= mapper.getReturnSerialNo(instk.getInputNo());
-            System.out.println("itemSerialNo = " + itemSerialNo);
+            //품목 상세 현재위치 창고로 변경
             int currentCommonCode= itemMapper.updateCurrentCommonCodeBySerialNo(itemSerialNo);
             // 입고 테이블
             int insertInstk = mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
             //입고 상세 테이블
-            int insertItstkSub= mapper.addInstkSub(inputKey,itemSerialNo);
+            int insertItstkSub= mapper.addInstkSub(inputKey,itemSerialNo, wareHouseCode);
             //인아웃 히스토리 집어 넣기
 
-            System.out.println("wareHouseCode = " + wareHouseCode);
-            
-            System.out.println("inputCommonCode = " + inputCommonCode);
-            System.out.println("inputCommonCode = " + inputCommonCode.length());
-            
-            int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
+            // 인풋
+            int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo ,inputKey);
 
             return (currentCommonCode == 1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
         }
@@ -132,7 +176,6 @@ public class InstkService {
         Boolean selectedConsent =mapper.selectedConsent(inputKey);
         // 업데이트한 입고상태
         int cnt =mapper.rejectInstk(inputKey);
-
 
         return  new Boolean[] {selectedConsent,cnt==1};
     }

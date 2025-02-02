@@ -68,7 +68,7 @@ public interface EmployeeMapper {
                                  )
                              </if>
                              <if test="type != 'all'">
-                                 AND #{type} LIKE CONCAT('%', #{keyword}, '%')
+                                 AND ${type} LIKE CONCAT('%', #{keyword}, '%')
                              </if>
             
                          </if>
@@ -116,14 +116,12 @@ public interface EmployeeMapper {
 
     @Update("""
                 UPDATE TB_EMPMST
-                SET 
-                    employee_common_code = #{employeeCommonCode},
-                    employee_workplace_code = #{employeeWorkPlaceCode},
-                    employee_no = #{employeeNo},
+                SET                
                     employee_password = #{employeePassword},
                     employee_tel = #{employeeTel},
                     employee_note = #{employeeNote},
-                    employee_name = #{employeeName}
+                    employee_name = #{employeeName} ,
+                    employee_active=#{employeeActive}
                 WHERE employee_key = #{employeeKey}
             """)
     int editEmployeeByKey(Employee employee);
@@ -155,9 +153,15 @@ public interface EmployeeMapper {
             
                     <!-- type이 'all'이면 모든 데이터 가져오기 -->
                     <if test="type == 'all'">
-                        <!-- 아무 조건도 추가하지 않음 -->
+                     AND (          
+                                     employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                     OR customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                     OR department_name LIKE CONCAT('%', #{keyword}, '%')
+                                     OR employee_no LIKE CONCAT('%', #{keyword}, '%')
+                                     OR employee_workplace_code LIKE CONCAT('%', #{keyword}, '%')
+                                 )
                     </if>
-            
+           
                     <!-- type이 특정 컬럼일 경우 해당 컬럼에서 keyword 포함 여부 검사 -->
                     <if test="type != null and type != 'all'">
                         AND ${type} LIKE CONCAT('%', #{keyword}, '%')

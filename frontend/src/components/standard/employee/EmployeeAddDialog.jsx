@@ -23,7 +23,7 @@ export function EmployeeAddDialog({
   };
 
   return (
-    <DialogRoot open={isModalOpen}>
+    <DialogRoot open={isModalOpen} onOpenChange={modalChange} >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

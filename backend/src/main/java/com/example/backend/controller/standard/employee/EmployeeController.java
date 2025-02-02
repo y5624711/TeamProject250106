@@ -34,10 +34,13 @@ public class EmployeeController {
             , String sort, String order) {
 
         // 컬럼명 숨길려고  서버에서 처리
-        String convertedType = Employee.correctCommonCode(type);
+        String convertedType = Employee.correctType(type);
+
+
         String convertedSort = Employee.correctCommonCode(sort);
 
-        System.out.println("convertedSort = " + convertedSort); 
+        System.out.println("convertedSort = " + convertedSort);
+        System.out.println("convertedType = " + convertedType);
 
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);

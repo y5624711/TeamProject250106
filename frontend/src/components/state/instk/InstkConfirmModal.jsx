@@ -18,7 +18,7 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 import error from "eslint-plugin-react/lib/util/error.js";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
+export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprovalSuccess }) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
   const [instkDetail, setInstkDetail] = useState({});
@@ -48,6 +48,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
         itemCommonName: instk.itemCommonName,
         employeeWorkPlaceCode: instkDetail.employeeWorkPlaceCode,
         requestEmployeeNo: instk.requestEmployeeNo,
+        itemAmount: instk.itemAmount,
       })
       .then((res) => {
         console.log(res);
@@ -55,10 +56,14 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
           description: res.data.message.text,
           type: res.data.message.type,
         });
+        setChangeModal();
+        onApprovalSuccess(); // 승인 성공 후 콜백 실행
       })
       .catch((error) => {
         console.log("입고테이블에 추가중 오류 발생했습니다", error);
-      });
+      }).finally(()=>{
+
+    });
   };
 
   // 입고 반려 메소드
@@ -83,7 +88,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
   };
   console.log(instk, instkDetail);
   return (
-    <DialogRoot size={"lg"} open={isModalOpen}>
+    <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>입고 승인</DialogTitle>
@@ -149,7 +154,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk }) {
             </HStack>
 
             <Field label={"주문 비고"} orientation="horizontal">
-              <Textarea value={instk.inputNote} placeholder={"최대50자"} />
+              <Textarea value={instk.inputNote} readOnly placeholder={"최대50자"} />
             </Field>
 
             <Field label={"입고 비고"} orientation="horizontal">

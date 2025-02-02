@@ -40,3 +40,9 @@ SELECT item_common_code
 FROM TB_ITEMMST;
 
 DROP TABLE TB_ITEMSUB;
+
+desc TB_ITEMSUB;
+
+#  ITEMSUB 에 현재 위치 나타내는 컬럼 없길래 추가  > VARCHAR 5 아니면 수정좀 부탁드려요
+ALTER TABLE  TB_ITEMSUB
+ add column  current_common_code VARCHAR(5);

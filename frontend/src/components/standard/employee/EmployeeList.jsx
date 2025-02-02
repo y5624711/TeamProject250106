@@ -5,7 +5,7 @@ import {
   Button,
   createListCollection,
   Flex,
-  HStack,
+  HStack, IconButton,
   Input,
   SelectContent,
   SelectItem,
@@ -30,6 +30,7 @@ import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import { Switch } from "../../ui/switch.jsx";
 import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
+import {BsArrowCounterclockwise} from "react-icons/bs";
 
 EmployeeViewDialog.propTypes = {};
 
@@ -109,7 +110,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setPage(e.page);
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      newParams.set("page", page); // "active" 키에 새로운 값 설정
       return newParams;
     });
   }
@@ -133,7 +134,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       { label: "부서", value: "부서명" },
       { label: "직원", value: "직원명" },
       { label: "사번", value: "사번" },
-      { label: "계약여부", value: "계약여부" },
+      // { label: "계약여부", value: "계약여부" },
     ],
   });
 
@@ -158,10 +159,20 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
-  console.log(memberList);
+  const handleResetClick = () => {
+    setSearchParams({}); // 검색 파라미터 초기화
+    setPage(1); // 페이지 1로 초기화
+    setSort("all"); // 기본 정렬 설정
+    setIsActiveVisible(false); // 기본 활성 상태 설정
+    setKeyword(""); // 검색어 초기화
+    setType("all"); // 기본 타입 설정
+    setOrder("desc"); // 기본 정렬 순서 설정
+  };
+
   return (
-    <Box h={"100vh"} p={10}>
+    <Box  p={5} >
       <HStack
+        justifyContent="center" w={"100%"}
         style={{
           alignItems: "flex-start",
         }}
@@ -175,7 +186,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
-              <SelectValueText placeholder={"선택해 주세요"} />
+              <SelectValueText placeholder={"전체"} />
             </SelectTrigger>
             <SelectContent
               style={{
@@ -193,12 +204,21 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           </SelectRoot>
         </Box>
         <Input
-          placeholder={"검색어를 입력해주세요"}
+          w={"50%"}
+          placeholder={"검색어를 입력해주세요."}
           value={keyword}
           onChange={(e) => {
             setKeyword(e.target.value);
           }}
         />
+        <IconButton
+          transform="translateX(-130%) "
+          style={{ cursor: "pointer" }}
+          variant={"ghost"}
+          onClick={handleResetClick}
+        >
+          <BsArrowCounterclockwise size="25px" />
+        </IconButton>
         <Button onClick={handleSearchButton}>검색</Button>
       </HStack>
       <Checkbox
@@ -207,7 +227,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       >
         전체 조회
       </Checkbox>
-      <Table.Root>
+      <Table.Root interactive>
         <Table.Header>
           <SortColumnHeader
             handleSortControl={handleSortControl}
@@ -245,6 +265,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               </Table.Cell>
               <Table.Cell> {item.employeeName} </Table.Cell>
               <Table.Cell> {item.employeeTel} </Table.Cell>
+
+
+
+
               <Table.Cell> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
@@ -252,8 +276,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex justify="center">
-        <HStack gap={30}>
+      <Flex  justify="space-between" mt={"20px"}>
+        <Box/>
+
           <Box>
             <PaginationRoot
               onPageChange={handlePageChange}
@@ -272,14 +297,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               </PaginationNextTrigger>
             </PaginationRoot>
           </Box>
+
           <Button
+            display="flex" justifyContent="flex-end"
             onClick={() => {
               setIsModalOpen(true);
             }}
           >
-            추가버튼
+            직원 등록
           </Button>
-        </HStack>
+
+
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}
@@ -288,6 +316,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         onChange={onChange}
         onSelect={onSelect}
       />
+
       <EmployeeViewDialog
         isModalOpen={isviewModalOpen}
         modalChange={handleviewModalControl}

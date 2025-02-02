@@ -5,7 +5,7 @@ import {
   HStack,
   Table,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
@@ -22,9 +22,11 @@ export function InstkList() {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  //페이지 네이션 + 저거 옵션다는거 부터 하자
-  useEffect(() => {
+
+  const refreshData = useCallback(() => {
+    setIsLoading(true);
     axios
       .get("api/instk/list", {
         params: {
@@ -33,13 +35,22 @@ export function InstkList() {
           keyword: searchParams.get("keyword"),
           sort: searchParams.get("sort"),
           order: searchParams.get("order"),
+          type:searchParams.get("type"),
         },
       })
       .then((res) => {
         setCount(res.data.count);
         setInstkList(res.data.list);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [searchParams]);
+  //페이지 네이션 + 저거 옵션다는거 부터 하자
+
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   console.log(instkList, "instklist");
 
@@ -51,20 +62,24 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    checkState === true ? handleDetailViewModal() : handleApproveModal();
+    checkState === true  ? handleDetailViewModal():(checkState===false ?handleDetailViewModal() : handleApproveModal());
+  };
+  const handleApprovalSuccess = async () => {
+    await refreshData(); // 데이터 새로고침
+    handleDetailViewModal(); // 상세 모달 열기
   };
 
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "입고 구분", value: "inputCommonCode" },
-      { label: "발주 번호", value: "inputNo" },
-      { label: "품목", value: "itemCommonName" },
-      { label: "담당 업체", value: "customerName" },
-      { label: "날짜", value: "inputStockDate" },
-      { label: "요청자", value: "requestEmployeeName" },
-      { label: "승인자", value: "inputStockEmployeeName" },
-      { label: "상태", value: "inputConsent" },
+      { label: "입고 구분", value: "input_common_code" },
+      { label: "발주 번호", value: "input_no" },
+      { label: "품목", value: "item_common_name" },
+      { label: "담당 업체", value: "customer_name" },
+      // { label: "날짜", value: "inputStockDate" },
+      { label: "요청자", value: "request_employee_name" },
+      { label: "승인자", value: "input_stock_employee_name" },
+      // { label: "상태", value: "inputConsent" },
     ],
   });
   const sortOptions = [
@@ -112,6 +127,7 @@ export function InstkList() {
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
+                defaultSortKey={"input_stock_date"}
               />
             </Table.Row>
           </Table.Header>
@@ -147,8 +163,6 @@ export function InstkList() {
                   <Table.Cell textAlign="center">
                     {item.inputStockDate || item.requestDate}
                   </Table.Cell>
-
-                  {/*TODO 반려 대기 처리 어떻게 변경해야하는데 ..*/}
                   <Table.Cell textAlign="center">
                     {item.inputConsent === true
                       ? "승인"
@@ -178,6 +192,7 @@ export function InstkList() {
         <InstkConfirmModal
           isModalOpen={isApproveModalOpen}
           setChangeModal={handleApproveModal}
+          onApprovalSuccess={handleApprovalSuccess}
           instk={instkList[selectedIndex]}
         />
       )}
@@ -187,6 +202,7 @@ export function InstkList() {
           isModalOpen={isDetailViewModalOpen}
           setChangeModal={handleDetailViewModal}
           instk={instkList[selectedIndex]}
+          isLoading={isLoading}
         />
       )}
     </Box>

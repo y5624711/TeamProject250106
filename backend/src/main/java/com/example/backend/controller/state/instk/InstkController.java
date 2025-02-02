@@ -28,8 +28,8 @@ public class InstkController {
             @RequestParam(value = "sort", defaultValue = "input_key") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order
     ) {
-
-        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order);
+        System.out.println("type = " + type);
+        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order,type);
         return returnlist;
 
     }
@@ -50,16 +50,14 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", STR."\{instk.getInputKey()}번 승인 실패  했습니다.")));
         }
-
     }
 
     //승인 상세
     @GetMapping("detailview/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey  ) {
+    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName ,@RequestParam String inputNo  ) {
 
-
-//        return  new Instk();
-        return service.detailView(inputKey);
+        System.out.println("inputNo = " + inputNo);
+        return service.detailView(inputKey,inputCommonCodeName,inputNo);
 
     }
     //확인 상세

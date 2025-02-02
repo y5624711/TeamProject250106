@@ -57,14 +57,15 @@ FROM TB_BUYIN BI
         ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
     LEFT JOIN TB_RTN_REQ RNRQ 
         ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
-    LEFT JOIN TB_EMPMST EM
+    LEFT JOIN TB_EMPMST EM        
         ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-    LEFT JOIN TB_EMPMST EM2
+    LEFT JOIN TB_EMPMST EM2        
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
-    LEFT JOIN TB_CUSTMST CT 
-        ON CT.customer_code = EM.employee_workplace_code
+    LEFT JOIN TB_CUSTMST CT  
+         ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
+        OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)    
     LEFT JOIN TB_SYSCOMM SC 
         ON SC.common_code = CT.item_code
     LEFT JOIN TB_SYSCOMM SC2 
@@ -84,15 +85,36 @@ WHERE 1=1
         AND input_consent = FALSE
     </if>
     <if test="keyword != null and keyword != ''">
-        AND (
-            BI.input_common_code LIKE CONCAT('%', #{keyword}, '%') OR
-            BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
-            SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
-            CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
-            INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%') OR
-            EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-            EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-        )
+        <choose>
+            <when test="type == 'input_common_code_name'">
+                AND SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_no'">
+                AND BI.input_no LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'item_common_name'">
+                AND SC.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'customer_name'">
+                AND CT.customer_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'request_employee_name'">
+                AND EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_stock_employee_name'">
+                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (
+                    SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
+                    SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </otherwise>
+        </choose>
     </if>
 ORDER BY 
     CASE WHEN #{sort} = 'default' THEN COALESCE(INS.input_stock_date, RNRQ.return_request_date) END,
@@ -105,15 +127,16 @@ LIMIT #{offset}, 10
             @Param("state") String state,
             @Param("keyword") String keyword,
             @Param("sort") String sort,
-            @Param("order") String order);
+            @Param("order") String order,
+            @Param("type")String type);
 
 
     @Select("""
             select input_stock_note
             from  TB_INSTK
-            where   input_key=#{inputKey}
+            where  input_key=#{inputKey}
             """)
-    String getInstkNoteByInputKey(int inputKey, String serialNo);
+    String getInstkNoteByInputKey(int inputKey);
 
     @Insert("""
             INSERT INTO TB_BUYIN
@@ -170,30 +193,45 @@ LIMIT #{offset}, 10
              """)
     InstkDetail viewReturnWareHouse(String inputNo);
 
-
-    // 입고 상세 추가
+    //입고 상세시 발생해야하는 일들 처리
     @Insert("""
-            INSERT  INTO TB_INSTK_SUB
-                   (input_key,serial_no)
-            VALUES 
-             (#{inputKey},#{insertSerialNo})
-           """)
-    int addInstkSub(int inputKey, String insertSerialNo);
+    <script>
+        -- 1. 사용 가능한 location_key 찾기
+        SELECT location_key INTO @selected_location
+        FROM TB_LOCMST 
+        WHERE located = FALSE AND warehouse_code = #{warehouseCode}
+        ORDER BY row ASC, col ASC, shelf ASC 
+        LIMIT 1;
 
-    @Insert("""
-    INSERT INTO TB_INOUT_HIS
-    (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no)
-    VALUES
-    (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo})
+        -- 2. 찾은 location_key를 업데이트
+        UPDATE TB_LOCMST
+        SET located = TRUE
+        WHERE location_key = @selected_location;
+
+        -- 3. 동일한 location_key를 사용하여 INSERT 실행
+        INSERT INTO TB_INSTK_SUB (input_key, serial_no, location_key)
+        VALUES (#{inputKey}, #{insertSerialNo}, @selected_location);
+    </script>
 """)
+    int addInstkSub(@Param("inputKey") int inputKey, @Param("insertSerialNo") String insertSerialNo, @Param("warehouseCode") String warehouseCode);
+
+    @Insert("""
+            <script>
+                 INSERT INTO TB_INOUT_HIS
+                 (serial_no, warehouse_code, inout_common_code, customer_employee_no, business_employee_no, inout_history_note, inout_no, location_key)
+                 VALUES
+                 (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{customerEmployeeNo}, #{businessEmployeeNo}, #{inoutHistoryNote}, #{inoutNo},
+                 (SELECT location_key FROM TB_INSTK_SUB WHERE serial_no = #{serialNo} AND input_key = #{inputKey} LIMIT 1));
+             </script>
+            """)
     int addInOutHistory(
             @Param("serialNo") String serialNo,
-            @Param("inoutCommonCode") String inoutCommonCode,      // 순서 변경
-            @Param("warehouseCode") String warehouseCode,          // 순서 변경
+            @Param("inoutCommonCode") String inoutCommonCode,
+            @Param("warehouseCode") String warehouseCode,
             @Param("customerEmployeeNo") String customerEmployeeNo,
             @Param("businessEmployeeNo") String businessEmployeeNo,
             @Param("inoutHistoryNote") String inoutHistoryNote,
-            @Param("inoutNo") String inoutNo);
+            @Param("inoutNo") String inoutNo, int inputKey);
 
     // 입고 반려 버튼 클릭시 거절
     @Update("""
@@ -277,7 +315,7 @@ LIMIT #{offset}, 10
         </if>
     </script>
 """)
-    int countByConsent(@Param("state") String state , String keyword);
+    int countByConsent(@Param("state") String state , String keyword, String type);
 
 
     // 입고 승인자의 사번을 창고 코드 조회 해오기
@@ -288,4 +326,26 @@ LIMIT #{offset}, 10
             WHERE EM.employee_no = #{inputStockEmployeeNo}
             """)
     String viewWareHouseCode(String inputStockEmployeeNo);
+
+    // 일반입고  창고이름
+    @Select("""
+            SELECT  WHM.warehouse_name
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no=BI.input_no
+            LEFT JOIN TB_WHMST  WHM  ON WHM.warehouse_code=APPR.warehouse_code
+            WHERE BI.input_key=#{inputKey} 
+            """)
+    String viewWareHouseName(int inputKey);
+
+    //반품입고 창고이름
+    @Select("""
+            SELECT  WHM.warehouse_name
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
+            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
+            WHERE BI.input_key=#{inputKey} 
+             """)
+    
+    String viewReturnWareHouseName(int inputKey);
 }
