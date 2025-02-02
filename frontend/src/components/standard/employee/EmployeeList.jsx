@@ -32,9 +32,7 @@ import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import {BsArrowCounterclockwise} from "react-icons/bs";
 
-EmployeeViewDialog.propTypes = {};
 
-SortColumnHeader.propTypes = { hanldeSortContorl: PropTypes.func };
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();

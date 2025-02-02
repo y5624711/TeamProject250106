@@ -35,6 +35,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive:false,
   });
 
+  console.log(onChange, "onChange");
   console.log(formData,"폼데이터")
 
   const frameworks = createListCollection({
@@ -207,8 +208,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   };
 
   const handleCancel = () => {
-    setIsEditMode(false);
-    fetchEmployeeData(); // 원래 데이터로 복원
+    // 예전에 수정 돌아가는거 ,
+    // setIsEditMode(false);
+    // fetchEmployeeData(); // 원래 데이터로 복원
+
 
   };
 
@@ -223,7 +226,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   
   return (
-
       <Stack gap={15}>
         <Field orientation="horizontal" label={"소속 구분"}>
           <SelectRoot
@@ -350,12 +352,9 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Field>
         )}
 
-
-
-
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
 
-          <Button onClick={handleCancel} mr={2} variant="outline">
+          <Button onClick={onChange} mr={2} variant="outline">
             취소
           </Button>
 

@@ -40,9 +40,7 @@ export function EmployeeAddDialog({
           />
         </DialogBody>
         <DialogFooter></DialogFooter>
-        <DialogCloseTrigger
-          // onClick={() => modalChange}
-        />
+        <DialogCloseTrigger/>
       </DialogContent>
     </DialogRoot>
   );
