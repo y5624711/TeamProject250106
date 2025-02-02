@@ -46,6 +46,7 @@ function InoutHistoryList({
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"inoutHistoryDate"}
                 />
               </Table.Row>
             </Table.Header>

@@ -78,7 +78,7 @@ public interface WarehouseMapper {
                     ${sort} ${order}
                 </if>
                 <if test="sort == null">
-                   w.warehouse_code ASC
+                   w.warehouse_code DESC
                 </if>
             LIMIT #{pageList},10    
             </script>

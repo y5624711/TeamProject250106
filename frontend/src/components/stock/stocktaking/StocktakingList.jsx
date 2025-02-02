@@ -46,6 +46,7 @@ function StocktakingList({
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"stocktakingDate"}
                 />
               </Table.Row>
             </Table.Header>

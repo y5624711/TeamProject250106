@@ -45,6 +45,7 @@ function LocationList({
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"locationKey"}
                 />
               </Table.Row>
             </Table.Header>

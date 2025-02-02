@@ -44,6 +44,7 @@ function WarehouseList({
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"warehouseKey"}
                 />
               </Table.Row>
             </Table.Header>
