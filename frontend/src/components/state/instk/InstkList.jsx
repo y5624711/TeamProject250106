@@ -5,7 +5,7 @@ import {
   HStack,
   Table,
 } from "@chakra-ui/react";
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
@@ -24,7 +24,6 @@ export function InstkList() {
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const refreshData = useCallback(() => {
     setIsLoading(true);
     axios
@@ -35,7 +34,7 @@ export function InstkList() {
           keyword: searchParams.get("keyword"),
           sort: searchParams.get("sort"),
           order: searchParams.get("order"),
-          type:searchParams.get("type"),
+          type: searchParams.get("type"),
         },
       })
       .then((res) => {
@@ -62,7 +61,11 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    checkState === true  ? handleDetailViewModal():(checkState===false ?handleDetailViewModal() : handleApproveModal());
+    checkState === true
+      ? handleDetailViewModal()
+      : checkState === false
+        ? handleDetailViewModal()
+        : handleApproveModal();
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
@@ -178,7 +181,7 @@ export function InstkList() {
           <Table.Footer></Table.Footer>
         </Table.Root>
       </Box>
-      <Center m={3}>
+      <Center>
         <Pagination
           count={count}
           pageSize={10}

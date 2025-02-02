@@ -46,8 +46,8 @@ function CustomerList({
     items: [
       { label: "전체", value: "all" },
       { label: "업체명", value: "customerName" },
-      { label: "사업자번호", value: "customerNo" },
-      { label: "취급 물품", value: "itemName" },
+      { label: "사업자 번호", value: "customerNo" },
+      { label: "취급 품목", value: "itemName" },
       { label: "대표자", value: "customerRep" },
       { label: "전화번호", value: "customerTel" },
     ],
@@ -144,7 +144,7 @@ function CustomerList({
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_no")}>
               <HStack alignItems="center" justify="center">
-                사업자번호
+                사업자 번호
                 {standard.sort === "customer_no" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
@@ -158,7 +158,7 @@ function CustomerList({
             </Table.ColumnHeader>
             <Table.ColumnHeader onClick={() => onHeader("customer_rep")}>
               <HStack alignItems="center" justify="center">
-                대표
+                대표자
                 {standard.sort === "customer_rep" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>

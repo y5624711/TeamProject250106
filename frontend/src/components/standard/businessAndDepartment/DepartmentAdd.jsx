@@ -76,7 +76,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>부서 추가</DialogTitle>
+          <DialogTitle>부서 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>

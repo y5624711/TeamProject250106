@@ -93,14 +93,14 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                 />
               </Field>
               <Box display={"flex"} gap={3}>
-                <Field label={"전화 번호"}>
+                <Field label={"전화번호"}>
                   <Input
                     name="customerTel"
                     value={customer.customerTel}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label={"팩스 번호"}>
+                <Field label={"팩스"}>
                   <Input
                     name="customerFax"
                     value={customer.customerFax}

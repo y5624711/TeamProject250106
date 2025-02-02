@@ -241,7 +241,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                   onChange={(e) => setWarehouseTel(e.target.value)}
                 />
               </Field>
-              <Field label="우편 번호" orientation="horizontal" mb={15}>
+              <Field label="우편번호" orientation="horizontal" mb={15}>
                 <Input
                   type={"text"}
                   value={warehousePost}
@@ -250,7 +250,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               </Field>
             </Box>
             <Box display="flex" gap={4}>
-              <Field label="광역 시도" orientation="horizontal" mb={15}>
+              <Field label="광역시도" orientation="horizontal" mb={15}>
                 <Input
                   type={"text"}
                   value={warehouseState}
