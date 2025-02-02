@@ -3,10 +3,10 @@ USE teamPrj0106;
 CREATE TABLE TB_RTN_REQ
 (
     return_request_key   INT PRIMARY KEY AUTO_INCREMENT,
-    serial_no            VARCHAR(20) NOT NULL,
-    franchise_code       VARCHAR(13) NOT NULL,
-    business_employee_no VARCHAR(13) NOT NULL,
-    customer_code        VARCHAR(13) NOT NULL,
+    serial_no            VARCHAR(20) NOT NULL REFERENCES TB_ITEMSUB (serial_no),
+    franchise_code       VARCHAR(13) NOT NULL REFERENCES TB_FRNCHSMST (franchise_code),
+    business_employee_no VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
+    customer_code        VARCHAR(13) NOT NULL REFERENCES TB_CUSTMST (customer_code),
     return_request_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_consent       BOOLEAN,
     return_request_note  VARCHAR(50)

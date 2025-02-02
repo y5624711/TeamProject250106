@@ -37,7 +37,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerTel, setCustomerTel] = useState("");
   const [customerFax, setCustomerFax] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
-  const [customerAddressDetail, setCustomerAddressDetail] = useState("");
+  const [customerAddressDetails, setCustomerAddressDetails] = useState("");
   const [customerPost, setCustomerPost] = useState("");
   const [customerNote, setCustomerNote] = useState("");
   const [customerActive, setCustomerActive] = useState("true");
@@ -59,7 +59,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     setCustomerTel("");
     setCustomerFax("");
     setCustomerAddress("");
-    setCustomerAddressDetail("");
+    setCustomerAddressDetails("");
     setCustomerPost("");
     setCustomerNote("");
     setCustomerActive(true);
@@ -83,7 +83,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       customerFax,
       customerPost,
       customerAddress,
-      customerAddressDetail,
+      customerAddressDetails,
       customerNote,
       customerActive,
     };
@@ -212,14 +212,15 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
             </Field>
             <Field orientation="horizontal" label={"상세 주소"}>
               <Input
-                value={customerAddressDetail}
-                onChange={(e) => setCustomerAddressDetail(e.target.value)}
+                value={customerAddressDetails}
+                onChange={(e) => setCustomerAddressDetails(e.target.value)}
               />
             </Field>
             <Field orientation="horizontal" label={"비고"}>
               <Textarea
                 value={customerNote}
                 onChange={(e) => setCustomerNote(e.target.value)}
+                maxHeight={"100px"}
               />
             </Field>
           </Stack>

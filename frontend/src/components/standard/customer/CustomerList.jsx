@@ -34,9 +34,10 @@ function CustomerList({
   handleSearchClick,
   toggleCheckedActive,
   onReset,
+  onNewClick,
 }) {
   const totalPages = Math.ceil(count / 10);
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  // const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   // console.log("commonCodeList", customerList);
   // console.log(customerKey);
   // console.log(checkedActive);
@@ -108,8 +109,8 @@ function CustomerList({
       </HStack>
 
       {/* 체크박스 필터 */}
-      <Checkbox checked={checkedActive} onChange={toggleCheckedActive}>
-        전체 조회
+      <Checkbox checked={checkedActive} onChange={toggleCheckedActive} mt={3}>
+        미사용 포함 조회
       </Checkbox>
 
       {/*테이블*/}
@@ -209,12 +210,14 @@ function CustomerList({
             handlePageChange(newPage);
           }}
         />
-        {/*{pages.map((page) => (*/}
-        {/*  <Button key={page} onClick={() => handlePageChange({ page })}>*/}
-        {/*    {page}*/}
-        {/*  </Button>*/}
-        {/*))}*/}
       </Center>
+
+      {/*협력사 등록*/}
+      <Box display="flex" justifyContent="flex-end">
+        <Button onClick={onNewClick} size={"lg"} mt={-63}>
+          협력업체 등록
+        </Button>
+      </Box>
     </Box>
   );
 }

@@ -124,8 +124,8 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
               </Field>
               <Field label={"상세 주소"}>
                 <Input
-                  name={"customerAddressDetail"}
-                  value={customer.customerAddressDetail}
+                  name={"customerAddressDetails"}
+                  value={customer.customerAddressDetails}
                   onChange={handleInputChange}
                 />
               </Field>
@@ -134,6 +134,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                   name={"customerNote"}
                   value={customer.customerNote}
                   onChange={handleInputChange}
+                  resize="none"
                 />
               </Field>
             </Stack>

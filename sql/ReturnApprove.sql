@@ -3,16 +3,16 @@ USE teamPrj0106;
 CREATE TABLE TB_RTN_APPR
 (
     return_approve_key     INT PRIMARY KEY AUTO_INCREMENT,
-    return_request_key     INT         NOT NULL,
-    customer_configurer_no VARCHAR(13) NOT NULL,
-    customer_employee_no   VARCHAR(13) NOT NULL,
-    return_no              VARCHAR(13) NOT NULL,
+    return_request_key     INT         NOT NULL REFERENCES TB_RTN_REQ (return_request_key),
+    customer_configurer_no VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
+    customer_employee_no   VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
+    return_no              VARCHAR(13) NOT NULL UNIQUE,
     return_approve_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_date            DATE,
     return_approve_note    VARCHAR(50)
 );
 
-# DROP TABLE TB_RTN_APPR;
+DROP TABLE TB_RTN_APPR;
 
 ALTER TABLE TB_RTN_APPR
     MODIFY COLUMN return_approve_date DATETIME DEFAULT CURRENT_TIMESTAMP;
