@@ -1,5 +1,7 @@
 package com.example.backend.mapper.standard.main;
 
+import com.example.backend.dto.standard.business.Business;
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.employee.Employee;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
@@ -19,6 +21,7 @@ public interface MainMapper {
                 a.employee_key,
                 a.employee_name,
                 a.employee_common_code,
+                a.employee_workplace_code,
                 CASE
                     WHEN #{str} = 'BIZ' THEN c.business_name
                     WHEN #{str} = 'CUS' THEN d.customer_name
@@ -57,18 +60,28 @@ public interface MainMapper {
                 emp2.employee_name AS customerEmployeeName,
                 sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
-                pr.purchase_consent AS purchaseConsent
+                pr.purchase_consent AS purchaseConsent,
+                pa.purchase_approve_date AS purchaseApproveDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
-            WHERE cus.customer_name =#{company}
-            ORDER BY pr.purchase_request_date DESC
-            LIMIT 0,3
+            WHERE emp2.employee_workplace_code =#{company}
+            ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+            LIMIT 3
             """)
     List<Purchase> selectPurchaseListByCustomer(String company);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_PURCH_REQ
+            WHERE employee_no=#{id};
+            """)
+    int selectCheckPurchByRequester(String id);
+
 
     // 구매 관리 리스트
     @Select("""
@@ -89,7 +102,8 @@ public interface MainMapper {
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
             WHERE emp1.employee_no =#{name}
-            ORDER BY pr.purchase_request_date DESC
+            ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
             LIMIT 0,3
             """)
     List<Purchase> selectPurchaseListByRequester(String name);
@@ -123,7 +137,7 @@ public interface MainMapper {
                 LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
-            WHERE c.customer_name = #{company}
+            WHERE c.customer_code = #{company}
             ORDER BY COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date),
                               ir.install_request_date,
                               ia.install_approve_date) DESC
@@ -168,40 +182,47 @@ public interface MainMapper {
             """)
     List<Install> selectInstallListByRequester(String id);
 
+
     @Select("""
-            
-                        SELECT
+            SELECT COUNT(*)
+            FROM TB_INSTL_REQ
+            WHERE business_employee_no = #{auth}
+            """)
+    int selectCheckInstallByRequseter(String auth);
+
+    @Select("""
+                SELECT
                 BI.input_key,
                 BI.input_common_code,
                 BI.business_employee_no,
                 BI.input_no,
                 BI.input_consent,
-                BI.input_note,\s
+                BI.input_note,
                 SC2.common_code_name AS input_common_code_name,
-                SC.common_code_name AS item_common_name,\s
+                SC.common_code_name AS item_common_name,
                 CT.customer_name AS customer_name,
                 EM.employee_name AS request_approval_employee_name,
                 EM.employee_no AS request_approval_employee_no,
                 EM2.employee_name AS request_employee_name,
                 EM2.employee_no AS request_employee_no,
                 CASE
-                    WHEN BI.input_consent = TRUE THEN INS.input_stock_date\s
+                    WHEN BI.input_consent = TRUE THEN INS.input_stock_date
                     ELSE NULL
                 END AS input_stock_date,
                 CASE
-                    WHEN BI.input_consent = TRUE THEN EM3.employee_name\s
+                    WHEN BI.input_consent = TRUE THEN EM3.employee_name
                     ELSE NULL
                 END AS input_stock_employee_name,
                 CASE
-                    WHEN BI.input_consent = TRUE THEN EM3.employee_no\s
+                    WHEN BI.input_consent = TRUE THEN EM3.employee_no
                     ELSE NULL
                 END AS input_stock_employee_no,
                 CASE
-                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount\s
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount
                     ELSE 1
                 END AS item_amount,
                 CASE
-                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.purchase_request_date\s
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.purchase_request_date
                     WHEN BI.input_common_code = 'RETRN' THEN RNRQ.return_request_date
                     ELSE NULL
                 END AS request_date
@@ -219,34 +240,127 @@ public interface MainMapper {
                     OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
                 LEFT JOIN TB_EMPMST EM2
                     ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
-                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)   \s
+                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
                 LEFT JOIN TB_CUSTMST CT
                     ON CT.customer_code = EM.employee_workplace_code
                 LEFT JOIN TB_SYSCOMM SC
-                    ON SC.common_code = CT.item_code  -- 이 부분 확인 필요
+                    ON SC.common_code = CT.item_code
                 LEFT JOIN TB_SYSCOMM SC2
                     ON SC2.common_code = BI.input_common_code
                 LEFT JOIN TB_INSTK INS
                     ON INS.input_key = BI.input_key  -- 수정
                 LEFT JOIN TB_EMPMST EM3
                     ON EM3.employee_no = INS.customer_employee_no  -- 수정
-            WHERE EM.employee_no = #{name}
-            ORDER BY COALESCE(INS.input_stock_date, RNRQ.return_request_date)  -- 수정
+            WHERE EM2.employee_no = #{name}
+            ORDER BY     COALESCE(INS.input_stock_date, RNRQ.return_request_date) DESC,
+                         BI.input_key DESC  -- 또는 다른 고유값 사용
             LIMIT 3;  -- 수정
             """)
     List<Instk> selectInstkList(String name);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM TB_PURCH_REQ
-            WHERE employee_no=#{id};
+                SELECT
+                BI.input_key,
+                BI.input_common_code,
+                BI.business_employee_no,
+                BI.input_no,
+                BI.input_consent,
+                BI.input_note,
+                SC2.common_code_name AS input_common_code_name,
+                SC.common_code_name AS item_common_name,
+                CT.customer_name AS customer_name,
+                EM.employee_name AS request_approval_employee_name,
+                EM.employee_no AS request_approval_employee_no,
+                EM2.employee_name AS request_employee_name,
+                EM2.employee_no AS request_employee_no,
+                CASE
+                    WHEN BI.input_consent = TRUE THEN INS.input_stock_date
+                    ELSE NULL
+                END AS input_stock_date,
+                CASE
+                    WHEN BI.input_consent = TRUE THEN EM3.employee_name
+                    ELSE NULL
+                END AS input_stock_employee_name,
+                CASE
+                    WHEN BI.input_consent = TRUE THEN EM3.employee_no
+                    ELSE NULL
+                END AS input_stock_employee_no,
+                CASE
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount
+                    ELSE 1
+                END AS item_amount,
+                CASE
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.purchase_request_date
+                    WHEN BI.input_common_code = 'RETRN' THEN RNRQ.return_request_date
+                    ELSE NULL
+                END AS request_date
+            FROM TB_BUYIN BI 
+                LEFT JOIN TB_PURCH_APPR PR
+                    ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
+                LEFT JOIN TB_PURCH_REQ PRQ 
+                    ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
+                LEFT JOIN TB_RTN_APPR RN
+                    ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
+                LEFT JOIN TB_RTN_REQ RNRQ
+                    ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
+                LEFT JOIN TB_EMPMST EM
+                    ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
+                LEFT JOIN TB_EMPMST EM2
+                    ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
+                LEFT JOIN TB_CUSTMST CT
+                    ON CT.customer_code = EM.employee_workplace_code
+                LEFT JOIN TB_SYSCOMM SC
+                    ON SC.common_code = CT.item_code
+                LEFT JOIN TB_SYSCOMM SC2
+                    ON SC2.common_code = BI.input_common_code
+                LEFT JOIN TB_INSTK INS
+                    ON INS.input_key = BI.input_key  -- 수정
+                LEFT JOIN TB_EMPMST EM3
+                    ON EM3.employee_no = INS.customer_employee_no  -- 수정
+            WHERE CT.customer_code = #{company}
+            ORDER BY     COALESCE(INS.input_stock_date, RNRQ.return_request_date) DESC,
+                         BI.input_key DESC  -- 또는 다른 고유값 사용
+            LIMIT 3;  -- 수정
             """)
-    int selectByRequester(String id);
+    List<Instk> selectInstkListByCustomer(String company);
 
     @Select("""
             SELECT COUNT(*)
-            FROM TB_INSTL_REQ
-            WHERE business_employee_no = #{auth}
+            FROM TB_BUYIN BI
+                LEFT JOIN TB_PURCH_APPR PR
+                    ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
+                LEFT JOIN TB_PURCH_REQ PRQ
+                    ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
+                LEFT JOIN TB_RTN_APPR RN
+                    ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
+                LEFT JOIN TB_RTN_REQ RNRQ
+                    ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
+                LEFT JOIN TB_EMPMST EM
+                    ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
+                LEFT JOIN TB_EMPMST EM2
+                    ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
+            WHERE EM2.employee_no = #{name}
             """)
-    int selectInstallByRequseter(String auth);
+    int selectCheckInstkByRequester(String name);
+
+
+    @Select("""
+            SELECT *
+            FROM TB_CUSTMST
+            WHERE customer_code = #{employeeWorkPlaceCode}
+            """)
+    Customer selectCommpany(String employeeWorkPlaceCode);
+
+    @Select("""
+            SELECT *
+            FROM TB_BIZMST biz
+            JOIN TB_DEPARTMST dep ON biz.business_common_code = dep.department_common_code
+            WHERE dep.department_code = #{employeeWorkPlaceCode}
+            """)
+    Business selectBusiness(String employeeWorkPlaceCode);
+
 }

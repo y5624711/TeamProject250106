@@ -24,6 +24,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { SelectViewCode } from "./SelectViewCode.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function CommonCodeView({
   commonCodeKey,
@@ -32,15 +33,6 @@ export function CommonCodeView({
   setChange,
   setCommonCodeKey,
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editCommonCode, setEditCommonCode] = useState({
-    commonCode: "",
-    commonCodeName: "",
-    commonCodeNote: "",
-    commonCodeType: "",
-    commonCodeActive: false,
-  });
-
   const [editedCommonCode, setEditedCommonCode] = useState({
     commonCode: "",
     commonCodeName: "",
@@ -63,7 +55,6 @@ export function CommonCodeView({
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
           setEditedCommonCode(res.data[0]);
-          setEditCommonCode(res.data[0]);
         })
         .catch((error) => {
           console.error("품목 공통 코드 정보 요청 중 오류 발생: ", error);
@@ -115,7 +106,6 @@ export function CommonCodeView({
 
     const updatedCommonCode = {
       ...editedCommonCode,
-      commonCodeActive: editCommonCode.commonCodeActive, // 체크박스 상태 반영
     };
 
     axios
@@ -128,7 +118,6 @@ export function CommonCodeView({
         });
         setCommonCodeKey(commonCodeKey);
         setChange((prev) => !prev);
-        handleClose();
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -156,8 +145,8 @@ export function CommonCodeView({
 
                 <Flex mb={15}>
                   {/*코드 종류 선택*/}
-                  <Text pt={5} mr={5} ml={-1}>
-                    코드 종류 선택
+                  <Text pt={5} mr={8} ml={-1}>
+                    코드 구분
                   </Text>
                   <SelectViewCode
                     selectOptions={selectOptions}
@@ -168,7 +157,12 @@ export function CommonCodeView({
                   <Checkbox
                     size={"lg"}
                     defaultChecked={editedCommonCode.commonCodeActive}
-                    onChange={(e) => setEditCommonCode(e.target.checked)}
+                    onChange={(e) =>
+                      setEditedCommonCode((prev) => ({
+                        ...prev,
+                        commonCodeActive: e.target.checked,
+                      }))
+                    }
                   >
                     사용여부
                   </Checkbox>
@@ -208,11 +202,16 @@ export function CommonCodeView({
               <Button variant="outline" onClick={handleClose}>
                 취소
               </Button>
-              {editedCommonCode.commonCodeActive && (
+              <Tooltip
+                content="입력을 완료해주세요."
+                openDelay={500}
+                closeDelay={100}
+                disabled={isValid}
+              >
                 <Button onClick={handleSaveClick} disabled={!isValid}>
                   확인
                 </Button>
-              )}
+              </Tooltip>
             </HStack>
           </DialogFooter>
           <DialogCloseTrigger />

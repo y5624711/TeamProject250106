@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { SelectCode } from "./SelectCode.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
@@ -157,9 +158,16 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleAddClick} disabled={!isValid}>
-            등록
-          </Button>
+          <Tooltip
+            content="입력을 완료해주세요."
+            openDelay={500}
+            closeDelay={100}
+            disabled={isValid}
+          >
+            <Button onClick={handleAddClick} disabled={!isValid}>
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>

@@ -13,7 +13,8 @@ import { HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
-import React, { useState } from "react";
+import React from "react";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
@@ -23,9 +24,6 @@ export function DepartmentViewAndUpdateDialog({
   setAddCheck,
   addCheck,
 }) {
-  const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const [saveCheck, setSaveCheck] = useState(true);
-
   let disable = false;
   if (department !== null) {
     disable = !(
@@ -36,66 +34,36 @@ export function DepartmentViewAndUpdateDialog({
   }
 
   const handleUpdate = () => {
-    department.departmentActive = saveCheck;
-    if (department.departmentActive) {
-      axios
-        .put("/api/department/update", {
-          departmentKey: department.departmentKey,
-          departmentCode: department.departmentCode,
-          departmentName: department.departmentName,
-          departmentTel: department.departmentTel,
-          departmentActive: department.departmentActive,
-          departmentFax: department.departmentFax,
-          departmentNote: department.departmentNote,
-        })
-        .then((res) => res.data)
-        .then((data) => {
-          // console.log(departmentList);
-          setAddCheck(!addCheck);
-          const message = data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
-          onCancel();
-        })
-        .catch((e) => {
-          const message = e.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
+    axios
+      .put("/api/department/update", {
+        departmentKey: department.departmentKey,
+        departmentCode: department.departmentCode,
+        departmentName: department.departmentName,
+        departmentTel: department.departmentTel,
+        departmentActive: department.departmentActive,
+        departmentFax: department.departmentFax,
+        departmentNote: department.departmentNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    } else {
-      axios
-        .put("/api/department/update", {
-          departmentKey: department.departmentKey,
-          departmentCode: "",
-          departmentName: department.departmentName,
-          departmentTel: department.departmentTel,
-          departmentActive: department.departmentActive,
-          departmentFax: department.departmentFax,
-          departmentNote: department.departmentNote,
-        })
-        .then((res) => res.data)
-        .then((data) => {
-          console.log("삭제");
-          setAddCheck(!addCheck);
-          const message = data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
-          onCancel();
-        })
-        .catch((e) => {
-          const message = e.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
+
+        // 리스트 새로고침
+        setAddCheck(!addCheck);
+
+        // 다이얼로그를 닫지 않음 (onCancel 호출 안 함)
+      })
+      .catch((e) => {
+        const message = e.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    }
+      });
   };
 
   if (!department) {
@@ -119,14 +87,15 @@ export function DepartmentViewAndUpdateDialog({
             <Checkbox
               size={"lg"}
               defaultChecked={department.departmentActive}
-              onChange={(e) => {
-                setSaveCheck(e.target.checked);
-              }}
-              disabled={!department.departmentActive}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentActive: e.target.checked,
+                }))
+              }
             >
               부서 사용여부
             </Checkbox>
-
             <Field label={"부서코드"} orientation="horizontal" mb={15}>
               <Input
                 value={department.departmentCode || ""}
@@ -194,19 +163,18 @@ export function DepartmentViewAndUpdateDialog({
           <Button variant="outline" onClick={() => onCancel()}>
             취소
           </Button>
-          {department.departmentActive && (
-            <>
-              <Button disabled={disable} onClick={handleUpdate}>
-                확인
-              </Button>
-            </>
-          )}
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={500}
+            closeDelay={100}
+            disabled={!disable}
+          >
+            <Button disabled={disable} onClick={handleUpdate}>
+              확인
+            </Button>
+          </Tooltip>
         </DialogFooter>
-        <DialogCloseTrigger
-          onClick={() => {
-            onCancel();
-          }}
-        />
+        <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
   );

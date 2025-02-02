@@ -9,10 +9,11 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { Flex, Input, Stack, Text, Textarea } from "@chakra-ui/react";
+import { Flex, Input, Stack, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   const [departmentName, setDepartmentName] = useState("");
@@ -51,6 +52,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
           description: message.text,
         });
         onCancel();
+        saved();
         resetValue();
       })
       .catch((e) => {
@@ -60,9 +62,6 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
           type: message.type,
           description: message.text,
         });
-      })
-      .finally(() => {
-        saved();
       });
   }
 
@@ -78,9 +77,6 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>부서 추가</DialogTitle>
-          <Text as="span" color="red.500">
-            * 표시된 부분은 반드시 입력해 주세요
-          </Text>
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
@@ -117,9 +113,16 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
           <Button variant="outline" onClick={handleCloseButton}>
             취소
           </Button>
-          <Button onClick={handleSaveDepartment} disabled={!disable}>
-            등록
-          </Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={500}
+            closeDelay={100}
+            disabled={disable}
+          >
+            <Button onClick={handleSaveDepartment} disabled={!disable}>
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger onClick={handleCloseButton} />
       </DialogContent>

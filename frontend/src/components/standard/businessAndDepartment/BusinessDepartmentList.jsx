@@ -43,7 +43,6 @@ export function BusinessDepartmentList() {
       .then((data) => {
         setDepartmentList(data.list);
         setCount(data.count);
-        setIsOpen(false);
       })
       .catch((error) => {
         console.log(error);
@@ -131,8 +130,10 @@ export function BusinessDepartmentList() {
         checked={active}
         onCheckedChange={toggleCheckActive}
         whiteSpace={"nowrap"}
+        mt={3}
+        mb={3}
       >
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
 
       {/*리스트*/}

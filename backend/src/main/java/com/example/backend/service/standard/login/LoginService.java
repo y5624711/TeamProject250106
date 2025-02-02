@@ -26,22 +26,39 @@ public class LoginService {
         List<String> auths = mapper.selectAuthByCommonCode(employee.getEmployeeNo());
         String authString = auths.stream().collect(Collectors.joining(" "));
 
-        if (db != null) {
-            if (db.getEmployeePassword().equals(employee.getEmployeePassword())) {
-                JwtClaimsSet claims = JwtClaimsSet.builder()
-                        .issuer("self")
-                        .subject(employee.getEmployeeNo())
-                        .issuedAt(Instant.now())
+        if (authString.equals("EMP")) {
+            if (db != null) {
+                if (db.getEmployeePassword().equals(employee.getEmployeePassword())) {
+                    JwtClaimsSet claims = JwtClaimsSet.builder()
+                            .issuer("self")
+                            .subject(employee.getEmployeeNo())
+                            .issuedAt(Instant.now())
 //                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7)) 7일 후 만료
 //                        .expiresAt(Instant.now().plusSeconds(60)) /*1분후 만료*/
-                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24))
-                        .claim("scope", authString)
-                        .build();
+                            .expiresAt(Instant.now().plusSeconds(60 * 60 * 24))
+                            .claim("scope", "BIZ")
+                            .build();
 
-                return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+                    return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+                }
+            }
+        } else {
+            if (db != null) {
+                if (db.getEmployeePassword().equals(employee.getEmployeePassword())) {
+                    JwtClaimsSet claims = JwtClaimsSet.builder()
+                            .issuer("self")
+                            .subject(employee.getEmployeeNo())
+                            .issuedAt(Instant.now())
+//                        .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7)) 7일 후 만료
+//                        .expiresAt(Instant.now().plusSeconds(60)) /*1분후 만료*/
+                            .expiresAt(Instant.now().plusSeconds(60 * 60 * 24))
+                            .claim("scope", authString)
+                            .build();
+
+                    return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+                }
             }
         }
-
         return null;
     }
 

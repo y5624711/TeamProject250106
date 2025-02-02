@@ -1,9 +1,11 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function MainBuyList({ company }) {
   const [purchaseList, setPurchaseList] = useState([]);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     axios
@@ -26,9 +28,9 @@ export function MainBuyList({ company }) {
   ];
 
   return (
-    <Box>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
       <Heading mb={3}>구매 현황</Heading>
-      <Table.Root size="sm">
+      <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
           <Table.Row bg={"gray.100"}>
             {columnHeaders.map((col, index) => (
@@ -41,7 +43,11 @@ export function MainBuyList({ company }) {
         <Table.Body>
           {purchaseList.length > 0 ? (
             purchaseList.map((row, index) => (
-              <Table.Row key={index}>
+              <Table.Row
+                key={index}
+                onDoubleClick={() => navigate("/purchase")}
+                title="더블클릭시 해당 페이지로 이동합니다"
+              >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
@@ -53,9 +59,9 @@ export function MainBuyList({ company }) {
                   {row.purchaseRequestDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {row.purchaseConsent === 1
+                  {row.purchaseConsent == 1
                     ? "승인"
-                    : row.purchaseConsent === 0
+                    : row.purchaseConsent == 0
                       ? "반려"
                       : "대기"}
                 </Table.Cell>

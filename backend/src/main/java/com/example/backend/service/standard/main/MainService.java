@@ -1,5 +1,7 @@
 package com.example.backend.service.standard.main;
 
+import com.example.backend.dto.standard.business.Business;
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.employee.Employee;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
@@ -22,12 +24,19 @@ public class MainService {
     public Map<String, Object> getEmployee(String id) {
         String str = id.substring(0, 3);
         Employee employee = mapper.selectById(str, id);
+        if (employee.getEmployeeCommonCode().equals("CUS")) {
+            Customer customer = mapper.selectCommpany(employee.getEmployeeWorkPlaceCode());
+            return Map.of("id", employee, "companyStatus", customer);
+        } else {
+            Business business = mapper.selectBusiness(employee.getEmployeeWorkPlaceCode());
 
-        return Map.of("id", employee);
+            return Map.of("id", employee, "companyStatus", business);
+        }
+
     }
 
     public boolean checkBuyRequester(Authentication auth) {
-        int cnt = mapper.selectByRequester(auth.getName());
+        int cnt = mapper.selectCheckPurchByRequester(auth.getName());
         return cnt > 0;
     }
 
@@ -43,13 +52,9 @@ public class MainService {
     }
 
 
-    public List<Instk> getInstkList(Authentication auth) {
-        return mapper.selectInstkList(auth.getName());
-    }
-
     //    설치요청자 체크
     public boolean checkInstallRequester(Authentication auth) {
-        int cnt = mapper.selectInstallByRequseter(auth.getName());
+        int cnt = mapper.selectCheckInstallByRequseter(auth.getName());
 
         return cnt > 0;
     }
@@ -60,5 +65,22 @@ public class MainService {
 
     public List<Install> getInstallListByCustomer(String company) {
         return mapper.selectInstallListByCustomer(company);
+    }
+
+    //입고 체크
+    public boolean checkInstkRequester(Authentication auth) {
+
+        int cnt = mapper.selectCheckInstkByRequester(auth.getName());
+
+        return cnt > 0;
+    }
+
+    public List<Instk> getInstkList(Authentication auth) {
+        System.out.println(" 들옴");
+        return mapper.selectInstkList(auth.getName());
+    }
+
+    public List<Instk> getInstkListByCustomer(String company) {
+        return mapper.selectInstkListByCustomer(company);
     }
 }

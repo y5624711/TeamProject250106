@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Field } from "../../components/ui/field.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { Tooltip } from "../../components/ui/tooltip.jsx";
 
 function TextItem({ children, path, ...rest }) {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function TextItem({ children, path, ...rest }) {
   );
 }
 
-function MemberInfo({ updateCheck, setUpdateCheck }) {
+function MemberInfo({ updateCheck }) {
   const { id } = useContext(AuthenticationContext);
   const [employee, setEmployee] = useState(null);
   const [empChange, setEmpChange] = useState(null);
@@ -52,7 +53,6 @@ function MemberInfo({ updateCheck, setUpdateCheck }) {
         setEmployee(data);
         setEmpChange(data);
         setLoading(false);
-        setUpdateCheck(false);
       });
   }, []);
 
@@ -88,7 +88,10 @@ function MemberInfo({ updateCheck, setUpdateCheck }) {
           description: message.text,
         });
         setEmpChange(employee);
-        setUpdateCheck(!updateCheck);
+        // 3초 후에 새로고침
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((e) => {
         const message = e.response.data.message;
@@ -184,11 +187,18 @@ function MemberInfo({ updateCheck, setUpdateCheck }) {
               닫기
             </Button>
           </DialogActionTrigger>
-          <Button onClick={handleSaveInfo} disabled={disable}>
-            저장
-          </Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={500}
+            closeDelay={100}
+            disabled={!disable}
+          >
+            <Button onClick={handleSaveInfo} disabled={disable}>
+              저장
+            </Button>
+          </Tooltip>
         </DialogFooter>
-        <DialogCloseTrigger></DialogCloseTrigger>
+        <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
   );

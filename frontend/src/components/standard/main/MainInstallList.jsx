@@ -1,9 +1,11 @@
 import { Box, Heading, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function MainInstallList({ company }) {
   const [installList, setInstallList] = useState([]);
+  const navigate = useNavigate("");
 
   useEffect(() => {
     axios
@@ -34,8 +36,6 @@ export function MainInstallList({ company }) {
 
           return { ...item, state };
         });
-
-        console.log(data);
         setInstallList(formattedList || []);
       });
   }, []);
@@ -43,18 +43,19 @@ export function MainInstallList({ company }) {
   const columnHeaders = [
     { label: "#" },
     { label: "가맹점" },
+    { label: "출고번호" },
     { label: "품목" },
-    { label: "협력업체" },
-    { label: "신청자" },
+    { label: "담당업체" },
+    { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
     { label: "상태" },
   ];
 
   return (
-    <Box>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
       <Heading mb={3}>설치 현황</Heading>
-      <Table.Root size="sm">
+      <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
           <Table.Row bg={"gray.100"}>
             {columnHeaders.map((col, index) => (
@@ -67,9 +68,14 @@ export function MainInstallList({ company }) {
         <Table.Body>
           {installList.length > 0 ? (
             installList.map((row, index) => (
-              <Table.Row key={index}>
+              <Table.Row
+                key={index}
+                onDoubleClick={() => navigate("/install")}
+                title="더블클릭시 해당 페이지로 이동합니다"
+              >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
+                <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">
@@ -88,7 +94,7 @@ export function MainInstallList({ company }) {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={7} style={{ textAlign: "center" }}>
+              <Table.Cell colSpan={9} style={{ textAlign: "center" }}>
                 요청내역이 없습니다.
               </Table.Cell>
             </Table.Row>

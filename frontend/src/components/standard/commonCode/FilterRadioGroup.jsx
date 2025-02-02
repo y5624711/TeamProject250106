@@ -29,12 +29,7 @@ export function FilterRadioGroup({ onRadioChange }) {
   }, [searchParams]);
 
   return (
-    <RadioGroup
-      defaultValue={radioValue}
-      my={1}
-      marginBottom={2}
-      onValueChange={handleRadioChange}
-    >
+    <RadioGroup value={radioValue} onValueChange={handleRadioChange}>
       <HStack gap={6}>
         <Radio value="all">전체 조회</Radio>
         <Radio value="system">시스템 코드 조회</Radio>

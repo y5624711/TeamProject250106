@@ -44,12 +44,14 @@ export function CommonCodeList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <ActiveSwitch
-        onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
-      />
-      <FilterRadioGroup
-        onRadioChange={(nextRadioValue) => setSearchParams(nextRadioValue)}
-      />
+      <Flex gap={5} alignItems="center" mt={2} mb={2}>
+        <ActiveSwitch
+          onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+        />
+        <FilterRadioGroup
+          onRadioChange={(nextRadioValue) => setSearchParams(nextRadioValue)}
+        />
+      </Flex>
       <Box>
         <Table.Root>
           <Table.Header>
