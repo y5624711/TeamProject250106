@@ -69,7 +69,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
         <DialogHeader>
           <DialogTitle>
             <Box>
-              <Box>창고 상세</Box>
+              <Box>창고 정보</Box>
             </Box>
           </DialogTitle>
         </DialogHeader>

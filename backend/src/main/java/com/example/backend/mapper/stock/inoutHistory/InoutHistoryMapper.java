@@ -163,7 +163,10 @@ public interface InoutHistoryMapper {
                 itcm.common_code_name itemName,
                 fr.franchise_name,
                 cusemp.employee_name customerEmployeeName,
-                bizemp.employee_name businessEmployeeName
+                bizemp.employee_name businessEmployeeName,
+                l.row,
+                l.col,
+                l.shelf
             FROM TB_INOUT_HIS h
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
@@ -171,6 +174,7 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
+                LEFT JOIN TB_LOCMST l ON h.location_key = l.location_key
             WHERE h.inout_history_key = ${inoutHistoryKey}
             """)
     InoutHistory view(Integer inoutHistoryKey);
@@ -280,9 +284,9 @@ public interface InoutHistoryMapper {
 
     // 시리얼 번호랑 로케이션키 가져오기
     @Select("""
-        SELECT serial_no, location_key
-        FROM TB_INOUT_HIS
-        WHERE inout_no = #{inoutNo}
-        """)
+            SELECT serial_no, location_key
+            FROM TB_INOUT_HIS
+            WHERE inout_no = #{inoutNo}
+            """)
     Map<String, Integer> getSerialNoAndLocationKeyByInputNo(@Param("inoutNo") String inoutNo);
 }

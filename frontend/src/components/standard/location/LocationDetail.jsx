@@ -68,7 +68,7 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>로케이션 상세</Box>
+            <Box>로케이션 정보</Box>
           </DialogTitle>
         </DialogHeader>
         <DialogBody
