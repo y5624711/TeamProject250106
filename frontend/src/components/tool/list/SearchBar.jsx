@@ -35,16 +35,26 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
     }
-    // 검색해도 active, sort, order 값 유지
-    const active = searchParams.get("active") ?? "false";
-    nextSearchParam.set("active", active);
-    const filter = searchParams.get("filter") ?? "";
+
+    // 검색해도 active, sort, order 값 유지 -> active 는 왜 유지하는거지?
     // const active = searchParams.get("active") ?? "false";
     // nextSearchParam.set("active", active);
+
     // 경로별로 다른 파라미터 추가 (active, state 구분)
     if (location.pathname.startsWith("/item")) {
       const active = searchParams.get("active") ?? "false";
       nextSearchParam.set("active", active);
+
+      // item 경로에선 filter를 URL에서 제거
+      const filter = searchParams.get("filter") ?? "";
+      if (filter) {
+        nextSearchParam.set("filter", filter);
+      } else {
+        nextSearchParam.delete("filter");
+      }
+    } else if (location.pathname.startsWith("/purchase")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
     } else if (location.pathname.startsWith("/install")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
@@ -54,7 +64,6 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     const order = searchParams.get("order") ?? "asc";
     nextSearchParam.set("sort", sort);
     nextSearchParam.set("order", order);
-    nextSearchParam.set("filter", filter);
     nextSearchParam.set("page", "1"); // 페이지는 1로 리셋
     return nextSearchParam;
   };
@@ -71,7 +80,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
   };
 
   return (
-    <HStack justifyContent="center" w={"100%"}>
+    <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
         collection={searchOptions}
         width="160px"
