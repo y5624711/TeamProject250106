@@ -67,4 +67,9 @@ public class StocktakingController {
     public List<Stocktaking> itemList(@PathVariable String warehouseCode) {
         return service.getStocktakingItemList(warehouseCode);
     }
+
+    @GetMapping("count/{warehouseCode}/{itemCode}")
+    public Integer count(@PathVariable String warehouseCode, @PathVariable String itemCode) {
+        return service.getStocktakingCountCurrent(warehouseCode, itemCode);
+    }
 }

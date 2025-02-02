@@ -91,4 +91,18 @@ public class StocktakingService {
                                 stocktaking.getStocktakingType() == null ||
                                 stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
     }
+
+    public Integer getStocktakingCountCurrent(String warehouseCode, String itemCode) {
+
+        // 전체 개수 가져오기
+        Integer all = mapper.getStocktakingAll(warehouseCode, itemCode);
+
+        // 출고 개수 가져오기
+        Integer out = mapper.getStocktakingOut(warehouseCode, itemCode);
+
+
+        Integer countCurrent = all - out - out;
+
+        return countCurrent;
+    }
 }

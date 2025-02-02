@@ -92,6 +92,28 @@ function StocktakingAdd({
     }
   }, [warehouseCode]);
 
+  // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
+  useEffect(() => {
+    if (warehouseCode && itemCode) {
+      axios
+        .get(`/api/stocktaking/count/${warehouseCode}/${itemCode}`)
+        .then((res) => {
+          console.log(res.data);
+          setCountCurrent(res.data); // 백엔드에서 받은 전산 수량 값 설정
+          setStocktakingAdd((prev) => ({
+            ...prev,
+            countCurrent: res.data, // stocktakingAdd에도 값 반영
+          }));
+        })
+        .catch((err) => {
+          console.error("전산 수량 조회 실패", err);
+          setCountCurrent(""); // 에러 발생 시 초기화
+        });
+    }
+  }, [warehouseCode, itemCode]);
+
+  useEffect(() => {}, [countCurrent]);
+
   // 창고 변경 시 관리자 컬렉션 생성
   const handleWarehouseChange = (selectedOption) => {
     setWarehouseName(selectedOption.label);
@@ -222,11 +244,7 @@ function StocktakingAdd({
             </Field>
             <Box display="flex" gap={4}>
               <Field label="전산 수량" orientation="horizontal" mb={15}>
-                <Input
-                  type={"text"}
-                  value={countCurrent}
-                  onChange={(e) => setCountCurrent(e.target.value)}
-                />
+                <Input type={"text"} value={countCurrent} readOnly />
               </Field>
               <Field label="실제 수량" orientation="horizontal" mb={15}>
                 <Input
