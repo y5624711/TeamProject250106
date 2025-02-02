@@ -57,13 +57,13 @@ FROM TB_BUYIN BI
         ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
     LEFT JOIN TB_RTN_REQ RNRQ 
         ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
-    LEFT JOIN TB_EMPMST EM
+    LEFT JOIN TB_EMPMST EM        -- 요청 승인자
         ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-    LEFT JOIN TB_EMPMST EM2
+    LEFT JOIN TB_EMPMST EM2        -- 요청자
         ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
         OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
-    LEFT JOIN TB_CUSTMST CT 
+    LEFT JOIN TB_CUSTMST CT  
         ON CT.customer_code = EM.employee_workplace_code
     LEFT JOIN TB_SYSCOMM SC 
         ON SC.common_code = CT.item_code
