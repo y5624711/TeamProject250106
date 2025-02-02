@@ -34,7 +34,7 @@ export function Navbar() {
 
   return (
     <Box>
-      <Flex gap={5} pt={5} w={"98%"} mx={"auto"}>
+      <Flex gap={5} mt={3} mb={2} w={"98%"} mx={"auto"}>
         <Heading _hover={{ cursor: "pointer" }} onClick={() => navigate("/")}>
           Choongang System
         </Heading>
@@ -52,7 +52,7 @@ export function Navbar() {
           </NavItem>
         )}
       </Flex>
-      <Flex bgColor={"lightSlateGray"} width="100%" gap={10} p={2} pl={4}>
+      <Flex bgColor={"lightSlateGray"} width="100%" gap={10} p={2} pl={3}>
         <NavItem path="/business">기준정보 관리</NavItem>
         <NavItem path={"/purchase"}>구매/설치 관리</NavItem>
         <NavItem path="/inoutHistory">물류 관리</NavItem>

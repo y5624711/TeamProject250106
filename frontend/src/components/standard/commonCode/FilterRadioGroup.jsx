@@ -31,9 +31,9 @@ export function FilterRadioGroup({ onRadioChange }) {
   return (
     <RadioGroup value={radioValue} onValueChange={handleRadioChange}>
       <HStack gap={6}>
-        <Radio value="all">전체 조회</Radio>
-        <Radio value="system">시스템 코드 조회</Radio>
-        <Radio value="item">물품 코드 조회</Radio>
+        <Radio value="all">전체</Radio>
+        <Radio value="system">시스템 코드</Radio>
+        <Radio value="item">품목 코드</Radio>
       </HStack>
     </RadioGroup>
   );

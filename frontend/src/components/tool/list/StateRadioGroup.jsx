@@ -28,7 +28,8 @@ export function StateRadioGroup({ radioOptions, onRadioChange }) {
     <RadioGroup
       value={state}
       onValueChange={(value) => handleRadio(value.value)}
-      my={3}
+      my={6}
+      ml={2}
     >
       <Stack direction="row" spacing={4}>
         {radioOptions.map((option) => (

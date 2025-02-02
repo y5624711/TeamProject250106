@@ -27,6 +27,7 @@ export function FranchiseList({
   search,
   setSearch,
   handleSearchClick,
+  onReset,
   checkedActive,
   toggleCheckedActive,
   onFranchiseClick,
@@ -79,7 +80,7 @@ export function FranchiseList({
   return (
     <Box>
       {/* 검색창 */}
-      <HStack justifyContent="center">
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <SelectRoot
           collection={FranchiseOptionList}
           width="160px"
@@ -114,12 +115,10 @@ export function FranchiseList({
 
         {/* 검색 초기화 */}
         <IconButton
-          transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
+          transform="translateX(-130%) "
           variant={"ghost"}
-          onClick={() => {
-            window.location.search = ""; // searchParams 초기화
-          }}
+          onClick={onReset}
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
@@ -132,15 +131,15 @@ export function FranchiseList({
       <Checkbox
         mt={3}
         mb={5}
-        ml={2}
+        ml={3}
         checked={checkedActive}
         onChange={toggleCheckedActive}
       >
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
 
       {/* 테이블 */}
-      <Table.Root interactive>
+      <Table.Root interactive style={{ cursor: "pointer" }}>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <TableColumnHeader
@@ -149,10 +148,14 @@ export function FranchiseList({
             >
               <HStack alignItems="center" justify="center">
                 <Stack>#</Stack>
-                {standard.sort === "franchiseKey" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
+                {standard.sort === "franchiseKey" ? (
+                  standard.order === "asc" ? (
+                    <FaCaretUp />
+                  ) : (
+                    <FaCaretDown />
+                  )
+                ) : (
+                  <FaCaretDown /> // 기본값
                 )}
               </HStack>
             </TableColumnHeader>

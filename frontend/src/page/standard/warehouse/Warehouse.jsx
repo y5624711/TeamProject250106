@@ -108,9 +108,11 @@ function Warehouse(props) {
           <Checkbox
             checked={checkedActive}
             onChange={toggleCheckedActive}
-            my={3}
+            mt={1}
+            mb={3}
+            ml={3}
           >
-            전체 조회
+            미사용 포함 조회
           </Checkbox>
           {/*리스트 jsx*/}
           <WarehouseList
@@ -122,8 +124,12 @@ function Warehouse(props) {
             refresh={refresh}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
-              새 창고 등록
+            <Button
+              size={"lg"}
+              mt={"-65px"}
+              onClick={() => setIsAddDialogOpen(true)}
+            >
+              창고 등록
             </Button>
           </Box>
           {/*등록 jsx*/}

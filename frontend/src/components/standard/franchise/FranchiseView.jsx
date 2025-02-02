@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Input,
+  Spinner,
+  Textarea,
+} from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
-import axios from "axios";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import axios from "axios";
 
 export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
@@ -37,66 +44,28 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
     }));
   };
 
-  // 확인 (수정 후 저장)
+  // // 확인 (수정 후 저장)
   const handleSaveClick = () => {
-    const updatedFranchise = {
-      ...franchise,
-      franchiseActive: franchise.franchiseActive ? 1 : 0, // boolean을 1, 0으로 변환
-    };
-
-    if (updatedFranchise.franchiseActive === 0) {
-      // 비활성화 상태로 저장하려는 경우, 먼저 삭제 처리
-      axios
-        .put(`/api/franchise/delete/${franchiseKey}`)
-        .then(() => {
-          // 수정 처리 (삭제 후 수정)
-          axios
-            .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
-            .then((res) => {
-              const message = res.data.message;
-              toaster.create({
-                type: message.type,
-                description: message.text,
-              });
-              setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-              onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
-              onDelete(franchiseKey); // 삭제 후 리스트에서 제거
-            })
-            .catch((e) => {
-              const message = e.response.data.message;
-              toaster.create({
-                type: message.type,
-                description: message.text,
-              });
-            });
-        })
-        .catch(() => {
-          toaster.create({
-            type: "error",
-            description: "사용 여부 업데이트 실패",
-          });
+    axios
+      .put(`/api/franchise/edit/${franchiseKey}`, franchise)
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    } else {
-      // 비활성화가 아닌 경우 그냥 수정 처리
-      axios
-        .put(`/api/franchise/edit/${franchiseKey}`, updatedFranchise)
-        .then((res) => {
-          const message = res.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
-          setOriginalData(updatedFranchise); // 저장 후 초기값 갱신
-          onSave(updatedFranchise); // 부모 컴포넌트로 수정된 데이터 전달
-        })
-        .catch((e) => {
-          const message = e.response.data.message;
-          toaster.create({
-            type: message.type,
-            description: message.text,
-          });
+        setOriginalData(franchise); // 저장 후 초기값 갱신
+        onSave(franchise); // 부모 컴포넌트로 수정된 데이터 전달
+        onDelete(franchiseKey); // 삭제 후 리스트에서 제거
+        onClose(franchiseKey); // 창 닫기
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
         });
-    }
+      });
   };
 
   // 취소
@@ -111,7 +80,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   return (
     <Box>
       <Box>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="가맹점" orientation="horizontal" mb={15}>
             <Input
               name="franchiseName"
@@ -127,7 +96,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               readOnly
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="사업자 번호" orientation="horizontal" mb={15}>
           <Input
             name="franchiseNo"
@@ -135,7 +104,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             onChange={handleChange}
           />
         </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="대표자" orientation="horizontal" mb={15}>
             <Input
               name="franchiseRep"
@@ -150,7 +119,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               onChange={handleChange}
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="우편번호" orientation="horizontal" mb={15}>
           <Input
             name="franchisePost"
@@ -158,21 +127,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             onChange={handleChange}
           />
         </Field>
-        <Field label="주소" orientation="horizontal" mb={15}>
-          <Input
-            name="franchiseAddress"
-            value={franchise.franchiseAddress}
-            onChange={handleChange}
-          />
-        </Field>
-        <Field label="상세 주소" orientation="horizontal" mb={15}>
-          <Input
-            name="franchiseAddressDetail"
-            value={franchise.franchiseAddressDetail}
-            onChange={handleChange}
-          />
-        </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="광역시도" orientation="horizontal" mb={15}>
             <Input
               name="franchiseState"
@@ -187,31 +142,42 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               onChange={handleChange}
             />
           </Field>
-        </Box>
+        </HStack>
+        <Field label="주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddress"
+            value={franchise.franchiseAddress}
+            onChange={handleChange}
+          />
+        </Field>
+        <Field label="상세 주소" orientation="horizontal" mb={15}>
+          <Input
+            name="franchiseAddressDetail"
+            value={franchise.franchiseAddressDetail}
+            onChange={handleChange}
+          />
+        </Field>
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             name="franchiseNote"
-            placeholder="최대 50자"
             value={franchise.franchiseNote}
             onChange={handleChange}
             style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>
-
-        <Checkbox
-          size={"lg"}
-          checked={franchise.franchiseActive}
-          onChange={(e) => {
-            const checked = e.target.checked;
-            setFranchise((prevFranchise) => ({
-              ...prevFranchise,
-              franchiseActive: checked, // 상태 업데이트
-            }));
-          }}
-        >
-          사용 여부
-        </Checkbox>
-
+        <Field label="사용 여부" orientation="horizontal">
+          <Checkbox
+            style={{ marginRight: "550px" }}
+            checked={franchise.franchiseActive}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setFranchise((prevFranchise) => ({
+                ...prevFranchise,
+                franchiseActive: checked, // 상태 업데이트
+              }));
+            }}
+          />
+        </Field>
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
           <Button onClick={handleCancelClick} variant="outline">
             취소

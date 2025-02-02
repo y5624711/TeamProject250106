@@ -59,7 +59,7 @@ function CustomerList({
   return (
     <Box>
       {/* 검색창 */}
-      <HStack justifyContent="center" w={"100%"}>
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <SelectRoot
           collection={optionList}
           width={"160px"}
@@ -67,7 +67,6 @@ function CustomerList({
           onValueChange={(oc) => {
             setSearch({ ...search, type: oc.value[0] });
           }}
-          size="md"
         >
           <SelectTrigger>
             <SelectValueText />
@@ -83,7 +82,7 @@ function CustomerList({
 
         <Input
           width="50%"
-          placeholder="검색어를 입력해 주세요"
+          placeholder="검색어를 입력해 주세요."
           type="text"
           value={search.keyword}
           onChange={(e) => {
@@ -109,12 +108,18 @@ function CustomerList({
       </HStack>
 
       {/* 체크박스 필터 */}
-      <Checkbox checked={checkedActive} onChange={toggleCheckedActive} mt={3}>
+      <Checkbox
+        mt={3}
+        mb={5}
+        ml={3}
+        checked={checkedActive}
+        onChange={toggleCheckedActive}
+      >
         미사용 포함 조회
       </Checkbox>
 
       {/*테이블*/}
-      <Table.Root interactive my={3} style={{ cursor: "pointer" }}>
+      <Table.Root interactive style={{ cursor: "pointer" }}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
@@ -204,6 +209,7 @@ function CustomerList({
       {/*pagination*/}
       <Center my={3}>
         <Pagination
+          size={"md"}
           count={count}
           pageSize={10}
           onPageChange={(newPage) => {

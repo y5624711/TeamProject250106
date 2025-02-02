@@ -59,7 +59,7 @@ function WarehouseList({
             </Table.Body>
           </Table.Root>
         </Box>
-        <Center>
+        <Center p={4}>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
             count={countWarehouse}
@@ -67,6 +67,8 @@ function WarehouseList({
             // page={page}
             siblingCount={2}
             defaultPage={currentPage}
+            variant="solid"
+            size={"md"}
           >
             <HStack>
               <PaginationPrevTrigger />

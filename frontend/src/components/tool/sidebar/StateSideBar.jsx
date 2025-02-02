@@ -30,7 +30,7 @@ export function StateSideBar() {
         w="220px"
         pb="4"
         bg="gray.100"
-        h={"100vh"}
+        h={"87vh"}
         borderRight="1px solid"
         borderColor="gray.200"
       >

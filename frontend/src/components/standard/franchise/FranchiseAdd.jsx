@@ -1,4 +1,4 @@
-import { Box, Button, Input, Textarea } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { toaster } from "../../ui/toaster.jsx";
@@ -109,7 +109,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
             onChange={(e) => setFranchiseNo(e.target.value)}
           />
         </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="대표자" orientation="horizontal" mb={15}>
             <Input
               value={franchiseRep}
@@ -122,7 +122,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
               onChange={(e) => setFranchiseTel(e.target.value)}
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="우편번호" orientation="horizontal" mb={15}>
           <Input
             value={franchisePost}
@@ -141,7 +141,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
             onChange={(e) => setFranchiseAddressDetail(e.target.value)}
           />
         </Field>
-        <Box display="flex" gap={4}>
+        <HStack>
           <Field label="광역시도" orientation="horizontal" mb={15}>
             <Input
               value={franchiseState}
@@ -154,7 +154,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
               onChange={(e) => setFranchiseCity(e.target.value)}
             />
           </Field>
-        </Box>
+        </HStack>
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             value={franchiseNote}
@@ -169,7 +169,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
           </Button>
           <Tooltip
             content="입력을 완료해 주세요."
-            openDelay={500}
+            openDelay={100}
             closeDelay={100}
           >
             <Button onClick={handleSaveClick} disabled={!validate()}>

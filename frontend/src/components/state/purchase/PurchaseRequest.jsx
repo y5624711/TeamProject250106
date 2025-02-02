@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  HStack,
   Input,
   SelectContent,
   SelectItem,
@@ -167,7 +168,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           onChange={(e) => setCustomerName(e.target.value)}
         />
       </Field>
-      <Box display="flex" gap={4}>
+      <HStack>
         <Field label="수량" orientation="horizontal" mb={15}>
           <Input
             type="number"
@@ -179,15 +180,15 @@ export function PurchaseRequest({ onSave, onClose }) {
         <Field label="가격" orientation="horizontal" mb={15}>
           <Input value={itemData.inputPrice * amount} readOnly />
         </Field>
-      </Box>
-      <Box display="flex" gap={4}>
+      </HStack>
+      <HStack>
         <Field label="요청자" orientation="horizontal" mb={15}>
           <Input value={name} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
           <Input value={id} readOnly />
         </Field>
-      </Box>
+      </HStack>
       <Field label="요청 비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchaseRequestNote}
@@ -202,7 +203,7 @@ export function PurchaseRequest({ onSave, onClose }) {
         </Button>
         <Tooltip
           content="입력을 완료해 주세요."
-          openDelay={500}
+          openDelay={100}
           closeDelay={100}
         >
           <Button onClick={handleSaveClick} disabled={isButtonDisabled}>
