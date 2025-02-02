@@ -87,7 +87,8 @@ export function InstkList() {
       />
       <RadioGroup
         value={searchParams.get("state") || "all"}
-        my={3}
+        my={6}
+        ml={2}
         onValueChange={(e) => {
           setSearchParams((prev) => ({
             ...Object.fromEntries(prev.entries()), // 기존 searchParams의 깊은 복사

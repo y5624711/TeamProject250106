@@ -45,11 +45,11 @@ export function CommonCode() {
 
   return (
     <Box>
-      <HStack align="flex-start" w="100%">
+      <HStack align={"flex-start"} w={"100%"}>
         <StandardSideBar />
-        <Stack flex={1} p={5} pt={6}>
-          <Heading size={"xl"} mb={3}>
-            공통코드 관리
+        <Stack flex={1} p={5}>
+          <Heading size={"xl"} p={2} mb={3}>
+            공통 코드 관리
           </Heading>
           <Box>
             {/* CommonCodeList 감싸는 컨테이너 */}

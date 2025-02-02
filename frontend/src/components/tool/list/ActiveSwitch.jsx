@@ -27,7 +27,13 @@ export function ActiveSwitch({ onActiveChange }) {
   };
 
   return (
-    <Checkbox my={3} checked={active} onChange={handleSwitchChange}>
+    <Checkbox
+      mt={3}
+      mb={5}
+      ml={3}
+      checked={active}
+      onChange={handleSwitchChange}
+    >
       미사용 포함 조회
     </Checkbox>
   );

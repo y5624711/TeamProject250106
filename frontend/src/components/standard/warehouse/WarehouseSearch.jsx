@@ -17,7 +17,7 @@ function WarehouseSearch({
   search,
 }) {
   return (
-    <HStack justifyContent="center">
+    <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
         collection={warehouseOptionList}
         defaultValue={["all"]}

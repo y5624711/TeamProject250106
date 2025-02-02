@@ -233,7 +233,7 @@ export function Franchise() {
     <Box>
       <HStack align={"flex-start"} w={"100%"}>
         <StandardSideBar />
-        <Stack flex={1} p={5} pb={0}>
+        <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
             기준정보 관리 {">"} 가맹점 관리
           </Heading>

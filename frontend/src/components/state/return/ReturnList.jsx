@@ -104,7 +104,7 @@ function ReturnList({
   return (
     <Box>
       {/*검색*/}
-      <HStack justifyContent="center" w={"100%"}>
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <SelectRoot
           collection={returnSearchKeywords}
           width={"160px"}
@@ -149,7 +149,8 @@ function ReturnList({
         name={state}
         value={state}
         onValueChange={onStateChange}
-        my={3}
+        my={6}
+        ml={2}
       >
         <HStack gap={6}>
           <Radio value="all">전체</Radio>

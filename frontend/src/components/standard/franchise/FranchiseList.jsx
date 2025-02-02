@@ -80,7 +80,7 @@ export function FranchiseList({
   return (
     <Box>
       {/* 검색창 */}
-      <HStack justifyContent="center">
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <SelectRoot
           collection={FranchiseOptionList}
           width="160px"
@@ -139,7 +139,7 @@ export function FranchiseList({
       </Checkbox>
 
       {/* 테이블 */}
-      <Table.Root interactive>
+      <Table.Root interactive style={{ cursor: "pointer" }}>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <TableColumnHeader

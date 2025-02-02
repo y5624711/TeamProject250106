@@ -17,7 +17,7 @@ function LocationSearch({
   handleSearchClick,
 }) {
   return (
-    <HStack justifyContent="center">
+    <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
         collection={locationOptionList}
         defaultValue={["all"]}
