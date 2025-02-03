@@ -33,10 +33,6 @@ export function Franchise() {
   const [checkedActive, setCheckedActive] = useState(
     searchParams.get("active") === "true",
   );
-  const [standard, setStandard] = useState({
-    sort: "franchise_key",
-    order: "desc",
-  });
   const [franchiseList, setFranchiseList] = useState([]);
   const [count, setCount] = useState(0);
   // 페이지네이션
@@ -53,8 +49,8 @@ export function Franchise() {
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
-          sort: searchParams.get("sort") || standard.sort,
-          order: searchParams.get("order") || standard.order,
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
         },
       })
       .then((res) => res.data)
@@ -63,20 +59,11 @@ export function Franchise() {
         setFranchiseList(data.franchiseList);
         setIsLoading(false);
       });
-  }, [searchParams, standard, checkedActive]);
+  }, [searchParams, checkedActive]);
 
   // 검색 상태를 URLSearchParams에 맞게 업데이트
   useEffect(() => {
     const nextSearch = { ...search };
-
-    // URL에서 sort, order 값을 가져와서 상태에 반영
-    const sort = searchParams.get("sort") || standard.sort;
-    const order = searchParams.get("order") || standard.order;
-
-    setStandard({
-      sort: sort,
-      order: order,
-    });
 
     // 기존 검색 파라미터 설정
     if (searchParams.get("type")) {
@@ -108,19 +95,6 @@ export function Franchise() {
 
     // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParam);
-  };
-
-  // 정렬 기준 변경 시 URL 파라미터 업데이트
-  const handleSortChange = (sort) => {
-    const order = standard.order === "asc" ? "desc" : "asc";
-    setStandard({ sort: sort, order: order });
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("sort", sort);
-    nextSearchParams.set("order", order);
-    nextSearchParams.set("page", "1"); // 1페이지로 설정
-
-    setSearchParams(nextSearchParams);
   };
 
   // 체크 박스 상태 변경 시 URL 파라미터 업데이트
@@ -191,8 +165,8 @@ export function Franchise() {
           page: currentPage,
           type: searchParams.get("type") || "all",
           keyword: searchParams.get("keyword") || "",
-          sort: searchParams.get("sort") || standard.sort,
-          order: searchParams.get("order") || standard.order,
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
         },
       })
       .then((res) => res.data)
@@ -247,15 +221,13 @@ export function Franchise() {
             count={count}
             search={search}
             setSearch={setSearch}
+            setSearchParams={setSearchParams}
             handleSearchClick={handleSearchClick}
             onReset={handleResetClick}
             checkedActive={checkedActive}
             setCheckedActive={setCheckedActive}
             toggleCheckedActive={toggleCheckedActive}
             handlePageChange={handlePageChange}
-            handleSortChange={handleSortChange}
-            standard={standard}
-            setStandard={setStandard}
             onFranchiseClick={handleFranchiseClick}
           />
           {/* 페이지네이션 */}

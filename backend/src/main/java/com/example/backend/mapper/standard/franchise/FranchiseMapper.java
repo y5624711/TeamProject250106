@@ -43,46 +43,51 @@ public interface FranchiseMapper {
     // 가맹점 리스트 불러오기
     @Select("""
             <script>
-                SELECT franchise_key, franchise_name, franchise_rep, franchise_no, franchise_tel, franchise_state, franchise_city, franchise_active
-                FROM TB_FRNCHSMST
-                WHERE <if test="active == false">franchise_active = TRUE</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
-                      <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
-                      <if test="keyword != null and keyword.trim() != ''">
+            SELECT franchise_key, franchise_name, franchise_rep, franchise_no, franchise_tel, franchise_state, franchise_city, franchise_active
+            FROM TB_FRNCHSMST
+            WHERE
+                <if test="active != null and !active">
+                    franchise_active = TRUE
+                </if>
+                <if test="active == null or active">
+                    1=1
+                </if>
+                <if test="keyword != null and keyword.trim() != ''">
                     AND (
                         <trim prefixOverrides="OR">
                             <if test="type=='all' or type=='franchiseName'">
-                                  franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR franchise_name LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseRep'">
-                               OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
+                                OR franchise_rep LIKE CONCAT('%', #{keyword}, '%')
                             </if>
-                             <if test="type=='all' or type=='franchiseNo'">
-                               OR franchise_no LIKE CONCAT('%', #{keyword}, '%')
+                            <if test="type=='all' or type=='franchiseNo'">
+                                OR franchise_no LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseTel'">
-                               OR franchise_tel LIKE CONCAT('%', #{keyword}, '%')
+                                OR franchise_tel LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseState'">
-                               OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
+                                OR franchise_state LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='franchiseCity'">
-                               OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
+                                OR franchise_city LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                         </trim>
                     )
                 </if>
             ORDER BY
                     <choose>
-                        <when test="sort == 'franchise_name'">franchise_name</when>
-                        <when test="sort == 'franchise_rep'">franchise_rep</when>
-                        <when test="sort == 'franchise_no'">franchise_no</when>
-                        <when test="sort == 'franchise_tel'">franchise_tel</when>
-                        <when test="sort == 'franchise_state'">franchise_state</when>
-                        <when test="sort == 'franchise_city'">franchise_city</when>
+                        <when test="sort == 'franchiseName'">franchise_name</when>
+                        <when test="sort == 'franchiseRep'">franchise_rep</when>
+                        <when test="sort == 'franchiseNo'">franchise_no</when>
+                        <when test="sort == 'franchiseTel'">franchise_tel</when>
+                        <when test="sort == 'franchiseState'">franchise_state</when>
+                        <when test="sort == 'franchiseCity'">franchise_city</when>
                         <otherwise>franchise_key</otherwise> <!-- 기본값 -->
                     </choose>
                     ${order}
-                LIMIT #{offset}, 10
+            LIMIT #{offset}, 10
             </script>
             """)
     List<Franchise> getFranchiseList(Boolean active, Integer offset, String type, String keyword, String sort, String order);
