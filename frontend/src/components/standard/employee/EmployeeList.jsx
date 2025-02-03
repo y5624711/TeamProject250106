@@ -31,6 +31,7 @@ import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
@@ -39,13 +40,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const [searchParams, setSearchParams] = useSearchParams();
   // 상태 초기화: 쿼리 파라미터에서 값 가져오기
   const [page, setPage] = useState(searchParams.get("page") || 1);
-  const [sort, setSort] = useState(searchParams.get("sort") || "all");
+  const [sort, setSort] = useState(searchParams.get("sort"));
   const [isActiveVisible, setIsActiveVisible] = useState(
     searchParams.get("active") === "true",
   );
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
   const [type, setType] = useState(searchParams.get("type") || "all");
-  const [order, setOrder] = useState(searchParams.get("order") || "DESC");
+  const [order, setOrder] = useState(searchParams.get("order") || "desc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isviewModalOpen, setIsviewModalOpen] = useState(false);
 
@@ -166,6 +167,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setOrder("desc"); // 기본 정렬 순서 설정
   };
 
+  // 소트
+  const sortOptions = [
+    { key: "기본키", label: "#" },
+    { key: "소속구분", label: "소속 구분" },
+    { key: "기업명", label: "기업" },
+    { key: "기업번호", label: "기업 번호" },
+    { key: "직원명", label: "직원" },
+    { key: "직원전화번호", label: "직원 전화번호" },
+    { key: "사번", label: "사번" },
+  ];
+
   return (
     <Box p={5}>
       <HStack
@@ -225,11 +237,22 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       </Checkbox>
       <Table.Root interactive>
         <Table.Header>
-          <SortColumnHeader
-            handleSortControl={handleSortControl}
-            searchParams={searchParams}
-          />
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Sort
+              sortOptions={sortOptions}
+              onSortChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+              defaultSortKey={"기본키"}
+            />
+
+            {/*<SortColumnHeader*/}
+            {/*  handleSortControl={handleSortControl}*/}
+            {/*  searchParams={searchParams}*/}
+            {/*/>*/}
+          </Table.Row>
         </Table.Header>
+
         <Table.Body>
           {memberList.map((item, index) => (
             <Table.Row

@@ -51,8 +51,6 @@ export function InstkList() {
     refreshData();
   }, [refreshData]);
 
-  console.log(instkList, "instklist");
-
   const handleApproveModal = () => {
     setIsApproveModalOpen(!isApproveModalOpen);
   };
@@ -79,10 +77,8 @@ export function InstkList() {
       { label: "발주 번호", value: "input_no" },
       { label: "품목", value: "item_common_name" },
       { label: "담당 업체", value: "customer_name" },
-      // { label: "날짜", value: "inputStockDate" },
       { label: "요청자", value: "request_employee_name" },
       { label: "승인자", value: "input_stock_employee_name" },
-      // { label: "상태", value: "inputConsent" },
     ],
   });
   const sortOptions = [

@@ -87,10 +87,10 @@ public interface EmployeeMapper {
                                 ORDER BY  ${convertedSort}
                              </when>
                              <otherwise>
-                              ORDER BY   employee_key
+                              ORDER BY   employee_key 
                              </otherwise>
                          </choose>
-                        <if test="order != null and (order == 'ASC' or order == 'DESC')">
+                        <if test="order != null and (order == 'asc' or order == 'desc')">
                                    ${order}
                                  </if>
             
