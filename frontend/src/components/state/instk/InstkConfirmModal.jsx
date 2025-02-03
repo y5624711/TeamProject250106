@@ -95,6 +95,7 @@ export function InstkConfirmModal({
       })
       .finally(() => {
         setChangeModal();
+        onApprovalSuccess();
       });
   };
   console.log(instk, instkDetail);
