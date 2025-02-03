@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@Transactional
 @RequiredArgsConstructor
 @RequestMapping("/api/install")
 public class InstallController {
@@ -30,7 +31,15 @@ public class InstallController {
 
     // 설치 요청 반려
     @PutMapping("disapprove/{installKey}")
-    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey, Authentication authentication) {
+        // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+        if (!service.disApproveAuth(authentication, installKey)) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "설치 반려 권한이 없습니다.")));
+        }
+
         // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
         if (service.installDisapprove(installKey)) {
             return ResponseEntity.ok().body(Map.of(
@@ -52,13 +61,13 @@ public class InstallController {
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "state", defaultValue = "") String state,
             @RequestParam(value = "type", defaultValue = "") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        return service.getInstallList(page, sort, order, state, type, keyword);
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            Authentication authentication) {
+        return service.getInstallList(page, sort, order, state, type, keyword, authentication);
     }
 
     // 설치 완료
     @PostMapping("configuration")
-    @Transactional
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
         try {
             // 검수 테이블 추가 & 품목 입출력 테이블 추가를 하나의 트랜잭션으로 처리
@@ -70,25 +79,6 @@ public class InstallController {
                     "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
                     "data", install
             ));
-//
-//            // 비고 추가, 검수 테이블에 추가
-//            if (service.installConfiguration(install)) {
-//                // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
-//                if (service.addOutHistory(install)) {
-//                    return ResponseEntity.ok().body(Map.of(
-//                            "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
-//                            "data", install
-//                    ));
-//                } else {
-//                    return ResponseEntity.internalServerError().body(Map.of(
-//                            "message", Map.of("type", "error", "text", "해당 품목의 출고 처리 중 오류가 발생했습니다.")
-//                    ));
-//                }
-//            } else {
-//                return ResponseEntity.internalServerError().body(Map.of(
-//                        "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
-//                ));
-//            }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
                     "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
@@ -114,31 +104,18 @@ public class InstallController {
     }
 
     // 설치 승인
-//    @PostMapping("approve")
-//    @PreAuthorize("isAuthenticated()")
-//    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
-    //       if (service.approveValidate(install)) {
-//            if (service.installApprove(install)) {
-//                return ResponseEntity.ok().body(Map.of(
-//                        "message", Map.of("type", "success",
-//                                "text", "설치 승인되었습니다."),
-//                        "data", install));
-//            } else {
-//                return ResponseEntity.internalServerError().body(Map.of(
-//                        "message", Map.of("type", "error", "text", "설치 승인이 실패하였습니다.")));
-//            }
-//        } else {
-//            return ResponseEntity.badRequest()
-//                    .body(Map.of("message", Map.of("type", "error",
-//                            "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
-//      }
-//    }
-
-    // 설치 승인
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install, Authentication authentication) {
         try {
+            // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+            if (!service.approveAuth(authentication, install)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "설치 승인 권한이 없습니다.")));
+            }
+
+            // 정확히 입력되었는지 검증 후 승인
             if (service.approveValidate(install)) {
                 service.installApprove(install);
                 return ResponseEntity.ok().body(Map.of(
@@ -184,6 +161,14 @@ public class InstallController {
     @PostMapping("request")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install, Authentication authentication) {
+
+        // "CUS"로 시작하는 사용자에게는 요청을 제한
+        String userId = authentication.getName();
+        if (userId.startsWith("CUS")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN) // 설치 요청 거부
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 설치 요청을 할 수 없습니다.")));
+        }
+
         if (service.requestValidate(install)) {
             if (service.installRequest(install, authentication)) {
                 return ResponseEntity.ok().body(Map.of(

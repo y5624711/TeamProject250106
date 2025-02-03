@@ -1,6 +1,7 @@
 package com.example.backend.service.state.install;
 
 import com.example.backend.dto.state.install.Install;
+import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.mapper.state.install.InstallMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class InstallService {
 
     final InstallMapper mapper;
+    final LoginMapper loginMapper;
 
     // 가맹점명, 품목, 수량 입력됐는지 검증
     public boolean requestValidate(Install install) {
@@ -52,6 +54,20 @@ public class InstallService {
     // 설치 기사 사번으로 이름 가져오기
     public List<Map<String, Object>> getCustomerEmployee(int installKey) {
         return mapper.getCustomerEmployee(installKey);
+    }
+
+    // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+    public boolean approveAuth(Authentication authentication, Install install) {
+        // 로그인한 사용자의 회사 정보 가져오기
+        String loginCompany = loginMapper.selectCompanyByCode(authentication.getName());
+        if (!loginCompany.startsWith("CUS")) {
+            return true;
+        }
+        // 설치 요청 키로 담당업체 코드 가져오기
+        String itemCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
+
+        // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
+        return loginCompany.equals(itemCompany);
     }
 
     // 설치 예정일, 설치 기사, 사번 입력됐는지 검증
@@ -194,10 +210,31 @@ public class InstallService {
     }
 
     // 설치 요청, 승인 리스트 가져오기
-    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword) {
+    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword, Authentication authentication) {
         Integer offset = (page - 1) * 10;
-        return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword),
-                "count", mapper.countAll(state, type, keyword));
+
+        String userId = authentication.getName();
+        String company = null;
+        if (userId.startsWith("CUS")) {
+            company = loginMapper.selectCompanyByCode(userId);
+        }
+
+        return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword, company),
+                "count", mapper.countAll(state, type, keyword, company));
+    }
+
+    // 반려에 대한 권한 검증
+    public boolean disApproveAuth(Authentication authentication, int installKey) {
+        // 로그인한 사용자의 회사 정보 가져오기
+        String loginCompany = loginMapper.selectCompanyByCode(authentication.getName());
+        if (!loginCompany.startsWith("CUS")) {
+            return true;
+        }
+        // 설치 요청 키로 담당업체 코드 가져오기
+        String itemCompany = mapper.getCustomerCodeByKey(installKey);
+
+        // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
+        return loginCompany.equals(itemCompany);
     }
 
     // 설치 요청 반려
@@ -206,6 +243,7 @@ public class InstallService {
         return cnt == 1;
     }
 
+    // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     public Install getInstallApproveData(int installKey) {
         return mapper.getInstallApproveData(installKey);
     }

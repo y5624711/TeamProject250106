@@ -113,13 +113,6 @@ public interface ItemMapper {
 
     @Update("""
             UPDATE TB_ITEMMST
-            SET item_active = 0
-            WHERE item_key = #{itemKey}
-            """)
-    int deleteItem(int itemKey);
-
-    @Update("""
-            UPDATE TB_ITEMMST
             SET item_active = #{customerActive}
             WHERE customer_code = #{customerCode}
             """)

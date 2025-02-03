@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
@@ -8,8 +8,10 @@ import { InstallApprove } from "../../../components/state/install/InstallApprove
 import axios from "axios";
 import { InstallConfiguration } from "../../../components/state/install/InstallConfiguration.jsx";
 import { useSearchParams } from "react-router-dom";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function Install() {
+  const { company } = useContext(AuthenticationContext);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [configurationDialogOpen, setConfigurationDialogOpen] = useState(false);
@@ -85,15 +87,17 @@ export function Install() {
             searchParams={searchParams}
             setSearchParams={setSearchParams}
           />
-          <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button
-              onClick={() => setRequestDialogOpen(true)}
-              size="lg"
-              mt={"-65px"}
-            >
-              설치 요청
-            </Button>
-          </Box>
+          {company && !company.startsWith("CUS") && (
+            <Box display="flex" justifyContent="flex-end" mb={4}>
+              <Button
+                onClick={() => setRequestDialogOpen(true)}
+                size="lg"
+                mt={"-65px"}
+              >
+                설치 요청
+              </Button>
+            </Box>
+          )}
         </Stack>
         <InstallRequest
           isOpen={requestDialogOpen}

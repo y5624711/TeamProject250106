@@ -25,6 +25,7 @@ import {
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
+import { format } from "date-fns";
 
 export function InstallConfiguration({
   installKey,
@@ -35,11 +36,11 @@ export function InstallConfiguration({
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
-  const [isConfiguration, setIsConfiguration] = useState(null);
+  // const [isConfiguration, setIsConfiguration] = useState(null);
 
   const handleClose = () => {
     setInoutHistoryNote("");
-    setIsConfiguration(null);
+    // setIsConfiguration(null);
     onClose();
   };
 
@@ -58,11 +59,10 @@ export function InstallConfiguration({
     }
   }, [installKey]);
 
+  // 설치 확인 요청
   const handleConfigurationClick = () => {
-    // 설치 확인 요청
     const configurationData = {
       outputNo: installData.outputNo,
-      // 협력일체 직원(승인자), 본사 직원(요청자), 가맹점 코드,
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
@@ -83,7 +83,7 @@ export function InstallConfiguration({
       .then((res) => {
         setInstallData(res.data || []); // 새로운 데이터로 업데이트
         setChange((prev) => !prev);
-        setIsConfiguration(true);
+        // setIsConfiguration(true);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -94,10 +94,13 @@ export function InstallConfiguration({
   // installData의 serialNumbers를 split하여 serialList로 설정
   const serialList = installData?.serialNumbers?.split(",") || [];
 
-  // installData가 null 또는 undefined일 때 렌더링을 막기 위한 처리
+  // 오늘 날짜 표기
+  const today = format(new Date(), "yyyy-MM-dd");
+
   if (!installData) {
-    return null; // 데이터가 없으면 아무것도 렌더링하지 않음
+    return null;
   }
+
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
       <DialogContent>
@@ -114,15 +117,12 @@ export function InstallConfiguration({
             <Field label={"가맹점 주소"} orientation="horizontal">
               <Input value={installData.franchiseAddress} readOnly />
             </Field>
-            <Field label={"품목"} orientation="horizontal">
-              <Input value={installData.itemCommonName} readOnly />
-            </Field>
             <HStack>
-              <Field label={"설치 기사"} orientation="horizontal">
-                <Input value={installData.customerInstallerName} readOnly />
+              <Field label={"품목"} orientation="horizontal">
+                <Input value={installData.itemCommonName} readOnly />
               </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input value={installData.customerInstallerNo} readOnly />
+              <Field label={"수량"} orientation="horizontal">
+                <Input value={installData.installRequestAmount} readOnly />
               </Field>
             </HStack>
             <HStack>
@@ -133,11 +133,30 @@ export function InstallConfiguration({
                 <Input value={installData.businessEmployeeNo} readOnly />
               </Field>
             </HStack>
+            <HStack>
+              <Field label={"승인자"} orientation="horizontal">
+                <Input value={installData.customerEmployeeName} readOnly />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={installData.customerEmployeeNo} readOnly />
+              </Field>
+            </HStack>
+            <HStack>
+              <Field label={"설치 기사"} orientation="horizontal">
+                <Input value={installData.customerInstallerName} readOnly />
+              </Field>
+              <Field label={"사번"} orientation="horizontal">
+                <Input value={installData.customerInstallerNo} readOnly />
+              </Field>
+            </HStack>
             <Field label={"승인 날짜"} orientation="horizontal">
               <Input value={installData.installRequestDate} readOnly />
             </Field>
             <Field label={"승인 비고"} orientation="horizontal">
-              <Input value={installData.installApproveNote} readOnly />
+              <Input
+                value={installData.installApproveNote || "내용없음"}
+                readOnly
+              />
             </Field>
             {installData.installApproveConsent && <Separator />}
             <HStack>
@@ -165,20 +184,35 @@ export function InstallConfiguration({
                 </SelectRoot>
               </Field>
             </HStack>
+            <HStack>
+              <Field label={"설치 예정일"} orientation="horizontal">
+                <Input value={installData.installScheduleDate} readOnly />
+              </Field>
+              <Field
+                label={
+                  installData?.inoutHistoryDate ? "설치 완료일" : "설치 확정일"
+                }
+                orientation="horizontal"
+              >
+                <Input
+                  value={installData?.inoutHistoryDate || today}
+                  readOnly
+                />
+              </Field>
+            </HStack>
             <Field label={"완료 비고"} orientation="horizontal">
               <Textarea
-                value={inoutHistoryNote}
+                value={
+                  installData?.inoutHistoryDate
+                    ? installData?.inoutHistoryNote || "내용없음"
+                    : inoutHistoryNote
+                }
                 placeholder={installData?.inoutHistoryDate ? "" : "최대 50자"}
                 onChange={(e) => setInoutHistoryNote(e.target.value)}
                 maxHeight={"100px"}
-                readOnly={!!installData?.inoutHistoryDate}
+                readOnly={!!installData?.inoutHistoryDate} // 완료되었으면 읽기 전용
               />
             </Field>
-            {installData.installApproveConsent == true && (
-              <Field label={"완료 날짜"} orientation="horizontal">
-                <Input value={installData.inoutHistoryDate} readOnly />
-              </Field>
-            )}
           </Stack>
         </DialogBody>
         <DialogFooter>

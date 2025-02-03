@@ -3,9 +3,9 @@ import {
   Box,
   Button,
   createListCollection,
-  Flex,
   HStack,
   Input,
+  Stack,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -21,9 +21,9 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { SelectViewCode } from "./SelectViewCode.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SelectCode } from "./SelectCode.jsx";
 
 export function CommonCodeView({
   commonCodeKey,
@@ -47,7 +47,7 @@ export function CommonCodeView({
     ],
   });
 
-  // 품목 공통 코드 상세 정보 가져오기
+  // 공통 코드 상세 정보 가져오기
   useEffect(() => {
     if (commonCodeKey) {
       axios
@@ -56,7 +56,7 @@ export function CommonCodeView({
           setEditedCommonCode(res.data[0]);
         })
         .catch((error) => {
-          console.error("품목 공통 코드 정보 요청 중 오류 발생: ", error);
+          console.error("공통 코드 정보 요청 중 오류 발생: ", error);
         });
     }
   }, [commonCodeKey]);
@@ -95,14 +95,6 @@ export function CommonCodeView({
 
   // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSaveClick = () => {
-    if (!isValid) {
-      toaster.create({
-        description: "품목 코드는 대문자 3자리로 입력해야 합니다.",
-        type: "error",
-      });
-      return;
-    }
-
     const updatedCommonCode = {
       ...editedCommonCode,
     };
@@ -130,57 +122,49 @@ export function CommonCodeView({
 
   return (
     <Box>
-      <DialogRoot open={isOpen} onOpenChange={handleClose}>
+      <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
         <DialogContent>
           <DialogHeader>
             <DialogTitle>공통 코드 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Box>
-              <Box>
-                <Text fontSize={"xs"} mt={-5} mb={3}>
-                  공통 코드는 대문자로 입력해야합니다.
-                </Text>
-
-                <Flex mb={2}>
-                  {/*코드 종류 선택*/}
-                  <Text pt={5} mr={8}>
-                    코드 구분
-                  </Text>
-                  <SelectViewCode
-                    selectOptions={selectOptions}
-                    onChange={handleCodeTypeChange}
-                    value={editedCommonCode.commonCodeType || ""}
-                  />
-                </Flex>
-
-                <Field label={"공통 코드"} orientation="horizontal" mb={15}>
+              <Text fontSize={"xs"} mt={-5} mb={3}>
+                시스템코드는 대문자 3~5자리, 품목 코드는 대문자 3자리로 입력해야
+                합니다.
+              </Text>
+              <Stack gap="15px">
+                <SelectCode
+                  selectOptions={selectOptions}
+                  onChange={handleCodeTypeChange}
+                  value={editedCommonCode.commonCodeType}
+                />
+                <Field label={"코드"} orientation="horizontal">
                   <Input
                     name="commonCode"
-                    placeholder="공통 코드"
-                    value={editedCommonCode.commonCode || ""}
+                    placeholder="코드"
+                    value={editedCommonCode.commonCode}
                     onChange={handleChange}
                     maxLength={3}
                   />
                 </Field>
-                <Field label={"공통 코드명"} orientation="horizontal" mb={15}>
+                <Field label={"코드명"} orientation="horizontal">
                   <Input
                     name="commonCodeName"
                     placeholder="코드명"
-                    value={editedCommonCode.commonCodeName || ""}
+                    value={editedCommonCode.commonCodeName}
                     onChange={handleChange}
                   />
                 </Field>
-                <Field label={"비고"} orientation="horizontal" mb={15}>
+                <Field label={"비고"} orientation="horizontal">
                   <Textarea
                     name="commonCodeNote"
-                    placeholder={"최대 50자"}
-                    value={editedCommonCode.commonCodeNote || ""}
+                    placeholder=""
+                    value={editedCommonCode.commonCodeNote}
                     onChange={handleChange}
                     resize={"none"}
                   />
                 </Field>
-
                 <Field label={"사용 여부"} orientation="horizontal" mb={15}>
                   <Checkbox
                     style={{ marginRight: "550px" }}
@@ -193,7 +177,7 @@ export function CommonCodeView({
                     }
                   />
                 </Field>
-              </Box>
+              </Stack>
             </Box>
           </DialogBody>
           <DialogFooter>
@@ -216,14 +200,6 @@ export function CommonCodeView({
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
-
-      {/*<DialogConfirmation*/}
-      {/*  isOpen={isDialogOpen}*/}
-      {/*  onClose={() => setIsDialogOpen(false)}*/}
-      {/*  onConfirm={handleDeleteConfirm}*/}
-      {/*  title="삭제 확인"*/}
-      {/*  body="해당 품목을 삭제하시겠습니까?"*/}
-      {/*/>*/}
     </Box>
   );
 }

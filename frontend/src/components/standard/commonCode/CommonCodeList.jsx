@@ -10,8 +10,8 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
 import { Button } from "../../ui/button.jsx";
+import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -38,18 +38,25 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
+  const radioOptions = [
+    { value: "all", label: "전체" },
+    { value: "system", label: "시스템 코드" },
+    { value: "item", label: "품목 코드" },
+  ];
+
   return (
     <Box w={"100%"}>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <Flex gap={5} alignItems="center" mb={1}>
+      <Flex gap={5} alignItems="center">
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
         <FilterRadioGroup
-          onRadioChange={(nextRadioValue) => setSearchParams(nextRadioValue)}
+          radioOptions={radioOptions}
+          onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
       </Flex>
       <Box>

@@ -39,15 +39,16 @@ public interface InstallMapper {
 
     // 설치 요청에 대한 정보 가져오기
     @Select("""
-             SELECT DISTINCT i.install_request_key, f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
+            SELECT DISTINCT i.install_request_key, f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
             i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note, i.install_request_date,
-            i.customer_code, i.install_request_consent
-             FROM TB_INSTL_REQ i
-             LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
-             LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
-             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
-             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
-             WHERE i.install_request_key = #{installKey}
+            i.customer_code, i.install_request_consent, c.customer_name
+            FROM TB_INSTL_REQ i
+            LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
+            LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
+            LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
+            LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
+            LEFT JOIN TB_CUSTMST c ON i.item_common_code = c.item_code
+            WHERE i.install_request_key = #{installKey}
             """)
     List<Install> getInstallRequestView(int installKey);
 
@@ -125,7 +126,7 @@ public interface InstallMapper {
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
             ia.install_approve_consent as consent, ir.install_request_date, ia.install_approve_date,
-            ih.inout_history_date, ih.inout_history_note ,
+            ih.inout_history_date, ih.inout_history_note, ir.install_request_amount, ia.install_schedule_date,
             GROUP_CONCAT(DISTINCT ts.serial_no) AS serial_numbers
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
@@ -219,6 +220,7 @@ public interface InstallMapper {
                     LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                     LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
                 WHERE 1=1
+                AND (#{company} IS NULL OR c.customer_code = #{company})
                 <if test="state == 'request'">
                     AND ir.install_request_consent IS NULL
                 </if>
@@ -278,7 +280,7 @@ public interface InstallMapper {
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword);
+    List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword, String company);
 
     // 총 페이지 수 계산
     @Select("""
@@ -294,6 +296,7 @@ public interface InstallMapper {
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                 WHERE 1=1
+                AND (#{company} IS NULL OR c.customer_code = #{company})
                 <if test="state == 'request'">
                     AND ir.install_request_consent IS NULL
                 </if>
@@ -342,7 +345,7 @@ public interface InstallMapper {
             </if>
             </script>
             """)
-    Integer countAll(String state, String type, String keyword);
+    Integer countAll(String state, String type, String keyword, String company);
 
     // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
     @Select("""
@@ -360,6 +363,15 @@ public interface InstallMapper {
             """)
     int installDisapprove(int installKey);
 
+    // 설치 요청 키로 담당업체 코드 가져오기
+    @Select("""
+            SELECT customer_code
+            FROM TB_INSTL_REQ
+            WHERE install_request_key = #{installKey}
+            """)
+    String getCustomerCodeByKey(int installKey);
+
+    // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @Select("""
             SELECT output_no, install_approve_date
             FROM TB_INSTL_APPR

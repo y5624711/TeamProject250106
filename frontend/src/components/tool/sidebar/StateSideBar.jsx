@@ -35,7 +35,7 @@ export function StateSideBar() {
         borderColor="gray.200"
       >
         <Box
-          bgColor={"#8BBCFF"}
+          bgColor={"#0061A2"}
           h={"70px"}
           display="flex"
           justifyContent="center" // 가로 방향 가운데 정렬

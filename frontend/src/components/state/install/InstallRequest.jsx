@@ -40,12 +40,12 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     customerName: "",
     installRequestNote: "",
   };
+  const [installRequest, setInstallRequest] = useState(initialInstallRequest);
   const [installItemList, setInstallItemList] = useState([]);
   const [franchiseList, setFranchiseList] = useState([]);
-  const [installRequest, setInstallRequest] = useState(initialInstallRequest);
-  const [localFranchiseName, setLocalFranchiseName] = useState("");
-  const [localFranchiseCode, setLocalFranchiseCode] = useState("");
-  const [selectedFranchise, setSelectedFranchise] = useState(null);
+  // const [localFranchiseName, setLocalFranchiseName] = useState("");
+  // const [localFranchiseCode, setLocalFranchiseCode] = useState("");
+  // const [selectedFranchise, setSelectedFranchise] = useState(null);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -53,30 +53,62 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     onClose();
   };
 
+  // 입력 변경 핸들러
   const handleInputChange = (field) => (e) => {
-    const value = e.target ? e.target.value : e.value;
-    setInstallRequest((prev) => ({ ...prev, [field]: value }));
+    setInstallRequest((prev) => ({
+      ...prev,
+      [field]: e.target ? e.target.value : e.value,
+    }));
   };
 
-  // 가맹점 정보 가져오기
-  useEffect(() => {
-    axios.get(`/api/install/franchise`).then((res) => {
-      // console.log("호출", res.data);
-      const franchiseOptions = res.data.map((franchise) => ({
-        value: franchise.franchise_code,
-        label: franchise.franchise_name,
-        address: franchise.franchise_address,
-      }));
-      setFranchiseList(franchiseOptions);
-    });
-  }, []);
+  // 가맹점 변경 시 주소 자동 설정
+  const handleFranchiseChange = (selectedOption) => {
+    setInstallRequest((prev) => ({
+      ...prev,
+      franchiseName: selectedOption.label,
+      franchiseCode: selectedOption.value,
+      franchiseAddress: selectedOption.address || "",
+    }));
+  };
 
-  // 사용중인 품목명, 품목 코드 가져오기
+  // 가맹점 조회 시
+  const onFranchiseClick = () => {
+    if (selectedFranchise) {
+      setInstallRequest((prev) => ({
+        ...prev,
+        franchiseName: selectedFranchise.label,
+        franchiseCode: selectedFranchise.value,
+        franchiseAddress: selectedFranchise.address || "", // 선택된 가맹점의 주소 설정
+      }));
+    }
+  };
+
+  // 데이터 로딩 (가맹점 목록, 품목 목록)
   useEffect(() => {
-    axios
-      .get("/api/install/commonCode")
-      .then((res) => setInstallItemList(res.data))
-      .catch((error) => console.error("데이터 로딩 중 오류 발생:", error));
+    const fetchData = async () => {
+      try {
+        const [franchiseRes, itemRes] = await Promise.all([
+          axios.get("/api/install/franchise"),
+          axios.get("/api/install/commonCode"),
+        ]);
+
+        setFranchiseList(
+          franchiseRes.data.map(
+            ({ franchise_code, franchise_name, franchise_address }) => ({
+              value: franchise_code,
+              label: franchise_name,
+              address: franchise_address,
+            }),
+          ),
+        );
+
+        setInstallItemList(itemRes.data);
+      } catch (error) {
+        console.error("데이터 로딩 오류:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // 설치 요청하기
@@ -96,34 +128,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
         const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
       });
-    console.log(installRequest);
-  };
-
-  // 가맹점 변경 시 주소 자동 설정
-  const handleFranchiseChange = (selectedOption) => {
-    setLocalFranchiseName(selectedOption.label);
-    setLocalFranchiseCode(selectedOption.value);
-    setSelectedFranchise(selectedOption);
-
-    // 선택 즉시 installRequest 업데이트
-    setInstallRequest((prev) => ({
-      ...prev,
-      franchiseName: selectedOption.label,
-      franchiseCode: selectedOption.value,
-      franchiseAddress: selectedOption.address || "",
-    }));
-  };
-
-  // 가맹점 클릭 시
-  const onFranchiseClick = () => {
-    if (selectedFranchise) {
-      setInstallRequest((prev) => ({
-        ...prev,
-        franchiseName: selectedFranchise.label,
-        franchiseCode: selectedFranchise.value,
-        franchiseAddress: selectedFranchise.address || "", // 선택된 가맹점의 주소 설정
-      }));
-    }
   };
 
   // 유효성 검증
@@ -154,12 +158,12 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   styles={{
                     control: (base) => ({
                       ...base,
-                      width: "470px", // 너비 고정
+                      width: "470px",
                       height: "40px",
                     }),
                     menu: (base) => ({
                       ...base,
-                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      zIndex: 100,
                       width: "470px",
                     }),
                   }}
@@ -241,18 +245,14 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             </Field>
             <HStack>
               <Field label="요청자" orientation="horizontal">
-                <Input placeholder="요청자 사번" value={name} />
+                <Input value={name} />
               </Field>
               <Field label="사번" orientation="horizontal">
-                <Input placeholder="요청자" value={id} />
+                <Input value={id} />
               </Field>
             </HStack>
             <Field label="담당 업체" orientation="horizontal">
-              <Input
-                readOnly
-                value={installRequest.customerName}
-                onChange={handleInputChange("customerName")}
-              />
+              <Input readOnly value={installRequest.customerName} />
             </Field>
             <Field label="비고" orientation="horizontal">
               <Textarea
@@ -270,7 +270,12 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+          <Tooltip
+            content="입력을 완료해주세요."
+            disabled={isValid}
+            openDelay={100}
+            closeDelay={100}
+          >
             <Button onClick={handleRequestClick} disabled={!isValid}>
               요청
             </Button>
