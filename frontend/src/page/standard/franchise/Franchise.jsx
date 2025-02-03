@@ -21,8 +21,8 @@ import { FranchiseList } from "../../../components/standard/franchise/FranchiseL
 import { FranchiseDialog } from "../../../components/standard/franchise/FranchiseDialog.jsx";
 
 export function Franchise() {
-  // 뷰 모드 관련 상태
-  const [viewMode, setViewMode] = useState("view");
+  const [franchiseKey, setFranchiseKey] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,14 +35,13 @@ export function Franchise() {
   );
   const [standard, setStandard] = useState({
     sort: "franchise_key",
-    order: "DESC",
+    order: "desc",
   });
-  // 데이터 및 페이지 관련 상태
   const [franchiseList, setFranchiseList] = useState([]);
   const [count, setCount] = useState(0);
-  // 선택된 항목 관련 상태
-  const [franchiseKey, setFranchiseKey] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // 페이지네이션
+  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
+  const page = Number(pageParam);
 
   // 가맹점 리스트 가져오기
   useEffect(() => {
@@ -50,7 +49,6 @@ export function Franchise() {
     axios
       .get("/api/franchise/list", {
         params: {
-          // active: searchParams.get("active") || "false",
           active: checkedActive,
           page: searchParams.get("page") || "1",
           type: searchParams.get("type") || "all",
@@ -70,6 +68,7 @@ export function Franchise() {
   // 검색 상태를 URLSearchParams에 맞게 업데이트
   useEffect(() => {
     const nextSearch = { ...search };
+
     if (searchParams.get("type")) {
       nextSearch.type = searchParams.get("type");
     } else {
@@ -80,12 +79,14 @@ export function Franchise() {
     } else {
       nextSearch.keyword = "";
     }
+
     setSearch(nextSearch);
   }, [searchParams]);
 
   // 검색 파라미터 업데이트
   const handleSearchClick = () => {
     const nextSearchParam = new URLSearchParams(searchParams);
+
     if (search.keyword.trim().length > 0) {
       nextSearchParam.set("type", search.type);
       nextSearchParam.set("keyword", search.keyword);
@@ -94,18 +95,19 @@ export function Franchise() {
       nextSearchParam.delete("type");
       nextSearchParam.delete("keyword");
     }
+
     // searchParams 상태를 업데이트하여 경로에 반영
     setSearchParams(nextSearchParam);
   };
 
-  // 체크 박스 상태 바꾸고, 그에 따라 URL의 'active' 파라미터 업데이트
+  // 체크 박스 상태 바꾸고 URL 의 'active' 파라미터 업데이트
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
-    nextSearchParams.set("page", "1"); // 페이지를 1로 리셋
+    nextSearchParams.set("page", "1");
     setSearchParams(nextSearchParams);
   };
 
@@ -177,10 +179,6 @@ export function Franchise() {
         setIsLoading(false);
       });
   };
-
-  // 페이지네이션
-  const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
-  const page = Number(pageParam);
 
   // 페이지 번호 변경 시 URL 의 쿼리 파라미터 업데이트
   function handlePageChange(e) {
