@@ -15,6 +15,7 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
@@ -261,7 +262,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               />
             </Field>
             <Box display="flex" gap={4}>
-              <Field label="광역 시도" orientation="horizontal" mb={15}>
+              <Field label="광역시도" orientation="horizontal" mb={15}>
                 <Input
                   type={"text"}
                   value={warehouseState}
@@ -290,7 +291,6 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 onChange={(e) => setWarehouseAddressDetail(e.target.value)}
               />
             </Field>
-            {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
             <Field label="비고" orientation="horizontal" mb={15}>
               <Input
                 type={"text"}
@@ -307,14 +307,22 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Button
-            variant="solid"
-            onClick={() => {
-              handleSaveClick();
-            }}
+          <Tooltip
+            content="입력을 완료해 주세요."
+            openDelay={100}
+            closeDelay={100}
+            disabled={validate()}
           >
-            저장
-          </Button>
+            <Button
+              variant="solid"
+              onClick={() => {
+                handleSaveClick();
+              }}
+              disabled={!validate()}
+            >
+              등록
+            </Button>
+          </Tooltip>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
