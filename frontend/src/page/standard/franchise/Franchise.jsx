@@ -254,7 +254,7 @@ export function Franchise() {
             onFranchiseClick={handleFranchiseClick}
           />
           {/* 페이지네이션 */}
-          <Center p={4}>
+          <Center w="100%" p={2}>
             <PaginationRoot
               onPageChange={handlePageChange}
               count={count}
@@ -272,7 +272,7 @@ export function Franchise() {
           </Center>
           {/* 가맹점 등록 버튼 */}
           <Flex justify="flex-end">
-            <Button size={"lg"} mt={"-65px"} onClick={handleAddFranchiseClick}>
+            <Button size={"lg"} mt={"-58px"} onClick={handleAddFranchiseClick}>
               가맹점 등록
             </Button>
           </Flex>
