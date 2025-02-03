@@ -50,7 +50,7 @@ export function CommonCodeList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <Flex gap={5} alignItems="center" mb={1}>
+      <Flex gap={5} alignItems="center">
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />

@@ -31,8 +31,7 @@ export function FilterRadioGroup({ onRadioChange, radioOptions }) {
     <RadioGroup
       value={filter}
       onValueChange={(value) => handleRadio(value.value)}
-      my={6}
-      ml={2}
+      mb={2}
     >
       <Stack direction="row" spacing={4}>
         {radioOptions.map((option) => (

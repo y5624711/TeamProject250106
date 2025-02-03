@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <BusinessAndDepartment />,
       },
       {
-        path: "commonCode/item",
+        path: "commonCode",
         element: <CommonCode />,
       },
       {
