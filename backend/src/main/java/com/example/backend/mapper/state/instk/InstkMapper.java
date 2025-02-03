@@ -317,13 +317,15 @@ LIMIT #{offset}, 10
 
 
     // 입고 승인자의 사번을 창고 코드 조회 해오기
+    // 주문
     @Select("""
-            SELECT W.warehouse_code
-            FROM TB_EMPMST EM
-            LEFT JOIN TB_WHMST W ON EM.employee_workplace_code = W.customer_code
-            WHERE EM.employee_no = #{inputStockEmployeeNo}
+            SELECT WHM.warehouse_code
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no=BI.input_no
+            LEFT JOIN TB_WHMST  WHM  ON WHM.warehouse_code=APPR.warehouse_code
+            WHERE BI.input_key=#{inputKey} 
             """)
-    String viewWareHouseCode(String inputStockEmployeeNo);
+    String viewWareHouseCode(int inputKey);
 
     // 일반입고  창고이름
     @Select("""
@@ -346,4 +348,14 @@ LIMIT #{offset}, 10
              """)
     
     String viewReturnWareHouseName(int inputKey);
+
+    @Select("""
+            SELECT  WHM.warehouse_code
+            FROM TB_BUYIN BI
+            LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
+            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
+            WHERE BI.input_key=#{inputKey} 
+           """)
+    String viewRetrunWareHouseCode(int inputKey);
 }
