@@ -199,9 +199,6 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
-              <Field orientation="horizontal" label="회수 예정일">
-                <Input readOnly value={approveData.returnDate || "미정"} />
-              </Field>
               <HStack>
                 <Field orientation="horizontal" label="승인자">
                   <Input readOnly value={approveData.customerEmployeeName} />
@@ -218,10 +215,14 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   <Input readOnly value={approveData.customerConfigurerNo} />
                 </Field>
               </HStack>
-
-              <Field orientation="horizontal" label="승인 날짜">
-                <Input readOnly value={approveData.returnApproveDate} />
-              </Field>
+              <HStack>
+                <Field orientation="horizontal" label="회수 예정일">
+                  <Input readOnly value={approveData.returnDate || "미정"} />
+                </Field>
+                <Field orientation="horizontal" label="승인 날짜">
+                  <Input readOnly value={approveData.returnApproveDate} />
+                </Field>
+              </HStack>
               <Field orientation="horizontal" label="승인 비고">
                 {approveData.returnApproveNote ? (
                   <Textarea

@@ -129,7 +129,7 @@ export function InstkDetaiViewModal({
                       position="relative"
                     >
                       <SelectTrigger>
-                        <SelectValueText placeholder={"내역 조회"} />
+                        <SelectValueText placeholder={"내역 확인"} />
                       </SelectTrigger>
                       <SelectContent
                         style={{
@@ -196,11 +196,11 @@ export function InstkDetaiViewModal({
               )}
               {instk.inputConsent && (
                 <Field label={"입고 비고"} orientation="horizontal">
-                  {/*{instk.inputStockNote ? (*/}
-                  <Input readOnly value={instk.inputStockNote} />
-                  {/*) : (*/}
-                  {/*  <Input readOnly value={"내용 없음"} />*/}
-                  {/*)}*/}
+                  {instk.inputStockNote ? (
+                    <Input readOnly value={instk.inputStockNote} />
+                  ) : (
+                    <Input readOnly value={"내용 없음"} />
+                  )}
                 </Field>
               )}
             </Stack>

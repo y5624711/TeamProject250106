@@ -138,11 +138,11 @@ export function InstkConfirmModal({
             </HStack>
 
             <HStack>
-              <Field label={"창고 주소"} orientation="horizontal">
-                <Input value={instkDetail.warehouseAddress} readOnly />
-              </Field>
               <Field label={"담당 업체"} orientation="horizontal">
                 <Input value={instk.customerName} readOnly />
+              </Field>
+              <Field label={"창고 주소"} orientation="horizontal">
+                <Input value={instkDetail.warehouseAddress} readOnly />
               </Field>
             </HStack>
 
