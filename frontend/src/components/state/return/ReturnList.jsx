@@ -318,6 +318,7 @@ function ReturnList({
           pageSize={10}
           page={currentPage}
           variant="solid"
+          size={"md"}
         >
           <HStack>
             <PaginationPrevTrigger />
