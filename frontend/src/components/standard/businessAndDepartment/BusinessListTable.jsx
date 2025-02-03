@@ -32,12 +32,11 @@ export function BusinessListTable({
             ))}
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {department.map((list, index) => (
             <Table.Row
               key={list.departmentKey || index}
-              _hover={{ cursor: "pointer" }}
+              _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               onDoubleClick={() => openDialog(list)}
               bg={list.departmentActive ? "white" : "gray.200"}
             >

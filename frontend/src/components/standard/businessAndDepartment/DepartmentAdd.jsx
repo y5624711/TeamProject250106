@@ -9,7 +9,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { Flex, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Input, Stack, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -68,7 +68,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   return (
     <DialogRoot
       open={isOpen}
-      size={"md"}
+      size={"lg"}
       onOpenChange={() => {
         onCancel();
         resetValue();
@@ -86,25 +86,25 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
                 onChange={(e) => setDepartmentName(e.target.value)}
               />
             </Field>
-            <Flex gap={3}>
-              <Field label={"대표전화"} orientation="horizontal">
-                <Input
-                  value={departmentTel}
-                  onChange={(e) => setDepartmentTel(e.target.value)}
-                />
-              </Field>
-              <Field label={"팩스"} orientation="horizontal">
-                <Input
-                  value={departmentFax}
-                  onChange={(e) => setDepartmentFax(e.target.value)}
-                />
-              </Field>
-            </Flex>
+            <Field label={"대표전화"} orientation="horizontal">
+              <Input
+                value={departmentTel}
+                onChange={(e) => setDepartmentTel(e.target.value)}
+              />
+            </Field>
+            <Field label={"팩스"} orientation="horizontal">
+              <Input
+                value={departmentFax}
+                onChange={(e) => setDepartmentFax(e.target.value)}
+              />
+            </Field>
             <Field label={"비고"} orientation="horizontal">
               <Textarea
                 value={departmentNote}
                 onChange={(e) => setDepartmentNote(e.target.value)}
+                placeholder={"최대 50자"}
                 resize={"none"}
+                maxLength={50}
               />
             </Field>
           </Stack>

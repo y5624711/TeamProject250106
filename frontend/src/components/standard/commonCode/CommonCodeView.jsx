@@ -6,7 +6,6 @@ import {
   Flex,
   HStack,
   Input,
-  Spacer,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -43,7 +42,7 @@ export function CommonCodeView({
 
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템코드", value: "SYSTEM" },
+      { label: "시스템 코드", value: "SYSTEM" },
       { label: "품목코드", value: "ITEM" },
     ],
   });
@@ -139,11 +138,11 @@ export function CommonCodeView({
           <DialogBody>
             <Box>
               <Box>
-                <Text fontSize={"xs"} mt={-5} color={"red"}>
+                <Text fontSize={"xs"} mt={-5} mb={5} color={"red"}>
                   품목 코드는 대문자 3자리로 입력해야 합니다.
                 </Text>
 
-                <Flex mb={15}>
+                <Flex mb={2}>
                   {/*코드 종류 선택*/}
                   <Text pt={5} mr={8} ml={-1}>
                     코드 구분
@@ -153,19 +152,6 @@ export function CommonCodeView({
                     onChange={handleCodeTypeChange}
                     value={editedCommonCode.commonCodeType || ""}
                   />
-                  <Spacer />
-                  <Checkbox
-                    size={"lg"}
-                    defaultChecked={editedCommonCode.commonCodeActive}
-                    onChange={(e) =>
-                      setEditedCommonCode((prev) => ({
-                        ...prev,
-                        commonCodeActive: e.target.checked,
-                      }))
-                    }
-                  >
-                    사용여부
-                  </Checkbox>
                 </Flex>
 
                 <Field label={"품목 코드"} orientation="horizontal" mb={15}>
@@ -192,6 +178,20 @@ export function CommonCodeView({
                     value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
                     resize={"none"}
+                  />
+                </Field>
+
+                <Field label={"사용 여부"} orientation="horizontal" mb={15}>
+                  <Checkbox
+                    style={{ marginRight: "550px" }}
+                    size={"lg"}
+                    defaultChecked={editedCommonCode.commonCodeActive}
+                    onChange={(e) =>
+                      setEditedCommonCode((prev) => ({
+                        ...prev,
+                        commonCodeActive: e.target.checked,
+                      }))
+                    }
                   />
                 </Field>
               </Box>

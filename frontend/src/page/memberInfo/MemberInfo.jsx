@@ -194,7 +194,7 @@ function MemberInfo({ updateCheck }) {
             disabled={!disable}
           >
             <Button onClick={handleSaveInfo} disabled={disable}>
-              저장
+              확인
             </Button>
           </Tooltip>
         </DialogFooter>

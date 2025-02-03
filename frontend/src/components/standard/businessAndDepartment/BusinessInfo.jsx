@@ -68,7 +68,19 @@ export function BusinessInfo({
             {/*</Field>*/}
             <Field label={"대표자"} orientation="horizontal" mb={3}>
               <Input
-                variant="filled"
+                variant="filed"
+                value={business.businessName}
+                onChange={(e) =>
+                  setBusiness((prev) => ({
+                    ...prev,
+                    businessName: e.target.value,
+                  }))
+                }
+              />
+            </Field>
+            <Field label={"대표자"}>
+              <Input
+                variant="subtle"
                 value={business.businessRep || ""}
                 onChange={(e) =>
                   setBusiness((prev) => ({

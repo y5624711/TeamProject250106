@@ -9,11 +9,11 @@ export function InventoryTable({
 }) {
   // 컬럼 배열 정의
   const columnsList = [
-    { key: "itemCurrentKey", label: "#" },
-    { key: "wareHouseName", label: "창고명" },
+    { key: "inOutHistoryDate", label: "#" },
+    { key: "wareHouseName", label: "창고" },
     { key: "wareHouseCity", label: "광역시도" },
     { key: "wareHouseAddress", label: "시군" },
-    { key: "wareHouseAddressDetail", label: "창고 위치" },
+    { key: "wareHouseAddressDetail", label: "상세주소" },
     { key: "customerName", label: "협력업체" },
     { key: "commonCodeName", label: "품명" },
     { key: "count", label: "수량" },
@@ -30,12 +30,16 @@ export function InventoryTable({
             onSortChange={(nextSearchParams) =>
               setSearchParams(nextSearchParams)
             }
+            defaultSortKey={"inOutHistoryDate"}
           />
         </Table.Row>
       </Table.Header>
       <Table.Body>
         {inventoryList.map((item, index) => (
-          <Table.Row key={item.inoutHistoryNote || index}>
+          <Table.Row
+            key={item.inoutHistoryNote || index}
+            _hover={{ backgroundColor: "gray.200" }}
+          >
             <Table.Cell textAlign="center">{index + 1}</Table.Cell>
             <Table.Cell textAlign="center">{item.wareHouseName}</Table.Cell>
             <Table.Cell textAlign="center">{item.wareHouseCity}</Table.Cell>
@@ -45,7 +49,7 @@ export function InventoryTable({
             </Table.Cell>
             <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
             <Table.Cell textAlign="center">{item.commonCodeName}</Table.Cell>
-            <Table.Cell textAlign="end">{item.count}</Table.Cell>
+            <Table.Cell textAlign="center">{item.count}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

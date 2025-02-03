@@ -9,7 +9,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { HStack, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Input, Stack, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
@@ -72,7 +72,7 @@ export function DepartmentViewAndUpdateDialog({
 
   return (
     <DialogRoot
-      size={"md"}
+      size={"lg"}
       open={isOpen}
       onOpenChange={() => {
         onCancel();
@@ -83,20 +83,20 @@ export function DepartmentViewAndUpdateDialog({
           <DialogTitle>부서 상세 정보</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={2}>
-            <Checkbox
-              size={"lg"}
-              defaultChecked={department.departmentActive}
-              onChange={(e) =>
-                setDepartmentData((prev) => ({
-                  ...prev,
-                  departmentActive: e.target.checked,
-                }))
-              }
-            >
-              부서 사용여부
-            </Checkbox>
-            <Field label={"부서코드"} orientation="horizontal" mb={15}>
+          <Stack gap={5}>
+            <Field label={"부서명"} orientation="horizontal">
+              <Input
+                value={department.departmentName || ""}
+                onChange={(e) =>
+                  setDepartmentData((prev) => ({
+                    ...prev,
+                    departmentName: e.target.value,
+                  }))
+                }
+              />
+            </Field>
+
+            <Field label={"부서코드"} orientation="horizontal">
               <Input
                 value={department.departmentCode || ""}
                 onChange={(e) =>
@@ -109,45 +109,32 @@ export function DepartmentViewAndUpdateDialog({
               />
             </Field>
 
-            <Field label={"부서명"} orientation="horizontal" mb={15}>
+            <Field label={"대표전화"} orientation="horizontal">
               <Input
-                value={department.departmentName || ""}
+                value={department.departmentTel || ""}
                 onChange={(e) =>
                   setDepartmentData((prev) => ({
                     ...prev,
-                    departmentName: e.target.value,
+                    departmentTel: e.target.value,
                   }))
                 }
               />
             </Field>
-
-            <HStack gap={5}>
-              <Field label={"대표전화"} orientation="horizontal" mb={15}>
-                <Input
-                  value={department.departmentTel || ""}
-                  onChange={(e) =>
-                    setDepartmentData((prev) => ({
-                      ...prev,
-                      departmentTel: e.target.value,
-                    }))
-                  }
-                />
-              </Field>
-              <Field label={"팩스"} orientation="horizontal" mb={15}>
-                <Input
-                  value={department.departmentFax || ""}
-                  onChange={(e) =>
-                    setDepartmentData((prev) => ({
-                      ...prev,
-                      departmentFax: e.target.value,
-                    }))
-                  }
-                />
-              </Field>
-            </HStack>
+            <Field label={"팩스"} orientation="horizontal">
+              <Input
+                value={department.departmentFax || ""}
+                onChange={(e) =>
+                  setDepartmentData((prev) => ({
+                    ...prev,
+                    departmentFax: e.target.value,
+                  }))
+                }
+              />
+            </Field>
             <Field label={"비고"} orientation="horizontal">
               <Textarea
                 resize={"none"}
+                maxLength={50}
                 value={department.departmentNote || ""}
                 onChange={(e) => {
                   setDepartmentData((prev) => ({
@@ -155,6 +142,20 @@ export function DepartmentViewAndUpdateDialog({
                     departmentNote: e.target.value,
                   }));
                 }}
+              />
+            </Field>
+
+            <Field label={"사용여부"} orientation="horizontal">
+              <Checkbox
+                size={"lg"}
+                style={{ marginRight: "550px" }}
+                defaultChecked={department.departmentActive}
+                onChange={(e) =>
+                  setDepartmentData((prev) => ({
+                    ...prev,
+                    departmentActive: e.target.checked,
+                  }))
+                }
               />
             </Field>
           </Stack>

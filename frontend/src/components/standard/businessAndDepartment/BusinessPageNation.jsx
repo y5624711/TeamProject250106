@@ -10,6 +10,7 @@ export function BusinessPageNation({ page, count, handlePageChange }) {
   return (
     <Center>
       <PaginationRoot
+        size={"md"}
         onPageChange={handlePageChange}
         count={count}
         pageSize={10}
