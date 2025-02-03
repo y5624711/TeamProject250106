@@ -14,72 +14,85 @@ public interface ReturnMapper {
 
     //반품 관리 리스트
     @Select("""
-            <script>  
-            SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
-                   rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
-                   customer_employee_no, emce.employee_name customerEmployeeName, customer_configurer_no, emcc.employee_name customerConfigurerName,
-                   return_request_date, return_approve_date, return_consent
-            FROM TB_RTN_REQ rr
-            LEFT JOIN TB_RTN_APPR ra
-            ON ra.return_request_key = rr.return_request_key
-            LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
-            LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
-            LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
-            LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
-            LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
-            LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
-            LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
-            WHERE
-            <if test="state == 'all'">
-                (1=1 || return_consent IS NOT true || return_consent IS NOT false)
-            </if>
-            <if test="state == 'request'">
-                return_consent IS NULL
-            </if>
-            <if test="state == 'approve'">
-                return_consent = true
-            </if>
-            <if test="state == 'disapprove'">
-                return_consent = false
-            </if>
-            <if test="keyword != null and keyword.trim()!=''">
-                AND (
-                    <trim prefixOverrides="OR">
-                        <if test="type=='all' or type=='franchiseName'">
-                            franchise_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>                
-                        <if test="type=='all' or type=='serialNo'">
-                            OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
+                        <script>  
+                        SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
+                               rr.business_employee_no, emb.employee_name AS businessEmployeeName, rr.customer_code, customer_name, 
+                               customer_employee_no, emce.employee_name customerEmployeeName, customer_configurer_no, emcc.employee_name customerConfigurerName,
+                               return_request_date, return_approve_date, return_consent
+                        FROM TB_RTN_REQ rr
+                        LEFT JOIN TB_RTN_APPR ra
+                        ON ra.return_request_key = rr.return_request_key
+                        LEFT JOIN TB_FRNCHSMST f ON f.franchise_code = rr.franchise_code
+                        LEFT JOIN TB_CUSTMST c ON c.customer_code = rr.customer_code
+                        LEFT JOIN TB_ITEMSUB its ON its.serial_no = rr.serial_no
+                        LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
+                        LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
+                        LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
+                        LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
+                        WHERE
+                        <if test="state == 'all'">
+                            (1=1 || return_consent IS NOT true || return_consent IS NOT false)
                         </if>
-                        <if test="type=='all' or type=='itemCommonName'">
-                            OR itc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        <if test="state == 'request'">
+                            return_consent IS NULL
                         </if>
-                        <if test="type=='all' or type=='returnNo'">
-                            OR ra.return_no LIKE CONCAT('%', #{keyword}, '%')
-                        </if>                
-                        <if test="type=='all' or type=='customerName'">
-                            OR customer_name LIKE CONCAT('%', #{keyword}, '%')
+                        <if test="state == 'approve'">
+                            return_consent = true
                         </if>
-                        <if test="type=='all' or type=='businessEmployeeName'">
-                            OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                            OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                        <if test="state == 'disapprove'">
+                            return_consent = false
                         </if>
-                        <if test="type=='all' or type=='customerEmployeeName'">
-                            OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
-                            OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
+            
+                        <!-- userCompany 값에 따라 조건 추가 -->
+                        <if test="userCompany != null">
+                            <choose>
+                                <when test="userCompany.startsWith('CUS')">
+                                    AND rr.customer_code = #{userCompany}
+                                </when>
+                                <when test="userCompany.startsWith('BIZ')">
+                                    AND 1=1
+                                </when>
+                            </choose>
                         </if>
-                        <if test="type=='all' or type=='customerConfigurerName'">
-                            OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
-                            OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                        </if>             
-                    </trim>
-                )    
-            </if>
-            ORDER BY ${sort} ${order}
-            LIMIT #{offset}, 10    
-            </script>      
+            
+                        <if test="keyword != null and keyword.trim()!=''">
+                            AND (
+                                <trim prefixOverrides="OR">
+                                    <if test="type=='all' or type=='franchiseName'">
+                                        franchise_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>                
+                                    <if test="type=='all' or type=='serialNo'">
+                                        OR rr.serial_no LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>
+                                    <if test="type=='all' or type=='itemCommonName'">
+                                        OR itc.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>
+                                    <if test="type=='all' or type=='returnNo'">
+                                        OR ra.return_no LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>                
+                                    <if test="type=='all' or type=='customerName'">
+                                        OR customer_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>
+                                    <if test="type=='all' or type=='businessEmployeeName'">
+                                        OR rr.business_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                                        OR emb.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>
+                                    <if test="type=='all' or type=='customerEmployeeName'">
+                                        OR ra.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                                        OR emce.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>
+                                    <if test="type=='all' or type=='customerConfigurerName'">
+                                        OR ra.customer_configurer_no LIKE CONCAT('%', #{keyword}, '%')
+                                        OR emcc.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                    </if>             
+                                </trim>
+                            )    
+                        </if>
+                        ORDER BY ${sort} ${order}
+                        LIMIT #{offset}, 10    
+                        </script>      
             """)
-    List<Return> getReturnList(String state, Integer offset, String type, String keyword, String sort, String order);
+    List<Return> getReturnList(String state, Integer offset, String type, String keyword, String sort, String order, String userCompany);
 
     //입출 내역 생기면 franchise도 불러올 수 있음
     @Select("""

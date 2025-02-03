@@ -7,6 +7,7 @@ import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class ReturnService {
     final EmployeeMapper employeeMapper;
 
     //반환 관리 리스트
-    public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order) {
+    public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order, Authentication auth) {
         // 날짜순은 두개 합쳐야함
         if ("date".equals(sort)) {
             sort = "COALESCE(return_approve_date, return_request_date)";
@@ -32,7 +33,13 @@ public class ReturnService {
         Integer offset = (page - 1) * 10;
 
         //리스트
-        List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order);
+        //본사일 경우 리스트 모두 보임
+        //협력사일 경우 자기 회사만
+        String userCompany = employeeMapper.checkUserCompany(auth.getName());
+        System.out.println("회사코드: " + userCompany);
+
+        List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order, userCompany);
+//        System.out.println("returnList: " + returnList);
         //총 수
         Integer count = mapper.countAll(state, type, keyword);
 

@@ -29,7 +29,8 @@ public class ReturnController {
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
-            @RequestParam(value = "order", defaultValue = "DESC") String order
+            @RequestParam(value = "order", defaultValue = "DESC") String order,
+            Authentication auth
     ) {
 //        System.out.println("page:" + page);
 //        System.out.println("state:" + state);
@@ -38,7 +39,7 @@ public class ReturnController {
 //        System.out.println("sort:" + sort);
 //        System.out.println("order:" + order);
 
-        return service.returnList(page, state, type, keyword, sort, order);
+        return service.returnList(page, state, type, keyword, sort, order, auth);
     }
 
     //시리얼 번호를 통해 정보 불러오기 (반품 요청창 작성)
