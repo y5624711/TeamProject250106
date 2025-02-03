@@ -30,9 +30,7 @@ import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
-EmployeeViewDialog.propTypes = {};
 
-SortColumnHeader.propTypes = { hanldeSortContorl: PropTypes.func };
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
@@ -149,14 +147,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       return newParams; // 새로운 객체를 반환
     });
   };
+  // 등록 모달창
   const handleModalControl = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  // 상세 모달창
   const handleviewModalControl = () => {
     setIsviewModalOpen(!isviewModalOpen);
   };
 
+  //파람지우기
   const handleResetClick = () => {
     setSearchParams({}); // 검색 파라미터 초기화
     setPage(1); // 페이지 1로 초기화
@@ -201,10 +202,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               ))}
             </SelectContent>
           </SelectRoot>
+
         </Box>
         <Input
           w={"50%"}
-          placeholder={"검색어를 입력해주세요."}
+          placeholder={"검색어를 입력해 주세요."}
           value={keyword}
           onChange={(e) => {
             setKeyword(e.target.value);
@@ -218,13 +220,15 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
-        <Button onClick={handleSearchButton}>검색</Button>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)"
+        >검색</Button>
       </HStack>
       <Checkbox
+        my={3}
         checked={isActiveVisible}
         onCheckedChange={(e) => handleVisible()}
       >
-        전체 조회
+        미사용 포함 조회
       </Checkbox>
       <Table.Root interactive>
         <Table.Header>
@@ -243,29 +247,28 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               }}
               bg={item.employeeActive ? "white" : "gray.100"}
             >
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell> {item.employeeWorkPlaceCode} </Table.Cell>
-              <Table.Cell>
+              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeWorkPlaceCode} </Table.Cell>
+              <Table.Cell textAlign="center">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
-              </Table.Cell>
-              <Table.Cell>{item.employeeWorkPlaceTel}</Table.Cell>
-              <Table.Cell>
-                {/*협력업체는 부서가 없어서 */}
-                {item.employeeCommonCode === "CUS"
-                  ? ""
-                  : item.employeeWorkPlaceName}
-              </Table.Cell>
-              <Table.Cell>
-                {item.employeeCommonCode === "CUS"
-                  ? ""
-                  : item.employeeWorkPlaceTel}
-              </Table.Cell>
-              <Table.Cell> {item.employeeName} </Table.Cell>
-              <Table.Cell> {item.employeeTel} </Table.Cell>
-
-              <Table.Cell> {item.employeeNo} </Table.Cell>
+              </Table.Cell  >
+              <Table.Cell textAlign="center">{item.employeeWorkPlaceTel}</Table.Cell>
+              {/*<Table.Cell textAlign="center">*/}
+              {/*  /!*협력업체는 부서가 없어서 *!/*/}
+              {/*  {item.employeeCommonCode === "CUS"*/}
+              {/*    ? ""*/}
+              {/*    : item.employeeWorkPlaceName}*/}
+              {/*</Table.Cell >*/}
+              {/*<Table.Cell textAlign="center">*/}
+              {/*  {item.employeeCommonCode === "CUS"*/}
+              {/*    ? ""*/}
+              {/*    : item.employeeWorkPlaceTel}*/}
+              {/*</Table.Cell>*/}
+              <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeTel} </Table.Cell>
+              <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
           {memberList.length === 0 && <Box> 조회 결과 x</Box>}
@@ -275,34 +278,33 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       <Flex justify="space-between" mt={"20px"}>
         <Box />
 
-        <Box>
-          <PaginationRoot
-            onPageChange={handlePageChange}
-            count={count}
-            pageSize={10}
-            page={page}
-            defaultPage={page}
-            variant={"solid"}
-          >
-            <PaginationPrevTrigger>
-              <FaArrowLeft />
-            </PaginationPrevTrigger>
-            <PaginationItems />
-            <PaginationNextTrigger>
-              <FaArrowRight />
-            </PaginationNextTrigger>
-          </PaginationRoot>
-        </Box>
+          <Box>
+            <PaginationRoot
+              onPageChange={handlePageChange}
+              count={count}
+              pageSize={10}
+              page={page}
+              defaultPage={page}
+              variant={"solid"}
+            >
+              <PaginationPrevTrigger>
+                <FaArrowLeft />
+              </PaginationPrevTrigger>
+              <PaginationItems />
+              <PaginationNextTrigger>
+                <FaArrowRight />
+              </PaginationNextTrigger>
+            </PaginationRoot>
+          </Box>
 
-        <Button
-          display="flex"
-          justifyContent="flex-end"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          직원 등록
-        </Button>
+          <Button
+            display="flex" justifyContent="flex-end"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            직원 등록
+          </Button>
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}

@@ -23,7 +23,7 @@ export function Employee() {
     <Box display={"flex"}>
       <StandardSideBar />
       <Box p={5} w={"100%"}>
-        <Heading>기준정보관리 {">"} 인사관리</Heading>
+        <Heading>기준정보관리 {">"} 인사 관리</Heading>
         <EmployeeList
           onSelect={handleSelectedNo}
           updateList={addCheck}
