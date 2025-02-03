@@ -20,7 +20,6 @@ export function Sort({ sortOptions, onSortChange, defaultSortKey }) {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("sort", key); // 정렬 기준 키
     nextSearchParams.set("order", nextOrder); // 오름차순/내림차순
-    nextSearchParams.set("page", "1"); // 페이지는 1로 리셋
 
     // 부모 컴포넌트로 새 검색 파라미터 전달
     onSortChange(nextSearchParams);
