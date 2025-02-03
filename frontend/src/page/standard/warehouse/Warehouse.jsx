@@ -147,8 +147,8 @@ const warehouseOptionList = createListCollection({
     { label: "전체", value: "all" },
     { label: "창고", value: "warehouse" },
     { label: "담당 업체", value: "customer" },
-    { label: "업체 직원", value: "employee" },
-    { label: "광역 시도", value: "warehouseState" },
+    { label: "관리자", value: "employee" },
+    { label: "광역시도", value: "warehouseState" },
     { label: "시군", value: "warehouseCity" },
   ],
 });

@@ -16,6 +16,8 @@ function InoutHistoryList({
   setSearchParams,
   countInoutHistory,
   handlePageChangeClick,
+  search,
+  setSearch,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedInoutHistory, setSelectedInoutHistory] = useState(null);
@@ -43,9 +45,17 @@ function InoutHistoryList({
               <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
                 <Sort
                   sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) =>
-                    setSearchParams(nextSearchParam)
-                  }
+                  onSortChange={(nextSearchParam) => {
+                    setSearchParams(nextSearchParam);
+                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                    const sortMatch = searchString.match(/sort=([^&]*)/);
+                    const orderMatch = searchString.match(/order=([^&]*)/);
+                    setSearch({
+                      ...search,
+                      order: orderMatch[1],
+                      sort: sortMatch[1],
+                    });
+                  }}
                   defaultSortKey={"inoutHistoryDate"}
                 />
               </Table.Row>
@@ -67,6 +77,7 @@ function InoutHistoryList({
           <PaginationRoot
             onPageChange={handlePageChangeClick}
             count={countInoutHistory}
+            page={currentPage}
             pageSize={10}
             siblingCount={2}
             defaultPage={currentPage}

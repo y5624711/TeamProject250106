@@ -14,19 +14,21 @@ import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistor
 import { Radio, RadioGroup } from "../../../components/ui/radio.jsx";
 
 function InoutHistory(props) {
+  const [searchParams, setSearchParams] = useSearchParams("");
+  const [state, setState] = useState("all");
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
-    state: "all",
+    sort: "",
+    order: "",
+    state: state,
   });
   const navigate = useNavigate();
   const [inoutHistoryList, setInoutHistoryList] = useState([]);
   const [countInoutHistory, setCountInoutHistory] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
-  const [state, setState] = useState(searchParams.get("state") || "all");
   const [value, setValue] = useState("inout");
 
   // 물품입출내역 정보 가져오기
@@ -38,7 +40,7 @@ function InoutHistory(props) {
         setCountInoutHistory(res.data.count);
       });
     window.scrollTo(0, 0);
-  }, [searchParams]);
+  }, [searchParams, state]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -50,23 +52,24 @@ function InoutHistory(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: 1,
+      state: search.state,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/inoutHistory/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: e.page,
       state: search.state,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/inoutHistory/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   useEffect(() => {
@@ -80,6 +83,8 @@ function InoutHistory(props) {
       type: search.type,
       keyword: search.keyword,
       state: nextSearchParam.toString(),
+      order: search.order,
+      sort: search.sort,
     });
   };
 
@@ -111,17 +116,21 @@ function InoutHistory(props) {
             handleSearchClick={handleSearchClick}
           />
           <RadioGroup
-            value={state}
-            onValueChange={(value) => handleRadio(value.value)}
+            value={search.state}
+            onValueChange={(value) => {
+              handleRadio(value.value);
+            }}
             my={6}
             ml={2}
             mt={4}
             onRadioChange={(nextSearchParam) => {
               setSearchParams(nextSearchParam);
-              setSearch({
+              setSearch(...search, {
                 type: search.type,
                 keyword: search.keyword,
-                state: nextSearchParam.toString(),
+                state: value,
+                sort: search.sort,
+                order: search.order,
               });
             }}
           >
@@ -140,6 +149,8 @@ function InoutHistory(props) {
             setSearchParams={setSearchParams}
             handlePageChangeClick={handlePageChangeClick}
             countInoutHistory={countInoutHistory}
+            search={search}
+            setSearch={setSearch}
           />
         </Stack>
       </HStack>

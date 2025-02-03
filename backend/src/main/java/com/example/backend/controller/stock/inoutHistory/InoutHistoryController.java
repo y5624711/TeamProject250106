@@ -3,6 +3,7 @@ package com.example.backend.controller.stock.inoutHistory;
 import com.example.backend.dto.stock.inoutHistory.InoutHistory;
 import com.example.backend.service.stock.inoutHistory.InoutHistoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -20,8 +21,9 @@ public class InoutHistoryController {
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "state", defaultValue = "") String state,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
-                                    @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.list(page, searchKeyword, searchType, sort, order, state);
+                                    @RequestParam(value = "order", defaultValue = "") String order,
+                                    Authentication auth) {
+        return service.list(page, searchKeyword, searchType, sort, order, state, auth);
     }
 
     @PostMapping("add")

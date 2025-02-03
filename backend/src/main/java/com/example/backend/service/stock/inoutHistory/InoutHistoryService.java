@@ -2,7 +2,9 @@ package com.example.backend.service.stock.inoutHistory;
 
 import com.example.backend.dto.stock.inoutHistory.InoutHistory;
 import com.example.backend.mapper.stock.inoutHistory.InoutHistoryMapper;
+import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -12,11 +14,18 @@ import java.util.Map;
 public class InoutHistoryService {
 
     final InoutHistoryMapper mapper;
+    final StocktakingMapper stocktakingMapper;
 
-    public Map<String, Object> list(Integer page, String searchKeyword, String searchType, String sort, String order, String state) {
+    public Map<String, Object> list(Integer page, String searchKeyword, String searchType, String sort, String order, String state, Authentication auth) {
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
-        return Map.of("list", mapper.list(pageList, searchKeyword, searchType, sort, order, state), "count", mapper.count(searchKeyword, searchType, state));
+
+//        로그인한 정보로 일터 코드 가져오기
+        String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
+//        BIZ 인지, CUS 인지 확인하는 용도
+        String workplace = workplaceCode.substring(0, 3);
+
+        return Map.of("list", mapper.list(pageList, searchKeyword, searchType, sort, order, state, workplaceCode, workplace), "count", mapper.count(searchKeyword, searchType, state, workplaceCode, workplace));
     }
 
     // camelCase를 snake_case로 변환하는 로직

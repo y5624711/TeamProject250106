@@ -31,7 +31,14 @@ public interface StocktakingMapper {
                 LEFT JOIN TB_SYSCOMM itcm ON s.item_code=itcm.common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
             WHERE
+                <if test="workplace == 'CUS'">
+                    w.customer_code=#{workplaceCode}
+                </if>
+                <if test="workplace == 'BIZ'">
+                    1=1
+                </if>
                 <if test="searchType == 'all'">
+                AND (
                     w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -42,34 +49,44 @@ public interface StocktakingMapper {
                  OR s.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.stocktaking_type LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.stocktaking_date LIKE CONCAT('%',#{searchKeyword},'%')
+                    )
                 </if>
                 <if test="searchType != 'all'">
                      <choose>
                          <when test="searchType == 'customer'">
+                        AND(
                              cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'item'">
+                        AND(
                              itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'warehouse'">
+                        AND(
                              s.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'customerEmployee'">
+                        AND(
                              s.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                           OR emp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'type'">
+                        AND(
                              s.stocktaking_type LIKE CONCAT('%',#{searchKeyword},'%')
+                             )
                          </when>
                          <when test="searchType == 'date'">
+                        AND(
                              s.stocktaking_date LIKE CONCAT('%',#{searchKeyword},'%')
+                             )
                          </when>
-                         <otherwise>
-                             1 = 0 
-                         </otherwise>
                      </choose>
                  </if>
             ORDER BY 
@@ -82,7 +99,7 @@ public interface StocktakingMapper {
             LIMIT #{pageList},10
             </script>
             """)
-    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList, String sort, String order);
+    List<Stocktaking> list(String searchType, String searchKeyword, Integer pageList, String sort, String order, String workplaceCode, String workplace);
 
     @Select("""
             <script>
@@ -93,7 +110,14 @@ public interface StocktakingMapper {
                 LEFT JOIN TB_SYSCOMM itcm ON s.item_code=itcm.common_code
                 LEFT JOIN TB_EMPMST emp ON s.customer_employee_no=emp.employee_no
             WHERE
+                <if test="workplace == 'CUS'">
+                    w.customer_code=#{workplaceCode}
+                </if>
+                <if test="workplace == 'BIZ'">
+                    1=1
+                </if>
                 <if test="searchType == 'all'">
+                AND (
                     w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -104,39 +128,49 @@ public interface StocktakingMapper {
                  OR s.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.stocktaking_type LIKE CONCAT('%',#{searchKeyword},'%')
                  OR s.stocktaking_date LIKE CONCAT('%',#{searchKeyword},'%')
+                    )
                 </if>
                 <if test="searchType != 'all'">
                      <choose>
                          <when test="searchType == 'customer'">
+                        AND(
                              cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'item'">
+                        AND(
                              itcm.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR s.item_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'warehouse'">
+                        AND(
                              s.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                           OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'customerEmployee'">
+                        AND(
                              s.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
                           OR emp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          )
                          </when>
                          <when test="searchType == 'type'">
+                        AND(
                              s.stocktaking_type LIKE CONCAT('%',#{searchKeyword},'%')
+                             )
                          </when>
                          <when test="searchType == 'date'">
+                        AND(
                              s.stocktaking_date LIKE CONCAT('%',#{searchKeyword},'%')
+                             )
                          </when>
-                         <otherwise>
-                             1 = 0 
-                         </otherwise>
                      </choose>
                  </if>
             </script>
             """)
-    Integer count(String searchType, String searchKeyword);
+    Integer count(String searchType, String searchKeyword, String workplaceCode, String workplace);
 
     @Select("""
             SELECT s.stocktaking_key,
@@ -175,11 +209,18 @@ public interface StocktakingMapper {
     int add(Stocktaking stocktaking);
 
     @Select("""
+            <script>
             SELECT warehouse_name, warehouse_code
             FROM TB_WHMST
-            WHERE customer_code=#{customerCode}
+            <if test="workplace == 'BIZ'">
+            </if>
+            <if test="workplace == 'CUS'">
+            WHERE 
+            customer_code=#{workplaceCode}
+            </if>
+            </script>
             """)
-    List<Stocktaking> getStocktakingWarehouseList(String customerCode);
+    List<Stocktaking> getStocktakingWarehouseList(String workplaceCode, String workplace);
 
     @Select("""
             SELECT i.item_common_code itemCode, s.common_code_name itemName
@@ -211,5 +252,5 @@ public interface StocktakingMapper {
             FROM TB_EMPMST
             WHERE employee_no=#{name}
             """)
-    String getCustomerCode(String name);
+    String getWorkplaceCode(String name);
 }
