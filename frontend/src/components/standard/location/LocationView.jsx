@@ -33,6 +33,7 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
 
       <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea
+          placeholder="최대 50자"
           style={{ maxHeight: "100px", overflowY: "auto" }}
           value={locationDetail.locationNote}
           onChange={(e) =>

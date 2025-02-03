@@ -222,7 +222,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               placeholder="최대 50자"
               value={customerNote}
               onChange={(e) => setCustomerNote(e.target.value)}
-              maxHeight={"100px"}
+              style={{ maxHeight: "100px", overflowY: "auto" }}
             />
           </Field>
         </DialogBody>
