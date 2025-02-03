@@ -229,7 +229,7 @@ function ReturnList({
               onClick={() => handleSort("emb.employee_name")}
             >
               <HStack alignItems="center" justify="center">
-                청자
+                요청자
                 {sort === "emb.employee_name" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
@@ -282,15 +282,19 @@ function ReturnList({
               <Table.Cell textAlign="center">{data.customerName}</Table.Cell>
 
               <Table.Cell textAlign="center">{data.serialNo}</Table.Cell>
-              <Table.Cell textAlign="center">{data.returnNo}</Table.Cell>
+              <Table.Cell textAlign="center">
+                {data.returnNo ? data.returnNo : "-"}
+              </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.businessEmployeeName}
               </Table.Cell>
               <Table.Cell textAlign="center">
-                {data.customerEmployeeName}
+                {data.customerEmployeeName ? data.customerEmployeeName : "-"}
               </Table.Cell>
               <Table.Cell textAlign="center">
-                {data.customerConfigurerName}
+                {data.customerConfigurerName
+                  ? data.customerConfigurerName
+                  : "-"}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.returnApproveDate || data.returnRequestDate}
