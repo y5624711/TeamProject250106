@@ -115,7 +115,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"팩스 번호"}>
+                  <Field orientation="horizontal" label={"팩스"}>
                     <Input
                       name="customerFax"
                       value={customer.customerFax}
@@ -123,7 +123,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                     />
                   </Field>
                 </HStack>
-                <Field orientation="horizontal" label={"우편 번호"}>
+                <Field orientation="horizontal" label={"우편번호"}>
                   <Input
                     name={"customerPost"}
                     value={customer.customerPost}

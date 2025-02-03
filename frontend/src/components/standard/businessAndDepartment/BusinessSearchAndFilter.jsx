@@ -26,7 +26,6 @@ export function BusinessSearchAndFilter({
   const optionList = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "부서번호", value: "number" },
       { label: "부서명", value: "name" },
     ],
   });

@@ -192,14 +192,14 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                 onChange={(e) => setCustomerTel(e.target.value)}
               />
             </Field>
-            <Field orientation="horizontal" label={"팩스 번호"}>
+            <Field orientation="horizontal" label={"팩스"}>
               <Input
                 value={customerFax}
                 onChange={(e) => setCustomerFax(e.target.value)}
               />
             </Field>
           </HStack>
-          <Field orientation="horizontal" label={"우편 번호"}>
+          <Field orientation="horizontal" label={"우편번호"}>
             <Input
               value={customerPost}
               onChange={(e) => setCustomerPost(e.target.value)}

@@ -100,7 +100,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label={"팩스 번호"}>
+                <Field label={"팩스"}>
                   <Input
                     name="customerFax"
                     value={customer.customerFax}
