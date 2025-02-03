@@ -1,4 +1,5 @@
 import {
+  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -26,6 +27,7 @@ import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
+import Select from "react-select";
 
 export function InstkDetaiViewModal({
   isModalOpen,
@@ -80,10 +82,6 @@ export function InstkDetaiViewModal({
   if (isLoading || isDataLoading) {
     return <Input readOnly value="로딩 중..." />;
   }
-  // console.log(detailData?.serialLocationList, "77번라인");
-  // console.log(serialLocationList, "시리얼 로케");
-
-  // console.log(selectLocationKey, "로케키");
 
   const handleSerialChange = (e) => {
     // console.log(e);
@@ -181,10 +179,10 @@ export function InstkDetaiViewModal({
               {instk.inputConsent && (
                 <HStack>
                   <Field label={"입고 승인자"} orientation="horizontal">
-                    <Input readOnl value={instk.inputStockEmployeeName} />
+                    <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
                   <Field label={"사번"} orientation="horizontal">
-                    <Input readOnl value={instk.inputStockEmployeeNo} />
+                    <Input readOnly value={instk.inputStockEmployeeNo} />
                   </Field>
                 </HStack>
               )}

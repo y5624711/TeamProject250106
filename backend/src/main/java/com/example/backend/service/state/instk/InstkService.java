@@ -47,6 +47,8 @@ public class InstkService {
 //      Map<String,Integer> map= inoutHistoryMapper.getSerialNoAndLocationKeyByInputNo(inoutNo);
         //  입고시 비고내용
          String inputStockNote= mapper.getInstkNoteByInputKey(inputKey);
+
+        System.out.println("inputStockNote = " + inputStockNote);
         String warehouseName="";
 
          if(inputCommonCodeName.equals("입고")) {
@@ -58,7 +60,7 @@ public class InstkService {
         System.out.println("warehouseName = " + warehouseName);
 
       Instk instk = new Instk();
-      instk.setInputNote(inputStockNote);
+      instk.setInputStockNote(inputStockNote);
       instk.setSerialLocationList(serialLocationList);
       instk.setWareHouseName(warehouseName);
         System.out.println("instk = " + instk);
@@ -171,11 +173,10 @@ public class InstkService {
 
     // 입고 반려
     public Boolean[] rejectInstk(int inputKey) {
-        //기존 입고삳태
-        Boolean selectedConsent =mapper.selectedConsent(inputKey);
-        // 업데이트한 입고상태
-        int cnt =mapper.rejectInstk(inputKey);
-
-        return  new Boolean[] {selectedConsent,cnt==1};
+        //반려 체크
+        Boolean currentStatus = mapper.selectedConsent(inputKey);
+        //업데이트 체크
+        int updateResult = mapper.rejectInstk(inputKey);
+        return new Boolean[] {currentStatus, updateResult == 1};
     }
 }

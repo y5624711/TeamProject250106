@@ -1,4 +1,11 @@
-import { HStack, Input, Separator, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Input,
+  Separator,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
@@ -9,6 +16,7 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
+  DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -39,7 +47,7 @@ export function InstkConfirmModal({
       });
   }, []);
 
-  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가 ,입고 상세에 시리얼 번호 로케이션 등등
+  // 입고 추가
   const handleAddInstk = () => {
     axios
       .post("/api/instk/add", {
@@ -86,6 +94,7 @@ export function InstkConfirmModal({
       })
       .finally(() => {
         setChangeModal();
+        onApprovalSuccess();
       });
   };
   console.log(instk, instkDetail);
@@ -108,34 +117,31 @@ export function InstkConfirmModal({
 
             <HStack>
               <Field orientation="horizontal" label={"품목"}>
-                <Input readOnly value={instk.itemCommonName} readOnly />
+                <Input readOnly value={instk.itemCommonName} />
               </Field>
               <Field label={"수량"} orientation="horizontal">
-                <Input readOnly value={instk.itemAmount} readOnly />
+                <Input readOnly value={instk.itemAmount} />
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"주문 요청자 "} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeName} readOnly />
+                <Input readOnly value={instk.requestEmployeeName} />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeNo} readOnly />
+                <Input readOnly value={instk.requestEmployeeNo} />
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"주문 승인자"} orientation="horizontal">
-                <Input value={instk.requestApprovalEmployeeName} readOnly />
+                <Input value={instk.requestApprovalEmployeeName} />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input
-                  readOnly
-                  value={instk.requestApprovalEmployeeNo}
-                  readOnly
-                />
+                <Input readOnly value={instk.requestApprovalEmployeeNo} />
               </Field>
             </HStack>
+
 
             <HStack>
               <Field label={"담당 업체"} orientation="horizontal">
@@ -166,6 +172,9 @@ export function InstkConfirmModal({
                 <Input value={id} readOnly />
               </Field>
             </HStack>
+
+            <Separator />
+
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
                 value={inputStockNote}

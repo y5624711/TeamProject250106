@@ -58,6 +58,9 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       } else {
         nextSearchParam.delete("filter");
       }
+    } else if (location.pathname.startsWith("/instk")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
     }
 
     const sort = searchParams.get("sort") ?? "";

@@ -139,8 +139,12 @@ export function InstkList() {
                     handleSelectModal(item.inputConsent);
                     setSelectedIndex(index);
                   }}
+                  style={{
+                    cursor: "pointer",
+                  }}
                   textAlign="center"
                   key={index}
+                  _hover={{ backgroundColor: "gray.200" }}
                 >
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                   <Table.Cell textAlign="center">

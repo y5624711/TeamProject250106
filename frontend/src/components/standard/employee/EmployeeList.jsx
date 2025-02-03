@@ -56,7 +56,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     searchParams.get("active") === "true",
   );
   const [keyword, setKeyword] = useState(searchParams.get("keyword") || "");
-  const [type, setType] = useState(searchParams.get("type") || "all");
+  const [type, setType] = useState([searchParams.get("type")] || "all");
   const [order, setOrder] = useState(searchParams.get("order") || "desc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isviewModalOpen, setIsviewModalOpen] = useState(false);
@@ -214,6 +214,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           onChange={(e) => {
             setKeyword(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchButton();
+            }
+          }}
         />
         <IconButton
           transform="translateX(-130%) "
@@ -244,11 +249,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               }
               defaultSortKey={"기본키"}
             />
-
-            {/*<SortColumnHeader*/}
-            {/*  handleSortControl={handleSortControl}*/}
-            {/*  searchParams={searchParams}*/}
-            {/*/>*/}
           </Table.Row>
         </Table.Header>
 
