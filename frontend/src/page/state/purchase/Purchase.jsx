@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import { PurchaseList } from "../../../components/state/purchase/PurchaseList.jsx";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { PurchaseDialog } from "../../../components/state/purchase/PurchaseDialog.jsx";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function Purchase() {
+  const { company } = useContext(AuthenticationContext);
   // URL 쿼리 파라미터 관련 상태
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, setState] = useState(searchParams.get("state") || "all");
@@ -104,16 +106,19 @@ export function Purchase() {
             setSearchParams={setSearchParams}
             state={state}
           />
-          {/* 구매 요청 버튼 */}
-          <Flex justify="flex-end">
-            <Button
-              size={"lg"}
-              mt={"-65px"}
-              onClick={handlePurchaseRequestClick}
-            >
-              구매 요청
-            </Button>
-          </Flex>
+          {/* 구매 요청 버튼 (권한에 따라 제한) */}
+          {company && // company 값이 존재하는지 확인하고 순서대로 실행
+            !company.startsWith("CUS") && (
+              <Flex justify="flex-end">
+                <Button
+                  size={"lg"}
+                  mt={"-65px"}
+                  onClick={handlePurchaseRequestClick}
+                >
+                  구매 요청
+                </Button>
+              </Flex>
+            )}
           {/* 구매 다이얼로그 */}
           <PurchaseDialog
             isOpen={isDialogOpen}

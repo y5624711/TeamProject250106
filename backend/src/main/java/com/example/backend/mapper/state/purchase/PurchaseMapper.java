@@ -74,6 +74,17 @@ public interface PurchaseMapper {
             <if test="state == 'disapprove'">
                 purchase_consent = FALSE
             </if>
+            <!-- company 값에 따라 조건 추가 -->
+            <if test="company != null">
+                <choose>
+                        <when test="company.startsWith('CUS')">
+                             AND pr.customer_code = #{company}
+                        </when>
+                        <when test="company.startsWith('BIZ')">
+                            AND 1=1
+                        </when>
+                </choose>
+            </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
@@ -104,7 +115,7 @@ public interface PurchaseMapper {
             LIMIT #{offset}, 10
             </script>
             """)
-    List<Purchase> getPurchaseList(Integer offset, String type, String keyword, String state, String sort, String order);
+    List<Purchase> getPurchaseList(Integer offset, String type, String keyword, String state, String sort, String order, String company);
 
     // 총 데이터 개수 (페이지네이션을 위해 사용)
     @Select("""
@@ -129,6 +140,17 @@ public interface PurchaseMapper {
             <if test="state == 'disapprove'">
                 purchase_consent = false
             </if>
+            <!-- company 값에 따라 조건 추가 -->
+            <if test="company != null">
+                <choose>
+                        <when test="company.startsWith('CUS')">
+                             AND pr.customer_code = #{company}
+                        </when>
+                        <when test="company.startsWith('BIZ')">
+                            AND 1=1
+                        </when>
+                </choose>
+            </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
@@ -151,7 +173,7 @@ public interface PurchaseMapper {
             </if>
             </script>
             """)
-    Integer countAll(String type, String keyword, String state);
+    Integer countAll(String type, String keyword, String state, String company);
 
     // 구매 승인 팝업 보기
     @Select("""
