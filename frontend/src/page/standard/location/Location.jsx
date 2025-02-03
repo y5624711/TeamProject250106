@@ -118,7 +118,6 @@ const locationOptionList = createListCollection({
     { label: "행", value: "row" },
     { label: "열", value: "col" },
     { label: "단", value: "shelf" },
-    { label: "비고", value: "note" },
   ],
 });
 
