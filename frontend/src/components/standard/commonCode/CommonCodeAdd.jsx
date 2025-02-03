@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import {
   createListCollection,
-  Flex,
   Input,
   Stack,
   Text,
@@ -38,6 +37,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     commonCodeNote: "",
     commonCodeType: "",
   };
+
   const [codeData, setCodeData] = useState(initialCodeData);
   const [checkCodeSelect, setCheckCodeSelect] = useState(false);
   const [codeType, setCodeType] = useState("");
@@ -72,15 +72,16 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     codeData.commonCodeName.trim() !== "" &&
     checkCodeSelect;
 
-  // 품목 공통 코드 등록하기
+  // 공통 코드 등록하기
   const handleAddClick = () => {
     if (!isValid) {
       toaster.create({
-        description: "품목 코드는 대문자 3자리로 입력해야 합니다.",
+        description: "공통 코드 형식을 맞춰주세요.",
         type: "error",
       });
       return;
     }
+
     axios
       .post("/api/commonCode/add", codeData)
       .then((res) => res.data)
@@ -106,24 +107,16 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           <DialogTitle>코드 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Text fontSize={"xs"} mt={-5}>
+          <Text fontSize={"xs"} mt={-5} mb={3}>
             시스템코드는 대문자 3~5자리, 품목 코드는 대문자 3자리로 입력해야
             합니다.
           </Text>
-
-          <Flex>
-            <Text pt={6} mr={7} ml={-1}>
-              코드 구분
-            </Text>
-            {/*코드 종류 선택*/}
+          <Stack gap={"15px"}>
             <SelectCode
               selectOptions={selectOptions}
               onChange={handleCodeTypeChange}
             />
-          </Flex>
-
-          <Stack w={"90%"} pt={"3"}>
-            <Field label="코드" orientation="horizontal" marginBottom={3}>
+            <Field label="코드" orientation="horizontal">
               <Input
                 value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
@@ -136,7 +129,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
                 }
               />
             </Field>
-            <Field label="코드명" orientation="horizontal" marginBottom={15}>
+            <Field label="코드명" orientation="horizontal">
               <Input
                 value={codeData.commonCodeName || ""}
                 onChange={handleInputChange("commonCodeName")}
@@ -146,7 +139,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
               <Textarea
                 resize={"none"}
                 maxLength={50}
-                placeholder="비고"
+                placeholder="최대 50자"
                 value={codeData.commonCodeNote || ""}
                 onChange={handleInputChange("commonCodeNote")}
               />

@@ -13,9 +13,10 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class CommonService {
+
     final CommonMapper mapper;
 
-    // 품목 공통 코드 조회
+    // 공통 코드 조회
     public Map<String, Object> getCommonCodeList(Integer page,
                                                  Boolean active,
                                                  String sort,
@@ -41,7 +42,7 @@ public class CommonService {
     }
 
 
-    // 품목 공통 코드 정보 입력됐는지 확인
+    // 공통 코드 정보 입력됐는지 확인
     public boolean validateCommonCode(CommonCode commonCode) {
         // 공통 코드 유형(SYSTEM/ITEM)에 따른 코드 길이 제한 검증
         boolean isValidCommonCode = false;
@@ -64,36 +65,36 @@ public class CommonService {
         return isValidCommonCode && isValidCommonName;
     }
 
-    // 품목 공통 코드 중복 화인
+    // 공통 코드 중복 화인
     public boolean duplicateCommonCode(String commonCode, String CommonName) {
         int count = mapper.countByCodeOrName(commonCode, CommonName);
         return count > 0;
     }
 
-    // 품목 공통 코드 추가
+    // 공통 코드 추가
     public boolean addCommonCode(CommonCode commonCode) {
         int cnt = mapper.addCommonCode(commonCode);
         return cnt == 1;
     }
 
-    // 품목 공통 코드 1개 정보 가져오기
+    // 공통 코드 1개 정보 가져오기
     public List<CommonCode> getCommonCodeView(int commonCodeKey) {
         return mapper.getCommonCodeView(commonCodeKey);
     }
 
-    // 삭제된 품목 공통 코드인지 확인
+    // 삭제된 공통 코드인지 확인
     public boolean deletedCommonCode(int commonCodeKey) {
         List<Integer> deletedCommonCodeList = mapper.deletedCommonCode();
         return deletedCommonCodeList.contains(commonCodeKey);
     }
 
-    // 품목 공통 코드 삭제하기
+    // 공통 코드 삭제하기
     public boolean deleteCommonCode(int commonCodeKey) {
         int cnt = mapper.deleteCommonCode(commonCodeKey);
         return cnt == 1;
     }
 
-    // 품목 공통 코드 수정하기
+    // 공통 코드 수정하기
     public boolean editCommonCode(int commonCodeKey, CommonCode commonCode) {
         int cnt = mapper.editCommonCode(commonCodeKey, commonCode);
         return cnt == 1;

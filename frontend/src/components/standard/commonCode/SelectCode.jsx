@@ -6,6 +6,7 @@ import {
   SelectValueText,
 } from "@chakra-ui/react";
 import React from "react";
+import { Field } from "../../ui/field.jsx";
 
 export function SelectCode({ selectOptions, onChange }) {
   const handleSelect = (selectedItem) => {
@@ -15,31 +16,25 @@ export function SelectCode({ selectOptions, onChange }) {
   };
 
   return (
-    <SelectRoot
-      size="sm"
-      width="150px"
-      collection={selectOptions}
-      position="relative"
-      marginBottom={15}
-      marginTop={5}
-      onValueChange={handleSelect}
-    >
-      <SelectTrigger>
-        <SelectValueText placeholder="코드 구분 선택" />
-      </SelectTrigger>
-      <SelectContent
-        style={{
-          width: "150px",
-          top: "35px",
-          position: "absolute",
-        }}
-      >
-        {selectOptions.items.map((option) => (
-          <SelectItem item={option} key={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+    <Field label={"코드 구분"} orientation="horizontal">
+      <SelectRoot collection={selectOptions} onValueChange={handleSelect}>
+        <SelectTrigger>
+          <SelectValueText placeholder="코드 구분 선택" />
+        </SelectTrigger>
+        <SelectContent
+          style={{
+            width: "85%",
+            top: "40px",
+            position: "absolute",
+          }}
+        >
+          {selectOptions.items.map((option) => (
+            <SelectItem item={option} key={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
+    </Field>
   );
 }
