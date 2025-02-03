@@ -10,7 +10,7 @@ import {
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import LocationAdd from "../../../components/standard/location/LocationAdd.jsx";
 import LocationSearch from "../../../components/standard/location/LocationSearch.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
 
@@ -22,7 +22,6 @@ function Location(props) {
     sort: "",
     order: "",
   });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [countLocation, setCountLocation] = useState("");
   const [locationList, setLocationList] = useState([]);

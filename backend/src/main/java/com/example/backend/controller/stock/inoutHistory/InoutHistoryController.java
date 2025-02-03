@@ -34,8 +34,4 @@ public class InoutHistoryController {
         return service.view(inoutHistoryKey);
     }
 
-    @PostMapping("addhistory")
-    public void addhistoty(@RequestBody InoutHistory InoutHistory) {
-        System.out.println("까꿍");
-    }
 }
