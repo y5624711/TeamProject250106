@@ -173,9 +173,14 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   <Input value={installRequest.installRequestAmount} readOnly />
                 </Field>
               </HStack>
-              <Field label={"창고"} orientation="horizontal">
-                <Input value={installRequest.warehouseName} readOnly />
-              </Field>
+              <HStack>
+                <Field label={"담당 업체"} orientation="horizontal">
+                  <Input value={installRequest.customerName} readOnly />
+                </Field>
+                <Field label={"창고"} orientation="horizontal">
+                  <Input value={installRequest.warehouseName} readOnly />
+                </Field>
+              </HStack>
               <HStack spacing={4}>
                 <Field label={"요청자"} orientation="horizontal">
                   <Input value={installRequest.businessEmployeeName} readOnly />

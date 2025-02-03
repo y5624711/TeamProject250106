@@ -39,15 +39,16 @@ public interface InstallMapper {
 
     // 설치 요청에 대한 정보 가져오기
     @Select("""
-             SELECT DISTINCT i.install_request_key, f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
+            SELECT DISTINCT i.install_request_key, f.franchise_name, i.item_common_code, sc.common_code_name as item_common_name, i.install_request_amount, f.franchise_address,
             i.business_employee_no, e.employee_name as business_employee_name, w.warehouse_name, w.warehouse_address, i.install_request_note, i.install_request_date,
-            i.customer_code, i.install_request_consent
-             FROM TB_INSTL_REQ i
-             LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
-             LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
-             LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
-             LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
-             WHERE i.install_request_key = #{installKey}
+            i.customer_code, i.install_request_consent, c.customer_name
+            FROM TB_INSTL_REQ i
+            LEFT JOIN TB_FRNCHSMST f ON i.franchise_code = f.franchise_code
+            LEFT JOIN TB_SYSCOMM sc ON i.item_common_code = sc.common_code
+            LEFT JOIN TB_EMPMST e ON i.business_employee_no = e.employee_no
+            LEFT JOIN TB_WHMST w ON i.customer_code = w.customer_code
+            LEFT JOIN TB_CUSTMST c ON i.item_common_code = c.item_code
+            WHERE i.install_request_key = #{installKey}
             """)
     List<Install> getInstallRequestView(int installKey);
 

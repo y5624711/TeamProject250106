@@ -36,11 +36,11 @@ export function InstallConfiguration({
   const { id, name } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
-  const [isConfiguration, setIsConfiguration] = useState(null);
+  // const [isConfiguration, setIsConfiguration] = useState(null);
 
   const handleClose = () => {
     setInoutHistoryNote("");
-    setIsConfiguration(null);
+    // setIsConfiguration(null);
     onClose();
   };
 
@@ -59,11 +59,10 @@ export function InstallConfiguration({
     }
   }, [installKey]);
 
+  // 설치 확인 요청
   const handleConfigurationClick = () => {
-    // 설치 확인 요청
     const configurationData = {
       outputNo: installData.outputNo,
-      // 협력일체 직원(승인자), 본사 직원(요청자), 가맹점 코드,
       customerEmployeeNo: id,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
@@ -84,7 +83,7 @@ export function InstallConfiguration({
       .then((res) => {
         setInstallData(res.data || []); // 새로운 데이터로 업데이트
         setChange((prev) => !prev);
-        setIsConfiguration(true);
+        // setIsConfiguration(true);
       })
       .catch((e) => {
         const message = e.response?.data?.message;
@@ -95,12 +94,12 @@ export function InstallConfiguration({
   // installData의 serialNumbers를 split하여 serialList로 설정
   const serialList = installData?.serialNumbers?.split(",") || [];
 
-  // installData가 null 또는 undefined일 때 렌더링을 막기 위한 처리
-  if (!installData) {
-    return null; // 데이터가 없으면 아무것도 렌더링하지 않음
-  }
-
+  // 오늘 날짜 표기
   const today = format(new Date(), "yyyy-MM-dd");
+
+  if (!installData) {
+    return null;
+  }
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">

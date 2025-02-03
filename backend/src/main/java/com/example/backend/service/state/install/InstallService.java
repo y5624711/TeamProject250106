@@ -63,8 +63,8 @@ public class InstallService {
         if (!loginCompany.startsWith("CUS")) {
             return true;
         }
-        // 설치 요청의 담당업체 코드 가져오기
-        String itemCompany = install.getCustomerCode();
+        // 설치 요청 키로 담당업체 코드 가져오기
+        String itemCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
 
         // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
         return loginCompany.equals(itemCompany);
