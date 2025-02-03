@@ -5,6 +5,7 @@ import com.example.backend.dto.state.purchase.Purchase;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +46,10 @@ public class PurchaseService {
     }
 
     // 구매 관리 리스트
-    public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order) {
+    public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order, Authentication auth) {
+        // 현재 로그인한 사용자의 customerCode 가져오기
+        String customerCode = mapper.getCustomerCode(auth.getName());
+
         // 요청 날짜, 승인 날짜 합치기
         if ("date".equals(sort)) {
             sort = "COALESCE(purchase_request_date, purchase_approve_date)";

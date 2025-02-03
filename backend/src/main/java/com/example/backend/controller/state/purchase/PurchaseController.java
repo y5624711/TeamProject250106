@@ -6,6 +6,7 @@ import com.example.backend.service.state.purchase.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class PurchaseController {
         }
     }
 
-    // 구매 관리 리스트
+    // 구매 관리 리스트 (권한)
     @GetMapping("/list")
     public Map<String, Object> purchaseList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -53,15 +54,10 @@ public class PurchaseController {
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "state", defaultValue = "all") String state,
             @RequestParam(value = "sort", defaultValue = "COALESCE(purchase_request_date, purchase_approve_date)") String sort,
-            @RequestParam(value = "order", defaultValue = "desc") String order) {
-        return service.purchaseList(page, type, keyword, state, sort, order);
+            @RequestParam(value = "order", defaultValue = "desc") String order,
+            Authentication auth) {
+        return service.purchaseList(page, type, keyword, state, sort, order, auth);
     }
-
-//    // 구매 관리 리스트 (권한)
-//    @GetMapping("purchaseList")
-//    public List<Purchase> purchaseListAuth(Authentication auth) {
-//        return service.getPurchaseListAuth(auth);
-//    }
 
     // 구매 승인 팝업 보기
     @GetMapping("approve/{purchaseRequestKey}")
