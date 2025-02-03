@@ -8,13 +8,15 @@ import {
   HStack,
   IconButton,
   Input,
+  Table,
+} from "@chakra-ui/react";
+import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Table,
-} from "@chakra-ui/react";
+} from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -179,20 +181,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           <SelectRoot
             collection={frameworks}
             value={type}
-            width="150px"
+            width="160px"
             position="relative"
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
               <SelectValueText placeholder={"전체"} />
             </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "150px",
-                top: "40px",
-                position: "absolute",
-              }}
-            >
+            <SelectContent>
               {frameworks.items.map((code) => (
                 <SelectItem item={code} key={code.value}>
                   {code.label}
