@@ -60,6 +60,7 @@ function Warehouse(props) {
       sort: search.sort,
       order: search.order,
       page: 1,
+      active: search.active,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
@@ -71,6 +72,7 @@ function Warehouse(props) {
       sort: search.sort,
       order: search.order,
       page: e.page,
+      active: search.active,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
@@ -79,10 +81,13 @@ function Warehouse(props) {
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
+    setSearch({ ...search, active: nextValue });
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
     setSearchParams(nextSearchParams);
   };
+
+  console.log(checkedActive);
 
   return (
     <Box>
