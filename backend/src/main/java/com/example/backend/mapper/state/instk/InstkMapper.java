@@ -13,7 +13,7 @@ public interface InstkMapper {
 
     @Select("""
 <script>
-SELECT
+    SELECT
     BI.input_key,
     BI.input_common_code,
     BI.business_employee_no,
@@ -86,7 +86,7 @@ WHERE 1=1
     </if>
     <if test="keyword != null and keyword != ''">
         <choose>
-            <when test="type == 'input_common_code_name'">d
+            <when test="type == 'input_common_code_name'">
                 AND SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_no'">
@@ -118,6 +118,9 @@ WHERE 1=1
             </otherwise>
         </choose>
     </if>
+     <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+                </if>
 ORDER BY 
     CASE WHEN #{sort} = 'default' THEN COALESCE(INS.input_stock_date, RNRQ.return_request_date) END,
     ${sort} ${order}
