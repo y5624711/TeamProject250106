@@ -69,6 +69,16 @@ export function Franchise() {
   useEffect(() => {
     const nextSearch = { ...search };
 
+    // URL에서 sort, order 값을 가져와서 상태에 반영
+    const sort = searchParams.get("sort") || standard.sort;
+    const order = searchParams.get("order") || standard.order;
+
+    setStandard({
+      sort: sort,
+      order: order,
+    });
+
+    // 기존 검색 파라미터 설정
     if (searchParams.get("type")) {
       nextSearch.type = searchParams.get("type");
     } else {
@@ -100,7 +110,20 @@ export function Franchise() {
     setSearchParams(nextSearchParam);
   };
 
-  // 체크 박스 상태 바꾸고 URL 의 'active' 파라미터 업데이트
+  // 정렬 기준 변경 시 URL 파라미터 업데이트
+  const handleSortChange = (sort) => {
+    const order = standard.order === "asc" ? "desc" : "asc";
+    setStandard({ sort: sort, order: order });
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("sort", sort);
+    nextSearchParams.set("order", order);
+    nextSearchParams.set("page", "1"); // 1페이지로 설정
+
+    setSearchParams(nextSearchParams);
+  };
+
+  // 체크 박스 상태 변경 시 URL 파라미터 업데이트
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
@@ -187,19 +210,6 @@ export function Franchise() {
 
     setSearchParams(nextSearchParams);
   }
-
-  // 정렬 기준 변경 시 URL 파라미터 업데이트
-  const handleSortChange = (sortField) => {
-    const nextOrder = standard.order === "asc" ? "desc" : "asc";
-    setStandard({ sort: sortField, order: nextOrder });
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("sort", sortField);
-    nextSearchParams.set("order", nextOrder);
-    nextSearchParams.set("page", "1"); // 1페이지로 설정
-
-    setSearchParams(nextSearchParams);
-  };
 
   // 검색 초기화
   const handleResetClick = () => {
