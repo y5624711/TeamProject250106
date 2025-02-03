@@ -36,7 +36,7 @@ public class ReturnService {
         //본사일 경우 리스트 모두 보임
         //협력사일 경우 자기 회사만
         String userCompany = employeeMapper.checkUserCompany(auth.getName());
-        System.out.println("회사코드: " + userCompany);
+//        System.out.println("회사코드: " + userCompany);
 
         List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order, userCompany);
 //        System.out.println("returnList: " + returnList);
@@ -124,7 +124,7 @@ public class ReturnService {
     public boolean checkApproveEmployee(String loginNo, String CustomerCode) {
         //1. 본사 사람인가? 2. 해당 협석사 직원인가?
         String userCompany = employeeMapper.checkUserCompany(loginNo);
-        System.out.println("유저 소속: " + userCompany);
+//        System.out.println("유저 소속: " + userCompany);
 
         return userCompany.equals(CustomerCode) || userCompany.startsWith("BIZ");
     }
