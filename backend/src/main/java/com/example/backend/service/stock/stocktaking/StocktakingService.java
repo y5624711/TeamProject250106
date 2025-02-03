@@ -16,11 +16,14 @@ public class StocktakingService {
 
     final StocktakingMapper mapper;
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order) {
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth) {
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.count(searchType, searchKeyword));
+        String workplaceCode = mapper.getWorkplaceCode(auth.getName());
+        String workplace = workplaceCode.substring(0, 3);
+
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace), "count", mapper.count(searchType, searchKeyword, workplaceCode, workplace));
     }
 
     // camelCase를 snake_case로 변환하는 로직
@@ -79,11 +82,9 @@ public class StocktakingService {
 
         String workplaceCode = mapper.getWorkplaceCode(auth.getName());
         String workplace = workplaceCode.substring(0, 3);
-        if (workplace.equals("CUS")) {
-            return mapper.getStocktakingWarehouseList(workplaceCode, workplace);
-        } else {
-            return mapper.getStocktakingWarehouseList(workplaceCode, workplace);
-        }
+
+        return mapper.getStocktakingWarehouseList(workplaceCode, workplace);
+
 
     }
 

@@ -23,8 +23,9 @@ public class StocktakingController {
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
-                                    @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.list(searchType, searchKeyword, page, sort, order);
+                                    @RequestParam(value = "order", defaultValue = "") String order,
+                                    Authentication auth) {
+        return service.list(searchType, searchKeyword, page, sort, order, auth);
     }
 
     @GetMapping("view/{stocktakingKey}")
