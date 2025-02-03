@@ -1,4 +1,4 @@
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -110,11 +110,11 @@ export function BusinessDepartmentList() {
 
   const handleResetClick = () => {
     setSearchParams("");
-    setSort({ column: "", order: "desc" });
+    setSort({ column: "department_code", order: "desc" });
   };
 
   if (loading) {
-    return <Spinner />;
+    return null;
   }
 
   return (

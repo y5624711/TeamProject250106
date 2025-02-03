@@ -1,6 +1,6 @@
-import { Box, Table } from "@chakra-ui/react";
+import { Box, HStack, Table } from "@chakra-ui/react";
 import React from "react";
-import { SortableColumnHeader } from "../../tool/SortableColumnHeader.jsx";
+import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 
 export function BusinessListTable({
   department,
@@ -22,13 +22,16 @@ export function BusinessListTable({
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             {columnsList.map((col) => (
-              <SortableColumnHeader
-                key={col.key}
-                columnKey={col.key}
-                label={col.label}
-                sort={sort}
-                handleSort={handleSort}
-              />
+              <Table.ColumnHeader
+                onClick={() => handleSort(col.key)}
+                textAlign="center"
+              >
+                <HStack justify="center" align="center" width="100%">
+                  {col.label}
+                  {sort.column === col.key &&
+                    (sort.order === "asc" ? <FaCaretUp /> : <FaCaretDown />)}
+                </HStack>
+              </Table.ColumnHeader>
             ))}
           </Table.Row>
         </Table.Header>

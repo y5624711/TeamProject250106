@@ -83,4 +83,8 @@ public class MainService {
     public List<Instk> getInstkListByCustomer(String company) {
         return mapper.selectInstkListByCustomer(company);
     }
+
+    public Customer getMainCusView(String company) {
+        return mapper.selectCustomer(company);
+    }
 }

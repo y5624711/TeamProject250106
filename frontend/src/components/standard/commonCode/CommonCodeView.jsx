@@ -177,7 +177,7 @@ export function CommonCodeView({
                     placeholder=""
                     value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
-                    resize={"none"}
+                    maxHeight={"100px"}
                   />
                 </Field>
 

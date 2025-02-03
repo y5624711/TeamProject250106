@@ -1,5 +1,6 @@
 package com.example.backend.controller.standard.main;
 
+import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
@@ -7,10 +8,7 @@ import com.example.backend.service.standard.main.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -65,6 +63,12 @@ public class MainPageController {
             System.out.println("company = " + company);
             return service.getInstkListByCustomer(company);
         }
+    }
+
+    @GetMapping("mainCustomerView/{company}")
+    public Customer customerView(@PathVariable String company) {
+
+        return service.getMainCusView(company);
     }
 
 }

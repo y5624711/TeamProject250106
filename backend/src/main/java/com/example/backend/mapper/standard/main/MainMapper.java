@@ -363,4 +363,10 @@ public interface MainMapper {
             """)
     Business selectBusiness(String employeeWorkPlaceCode);
 
+    @Select("""
+            SELECT *
+            FROM TB_CUSTMST
+            WHERE customer_code = #{company}
+            """)
+    Customer selectCustomer(String company);
 }

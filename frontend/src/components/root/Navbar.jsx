@@ -26,7 +26,7 @@ function NavItem({ children, path, textColor, ...rest }) {
 }
 
 export function Navbar() {
-  const { id, isAuthenticated, logout, name } = useContext(
+  const { id, isAuthenticated, logout, isAdmin } = useContext(
     AuthenticationContext,
   );
 
@@ -58,17 +58,20 @@ export function Navbar() {
         )}
       </Flex>
       <Flex bgColor={"#4374D9"} width="100%" gap={10} p={2} pl={3}>
-        <NavItem
-          path="/business"
-          textColor="white"
-          _hover={{
-            bgColor: "#1F50B5",
-            borderRadius: "12px",
-            cursor: "pointer",
-          }}
-        >
-          기준정보 관리
-        </NavItem>
+        {isAdmin && (
+          <NavItem
+            path="/business"
+            textColor="white"
+            _hover={{
+              bgColor: "#1F50B5",
+              borderRadius: "12px",
+              cursor: "pointer",
+            }}
+          >
+            기준정보 관리
+          </NavItem>
+        )}
+
         <NavItem
           path="/purchase"
           textColor="white"
