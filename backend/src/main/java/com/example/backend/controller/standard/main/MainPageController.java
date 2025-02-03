@@ -67,7 +67,6 @@ public class MainPageController {
 
     @GetMapping("mainCustomerView/{company}")
     public Customer customerView(@PathVariable String company) {
-
         return service.getMainCusView(company);
     }
 

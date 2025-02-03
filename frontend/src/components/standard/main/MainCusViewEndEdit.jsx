@@ -1,17 +1,185 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+} from "../../ui/dialog.jsx";
+import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
+import { Field } from "../../ui/field.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
+import { Button } from "../../ui/button.jsx";
 
-export function MainCusViewEndEdit({ company, cusViewOpen, setCusViewOpen }) {
+export function MainCusViewEndEdit({
+  company,
+  cusViewOpen,
+  setCusViewOpen,
+  onCancel,
+}) {
   const [customer, setCustomer] = useState();
+  const [savedCustomer, setSavedCustomer] = useState();
+  const [updateCheck, setUpdateCheck] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`/api/main/mainCustomerView/${company}}`)
+      .get(`/api/main/mainCustomerView/${company}`)
       .then((res) => res.data)
       .then((data) => {
-        console.log("옴", data);
+        setCustomer(data);
+        setSavedCustomer(data);
+        setUpdateCheck(false);
       });
-  }, []);
+  }, [cusViewOpen, updateCheck]);
 
-  return null;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCustomer((prevCustomer) => ({
+      ...prevCustomer,
+      [name]: value,
+    }));
+    // console.log("입력 정보", customer);
+  };
+
+  const handleUpdate = () => {
+    setUpdateCheck(true);
+    // axios.put("/api/main/mainCustomerUpdate", {
+    //   customer,
+    // });
+  };
+  return (
+    <Box>
+      <DialogRoot
+        open={cusViewOpen}
+        size={"lg"}
+        onOpenChange={() => {
+          onCancel();
+          setCustomer(savedCustomer);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>협력 업체 정보</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            {customer ? (
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
+                }}
+              >
+                <HStack>
+                  <Field orientation="horizontal" label={"업체명"}>
+                    <Input
+                      name="customerName"
+                      value={customer.customerName || ""}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                  <Field orientation="horizontal" label={"업체 코드"}>
+                    <Input readOnly value={customer.customerCode || ""} />
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"취급 품목"}>
+                  <Input readOnly name="itemName" value={customer.itemName} />
+                </Field>
+                <HStack>
+                  <Field orientation="horizontal" label={"대표자"}>
+                    <Input
+                      name="customerRep"
+                      value={customer.customerRep}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+
+                  <Field orientation="horizontal" label={"사업자 번호"}>
+                    <Input
+                      name="customerNo"
+                      value={customer.customerNo}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                </HStack>
+                <HStack>
+                  <Field orientation="horizontal" label={"전화번호"}>
+                    <Input
+                      name="customerTel"
+                      value={customer.customerTel}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                  <Field orientation="horizontal" label={"팩스"}>
+                    <Input
+                      name="customerFax"
+                      value={customer.customerFax}
+                      onChange={handleInputChange}
+                    />
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"우편번호"}>
+                  <Input
+                    name={"customerPost"}
+                    value={customer.customerPost}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"주소"}>
+                  <Input
+                    name={"customerAddress"}
+                    value={customer.customerAddress}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"상세 주소"}>
+                  <Input
+                    name={"customerAddressDetails"}
+                    value={customer.customerAddressDetails}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"비고"}>
+                  <Textarea name={"customerNote"} maxHeight={"100px"} />
+                </Field>
+                <Field orientation="horizontal" label={"사용 여부"}>
+                  <Checkbox
+                    transform="translateX(-2590%)"
+                    name={"customerActive"}
+                    checked={customer.customerActive}
+                    onCheckedChange={(e) => {
+                      // console.log("체크박스 변경 전 값:", customer.customerActive);
+                      // console.log("체크박스 변경 후 값:", e);
+                      const checked =
+                        e.checked !== undefined ? e.checked : e.target.checked;
+                      setCustomer((prevCustomer) => ({
+                        ...prevCustomer,
+                        customerActive: checked, // 상태 업데이트
+                      }));
+                      // console.log("그 후?", checked);
+                    }}
+                  />
+                </Field>
+              </Box>
+            ) : (
+              <p>고객 정보를 불러오는 중입니다...</p>
+            )}
+          </DialogBody>
+          <DialogFooter>
+            <HStack>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">취소</Button>
+              </DialogActionTrigger>
+              <Button onClick={handleUpdate}>확인</Button>
+            </HStack>
+            <DialogCloseTrigger />
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
+    </Box>
+  );
 }

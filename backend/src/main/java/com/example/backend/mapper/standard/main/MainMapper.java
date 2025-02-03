@@ -364,8 +364,9 @@ public interface MainMapper {
     Business selectBusiness(String employeeWorkPlaceCode);
 
     @Select("""
-            SELECT *
-            FROM TB_CUSTMST
+            SELECT *,common_code_name AS itemName
+            FROM TB_CUSTMST cus
+            JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
             WHERE customer_code = #{company}
             """)
     Customer selectCustomer(String company);

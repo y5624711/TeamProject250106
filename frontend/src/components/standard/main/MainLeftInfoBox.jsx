@@ -107,6 +107,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
             company={company}
             cusViewOpen={cusViewOpen}
             setCusViewOpen={setCusViewOpen}
+            onCancel={() => setCusViewOpen(false)}
           />
           <MainWarehouseViewEndEdit
             company={company}
