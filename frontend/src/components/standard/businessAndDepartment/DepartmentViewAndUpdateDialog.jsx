@@ -133,7 +133,8 @@ export function DepartmentViewAndUpdateDialog({
             </Field>
             <Field label={"비고"} orientation="horizontal">
               <Textarea
-                maxHeight={"100px"}
+                placeholder={"최대 50자"}
+                style={{ maxHeight: "100px", overflowY: "auto" }}
                 maxLength={50}
                 value={department.departmentNote || ""}
                 onChange={(e) => {

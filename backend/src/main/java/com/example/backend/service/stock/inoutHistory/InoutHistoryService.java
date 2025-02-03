@@ -40,7 +40,7 @@ public class InoutHistoryService {
             case "inout_common_code":
                 return "h.inout_common_code";
             case "item_name":
-                return "itcm.item_common_name";
+                return "itcm.common_code_name";
             case "serial_no":
                 return "h.serial_no";
             case "customer_name":

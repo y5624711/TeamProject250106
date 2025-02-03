@@ -16,6 +16,8 @@ function StocktakingList({
   setSearchParams,
   handlePageChangeClick,
   countStocktaking,
+  setSearch,
+  search,
 }) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedStocktaking, setSelectedStocktaking] = useState(null);
@@ -43,9 +45,17 @@ function StocktakingList({
               <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
                 <Sort
                   sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) =>
-                    setSearchParams(nextSearchParam)
-                  }
+                  onSortChange={(nextSearchParam) => {
+                    setSearchParams(nextSearchParam);
+                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                    const sortMatch = searchString.match(/sort=([^&]*)/);
+                    const orderMatch = searchString.match(/order=([^&]*)/);
+                    setSearch({
+                      ...search,
+                      order: orderMatch[1],
+                      sort: sortMatch[1],
+                    });
+                  }}
                   defaultSortKey={"stocktakingDate"}
                 />
               </Table.Row>
@@ -68,7 +78,7 @@ function StocktakingList({
             onPageChange={handlePageChangeClick}
             count={countStocktaking}
             pageSize={10}
-            // page={page}
+            page={currentPage}
             siblingCount={2}
             defaultPage={currentPage}
             variant="solid"

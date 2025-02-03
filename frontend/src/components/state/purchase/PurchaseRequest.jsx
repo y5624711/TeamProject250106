@@ -189,7 +189,7 @@ export function PurchaseRequest({ onSave, onClose }) {
           <Input value={id} readOnly />
         </Field>
       </HStack>
-      <Field label="요청 비고" orientation="horizontal" mb={15}>
+      <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea
           value={purchaseRequestNote}
           onChange={(e) => setPurchaseRequestNote(e.target.value)}

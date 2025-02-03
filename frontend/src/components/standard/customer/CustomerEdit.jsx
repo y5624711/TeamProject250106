@@ -146,6 +146,7 @@ function CustomerEdit({ isOpen, onCancel, customerKey, onEdit }) {
                 </Field>
                 <Field orientation="horizontal" label={"비고"}>
                   <Textarea
+                    placeholder={"최대 50자"}
                     name={"customerNote"}
                     value={customer.customerNote}
                     onChange={handleInputChange}

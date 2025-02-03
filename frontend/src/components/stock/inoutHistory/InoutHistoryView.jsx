@@ -87,11 +87,15 @@ function InoutHistoryView({ inoutHistoryKey }) {
         />
       </Field>
       <Field label="비고" orientation="horizontal" mb={15}>
-        <Textarea
-          style={{ maxHeight: "100px", overflowY: "auto" }}
-          value={inoutHistoryDetail.inoutHistoryNote}
-          readOnly
-        />
+        {inoutHistoryDetail.inoutHistoryNote ? (
+          <Textarea
+            style={{ maxHeight: "100px", overflowY: "auto" }}
+            value={inoutHistoryDetail.inoutHistoryNote}
+            readOnly
+          />
+        ) : (
+          <Input readOnly value={"내용 없음"} />
+        )}
       </Field>
     </Box>
   );

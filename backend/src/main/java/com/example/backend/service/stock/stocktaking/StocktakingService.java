@@ -42,7 +42,7 @@ public class StocktakingService {
             case "stocktaking_key":
                 return "s.stocktaking_key";
             case "item_common_name":
-                return "itcm.item_common_name";
+                return "itcm.common_code_name";
             case "customer_name":
                 return "cus.customer_name";
             case "count_current":
@@ -56,7 +56,7 @@ public class StocktakingService {
             case "stocktaking_type":
                 return "s.stocktaking_type";
             case "customer_employee_name":
-                return "e.employee_name";
+                return "emp.employee_name";
             case "stocktaking_date":
                 return "s.stocktaking_date";
             default:

@@ -174,7 +174,7 @@ export function CommonCodeView({
                 <Field label={"비고"} orientation="horizontal" mb={15}>
                   <Textarea
                     name="commonCodeNote"
-                    placeholder=""
+                    placeholder={"최대 50자"}
                     value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
                     maxHeight={"100px"}

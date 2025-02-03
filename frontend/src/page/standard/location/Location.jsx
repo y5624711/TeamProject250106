@@ -10,7 +10,7 @@ import {
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import LocationAdd from "../../../components/standard/location/LocationAdd.jsx";
 import LocationSearch from "../../../components/standard/location/LocationSearch.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
 
@@ -19,8 +19,9 @@ function Location(props) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    sort: "",
+    order: "",
   });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [countLocation, setCountLocation] = useState("");
   const [locationList, setLocationList] = useState([]);
@@ -51,19 +52,22 @@ function Location(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: 1,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/location/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/location/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: e.page,
+    };
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   return (
@@ -89,6 +93,8 @@ function Location(props) {
             setSearchParams={setSearchParams}
             searchParams={searchParams}
             refresh={refresh}
+            setSearch={setSearch}
+            search={search}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button
@@ -118,7 +124,6 @@ const locationOptionList = createListCollection({
     { label: "행", value: "row" },
     { label: "열", value: "col" },
     { label: "단", value: "shelf" },
-    { label: "비고", value: "note" },
   ],
 });
 
