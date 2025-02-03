@@ -8,7 +8,7 @@ import { MainWarehouseViewEndEdit } from "./MainWarehouseViewEndEdit.jsx";
 export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
   const navigate = useNavigate();
   const [cusViewOpen, setCusViewOpen] = useState(false);
-  const [warehouseOpen, setWarehouseOpen] = useState(false);
+  const [warehouseViewOpen, setWarehouseViewOpen] = useState(false);
 
   return (
     <Box
@@ -84,7 +84,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
                 variant={"ghost"}
                 colorPalette={"blue"}
                 fontWeight="bold"
-                onClick={() => setWarehouseOpen(true)}
+                onClick={() => setWarehouseViewOpen(true)}
               >
                 창고 정보
               </Button>
@@ -106,13 +106,12 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
           <MainCusViewEndEdit
             company={company}
             cusViewOpen={cusViewOpen}
-            setCusViewOpen={setCusViewOpen}
             onCancel={() => setCusViewOpen(false)}
           />
           <MainWarehouseViewEndEdit
             company={company}
-            warehouseViewOpen={warehouseOpen}
-            setWarehouseViewOpen={setWarehouseOpen}
+            warehouseViewOpen={warehouseViewOpen}
+            onCancel={() => setWarehouseViewOpen(false)}
           />
         </>
       )}

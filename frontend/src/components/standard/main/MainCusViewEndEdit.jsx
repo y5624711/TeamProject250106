@@ -10,17 +10,13 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Text, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
-export function MainCusViewEndEdit({
-  company,
-  cusViewOpen,
-  setCusViewOpen,
-  onCancel,
-}) {
+export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
   const [customer, setCustomer] = useState();
   const [savedCustomer, setSavedCustomer] = useState();
   const [updateCheck, setUpdateCheck] = useState(false);
@@ -36,13 +32,24 @@ export function MainCusViewEndEdit({
       .finally(() => setUpdateCheck(false));
   }, [updateCheck]);
 
+  let disabled = false;
+  if (customer != null) {
+    disabled = !(
+      customer.customerRep.trim().length > 0 &&
+      customer.customerNo.trim().length > 0 &&
+      customer.customerTel.trim().length > 0 &&
+      customer.customerFax.trim().length > 0 &&
+      customer.customerAddress.trim().length > 0 &&
+      customer.customerPost.trim().length > 0
+    );
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCustomer((prevCustomer) => ({
       ...prevCustomer,
       [name]: value,
     }));
-    // console.log("입력 정보", customer);
   };
 
   const handleClose = () => {
@@ -53,11 +60,7 @@ export function MainCusViewEndEdit({
   const handleUpdate = () => {
     axios
       .put("/api/main/mainCustomerUpdate", {
-        customerKey: customer.customerKey,
         customerName: customer.customerName,
-        customerCode: customer.customerCode,
-        itemCode: customer.itemCode,
-        itemName: customer.itemName,
         customerRep: customer.customerRep,
         customerNo: customer.customerNo,
         customerTel: customer.customerTel,
@@ -84,6 +87,7 @@ export function MainCusViewEndEdit({
         });
       });
   };
+
   return (
     <Box>
       <DialogRoot open={cusViewOpen} size={"lg"} onOpenChange={handleClose}>
@@ -171,15 +175,16 @@ export function MainCusViewEndEdit({
                 </Field>
                 <Field orientation="horizontal" label={"비고"}>
                   <Textarea
+                    style={{ maxHeight: "100px", overflowY: "auto" }}
+                    placeholder="최대 50자"
                     name={"customerNote"}
                     value={customer.customerNote}
-                    maxHeight={"100px"}
                     onChange={handleInputChange}
                   />
                 </Field>
               </Box>
             ) : (
-              <p>고객 정보를 불러오는 중입니다...</p>
+              <Text>고객 정보를 불러오는 중입니다...</Text>
             )}
           </DialogBody>
           <DialogFooter>
@@ -189,7 +194,16 @@ export function MainCusViewEndEdit({
                   취소
                 </Button>
               </DialogActionTrigger>
-              <Button onClick={handleUpdate}>확인</Button>
+              <Tooltip
+                content="입력을 완료해 주세요."
+                openDelay={500}
+                closeDelay={100}
+                disabled={!disabled}
+              >
+                <Button onClick={handleUpdate} disabled={disabled}>
+                  확인
+                </Button>
+              </Tooltip>
             </HStack>
             <DialogCloseTrigger />
           </DialogFooter>

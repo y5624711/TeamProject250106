@@ -1,6 +1,7 @@
 package com.example.backend.controller.standard.main;
 
 import com.example.backend.dto.standard.customer.Customer;
+import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
@@ -76,6 +77,27 @@ public class MainPageController {
         System.out.println("customer = " + customer);
         if (service.validCustomer(customer)) {
             if (service.updateCustomer(customer)) {
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success", "text", "수정 되었습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message",
+                        Map.of("type", "success", "text", "수정 되지 않았습니다.")));
+            }
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of("message",
+                    Map.of("type", "error", "text", "내용을 입력 해주세요.")));
+        }
+    }
+
+    @GetMapping("mainWarehouseView/{company}")
+    public Warehouse warehouseView(@PathVariable String company) {
+        return service.getMainWareView(company);
+    }
+
+    @PutMapping("mainWarehouseUpdate")
+    public ResponseEntity<Map<String, Object>> mainWarehouseUpdate(@RequestBody Warehouse warehouse) {
+        if (service.validWarehouse(warehouse)) {
+            if (service.updateWarehouse(warehouse)) {
                 return ResponseEntity.ok().body(Map.of("message",
                         Map.of("type", "success", "text", "수정 되었습니다.")));
             } else {
