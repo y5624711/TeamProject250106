@@ -362,6 +362,15 @@ public interface InstallMapper {
             """)
     int installDisapprove(int installKey);
 
+    // 설치 요청 키로 담당업체 코드 가져오기
+    @Select("""
+            SELECT customer_code
+            FROM TB_INSTL_REQ
+            WHERE install_request_key = #{installKey}
+            """)
+    String getCustomerCodeByKey(int installKey);
+
+    // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @Select("""
             SELECT output_no, install_approve_date
             FROM TB_INSTL_APPR

@@ -31,7 +31,15 @@ public class InstallController {
 
     // 설치 요청 반려
     @PutMapping("disapprove/{installKey}")
-    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey, Authentication authentication) {
+        // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+        if (!service.disApproveAuth(authentication, installKey)) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "설치 반려 권한이 없습니다.")));
+        }
+
         // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
         if (service.installDisapprove(installKey)) {
             return ResponseEntity.ok().body(Map.of(
@@ -98,8 +106,16 @@ public class InstallController {
     // 설치 승인
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install) {
+    public ResponseEntity<Map<String, Object>> installApprove(@RequestBody Install install, Authentication authentication) {
         try {
+            // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+            if (!service.approveAuth(authentication, install)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "설치 승인 권한이 없습니다.")));
+            }
+
+            // 정확히 입력되었는지 검증 후 승인
             if (service.approveValidate(install)) {
                 service.installApprove(install);
                 return ResponseEntity.ok().body(Map.of(
@@ -145,7 +161,7 @@ public class InstallController {
     @PostMapping("request")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install, Authentication authentication) {
-        
+
         // "CUS"로 시작하는 사용자에게는 요청을 제한
         String userId = authentication.getName();
         if (userId.startsWith("CUS")) {
