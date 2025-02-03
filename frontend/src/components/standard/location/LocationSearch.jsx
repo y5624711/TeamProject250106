@@ -37,7 +37,6 @@ function LocationSearch({
       <SelectRoot
         collection={locationOptionList}
         defaultValue={["all"]}
-        value={selectValue}
         size="md"
         width="160px"
         onValueChange={(oc) => {
