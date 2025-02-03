@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function Install() {
+  const { company } = useContext(AuthenticationContext);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [configurationDialogOpen, setConfigurationDialogOpen] = useState(false);
@@ -19,7 +20,6 @@ export function Install() {
   const [change, setChange] = useState();
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams("");
-  const { company } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios

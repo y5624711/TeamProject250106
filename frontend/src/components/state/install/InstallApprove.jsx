@@ -89,7 +89,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           description: data.message.text,
           type: data.message.type,
         });
-        // ✅ 승인 후 바로 installAppr 데이터 다시 요청
+        // 승인 후 바로 installAppr 데이터 다시 요청
         return axios.get(`/api/install/approveData/${installKey}`);
       })
       .then((res) => {
