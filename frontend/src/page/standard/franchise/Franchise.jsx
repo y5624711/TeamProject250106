@@ -30,7 +30,9 @@ export function Franchise() {
     type: "all",
     keyword: "",
   });
-  const [checkedActive, setCheckedActive] = useState(false);
+  const [checkedActive, setCheckedActive] = useState(
+    searchParams.get("active") === "true",
+  );
   const [standard, setStandard] = useState({
     sort: "franchise_key",
     order: "DESC",
@@ -80,6 +82,32 @@ export function Franchise() {
     }
     setSearch(nextSearch);
   }, [searchParams]);
+
+  // 검색 파라미터 업데이트
+  const handleSearchClick = () => {
+    const nextSearchParam = new URLSearchParams(searchParams);
+    if (search.keyword.trim().length > 0) {
+      nextSearchParam.set("type", search.type);
+      nextSearchParam.set("keyword", search.keyword);
+      nextSearchParam.set("page", "1"); // 1 페이지로 설정
+    } else {
+      nextSearchParam.delete("type");
+      nextSearchParam.delete("keyword");
+    }
+    // searchParams 상태를 업데이트하여 경로에 반영
+    setSearchParams(nextSearchParam);
+  };
+
+  // 체크 박스 상태 바꾸고, 그에 따라 URL의 'active' 파라미터 업데이트
+  const toggleCheckedActive = () => {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    nextSearchParams.set("page", "1"); // 페이지를 1로 리셋
+    setSearchParams(nextSearchParams);
+  };
 
   // 새로운 가맹점 추가 또는 수정
   const handleSave = (newFranchise) => {
@@ -150,36 +178,6 @@ export function Franchise() {
       });
   };
 
-  // 검색 파라미터 업데이트
-  const handleSearchClick = () => {
-    const nextSearchParam = new URLSearchParams(searchParams);
-    if (search.keyword.trim().length > 0) {
-      nextSearchParam.set("type", search.type);
-      nextSearchParam.set("keyword", search.keyword);
-      nextSearchParam.set("page", "1"); // 1 페이지로 설정
-    } else {
-      nextSearchParam.delete("type");
-      nextSearchParam.delete("keyword");
-    }
-    // searchParams 상태를 업데이트하여 경로에 반영
-    setSearchParams(nextSearchParam);
-  };
-
-  // 삭제 내역 체크박스 상태 바꾸고, 그에 따라 URL의 'active' 파라미터 업데이트
-  const toggleCheckedActive = () => {
-    const nextValue = !checkedActive;
-    setCheckedActive(nextValue);
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    if (nextValue) {
-      nextSearchParams.set("active", "true");
-    } else {
-      nextSearchParams.set("active", "false");
-    }
-    nextSearchParams.set("page", "1"); // 페이지를 1로 리셋
-    setSearchParams(nextSearchParams);
-  };
-
   // 페이지네이션
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
@@ -208,7 +206,6 @@ export function Franchise() {
   // 검색 초기화
   const handleResetClick = () => {
     const nextSearchParams = new URLSearchParams();
-    nextSearchParams.set("page", "1"); // 1페이지로 설정
     setSearchParams(nextSearchParams);
   };
 
