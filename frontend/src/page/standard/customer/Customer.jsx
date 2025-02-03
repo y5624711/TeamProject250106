@@ -6,7 +6,7 @@ import CustomerAdd from "../../../components/standard/customer/CustomerAdd.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { useSearchParams } from "react-router-dom";
 import { toaster } from "../../../components/ui/toaster.jsx";
-import CustomerEdit from "../../../components/standard/customer/CustomerEdit.jsx";
+import CustomerView from "../../../components/standard/customer/CustomerView.jsx";
 
 function Customer() {
   const [customerList, setCustomerList] = useState([]);
@@ -281,7 +281,7 @@ function Customer() {
             onSave={handleSaveClick}
           />
 
-          <CustomerEdit
+          <CustomerView
             isOpen={editDialogOpen}
             customerKey={customerKey}
             onEdit={handleEditClick}
