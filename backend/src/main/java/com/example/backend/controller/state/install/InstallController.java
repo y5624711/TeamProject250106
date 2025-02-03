@@ -145,6 +145,14 @@ public class InstallController {
     @PostMapping("request")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> installRequest(@RequestBody Install install, Authentication authentication) {
+        
+        // "CUS"로 시작하는 사용자에게는 요청을 제한
+        String userId = authentication.getName();
+        if (userId.startsWith("CUS")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN) // 설치 요청 거부
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 설치 요청을 할 수 없습니다.")));
+        }
+
         if (service.requestValidate(install)) {
             if (service.installRequest(install, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
