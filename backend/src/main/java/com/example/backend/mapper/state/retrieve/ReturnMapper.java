@@ -183,6 +183,19 @@ public interface ReturnMapper {
             <if test="state == 'disapprove'">
                 return_consent = false
             </if>
+            
+            <!-- userCompany 값에 따라 조건 추가 -->
+            <if test="userCompany != null">
+            <choose>
+            <when test="userCompany.startsWith('CUS')">
+            AND rr.customer_code = #{userCompany}
+            </when>
+            <when test="userCompany.startsWith('BIZ')">
+            AND 1=1
+            </when>
+            </choose>
+            </if>
+            
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
@@ -218,7 +231,7 @@ public interface ReturnMapper {
             </if>
             </script>      
             """)
-    int countAll(String state, String type, String keyword);
+    int countAll(String state, String type, String keyword, String userCompany);
 
     //반려: consent = false
     @Update("""
