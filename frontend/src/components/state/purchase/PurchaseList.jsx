@@ -120,7 +120,7 @@ export function PurchaseList({
                   {purchase.employeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {purchase.customerEmployeeName}
+                  {purchase.customerEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {purchase.purchaseApproveDate || purchase.purchaseRequestDate}
