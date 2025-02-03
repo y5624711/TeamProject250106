@@ -87,8 +87,6 @@ function Warehouse(props) {
     setSearchParams(nextSearchParams);
   };
 
-  console.log(checkedActive);
-
   return (
     <Box>
       <HStack align="flex-start" w="100%">
