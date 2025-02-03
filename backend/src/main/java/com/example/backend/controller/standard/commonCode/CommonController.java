@@ -18,7 +18,6 @@ public class CommonController {
     @PutMapping("edit/{commonCodeKey}")
     public ResponseEntity<Map<String, Object>> editCommonCode(@PathVariable int commonCodeKey, @RequestBody CommonCode commonCode) {
 
-        System.out.println("commonCode = " + commonCode);
         // 품목 공통 코드 입력 검증
         if (!service.validateCommonCode(commonCode)) {
             return ResponseEntity.badRequest().body(Map.of(
