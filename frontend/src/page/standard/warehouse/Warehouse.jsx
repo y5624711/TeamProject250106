@@ -150,6 +150,7 @@ const warehouseOptionList = createListCollection({
     { label: "관리자", value: "employee" },
     { label: "광역시도", value: "warehouseState" },
     { label: "시군", value: "warehouseCity" },
+    { label: "전화번호", value: "warehouseTel" },
   ],
 });
 
