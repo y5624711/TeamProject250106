@@ -19,7 +19,6 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedItem, setEditedItem] = useState({
     size: "",
     unit: "",
@@ -153,12 +152,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                       <Checkbox
                         name="itemActive"
                         checked={editedItem.itemActive}
-                        // onChange={(e) =>
-                        //   setEditedItem((prevItem) => ({
-                        //     ...prevItem,
-                        //     itemActive: e.target.checked,
-                        //   }))
-                        // }
                         readOnly
                       />
                     </Box>
@@ -182,13 +175,6 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
-      {/*<DialogConfirmation*/}
-      {/*  isOpen={isDialogOpen}*/}
-      {/*  onClose={() => setIsDialogOpen(false)}*/}
-      {/*  onConfirm={handleDeleteConfirm}*/}
-      {/*  title="삭제 확인"*/}
-      {/*  body="해당 품목을 삭제하시겠습니까?"*/}
-      {/*/>*/}
     </Box>
   );
 }

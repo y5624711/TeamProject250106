@@ -41,8 +41,8 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   const [itemData, setItemData] = useState(initialItemData);
 
   const handleClose = () => {
-    setItemData(initialItemData); // 데이터 초기화
-    onClose(); // 다이얼로그 닫기
+    setItemData(initialItemData);
+    onClose();
   };
 
   const handleInputChange = (field) => (e) => {
@@ -67,14 +67,6 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
 
   // 품목 등록하기
   const handleAddClick = () => {
-    if (!isValid) {
-      toaster.create({
-        description: "모든 필수 입력값을 입력해 주세요.",
-        type: "error",
-      });
-      return;
-    }
-
     axios
       .post("/api/item/add", itemData)
       .then((res) => res.data)
