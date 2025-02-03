@@ -139,7 +139,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
 
   return (
     <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
-      <DialogContent>
+      <DialogContent style={{ maxHeight: "90vh", overflow: "hidden" }}>
         <DialogHeader>
           <DialogTitle>
             {installRequest.installRequestConsent === false
@@ -190,27 +190,26 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               </Field>
               <Field label={"요청 비고"} orientation="horizontal">
                 <Textarea
-                  value={installRequest.installRequestNote}
+                  value={installRequest.installRequestNote || "내용없음"}
                   readOnly
                   maxHeight={"40px"}
                 />
               </Field>
-              {installRequest.installRequestConsent == null && <Separator />}
+
+              {!isApproved && <Separator />}
+
+              {installRequest.installRequestConsent != false && (
+                <HStack>
+                  <Field label={"승인자"} orientation="horizontal">
+                    <Input value={name} readOnly />
+                  </Field>
+                  <Field label={"사번"} orientation="horizontal">
+                    <Input value={id} readOnly />
+                  </Field>
+                </HStack>
+              )}
               {installRequest.installRequestConsent != false && (
                 <Stack gap={"15px"}>
-                  <Field label={"설치 예정일"} orientation="horizontal">
-                    <Input
-                      value={installApprove.installScheduleDate}
-                      onChange={(e) =>
-                        setInstallApprove({
-                          ...installApprove,
-                          installScheduleDate: e.target.value,
-                        })
-                      }
-                      type={"date"}
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                  </Field>
                   <HStack>
                     <Field label="설치 기사" orientation="horizontal">
                       <SelectRoot
@@ -266,16 +265,20 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                       />
                     </Field>
                   </HStack>
-                  {installRequest.installRequestConsent != false && (
-                    <HStack>
-                      <Field label={"승인자"} orientation="horizontal">
-                        <Input value={name} readOnly />
-                      </Field>
-                      <Field label={"사번"} orientation="horizontal">
-                        <Input value={id} readOnly />
-                      </Field>
-                    </HStack>
-                  )}
+                  <Field label={"설치 예정일"} orientation="horizontal">
+                    <Input
+                      value={installApprove.installScheduleDate}
+                      onChange={(e) =>
+                        setInstallApprove({
+                          ...installApprove,
+                          installScheduleDate: e.target.value,
+                        })
+                      }
+                      type={"date"}
+                      min={new Date().toISOString().split("T")[0]}
+                    />
+                  </Field>
+
                   {isApproved == true && (
                     <Field label={"승인 날짜"} orientation="horizontal">
                       <Input

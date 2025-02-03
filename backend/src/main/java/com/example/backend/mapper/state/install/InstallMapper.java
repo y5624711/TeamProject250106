@@ -125,7 +125,7 @@ public interface InstallMapper {
             ia.customer_employee_no, e2.employee_name as customer_employee_name,  
             ia.customer_installer_no, e3.employee_name as customer_installer_name, ia.install_approve_note,
             ia.install_approve_consent as consent, ir.install_request_date, ia.install_approve_date,
-            ih.inout_history_date, ih.inout_history_note ,
+            ih.inout_history_date, ih.inout_history_note, ir.install_request_amount, ia.install_schedule_date,
             GROUP_CONCAT(DISTINCT ts.serial_no) AS serial_numbers
             FROM TB_INSTL_APPR ia
             LEFT JOIN TB_INSTL_REQ ir ON ia.install_request_key = ir.install_request_key
