@@ -6,7 +6,7 @@ import {
   HStack,
   Stack,
 } from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import WarehouseList from "../../../components/standard/warehouse/WarehouseList.jsx";
@@ -28,7 +28,6 @@ function Warehouse(props) {
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [countWarehouse, setCountWarehouse] = useState("");
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );

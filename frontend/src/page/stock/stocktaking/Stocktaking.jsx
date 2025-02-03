@@ -7,7 +7,7 @@ import {
   HStack,
   Stack,
 } from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
@@ -21,7 +21,6 @@ function Stocktaking(props) {
     sort: "",
     order: "",
   });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
