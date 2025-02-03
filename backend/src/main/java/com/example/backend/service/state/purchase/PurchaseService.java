@@ -19,8 +19,8 @@ import java.util.Map;
 public class PurchaseService {
 
     final PurchaseMapper mapper;
-    final LoginMapper loginMapper;
     final InstkMapper instkMapper;
+    final LoginMapper loginMapper;
 
     // 필드 유효성 확인 (사번, 이름은 로그인 정보를 가져오기 때문에 굳이 확인할 필요 없어서 뺌)
     public boolean validate(Purchase purchase) {
@@ -42,7 +42,8 @@ public class PurchaseService {
     }
 
     // 구매 요청
-    public boolean purchaseRequest(Purchase purchase) {
+    public boolean purchaseRequest(Purchase purchase, Authentication auth) {
+        purchase.setEmployeeNo(auth.getName()); // 사용자 정보 가져오기
         int cnt = mapper.purchaseRequest(purchase);
         return cnt == 1;
     }

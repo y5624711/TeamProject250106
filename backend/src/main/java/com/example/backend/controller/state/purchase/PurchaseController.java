@@ -2,10 +2,13 @@ package com.example.backend.controller.state.purchase;
 
 import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
+import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.service.state.purchase.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import java.util.Map;
 public class PurchaseController {
 
     private final PurchaseService service;
+    private final LoginMapper loginMapper;
 
     // 품목 구분 코드 리스트 가져오기
     @GetMapping("commonCode")
@@ -34,9 +38,15 @@ public class PurchaseController {
 
     // 구매 요청
     @PostMapping("/request")
-    public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase, Authentication auth) {
+        // "CUS"로 시작하면 요청 제한
+        String company = auth.getName();
+        if (company == null || !company.startsWith("CUS")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 구매 요청을 할 수 없습니다.")));
+        }
         if (service.validate(purchase)) {
-            if (service.purchaseRequest(purchase)) {
+            if (service.purchaseRequest(purchase, auth)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청에 실패하였습니다.")));
