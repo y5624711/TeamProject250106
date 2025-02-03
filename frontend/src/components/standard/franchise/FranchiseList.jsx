@@ -5,9 +5,7 @@ import {
   HStack,
   IconButton,
   Input,
-  Stack,
   Table,
-  TableColumnHeader,
   TableHeader,
 } from "@chakra-ui/react";
 import {
@@ -18,22 +16,20 @@ import {
   SelectValueText,
 } from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
-import React, { useMemo } from "react";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
+import React from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
+import { Sort } from "../../tool/list/Sort.jsx";
 
 export function FranchiseList({
   franchiseList,
   search,
   setSearch,
+  setSearchParams,
   handleSearchClick,
   onReset,
   checkedActive,
   toggleCheckedActive,
   onFranchiseClick,
-  standard,
-  setStandard,
-  handleSortChange,
 }) {
   const FranchiseOptionList = createListCollection({
     items: [
@@ -46,36 +42,15 @@ export function FranchiseList({
     ],
   });
 
-  // 정렬 기준 변경
-  const HeaderClick = (column) => {
-    if (standard.sort === column) {
-      setStandard({
-        sort: column,
-        order: standard.order === "asc" ? "desc" : "asc",
-      });
-    } else {
-      setStandard({
-        sort: column,
-        order: "asc",
-      });
-    }
-    // 새로운 파라미터를 사용하여 정렬 변경 함수 호출
-    if (handleSortChange) {
-      handleSortChange(column, standard.order);
-    }
-  };
-
-  // 정렬된 데이터 반환
-  const sortedFranchiseList = useMemo(() => {
-    return [...franchiseList].sort((a, b) => {
-      const aValue = a[standard.sort];
-      const bValue = b[standard.sort];
-
-      if (aValue < bValue) return standard.order === "asc" ? -1 : 1;
-      if (aValue > bValue) return standard.order === "asc" ? 1 : -1;
-      return 0;
-    });
-  }, [franchiseList, standard]);
+  const sortOptions = [
+    { key: "franchiseKey", label: "#" },
+    { key: "franchiseName", label: "가맹점" },
+    { key: "franchiseNo", label: "사업자 번호" },
+    { key: "franchiseRep", label: "대표자" },
+    { key: "franchiseTel", label: "전화번호" },
+    { key: "franchiseState", label: "광역시도" },
+    { key: "franchiseCity", label: "시군" },
+  ];
 
   return (
     <Box>
@@ -142,106 +117,18 @@ export function FranchiseList({
       <Table.Root interactive style={{ cursor: "pointer" }}>
         <TableHeader>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseKey")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>#</Stack>
-                {standard.sort === "franchiseKey" ? (
-                  standard.order === "asc" ? (
-                    <FaCaretUp />
-                  ) : (
-                    <FaCaretDown />
-                  )
-                ) : (
-                  <FaCaretDown /> // 기본값
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseName")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>가맹점</Stack>
-                {standard.sort === "franchiseName" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseNo")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>사업자 번호</Stack>
-                {standard.sort === "franchiseNo" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseRep")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>대표자</Stack>
-                {standard.sort === "franchiseRep" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseTel")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>전화번호</Stack>
-                {standard.sort === "franchiseTel" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseState")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>광역시도</Stack>
-                {standard.sort === "franchiseState" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
-            <TableColumnHeader
-              textAlign="center"
-              onClick={() => HeaderClick("franchiseCity")}
-            >
-              <HStack alignItems="center" justify="center">
-                <Stack>시군</Stack>
-                {standard.sort === "franchiseCity" && (
-                  <Stack>
-                    {standard.order === "asc" ? <FaCaretUp /> : <FaCaretDown />}
-                  </Stack>
-                )}
-              </HStack>
-            </TableColumnHeader>
+            <Sort
+              sortOptions={sortOptions}
+              onSortChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+              defaultSortKey={"franchiseKey"}
+            />
           </Table.Row>
         </TableHeader>
         <Table.Body>
-          {sortedFranchiseList.length > 0 ? (
-            sortedFranchiseList.map((franchise, index) => (
+          {franchiseList.length > 0 ? (
+            franchiseList.map((franchise, index) => (
               <Table.Row
                 key={franchise.franchiseKey}
                 onDoubleClick={() => onFranchiseClick(franchise.franchiseKey)}

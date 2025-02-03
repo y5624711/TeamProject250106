@@ -57,6 +57,12 @@ public class PurchaseController {
         return service.purchaseList(page, type, keyword, state, sort, order);
     }
 
+//    // 구매 관리 리스트 (권한)
+//    @GetMapping("purchaseList")
+//    public List<Purchase> purchaseListAuth(Authentication auth) {
+//        return service.getPurchaseListAuth(auth);
+//    }
+
     // 구매 승인 팝업 보기
     @GetMapping("approve/{purchaseRequestKey}")
     public Purchase viewPurchaseApprove(@PathVariable int purchaseRequestKey) {
