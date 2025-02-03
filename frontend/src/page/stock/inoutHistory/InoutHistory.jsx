@@ -11,7 +11,7 @@ import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHist
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
-import { StockRadioGroup } from "../../../components/stock/StockRadioGroup.jsx";
+import { Radio, RadioGroup } from "../../../components/ui/radio.jsx";
 
 function InoutHistory(props) {
   const [search, setSearch] = useState({
@@ -26,6 +26,7 @@ function InoutHistory(props) {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
+  const [state, setState] = useState(searchParams.get("state") || "all");
   const [value, setValue] = useState("inout");
 
   // 물품입출내역 정보 가져오기
@@ -68,6 +69,32 @@ function InoutHistory(props) {
     );
   }
 
+  useEffect(() => {
+    const currentState = searchParams.get("state") || "all";
+    setState(currentState); // UI와 동기화
+  }, [searchParams]);
+
+  const onRadioChange = (nextSearchParam) => {
+    setSearchParams(nextSearchParam);
+    setSearch({
+      type: search.type,
+      keyword: search.keyword,
+      state: nextSearchParam.toString(),
+    });
+  };
+
+  const handleRadio = (value) => {
+    setState(value);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("state", value);
+    nextSearchParams.set("page", "1");
+
+    onRadioChange(value); // 부모 컴포넌트로 선택된 값 전달
+
+    setSearchParams(nextSearchParams);
+  };
+
   return (
     <Box>
       <HStack align="flex-start" w="100%">
@@ -83,8 +110,12 @@ function InoutHistory(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <StockRadioGroup
-            radioOptions={radioOptions}
+          <RadioGroup
+            value={state}
+            onValueChange={(value) => handleRadio(value.value)}
+            my={6}
+            ml={2}
+            mt={4}
             onRadioChange={(nextSearchParam) => {
               setSearchParams(nextSearchParam);
               setSearch({
@@ -93,7 +124,15 @@ function InoutHistory(props) {
                 state: nextSearchParam.toString(),
               });
             }}
-          />
+          >
+            <HStack gap={6}>
+              {radioOptions.map((option) => (
+                <Radio key={option.value} value={option.value}>
+                  {option.label}
+                </Radio>
+              ))}
+            </HStack>
+          </RadioGroup>
           {/*리스트 jsx*/}
           <InoutHistoryList
             inoutHistoryList={inoutHistoryList}

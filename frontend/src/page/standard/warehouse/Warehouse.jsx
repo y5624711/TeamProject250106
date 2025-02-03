@@ -6,7 +6,7 @@ import {
   HStack,
   Stack,
 } from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import WarehouseList from "../../../components/standard/warehouse/WarehouseList.jsx";
@@ -28,7 +28,6 @@ function Warehouse(props) {
   const [warehouseList, setWarehouseList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [countWarehouse, setCountWarehouse] = useState("");
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
   );
@@ -58,33 +57,30 @@ function Warehouse(props) {
       type: search.type,
       keyword: search.keyword,
       sort: search.sort,
-      active: checkedActive,
       order: search.order,
+      page: 1,
+      active: search.active,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/warehouse/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
       sort: search.sort,
-      active: checkedActive,
       order: search.order,
+      page: e.page,
+      active: search.active,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/warehouse/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
+    setSearch({ ...search, active: nextValue });
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
     setSearchParams(nextSearchParams);
@@ -122,6 +118,8 @@ function Warehouse(props) {
             handlePageChangeClick={handlePageChangeClick}
             setSearchParams={setSearchParams}
             refresh={refresh}
+            search={search}
+            setSearch={setSearch}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button

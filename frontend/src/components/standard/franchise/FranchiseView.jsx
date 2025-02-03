@@ -162,6 +162,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             name="franchiseNote"
             value={franchise.franchiseNote}
             onChange={handleChange}
+            placeholder="최대 50자"
             style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>

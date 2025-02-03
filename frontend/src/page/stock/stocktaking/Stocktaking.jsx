@@ -7,7 +7,7 @@ import {
   HStack,
   Stack,
 } from "@chakra-ui/react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
@@ -18,8 +18,9 @@ function Stocktaking(props) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    sort: "",
+    order: "",
   });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams("");
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1,
@@ -49,19 +50,22 @@ function Stocktaking(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: 1,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/stocktaking/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/stocktaking/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
+      page: e.page,
+    };
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   return (
@@ -88,6 +92,8 @@ function Stocktaking(props) {
             setSearchParams={setSearchParams}
             countStocktaking={countStocktaking}
             handlePageChangeClick={handlePageChangeClick}
+            search={search}
+            setSearch={setSearch}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button

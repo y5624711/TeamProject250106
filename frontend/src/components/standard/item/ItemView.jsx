@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -140,7 +140,8 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                     />
                   </Field>
                   <Field label={"비고"} orientation="horizontal">
-                    <Input
+                    <Textarea
+                      style={{ maxHeight: "100px", overflowY: "auto" }}
                       name="itemNote"
                       placeholder="비고"
                       value={editedItem.itemNote}

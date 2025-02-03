@@ -168,6 +168,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
             <Field label="비고" orientation="horizontal">
               <Textarea
                 placeholder="최대 50자"
+                style={{ maxHeight: "100px", overflowY: "auto" }}
                 value={itemData.itemNote}
                 onChange={handleInputChange("itemNote")}
               />

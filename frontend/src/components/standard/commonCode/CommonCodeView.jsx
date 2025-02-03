@@ -200,14 +200,6 @@ export function CommonCodeView({
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
-
-      {/*<DialogConfirmation*/}
-      {/*  isOpen={isDialogOpen}*/}
-      {/*  onClose={() => setIsDialogOpen(false)}*/}
-      {/*  onConfirm={handleDeleteConfirm}*/}
-      {/*  title="삭제 확인"*/}
-      {/*  body="해당 품목을 삭제하시겠습니까?"*/}
-      {/*/>*/}
     </Box>
   );
 }
