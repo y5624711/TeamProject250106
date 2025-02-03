@@ -92,6 +92,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
       })
       .catch((e) => {
         console.error(e);
+        const message = e.response.data.message;
         toaster.create({
           type: message.type,
           description: message.text,

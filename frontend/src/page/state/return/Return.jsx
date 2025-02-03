@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import ReturnList from "../../../components/state/return/ReturnList.jsx";
@@ -7,6 +7,7 @@ import { Button } from "../../../components/ui/button.jsx";
 import ReturnRequest from "../../../components/state/return/ReturnRequest.jsx";
 import ReturnApprove from "../../../components/state/return/ReturnApprove.jsx";
 import { useSearchParams } from "react-router-dom";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 function Return(props) {
   const [returnList, setReturnList] = useState([]);
@@ -15,6 +16,7 @@ function Return(props) {
   const [returnRequestKey, setReturnRequestKey] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams("");
   const [count, setCount] = useState(1);
+  const { id } = useContext(AuthenticationContext);
 
   const state = searchParams.get("state") || "all";
   const sort = searchParams.get("sort") || "date";
@@ -83,15 +85,17 @@ function Return(props) {
             sort={sort}
             order={order}
           />
-          <Flex justify="flex-end">
-            <Button
-              size={"lg"}
-              onClick={() => setRequestDialogOpen(true)}
-              mt={-11}
-            >
-              반품 요청
-            </Button>
-          </Flex>
+          {id?.startsWith("BIZEMP") && (
+            <Flex justify="flex-end">
+              <Button
+                size={"lg"}
+                onClick={() => setRequestDialogOpen(true)}
+                mt={-11}
+              >
+                반품 요청
+              </Button>
+            </Flex>
+          )}
         </Stack>
         <ReturnRequest
           isOpen={requestDialogOpen}

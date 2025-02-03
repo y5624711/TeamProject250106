@@ -207,6 +207,12 @@ public interface EmployeeMapper {
             """)
     Integer viewMaxEmployeeNo(String employeeCommonCode);
 
+    @Select("""
+            SELECT employee_workplace_code
+            FROM TB_EMPMST
+            WHERE employee_no=#{loginNo}
+            """)
+    String checkUserCompany(String loginNo);
 }
 
 

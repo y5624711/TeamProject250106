@@ -73,8 +73,9 @@ FROM TB_RTN_REQ rr
          LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
          LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no
          LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
-WHERE common_code_name LIKE CONCAT('%', '장', '%')
-  AND (1 = 1 || return_consent IS NOT true || return_consent IS NOT false);
+WHERE rr.serial_no LIKE CONCAT('%', '00', '%')
+  AND rr.customer_code = 'CUS0000000005';
+
 
 SELECT rr.return_request_key,
        rr.franchise_code,

@@ -1,11 +1,13 @@
 package com.example.backend.service.state.retrieve;
 
 import com.example.backend.dto.state.retrieve.Return;
+import com.example.backend.mapper.standard.employee.EmployeeMapper;
 import com.example.backend.mapper.standard.franchise.FranchiseMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.retrieve.ReturnMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,26 +22,26 @@ public class ReturnService {
     final ReturnMapper mapper;
     final FranchiseMapper franchiseMapper;
     final InstkMapper instkMapper;
+    final EmployeeMapper employeeMapper;
 
     //반환 관리 리스트
-    public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order) {
+    public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order, Authentication auth) {
         // 날짜순은 두개 합쳐야함
         if ("date".equals(sort)) {
             sort = "COALESCE(return_approve_date, return_request_date)";
         }
-
-//        System.out.println("sort: " + sort);
-
-        //        System.out.println("리스트: " + mapper.getReturnList());
         Integer offset = (page - 1) * 10;
 
         //리스트
-        List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order);
-//        System.out.println("returnList" + returnList);
+        //본사일 경우 리스트 모두 보임
+        //협력사일 경우 자기 회사만
+        String userCompany = employeeMapper.checkUserCompany(auth.getName());
+//        System.out.println("회사코드: " + userCompany);
 
+        List<Return> returnList = mapper.getReturnList(state, offset, type, keyword, sort, order, userCompany);
+//        System.out.println("returnList: " + returnList);
         //총 수
         Integer count = mapper.countAll(state, type, keyword);
-
 
         return Map.of("returnList", returnList, "count", count);
     }
@@ -52,12 +54,12 @@ public class ReturnService {
 
     //반품 요청 정보 저장
     public boolean addRequest(Return requestInfo) {
-
         //프랜차이즈 이름-> 코드
         String franchiseCode = franchiseMapper.getFranchiseCode(requestInfo.getFranchiseName());
-//        System.out.println("프랜차이즈 이름, 코드: " + requestInfo.getFranchiseName() + franchiseCode);
+        if (franchiseCode == null || franchiseCode.isEmpty()) {
+            return false;
+        }
         requestInfo.setFranchiseCode(franchiseCode);
-
         //요청 정보 작성
         int count = mapper.addRequest(requestInfo);
 
@@ -108,5 +110,22 @@ public class ReturnService {
     public List<Map<String, Object>> getConfigurerList(String returnRequestKey) {
 //        System.out.println("업체 당 기사 목록: " + mapper.getConfigurerList(returnRequestKey));
         return mapper.getConfigurerList(returnRequestKey);
+    }
+
+    //요청자 자격
+    public boolean checkCustomer(String loginNo) {
+        String userCompany = employeeMapper.checkUserCompany(loginNo);
+
+        // "CUS"로 시작하면 true, 그렇지 않으면 false 반환
+        return userCompany != null && userCompany.startsWith("CUS");
+    }
+
+    //승인자 (제한)자격
+    public boolean checkApproveEmployee(String loginNo, String CustomerCode) {
+        //1. 본사 사람인가? 2. 해당 협석사 직원인가?
+        String userCompany = employeeMapper.checkUserCompany(loginNo);
+//        System.out.println("유저 소속: " + userCompany);
+
+        return userCompany.equals(CustomerCode) || userCompany.startsWith("BIZ");
     }
 }

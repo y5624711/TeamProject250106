@@ -143,7 +143,14 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           setRequestData(initialRequestData);
           onClose();
         })
-        .catch((e) => console.error("반품 요청 에러", e));
+        .catch((e) => {
+          console.error("반품 요청 에러", e);
+          const message = e.response.data.message;
+          toaster.create({
+            type: message.type,
+            description: message.text,
+          });
+        });
     }
   };
 
