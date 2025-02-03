@@ -55,6 +55,8 @@ public class InstkService {
              warehouseName=mapper.viewReturnWareHouseName(inputKey);
          }
 
+        System.out.println("warehouseName = " + warehouseName);
+
       Instk instk = new Instk();
       instk.setInputNote(inputStockNote);
       instk.setSerialLocationList(serialLocationList);
@@ -75,7 +77,8 @@ public class InstkService {
         String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
         String inoutNo=  "IN" + instk.getInputNo().substring(2);
         String inputCommonCode=instk.getInputCommonCode();
-        String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());
+
+        //String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());
         // 가입고  상태 변환
          int updateChecked =   mapper.updateBuyInConsentByInputKey(inputKey);
 
@@ -85,6 +88,10 @@ public class InstkService {
         if(instk.getInputCommonCode().equals("INSTK")) {
             // 품목 공통코드 조회
             String itemCommonCode = commonMapper.viewCommonCodeByCodeName(instk.getItemCommonName());
+
+            //인풋키 기준으로 창고 코드 가져오도록
+            String wareHouseCode=mapper.viewWareHouseCode(inputKey);
+            System.out.println("입고 wareHouseCode = " + wareHouseCode);
             //입고 테이블
             int insertInstk= mapper.addInstk(inputKey,inputStockNote,inputStockEmployeeNo);
 
@@ -117,20 +124,6 @@ public class InstkService {
                         inputKey);
                 checked &= (insertItemSub == 1) & (insertItstkSub == 1) & (inInoutHistory == 1);
             }
-
-//            //품목 상세에서  시리얼 넘버 맥스 뭔지 찾아오기
-//            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
-//            //시리얼 번호 최대로
-//            String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
-//
-//            int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
-//
-//
-//            //입고 상세 테이블
-//            int insertItstkSub=mapper.addInstkSub(inputKey,insertSerialNo);
-//            //입고 승인자 일하는 창고 코드 가져오기
-//          int inInoutHistory=  mapper.addInOutHistory(insertSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo);
-
             // 다 들어갔는지 체크하는거 필요함
             return checked;
         }
@@ -138,6 +131,10 @@ public class InstkService {
         else if(instk.getInputCommonCode().equals("RETRN")) {
             //시리얼 번호 가져오기
             String itemSerialNo= mapper.getReturnSerialNo(instk.getInputNo());
+            
+            //창고 코드
+            String wareHouseCode=mapper.viewRetrunWareHouseCode(inputKey);
+            System.out.println("반품 wareHouseCode = " + wareHouseCode);
             //품목 상세 현재위치 창고로 변경
             int currentCommonCode= itemMapper.updateCurrentCommonCodeBySerialNo(itemSerialNo);
             // 입고 테이블
@@ -161,10 +158,12 @@ public class InstkService {
         // 그냥 입고 ,구매승인가서 , 창고 코드 , 창고 코드 가서
         if(inputCommonCode.equals("INSTK")) {
               InstkDetail instkDetail = mapper.viewWareHouse(inputNo);
+            System.out.println("instkDetail = " + instkDetail);
               return instkDetail;
         }   //     반품 입고
         else if(inputCommonCode.equals("RETRN")) {
             InstkDetail instkDetail = mapper.viewReturnWareHouse(inputNo);
+            System.out.println("instkDetail = " + instkDetail);
             return instkDetail;
         }
         return null;

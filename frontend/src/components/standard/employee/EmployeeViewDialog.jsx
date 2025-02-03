@@ -22,10 +22,8 @@ export function EmployeeViewDialog({
     modalChange();
   };
 
-  console.log(modalChange)
-
   return (
-    <DialogRoot size={"lg"} open={isModalOpen}  onOpenChange={modalChange}>
+    <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={modalChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -40,7 +38,7 @@ export function EmployeeViewDialog({
           />
         </DialogBody>
         <DialogFooter></DialogFooter>
-        <DialogCloseTrigger/>
+        <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
   );

@@ -8,13 +8,15 @@ import {
   HStack,
   IconButton,
   Input,
+  Table,
+} from "@chakra-ui/react";
+import {
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  Table,
-} from "@chakra-ui/react";
+} from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -29,17 +31,27 @@ import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
-
-
+import { Sort } from "../../tool/list/Sort.jsx";
+import { Pagination } from "../../tool/list/Pagination.jsx";
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
+  //검색 옵션
+  const frameworks = createListCollection({
+    items: [
+      { label: "소속구분", value: "소속구분" },
+      { label: "기업", value: "기업명" },
+      { label: "직원", value: "직원명" },
+      { label: "사번", value: "사번" },
+    ],
+  });
+
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   const [count, setCount] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   // 상태 초기화: 쿼리 파라미터에서 값 가져오기
   const [page, setPage] = useState(searchParams.get("page") || 1);
-  const [sort, setSort] = useState(searchParams.get("sort") || "all");
+  const [sort, setSort] = useState(searchParams.get("sort"));
   const [isActiveVisible, setIsActiveVisible] = useState(
     searchParams.get("active") === "true",
   );
@@ -65,13 +77,12 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     axios
       .get("api/employee/list", {
         params: {
-          page: page,
-          isActiveVisible: isActiveVisible,
-          keyword: keyword,
-          //  배열이면 , 삭제한값
-          type: Array.isArray(type) ? type.join("") : type,
-          sort: sort,
-          order: order,
+          isActiveVisible: searchParams.get("active"),
+          page: searchParams.get("page"),
+          keyword: searchParams.get("keyword"),
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
+          type: searchParams.get("type"),
         },
       })
       .then((res) => {
@@ -93,10 +104,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   // active 보여주는거 정하는 버튼
 
   const handleVisible = () => {
-    setIsActiveVisible(!isActiveVisible);
+    const active = searchParams.get("active");
+    const insertActive = active === true ? true : false;
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      newParams.set("active", insertActive); // "active" 키에 새로운 값 설정
       return newParams;
     });
   };
@@ -112,27 +124,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   }
 
   function handleSearchButton() {
-    setPage(1); // 페이지를 1로 초기화
+    // setPage(1); // 페이지를 1로 초기화
 
-    setSearchParams((prev) => {
-      const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
-      newParams.type = type; // type 값 업데이트
-      newParams.keyword = keyword; // keyword 값 업데이트
-
-      return newParams; // 새로운 객체를 반환
-    });
+    const newParams = new URLSearchParams(searchParams); // 기존 파라미터 복사 (깊은 복사)
+    newParams.set("type", type); // type 값 업데이트
+    newParams.set("keyword", keyword); // keyword 값 업데이트
+    newParams.set("page", 1);
+    setSearchParams(newParams);
   }
-
-  const frameworks = createListCollection({
-    items: [
-      { label: "소속구분", value: "소속구분" },
-      { label: "기업", value: "기업명" },
-      { label: "부서", value: "부서명" },
-      { label: "직원", value: "직원명" },
-      { label: "사번", value: "사번" },
-      // { label: "계약여부", value: "계약여부" },
-    ],
-  });
 
   const handleSortControl = (sortName) => {
     const convertedOrderName =
@@ -168,6 +167,17 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setOrder("desc"); // 기본 정렬 순서 설정
   };
 
+  // 소트
+  const sortOptions = [
+    { key: "기본키", label: "#" },
+    { key: "소속구분", label: "소속 구분" },
+    { key: "기업명", label: "기업" },
+    { key: "기업번호", label: "기업 번호" },
+    { key: "직원명", label: "직원" },
+    { key: "직원전화번호", label: "직원 전화번호" },
+    { key: "사번", label: "사번" },
+  ];
+
   return (
     <Box p={5}>
       <HStack
@@ -181,20 +191,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           <SelectRoot
             collection={frameworks}
             value={type}
-            width="150px"
+            width="160px"
             position="relative"
             onValueChange={(e) => setType(e.value)}
           >
             <SelectTrigger>
               <SelectValueText placeholder={"전체"} />
             </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "150px",
-                top: "40px",
-                position: "absolute",
-              }}
-            >
+            <SelectContent>
               {frameworks.items.map((code) => (
                 <SelectItem item={code} key={code.value}>
                   {code.label}
@@ -202,7 +206,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               ))}
             </SelectContent>
           </SelectRoot>
-
         </Box>
         <Input
           w={"50%"}
@@ -220,23 +223,35 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
-        <Button onClick={handleSearchButton} transform="translateX(-75%)"
-        >검색</Button>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)">
+          검색
+        </Button>
       </HStack>
       <Checkbox
         my={3}
-        checked={isActiveVisible}
+        checked={searchParams.get("active")}
         onCheckedChange={(e) => handleVisible()}
       >
         미사용 포함 조회
       </Checkbox>
       <Table.Root interactive>
         <Table.Header>
-          <SortColumnHeader
-            handleSortControl={handleSortControl}
-            searchParams={searchParams}
-          />
+          <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+            <Sort
+              sortOptions={sortOptions}
+              onSortChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+              defaultSortKey={"기본키"}
+            />
+
+            {/*<SortColumnHeader*/}
+            {/*  handleSortControl={handleSortControl}*/}
+            {/*  searchParams={searchParams}*/}
+            {/*/>*/}
+          </Table.Row>
         </Table.Header>
+
         <Table.Body>
           {memberList.map((item, index) => (
             <Table.Row
@@ -246,26 +261,21 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                 handleviewModalControl();
               }}
               bg={item.employeeActive ? "white" : "gray.100"}
+              _hover={{ backgroundColor: "gray.200" }}
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-              <Table.Cell textAlign="center"> {item.employeeWorkPlaceCode} </Table.Cell>
+              <Table.Cell textAlign="center">
+                {" "}
+                {item.employeeWorkPlaceCode}{" "}
+              </Table.Cell>
               <Table.Cell textAlign="center">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
-              </Table.Cell  >
-              <Table.Cell textAlign="center">{item.employeeWorkPlaceTel}</Table.Cell>
-              {/*<Table.Cell textAlign="center">*/}
-              {/*  /!*협력업체는 부서가 없어서 *!/*/}
-              {/*  {item.employeeCommonCode === "CUS"*/}
-              {/*    ? ""*/}
-              {/*    : item.employeeWorkPlaceName}*/}
-              {/*</Table.Cell >*/}
-              {/*<Table.Cell textAlign="center">*/}
-              {/*  {item.employeeCommonCode === "CUS"*/}
-              {/*    ? ""*/}
-              {/*    : item.employeeWorkPlaceTel}*/}
-              {/*</Table.Cell>*/}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {item.employeeWorkPlaceTel}
+              </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeTel} </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
@@ -275,36 +285,33 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex justify="space-between" mt={"20px"}>
+
+      <Flex justify="space-between">
         <Box />
 
-          <Box>
-            <PaginationRoot
-              onPageChange={handlePageChange}
-              count={count}
-              pageSize={10}
-              page={page}
-              defaultPage={page}
-              variant={"solid"}
-            >
-              <PaginationPrevTrigger>
-                <FaArrowLeft />
-              </PaginationPrevTrigger>
-              <PaginationItems />
-              <PaginationNextTrigger>
-                <FaArrowRight />
-              </PaginationNextTrigger>
-            </PaginationRoot>
-          </Box>
+        <Box>
+          <Pagination
+            count={count}
+            pageSize={10}
+            onPageChange={(newPage) => {
+              const nextSearchParam = new URLSearchParams(searchParams);
+              nextSearchParam.set("page", newPage);
+              setSearchParams(nextSearchParam);
+            }}
+          />
+        </Box>
 
+        {/*페이지네이션과 동일값 */}
+        <Box p={4}>
           <Button
-            display="flex" justifyContent="flex-end"
             onClick={() => {
               setIsModalOpen(true);
             }}
+            size={"lg"}
           >
             직원 등록
           </Button>
+        </Box>
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}
@@ -313,7 +320,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         onChange={onChange}
         onSelect={onSelect}
       />
-
       <EmployeeViewDialog
         isModalOpen={isviewModalOpen}
         modalChange={handleviewModalControl}

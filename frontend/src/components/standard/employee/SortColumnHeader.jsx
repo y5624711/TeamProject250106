@@ -4,6 +4,8 @@ import { FaArrowDown, FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import React, { useState } from "react";
 
 export function SortColumnHeader({ handleSortControl, searchParams }) {
+  // 기본 정렬 표시를 위해
+  const [initialSort, setInitialSort] = useState(true);
   return (
     <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
       <Table.ColumnHeader
@@ -79,42 +81,6 @@ export function SortColumnHeader({ handleSortControl, searchParams }) {
           )}
         </HStack>
       </Table.ColumnHeader>
-      {/*<Table.ColumnHeader*/}
-      {/*  onClick={() => {*/}
-      {/*    handleSortControl("부서명");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <HStack justify="center" align="center" width="100%">*/}
-      {/*    부서*/}
-      {/*    {searchParams.get("sort") === "부서명" ? (*/}
-      {/*      searchParams.get("order") === "ASC" ? (*/}
-      {/*        <FaCaretUp />*/}
-      {/*      ) : (*/}
-      {/*        <FaCaretDown />*/}
-      {/*      )*/}
-      {/*    ) : (*/}
-      {/*      ""*/}
-      {/*    )}*/}
-      {/*  </HStack>*/}
-      {/*</Table.ColumnHeader>*/}
-      {/*<Table.ColumnHeader*/}
-      {/*  onClick={() => {*/}
-      {/*    handleSortControl("부서번호");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <HStack justify="center" align="center" width="100%">*/}
-      {/*    부서 번호*/}
-      {/*    {searchParams.get("sort") === "부서번호" ? (*/}
-      {/*      searchParams.get("order") === "ASC" ? (*/}
-      {/*        <FaCaretUp />*/}
-      {/*      ) : (*/}
-      {/*        <FaCaretDown />*/}
-      {/*      )*/}
-      {/*    ) : (*/}
-      {/*      ""*/}
-      {/*    )}*/}
-      {/*  </HStack>*/}
-      {/*</Table.ColumnHeader>*/}
       <Table.ColumnHeader
         onClick={() => {
           handleSortControl("직원명");
