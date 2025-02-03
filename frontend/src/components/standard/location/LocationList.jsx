@@ -18,6 +18,8 @@ function LocationList({
   handlePageChangeClick,
   setSearchParams,
   refresh,
+  setSearch,
+  search,
 }) {
   const navigate = useNavigate();
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -42,9 +44,17 @@ function LocationList({
               <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
                 <Sort
                   sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) =>
-                    setSearchParams(nextSearchParam)
-                  }
+                  onSortChange={(nextSearchParam) => {
+                    setSearchParams(nextSearchParam);
+                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                    const sortMatch = searchString.match(/sort=([^&]*)/);
+                    const orderMatch = searchString.match(/order=([^&]*)/);
+                    setSearch({
+                      ...search,
+                      order: orderMatch[1],
+                      sort: sortMatch[1],
+                    });
+                  }}
                   defaultSortKey={"locationKey"}
                 />
               </Table.Row>

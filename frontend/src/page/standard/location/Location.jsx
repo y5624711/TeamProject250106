@@ -19,6 +19,8 @@ function Location(props) {
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    sort: "",
+    order: "",
   });
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams("");
@@ -51,6 +53,8 @@ function Location(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
       page: 1,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
@@ -60,11 +64,18 @@ function Location(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      sort: search.sort,
+      order: search.order,
       page: e.page,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
+  console.log(search);
+  console.log(search.sort);
+  console.log(search.order);
+  console.log(search.type);
+  console.log(search.keyword);
   return (
     <Box>
       <HStack align="flex-start" w="100%">
@@ -88,6 +99,8 @@ function Location(props) {
             setSearchParams={setSearchParams}
             searchParams={searchParams}
             refresh={refresh}
+            setSearch={setSearch}
+            search={search}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button
