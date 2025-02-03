@@ -52,7 +52,9 @@ public interface PurchaseMapper {
                 sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent,
-                pa.purchase_approve_date AS purchaseApproveDate
+                pa.purchase_approve_date AS purchaseApproveDate,
+            COALESCE(GREATEST(pr.purchase_request_date, pa.purchase_approve_date),
+                              pr.purchase_request_date, pa.purchase_approve_date) AS purchaseDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
@@ -92,7 +94,13 @@ public interface PurchaseMapper {
                     </trim>
                     )
             </if>
-            ORDER BY ${sort} ${order}
+            <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+            </if>
+            <if test="sort == null or sort == ''">
+                    ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+            </if>
             LIMIT #{offset}, 10
             </script>
             """)

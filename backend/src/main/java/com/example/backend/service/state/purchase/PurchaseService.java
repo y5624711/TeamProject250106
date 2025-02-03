@@ -49,11 +49,6 @@ public class PurchaseService {
     public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order, Authentication auth) {
         // 현재 로그인한 사용자의 customerCode 가져오기
         String customerCode = mapper.getCustomerCode(auth.getName());
-
-        // 요청 날짜, 승인 날짜 합치기
-        if ("date".equals(sort)) {
-            sort = "COALESCE(purchase_request_date, purchase_approve_date)";
-        }
         // SQL의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
         // 조회되는 게시물들

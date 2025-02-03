@@ -53,8 +53,8 @@ public class PurchaseController {
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "state", defaultValue = "all") String state,
-            @RequestParam(value = "sort", defaultValue = "COALESCE(purchase_request_date, purchase_approve_date)") String sort,
-            @RequestParam(value = "order", defaultValue = "desc") String order,
+            @RequestParam(value = "sort", defaultValue = "") String sort,
+            @RequestParam(value = "order", defaultValue = "") String order,
             Authentication auth) {
         return service.purchaseList(page, type, keyword, state, sort, order, auth);
     }
