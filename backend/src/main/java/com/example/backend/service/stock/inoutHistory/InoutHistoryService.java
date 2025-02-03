@@ -20,7 +20,9 @@ public class InoutHistoryService {
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
 
+//        로그인한 정보로 일터 코드 가져오기
         String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
+//        BIZ 인지, CUS 인지 확인하는 용도
         String workplace = workplaceCode.substring(0, 3);
 
         return Map.of("list", mapper.list(pageList, searchKeyword, searchType, sort, order, state, workplaceCode, workplace), "count", mapper.count(searchKeyword, searchType, state, workplaceCode, workplace));
