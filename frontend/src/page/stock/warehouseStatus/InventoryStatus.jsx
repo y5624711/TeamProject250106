@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
-import { Center, Heading, HStack, Spinner, Stack } from "@chakra-ui/react";
+import { Center, Heading, HStack, Stack } from "@chakra-ui/react";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -15,26 +15,17 @@ import { useSearchParams } from "react-router-dom";
 function InventoryStatus() {
   const [inventoryList, setInventoryList] = useState([]);
   const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({ type: "all", keyword: "" });
-  // const [sort, setSort] = useState({ column: "", order: "desc" });
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
   useEffect(() => {
-    axios
-      .get("/api/inventory/list", { params: searchParams })
-      .then((res) => {
-        setInventoryList(res.data.list);
-        setCount(res.data.count);
-      })
-      .finally(() => setLoading(false));
+    axios.get("/api/inventory/list", { params: searchParams }).then((res) => {
+      setInventoryList(res.data.list);
+      setCount(res.data.count);
+    });
   }, [searchParams]);
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <HStack align="flex-start" w={"100%"}>

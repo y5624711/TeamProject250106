@@ -20,8 +20,8 @@ export function MainInstkList({ company }) {
     { label: "#" },
     { label: "입고 구분" },
     { label: "발주 번호" },
-    { label: "담당 업체" },
     { label: "품목" },
+    { label: "담당 업체" },
     { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
@@ -48,16 +48,17 @@ export function MainInstkList({ company }) {
                 key={index}
                 onDoubleClick={() => navigate("/instk")}
                 title="더블 클릭시 해당 페이지로 이동합니다."
+                _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.inputCommonCodeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{item.inputNo}</Table.Cell>
-                <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.itemCommonName}
                 </Table.Cell>
+                <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.requestEmployeeName}
                 </Table.Cell>

@@ -32,7 +32,7 @@ export function ActiveSwitch({ onActiveChange }) {
       mb={5}
       ml={3}
       checked={active}
-      onChange={handleSwitchChange}
+      onCheckedChange={handleSwitchChange}
     >
       미사용 포함 조회
     </Checkbox>

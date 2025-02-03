@@ -44,7 +44,13 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     if (location.pathname.startsWith("/item")) {
       const active = searchParams.get("active") ?? "false";
       nextSearchParam.set("active", active);
-
+    } else if (location.pathname.startsWith("/purchase")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
+    } else if (location.pathname.startsWith("/install")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
+    } else if (location.pathname.startsWith("/commonCode")) {
       // item 경로에선 filter를 URL에서 제거
       const filter = searchParams.get("filter") ?? "";
       if (filter) {
@@ -52,12 +58,6 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       } else {
         nextSearchParam.delete("filter");
       }
-    } else if (location.pathname.startsWith("/purchase")) {
-      const state = searchParams.get("state") ?? "all";
-      nextSearchParam.set("state", state);
-    } else if (location.pathname.startsWith("/install")) {
-      const state = searchParams.get("state") ?? "all";
-      nextSearchParam.set("state", state);
     }
 
     const sort = searchParams.get("sort") ?? "";

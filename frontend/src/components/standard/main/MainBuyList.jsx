@@ -47,6 +47,7 @@ export function MainBuyList({ company }) {
                 key={index}
                 onDoubleClick={() => navigate("/purchase")}
                 title="더블 클릭시 해당 페이지로 이동합니다."
+                _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
