@@ -86,7 +86,7 @@ WHERE 1=1
     </if>
     <if test="keyword != null and keyword != ''">
         <choose>
-            <when test="type == 'input_common_code_name'">
+            <when test="type == 'input_common_code_name'">d
                 AND SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_no'">
