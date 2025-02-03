@@ -132,13 +132,14 @@ LIMIT #{offset}, 10
             @Param("order") String order,
             @Param("type")String type);
 
-
     @Select("""
             select input_stock_note
             from  TB_INSTK
             where  input_key=#{inputKey}
             """)
     String getInstkNoteByInputKey(int inputKey);
+
+
 
     @Insert("""
             INSERT INTO TB_BUYIN

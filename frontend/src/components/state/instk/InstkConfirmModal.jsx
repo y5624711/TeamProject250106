@@ -1,4 +1,11 @@
-import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Input,
+  Separator,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
@@ -41,7 +48,7 @@ export function InstkConfirmModal({
       });
   }, []);
 
-  // 입고테이블에 추가 , 가입고 상태 변환 ,품목에 시리얼 번호 추가,품목 입출내역에 추가 ,입고 상세에 시리얼 번호 로케이션 등등
+  // 입고 추가
   const handleAddInstk = () => {
     axios
       .post("/api/instk/add", {
@@ -135,6 +142,14 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
+            <Field label={"주문 비고"} orientation="horizontal">
+              <Textarea
+                value={instk.inputNote}
+                readOnly
+                placeholder={"최대50자"}
+              />
+            </Field>
+
             <HStack>
               <Field label={"창고 주소"} orientation="horizontal">
                 <Input value={instkDetail.warehouseAddress} readOnly />
@@ -153,13 +168,7 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <Field label={"주문 비고"} orientation="horizontal">
-              <Textarea
-                value={instk.inputNote}
-                readOnly
-                placeholder={"최대50자"}
-              />
-            </Field>
+            <Separator />
 
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
