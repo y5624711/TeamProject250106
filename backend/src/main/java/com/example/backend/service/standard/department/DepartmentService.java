@@ -3,6 +3,7 @@ package com.example.backend.service.standard.department;
 import com.example.backend.dto.standard.department.Department;
 import com.example.backend.mapper.standard.department.DepartmentMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,15 +64,6 @@ public class DepartmentService {
         return cnt == 1;
     }
 
-    public boolean deleteDepartment(Integer departmentKey) {
-        int cnt = mapper.deleteDepartment(departmentKey);
-        return cnt == 1;
-    }
-
-    public boolean reUseDepartment(Integer departmentKey) {
-        int cnt = mapper.reUseDepartment(departmentKey);
-        return cnt == 1;
-    }
 
     public boolean checkSameNameCheck(Department department) {
         String name = department.getDepartmentName().trim();
@@ -80,10 +72,20 @@ public class DepartmentService {
 
     public boolean checkUpdateSameNameCheck(Department department) {
         String name = department.getDepartmentName().trim();
-        return mapper.checkSameName(name) <= 1;
+        return mapper.checkSameName(name) > 0;
     }
 
     public List<Department> getCodeNames() {
         return mapper.getCodeNames();
+    }
+
+    public boolean checkAdmin(Authentication auth) {
+        String authSlice = auth.getName().trim().substring(0, 3);
+        if (authSlice.equals("BIZ")) {
+            int cnt = mapper.selectEmployee(auth.getName());
+            return cnt == 1;
+        } else {
+            return false;
+        }
     }
 }

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { Checkbox } from "../../ui/checkbox.jsx";
@@ -9,8 +9,10 @@ import { BusinessPageNation } from "./BusinessPageNation.jsx";
 import { DepartmentViewAndUpdateDialog } from "./DepartmentViewAndUpdateDialog.jsx";
 import { DepartmentAdd } from "./DepartmentAdd.jsx";
 import { Button } from "../../ui/button.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function BusinessDepartmentList() {
+  const { isAdmin } = useContext(AuthenticationContext);
   const [departmentList, setDepartmentList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
@@ -146,9 +148,11 @@ export function BusinessDepartmentList() {
         openDialog={handleOpenDialog}
       />
       <Box pt={5}>
-        <Button float={"right"} onClick={() => setIsAddOpen(true)}>
-          부서 등록
-        </Button>
+        {isAdmin && (
+          <Button float={"right"} onClick={() => setIsAddOpen(true)}>
+            부서 등록
+          </Button>
+        )}
 
         {/*페이지네이션*/}
         <BusinessPageNation
@@ -174,6 +178,7 @@ export function BusinessDepartmentList() {
         setAddCheck={setAddCheck}
         addCheck={addCheck}
         onOpenChange={(isOpen) => setIsOpen(isOpen)}
+        isAdmin={isAdmin}
       />
     </Box>
   );

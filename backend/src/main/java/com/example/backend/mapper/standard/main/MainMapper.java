@@ -70,7 +70,7 @@ public interface MainMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
-            WHERE emp2.employee_workplace_code =#{company}
+            WHERE cus.customer_code = 'CUS0000000001'
             ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
                             pr.purchase_request_date,pa.purchase_approve_date) DESC
             LIMIT 3
@@ -200,13 +200,13 @@ public interface MainMapper {
                 BI.input_no,
                 BI.input_consent,
                 BI.input_note,
-                SC2.common_code_name AS input_common_code_name,
-                SC.common_code_name AS item_common_name,
-                CT.customer_name AS customer_name,
-                EM.employee_name AS request_approval_employee_name,
-                EM.employee_no AS request_approval_employee_no,
-                EM2.employee_name AS request_employee_name,
-                EM2.employee_no AS request_employee_no,
+                SC2.common_code_name AS inputCommonCodeName,
+                SC.common_code_name AS itemCommonName,
+                CT.customer_name AS customerName,
+                EM.employee_name AS requestApprovalEmployeeName,
+                EM.employee_no AS requestApprovalEmployeeNo,
+                EM2.employee_name AS requestEmployeeName,
+                EM2.employee_no AS requestEmployeeNo,
                 CASE
                     WHEN BI.input_consent = TRUE THEN INS.input_stock_date
                     ELSE NULL
@@ -243,19 +243,19 @@ public interface MainMapper {
                 LEFT JOIN TB_EMPMST EM2
                     ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
                     OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
-                LEFT JOIN TB_CUSTMST CT
-                    ON CT.customer_code = EM.employee_workplace_code
+                LEFT JOIN TB_CUSTMST CT  
+                    ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
+                    OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)    
                 LEFT JOIN TB_SYSCOMM SC
                     ON SC.common_code = CT.item_code
                 LEFT JOIN TB_SYSCOMM SC2
                     ON SC2.common_code = BI.input_common_code
-                LEFT JOIN TB_INSTK INS
-                    ON INS.input_key = BI.input_key  -- 수정
-                LEFT JOIN TB_EMPMST EM3
-                    ON EM3.employee_no = INS.customer_employee_no  -- 수정
+                LEFT JOIN TB_INSTK INS 
+                    ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
+                LEFT JOIN TB_EMPMST EM3 
+                    ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
             WHERE EM2.employee_no = #{name}
-            ORDER BY     COALESCE(INS.input_stock_date, RNRQ.return_request_date) DESC,
-                         BI.input_key DESC  -- 또는 다른 고유값 사용
+            ORDER BY COALESCE(INS.input_stock_date, RNRQ.return_request_date) DESC
             LIMIT 3;  -- 수정
             """)
     List<Instk> selectInstkList(String name);

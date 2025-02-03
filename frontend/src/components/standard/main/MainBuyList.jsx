@@ -54,7 +54,7 @@ export function MainBuyList({ company }) {
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.employeeName}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {row.customerEmployeeName}
+                  {row.customerEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.purchaseRequestDate}

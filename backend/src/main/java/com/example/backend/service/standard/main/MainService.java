@@ -77,7 +77,6 @@ public class MainService {
     }
 
     public List<Instk> getInstkList(Authentication auth) {
-        System.out.println(" 들옴");
         return mapper.selectInstkList(auth.getName());
     }
 

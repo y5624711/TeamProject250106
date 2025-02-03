@@ -36,6 +36,23 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
     resetValue();
   };
 
+  const formatPhoneNumber = (value) => {
+    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+    // 숫자만 남기고, 11자리까지만 허용
+    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+
+    // 정규식에 맞춰 하이픈 추가
+    if (onlyNums.length === 11) {
+      return onlyNums.replace(regPhone, "01$1-$2-$3");
+    } else if (onlyNums.length > 7) {
+      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (onlyNums.length > 3) {
+      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+
+    return onlyNums;
+  };
+
   function handleSaveDepartment() {
     axios
       .post("/api/department/add", {
@@ -84,18 +101,23 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
               <Input
                 value={departmentName}
                 onChange={(e) => setDepartmentName(e.target.value)}
+                maxlength={10}
               />
             </Field>
             <Field label={"대표전화"} orientation="horizontal">
               <Input
                 value={departmentTel}
-                onChange={(e) => setDepartmentTel(e.target.value)}
+                onChange={(e) =>
+                  setDepartmentTel(formatPhoneNumber(e.target.value))
+                }
+                maxlength={13}
               />
             </Field>
             <Field label={"팩스"} orientation="horizontal">
               <Input
                 value={departmentFax}
                 onChange={(e) => setDepartmentFax(e.target.value)}
+                maxlength={15}
               />
             </Field>
             <Field label={"비고"} orientation="horizontal">
@@ -103,6 +125,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
                 value={departmentNote}
                 onChange={(e) => setDepartmentNote(e.target.value)}
                 placeholder={"최대 50자"}
+                maxlength={50}
                 style={{ maxHeight: "100px", overflowY: "auto" }}
               />
             </Field>
