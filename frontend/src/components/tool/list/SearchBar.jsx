@@ -58,6 +58,9 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     } else if (location.pathname.startsWith("/install")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
+    } else if (location.pathname.startsWith("/instk")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
     }
 
     const sort = searchParams.get("sort") ?? "";
