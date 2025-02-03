@@ -30,8 +30,6 @@ import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
-
-
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
@@ -202,7 +200,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               ))}
             </SelectContent>
           </SelectRoot>
-
         </Box>
         <Input
           w={"50%"}
@@ -220,8 +217,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         >
           <BsArrowCounterclockwise size="25px" />
         </IconButton>
-        <Button onClick={handleSearchButton} transform="translateX(-75%)"
-        >검색</Button>
+        <Button onClick={handleSearchButton} transform="translateX(-75%)">
+          검색
+        </Button>
       </HStack>
       <Checkbox
         my={3}
@@ -248,24 +246,18 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               bg={item.employeeActive ? "white" : "gray.100"}
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-              <Table.Cell textAlign="center"> {item.employeeWorkPlaceCode} </Table.Cell>
+              <Table.Cell textAlign="center">
+                {" "}
+                {item.employeeWorkPlaceCode}{" "}
+              </Table.Cell>
               <Table.Cell textAlign="center">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
-              </Table.Cell  >
-              <Table.Cell textAlign="center">{item.employeeWorkPlaceTel}</Table.Cell>
-              {/*<Table.Cell textAlign="center">*/}
-              {/*  /!*협력업체는 부서가 없어서 *!/*/}
-              {/*  {item.employeeCommonCode === "CUS"*/}
-              {/*    ? ""*/}
-              {/*    : item.employeeWorkPlaceName}*/}
-              {/*</Table.Cell >*/}
-              {/*<Table.Cell textAlign="center">*/}
-              {/*  {item.employeeCommonCode === "CUS"*/}
-              {/*    ? ""*/}
-              {/*    : item.employeeWorkPlaceTel}*/}
-              {/*</Table.Cell>*/}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {item.employeeWorkPlaceTel}
+              </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeTel} </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
@@ -278,33 +270,36 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       <Flex justify="space-between" mt={"20px"}>
         <Box />
 
-          <Box>
-            <PaginationRoot
-              onPageChange={handlePageChange}
-              count={count}
-              pageSize={10}
-              page={page}
-              defaultPage={page}
-              variant={"solid"}
-            >
-              <PaginationPrevTrigger>
-                <FaArrowLeft />
-              </PaginationPrevTrigger>
-              <PaginationItems />
-              <PaginationNextTrigger>
-                <FaArrowRight />
-              </PaginationNextTrigger>
-            </PaginationRoot>
-          </Box>
-
-          <Button
-            display="flex" justifyContent="flex-end"
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
+        <Box>
+          <PaginationRoot
+            onPageChange={handlePageChange}
+            count={count}
+            pageSize={10}
+            page={page}
+            defaultPage={page}
+            variant={"solid"}
+            size={"lg"}
           >
-            직원 등록
-          </Button>
+            <PaginationPrevTrigger>
+              <FaArrowLeft />
+            </PaginationPrevTrigger>
+            <PaginationItems />
+            <PaginationNextTrigger>
+              <FaArrowRight />
+            </PaginationNextTrigger>
+          </PaginationRoot>
+        </Box>
+
+        <Button
+          display="flex"
+          justifyContent="flex-end"
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+          size={"lg"}
+        >
+          직원 등록
+        </Button>
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}
