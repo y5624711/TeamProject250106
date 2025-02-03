@@ -72,9 +72,9 @@ public interface EmployeeMapper {
                              </if>
             
                          </if>
-           
+            
                          <!-- 정렬 조건   -->
-                        
+            
                          <choose>
                              <when test="convertedSort != null and convertedSort != ''\s
                                                and (convertedSort == 'employee_name'\s
@@ -162,7 +162,7 @@ public interface EmployeeMapper {
                          LEFT JOIN TB_CUSTMST C
                          ON E.employee_common_code = 'CUS'
                          AND E.employee_workplace_code = C.customer_code
-                        
+            
                 <where>
                     <!-- isActiveVisible이 false라면 employee_active = true 조건 추가 -->
                     <if test="isActiveVisible != null and !isActiveVisible">
@@ -179,7 +179,7 @@ public interface EmployeeMapper {
                                      OR employee_workplace_code LIKE CONCAT('%', #{keyword}, '%')
                                  )
                     </if>
-           
+            
                     <!-- type이 특정 컬럼일 경우 해당 컬럼에서 keyword 포함 여부 검사 -->
                     <if test="type != null and type != 'all'">
                         AND ${type} LIKE CONCAT('%', #{keyword}, '%')
@@ -202,6 +202,12 @@ public interface EmployeeMapper {
             """)
     Integer viewMaxEmployeeNo(String employeeCommonCode);
 
+    @Select("""
+            SELECT employee_workplace_code
+            FROM TB_EMPMST
+            WHERE employee_no=#{loginNo}
+            """)
+    String checkUserCompany(String loginNo);
 }
 
 

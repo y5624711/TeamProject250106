@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Transactional
 @RequestMapping("/api/return")
 public class ReturnController {
     final ReturnService service;
@@ -48,9 +51,16 @@ public class ReturnController {
     //반품 요청
     @PostMapping("request")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> requestReturn(@RequestBody Return requestInfo) {
-//        System.out.println("request: " + requestInfo);
+    public ResponseEntity<Map<String, Object>> requestReturn(@RequestBody Return requestInfo, Authentication auth) {
+        //조건 1 로그인 한 사람이 본사 직원이어야함
+        if (service.checkCustomer(auth.getName())) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "요청 권한이 없습니다.")));
+        }
 
+        //조건 2 요청 실패 여부 - trans
         if (service.addRequest(requestInfo)) {
             return ResponseEntity.ok().body(Map.of("message",
                     Map.of("type", "success", "text", "요청하였습니다."),
@@ -77,8 +87,15 @@ public class ReturnController {
     //반품 승인 + 가입고 요청
     @PostMapping("approve")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo) {
-//        System.out.println("controller: " + approveInfo);
+    public ResponseEntity<Map<String, Object>> approveReturn(@RequestBody Return approveInfo, Authentication auth) {
+        //승인하는 사람이 해당 본사 or 해당 협력사 직원
+        if (!service.checkApproveEmployee(auth.getName(), approveInfo.getCustomerCode())) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "error",
+                                    "text", "승인 권한이 없습니다.")));
+        }
+
         if (service.addApprove(approveInfo)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",
