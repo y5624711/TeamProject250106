@@ -126,7 +126,6 @@ export function BusinessDepartmentList() {
       />
 
       <Checkbox
-        variant={"subtle"}
         checked={active}
         onCheckedChange={toggleCheckActive}
         whiteSpace={"nowrap"}

@@ -4,21 +4,21 @@ import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx"
 import { useNavigate } from "react-router-dom";
 import MemberInfo from "../../page/memberInfo/MemberInfo.jsx";
 
-function NavItem({ children, path, ...rest }) {
+function NavItem({ children, path, textColor, ...rest }) {
   const navigate = useNavigate();
 
   return (
     <Box
       h={"40px"}
-      w={{ base: "90px", sm: "110px" }} // 반응형: 작은 화면에서는 더 좁게
-      display="flex" // Flexbox 활성화
-      justifyContent="center" // 가로 방향 가운데 정렬
-      alignItems="center" // 세로 방향 가운데 정렬
+      w={{ base: "90px", sm: "110px" }}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
       _hover={{ cursor: "pointer", bgColor: "whiteAlpha.700" }}
       onClick={() => path && navigate(path)}
       {...rest}
     >
-      <Text fontWeight={"bold"} color={"gray.700"} whiteSpace={"nowrap"}>
+      <Text fontWeight={"bold"} color={textColor} whiteSpace={"nowrap"}>
         {children}
       </Text>
     </Box>
@@ -35,7 +35,11 @@ export function Navbar() {
   return (
     <Box>
       <Flex gap={5} mt={3} mb={2} w={"98%"} mx={"auto"}>
-        <Heading _hover={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+        <Heading
+          fontWeight="bold"
+          _hover={{ cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
           Choongang System
         </Heading>
         <Spacer />
@@ -43,6 +47,7 @@ export function Navbar() {
 
         {isAuthenticated && (
           <NavItem
+            textColor="gray.700"
             onClick={() => {
               logout();
               navigate("/login");
@@ -52,10 +57,40 @@ export function Navbar() {
           </NavItem>
         )}
       </Flex>
-      <Flex bgColor={"lightSlateGray"} width="100%" gap={10} p={2} pl={3}>
-        <NavItem path="/business">기준정보 관리</NavItem>
-        <NavItem path={"/purchase"}>구매/설치 관리</NavItem>
-        <NavItem path="/inoutHistory">물류 관리</NavItem>
+      <Flex bgColor={"#4374D9"} width="100%" gap={10} p={2} pl={3}>
+        <NavItem
+          path="/business"
+          textColor="white"
+          _hover={{
+            bgColor: "#1F50B5",
+            borderRadius: "12px",
+            cursor: "pointer",
+          }}
+        >
+          기준정보 관리
+        </NavItem>
+        <NavItem
+          path="/purchase"
+          textColor="white"
+          _hover={{
+            bgColor: "#1F50B5",
+            borderRadius: "12px",
+            cursor: "pointer",
+          }}
+        >
+          구매/설치 관리
+        </NavItem>
+        <NavItem
+          path="/inoutHistory"
+          textColor="white"
+          _hover={{
+            bgColor: "#1F50B5",
+            borderRadius: "12px",
+            cursor: "pointer",
+          }}
+        >
+          물류 관리
+        </NavItem>
       </Flex>
     </Box>
   );

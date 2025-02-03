@@ -94,7 +94,7 @@ export function CommonCodeList({
             ))}
           </Table.Body>
         </Table.Root>
-        <Flex justify="center" pt={5}>
+        <Flex justify="center">
           <HStack w={"100%"}>
             <Pagination
               count={count}
