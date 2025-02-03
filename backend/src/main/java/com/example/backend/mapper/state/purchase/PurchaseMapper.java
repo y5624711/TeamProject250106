@@ -12,11 +12,11 @@ public interface PurchaseMapper {
 
     // 품목 구분 코드 리스트 가져오기
     @Select("""
-            SELECT cus.item_code AS item_common_code,
+            SELECT ite.item_common_code AS item_common_code,
                    sys.common_code_name AS item_common_name
-            FROM TB_CUSTMST cus
-            LEFT JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
-            WHERE cus.customer_active = 1  -- 협력 업체에서 사용중인 것만 가져오기
+            FROM TB_ITEMMST ite
+            LEFT JOIN TB_SYSCOMM sys ON ite.item_common_code = sys.common_code
+            WHERE ite.item_active = 1  -- 품목에서 사용중인 것만 가져오기
             ORDER BY BINARY(item_common_name)
             """)
     List<Map<String, Object>> getItemCommonCodeList();
