@@ -1,5 +1,7 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 function SidebarItem({ children, path, ...rest }) {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ function SidebarItem({ children, path, ...rest }) {
 }
 
 export function StandardSideBar() {
+  const { isAdmin } = useContext(AuthenticationContext);
   return (
     <Flex>
       <Box
@@ -46,14 +49,21 @@ export function StandardSideBar() {
           </Text>
         </Box>
         <Stack spacing="2" mt="4">
-          <SidebarItem path="/business">사업장/부서 관리</SidebarItem>
-          <SidebarItem path="/employee">인사 관리</SidebarItem>
-          <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
-          <SidebarItem path="/customer">협력업체 관리</SidebarItem>
-          <SidebarItem path="/item">품목 관리</SidebarItem>
-          <SidebarItem path="/warehouse">창고 관리</SidebarItem>
+          {isAdmin && (
+            <>
+              <SidebarItem path="/business">사업장/부서 관리</SidebarItem>
+              <SidebarItem path="/employee">인사 관리</SidebarItem>
+              <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
+              <SidebarItem path="/customer">협력업체 관리</SidebarItem>
+              <SidebarItem path="/item">품목 관리</SidebarItem>
+              <SidebarItem path="/warehouse">창고 관리</SidebarItem>
+            </>
+          )}
+
           <SidebarItem path="/location">로케이션 관리</SidebarItem>
-          <SidebarItem path="/commonCode">공통 코드 관리</SidebarItem>
+          {isAdmin && (
+            <SidebarItem path="/commonCode">공통 코드 관리</SidebarItem>
+          )}
         </Stack>
       </Box>
     </Flex>

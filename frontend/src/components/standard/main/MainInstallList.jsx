@@ -43,9 +43,9 @@ export function MainInstallList({ company }) {
   const columnHeaders = [
     { label: "#" },
     { label: "가맹점" },
-    { label: "출고번호" },
     { label: "품목" },
     { label: "담당업체" },
+    { label: "출고번호" },
     { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
@@ -72,12 +72,13 @@ export function MainInstallList({ company }) {
                 key={index}
                 onDoubleClick={() => navigate("/install")}
                 title="더블 클릭시 해당 페이지로 이동합니다."
+                _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
-                <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
+                <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.businessEmployeeName}
                 </Table.Cell>

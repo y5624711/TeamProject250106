@@ -25,7 +25,10 @@ function NavItem({ children, path }) {
 }
 
 export function Navbar() {
-  const { isAuthenticated, logout } = useContext(AuthenticationContext);
+  const { id, isAuthenticated, logout, isAdmin } = useContext(
+    AuthenticationContext,
+  );
+
   const navigate = useNavigate();
 
   const menuItems = [

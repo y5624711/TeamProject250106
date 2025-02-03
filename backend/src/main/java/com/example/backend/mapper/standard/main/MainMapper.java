@@ -3,11 +3,13 @@ package com.example.backend.mapper.standard.main;
 import com.example.backend.dto.standard.business.Business;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.employee.Employee;
+import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -363,4 +365,49 @@ public interface MainMapper {
             """)
     Business selectBusiness(String employeeWorkPlaceCode);
 
+    @Select("""
+            SELECT *,common_code_name AS itemName
+            FROM TB_CUSTMST cus
+            JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
+            WHERE customer_code = #{company}
+            """)
+    Customer selectCustomer(String company);
+
+    @Update("""
+            UPDATE TB_CUSTMST
+            SET customer_rep = #{customerRep},
+                customer_tel = #{customerTel},
+                customer_fax = #{customerFax},
+                customer_address = #{customerAddress},
+                customer_address_details = #{customerAddressDetails},
+                customer_post = #{customerPost},
+                customer_note = #{customerNote},
+                customer_no = #{customerNo}
+            WHERE customer_code = #{customerCode}
+            """)
+    int updateCustomer(Customer customer);
+
+    @Select("""
+            SELECT *
+            FROM TB_WHMST whs
+            JOIN TB_CUSTMST cus ON whs.customer_code = cus.customer_code
+            JOIN TB_EMPMST emp ON whs.customer_employee_no = emp.employee_no
+            WHERE cus.customer_code = #{company}
+            """)
+    Warehouse selectWarehouse(String company);
+
+    @Update("""
+            UPDATE TB_WHMST
+            SET warehouse_name = #{warehouseName},
+                warehouse_tel = #{warehouseTel},
+                warehouse_post = #{warehousePost},
+                warehouse_state = #{warehouseState},
+                warehouse_city = #{warehouseCity},
+                warehouse_address = #{warehouseAddress},
+                warehouse_address_detail = #{warehouseAddressDetail},
+                warehouse_note = #{warehouseNote}
+            WHERE customer_code = #{customerCode}
+            
+            """)
+    int updateWarehouse(Warehouse warehouse);
 }

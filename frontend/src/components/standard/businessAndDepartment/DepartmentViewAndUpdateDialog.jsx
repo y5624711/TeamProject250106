@@ -135,6 +135,7 @@ export function DepartmentViewAndUpdateDialog({
               <Textarea
                 placeholder={"최대 50자"}
                 style={{ maxHeight: "100px", overflowY: "auto" }}
+                maxLength={50}
                 value={department.departmentNote || ""}
                 onChange={(e) => {
                   setDepartmentData((prev) => ({

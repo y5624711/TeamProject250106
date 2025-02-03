@@ -40,7 +40,7 @@ function TextItem({ children, path, ...rest }) {
 }
 
 function MemberInfo({ updateCheck }) {
-  const { id } = useContext(AuthenticationContext);
+  const { id, name } = useContext(AuthenticationContext);
   const [employee, setEmployee] = useState(null);
   const [empChange, setEmpChange] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -107,7 +107,8 @@ function MemberInfo({ updateCheck }) {
 
   return (
     <DialogRoot
-      onOpenChange={(isOpen) => {
+      size={"lg"}
+      onOpenChange={() => {
         setEmployee(empChange);
       }}
     >
@@ -117,7 +118,7 @@ function MemberInfo({ updateCheck }) {
             setEmployee(empChange);
           }}
         >
-          내 정보
+          {name}
         </TextItem>
       </DialogTrigger>
       <DialogContent>
@@ -184,7 +185,7 @@ function MemberInfo({ updateCheck }) {
         <DialogFooter>
           <DialogActionTrigger asChild>
             <Button variant="outline" onClick={handleClose}>
-              닫기
+              취소
             </Button>
           </DialogActionTrigger>
           <Tooltip

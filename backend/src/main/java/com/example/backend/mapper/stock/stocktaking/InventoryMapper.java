@@ -33,6 +33,9 @@ public interface InventoryMapper {
                                 </if>
                             </if>
                         </trim>
+                            <if test="slice != 'BIZ'">
+                                    AND warehouse_code = #{warehouseCode}
+                            </if>
                     </where>
                         ORDER BY
                             <choose>
@@ -55,7 +58,8 @@ public interface InventoryMapper {
                         LIMIT #{offset},10
                 </script>
             """)
-    List<Inventory> selectList(int offset, String type, String keyword, String sortColum, String sortOrder);
+    List<Inventory> selectList(int offset, String type, String keyword, String sortColum, String sortOrder,
+                               String slice, String warehouseCode);
 
     @Select("""
                 <script>
@@ -78,14 +82,31 @@ public interface InventoryMapper {
                                 </if>
                             </if>
                         </trim>
+                            <if test="slice != 'BIZ'">
+                                    AND warehouse_code = #{warehouseCode}
+                            </if>
                     </where>
                  </script>
             """)
-    int countAll(String type, String keyword);
+    int countAll(String type, String keyword, String slice, String warehouseCode);
 
     @Select("""
             SELECT *
             FROM V_ITEM_CRNT
             """)
     List<Inventory> selectGraphList();
+
+    @Select("""
+            SELECT warehouse_code
+            FROM TB_WHMST
+            WHERE customer_code = #{name}
+            """)
+    String SelectWarehouseCodeByCustomerCode(String name);
+
+    @Select("""
+            SELECT employee_workplace_code
+            FROM TB_EMPMST
+            WHERE employee_no = #{name}
+            """)
+    String selectCustomerCode(String name);
 }

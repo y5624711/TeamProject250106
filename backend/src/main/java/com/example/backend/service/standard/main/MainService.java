@@ -3,6 +3,7 @@ package com.example.backend.service.standard.main;
 import com.example.backend.dto.standard.business.Business;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.employee.Employee;
+import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.dto.state.install.Install;
 import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
@@ -82,5 +83,47 @@ public class MainService {
 
     public List<Instk> getInstkListByCustomer(String company) {
         return mapper.selectInstkListByCustomer(company);
+    }
+
+    public Customer getMainCusView(String company) {
+        return mapper.selectCustomer(company);
+    }
+
+    public boolean validCustomer(Customer customer) {
+        Boolean name = !customer.getCustomerName().trim().isEmpty();
+        Boolean rep = !customer.getCustomerRep().trim().isEmpty();
+        Boolean tel = !customer.getCustomerAddress().trim().isEmpty();
+        Boolean address = !customer.getCustomerAddress().trim().isEmpty();
+        Boolean post = !customer.getCustomerPost().trim().isEmpty();
+
+
+        return name & rep & tel & address & post;
+    }
+
+    public boolean updateCustomer(Customer customer) {
+        int cnt = mapper.updateCustomer(customer);
+
+        return cnt == 1;
+    }
+
+    public Warehouse getMainWareView(String company) {
+        return mapper.selectWarehouse(company);
+    }
+
+    public boolean validWarehouse(Warehouse warehouse) {
+        Boolean name = !warehouse.getWarehouseName().trim().isEmpty();
+        Boolean tel = !warehouse.getWarehouseTel().trim().isEmpty();
+        Boolean address = !warehouse.getWarehouseAddress().trim().isEmpty();
+        Boolean post = !warehouse.getWarehousePost().trim().isEmpty();
+        Boolean state = !warehouse.getWarehouseState().trim().isEmpty();
+        Boolean city = !warehouse.getWarehouseCity().trim().isEmpty();
+
+        return name & tel & address & post & state & city;
+    }
+
+    public boolean updateWarehouse(Warehouse warehouse) {
+        int cnt = mapper.updateWarehouse(warehouse);
+
+        return cnt == 1;
     }
 }

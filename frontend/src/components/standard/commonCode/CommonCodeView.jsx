@@ -162,7 +162,7 @@ export function CommonCodeView({
                     placeholder=""
                     value={editedCommonCode.commonCodeNote}
                     onChange={handleChange}
-                    resize={"none"}
+                    maxHeight={"100px"}
                   />
                 </Field>
                 <Field label={"사용 여부"} orientation="horizontal" mb={15}>
