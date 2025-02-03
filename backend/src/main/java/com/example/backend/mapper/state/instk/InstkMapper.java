@@ -182,12 +182,10 @@ LIMIT #{offset}, 10
 
     // 반품 입고시 창고 주소 가져오는 DTO
     @Select("""
-             SELECT  APPR.customer_employee_no ,EMPMST.employee_workplace_code, WHMST.warehouse_address
-             FROM TB_RTN_APPR APPR
-             LEFT JOIN TB_EMPMST EMPMST 
-             ON APPR.customer_employee_no=EMPMST.employee_no
-             LEFT JOIN TB_WHMST WHMST
-             ON EMPMST.employee_workplace_code=WHMST.customer_code
+             SELECT  WHM.warehouse_address
+           FROM  TB_RTN_APPR APPR
+            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
              WHERE APPR.return_no=#{inputNo}
          
              """)

@@ -55,6 +55,8 @@ public class InstkService {
              warehouseName=mapper.viewReturnWareHouseName(inputKey);
          }
 
+        System.out.println("warehouseName = " + warehouseName);
+
       Instk instk = new Instk();
       instk.setInputNote(inputStockNote);
       instk.setSerialLocationList(serialLocationList);
@@ -161,10 +163,12 @@ public class InstkService {
         // 그냥 입고 ,구매승인가서 , 창고 코드 , 창고 코드 가서
         if(inputCommonCode.equals("INSTK")) {
               InstkDetail instkDetail = mapper.viewWareHouse(inputNo);
+            System.out.println("instkDetail = " + instkDetail);
               return instkDetail;
         }   //     반품 입고
         else if(inputCommonCode.equals("RETRN")) {
             InstkDetail instkDetail = mapper.viewReturnWareHouse(inputNo);
+            System.out.println("instkDetail = " + instkDetail);
             return instkDetail;
         }
         return null;
