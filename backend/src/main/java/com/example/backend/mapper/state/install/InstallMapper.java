@@ -219,6 +219,7 @@ public interface InstallMapper {
                     LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                     LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
                 WHERE 1=1
+                AND (#{company} IS NULL OR c.customer_code = #{company})
                 <if test="state == 'request'">
                     AND ir.install_request_consent IS NULL
                 </if>
@@ -278,7 +279,7 @@ public interface InstallMapper {
                 LIMIT #{offset}, 10
             </script>
             """)
-    List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword);
+    List<Install> getInstallList(Integer offset, String sort, String order, String state, String type, String keyword, String company);
 
     // 총 페이지 수 계산
     @Select("""
@@ -294,6 +295,7 @@ public interface InstallMapper {
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                 WHERE 1=1
+                AND (#{company} IS NULL OR c.customer_code = #{company})
                 <if test="state == 'request'">
                     AND ir.install_request_consent IS NULL
                 </if>
@@ -342,7 +344,7 @@ public interface InstallMapper {
             </if>
             </script>
             """)
-    Integer countAll(String state, String type, String keyword);
+    Integer countAll(String state, String type, String keyword, String company);
 
     // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
     @Select("""

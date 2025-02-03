@@ -1,6 +1,7 @@
 package com.example.backend.service.state.install;
 
 import com.example.backend.dto.state.install.Install;
+import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.mapper.state.install.InstallMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class InstallService {
 
     final InstallMapper mapper;
+    final LoginMapper loginMapper;
 
     // 가맹점명, 품목, 수량 입력됐는지 검증
     public boolean requestValidate(Install install) {
@@ -194,10 +196,17 @@ public class InstallService {
     }
 
     // 설치 요청, 승인 리스트 가져오기
-    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword) {
+    public Map<String, Object> getInstallList(Integer page, String sort, String order, String state, String type, String keyword, Authentication authentication) {
         Integer offset = (page - 1) * 10;
-        return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword),
-                "count", mapper.countAll(state, type, keyword));
+
+        String userId = authentication.getName();
+        String company = null;
+        if (userId.startsWith("CUS")) {
+            company = loginMapper.selectCompanyByCode(userId);
+        }
+
+        return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword, company),
+                "count", mapper.countAll(state, type, keyword, company));
     }
 
     // 설치 요청 반려

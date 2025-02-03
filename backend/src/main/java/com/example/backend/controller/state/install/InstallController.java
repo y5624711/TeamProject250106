@@ -53,8 +53,9 @@ public class InstallController {
             @RequestParam(value = "order", defaultValue = "") String order,
             @RequestParam(value = "state", defaultValue = "") String state,
             @RequestParam(value = "type", defaultValue = "") String type,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        return service.getInstallList(page, sort, order, state, type, keyword);
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            Authentication authentication) {
+        return service.getInstallList(page, sort, order, state, type, keyword, authentication);
     }
 
     // 설치 완료
