@@ -8,6 +8,7 @@ import com.example.backend.dto.state.instk.Instk;
 import com.example.backend.dto.state.purchase.Purchase;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -370,4 +371,17 @@ public interface MainMapper {
             WHERE customer_code = #{company}
             """)
     Customer selectCustomer(String company);
+
+    @Update("""
+            UPDATE TB_CUSTMST
+            SET customer_rep = #{customerRep},
+                customer_tel = #{customerTel},
+                customer_fax = #{customerFax},
+                customer_address = #{customerAddress},
+                customer_address_details = #{customerAddressDetails},
+                customer_post = #{customerPost},
+                customer_note = #{customerNote}
+            WHERE customer_no = #{customerNo}
+            """)
+    int updateCustomer(Customer customer);
 }

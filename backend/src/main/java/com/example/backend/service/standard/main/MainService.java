@@ -87,4 +87,21 @@ public class MainService {
     public Customer getMainCusView(String company) {
         return mapper.selectCustomer(company);
     }
+
+    public boolean validCustomer(Customer customer) {
+        Boolean name = !customer.getCustomerName().trim().isEmpty();
+        Boolean rep = !customer.getCustomerRep().trim().isEmpty();
+        Boolean tel = !customer.getCustomerAddress().trim().isEmpty();
+        Boolean address = !customer.getCustomerAddress().trim().isEmpty();
+        Boolean post = !customer.getCustomerPost().trim().isEmpty();
+
+
+        return name & rep & tel & address & post;
+    }
+
+    public boolean updateCustomer(Customer customer) {
+        int cnt = mapper.updateCustomer(customer);
+
+        return cnt == 1;
+    }
 }

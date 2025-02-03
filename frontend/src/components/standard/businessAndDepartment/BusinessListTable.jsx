@@ -23,6 +23,7 @@ export function BusinessListTable({
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             {columnsList.map((col) => (
               <Table.ColumnHeader
+                key={col.key}
                 onClick={() => handleSort(col.key)}
                 textAlign="center"
               >

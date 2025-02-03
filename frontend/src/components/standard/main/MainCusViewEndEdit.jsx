@@ -12,8 +12,8 @@ import {
 } from "../../ui/dialog.jsx";
 import { Box, HStack, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
-import { Checkbox } from "../../ui/checkbox.jsx";
 import { Button } from "../../ui/button.jsx";
+import { toaster } from "../../ui/toaster.jsx";
 
 export function MainCusViewEndEdit({
   company,
@@ -32,9 +32,9 @@ export function MainCusViewEndEdit({
       .then((data) => {
         setCustomer(data);
         setSavedCustomer(data);
-        setUpdateCheck(false);
-      });
-  }, [cusViewOpen, updateCheck]);
+      })
+      .finally(() => setUpdateCheck(false));
+  }, [updateCheck]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,22 +45,48 @@ export function MainCusViewEndEdit({
     // console.log("입력 정보", customer);
   };
 
+  const handleClose = () => {
+    setCustomer(savedCustomer);
+    onCancel();
+  };
+
   const handleUpdate = () => {
-    setUpdateCheck(true);
-    // axios.put("/api/main/mainCustomerUpdate", {
-    //   customer,
-    // });
+    axios
+      .put("/api/main/mainCustomerUpdate", {
+        customerKey: customer.customerKey,
+        customerName: customer.customerName,
+        customerCode: customer.customerCode,
+        itemCode: customer.itemCode,
+        itemName: customer.itemName,
+        customerRep: customer.customerRep,
+        customerNo: customer.customerNo,
+        customerTel: customer.customerTel,
+        customerFax: customer.customerFax,
+        customerAddress: customer.customerAddress,
+        customerAddressDetails: customer.customerAddressDetails,
+        customerPost: customer.customerPost,
+        customerNote: customer.customerNote,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setUpdateCheck(true);
+      })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
   return (
     <Box>
-      <DialogRoot
-        open={cusViewOpen}
-        size={"lg"}
-        onOpenChange={() => {
-          onCancel();
-          setCustomer(savedCustomer);
-        }}
-      >
+      <DialogRoot open={cusViewOpen} size={"lg"} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>협력 업체 정보</DialogTitle>
@@ -144,24 +170,11 @@ export function MainCusViewEndEdit({
                   />
                 </Field>
                 <Field orientation="horizontal" label={"비고"}>
-                  <Textarea name={"customerNote"} maxHeight={"100px"} />
-                </Field>
-                <Field orientation="horizontal" label={"사용 여부"}>
-                  <Checkbox
-                    transform="translateX(-2590%)"
-                    name={"customerActive"}
-                    checked={customer.customerActive}
-                    onCheckedChange={(e) => {
-                      // console.log("체크박스 변경 전 값:", customer.customerActive);
-                      // console.log("체크박스 변경 후 값:", e);
-                      const checked =
-                        e.checked !== undefined ? e.checked : e.target.checked;
-                      setCustomer((prevCustomer) => ({
-                        ...prevCustomer,
-                        customerActive: checked, // 상태 업데이트
-                      }));
-                      // console.log("그 후?", checked);
-                    }}
+                  <Textarea
+                    name={"customerNote"}
+                    value={customer.customerNote}
+                    maxHeight={"100px"}
+                    onChange={handleInputChange}
                   />
                 </Field>
               </Box>
@@ -172,7 +185,9 @@ export function MainCusViewEndEdit({
           <DialogFooter>
             <HStack>
               <DialogActionTrigger asChild>
-                <Button variant="outline">취소</Button>
+                <Button variant="outline" onClick={handleClose}>
+                  취소
+                </Button>
               </DialogActionTrigger>
               <Button onClick={handleUpdate}>확인</Button>
             </HStack>

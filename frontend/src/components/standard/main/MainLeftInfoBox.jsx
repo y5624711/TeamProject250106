@@ -78,7 +78,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
                 fontWeight="bold"
                 onClick={() => setCusViewOpen(true)}
               >
-                품목 정보
+                업체 정보
               </Button>
               <Button
                 variant={"ghost"}
