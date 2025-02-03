@@ -45,6 +45,7 @@ function LocationList({
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"locationKey"}
                 />
               </Table.Row>
             </Table.Header>
@@ -60,7 +61,7 @@ function LocationList({
             </Table.Body>
           </Table.Root>
         </Box>
-        <Center>
+        <Center p={4}>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
             count={countLocation}
@@ -68,6 +69,8 @@ function LocationList({
             // page={page}
             siblingCount={2}
             defaultPage={currentPage}
+            variant="solid"
+            size={"md"}
           >
             <HStack>
               <PaginationPrevTrigger />

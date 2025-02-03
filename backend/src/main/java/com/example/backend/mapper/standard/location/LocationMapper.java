@@ -61,7 +61,7 @@ public interface LocationMapper {
                     ${sort} ${order}
                 </if>
                 <if test="sort == null">
-                    l.location_key ASC
+                    l.location_key DESC
                 </if>
             LIMIT #{pageList},10    
             

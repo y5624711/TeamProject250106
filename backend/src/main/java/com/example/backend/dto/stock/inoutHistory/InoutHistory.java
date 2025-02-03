@@ -35,4 +35,8 @@ public class InoutHistory {
     //    협력업체 직원 이름
     private String customerEmployeeName;
 
+    //    로케이션 정보
+    private String row;
+    private String col;
+    private String shelf;
 }

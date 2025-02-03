@@ -40,30 +40,6 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="전화번호" orientation="horizontal" mb={15}>
-          <Input
-            value={warehouseDetail.warehouseTel}
-            onChange={(e) =>
-              setWarehouseDetail({
-                ...warehouseDetail,
-                warehouseTel: e.target.value,
-              })
-            }
-          />
-        </Field>
-        <Field label="우편번호" orientation="horizontal" mb={15}>
-          <Input
-            value={warehouseDetail.warehousePost}
-            onChange={(e) =>
-              setWarehouseDetail({
-                ...warehouseDetail,
-                warehousePost: e.target.value,
-              })
-            }
-          />
-        </Field>
-      </Box>
-      <Box display="flex" gap={4}>
         <Field label="관리자" orientation="horizontal" mb={15}>
           <Input value={warehouseDetail.employeeName} readOnly />
         </Field>
@@ -80,6 +56,29 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
       </Box>
+      <Field label="전화번호" orientation="horizontal" mb={15}>
+        <Input
+          value={warehouseDetail.warehouseTel}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehouseTel: e.target.value,
+            })
+          }
+        />
+      </Field>
+      <Field label="우편번호" orientation="horizontal" mb={15}>
+        <Input
+          value={warehouseDetail.warehousePost}
+          onChange={(e) =>
+            setWarehouseDetail({
+              ...warehouseDetail,
+              warehousePost: e.target.value,
+            })
+          }
+        />
+      </Field>
+
       <Box display="flex" gap={4}>
         <Field label="광역시도" orientation="horizontal" mb={15}>
           <Input
@@ -129,7 +128,6 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
       <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea
           name="warehouseNote"
-          placeholder="최대 50자"
           style={{ maxHeight: "100px", overflowY: "auto" }}
           value={warehouseDetail.warehouseNote}
           onChange={(e) =>

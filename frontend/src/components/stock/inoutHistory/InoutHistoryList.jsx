@@ -1,10 +1,22 @@
 import React, { useState } from "react";
-import { Box, Center, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
 import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
 import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "../../ui/pagination.jsx";
 
-function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
+function InoutHistoryList({
+  currentPage,
+  inoutHistoryList,
+  setSearchParams,
+  countInoutHistory,
+  handlePageChangeClick,
+}) {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [selectedInoutHistory, setSelectedInoutHistory] = useState(null);
 
@@ -23,7 +35,7 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
   ];
 
   return (
-    <Box>
+    <Box mt={-2}>
       <Stack>
         <Box>
           <Table.Root interactive>
@@ -34,6 +46,7 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
                   onSortChange={(nextSearchParam) =>
                     setSearchParams(nextSearchParam)
                   }
+                  defaultSortKey={"inoutHistoryDate"}
                 />
               </Table.Row>
             </Table.Header>
@@ -50,7 +63,23 @@ function InoutHistoryList({ currentPage, inoutHistoryList, setSearchParams }) {
             </Table.Body>
           </Table.Root>
         </Box>
-        <Center></Center>
+        <Center p={4}>
+          <PaginationRoot
+            onPageChange={handlePageChangeClick}
+            count={countInoutHistory}
+            pageSize={10}
+            siblingCount={2}
+            defaultPage={currentPage}
+            variant="solid"
+            size={"md"}
+          >
+            <HStack>
+              <PaginationPrevTrigger />
+              <PaginationItems />
+              <PaginationNextTrigger />
+            </HStack>
+          </PaginationRoot>
+        </Center>
         {/*입출내역 더블클릭 시 뜨는 팝업창*/}
         <InoutHistoryDetail
           inoutHistoryKey={selectedInoutHistory}

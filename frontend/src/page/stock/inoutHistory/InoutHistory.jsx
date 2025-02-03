@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
-  Center,
   createListCollection,
   Heading,
   HStack,
@@ -12,13 +11,7 @@ import InoutHistorySearch from "../../../components/stock/inoutHistory/InoutHist
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InoutHistoryList from "../../../components/stock/inoutHistory/InoutHistoryList.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
-import { StateRadioGroup } from "../../../components/tool/list/StateRadioGroup.jsx";
+import { StockRadioGroup } from "../../../components/stock/StockRadioGroup.jsx";
 
 function InoutHistory(props) {
   const [search, setSearch] = useState({
@@ -81,7 +74,7 @@ function InoutHistory(props) {
         <StockSideBar />
         <Stack flex={1} p={5}>
           <Heading size={"xl"} p={2} mb={3}>
-            물류 관리 {">"} 물품입출내역
+            물류 관리 {">"} 물품 입출내역
           </Heading>
           {/* 검색 jsx */}
           <InoutHistorySearch
@@ -90,7 +83,7 @@ function InoutHistory(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <StateRadioGroup
+          <StockRadioGroup
             radioOptions={radioOptions}
             onRadioChange={(nextSearchParam) => {
               setSearchParams(nextSearchParam);
@@ -106,24 +99,11 @@ function InoutHistory(props) {
             inoutHistoryList={inoutHistoryList}
             currentPage={currentPage}
             setSearchParams={setSearchParams}
+            handlePageChangeClick={handlePageChangeClick}
+            countInoutHistory={countInoutHistory}
           />
         </Stack>
       </HStack>
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChangeClick}
-          count={countInoutHistory}
-          pageSize={10}
-          siblingCount={2}
-          defaultPage={currentPage}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
     </Box>
   );
 }
@@ -137,15 +117,14 @@ const radioOptions = [
 const inoutHistoryOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
-    { label: "시리얼 번호", value: "serialNo" },
     { label: "품목", value: "item" },
+    { label: "시리얼 번호", value: "serialNo" },
     { label: "담당 업체", value: "customer" },
     { label: "창고", value: "warehouse" },
     { label: "가맹점", value: "franchise" },
     { label: "본사 직원", value: "businessEmployee" },
     { label: "협력업체 직원", value: "customerEmployee" },
     { label: "사번", value: "employeeNumber" },
-    { label: "날짜", value: "date" },
   ],
 });
 

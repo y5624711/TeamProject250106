@@ -136,7 +136,7 @@ function Warehouse(props) {
           <WarehouseAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            title="새 창고 등록"
+            title="창고 등록"
           />
         </Stack>
       </HStack>

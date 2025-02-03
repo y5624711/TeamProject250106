@@ -28,6 +28,8 @@ public class WarehouseService {
         String newWarehouseCode = whs + newNumber;
         warehouse.setWarehouseCode(newWarehouseCode);
 
+        warehouse.setWarehouseActive(true);
+
         int count = mapper.addWarehouse(warehouse);
         return count == 1;
     }

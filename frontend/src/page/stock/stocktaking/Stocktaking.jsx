@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StockSideBar } from "../../../components/tool/sidebar/StockSideBar.jsx";
 import {
   Box,
-  Center,
   createListCollection,
   Heading,
   HStack,
@@ -12,12 +11,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import StocktakingSearch from "../../../components/stock/stocktaking/StocktakingSearch.jsx";
 import StocktakingList from "../../../components/stock/stocktaking/StocktakingList.jsx";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../../components/ui/pagination.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import StocktakingAdd from "../../../components/stock/stocktaking/StocktakingAdd.jsx";
 
@@ -86,15 +79,22 @@ function Stocktaking(props) {
             search={search}
             handleSearchClick={handleSearchClick}
           />
-          <Box h={11}></Box>
+          <Box h={6}></Box>
+          <Box h={5}></Box>
           {/*리스트 jsx*/}
           <StocktakingList
             stocktakingList={stocktakingList}
             currentPage={currentPage}
             setSearchParams={setSearchParams}
+            countStocktaking={countStocktaking}
+            handlePageChangeClick={handlePageChangeClick}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button width="85px" onClick={() => setIsAddDialogOpen(true)}>
+            <Button
+              size={"lg"}
+              mt={"-65px"}
+              onClick={() => setIsAddDialogOpen(true)}
+            >
               실사 등록
             </Button>
           </Box>
@@ -108,23 +108,6 @@ function Stocktaking(props) {
           />
         </Stack>
       </HStack>
-
-      <Center>
-        <PaginationRoot
-          onPageChange={handlePageChangeClick}
-          count={countStocktaking}
-          pageSize={10}
-          // page={page}
-          siblingCount={2}
-          defaultPage={currentPage}
-        >
-          <HStack>
-            <PaginationPrevTrigger />
-            <PaginationItems />
-            <PaginationNextTrigger />
-          </HStack>
-        </PaginationRoot>
-      </Center>
     </Box>
   );
 }
@@ -135,9 +118,8 @@ const stocktakingOptionList = createListCollection({
     { label: "담당 업체", value: "customer" },
     { label: "품목", value: "item" },
     { label: "창고", value: "warehouse" },
-    { label: "담당자", value: "customerEmployee" },
     { label: "실사 유형", value: "type" },
-    { label: "날짜", value: "date" },
+    { label: "담당자", value: "customerEmployee" },
   ],
 });
 

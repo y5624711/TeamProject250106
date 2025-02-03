@@ -17,6 +17,13 @@ function InoutHistoryView({ inoutHistoryKey }) {
       });
   }, []);
 
+  const location =
+    inoutHistoryDetail.row +
+    " - " +
+    inoutHistoryDetail.col +
+    " - " +
+    inoutHistoryDetail.shelf;
+
   return (
     <Box>
       {inoutHistoryDetail.inoutCommonCode === "OUT" ? (
@@ -48,13 +55,13 @@ function InoutHistoryView({ inoutHistoryKey }) {
           <Input value={inoutHistoryDetail.warehouseAddress} readOnly />
         </Field>
       </Box>
-      {inoutHistoryDetail.inoutCommonCode === "INSTL" ? (
+      {inoutHistoryDetail.inoutCommonCode === "OUT" ? (
         <Field label="가맹점" orientation="horizontal" mb={15}>
           <Input value={inoutHistoryDetail.franchiseName} readOnly />
         </Field>
       ) : (
         <Field label="로케이션" orientation="horizontal" mb={15}>
-          <Input value={inoutHistoryDetail.locationKey} readOnly />
+          <Input value={inoutHistoryDetail.row ? location : ""} readOnly />
         </Field>
       )}
       <Box display="flex" gap={4}>
@@ -74,7 +81,10 @@ function InoutHistoryView({ inoutHistoryKey }) {
         </Field>
       </Box>
       <Field label="날짜" orientation="horizontal" mb={15}>
-        <Input value={inoutHistoryDetail.inoutHistoryDate} readOnly />
+        <Input
+          value={inoutHistoryDetail.inoutHistoryDate?.slice(0, 10) || ""}
+          readOnly
+        />
       </Field>
       <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea

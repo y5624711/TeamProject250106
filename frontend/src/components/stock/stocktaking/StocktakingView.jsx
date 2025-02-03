@@ -59,7 +59,10 @@ function StocktakingView({ stocktakingKey }) {
         />
       </Field>
       <Field label="실사 날짜" orientation="horizontal" mb={15}>
-        <Input value={stocktakingDetail.stocktakingDate} readOnly />
+        <Input
+          value={stocktakingDetail.stocktakingDate?.slice(0, 10) || ""}
+          readOnly
+        />
       </Field>
       <Field label="비고" orientation="horizontal" mb={15}>
         <Textarea
