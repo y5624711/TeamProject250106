@@ -31,8 +31,7 @@ public class MainPageController {
     @PreAuthorize("isAuthenticated()")
     public List<Purchase> purchaseList(Authentication auth,
                                        @RequestParam(value = "company", required = false) String company) {
-        // 구매신청자와 신청받은 업체 구분
-        if (service.checkBuyRequester(auth)) {
+        if (service.checkAdmin(auth)) {
             return service.getPurChaseListByRequester(auth);
         } else {
             return service.getPurchaseListByCustomer(company);
@@ -43,7 +42,7 @@ public class MainPageController {
     @PreAuthorize("isAuthenticated()")
     public List<Install> installList(Authentication auth,
                                      @RequestParam(value = "company", required = false) String company) {
-        if (service.checkInstallRequester(auth)) {
+        if (service.checkAdmin(auth)) {
             //요청자
             return service.getInstallListByRequester(auth);
 
@@ -56,14 +55,15 @@ public class MainPageController {
     @GetMapping("instkList")
     @PreAuthorize("isAuthenticated()")
     public List<Instk> instakList(Authentication auth, @RequestParam(value = "company", required = false) String company) {
-        if (service.checkInstkRequester(auth)) {
-            //요청자
+
+        if (service.checkAdmin(auth)) {
             return service.getInstkList(auth);
         } else {
             //업체
             return service.getInstkListByCustomer(company);
         }
     }
+
 
     @GetMapping("mainCustomerView/{company}")
     public Customer customerView(@PathVariable String company) {
@@ -72,7 +72,6 @@ public class MainPageController {
 
     @PutMapping("mainCustomerUpdate")
     public ResponseEntity<Map<String, Object>> mainCustomerUpdate(@RequestBody Customer customer) {
-        System.out.println("customer = " + customer);
         if (service.validCustomer(customer)) {
             if (service.updateCustomer(customer)) {
                 return ResponseEntity.ok().body(Map.of("message",

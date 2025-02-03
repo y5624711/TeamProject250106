@@ -35,11 +35,7 @@ public class MainService {
         }
 
     }
-
-    public boolean checkBuyRequester(Authentication auth) {
-        int cnt = mapper.selectCheckPurchByRequester(auth.getName());
-        return cnt > 0;
-    }
+    
 
     //    구매 신정받은 업체 리스트
     public List<Purchase> getPurchaseListByCustomer(String company) {
@@ -53,13 +49,6 @@ public class MainService {
     }
 
 
-    //    설치요청자 체크
-    public boolean checkInstallRequester(Authentication auth) {
-        int cnt = mapper.selectCheckInstallByRequseter(auth.getName());
-
-        return cnt > 0;
-    }
-
     public List<Install> getInstallListByRequester(Authentication auth) {
         return mapper.selectInstallListByRequester(auth.getName());
     }
@@ -68,13 +57,6 @@ public class MainService {
         return mapper.selectInstallListByCustomer(company);
     }
 
-    //입고 체크
-    public boolean checkInstkRequester(Authentication auth) {
-
-        int cnt = mapper.selectCheckInstkByRequester(auth.getName());
-
-        return cnt > 0;
-    }
 
     public List<Instk> getInstkList(Authentication auth) {
         return mapper.selectInstkList(auth.getName());
@@ -124,5 +106,15 @@ public class MainService {
         int cnt = mapper.updateWarehouse(warehouse);
 
         return cnt == 1;
+    }
+
+    public boolean checkAdmin(Authentication auth) {
+        String authSlice = auth.getName().trim().substring(0, 3);
+        if (authSlice.equals("BIZ")) {
+            int cnt = mapper.selectEmployee(auth.getName());
+            return cnt == 1;
+        } else {
+            return false;
+        }
     }
 }
