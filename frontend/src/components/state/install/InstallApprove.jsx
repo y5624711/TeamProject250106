@@ -309,7 +309,12 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               <Button variant="outline" onClick={handleDisapproveClick}>
                 반려
               </Button>
-              <Tooltip content={"입력을 완료해주세요"} disabled={isValid}>
+              <Tooltip
+                content={"입력을 완료해주세요"}
+                disabled={isValid}
+                openDelay={100}
+                closeDelay={100}
+              >
                 <Button onClick={handleApproveClick} disabled={!isValid}>
                   승인
                 </Button>

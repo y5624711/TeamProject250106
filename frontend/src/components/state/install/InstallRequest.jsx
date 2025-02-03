@@ -270,7 +270,12 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+          <Tooltip
+            content="입력을 완료해주세요."
+            disabled={isValid}
+            openDelay={100}
+            closeDelay={100}
+          >
             <Button onClick={handleRequestClick} disabled={!isValid}>
               요청
             </Button>
