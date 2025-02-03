@@ -26,13 +26,13 @@ export function SelectViewCode({ selectOptions, onChange, value }) {
     >
       <SelectTrigger>
         <SelectValueText
-          placeholder={value === "SYSTEM" ? "시스템코드" : "물품코드"}
+          placeholder={value === "SYSTEM" ? "시스템 코드" : "품목 코드"}
         />
       </SelectTrigger>
       <SelectContent
         style={{
           width: "150px",
-          top: "70px",
+          top: "50px",
           position: "absolute",
         }}
       >

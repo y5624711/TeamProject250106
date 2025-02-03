@@ -43,7 +43,7 @@ export function CommonCodeView({
   const selectOptions = createListCollection({
     items: [
       { label: "시스템 코드", value: "SYSTEM" },
-      { label: "품목코드", value: "ITEM" },
+      { label: "품목 코드", value: "ITEM" },
     ],
   });
 
@@ -133,18 +133,18 @@ export function CommonCodeView({
       <DialogRoot open={isOpen} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>품목 코드 정보</DialogTitle>
+            <DialogTitle>공통 코드 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Box>
               <Box>
-                <Text fontSize={"xs"} mt={-5} mb={5} color={"red"}>
-                  품목 코드는 대문자 3자리로 입력해야 합니다.
+                <Text fontSize={"xs"} mt={-5} mb={3}>
+                  공통 코드는 대문자로 입력해야합니다.
                 </Text>
 
                 <Flex mb={2}>
                   {/*코드 종류 선택*/}
-                  <Text pt={5} mr={8} ml={-1}>
+                  <Text pt={5} mr={8}>
                     코드 구분
                   </Text>
                   <SelectViewCode
@@ -154,19 +154,19 @@ export function CommonCodeView({
                   />
                 </Flex>
 
-                <Field label={"품목 코드"} orientation="horizontal" mb={15}>
+                <Field label={"공통 코드"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCode"
-                    placeholder="품목 코드"
+                    placeholder="공통 코드"
                     value={editedCommonCode.commonCode || ""}
                     onChange={handleChange}
                     maxLength={3}
                   />
                 </Field>
-                <Field label={"품목명"} orientation="horizontal" mb={15}>
+                <Field label={"공통 코드명"} orientation="horizontal" mb={15}>
                   <Input
                     name="commonCodeName"
-                    placeholder="품목명"
+                    placeholder="코드명"
                     value={editedCommonCode.commonCodeName || ""}
                     onChange={handleChange}
                   />
@@ -174,7 +174,7 @@ export function CommonCodeView({
                 <Field label={"비고"} orientation="horizontal" mb={15}>
                   <Textarea
                     name="commonCodeNote"
-                    placeholder="비고"
+                    placeholder=""
                     value={editedCommonCode.commonCodeNote || ""}
                     onChange={handleChange}
                     resize={"none"}
@@ -184,7 +184,6 @@ export function CommonCodeView({
                 <Field label={"사용 여부"} orientation="horizontal" mb={15}>
                   <Checkbox
                     style={{ marginRight: "550px" }}
-                    size={"lg"}
                     defaultChecked={editedCommonCode.commonCodeActive}
                     onChange={(e) =>
                       setEditedCommonCode((prev) => ({

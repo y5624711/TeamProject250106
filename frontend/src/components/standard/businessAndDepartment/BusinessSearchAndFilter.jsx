@@ -90,7 +90,7 @@ export function BusinessSearchAndFilter({
         onChange={(e) =>
           setSearch({ ...search, keyword: e.target.value.trim() })
         }
-        placeholder={"검색어를 입력해 주세요"}
+        placeholder={"검색어를 입력해 주세요."}
         onKeyDown={handlePressKey}
       />
       <IconButton
