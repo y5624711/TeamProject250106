@@ -58,27 +58,21 @@ function Warehouse(props) {
       type: search.type,
       keyword: search.keyword,
       sort: search.sort,
-      active: checkedActive,
       order: search.order,
+      page: 1,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/warehouse/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
       sort: search.sort,
-      active: checkedActive,
       order: search.order,
+      page: e.page,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/warehouse/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
@@ -122,6 +116,8 @@ function Warehouse(props) {
             handlePageChangeClick={handlePageChangeClick}
             setSearchParams={setSearchParams}
             refresh={refresh}
+            search={search}
+            setSearch={setSearch}
           />
           <Box display="flex" justifyContent="flex-end" mb={4}>
             <Button

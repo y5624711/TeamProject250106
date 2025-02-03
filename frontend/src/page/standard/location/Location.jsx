@@ -71,11 +71,6 @@ function Location(props) {
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
-  console.log(search);
-  console.log(search.sort);
-  console.log(search.order);
-  console.log(search.type);
-  console.log(search.keyword);
   return (
     <Box>
       <HStack align="flex-start" w="100%">
