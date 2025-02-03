@@ -197,7 +197,11 @@ export function InstkDetaiViewModal({
               {instk.inputConsent && (
                 <Field label={"입고 비고"} orientation="horizontal">
                   {instk.inputStockNote ? (
-                    <Input readOnly value={instk.inputStockNote} />
+                    <Textarea
+                      readOnly
+                      value={instk.inputStockNote}
+                      style={{ maxHeight: "100px", overflowY: "auto" }}
+                    />
                   ) : (
                     <Input readOnly value={"내용 없음"} />
                   )}
