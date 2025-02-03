@@ -40,7 +40,13 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-            WHERE 1=1
+            WHERE
+                <if test="workplace == 'CUS'">
+                    cus.customer_code=#{workplaceCode}
+                </if>
+                <if test="workplace == 'BIZ'">
+                    1=1
+                </if>
                 <if test="state == 'storage'">
                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
@@ -137,7 +143,7 @@ public interface InoutHistoryMapper {
             LIMIT #{pageList},10
             </script>
             """)
-    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType, String sort, String order, String state);
+    List<InoutHistory> list(Integer pageList, String searchKeyword, String searchType, String sort, String order, String state, String workplaceCode, String workplace);
 
     @Insert("""
             INSERT INTO TB_INOUT_HIS()
@@ -191,7 +197,13 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-            WHERE 1=1
+            WHERE 
+                <if test="workplace == 'CUS'">
+                    cus.customer_code=#{workplaceCode}
+                </if>
+                <if test="workplace == 'BIZ'">
+                    1=1
+                </if>
                 <if test="state == 'storage'">
                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
                 </if>
@@ -280,7 +292,7 @@ public interface InoutHistoryMapper {
                  </if>
             </script>
             """)
-    Integer count(String searchKeyword, String searchType, String state);
+    Integer count(String searchKeyword, String searchType, String state, String workplaceCode, String workplace);
 
     // 시리얼 번호랑 로케이션키 가져오기
     @Select("""

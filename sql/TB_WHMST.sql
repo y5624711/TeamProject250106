@@ -54,3 +54,7 @@ SELECT *
 FROM TB_WHMST
 WHERE warehouse_key = 1;
 
+SELECT i.item_common_code itemCode
+FROM TB_WHMST w
+         LEFT JOIN TB_ITEMMST i ON w.customer_code = i.customer_code
+WHERE w.warehouse_code = 'WHS0000000004';

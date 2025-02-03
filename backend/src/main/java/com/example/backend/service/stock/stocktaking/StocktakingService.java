@@ -89,6 +89,8 @@ public class StocktakingService {
     }
 
     public List<Stocktaking> getStocktakingItemList(String warehouseCode) {
+
+        System.out.println(mapper.getStocktakingItemList(warehouseCode));
         return mapper.getStocktakingItemList(warehouseCode);
     }
 
