@@ -127,10 +127,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     items: [
       { label: "소속구분", value: "소속구분" },
       { label: "기업", value: "기업명" },
-      { label: "부서", value: "부서명" },
       { label: "직원", value: "직원명" },
       { label: "사번", value: "사번" },
-      // { label: "계약여부", value: "계약여부" },
     ],
   });
 
@@ -241,6 +239,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                 handleviewModalControl();
               }}
               bg={item.employeeActive ? "white" : "gray.100"}
+              _hover={{ backgroundColor: "gray.200" }}
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>
               <Table.Cell textAlign="center">
@@ -264,7 +263,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex justify="space-between" mt={"20px"}>
+      <Flex justify="space-between" p={4}>
         <Box />
 
         <Box>
@@ -275,7 +274,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             page={page}
             defaultPage={page}
             variant={"solid"}
-            size={"lg"}
+            size={"md"}
           >
             <PaginationPrevTrigger>
               <FaArrowLeft />
