@@ -96,13 +96,15 @@ WHERE 1=1
                 AND SC.common_code_name LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'customer_name'">
-                AND CT.customer_name LIKE CONCAT('%', #{keyword}, '%')
+                AND CT.customer_name LIKE CONCAT('%', #{keyword}, '%') 
             </when>
             <when test="type == 'request_employee_name'">
                 AND EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_stock_employee_name'">
                 AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <otherwise>
                 AND (
