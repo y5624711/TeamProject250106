@@ -241,8 +241,17 @@ public interface WarehouseMapper {
     int addWarehouse(Warehouse warehouse);
 
     @Select("""
-            SELECT *
-            FROM TB_CUSTMST
+            SELECT * FROM TB_CUSTMST c\s
+            LEFT JOIN TB_WHMST w\s
+            ON c.customer_code = w.customer_code\s
+            WHERE w.warehouse_code IS NULL
+            
+            UNION
+            
+            SELECT * FROM TB_CUSTMST c\s
+            RIGHT JOIN TB_WHMST w\s
+            ON c.customer_code = w.customer_code\s
+            WHERE w.warehouse_code IS NULL;
             """)
     List<Customer> getWarehouseCustomerList();
 

@@ -108,7 +108,10 @@ public class WarehouseController {
     // 협력업체 리스트 가져오기
     @GetMapping("customer")
     public List<Customer> customerList() {
+
         return service.getWarehouseCustomerList();
+
+
     }
 
     // 관리자 리스트 가져오기
