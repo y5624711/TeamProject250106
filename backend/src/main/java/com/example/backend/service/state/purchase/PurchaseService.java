@@ -59,6 +59,14 @@ public class PurchaseService {
         return Map.of("purchaseList", purchaseList, "count", count);
     }
 
+//    // 구매 관리 리스트 (권한)
+//    public List<Purchase> getPurchaseListAuth(Authentication auth) {
+//        // 현재 로그인한 사용자의 customerCode 가져오기
+//        String customerCode = mapper.getCustomerCode(auth.getName());
+//        // 본인의 customerCode에 해당하는 창고 목록만 조회
+//        return mapper.getPurchaseListAuth(customerCode);
+//    }
+
     // 구매 승인 팝업 보기
     public Purchase viewPurchaseApprove(int purchaseRequestKey) {
         return mapper.viewPurchaseApprove(purchaseRequestKey);
