@@ -298,13 +298,6 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 onChange={(e) => setWarehouseNote(e.target.value)}
               />
             </Field>
-            <Field label="사용 여부" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={warehouseActive}
-                onChange={(e) => setWarehouseActive(e.target.value)}
-              />
-            </Field>
           </Box>
         </DialogBody>
         <DialogFooter>
