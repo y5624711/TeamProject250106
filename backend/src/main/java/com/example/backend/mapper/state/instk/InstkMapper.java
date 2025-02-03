@@ -118,12 +118,19 @@ WHERE 1=1
             </otherwise>
         </choose>
     </if>
-     <if test="sort != null and sort != ''">
-                    ORDER BY ${sort} ${order}
+        <if test="sort != null and sort != ''">
+                  <choose>
+                <when test="sort == 'combined_date'">
+                ORDER BY COALESCE(INS.input_stock_date, request_date) ${order}
+                 </when>
+                  <otherwise>
+                               ORDER BY ${sort} ${order}
+                  </otherwise>
+                  </choose>
                 </if>
-ORDER BY 
-    CASE WHEN #{sort} = 'default' THEN COALESCE(INS.input_stock_date, RNRQ.return_request_date) END,
-    ${sort} ${order}
+            <if test="sort == null or sort == ''">
+                        ORDER BY COALESCE(INS.input_stock_date, request_date) DESC
+                     </if>
 LIMIT #{offset}, 10    
 </script>
 """)

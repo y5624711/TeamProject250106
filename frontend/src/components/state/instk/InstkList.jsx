@@ -89,7 +89,7 @@ export function InstkList() {
     { key: "customer_name", label: "담당 업체" },
     { key: "request_employee_name", label: "요청자" },
     { key: "input_stock_employee_name", label: "승인자" },
-    { key: "input_stock_date", label: "날짜" },
+    { key: "combined_date", label: "날짜" },
     { key: "input_consent", label: "상태" },
   ];
 
@@ -127,7 +127,7 @@ export function InstkList() {
                 onSortChange={(nextSearchParam) =>
                   setSearchParams(nextSearchParam)
                 }
-                defaultSortKey={"input_stock_date"}
+                defaultSortKey={"combined_date"}
               />
             </Table.Row>
           </Table.Header>
