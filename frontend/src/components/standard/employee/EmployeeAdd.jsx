@@ -43,7 +43,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
-      { label: "직원", value: "EMP" },
+      { label: "본사직원", value: "EMP" },
     ],
   });
 
