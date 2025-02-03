@@ -29,18 +29,28 @@ public class EmployeeController {
 //     }
 
 
+
     @GetMapping("/list")  //  모든 멤버 출력
-    public EmployeeResponse getAllEmployees(@RequestParam int page, Boolean isActiveVisible, String keyword, String type
-            , String sort, String order) {
+    public EmployeeResponse getAllEmployees(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "type", defaultValue = "all") String type,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "sort", defaultValue = "employee_key") String sort,
+            @RequestParam(value = "order", defaultValue = "desc") String order,
+            @RequestParam(value="isActiveVisible", defaultValue="false") Boolean isActiveVisible
+            ) {
 
         // 컬럼명 숨길려고  서버에서 처리
         String convertedType = Employee.correctType(type);
 
+        System.out.println("sort = " + sort);
 
         String convertedSort = Employee.correctCommonCode(sort);
 
+        System.out.println("page = " + page);
         System.out.println("convertedSort = " + convertedSort);
         System.out.println("convertedType = " + convertedType);
+        System.out.println("order = " + order);
 
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);

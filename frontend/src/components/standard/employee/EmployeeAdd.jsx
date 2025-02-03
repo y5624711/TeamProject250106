@@ -1,6 +1,8 @@
 import {
   Box,
   createListCollection,
+  Flex,
+  Heading,
   HStack,
   Input,
   SelectContent,
@@ -40,7 +42,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
-      { label: "직원", value: "EMP" },
+      { label: "본사직원", value: "EMP" },
     ],
   });
 
@@ -307,41 +309,43 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
 
-      {viewKey !== -1 && (
-        <Field label={"비밀번호"} orientation="horizontal">
-          <Input
-            name="password"
-            placeholder={"비밀번호"}
-            value={formData.password}
+        {viewKey !== -1 && (
+          <Field label={"비밀번호"} orientation="horizontal">
+            <Input
+              name="password"
+              placeholder={"비밀번호"}
+              value={formData.password}
+              onChange={handleInputChange}
+
+            />
+          </Field>
+        )}
+        <Field label={"비고"} orientation="horizontal">
+          <Textarea
+            name="note"
+            style={{ maxHeight: "100px", overflowY: "auto" }}
+            placeholder={viewKey===-1? "최대 50 글자":""}
+            value={formData.note}
             onChange={handleInputChange}
+
           />
         </Field>
-      )}
-      <Field label={"비고"} orientation="horizontal">
-        <Textarea
-          style={{ maxHeight: "100px", overflowY: "auto" }}
-          name="note"
-          placeholder={"최대 50 글자"}
-          value={formData.note}
-          onChange={handleInputChange}
-        />
-      </Field>
-      {viewKey !== -1 && (
-        <Field label={"사용 여부"} orientation="horizontal">
-          <Box ml={"86px"} style={{ position: "absolute" }}>
-            <Checkbox
-              name="employeeActive"
-              checked={formData.employeeActive}
-              onCheckedChange={(e) =>
-                setFormData((prevItem) => ({
-                  ...prevItem,
-                  employeeActive: e.checked,
-                }))
-              }
-            />
-          </Box>
-        </Field>
-      )}
+        {viewKey !== -1 && (
+          <Field label={"사용 여부"} orientation="horizontal">
+            <Box ml={"86px"} style={{ position: "absolute" }}>
+              <Checkbox
+                name="employeeActive"
+                checked={formData.employeeActive}
+                onCheckedChange={(e) =>
+                  setFormData((prevItem) => ({
+                    ...prevItem,
+                    employeeActive: e.checked,
+                  }))
+                }
+              />
+            </Box>
+          </Field>
+        )}
 
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={onChange} mr={2} variant="outline">
@@ -355,19 +359,9 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           closeDelay={100}
         >
           <Button onClick={handleSubmit} disabled={!isValid}>
-            등록
+            {viewKey === -1 ? "회원 등록" : "저장"}
           </Button>
         </Tooltip>
-
-        {/*<Button onClick={handleSubmit} disabled={isValid}>*/}
-        {/*  {viewKey === -1 ? "회원 등록" : "저장" }*/}
-        {/*</Button>*/}
-
-        {/*{viewKey !== -1 && (*/}
-        {/*  <Button onClick={handleDelete} ml={2}>*/}
-        {/*    회원 삭제*/}
-        {/*  </Button>*/}
-        {/*)}*/}
       </Box>
     </Stack>
   );
