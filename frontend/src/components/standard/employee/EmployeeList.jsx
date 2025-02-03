@@ -32,8 +32,19 @@ import * as PropTypes from "prop-types";
 import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { Sort } from "../../tool/list/Sort.jsx";
+import { Pagination } from "../../tool/list/Pagination.jsx";
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
+  //검색 옵션
+  const frameworks = createListCollection({
+    items: [
+      { label: "소속구분", value: "소속구분" },
+      { label: "기업", value: "기업명" },
+      { label: "직원", value: "직원명" },
+      { label: "사번", value: "사번" },
+    ],
+  });
+
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   const [count, setCount] = useState(1);
@@ -66,13 +77,12 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     axios
       .get("api/employee/list", {
         params: {
-          page: page,
-          isActiveVisible: isActiveVisible,
-          keyword: keyword,
-          //  배열이면 , 삭제한값
-          type: Array.isArray(type) ? type.join("") : type,
-          sort: sort,
-          order: order,
+          isActiveVisible: searchParams.get("active"),
+          page: searchParams.get("page"),
+          keyword: searchParams.get("keyword"),
+          sort: searchParams.get("sort"),
+          order: searchParams.get("order"),
+          type: searchParams.get("type"),
         },
       })
       .then((res) => {
@@ -94,10 +104,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   // active 보여주는거 정하는 버튼
 
   const handleVisible = () => {
-    setIsActiveVisible(!isActiveVisible);
+    const active = searchParams.get("active");
+    const insertActive = active === true ? true : false;
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("active", !isActiveVisible); // "active" 키에 새로운 값 설정
+      newParams.set("active", insertActive); // "active" 키에 새로운 값 설정
       return newParams;
     });
   };
@@ -113,25 +124,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   }
 
   function handleSearchButton() {
-    setPage(1); // 페이지를 1로 초기화
+    // setPage(1); // 페이지를 1로 초기화
 
-    setSearchParams((prev) => {
-      const newParams = { ...prev }; // 기존 파라미터 복사 (깊은 복사)
-      newParams.type = type; // type 값 업데이트
-      newParams.keyword = keyword; // keyword 값 업데이트
-
-      return newParams; // 새로운 객체를 반환
-    });
+    const newParams = new URLSearchParams(searchParams); // 기존 파라미터 복사 (깊은 복사)
+    newParams.set("type", type); // type 값 업데이트
+    newParams.set("keyword", keyword); // keyword 값 업데이트
+    newParams.set("page", 1);
+    setSearchParams(newParams);
   }
-
-  const frameworks = createListCollection({
-    items: [
-      { label: "소속구분", value: "소속구분" },
-      { label: "기업", value: "기업명" },
-      { label: "직원", value: "직원명" },
-      { label: "사번", value: "사번" },
-    ],
-  });
 
   const handleSortControl = (sortName) => {
     const convertedOrderName =
@@ -227,10 +227,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           검색
         </Button>
       </HStack>
-
       <Checkbox
         my={3}
-        checked={isActiveVisible}
+        checked={searchParams.get("active")}
         onCheckedChange={(e) => handleVisible()}
       >
         미사용 포함 조회
@@ -286,39 +285,33 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
-      <Flex justify="space-between" p={4}>
+
+      <Flex justify="space-between">
         <Box />
 
         <Box>
-          <PaginationRoot
-            onPageChange={handlePageChange}
+          <Pagination
             count={count}
             pageSize={10}
-            page={page}
-            defaultPage={page}
-            variant={"solid"}
-            size={"md"}
-          >
-            <PaginationPrevTrigger>
-              <FaArrowLeft />
-            </PaginationPrevTrigger>
-            <PaginationItems />
-            <PaginationNextTrigger>
-              <FaArrowRight />
-            </PaginationNextTrigger>
-          </PaginationRoot>
+            onPageChange={(newPage) => {
+              const nextSearchParam = new URLSearchParams(searchParams);
+              nextSearchParam.set("page", newPage);
+              setSearchParams(nextSearchParam);
+            }}
+          />
         </Box>
 
-        <Button
-          display="flex"
-          justifyContent="flex-end"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-          size={"lg"}
-        >
-          직원 등록
-        </Button>
+        {/*페이지네이션과 동일값 */}
+        <Box p={4}>
+          <Button
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+            size={"lg"}
+          >
+            직원 등록
+          </Button>
+        </Box>
       </Flex>
       <EmployeeAddDialog
         isModalOpen={isModalOpen}
@@ -327,7 +320,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         onChange={onChange}
         onSelect={onSelect}
       />
-
       <EmployeeViewDialog
         isModalOpen={isviewModalOpen}
         modalChange={handleviewModalControl}
