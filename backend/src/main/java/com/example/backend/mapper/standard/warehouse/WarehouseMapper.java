@@ -20,7 +20,7 @@ public interface WarehouseMapper {
                    cus.customer_name,
                    e.employee_name,
                    w.warehouse_active
-            FROM TB_WHMST w 
+            FROM TB_WHMST w
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                 LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
             WHERE 
@@ -134,23 +134,27 @@ public interface WarehouseMapper {
     @Select("""
             <script>
             SELECT COUNT(*)
-            FROM TB_WHMST
+            FROM TB_WHMST w
+                LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+                LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
             WHERE 
-                <if test="active == false">warehouse_active = 1</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
+                <if test="active == false"> w.warehouse_active = 1</if> <!-- 체크박스 해지한 경우 TRUE인것만 보여주기 -->
                 <if test="active == true">1=1</if> <!-- 체크박스 체크한 경우 전체 보여주기 -->
                 <if test="searchType == 'all'">
                 AND(
-                    warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR customer_code LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR warehouse_active LIKE CONCAT('%',#{searchKeyword},'%')
+                    w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR cus.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
                 )
                 </if>
                 <if test="searchType != 'all'">
-                     <choose>
-                         <when test="searchType == 'warehouse'">
+                 <choose>
+                     <when test="searchType == 'warehouse'">
                     AND(
                          w.warehouse_name LIKE CONCAT('%', #{searchKeyword}, '%')
                       OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')   
@@ -181,7 +185,7 @@ public interface WarehouseMapper {
                      <otherwise>
                        AND  ${searchType} LIKE CONCAT('%', #{searchKeyword}, '%')
                      </otherwise>
-                     </choose>
+                 </choose>
                  </if>
             </script>
             
