@@ -303,16 +303,39 @@ LIMIT #{offset}, 10
         </if>
         <!-- keyword 조건 -->
         <if test="keyword != null and keyword != ''">
-            AND (
-                BI.input_common_code LIKE CONCAT('%', #{keyword}, '%')                -- BI 테이블의 input_common_code
-                OR BI.input_no LIKE CONCAT('%', #{keyword}, '%')                     -- BI 테이블의 input_no
---                OR SC.common_name LIKE CONCAT('%', #{keyword}, '%')                  -- SC 테이블의 item_common_name
-                OR CT.customer_name LIKE CONCAT('%', #{keyword}, '%')                -- CT 테이블의 customer_name
-                OR INS.input_stock_date LIKE CONCAT('%', #{keyword}, '%')            -- INS 테이블의 input_stock_date
-                OR EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 요청 담당자 이름 (EM2 테이블)
-                OR EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')               -- 재고 담당자 이름 (EM3 테이블)
-            )
-        </if>
+        <choose>
+            <when test="type == 'input_common_code_name'">
+                AND SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_no'">
+                AND BI.input_no LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'item_common_name'">
+                AND SC.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'customer_name'">
+                AND CT.customer_name LIKE CONCAT('%', #{keyword}, '%') 
+            </when>
+            <when test="type == 'request_employee_name'">
+                AND EM2.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="type == 'input_stock_employee_name'">
+                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (
+                    SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    BI.input_no LIKE CONCAT('%', #{keyword}, '%') OR
+                    SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </otherwise>
+        </choose>
+    </if>
     </script>
 """)
     int countByConsent(@Param("state") String state , String keyword, String type);
