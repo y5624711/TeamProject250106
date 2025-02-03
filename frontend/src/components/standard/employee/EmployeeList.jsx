@@ -214,6 +214,11 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           onChange={(e) => {
             setKeyword(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchButton();
+            }
+          }}
         />
         <IconButton
           transform="translateX(-130%) "
