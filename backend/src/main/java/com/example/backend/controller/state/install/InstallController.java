@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@Transactional
 @RequiredArgsConstructor
 @RequestMapping("/api/install")
 public class InstallController {
@@ -58,7 +59,6 @@ public class InstallController {
 
     // 설치 완료
     @PostMapping("configuration")
-    @Transactional
     public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
         try {
             // 검수 테이블 추가 & 품목 입출력 테이블 추가를 하나의 트랜잭션으로 처리
@@ -70,25 +70,6 @@ public class InstallController {
                     "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
                     "data", install
             ));
-//
-//            // 비고 추가, 검수 테이블에 추가
-//            if (service.installConfiguration(install)) {
-//                // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
-//                if (service.addOutHistory(install)) {
-//                    return ResponseEntity.ok().body(Map.of(
-//                            "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
-//                            "data", install
-//                    ));
-//                } else {
-//                    return ResponseEntity.internalServerError().body(Map.of(
-//                            "message", Map.of("type", "error", "text", "해당 품목의 출고 처리 중 오류가 발생했습니다.")
-//                    ));
-//                }
-//            } else {
-//                return ResponseEntity.internalServerError().body(Map.of(
-//                        "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
-//                ));
-//            }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
                     "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
