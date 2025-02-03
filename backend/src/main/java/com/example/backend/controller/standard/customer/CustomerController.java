@@ -4,12 +4,15 @@ import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.service.standard.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/customer")
@@ -18,7 +21,8 @@ public class CustomerController {
 
     //협력사 등록
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer) {
+//    @PreAuthorize("hasAuthority('SCOPE_BIZ')")
+    public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer, Authentication auth) {
         //협력사 입력란 빈칸 검증
         if (!service.checkEmptyCustomer(customer)) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -95,7 +99,7 @@ public class CustomerController {
 //        System.out.println("customer: " + customer);
 
         //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
-        if (customer.getCustomerActive() && !service.checkActive(customer)) {
+        if (customer.getCustomerActive() && service.checkActive(customer)) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력업체가 존재합니다.")
             ));
@@ -117,6 +121,7 @@ public class CustomerController {
     //등록할 수 있는 품목 목록
     @GetMapping("itemCode/list")
     private List<CommonCode> itemCodeList() {
+//        System.out.println(service.itemCodeList());
         return service.itemCodeList();
     }
 

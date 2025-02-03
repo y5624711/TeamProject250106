@@ -62,20 +62,22 @@ public class CustomerService {
         return count == 1;
     }
 
-    //
+    //active 복구 가능한지
     public boolean checkActive(Customer customer) {
         //1. active에 변화가 있는지 확인
         Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
-        String activeCustomer = "";
+
+        if (oldActive == customer.getCustomerActive()) {
+            //복구 하려는 거 아니편 패스
+            return false;
+        }
 
         //2 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
-        if (oldActive != customer.getCustomerActive()) {
-            activeCustomer = mapper.getItemCustomer(customer.getItemCode());
-        }
-//        System.out.println("복구: " + customer.getCustomerCode());
-//        System.out.println("activeCustomer: " + activeCustomer);
+        String activeCustomer = mapper.getItemCustomer(customer.getItemCode());
+        System.out.println("복구: " + customer.getCustomerCode());
+        System.out.println("activeCustomer: " + activeCustomer);
 
-        return activeCustomer == null || activeCustomer.equals(customer.getCustomerCode());
+        return !activeCustomer.equals(customer.getCustomerCode());
     }
 
 

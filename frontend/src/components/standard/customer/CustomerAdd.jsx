@@ -46,6 +46,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   useEffect(() => {
     axios.get("/api/customer/itemCode/list").then((res) => {
       setItemCodeList(res.data);
+      console.log("호출", itemCodeList);
     });
   }, []);
 
@@ -95,7 +96,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     resetState();
     onCancel();
   };
-  // console.log("itemCodeList", itemCodeList);
+  console.log("itemCodeList", itemCodeList);
 
   const myItems = createListCollection({
     items: itemCodeList.map((itemCode) => {
