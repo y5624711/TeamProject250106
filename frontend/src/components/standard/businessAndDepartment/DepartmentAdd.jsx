@@ -86,7 +86,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
                 onChange={(e) => setDepartmentName(e.target.value)}
               />
             </Field>
-            <Field label={"대표전화"} orientation="horizontal">
+            <Field label={"전화번호"} orientation="horizontal">
               <Input
                 value={departmentTel}
                 onChange={(e) => setDepartmentTel(e.target.value)}
