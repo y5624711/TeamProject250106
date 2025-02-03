@@ -77,9 +77,14 @@ public class StocktakingService {
 
     public List<Stocktaking> getStocktakingWarehouseList(Authentication auth) {
 
-        String customerCode = mapper.getCustomerCode(auth.getName());
+        String workplaceCode = mapper.getWorkplaceCode(auth.getName());
+        String workplace = workplaceCode.substring(0, 3);
+        if (workplace.equals("CUS")) {
+            return mapper.getStocktakingWarehouseList(workplaceCode, workplace);
+        } else {
+            return mapper.getStocktakingWarehouseList(workplaceCode, workplace);
+        }
 
-        return mapper.getStocktakingWarehouseList(customerCode);
     }
 
     public List<Stocktaking> getStocktakingItemList(String warehouseCode) {

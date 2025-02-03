@@ -175,11 +175,18 @@ public interface StocktakingMapper {
     int add(Stocktaking stocktaking);
 
     @Select("""
+            <script>
             SELECT warehouse_name, warehouse_code
             FROM TB_WHMST
-            WHERE customer_code=#{customerCode}
+            <if test="workplace == 'BIZ'">
+            </if>
+            <if test="workplace == 'CUS'">
+            WHERE 
+            customer_code=#{workplaceCode}
+            </if>
+            </script>
             """)
-    List<Stocktaking> getStocktakingWarehouseList(String customerCode);
+    List<Stocktaking> getStocktakingWarehouseList(String workplaceCode, String workplace);
 
     @Select("""
             SELECT i.item_common_code itemCode, s.common_code_name itemName
@@ -211,5 +218,5 @@ public interface StocktakingMapper {
             FROM TB_EMPMST
             WHERE employee_no=#{name}
             """)
-    String getCustomerCode(String name);
+    String getWorkplaceCode(String name);
 }
