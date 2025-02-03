@@ -10,12 +10,11 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, Input, Textarea } from "@chakra-ui/react";
+import { Box, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
-import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
@@ -262,7 +261,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               />
             </Field>
             <Box display="flex" gap={4}>
-              <Field label="광역시도" orientation="horizontal" mb={15}>
+              <Field label="광역 시도" orientation="horizontal" mb={15}>
                 <Input
                   type={"text"}
                   value={warehouseState}
@@ -293,12 +292,17 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
             </Field>
             {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
             <Field label="비고" orientation="horizontal" mb={15}>
-              <Textarea
-                style={{ maxHeight: "100px", overflowY: "auto" }}
-                placeholder="최대 50자"
+              <Input
                 type={"text"}
                 value={warehouseNote}
                 onChange={(e) => setWarehouseNote(e.target.value)}
+              />
+            </Field>
+            <Field label="사용 여부" orientation="horizontal" mb={15}>
+              <Input
+                type={"text"}
+                value={warehouseActive}
+                onChange={(e) => setWarehouseActive(e.target.value)}
               />
             </Field>
           </Box>
@@ -310,22 +314,14 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               취소
             </Button>
           </DialogActionTrigger>
-          <Tooltip
-            content="입력을 완료해 주세요."
-            openDelay={100}
-            closeDelay={100}
-            disabled={validate()}
+          <Button
+            variant="solid"
+            onClick={() => {
+              handleSaveClick();
+            }}
           >
-            <Button
-              variant="solid"
-              onClick={() => {
-                handleSaveClick();
-              }}
-              disabled={!validate()}
-            >
-              등록
-            </Button>
-          </Tooltip>
+            저장
+          </Button>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>

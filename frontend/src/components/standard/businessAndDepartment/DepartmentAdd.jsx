@@ -103,8 +103,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
                 value={departmentNote}
                 onChange={(e) => setDepartmentNote(e.target.value)}
                 placeholder={"최대 50자"}
-                resize={"none"}
-                maxLength={50}
+                style={{ maxHeight: "100px", overflowY: "auto" }}
               />
             </Field>
           </Stack>

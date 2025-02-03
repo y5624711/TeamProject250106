@@ -151,35 +151,24 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
+          {approveData.returnConsent === "1" && (
+            <Field orientation="horizontal" label="반품 번호">
+              <Input readOnly value={approveData.returnNo} />
+            </Field>
+          )}
           <Field orientation="horizontal" label="가맹점">
             <Input readOnly value={approveData.franchiseName} />
           </Field>
-          {approveData.returnConsent === "1" ? (
-            <Box
-              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-            >
-              <HStack>
-                <Field orientation="horizontal" label="반품 번호">
-                  <Input readOnly value={approveData.returnNo} />
-                </Field>
-                <Field orientation="horizontal" label="시리얼 번호">
-                  <Input readOnly defaultValue={approveData.serialNo} />
-                </Field>
-              </HStack>
-              <Field orientation="horizontal" label="품목">
-                <Input readOnly value={approveData.itemCommonName} />
-              </Field>
-            </Box>
-          ) : (
-            <HStack>
-              <Field orientation="horizontal" label="품목">
-                <Input readOnly value={approveData.itemCommonName} />
-              </Field>
-              <Field orientation="horizontal" label="시리얼 번호">
-                <Input readOnly defaultValue={approveData.serialNo} />
-              </Field>
-            </HStack>
-          )}
+
+          <HStack>
+            <Field orientation="horizontal" label="품목">
+              <Input readOnly value={approveData.itemCommonName} />
+            </Field>
+            <Field orientation="horizontal" label="시리얼 번호">
+              <Input readOnly defaultValue={approveData.serialNo} />
+            </Field>
+          </HStack>
+
           <Field orientation="horizontal" label="담당 업체">
             <Input readOnly value={approveData.customerName} />
           </Field>
@@ -195,15 +184,15 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             <Input readOnly value={approveData.returnRequestDate} />
           </Field>
           <Field orientation="horizontal" label="요청 비고">
-            {/*{approveData.returnRequestNote ? (*/}
-            <Textarea
-              readOnly
-              value={approveData.returnRequestNote}
-              maxHeight={"100px"}
-            />
-            {/*) : (*/}
-            {/*  <Input readOnly value={"내용 없음"} />*/}
-            {/*)}*/}
+            {approveData.returnRequestNote ? (
+              <Textarea
+                readOnly
+                value={approveData.returnRequestNote}
+                maxHeight={"100px"}
+              />
+            ) : (
+              <Input readOnly value={"내용 없음"} />
+            )}
           </Field>
 
           {approveData.returnConsent === "1" ? (
@@ -226,22 +215,24 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   <Input readOnly value={approveData.customerConfigurerNo} />
                 </Field>
               </HStack>
-              <Field orientation="horizontal" label="회수 예정일">
-                <Input readOnly value={approveData.returnDate || "미정"} />
-              </Field>
-              <Field orientation="horizontal" label="승인 날짜">
-                <Input readOnly value={approveData.returnApproveDate} />
-              </Field>
+              <HStack>
+                <Field orientation="horizontal" label="회수 예정일">
+                  <Input readOnly value={approveData.returnDate || "미정"} />
+                </Field>
+                <Field orientation="horizontal" label="승인 날짜">
+                  <Input readOnly value={approveData.returnApproveDate} />
+                </Field>
+              </HStack>
               <Field orientation="horizontal" label="승인 비고">
-                {/*{approveData.returnApproveNote ? (*/}
-                <Textarea
-                  readOnly
-                  value={approveData.returnApproveNote}
-                  maxHeight={"100px"}
-                />
-                {/*) : (*/}
-                {/*  <Input readOnly value={"내용 없음"} />*/}
-                {/*)}*/}
+                {approveData.returnApproveNote ? (
+                  <Textarea
+                    readOnly
+                    value={approveData.returnApproveNote}
+                    style={{ maxHeight: "100px", overflowY: "auto" }}
+                  />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
+                )}
               </Field>
             </Box>
           ) : approveData.returnConsent === "0" ? (

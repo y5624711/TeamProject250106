@@ -207,9 +207,8 @@ function CustomerList({
       </Table.Root>
 
       {/*pagination*/}
-      <Center my={3}>
+      <Center>
         <Pagination
-          size={"md"}
           count={count}
           pageSize={10}
           onPageChange={(newPage) => {
@@ -220,7 +219,7 @@ function CustomerList({
 
       {/*협력사 등록*/}
       <Box display="flex" justifyContent="flex-end">
-        <Button onClick={onNewClick} size={"lg"} mt={-63}>
+        <Button onClick={onNewClick} size={"lg"} mt={-55}>
           협력업체 등록
         </Button>
       </Box>

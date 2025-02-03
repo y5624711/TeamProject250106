@@ -166,11 +166,15 @@ export function PurchaseApprove({
         />
       </Field>
       <Field label="요청 비고" orientation="horizontal" mb={15}>
-        <Textarea
-          value={purchase.purchaseRequestNote}
-          readOnly
-          style={{ maxHeight: "100px", overflowY: "auto" }}
-        />
+        {purchase.purchaseRequestNote ? (
+          <Textarea
+            value={purchase.purchaseRequestNote}
+            readOnly
+            style={{ maxHeight: "100px", overflowY: "auto" }}
+          />
+        ) : (
+          <Input readOnly value={"내용 없음"} />
+        )}
       </Field>
 
       {/* 승인 여부가 승인/반려이면 숨기고, 승인 여부가 정해지지 않은 경우에만 표시 */}
@@ -198,19 +202,31 @@ export function PurchaseApprove({
             </Box>
           )}
           <Field label="승인 비고" orientation="horizontal" mt={15}>
-            <Textarea
-              value={purchase.purchaseApproveNote}
-              placeholder={"최대 50자"}
-              onChange={(e) =>
-                purchase.purchaseConsent !== true &&
-                setPurchase({
-                  ...purchase,
-                  purchaseApproveNote: e.target.value,
-                })
-              }
-              readOnly={purchase.purchaseConsent === true}
-              style={{ maxHeight: "100px", overflowY: "auto" }}
-            />
+            {purchase.purchaseConsent ? (
+              purchase.purchaseApproveNote ? (
+                <Textarea
+                  value={purchase.purchaseApproveNote}
+                  readOnly
+                  style={{ maxHeight: "100px", overflowY: "auto" }}
+                />
+              ) : (
+                <Input readOnly value={"내용 없음"} />
+              )
+            ) : (
+              <Textarea
+                value={purchase.purchaseApproveNote}
+                placeholder={"최대 50자"}
+                onChange={(e) =>
+                  purchase.purchaseConsent !== true &&
+                  setPurchase({
+                    ...purchase,
+                    purchaseApproveNote: e.target.value,
+                  })
+                }
+                readOnly={purchase.purchaseConsent === true}
+                style={{ maxHeight: "100px", overflowY: "auto" }}
+              />
+            )}
           </Field>
         </>
       )}

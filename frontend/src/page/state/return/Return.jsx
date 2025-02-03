@@ -84,7 +84,11 @@ function Return(props) {
             order={order}
           />
           <Flex justify="flex-end">
-            <Button onClick={() => setRequestDialogOpen(true)} mt={-11}>
+            <Button
+              size={"lg"}
+              onClick={() => setRequestDialogOpen(true)}
+              mt={-11}
+            >
               반품 요청
             </Button>
           </Flex>

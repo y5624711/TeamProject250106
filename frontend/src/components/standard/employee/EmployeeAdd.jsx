@@ -1,26 +1,24 @@
 import {
   Box,
-  createListCollection, Flex,
-  Heading,
+  createListCollection,
   HStack,
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
-import * as PropTypes from "prop-types";
 import { SelectViewComp } from "./SelectViewComp.jsx";
-import {Checkbox} from "../../ui/checkbox.jsx";
-import {Tooltip} from "../../ui/tooltip.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -33,11 +31,11 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     note: "",
     workPlace: "",
     departMent: "",
-    employeeActive:false,
+    employeeActive: false,
   });
 
   console.log(onChange, "onChange");
-  console.log(formData,"폼데이터")
+  console.log(formData, "폼데이터");
 
   const frameworks = createListCollection({
     items: [
@@ -77,8 +75,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           workPlace: res.data.employeeWorkPlaceCode || "",
           note: res.data.employeeNote || "",
           name: res.data.employeeName || "",
-          employeeActive:res.data.employeeActive || false,
-          departMent:res.data.departmentName,
+          employeeActive: res.data.employeeActive || false,
+          departMent: res.data.departmentName,
         });
       });
   };
@@ -136,7 +134,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         employeeNote: formData.note,
         employeeDepartment: formData.department,
         employeePassword: formData.password,
-        employeeActive:formData.employeeActive,
+        employeeActive: formData.employeeActive,
       };
 
       axios
@@ -212,75 +210,70 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     // 예전에 수정 돌아가는거 ,
     // setIsEditMode(false);
     // fetchEmployeeData(); // 원래 데이터로 복원
-
-
   };
 
   const isCommonCodeSelectedCheck =
     viewKey === -1 && typeof formData.selectedCommonCode === "object";
 
-
   const isValid =
-    formData.name.trim().length > 0 &&  // 공백만 있는 경우 방지
-    formData.name.length < 6 &&         // 이름 길이 제한
-    !!formData.selectedCommonCode &&    // 존재 여부 확인 (불리언 변환)
-    !!formData.workPlace;               // 존재 여부 확인 (불리언 변환)
+    formData.name.trim().length > 0 && // 공백만 있는 경우 방지
+    formData.name.length < 6 && // 이름 길이 제한
+    !!formData.selectedCommonCode && // 존재 여부 확인 (불리언 변환)
+    !!formData.workPlace; // 존재 여부 확인 (불리언 변환)
 
-
-
-  
   return (
-      <Stack gap={15}>
-        <Field orientation="horizontal" label={"소속 구분"}>
-          <SelectRoot
-            collection={frameworks}
-            value={
-              viewKey !== -1
-                ? [formData.selectedCommonCode]
-                : formData.selectedCommonCode
-            }
-            onValueChange={handleSelectChange}
-            readOnly={viewKey !== -1}
-            position="relative"
+    <Stack gap={15}>
+      <Field orientation="horizontal" label={"소속 구분"}>
+        <SelectRoot
+          collection={frameworks}
+          value={
+            viewKey !== -1
+              ? [formData.selectedCommonCode]
+              : formData.selectedCommonCode
+          }
+          onValueChange={handleSelectChange}
+          readOnly={viewKey !== -1}
+          position="relative"
+        >
+          <SelectTrigger>
+            <SelectValueText placeholder={"소속을 선택해 주세요."} />
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              width: "100%",
+              top: "40px",
+              position: "absolute",
+            }}
           >
-            <SelectTrigger>
-              <SelectValueText placeholder={"소속을 선택해 주세요."} />
-            </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "100%",
-                top: "40px",
-                position: "absolute",
-              }}
-            >
-              {frameworks.items.map((code) => (
-                <SelectItem item={code} key={code.value}>
-                  {code.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-        </Field>
-        {isCommonCodeSelectedCheck && (
-          <SelectViewComp
-            formData={formData}
-            handleSelectChange={handleWorkPlaceChange}
-          />
-        )}
-        {viewKey !== -1 && (
-          <HStack>
-            {formData.selectedCommonCode==="EMP" &&
-              <Field label={"부서"}  orientation="horizontal">
-                <Input
-                  name="workPlace"
-                  placeholder={""}
-                  value={formData.departMent}
-                  onChange={handleInputChange}
-                  readOnly={viewKey !== -1}
-                />
-              </Field>}
+            {frameworks.items.map((code) => (
+              <SelectItem item={code} key={code.value}>
+                {code.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Field>
+      {isCommonCodeSelectedCheck && (
+        <SelectViewComp
+          formData={formData}
+          handleSelectChange={handleWorkPlaceChange}
+        />
+      )}
+      {viewKey !== -1 && (
+        <HStack>
+          {formData.selectedCommonCode === "EMP" && (
+            <Field label={"부서"} orientation="horizontal">
+              <Input
+                name="workPlace"
+                placeholder={""}
+                value={formData.departMent}
+                onChange={handleInputChange}
+                readOnly={viewKey !== -1}
+              />
+            </Field>
+          )}
 
-          <Field label={"소속 코드"}  orientation="horizontal">
+          <Field label={"소속 코드"} orientation="horizontal">
             <Input
               name="workPlace"
               placeholder={""}
@@ -289,78 +282,71 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
               readOnly={viewKey !== -1}
             />
           </Field>
-          </HStack>
-        )}
-        <Field label={"직원"}  orientation="horizontal">
+        </HStack>
+      )}
+      <Field label={"직원"} orientation="horizontal">
+        <Input
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          readOnly={viewKey !== -1}
+        />
+      </Field>
+      {viewKey !== -1 && (
+        <Field label={"사번"} orientation="horizontal">
           <Input
-            name="name"
-            value={formData.name}
+            name="employeeNo"
+            placeholder={"사번"}
+            value={formData.employeeNo}
             onChange={handleInputChange}
-            readOnly={viewKey !== -1 }
+            readOnly={viewKey !== -1}
           />
         </Field>
-        {viewKey !== -1 && (
-          <Field label={"사번"} orientation="horizontal">
-            <Input
-              name="employeeNo"
-              placeholder={"사번"}
-              value={formData.employeeNo}
-              onChange={handleInputChange}
-              readOnly={viewKey !== -1}
+      )}
+      <Field label={"전화 번호"} orientation="horizontal">
+        <Input name="tel" value={formData.tel} onChange={handleInputChange} />
+      </Field>
+
+      {viewKey !== -1 && (
+        <Field label={"비밀번호"} orientation="horizontal">
+          <Input
+            name="password"
+            placeholder={"비밀번호"}
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+        </Field>
+      )}
+      <Field label={"비고"} orientation="horizontal">
+        <Textarea
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          name="note"
+          placeholder={"최대 50 글자"}
+          value={formData.note}
+          onChange={handleInputChange}
+        />
+      </Field>
+      {viewKey !== -1 && (
+        <Field label={"사용 여부"} orientation="horizontal">
+          <Box ml={"86px"} style={{ position: "absolute" }}>
+            <Checkbox
+              name="employeeActive"
+              checked={formData.employeeActive}
+              onCheckedChange={(e) =>
+                setFormData((prevItem) => ({
+                  ...prevItem,
+                  employeeActive: e.checked,
+                }))
+              }
             />
-          </Field>
-        )}
-        <Field label={"전화 번호"} orientation="horizontal">
-          <Input
-            name="tel"
-            value={formData.tel}
-            onChange={handleInputChange}
-
-          />
+          </Box>
         </Field>
-
-        {viewKey !== -1 && (
-          <Field label={"비밀번호"} orientation="horizontal">
-            <Input
-              name="password"
-              placeholder={"비밀번호"}
-              value={formData.password}
-              onChange={handleInputChange}
-
-            />
-          </Field>
-        )}
-        <Field label={"비고"} orientation="horizontal">
-          <Input
-            name="note"
-            placeholder={viewKey===-1? "최대 50 글자":""}
-            value={formData.note}
-            onChange={handleInputChange}
-
-          />
-        </Field>
-        {viewKey !== -1 && (
-          <Field label={"사용 여부"} orientation="horizontal">
-            <Box ml={"86px"} style={{ position: "absolute" }}>
-              <Checkbox
-                name="employeeActive"
-                checked={formData.employeeActive}
-                onCheckedChange={(e) =>
-                  setFormData((prevItem) => ({
-                    ...prevItem,
-                    employeeActive: e.checked,
-                  }))
-                }
-              />
-            </Box>
-          </Field>
-        )}
+      )}
 
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
-
-          <Button onClick={onChange} mr={2} variant="outline">
-            취소
-          </Button>
+        <Button onClick={onChange} mr={2} variant="outline">
+          취소
+        </Button>
 
         <Tooltip
           content="입력을 완료해주세요."
@@ -377,13 +363,12 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         {/*  {viewKey === -1 ? "회원 등록" : "저장" }*/}
         {/*</Button>*/}
 
-
         {/*{viewKey !== -1 && (*/}
         {/*  <Button onClick={handleDelete} ml={2}>*/}
         {/*    회원 삭제*/}
         {/*  </Button>*/}
         {/*)}*/}
       </Box>
-      </Stack>
+    </Stack>
   );
 }

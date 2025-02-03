@@ -146,7 +146,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
               <Textarea
                 resize={"none"}
                 maxLength={50}
-                placeholder="비고"
+                placeholder={"최대 50자"}
                 value={codeData.commonCodeNote || ""}
                 onChange={handleInputChange("commonCodeNote")}
               />

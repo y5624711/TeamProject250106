@@ -129,6 +129,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         <Textarea
           name="warehouseNote"
           style={{ maxHeight: "100px", overflowY: "auto" }}
+          placeholder="최대 50자"
           value={warehouseDetail.warehouseNote}
           onChange={(e) =>
             setWarehouseDetail({
