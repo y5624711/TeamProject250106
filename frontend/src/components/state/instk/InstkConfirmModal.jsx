@@ -18,7 +18,12 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 import error from "eslint-plugin-react/lib/util/error.js";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprovalSuccess }) {
+export function InstkConfirmModal({
+  isModalOpen,
+  setChangeModal,
+  instk,
+  onApprovalSuccess,
+}) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
   const [instkDetail, setInstkDetail] = useState({});
@@ -61,9 +66,8 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
       })
       .catch((error) => {
         console.log("입고테이블에 추가중 오류 발생했습니다", error);
-      }).finally(()=>{
-
-    });
+      })
+      .finally(() => {});
   };
 
   // 입고 반려 메소드
@@ -106,32 +110,28 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
 
             <HStack>
               <Field orientation="horizontal" label={"품목 명"}>
-                <Input readOnly value={instk.itemCommonName} readOnly />
+                <Input readOnly value={instk.itemCommonName} />
               </Field>
               <Field label={"수량"} orientation="horizontal">
-                <Input readOnly value={instk.itemAmount} readOnly />
+                <Input readOnly value={instk.itemAmount} />
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"주문 요청자 "} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeName} readOnly />
+                <Input readOnly value={instk.requestEmployeeName} />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input readOnly value={instk.requestEmployeeNo} readOnly />
+                <Input readOnly value={instk.requestEmployeeNo} />
               </Field>
             </HStack>
 
             <HStack>
               <Field label={"주문 승인자"} orientation="horizontal">
-                <Input value={instk.requestApprovalEmployeeName} readOnly />
+                <Input value={instk.requestApprovalEmployeeName} />
               </Field>
               <Field label={"사번"} orientation="horizontal">
-                <Input
-                  readOnly
-                  value={instk.requestApprovalEmployeeNo}
-                  readOnly
-                />
+                <Input readOnly value={instk.requestApprovalEmployeeNo} />
               </Field>
             </HStack>
 
@@ -154,7 +154,11 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
             </HStack>
 
             <Field label={"주문 비고"} orientation="horizontal">
-              <Textarea value={instk.inputNote} readOnly placeholder={"최대50자"} />
+              <Textarea
+                value={instk.inputNote}
+                readOnly
+                placeholder={"최대50자"}
+              />
             </Field>
 
             <Field label={"입고 비고"} orientation="horizontal">
