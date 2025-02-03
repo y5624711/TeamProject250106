@@ -378,4 +378,13 @@ public interface InstallMapper {
             WHERE install_request_key = #{installKey}
             """)
     Install getInstallApproveData(int installKey);
+
+    // 권한 설정 :  로그인 아이디로 회사 코드 가져오기
+    @Select("""
+            SELECT e.employee_workplace_code
+            FROM TB_EMPMST e
+                     JOIN TB_CUSTMST c ON e.employee_workplace_code = c.customer_code
+            WHERE e.employee_no = #{id}
+            """)
+    String selectCompanyById(String id);
 }

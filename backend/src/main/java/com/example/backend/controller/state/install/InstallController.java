@@ -68,8 +68,16 @@ public class InstallController {
 
     // 설치 완료
     @PostMapping("configuration")
-    public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installConfiguration(@RequestBody Install install, Authentication authentication) {
         try {
+            // 본사 직원 또는 설치기사인지 검증
+            if (!service.configurationAuth(authentication, install)) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", Map.of("type", "error",
+                                "text", "설치 완료 권한이 없습니다.")));
+            }
+
             // 검수 테이블 추가 & 품목 입출력 테이블 추가를 하나의 트랜잭션으로 처리
             if (!service.installConfiguration(install) || !service.addOutHistory(install)) {
                 throw new RuntimeException("설치 또는 출고 처리 중 오류 발생");
