@@ -30,7 +30,7 @@ export function ItemList({
   const sortOptions = [
     { key: "itemKey", label: "#" },
     { key: "itemCommonName", label: "품목" },
-    { key: "customerName", label: "담당업체" },
+    { key: "customerName", label: "담당 업체" },
     { key: "size", label: "규격" },
     { key: "unit", label: "단위" },
     { key: "inputPrice", label: "입고가" },
