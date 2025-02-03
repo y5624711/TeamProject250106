@@ -56,13 +56,8 @@ public class PurchaseService {
         // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
 
-        // 조회되는 게시물들
-        List<Purchase> purchaseList = mapper.getPurchaseList(offset, type, keyword, state, sort, order, company);
-
-        // 전체 게시물 수
-        Integer count = mapper.countAll(type, keyword, state, company);
-
-        return Map.of("purchaseList", purchaseList, "count", count);
+        // 구매 관리 리스트와 전체 개수를 반환
+        return Map.of("purchaseList", mapper.getPurchaseList(offset, type, keyword, state, sort, order, company), "count", mapper.countAll(type, keyword, state, company));
     }
 
     // 구매 승인 팝업 보기
