@@ -121,22 +121,18 @@ function Warehouse(props) {
             search={search}
             setSearch={setSearch}
           />
-          <Box display="flex" justifyContent="flex-end" mb={4}>
-            <Button
-              size={"lg"}
-              mt={"-65px"}
-              onClick={() => setIsAddDialogOpen(true)}
-            >
+          <Box display="flex" justifyContent="flex-end" mt="-65px">
+            <Button size="lg" onClick={() => setIsAddDialogOpen(true)}>
               창고 등록
             </Button>
           </Box>
-          {/*등록 jsx*/}
-          <WarehouseAdd
-            isOpen={isAddDialogOpen}
-            onClose={() => setIsAddDialogOpen(false)}
-            title="창고 등록"
-          />
         </Stack>
+        {/*등록 jsx*/}
+        <WarehouseAdd
+          isOpen={isAddDialogOpen}
+          onClose={() => setIsAddDialogOpen(false)}
+          title="창고 등록"
+        />
       </HStack>
     </Box>
   );

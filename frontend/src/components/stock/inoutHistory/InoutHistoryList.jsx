@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Table } from "@chakra-ui/react";
 import InoutHistoryDetail from "./InoutHistoryDetail.jsx";
 import InoutHistoryListPage from "./InoutHistoryListPage.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
@@ -38,66 +38,64 @@ function InoutHistoryList({
 
   return (
     <Box mt={-2}>
-      <Stack>
-        <Box>
-          <Table.Root interactive>
-            <Table.Header>
-              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-                <Sort
-                  sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) => {
-                    setSearchParams(nextSearchParam);
-                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
-                    const sortMatch = searchString.match(/sort=([^&]*)/);
-                    const orderMatch = searchString.match(/order=([^&]*)/);
-                    setSearch({
-                      ...search,
-                      order: orderMatch[1],
-                      sort: sortMatch[1],
-                    });
-                  }}
-                  defaultSortKey={"inoutHistoryDate"}
-                />
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {/* 각 입출내역 */}
-              {inoutHistoryList.map((inoutHistory, index) => (
-                <InoutHistoryListPage
-                  index={index}
-                  inoutHistory={inoutHistory}
-                  setSelectedInoutHistory={setSelectedInoutHistory}
-                  setIsDetailDialogOpen={setIsDetailDialogOpen}
-                />
-              ))}
-            </Table.Body>
-          </Table.Root>
-        </Box>
-        <Center p={4}>
-          <PaginationRoot
-            onPageChange={handlePageChangeClick}
-            count={countInoutHistory}
-            page={currentPage}
-            pageSize={10}
-            siblingCount={2}
-            defaultPage={currentPage}
-            variant="solid"
-            size={"md"}
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
-        </Center>
-        {/*입출내역 더블클릭 시 뜨는 팝업창*/}
-        <InoutHistoryDetail
-          inoutHistoryKey={selectedInoutHistory}
-          isOpened={isDetailDialogOpen}
-          onClosed={() => setIsDetailDialogOpen(false)}
-        />
-      </Stack>
+      <Box>
+        <Table.Root interactive>
+          <Table.Header>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) => {
+                  setSearchParams(nextSearchParam);
+                  const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                  const sortMatch = searchString.match(/sort=([^&]*)/);
+                  const orderMatch = searchString.match(/order=([^&]*)/);
+                  setSearch({
+                    ...search,
+                    order: orderMatch[1],
+                    sort: sortMatch[1],
+                  });
+                }}
+                defaultSortKey={"inoutHistoryDate"}
+              />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {/* 각 입출내역 */}
+            {inoutHistoryList.map((inoutHistory, index) => (
+              <InoutHistoryListPage
+                index={index}
+                inoutHistory={inoutHistory}
+                setSelectedInoutHistory={setSelectedInoutHistory}
+                setIsDetailDialogOpen={setIsDetailDialogOpen}
+              />
+            ))}
+          </Table.Body>
+        </Table.Root>
+      </Box>
+      <Center p={4}>
+        <PaginationRoot
+          onPageChange={handlePageChangeClick}
+          count={countInoutHistory}
+          page={currentPage}
+          pageSize={10}
+          siblingCount={2}
+          defaultPage={currentPage}
+          variant="solid"
+          size={"md"}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
+      {/*입출내역 더블클릭 시 뜨는 팝업창*/}
+      <InoutHistoryDetail
+        inoutHistoryKey={selectedInoutHistory}
+        isOpened={isDetailDialogOpen}
+        onClosed={() => setIsDetailDialogOpen(false)}
+      />
     </Box>
   );
 }

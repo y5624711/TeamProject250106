@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import {
   PaginationItems,
@@ -37,65 +37,63 @@ function LocationList({
 
   return (
     <Box>
-      <Stack>
-        <Box>
-          <Table.Root interactive>
-            <Table.Header>
-              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-                <Sort
-                  sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) => {
-                    setSearchParams(nextSearchParam);
-                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
-                    const sortMatch = searchString.match(/sort=([^&]*)/);
-                    const orderMatch = searchString.match(/order=([^&]*)/);
-                    setSearch({
-                      ...search,
-                      order: orderMatch[1],
-                      sort: sortMatch[1],
-                    });
-                  }}
-                  defaultSortKey={"locationKey"}
-                />
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {locationList.map((location, index) => (
-                <LocationListPage
-                  index={index}
-                  location={location}
-                  setSelectedLocationKey={setSelectedLocationKey}
-                  setIsDetailDialogOpen={setIsDetailDialogOpen}
-                />
-              ))}
-            </Table.Body>
-          </Table.Root>
-        </Box>
-        <Center p={4}>
-          <PaginationRoot
-            onPageChange={handlePageChangeClick}
-            count={countLocation}
-            pageSize={10}
-            page={currentPage}
-            siblingCount={2}
-            defaultPage={currentPage}
-            variant="solid"
-            size={"md"}
-          >
-            <HStack>
-              <PaginationPrevTrigger />
-              <PaginationItems />
-              <PaginationNextTrigger />
-            </HStack>
-          </PaginationRoot>
-        </Center>
-        <LocationDetail
-          locationKey={selectedLocationKey}
-          isOpened={isDetailDialogOpen}
-          onClosed={() => setIsDetailDialogOpen(false)}
-          refresh={refresh}
-        />
-      </Stack>
+      <Box>
+        <Table.Root interactive>
+          <Table.Header>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) => {
+                  setSearchParams(nextSearchParam);
+                  const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                  const sortMatch = searchString.match(/sort=([^&]*)/);
+                  const orderMatch = searchString.match(/order=([^&]*)/);
+                  setSearch({
+                    ...search,
+                    order: orderMatch[1],
+                    sort: sortMatch[1],
+                  });
+                }}
+                defaultSortKey={"locationKey"}
+              />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {locationList.map((location, index) => (
+              <LocationListPage
+                index={index}
+                location={location}
+                setSelectedLocationKey={setSelectedLocationKey}
+                setIsDetailDialogOpen={setIsDetailDialogOpen}
+              />
+            ))}
+          </Table.Body>
+        </Table.Root>
+      </Box>
+      <Center w="100%" p={4}>
+        <PaginationRoot
+          onPageChange={handlePageChangeClick}
+          count={countLocation}
+          pageSize={10}
+          page={currentPage}
+          siblingCount={2}
+          defaultPage={currentPage}
+          variant="solid"
+          size={"md"}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
+      <LocationDetail
+        locationKey={selectedLocationKey}
+        isOpened={isDetailDialogOpen}
+        onClosed={() => setIsDetailDialogOpen(false)}
+        refresh={refresh}
+      />
     </Box>
   );
 }
