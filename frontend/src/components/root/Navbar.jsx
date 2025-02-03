@@ -57,12 +57,12 @@ export function Navbar() {
           </NavItem>
         )}
       </Flex>
-      <Flex bgColor={"#4374D9"} width="100%" gap={10} p={2} pl={3}>
+      <Flex bgColor={"#003B63"} width="100%" gap={10} p={2} pl={3}>
         <NavItem
           path="/business"
           textColor="white"
           _hover={{
-            bgColor: "#1F50B5",
+            bgColor: "#015791",
             borderRadius: "12px",
             cursor: "pointer",
           }}
@@ -73,7 +73,7 @@ export function Navbar() {
           path="/purchase"
           textColor="white"
           _hover={{
-            bgColor: "#1F50B5",
+            bgColor: "#015791",
             borderRadius: "12px",
             cursor: "pointer",
           }}
@@ -84,7 +84,7 @@ export function Navbar() {
           path="/inoutHistory"
           textColor="white"
           _hover={{
-            bgColor: "#1F50B5",
+            bgColor: "#015791",
             borderRadius: "12px",
             cursor: "pointer",
           }}
