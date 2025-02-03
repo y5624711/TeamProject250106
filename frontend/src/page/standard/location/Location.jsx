@@ -51,19 +51,18 @@ function Location(props) {
     const searchInfo = {
       type: search.type,
       keyword: search.keyword,
+      page: 1,
     };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(`/location/list?${searchQuery.toString()}`);
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   function handlePageChangeClick(e) {
-    const pageNumber = { page: e.page };
-    const pageQuery = new URLSearchParams(pageNumber);
-    const searchInfo = { type: search.type, keyword: search.keyword };
-    const searchQuery = new URLSearchParams(searchInfo);
-    navigate(
-      `/location/list?${searchQuery.toString()}&${pageQuery.toString()}`,
-    );
+    const searchInfo = {
+      type: search.type,
+      keyword: search.keyword,
+      page: e.page,
+    };
+    setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
 
   return (

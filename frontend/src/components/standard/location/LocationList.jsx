@@ -66,7 +66,7 @@ function LocationList({
             onPageChange={handlePageChangeClick}
             count={countLocation}
             pageSize={10}
-            // page={page}
+            page={currentPage}
             siblingCount={2}
             defaultPage={currentPage}
             variant="solid"
