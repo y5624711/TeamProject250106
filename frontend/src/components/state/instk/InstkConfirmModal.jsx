@@ -1,4 +1,4 @@
-import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
+import { HStack, Input, Separator, Stack, Textarea } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   DialogActionTrigger,
@@ -9,16 +9,19 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
-import error from "eslint-plugin-react/lib/util/error.js";
 import { toaster } from "../../ui/toaster.jsx";
 
-export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprovalSuccess }) {
+export function InstkConfirmModal({
+  isModalOpen,
+  setChangeModal,
+  instk,
+  onApprovalSuccess,
+}) {
   const { id } = useContext(AuthenticationContext);
   const [inputStockNote, setInputStockNote] = useState("");
   const [instkDetail, setInstkDetail] = useState({});
@@ -61,9 +64,8 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
       })
       .catch((error) => {
         console.log("입고테이블에 추가중 오류 발생했습니다", error);
-      }).finally(()=>{
-
-    });
+      })
+      .finally(() => {});
   };
 
   // 입고 반려 메소드
@@ -105,7 +107,7 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
             </HStack>
 
             <HStack>
-              <Field orientation="horizontal" label={"품목 명"}>
+              <Field orientation="horizontal" label={"품목"}>
                 <Input readOnly value={instk.itemCommonName} readOnly />
               </Field>
               <Field label={"수량"} orientation="horizontal">
@@ -144,6 +146,18 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
               </Field>
             </HStack>
 
+            <Field label={"주문 비고"} orientation="horizontal">
+              {instk.inputNote ? (
+                <Textarea
+                  value={instk.inputNote}
+                  readOnly
+                  placeholder={"최대50자"}
+                />
+              ) : (
+                <Input readOnly value={"내용 없음"} />
+              )}
+            </Field>
+            <Separator />
             <HStack>
               <Field label={"입고 승인자"} orientation="horizontal">
                 <Input value={localStorage.getItem("name")} readOnly />
@@ -152,11 +166,6 @@ export function InstkConfirmModal({ isModalOpen, setChangeModal, instk ,onApprov
                 <Input value={id} readOnly />
               </Field>
             </HStack>
-
-            <Field label={"주문 비고"} orientation="horizontal">
-              <Textarea value={instk.inputNote} readOnly placeholder={"최대50자"} />
-            </Field>
-
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
                 value={inputStockNote}

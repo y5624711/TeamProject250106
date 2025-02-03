@@ -12,12 +12,9 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { DialogConfirmation } from "../../tool/DialogConfirmation.jsx";
 
 function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
   const [customer, setCustomer] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // const [isDeleted, setIsDeleted] = useState(false);
 
   //정보 불러오기
   useEffect(() => {
@@ -148,9 +145,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
                   </Button>
                 </DialogActionTrigger>
                 <Button onClick={() => onEdit(customer)}>수정</Button>
-                <Button onClick={setIsDialogOpen} colorPalette={"red"}>
-                  삭제
-                </Button>
+                <Button colorPalette={"red"}>삭제</Button>
               </HStack>
             ) : (
               <HStack>
@@ -164,14 +159,6 @@ function CustomerView({ isOpen, onCancel, customerKey, onDelete, onEdit }) {
           </DialogFooter>
         </DialogContent>
       </DialogRoot>
-
-      <DialogConfirmation
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={onDelete}
-        title="삭제 확인"
-        body="해당 협력업체 정보를 삭제하시겠습니까?"
-      />
     </Box>
   );
 }
