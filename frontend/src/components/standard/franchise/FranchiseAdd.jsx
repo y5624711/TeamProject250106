@@ -121,7 +121,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
   };
 
   return (
-    <Box>
+    <Box css={{ "--field-label-width": "85px" }}>
       <Box>
         <Field label="가맹점" orientation="horizontal" mb={15} required>
           <Input
