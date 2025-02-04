@@ -29,6 +29,7 @@ export function LoginCheck() {
       } else {
         if (!isAdmin && adminList.includes(location.pathname)) {
           navigate("/"); // 관리자가 아닌데 admin 페이지에 접근하면 메인 페이지로 이동
+          alert("권한이 없습니다.");
         }
       }
     }

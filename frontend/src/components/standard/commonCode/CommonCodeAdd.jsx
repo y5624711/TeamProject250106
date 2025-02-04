@@ -26,8 +26,9 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템 코드", value: "SYSTEM" },
+      { label: "기준 코드", value: "STANDARD" },
       { label: "품목 코드", value: "ITEM" },
+      { label: "상태 코드", value: "STATE" },
     ],
   });
 

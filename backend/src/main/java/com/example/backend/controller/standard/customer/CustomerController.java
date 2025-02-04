@@ -31,7 +31,7 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "요청 권한이 없습니다.")));
+                                        "text", "등록 권한이 없습니다.")));
             }
 
             //협력사 입력란 빈칸 검증
@@ -119,17 +119,23 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "승인 권한이 없습니다.")));
+                                        "text", "수정 권한이 없습니다.")));
             }
 
             //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
-            if (customer.getCustomerActive() && service.checkActive(customer)) {
+            if (customer.getCustomerActive() && !service.checkActive(customer)) {
                 return ResponseEntity.badRequest().body(Map.of(
                         "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력업체가 존재합니다.")
                 ));
             }
 
-            //복구 권한자인가?
+            //사용여부 수정 시도 시 권한자 여부
+            if (service.checkActiveChange(customer) && returnService.checkCustomer(auth.getName())) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "사용여부 수정 권한이 없습니다.")));
+            }
 
             //수정
             if (service.editCustomer(customer)) {

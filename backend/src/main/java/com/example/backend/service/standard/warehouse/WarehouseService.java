@@ -19,21 +19,13 @@ public class WarehouseService {
     //창고 등록
     public Boolean addWarehouse(Warehouse warehouse) {
 
-        String whs;
 
         // 0 또는 숫자 조회
         Integer maxNo = mapper.viewMaxWarehouseCode();
+        String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
 
-        if (maxNo - 99 < 0) {
-            whs = "WHS0";
-        } else {
-            whs = "WHS";
-        }
 
-        Integer newNumber = maxNo + 1;
-        String num = String.valueOf(newNumber);
-
-        String newWarehouseCode = whs + num;
+        String newWarehouseCode = "WHS" + newNumber;
         warehouse.setWarehouseCode(newWarehouseCode);
 
         warehouse.setWarehouseActive(true);

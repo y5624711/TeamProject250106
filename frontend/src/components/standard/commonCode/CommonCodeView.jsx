@@ -42,8 +42,9 @@ export function CommonCodeView({
 
   const selectOptions = createListCollection({
     items: [
-      { label: "시스템 코드", value: "SYSTEM" },
+      { label: "기준 코드", value: "STANDARD" },
       { label: "품목 코드", value: "ITEM" },
+      { label: "상태 코드", value: "STATE" },
     ],
   });
 
@@ -89,7 +90,8 @@ export function CommonCodeView({
       editedCommonCode.commonCodeType === "ITEM" &&
       /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
     (editedCommonCode != null &&
-      editedCommonCode.commonCodeType === "SYSTEM" &&
+      (editedCommonCode.commonCodeType === "STANDARD" ||
+        editedCommonCode.commonCodeType === "STATE") && // OR 연산자로 수정
       /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
       editedCommonCode.commonCodeName.trim() !== "");
 
@@ -137,7 +139,7 @@ export function CommonCodeView({
                 <SelectCode
                   selectOptions={selectOptions}
                   onChange={handleCodeTypeChange}
-                  value={editedCommonCode.commonCodeType}
+                  selectValue={editedCommonCode.commonCodeType}
                 />
                 <Field label={"코드"} orientation="horizontal">
                   <Input
@@ -145,7 +147,7 @@ export function CommonCodeView({
                     placeholder="코드"
                     value={editedCommonCode.commonCode}
                     onChange={handleChange}
-                    maxLength={3}
+                    maxLength={5}
                   />
                 </Field>
                 <Field label={"코드명"} orientation="horizontal">

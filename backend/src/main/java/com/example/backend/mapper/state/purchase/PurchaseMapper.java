@@ -227,8 +227,10 @@ public interface PurchaseMapper {
 
     // 기존 발주 번호에서 최대 번호 조회
     @Select("""
-            SELECT MAX(CAST(purchase_no AS UNSIGNED))
+            SELECT COALESCE(MAX(CAST(SUBSTRING(purchase_no, 4) AS UNSIGNED)), 0) AS maxNumber
             FROM TB_PURCH_APPR
+            WHERE purchase_no LIKE 'PUR%'
+            AND purchase_no REGEXP '^[A-Za-z]+[0-9]+$'
             """)
     Long viewMaxPurchaseNo();
 
