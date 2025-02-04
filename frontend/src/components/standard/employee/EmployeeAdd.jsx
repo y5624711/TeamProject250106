@@ -80,10 +80,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
-  // 전화번호면 regx
   const handleInputChange = (e) => {
     var { name, value } = e.target;
-    console.log(name, "name", value, "value");
 
     if (name === "tel") {
       value = formatPhoneNumber(value);
@@ -244,9 +242,14 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   return (
     <Stack gap={15}>
-      <Field orientation="horizontal" label={"소속 구분"}>
+      <Field
+        orientation="horizontal"
+        label={"소속 구분"}
+        required={viewKey !== -1 ? false : true}
+      >
         <SelectRoot
           collection={frameworks}
+          variant={viewKey !== -1 ? "subtle" : "outline"}
           value={
             viewKey !== -1
               ? [formData.selectedCommonCode]
@@ -305,7 +308,11 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Field>
         </HStack>
       )}
-      <Field label={"직원"} orientation="horizontal">
+      <Field
+        label={"직원"}
+        orientation="horizontal"
+        required={viewKey !== -1 ? false : true}
+      >
         <Input
           name="name"
           value={formData.name}

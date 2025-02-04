@@ -9,7 +9,7 @@ import { Field } from "../../ui/field.jsx";
 
 export function CustomerSelect({ frameworks, formData, handleSelectChange }) {
   return (
-    <Field orientation="horizontal" label={"업체 구분"}>
+    <Field orientation="horizontal" label={"업체 구분"} required>
       <SelectRoot
         collection={frameworks}
         value={formData.workPlace}
