@@ -93,7 +93,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap="15px">
-            <Field label={"품목"} orientation="horizontal">
+            <Field label={"품목"} orientation="horizontal" required>
               <SelectRoot
                 onValueChange={(selectedName) => {
                   const selectedItem = itemCommonCodeList.find(
@@ -135,7 +135,11 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
               </SelectRoot>
             </Field>
             <Field label={"담당 업체"} orientation="horizontal">
-              <Input readOnly value={itemData.customerName} />
+              <Input
+                readOnly
+                value={itemData.customerName}
+                variant={"subtle"}
+              />
             </Field>
             <Field label="규격" orientation="horizontal">
               <Input
@@ -149,7 +153,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 onChange={handleInputChange("unit")}
               />
             </Field>
-            <Field label="입고가" orientation="horizontal">
+            <Field label="입고가" orientation="horizontal" required>
               <Input
                 type="number"
                 value={itemData.inputPrice}
@@ -157,7 +161,7 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
                 min="1"
               />
             </Field>
-            <Field label="출고가" orientation="horizontal">
+            <Field label="출고가" orientation="horizontal" required>
               <Input
                 type="number"
                 value={itemData.outputPrice}
