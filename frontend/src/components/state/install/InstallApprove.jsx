@@ -138,8 +138,13 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     installApprove.customerInstallerNo;
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
-      <DialogContent style={{ maxHeight: "90vh", overflow: "hidden" }}>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={handleClose}
+      size="lg"
+      scrollBehavior={"none"}
+    >
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>
             {installRequest.installRequestConsent === false
