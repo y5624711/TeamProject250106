@@ -372,12 +372,12 @@ public interface InstallMapper {
     List<String> getConfigurationSerials(String outputNo);
 
     // 설치 요청 반려
-    @Update("""
-            UPDATE TB_INSTL_REQ
-            SET install_request_consent = false
-            WHERE install_request_key = #{installKey}
-            """)
-    int installDisapprove(int installKey);
+//    @Insert("""
+//            INSERT INTO
+//            (install_request_key, customer_name, install_disapprove_note)
+//            VALUES ( #{installRequestKey}, #{customerName}, #{installDisapproveNote})
+//            """)
+//    int installDisapprove(Install install);
 
     // 설치 요청 키로 담당업체 코드 가져오기
     @Select("""

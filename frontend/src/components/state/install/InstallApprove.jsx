@@ -117,10 +117,16 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
-  // 설치 요청 반려
+  // 설치 요청 반려 (기본키, 요청키, 반려자, 반려날짜, 비고)
   const handleDisapproveClick = () => {
+    const disapproveData = {
+      installRequestKey: installKey,
+      customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자 = 반려자)
+      installDisapproveNote: installApprove.installApproveNote,
+    };
+
     axios
-      .put(`/api/install/disapprove/${installKey}`)
+      .post(`/api/install/disapprove`, disapproveData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({

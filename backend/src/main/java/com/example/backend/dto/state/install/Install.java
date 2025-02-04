@@ -22,7 +22,6 @@ public class Install {
     private String businessEmployeeName;
     private String customerName;
     private String warehouseName;
-    private String warehouseAddress;
     private String customerEmployeeNo;
     private String customerInstallerNo;
     private String customerInstallerName;
@@ -45,4 +44,5 @@ public class Install {
     private Integer countItem;
     private LocalDate inoutHistoryDate;
     private LocalDate installDate;
+    private String disapproveNote;
 }

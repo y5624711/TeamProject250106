@@ -253,12 +253,12 @@ public class InstallService {
     }
 
     // 반려에 대한 권한 검증
-    public boolean disApproveAuth(Authentication authentication, int installKey) {
+    public boolean disApproveAuth(Authentication authentication, Install install) {
         if (authentication.getName().startsWith("CUS")) {
             // 로그인한 사용자의 회사 정보 가져오기
             String loginCompany = mapper.selectCompanyById(authentication.getName());
             // 설치 요청 키로 담당업체 코드 가져오기
-            String cusCompany = mapper.getCustomerCodeByKey(installKey);
+            String cusCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
             // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
             return loginCompany.equals(cusCompany);
         } else {
@@ -267,10 +267,10 @@ public class InstallService {
     }
 
     // 설치 요청 반려
-    public boolean installDisapprove(int installKey) {
-        int cnt = mapper.installDisapprove(installKey);
-        return cnt == 1;
-    }
+//    public boolean installDisapprove(Install install) {
+//        int cnt = mapper.installDisapprove(install);
+//        return cnt == 1;
+//    }
 
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     public Install getInstallApproveData(int installKey) {
