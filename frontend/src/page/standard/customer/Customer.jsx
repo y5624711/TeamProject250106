@@ -199,6 +199,7 @@ function Customer() {
         {/* Dialog */}
         <div>
           <CustomerAdd
+            customerList={customerList}
             isOpen={addDialogOpen}
             onCancel={() => setAddDialogOpen(false)}
             onSave={handleSaveClick}

@@ -29,7 +29,7 @@ import { PhoneInput } from "../../tool/masking/PhoneInput.jsx";
 import { CustomerNoInput } from "../../tool/masking/CustomerNoInput.jsx";
 import { CorporateNoInput } from "../../tool/masking/CorporateNoInput.jsx";
 
-function CustomerAdd({ isOpen, onCancel, onSave }) {
+function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
   const [customerName, setCustomerName] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [itemName, setItemName] = useState("");
@@ -52,7 +52,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       setItemCodeList(res.data);
       // console.log("호출", itemCodeList);
     });
-  }, []);
+  }, [customerList]);
 
   const resetState = () => {
     setCustomerName("");
@@ -112,23 +112,6 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       };
     }),
   });
-
-  const Phone = (value) => {
-    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
-    // 숫자만 남기고, 11자리까지만 허용
-    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
-
-    // 정규식에 맞춰 하이픈 추가
-    if (onlyNums.length === 11) {
-      return onlyNums.replace(regPhone, "01$1-$2-$3");
-    } else if (onlyNums.length > 7) {
-      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
-    } else if (onlyNums.length > 3) {
-      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
-    }
-
-    return onlyNums;
-  };
 
   const isValid =
     customerName &&
