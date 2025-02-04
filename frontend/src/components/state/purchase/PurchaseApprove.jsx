@@ -115,7 +115,6 @@ export function PurchaseApprove({
           description: data.message.text,
         });
       });
-    onClose(); // 반려 후 다이얼로그 닫기
   };
 
   if (loading) {
