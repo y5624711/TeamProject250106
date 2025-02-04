@@ -92,7 +92,7 @@ export function DepartmentViewAndUpdateDialog({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>부서 상세 정보</DialogTitle>
+          <DialogTitle>부서 정보</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
@@ -161,7 +161,6 @@ export function DepartmentViewAndUpdateDialog({
 
             <Field label={"사용여부"} orientation="horizontal">
               <Checkbox
-                size={"lg"}
                 style={{ marginRight: "550px" }}
                 defaultChecked={department.departmentActive}
                 onChange={(e) =>
