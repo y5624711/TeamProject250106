@@ -189,6 +189,7 @@ export function Franchise() {
   const handleResetClick = () => {
     const nextSearchParams = new URLSearchParams();
     setSearchParams(nextSearchParams);
+    setCheckedActive(false);
   };
 
   // 가맹점 등록 버튼 클릭 시 다이얼로그 열림
