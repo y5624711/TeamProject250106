@@ -117,6 +117,11 @@ export function PurchaseApprove({
       });
   };
 
+  // 취소 버튼 클릭 시 창 닫기
+  const handleCancelClick = () => {
+    onClose();
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -249,10 +254,17 @@ export function PurchaseApprove({
         </>
       )}
 
-      {/* 승인 여부가 null일 때만 반려/승인 버튼 표시 */}
+      {/* 승인 여부가 null일 때만 취소/반려/승인 버튼 표시 */}
       {purchase?.purchaseConsent === undefined && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
-          <Button onClick={handleDisapprove} variant="outline">
+          <Button onClick={handleCancelClick} variant="outline">
+            취소
+          </Button>
+          <Button
+            onClick={handleDisapprove}
+            variant="outline"
+            colorPalette="red"
+          >
             반려
           </Button>
           <Button onClick={handleApprove}>승인</Button>
