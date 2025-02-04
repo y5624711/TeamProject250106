@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Input, Stack, Text, Textarea } from "@chakra-ui/react";
+import { Box, HStack, Input, Stack, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -96,14 +96,19 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
             {item.map((item) => (
               <Stack gap={"15px"}>
                 <>
-                  <Text fontSize={"xs"} mt={-5}>
-                    품목과 담당업체는 수정이 불가능합니다.
-                  </Text>
                   <Field label={"품목 "} orientation="horizontal">
-                    <Input readOnly value={item.itemCommonName} />
+                    <Input
+                      readOnly
+                      value={item.itemCommonName}
+                      variant={"subtle"}
+                    />
                   </Field>
                   <Field label={"담당 업체"} orientation="horizontal">
-                    <Input readOnly value={item.customerName || ""} />
+                    <Input
+                      readOnly
+                      value={item.customerName || ""}
+                      variant={"subtle"}
+                    />
                   </Field>
                   <Field label={"규격"} orientation="horizontal">
                     <Input

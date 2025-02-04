@@ -75,8 +75,8 @@ export function ItemList({
                   {item.itemCommonName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
-                <Table.Cell textAlign="center">{item.size}</Table.Cell>
-                <Table.Cell textAlign="center">{item.unit}</Table.Cell>
+                <Table.Cell textAlign="center">{item.size || "-"}</Table.Cell>
+                <Table.Cell textAlign="center">{item.unit || "-"}</Table.Cell>
                 <Table.Cell textAlign="center">{item.inputPrice}</Table.Cell>
                 <Table.Cell textAlign="center">{item.outputPrice}</Table.Cell>
               </Table.Row>
