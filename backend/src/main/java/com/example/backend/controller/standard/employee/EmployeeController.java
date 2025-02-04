@@ -5,6 +5,8 @@ import com.example.backend.dto.standard.employee.EmployeeResponse;
 import com.example.backend.service.standard.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -55,8 +57,19 @@ public class EmployeeController {
     }
 
     // 회원 등록
+
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee , Authentication authentication) {
+
+        //협력업체 직원이 누르게 될경우 
+        if (!authentication.getName().startsWith("BIZ")) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "회원 등록 권한이 없습니다.")));
+        }
+
+
         System.out.println("account = " + employee);
         if (service.addEmployee(employee)) {
             return ResponseEntity.ok()
@@ -71,7 +84,15 @@ public class EmployeeController {
 
     // 회원 수정
     @PutMapping("update")
-    public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee ,Authentication authentication) {
+        //협력업체 직원이 누르게 될경우
+        if (!authentication.getName().startsWith("BIZ")) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "회원 수정 권한이 없습니다.")));
+        }
+
         System.out.println("employee = " + employee);
         if (service.editEmployeeByKey(employee)) {
             return ResponseEntity.ok()
@@ -85,7 +106,15 @@ public class EmployeeController {
     }
 
     @PutMapping("delete")
-    public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee ,Authentication authentication) {
+
+        //협력업체 직원이 누르게 될경우
+        if (!authentication.getName().startsWith("BIZ")) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "회원 삭제 권한이 없습니다.")));
+        }
 
         System.out.println("employee = " + employee);
         if (service.deleteEmployeeByKey(employee.getEmployeeKey())) {
