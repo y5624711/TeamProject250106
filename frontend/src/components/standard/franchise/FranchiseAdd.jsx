@@ -32,6 +32,32 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
     );
   };
 
+  // 사업자 번호 정규식
+  const formatFranchiseNo = (value) => {
+    return value
+      .replace(/[^0-9]/g, "") // 숫자만 허용
+      .replace(/^(\d{3})(\d{0,2})(\d{0,5})$/, (match, p1, p2, p3) => {
+        let result = p1;
+        if (p2) result += `-${p2}`;
+        if (p3) result += `-${p3}`;
+        return result;
+      });
+  };
+
+  // 전화번호 정규식
+  const formatFranchiseTel = (value) => {
+    value = value.replace(/[^0-9]/g, ""); // 숫자만 허용
+    if (value.length <= 3) {
+      return value; // 3자리 이하일 경우 그냥 반환
+    } else if (value.length <= 6) {
+      return value.replace(/^(\d{3})(\d{0,3})$/, "$1-$2");
+    } else if (value.length <= 10) {
+      return value.replace(/^(\d{3})(\d{3})(\d{0,4})$/, "$1-$2-$3");
+    } else if (value.length <= 11) {
+      return value.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"); // 11자리 이상도 이 패턴을 사용
+    }
+  };
+
   // 가맹점 등록하기
   const handleSaveClick = () => {
     if (!validate()) {
@@ -106,7 +132,8 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
         <Field label="사업자 번호" orientation="horizontal" mb={15} required>
           <Input
             value={franchiseNo}
-            onChange={(e) => setFranchiseNo(e.target.value)}
+            onChange={(e) => setFranchiseNo(formatFranchiseNo(e.target.value))}
+            maxLength={12}
           />
         </Field>
         <HStack>
@@ -119,7 +146,10 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
           <Field label="전화번호" orientation="horizontal" mb={15} required>
             <Input
               value={franchiseTel}
-              onChange={(e) => setFranchiseTel(e.target.value)}
+              onChange={(e) =>
+                setFranchiseTel(formatFranchiseTel(e.target.value))
+              }
+              maxLength={13}
             />
           </Field>
         </HStack>
