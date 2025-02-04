@@ -8,7 +8,7 @@ import axios from "axios";
 import { MainLeftInfoBox } from "../../components/standard/main/MainLeftInfoBox.jsx";
 
 export function Main() {
-  const { company, isAdmin } = useContext(AuthenticationContext);
+  const { company, isAdmin, userScope } = useContext(AuthenticationContext);
   const [user, setUser] = useState({});
   const [companyStatus, setCompanyStatus] = useState({});
   useEffect(() => {
@@ -39,11 +39,11 @@ export function Main() {
         {/* 메인 컨텐츠 리스트 */}
         <Stack w="100%">
           {/* 구매 리스트 */}
-          <MainBuyList company={company} />
+          <MainBuyList company={company} scope={userScope} />
           {/* 입고 리스트 */}
-          <MainInstkList company={company} />
+          <MainInstkList company={company} scope={userScope} />
           {/* 설치 리스트 */}
-          <MainInstallList company={company} />
+          <MainInstallList company={company} scope={userScope} />
         </Stack>
         <Box
           position="relative"

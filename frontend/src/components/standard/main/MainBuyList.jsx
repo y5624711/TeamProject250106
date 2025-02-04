@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function MainBuyList({ company }) {
+export function MainBuyList({ company, scope }) {
   const [purchaseList, setPurchaseList] = useState([]);
   const navigate = useNavigate("");
 
   useEffect(() => {
     axios
-      .get("/api/main/purList", { params: { company } })
+      .get("/api/main/purList", { params: { company, scope } })
       .then((res) => res.data)
       .then((data) => {
         setPurchaseList(data);

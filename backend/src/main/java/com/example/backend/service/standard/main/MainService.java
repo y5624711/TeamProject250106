@@ -35,7 +35,7 @@ public class MainService {
         }
 
     }
-    
+
 
     //    구매 신정받은 업체 리스트
     public List<Purchase> getPurchaseListByCustomer(String company) {
@@ -108,9 +108,8 @@ public class MainService {
         return cnt == 1;
     }
 
-    public boolean checkAdmin(Authentication auth) {
-        String authSlice = auth.getName().trim().substring(0, 3);
-        if (authSlice.equals("BIZ")) {
+    public boolean checkAdmin(Authentication auth, String scope) {
+        if (scope.equals("BIZ")) {
             int cnt = mapper.selectEmployee(auth.getName());
             return cnt == 1;
         } else {

@@ -30,8 +30,9 @@ public class MainPageController {
     @GetMapping("purList")
     @PreAuthorize("isAuthenticated()")
     public List<Purchase> purchaseList(Authentication auth,
-                                       @RequestParam(value = "company", required = false) String company) {
-        if (service.checkAdmin(auth)) {
+                                       @RequestParam(value = "company", required = false) String company,
+                                       @RequestParam(value = "scope", required = false) String scope) {
+        if (service.checkAdmin(auth, scope)) {
             return service.getPurChaseListByRequester(auth);
         } else {
             return service.getPurchaseListByCustomer(company);
@@ -41,8 +42,9 @@ public class MainPageController {
     @GetMapping("installList")
     @PreAuthorize("isAuthenticated()")
     public List<Install> installList(Authentication auth,
-                                     @RequestParam(value = "company", required = false) String company) {
-        if (service.checkAdmin(auth)) {
+                                     @RequestParam(value = "company", required = false) String company,
+                                     @RequestParam(value = "scope", required = false) String scope) {
+        if (service.checkAdmin(auth, scope)) {
             //요청자
             return service.getInstallListByRequester(auth);
 
@@ -54,9 +56,11 @@ public class MainPageController {
 
     @GetMapping("instkList")
     @PreAuthorize("isAuthenticated()")
-    public List<Instk> instakList(Authentication auth, @RequestParam(value = "company", required = false) String company) {
+    public List<Instk> instakList(Authentication auth,
+                                  @RequestParam(value = "company", required = false) String company,
+                                  @RequestParam(value = "scope", required = false) String scope) {
 
-        if (service.checkAdmin(auth)) {
+        if (service.checkAdmin(auth, scope)) {
             return service.getInstkList(auth);
         } else {
             //업체

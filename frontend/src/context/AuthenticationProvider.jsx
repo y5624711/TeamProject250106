@@ -73,9 +73,11 @@ function AuthenticationProvider({ children }) {
   }
 
   let isAdmin = false;
+  let userScope;
 
   if (userToken.scope) {
     isAdmin = userToken.scope.split(" ").includes("BIZ");
+    userScope = userToken.scope.split(" ").toString();
     console.log(userToken.scope);
   }
 
@@ -89,6 +91,7 @@ function AuthenticationProvider({ children }) {
         logout,
         isAuthenticated,
         isAdmin,
+        userScope,
         hasAccess,
         isInitialized: isInitialized,
       }}
