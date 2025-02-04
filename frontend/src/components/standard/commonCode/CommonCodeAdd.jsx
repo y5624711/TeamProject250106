@@ -28,8 +28,8 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = [
-    { label: "기준 코드", value: "STANDARD" },
     { label: "품목 코드", value: "ITEM" },
+    { label: "기준 코드", value: "STANDARD" },
     { label: "상태 코드", value: "STATE" },
   ];
 
@@ -102,10 +102,10 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5} mb={3}>
-            {codeType === "ITEM" || codeType === "STATE"
-              ? "품목/상태 코드는 대문자 3자리로 입력해야 합니다."
-              : codeType === "STANDARD"
-                ? "기준 코드는 대문자 3~5자리로 입력해야 합니다."
+            {codeType === "ITEM" || codeType === "STANDARD"
+              ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
+              : codeType === "STATE"
+                ? "싱태 코드는 대문자 3~5자리로 입력해야 합니다."
                 : "  "}
           </Text>
           <Stack gap={"15px"}>

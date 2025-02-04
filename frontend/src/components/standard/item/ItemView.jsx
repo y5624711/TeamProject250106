@@ -182,7 +182,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                     <Textarea
                       style={{ maxHeight: "100px", overflowY: "auto" }}
                       name="itemNote"
-                      placeholder="비고"
+                      placeholder="최대 50자"
                       value={editedItem.itemNote}
                       onChange={handleChange}
                     />
