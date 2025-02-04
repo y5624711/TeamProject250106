@@ -142,7 +142,7 @@ public interface InstallMapper {
             """)
     Install getInstallApproveView(int installKey);
 
-    // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 0으로 업데이트
+    // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 1으로 업데이트
     @Update("""
             UPDATE TB_ITEMSUB
             SET item_sub_active = 1
@@ -157,6 +157,22 @@ public interface InstallMapper {
             WHERE serial_no = #{serialNo}
             """)
     int updateSerialCurrent(String serialNo);
+
+    // 시리얼 번호에 맞는 location 키 가져오가
+    @Select("""
+            SELECT location_key
+            FROM TB_INSTK_SUB
+            WHERE serial_no = #{serailNo}
+            """)
+    List<Integer> getLocationKeyList(String serial);
+
+    // 시리얼 번호에 맞는 location 비활성화
+    @Update("""
+            UPDATE TB_LOCMST
+            SET located = 0
+            WHERE location_key = #{locationKey}
+            """)
+    int updateLocaionActive(Integer locationKey);
 
     // 승인 테이블에 상태 true로 변경
     @Update("""
@@ -387,4 +403,5 @@ public interface InstallMapper {
             WHERE e.employee_no = #{id}
             """)
     String selectCompanyById(String id);
+
 }

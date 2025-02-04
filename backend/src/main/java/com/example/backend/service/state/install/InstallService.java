@@ -115,7 +115,7 @@ public class InstallService {
             for (String serial : serialList) {
                 install.setSerialNo(serial);
                 mapper.addSerialToApprove(install);
-
+                // 우선 시리얼 번호 active 0으로 변경
                 int updatedRows = mapper.updateItemSubActiveFalse(serial);
                 if (updatedRows <= 0) {
                     throw new InstallApproveException("설치 승인 실패: 시리얼 번호 [" + serial + "] 등록 중 오류 발생");
@@ -176,6 +176,16 @@ public class InstallService {
                 int updateResult = mapper.updateSerialCurrent(serial);
                 if (updateResult != 1) {
                     throw new IllegalStateException("시리얼 번호 현재 위치 업데이트 실패");
+                }
+
+                // 시리얼 번호에 맞는 location 키 가져오가
+                List<Integer> locationKeyList = mapper.getLocationKeyList(serial);
+                for (Integer locationKey : locationKeyList) {
+                    // 시리얼 번호에 맞는 location 비활성화
+                    Integer updateLocation = mapper.updateLocaionActive(locationKey);
+                    if (updateLocation != 1) {
+                        throw new IllegalStateException("로케이션 비활성화 실패");
+                    }
                 }
             }
 
