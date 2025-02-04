@@ -6,7 +6,6 @@ import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.service.state.purchase.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -41,10 +40,10 @@ public class PurchaseController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase, Authentication auth) {
         // "CUS"로 시작하면 요청 제한
-        String company = auth.getName();
-        if (company == null || !company.startsWith("CUS")) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 구매 요청을 할 수 없습니다.")));
-        }
+//        String company = auth.getName();
+//        if (company == null || !company.startsWith("CUS")) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 구매 요청을 할 수 없습니다.")));
+//        }
         if (service.validate(purchase)) {
             if (service.purchaseRequest(purchase, auth)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
