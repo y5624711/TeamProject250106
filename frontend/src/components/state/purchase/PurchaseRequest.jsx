@@ -180,7 +180,11 @@ export function PurchaseRequest({ onSave, onClose }) {
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
           <Input
-            value={itemData.inputPrice * amount}
+            value={
+              itemData.inputPrice && amount
+                ? (itemData.inputPrice * amount).toLocaleString("ko-KR")
+                : "0"
+            }
             readOnly
             variant="subtle"
           />

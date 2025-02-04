@@ -139,7 +139,14 @@ export function PurchaseApprove({
           <Input value={purchase.amount} readOnly />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={purchase?.totalPrice || "N/A"} readOnly />
+          <Input
+            value={
+              purchase?.totalPrice
+                ? Number(purchase.totalPrice).toLocaleString("ko-KR")
+                : "N/A"
+            }
+            readOnly
+          />
         </Field>
       </HStack>
       <HStack>
