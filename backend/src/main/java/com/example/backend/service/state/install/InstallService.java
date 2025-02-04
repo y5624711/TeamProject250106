@@ -80,59 +80,67 @@ public class InstallService {
     }
 
     // 커스텀 예외 클래스 생성
-    public class InstallApproveException extends RuntimeException {
+    public class InstallApproveException extends RuntimeException {  // <-- 반드시 RuntimeException 상속
         public InstallApproveException(String message) {
             super(message);
         }
+    }
+
+    // 시리얼 번호 개수 확인
+    public boolean approveSerial(Install install) {
+        int num = install.getInstallRequestAmount();
+        List<String> serialList = mapper.getSerials(install.getItemCommonCode(), num);
+        return num > serialList.size();
     }
 
     // 설치 승인
     @Transactional
     public void installApprove(Install install) {
         try {
-            // 1. 시리얼 번호 수량만큼 시리얼 번호 가져오기
-            // 요청 수량 가져오기
+            // 1. 요청 수량만큼 시리얼 번호 가져오기
             int num = install.getInstallRequestAmount();
-            // 설치 요청에서 수량만큼 시리얼 번호 가져오기
             List<String> serialList = mapper.getSerials(install.getItemCommonCode(), num);
+
             if (serialList.size() < num) {
-                throw new InstallApproveException("가능한 품목 수량이 부족합니다." + " 가능한 수량: " + serialList.toArray().length);
+                throw new InstallApproveException("요청 수량이 많습니다. 사용 가능한 시리얼 번호: " + serialList.size());
             }
 
-            // 2. 출고 번호 등록
+            // 2. 출고 번호 생성
             String outputCode = "OUT";
-            // 0 또는 숫자 조회
             Integer maxNo = mapper.viewMaxOutputNo(outputCode);
-            //  부족한 자리수 만큼  0 채우기
             String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
             install.setOutputNo(outputCode + newNumber);
 
-            // 가져온 시리얼 번호 리스트를 출고번호와 함께 TB_INSTL_SUB에 삽입
+            // 3. 시리얼 번호 등록
             for (String serial : serialList) {
                 install.setSerialNo(serial);
                 mapper.addSerialToApprove(install);
-                // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 0으로 업데이트
+
                 int updatedRows = mapper.updateItemSubActiveFalse(serial);
                 if (updatedRows <= 0) {
-                    throw new InstallApproveException("시리얼 번호를 등록할 수 없습니다.");
+                    throw new InstallApproveException("설치 승인 실패: 시리얼 번호 [" + serial + "] 등록 중 오류 발생");
                 }
             }
 
-            // 설치 승인 테이블에 추가
+            // 4. 설치 승인 테이블에 추가
             int approve = mapper.installApprove(install);
             if (approve <= 0) {
-                throw new InstallApproveException("발주 번호를 등록할 수 없습니다.");
+                throw new InstallApproveException("설치 승인 실패: 발주 번호 등록 실패");
             }
 
-            // 3. 요청 테이블의 승인 여부 true 처리
+            // 5. 요청 승인 여부 업데이트
             int updateRequestConsent = mapper.updateRequestConsent(install.getInstallRequestKey());
             if (updateRequestConsent <= 0) {
-                throw new InstallApproveException("설치 승인이 실패했습니다.");
+                throw new InstallApproveException("설치 승인 실패: 요청 테이블 승인 처리 실패");
             }
-        } catch (Exception e) {
-            throw new InstallApproveException(e.getMessage());
+
+        } catch (InstallApproveException e) {
+            throw e;  // 서비스에서 발생한 예외를 그대로 컨트롤러로 전달
+        } catch (RuntimeException e) {
+            throw new InstallApproveException("설치 승인 중 알 수 없는 오류 발생: " + e.getMessage());
         }
     }
+
 
     // 설치 승인에 대한 정보 가져오기
     public Install getInstallApproveView(int installKey) {

@@ -124,22 +124,33 @@ public class InstallController {
             }
 
             // 정확히 입력되었는지 검증 후 승인
-            if (service.approveValidate(install)) {
-                service.installApprove(install);
-                return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success",
-                                "text", "설치 승인되었습니다."),
-                        "data", install));
-            } else {
+            if (!service.approveValidate(install)) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "error",
-                                "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
+                        .body(Map.of("message", Map.of("type", "error", "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
+
             }
+
+            // 3. 요청 수량과 시리얼 번호 검증
+            if (service.approveSerial(install)) {  // 시리얼 번호 부족한 경우
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", Map.of("type", "error", "text", "재고가 부족합니다.")));
+            }
+            System.out.println("eee2");
+
+            // 4. 설치 승인 처리
+            service.installApprove(install);
+            System.out.println("eee3");
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success",
+                            "text", "설치 승인되었습니다."),
+                    "data", install));
+
         } catch (InstallService.InstallApproveException e) {
             return ResponseEntity.internalServerError().body(Map.of(
                     "message", Map.of("type", "error", "text", e.getMessage())));
         }
     }
+
 
     // 설치 기사 정보 가져오기
     @GetMapping("customerEmployee/{installKey}")

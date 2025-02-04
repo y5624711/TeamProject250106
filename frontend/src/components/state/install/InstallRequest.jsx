@@ -146,7 +146,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
         <DialogBody>
           <Stack gap={5}>
             <HStack>
-              <Field orientation="horizontal" label="가맹점">
+              <Field orientation="horizontal" label="가맹점" required>
                 <Select
                   options={franchiseList}
                   value={franchiseList.find(
@@ -158,21 +158,21 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   styles={{
                     control: (base) => ({
                       ...base,
-                      width: "470px",
-                      height: "40px",
+                      width: "537px",
+                      height: "42px",
                     }),
                     menu: (base) => ({
                       ...base,
                       zIndex: 100,
-                      width: "470px",
+                      // width: "470px",
                     }),
                   }}
                 />
-                <Button onClick={onFranchiseClick}>조회</Button>
+                {/*<Button onClick={onFranchiseClick}>조회</Button>*/}
               </Field>
             </HStack>
 
-            <Field label="품목" orientation="horizontal">
+            <Field label="품목" orientation="horizontal" required>
               <SelectRoot
                 onValueChange={(e) => {
                   const selectedItem = installItemList.find(
@@ -221,7 +221,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                 {installRequest.countItem > 0 ? installRequest.countItem : 0}
               </Heading>
             </Box>
-            <Field label="수량" orientation="horizontal">
+            <Field label="수량" orientation="horizontal" required>
               <Input
                 type="number"
                 value={installRequest.installRequestAmount}
@@ -239,20 +239,26 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
             )}
             <Field label="가맹점 주소" orientation="horizontal">
               <Input
+                variant="subtle"
                 value={installRequest.franchiseAddress}
                 onChange={handleInputChange("franchiseAddress")}
               />
             </Field>
-            <HStack>
+            <HStack width="100%" justifyContent="space-between">
               <Field label="요청자" orientation="horizontal">
-                <Input value={name} />
+                <Input value={name} variant="subtle" />
               </Field>
               <Field label="사번" orientation="horizontal">
-                <Input value={id} />
+                <Input value={id} variant="subtle" />
               </Field>
             </HStack>
+
             <Field label="담당 업체" orientation="horizontal">
-              <Input readOnly value={installRequest.customerName} />
+              <Input
+                readOnly
+                value={installRequest.customerName}
+                variant="subtle"
+              />
             </Field>
             <Field label="비고" orientation="horizontal">
               <Textarea
