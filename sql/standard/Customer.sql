@@ -5,6 +5,8 @@ CREATE TABLE TB_CUSTMST
     customer_code            VARCHAR(13) NOT NULL UNIQUE,
     customer_name            VARCHAR(30) NOT NULL UNIQUE,
     customer_rep             VARCHAR(5)  NOT NULL,
+    industry                 VARCHAR(30) NOT NULL,
+    corporate_no             VARCHAR(13) UNIQUE,
     customer_no              VARCHAR(13) NOT NULL UNIQUE,
     customer_tel             VARCHAR(15) NOT NULL UNIQUE,
     customer_fax             VARCHAR(15),
@@ -15,6 +17,8 @@ CREATE TABLE TB_CUSTMST
     customer_note            VARCHAR(50)
 );
 
+ALTER TABLE TB_CUSTMST
+    MODIFY COLUMN corporate_no VARCHAR(14) NOT NULL UNIQUE;
 
 DROP TABLE TB_CUSTMST;
 

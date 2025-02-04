@@ -180,8 +180,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
         >
-          <Field orientation="horizontal" label="가맹점">
+          <Field orientation="horizontal" label="가맹점" required>
             <Select
               options={franchiseList}
               value={franchiseList.find(
@@ -203,15 +204,10 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 }),
               }}
             />
-            {/*<Input*/}
-            {/*  value={requestData.franchiseName}*/}
-            {/*  // placeholder="OOO점"*/}
-            {/*  onChange={handleInput("franchiseName")}*/}
-            {/*/>*/}
             <Button onClick={onFranchiseClick}>조회</Button>
           </Field>
           <HStack>
-            <Field orientation="horizontal" label="시리얼 번호">
+            <Field orientation="horizontal" label="시리얼 번호" required>
               <SelectRoot
                 value={requestData.serialNo}
                 onValueChange={(e) => {
@@ -245,6 +241,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             </Field>
             <Field orientation="horizontal" label="품목">
               <Input
+                variant={"subtle"}
                 readOnly
                 value={requestData.itemCommonName}
                 // placeholder={"OOOO"}
@@ -253,6 +250,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           </HStack>
           <Field orientation="horizontal" label="담당 업체">
             <Input
+              variant={"subtle"}
               readOnly
               value={requestData.customerName}
               // placeholder="OOOO"
@@ -261,6 +259,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           <HStack>
             <Field orientation="horizontal" label="요청자">
               <Input
+                variant={"subtle"}
                 readOnly
                 value={requestData.businessEmployeeName}
                 // onChange={handleInput("businessEmployeeName")}
@@ -268,6 +267,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             </Field>
             <Field orientation="horizontal" label="사번">
               <Input
+                variant={"subtle"}
                 value={requestData.businessEmployeeNo}
                 readOnly
                 // onChange={handleInput("businessEmployeeNo")}

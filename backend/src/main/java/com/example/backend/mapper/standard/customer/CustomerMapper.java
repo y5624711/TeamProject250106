@@ -15,12 +15,12 @@ public interface CustomerMapper {
     //협력사 등록
     @Insert("""
             INSERT INTO TB_CUSTMST
-            (customer_name, customer_code, item_code, customer_rep, customer_no, 
-             customer_tel, customer_fax, customer_address, customer_address_details, 
-             customer_post, customer_note)
-            VALUES (#{customerName},#{customerCode},#{itemCode}, #{customerRep}, #{customerNo}, 
-                    #{customerTel}, #{customerFax}, #{customerAddress}, #{customerAddressDetails}, 
-                    #{customerPost}, #{customerNote})
+            (customer_name, customer_code, item_code, industry, corporate_no, customer_rep, 
+             customer_no, customer_tel, customer_fax, customer_address, 
+             customer_address_details, customer_post, customer_note)
+            VALUES (#{customerName},#{customerCode},#{itemCode}, #{industry}, #{corporateNo}, 
+                    #{customerRep}, #{customerNo}, #{customerTel}, #{customerFax}, 
+                    #{customerAddress}, #{customerAddressDetails}, #{customerPost}, #{customerNote})
             """)
     int addCustomer(Customer customer);
 

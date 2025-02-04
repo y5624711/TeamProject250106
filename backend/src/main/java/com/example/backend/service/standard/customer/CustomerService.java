@@ -26,7 +26,7 @@ public class CustomerService {
         Integer maxNo = mapper.viewMaxCustomerCode(cus);
 
         //  부족한 자리수 만큼  0 채우기
-        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+        String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
 
         String newCustomerCode = cus + newNumber;
 //        System.out.println(newCustomerCode);

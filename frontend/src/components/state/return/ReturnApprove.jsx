@@ -154,6 +154,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
         >
           {approveData.returnConsent === "1" && (
             <Field orientation="horizontal" label="반품 번호">
@@ -202,6 +203,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           {approveData.returnConsent === "1" ? (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+              css={{ "--field-label-width": "85px" }}
             >
               <HStack>
                 <Field orientation="horizontal" label="승인자">
@@ -240,22 +242,50 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
               </Field>
             </Box>
           ) : approveData.returnConsent === "0" ? (
-            ""
+            <Box
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+              css={{ "--field-label-width": "85px" }}
+            >
+              <HStack>
+                <Field orientation="horizontal" label="반려자">
+                  <Input readOnly value={"임시"} />
+                </Field>
+                <Field orientation="horizontal" label="사번">
+                  <Input readOnly value={"임시"} />
+                </Field>
+              </HStack>
+
+              <Field orientation="horizontal" label="반려 날짜">
+                <Input readOnly value={"임시"} />
+              </Field>
+              <Field orientation="horizontal" label="반려 비고">
+                {approveData.returnApproveNote ? (
+                  <Textarea
+                    readOnly
+                    value={approveData.returnApproveNote}
+                    style={{ maxHeight: "100px", overflowY: "auto" }}
+                  />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
+                )}
+              </Field>
+            </Box>
           ) : (
             <Box
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+              css={{ "--field-label-width": "85px" }}
             >
               <Separator />
               <HStack>
-                <Field orientation="horizontal" label="승인자">
-                  <Input readOnly value={name} />
+                <Field orientation="horizontal" label="반려/승인자">
+                  <Input readOnly value={name} variant={"subtle"} />
                 </Field>
                 <Field orientation="horizontal" label="사번">
-                  <Input readOnly value={id} />
+                  <Input readOnly value={id} variant={"subtle"} />
                 </Field>
               </HStack>
               <HStack>
-                <Field label={"검수 기사"} orientation="horizontal">
+                <Field label={"검수 기사"} orientation="horizontal" required>
                   <SelectRoot
                     onValueChange={(e) => {
                       const selectedConfigurer = configurerList.find(
@@ -280,7 +310,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                     <SelectContent
                       maxHeight={"100px"}
                       style={{
-                        width: "75%",
+                        width: "70%",
                         top: "40px",
                         position: "absolute",
                       }}
@@ -301,11 +331,15 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   </SelectRoot>
                 </Field>
                 <Field label={"사번"} orientation="horizontal">
-                  <Input value={approveData.customerConfigurerNo} readOnly />
+                  <Input
+                    value={approveData.customerConfigurerNo}
+                    readOnly
+                    variant={"subtle"}
+                  />
                 </Field>
               </HStack>
 
-              <Field orientation="horizontal" label="회수 예정일">
+              <Field orientation="horizontal" label="회수 예정일" required>
                 <Input
                   type="date" // 사용자가 달력으로 날짜 선택 가능
                   value={approveData.returnDate || ""}
@@ -313,7 +347,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   min={new Date().toISOString().split("T")[0]}
                 />
               </Field>
-              <Field orientation="horizontal" label="승인 비고">
+              <Field orientation="horizontal" label="비고">
                 <Textarea
                   value={approveData.returnApproveNote}
                   placeholder="최대 50자"
@@ -332,7 +366,14 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             </Button>
           ) : (
             <HStack>
-              <Button onClick={handleDisapproveButton} variant="outline">
+              <Button onClick={onClose} variant="outline">
+                닫기
+              </Button>
+              <Button
+                onClick={handleDisapproveButton}
+                variant="outline"
+                colorPalette="red"
+              >
                 반려
               </Button>
               <Tooltip

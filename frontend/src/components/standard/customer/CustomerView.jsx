@@ -84,27 +84,51 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     />
                   </Field>
                   <Field orientation="horizontal" label={"업체 코드"}>
-                    <Input readOnly value={customer.customerCode || ""} />
-                  </Field>
-                </HStack>
-                <Field orientation="horizontal" label={"취급 품목"}>
-                  <Input readOnly name="itemName" value={customer.itemName} />
-                </Field>
-                <HStack>
-                  <Field orientation="horizontal" label={"대표자"}>
                     <Input
-                      name="customerRep"
-                      value={customer.customerRep}
-                      onChange={handleInputChange}
+                      readOnly
+                      value={customer.customerCode || ""}
+                      variant={"subtle"}
                     />
                   </Field>
-
+                </HStack>
+                <HStack>
+                  <Field orientation="horizontal" label={"취급 품목"}>
+                    <Input
+                      readOnly
+                      name="itemName"
+                      value={customer.itemName}
+                      variant={"subtle"}
+                    />
+                  </Field>
+                  <Field orientation={"horizontal"} label={"업종"}>
+                    <Input
+                      readOnly
+                      name={"industry"}
+                      value={customer.industry}
+                    ></Input>
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"대표자"}>
+                  <Input
+                    name="customerRep"
+                    value={customer.customerRep}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <HStack>
                   <Field orientation="horizontal" label={"사업자 번호"}>
                     <Input
                       name="customerNo"
                       value={customer.customerNo}
                       onChange={handleInputChange}
                     />
+                  </Field>
+                  <Field orientation="horizontal" label={"법인 번호"}>
+                    <Input
+                      name="corporateNo"
+                      value={customer.corporateNo}
+                      onChange={handleInputChange}
+                    ></Input>
                   </Field>
                 </HStack>
                 <HStack>
