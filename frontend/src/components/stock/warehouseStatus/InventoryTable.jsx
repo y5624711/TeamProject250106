@@ -14,7 +14,7 @@ export function InventoryTable({
     { key: "wareHouseCity", label: "광역시도" },
     { key: "wareHouseAddress", label: "시군" },
     { key: "wareHouseAddressDetail", label: "상세주소" },
-    { key: "customerName", label: "협력업체" },
+    { key: "customerName", label: "협력 업체" },
     { key: "commonCodeName", label: "품목" },
     { key: "count", label: "수량" },
   ];

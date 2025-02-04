@@ -27,7 +27,7 @@ export function SearchInventory({
       { label: "창고", value: "wareHouseName" },
       { label: "광역시도", value: "warehouseCity" },
       { label: "시군", value: "warehouseAddress" },
-      { label: "협력업체", value: "customerName" },
+      { label: "협력 업체", value: "customerName" },
       { label: "품목", value: "itemName" },
     ],
   });
