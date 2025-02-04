@@ -193,14 +193,14 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
           <Box>
-            <Field label="창고" orientation="horizontal" mb={15}>
+            <Field label="창고" orientation="horizontal" mb={15} required>
               <Input
                 type={"text"}
                 value={warehouseName}
                 onChange={(e) => setWarehouseName(e.target.value)}
               />
             </Field>
-            <Field label="담당 업체" orientation="horizontal" mb={15}>
+            <Field label="담당 업체" orientation="horizontal" mb={15} required>
               <Select
                 options={customerList}
                 value={customerList.find(
@@ -224,7 +224,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               />
               {/*<Button onClick={onCustomerClick}>조회</Button>*/}
             </Field>
-            <Field label="관리자" orientation="horizontal" mb={15}>
+            <Field label="관리자" orientation="horizontal" mb={15} required>
               <Select
                 options={employeeList}
                 value={employeeList.find(
@@ -254,7 +254,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 onChange={(e) => setWarehouseTel(e.target.value)}
               />
             </Field>
-            <Field label="우편번호" orientation="horizontal" mb={15}>
+            <Field label="우편번호" orientation="horizontal" mb={15} required>
               <Input
                 type={"text"}
                 value={warehousePost}
@@ -262,14 +262,14 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               />
             </Field>
             <Box display="flex" gap={4}>
-              <Field label="광역시도" orientation="horizontal" mb={15}>
+              <Field label="광역시도" orientation="horizontal" mb={15} required>
                 <Input
                   type={"text"}
                   value={warehouseState}
                   onChange={(e) => setWarehouseState(e.target.value)}
                 />
               </Field>
-              <Field label="시군" orientation="horizontal" mb={15}>
+              <Field label="시군" orientation="horizontal" mb={15} required>
                 <Input
                   type={"text"}
                   value={warehouseCity}
@@ -277,7 +277,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 />
               </Field>
             </Box>
-            <Field label="주소" orientation="horizontal" mb={15}>
+            <Field label="주소" orientation="horizontal" mb={15} required>
               <Input
                 type={"text"}
                 value={warehouseAddress}

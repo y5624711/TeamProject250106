@@ -121,7 +121,7 @@ function LocationAdd({ isOpen, onClose, title }) {
         </DialogHeader>
         <DialogBody>
           <Box>
-            <Field label="창고" orientation="horizontal" mb={15}>
+            <Field label="창고" orientation="horizontal" mb={15} required>
               <Select
                 options={warehouseList}
                 value={warehouseList.find(
@@ -145,21 +145,21 @@ function LocationAdd({ isOpen, onClose, title }) {
               />
             </Field>
             <Box display="flex" gap={20}>
-              <Field label="행" orientation="horizontal" mb={15}>
+              <Field label="행" orientation="horizontal" mb={15} required>
                 <Input
                   type={"text"}
                   value={row}
                   onChange={(e) => setRow(e.target.value)}
                 />
               </Field>
-              <Field label="열" orientation="horizontal" mb={15}>
+              <Field label="열" orientation="horizontal" mb={15} required>
                 <Input
                   type={"text"}
                   value={col}
                   onChange={(e) => setCol(e.target.value)}
                 />
               </Field>
-              <Field label="단" orientation="horizontal" mb={15}>
+              <Field label="단" orientation="horizontal" mb={15} required>
                 <Input
                   type={"text"}
                   value={shelf}
