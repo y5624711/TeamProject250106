@@ -107,7 +107,7 @@ export function InstkConfirmModal({
         </DialogHeader>
         <DialogBody>
           <Stack gap={3}>
-            <HStack>
+            <HStack gap={3}>
               <Field orientation="horizontal" label={"입고 구분"}>
                 <Input value={instk.inputCommonCodeName} readOnly />
               </Field>
@@ -116,7 +116,7 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <HStack>
+            <HStack gap={3}>
               <Field orientation="horizontal" label={"품목"}>
                 <Input readOnly value={instk.itemCommonName} />
               </Field>
@@ -125,7 +125,7 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <HStack>
+            <HStack gap={3}>
               <Field label={"주문 요청자 "} orientation="horizontal">
                 <Input readOnly value={instk.requestEmployeeName} />
               </Field>
@@ -134,7 +134,7 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <HStack>
+            <HStack gap={3}>
               <Field label={"주문 승인자"} orientation="horizontal">
                 <Input value={instk.requestApprovalEmployeeName} />
               </Field>
@@ -143,7 +143,7 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <HStack>
+            <HStack gap={3}>
               <Field label={"담당 업체"} orientation="horizontal">
                 <Input value={instk.customerName} readOnly />
               </Field>
@@ -164,8 +164,13 @@ export function InstkConfirmModal({
               )}
             </Field>
             <Separator />
-            <HStack>
-              <Field label={"입고 승인자"} orientation="horizontal">
+            <HStack gap={3}>
+              {/*TODO FIELD 텍스트 가운데 정렬 */}
+              <Field
+                label={"입고 승인자"}
+                orientation="horizontal"
+                sx={{ justifyContent: "center" }}
+              >
                 <Input value={localStorage.getItem("name")} readOnly />
               </Field>
               <Field label={"사번"} orientation="horizontal">
