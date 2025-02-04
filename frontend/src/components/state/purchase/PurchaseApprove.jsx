@@ -115,7 +115,11 @@ export function PurchaseApprove({
           description: data.message.text,
         });
       });
-    onClose(); // 반려 후 다이얼로그 닫기
+  };
+
+  // 취소 버튼 클릭 시 창 닫기
+  const handleCancelClick = () => {
+    onClose();
   };
 
   if (loading) {
@@ -140,7 +144,14 @@ export function PurchaseApprove({
           <Input value={purchase.amount} readOnly />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={purchase?.totalPrice || "N/A"} readOnly />
+          <Input
+            value={
+              purchase?.totalPrice
+                ? Number(purchase.totalPrice).toLocaleString("ko-KR")
+                : "N/A"
+            }
+            readOnly
+          />
         </Field>
       </HStack>
       <HStack>
@@ -159,7 +170,7 @@ export function PurchaseApprove({
           <Input value={purchase.employeeNo} readOnly />
         </Field>
       </HStack>
-      <Field label="요청 날짜" orientation="horizontal" mb={15}>
+      <Field label="요청일" orientation="horizontal" mb={15}>
         <Input
           value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
           readOnly
@@ -184,16 +195,28 @@ export function PurchaseApprove({
       {purchase.purchaseConsent !== false && (
         <>
           <Box display="flex" gap={4} mt={15}>
-            <Field label="승인자" orientation="horizontal">
-              <Input value={purchase.customerEmployeeName || name} readOnly />
+            <Field label="반려/승인자" orientation="horizontal">
+              <Input
+                value={purchase.customerEmployeeName || name}
+                readOnly
+                variant={
+                  purchase.purchaseConsent !== true ? "subtle" : undefined
+                }
+              />
             </Field>
             <Field label="사번" orientation="horizontal">
-              <Input value={purchase.customerEmployeeNo || id} readOnly />
+              <Input
+                value={purchase.customerEmployeeNo || id}
+                readOnly
+                variant={
+                  purchase.purchaseConsent !== true ? "subtle" : undefined
+                }
+              />
             </Field>
           </Box>
           {purchase.purchaseConsent && (
             <Box mt={4}>
-              <Field label="승인 날짜" orientation="horizontal" mb={15}>
+              <Field label="승인일" orientation="horizontal" mb={15}>
                 <Input
                   value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
                   readOnly
@@ -201,7 +224,7 @@ export function PurchaseApprove({
               </Field>
             </Box>
           )}
-          <Field label="승인 비고" orientation="horizontal" mt={15}>
+          <Field label="비고" orientation="horizontal" mt={15}>
             {purchase.purchaseConsent ? (
               purchase.purchaseApproveNote ? (
                 <Textarea
@@ -231,10 +254,17 @@ export function PurchaseApprove({
         </>
       )}
 
-      {/* 승인 여부가 null일 때만 반려/승인 버튼 표시 */}
+      {/* 승인 여부가 null일 때만 취소/반려/승인 버튼 표시 */}
       {purchase?.purchaseConsent === undefined && (
         <Box display="flex" gap={4} mt={6} justifyContent="flex-end">
-          <Button onClick={handleDisapprove} variant="outline">
+          <Button onClick={handleCancelClick} variant="outline">
+            취소
+          </Button>
+          <Button
+            onClick={handleDisapprove}
+            variant="outline"
+            colorPalette="red"
+          >
             반려
           </Button>
           <Button onClick={handleApprove}>승인</Button>

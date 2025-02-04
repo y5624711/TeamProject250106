@@ -126,7 +126,7 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   return (
     <Box>
-      <Field label="품목" orientation="horizontal" mb={15}>
+      <Field label="품목" orientation="horizontal" mb={15} required>
         <SelectRoot
           onValueChange={(e) => {
             const selectedItem = itemCommonCodeList.find(
@@ -166,10 +166,11 @@ export function PurchaseRequest({ onSave, onClose }) {
         <Input
           value={itemData.customerName}
           onChange={(e) => setCustomerName(e.target.value)}
+          variant="subtle"
         />
       </Field>
       <HStack>
-        <Field label="수량" orientation="horizontal" mb={15}>
+        <Field label="수량" orientation="horizontal" mb={15} required>
           <Input
             type="number"
             value={amount}
@@ -178,15 +179,23 @@ export function PurchaseRequest({ onSave, onClose }) {
           />
         </Field>
         <Field label="가격" orientation="horizontal" mb={15}>
-          <Input value={itemData.inputPrice * amount} readOnly />
+          <Input
+            value={
+              itemData.inputPrice && amount
+                ? (itemData.inputPrice * amount).toLocaleString("ko-KR")
+                : "0"
+            }
+            readOnly
+            variant="subtle"
+          />
         </Field>
       </HStack>
       <HStack>
         <Field label="요청자" orientation="horizontal" mb={15}>
-          <Input value={name} readOnly />
+          <Input value={name} readOnly variant="subtle" />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
-          <Input value={id} readOnly />
+          <Input value={id} readOnly variant="subtle" />
         </Field>
       </HStack>
       <Field label="비고" orientation="horizontal" mb={15}>

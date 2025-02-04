@@ -40,8 +40,8 @@ public class FranchiseService {
         // 기존 가맹점 코드에서 최대 번호를 조회
         Long maxNo = mapper.viewMaxFranchiseCode(franchise.getFranchiseCode());
 
-        // 최대 번호가 없으면 1, 있으면 1을 더한 값을 10자리 형식으로 생성
-        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+        // 최대 번호가 없으면 1, 있으면 1을 더한 값을 3자리 형식으로 생성
+        String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
 
         // 기존 가맹점 코드와 새로운 번호를 합쳐서 새로운 가맹점 코드 생성
         String insertFranchiseCode = "FRN" + newNumber;
