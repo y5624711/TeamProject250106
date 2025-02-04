@@ -204,9 +204,18 @@ export function InstkConfirmModal({
           </Stack>
         </DialogBody>
         <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setChangeModal();
+            }}
+          >
+            취소
+          </Button>
           <DialogActionTrigger asChild>
             <Button
               variant="outline"
+              colorPalette="red"
               onClick={() => {
                 handleRejectInstk();
               }}
