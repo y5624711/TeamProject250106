@@ -36,9 +36,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive: false,
   });
 
-  console.log(onChange, "onChange");
-  console.log(formData, "폼데이터");
-
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
@@ -83,8 +80,19 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
+  // 전화번호면 regx
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    var { name, value } = e.target;
+    console.log(name, "name", value, "value");
+
+    if (name === "tel") {
+      value = formatPhoneNumber(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -208,10 +216,21 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
-  const handleCancel = () => {
-    // 예전에 수정 돌아가는거 ,
-    // setIsEditMode(false);
-    // fetchEmployeeData(); // 원래 데이터로 복원
+  const formatPhoneNumber = (value) => {
+    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+    // 숫자만 남기고, 11자리까지만 허용
+    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+
+    // 정규식에 맞춰 하이픈 추가
+    if (onlyNums.length === 11) {
+      return onlyNums.replace(regPhone, "01$1-$2-$3");
+    } else if (onlyNums.length > 7) {
+      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (onlyNums.length > 3) {
+      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+
+    return onlyNums;
   };
 
   const isCommonCodeSelectedCheck =
@@ -309,43 +328,41 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
 
-        {viewKey !== -1 && (
-          <Field label={"비밀번호"} orientation="horizontal">
-            <Input
-              name="password"
-              placeholder={"비밀번호"}
-              value={formData.password}
-              onChange={handleInputChange}
-
-            />
-          </Field>
-        )}
-        <Field label={"비고"} orientation="horizontal">
-          <Textarea
-            name="note"
-            style={{ maxHeight: "100px", overflowY: "auto" }}
-            placeholder={viewKey===-1? "최대 50 글자":""}
-            value={formData.note}
+      {viewKey !== -1 && (
+        <Field label={"비밀번호"} orientation="horizontal">
+          <Input
+            name="password"
+            placeholder={"비밀번호"}
+            value={formData.password}
             onChange={handleInputChange}
-
           />
         </Field>
-        {viewKey !== -1 && (
-          <Field label={"사용 여부"} orientation="horizontal">
-            <Box ml={"86px"} style={{ position: "absolute" }}>
-              <Checkbox
-                name="employeeActive"
-                checked={formData.employeeActive}
-                onCheckedChange={(e) =>
-                  setFormData((prevItem) => ({
-                    ...prevItem,
-                    employeeActive: e.checked,
-                  }))
-                }
-              />
-            </Box>
-          </Field>
-        )}
+      )}
+      <Field label={"비고"} orientation="horizontal">
+        <Textarea
+          name="note"
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          placeholder={viewKey === -1 ? "최대 50 글자" : ""}
+          value={formData.note}
+          onChange={handleInputChange}
+        />
+      </Field>
+      {viewKey !== -1 && (
+        <Field label={"사용 여부"} orientation="horizontal">
+          <Box ml={"86px"} style={{ position: "absolute" }}>
+            <Checkbox
+              name="employeeActive"
+              checked={formData.employeeActive}
+              onCheckedChange={(e) =>
+                setFormData((prevItem) => ({
+                  ...prevItem,
+                  employeeActive: e.checked,
+                }))
+              }
+            />
+          </Box>
+        </Field>
+      )}
 
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={onChange} mr={2} variant="outline">
