@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import { ItemList } from "../../../components/standard/item/ItemList.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ItemAdd } from "../../../components/standard/item/ItemAdd.jsx";
 import { ItemView } from "../../../components/standard/item/ItemView.jsx";
+import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 
 export function Item() {
   const [itemKey, setItemKey] = useState(1);
@@ -16,6 +17,14 @@ export function Item() {
   const [searchParams, setSearchParams] = useSearchParams("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const { id } = useContext(AuthenticationContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id && id.startsWith("CUS")) {
+      navigate("/", { replace: true });
+    }
+  }, [id, navigate]);
 
   useEffect(() => {
     axios
