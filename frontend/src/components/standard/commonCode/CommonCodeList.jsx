@@ -10,7 +10,6 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Button } from "../../ui/button.jsx";
 import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
 
 export function CommonCodeList({
@@ -19,7 +18,6 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
-  setAddDialogOpen,
 }) {
   // 검색 옵션
   const searchOptions = createListCollection({
@@ -45,7 +43,7 @@ export function CommonCodeList({
   ];
 
   return (
-    <Box w={"100%"}>
+    <Box>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
@@ -73,30 +71,25 @@ export function CommonCodeList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {commonCodeList?.map((item, index) => (
+            {commonCodeList?.map((code, index) => (
               <Table.Row
-                key={item.commonCodeKey ? item.commonCodeKey : index}
+                key={code.commonCodeKey ? code.commonCodeKey : index}
                 onDoubleClick={() => {
-                  console.log("클릭");
-                  onRowClick(item.commonCodeKey);
+                  onRowClick(code.commonCodeKey);
                 }}
                 style={{
                   cursor: "pointer",
                 }}
-                bg={item.commonCodeActive ? "white" : "gray.100"}
+                bg={code.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {index + 1}
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {code.commonCodeType}
                 </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCodeType}
-                </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCode}
-                </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCodeName}
+                <Table.Cell textAlign="center">{code.commonCode}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {code.commonCodeName}
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -113,13 +106,6 @@ export function CommonCodeList({
                 setSearchParams(nextSearchParam);
               }}
             />
-            <Button
-              size="lg"
-              float={"right"}
-              onClick={() => setAddDialogOpen(true)}
-            >
-              코드 등록
-            </Button>
           </HStack>
         </Flex>
       </Box>
