@@ -51,8 +51,9 @@ public class CommonService {
             isValidCommonCode = commonCode.getCommonCode() != null &&
                     !commonCode.getCommonCode().trim().isEmpty() &&
                     commonCode.getCommonCode().matches("^[A-Z]{3}$");
-        } else if ("SYSTEM".equals(commonCode.getCommonCodeType())) {
-            // SYSTEM일 경우 대문자 3~5자리 검증
+        } else if ("STATE".equals(commonCode.getCommonCodeType()) ||
+                "STANDARD".equals(commonCode.getCommonCodeType())) {
+            // 기준 or 상태 경우 대문자 3~5자리 검증
             isValidCommonCode = commonCode.getCommonCode() != null &&
                     !commonCode.getCommonCode().trim().isEmpty() &&
                     commonCode.getCommonCode().matches("^[A-Z]{3,5}$");
