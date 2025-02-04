@@ -97,39 +97,53 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
   return (
     <Box>
       <Box>
-        <Field label="가맹점" orientation="horizontal" mb={15}>
+        <Field label="가맹점" orientation="horizontal" mb={15} required>
           <Input
             value={franchiseName}
             onChange={(e) => setFranchiseName(e.target.value)}
           />
         </Field>
-        <Field label="사업자 번호" orientation="horizontal" mb={15}>
+        <Field label="사업자 번호" orientation="horizontal" mb={15} required>
           <Input
             value={franchiseNo}
             onChange={(e) => setFranchiseNo(e.target.value)}
           />
         </Field>
         <HStack>
-          <Field label="대표자" orientation="horizontal" mb={15}>
+          <Field label="대표자" orientation="horizontal" mb={15} required>
             <Input
               value={franchiseRep}
               onChange={(e) => setFranchiseRep(e.target.value)}
             />
           </Field>
-          <Field label="전화번호" orientation="horizontal" mb={15}>
+          <Field label="전화번호" orientation="horizontal" mb={15} required>
             <Input
               value={franchiseTel}
               onChange={(e) => setFranchiseTel(e.target.value)}
             />
           </Field>
         </HStack>
-        <Field label="우편번호" orientation="horizontal" mb={15}>
+        <HStack>
+          <Field label="광역시도" orientation="horizontal" mb={15} required>
+            <Input
+              value={franchiseState}
+              onChange={(e) => setFranchiseState(e.target.value)}
+            />
+          </Field>
+          <Field label="시군" orientation="horizontal" mb={15} required>
+            <Input
+              value={franchiseCity}
+              onChange={(e) => setFranchiseCity(e.target.value)}
+            />
+          </Field>
+        </HStack>
+        <Field label="우편번호" orientation="horizontal" mb={15} required>
           <Input
             value={franchisePost}
             onChange={(e) => setFranchisePost(e.target.value)}
           />
         </Field>
-        <Field label="주소" orientation="horizontal" mb={15}>
+        <Field label="주소" orientation="horizontal" mb={15} required>
           <Input
             value={franchiseAddress}
             onChange={(e) => setFranchiseAddress(e.target.value)}
@@ -141,20 +155,6 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
             onChange={(e) => setFranchiseAddressDetail(e.target.value)}
           />
         </Field>
-        <HStack>
-          <Field label="광역시도" orientation="horizontal" mb={15}>
-            <Input
-              value={franchiseState}
-              onChange={(e) => setFranchiseState(e.target.value)}
-            />
-          </Field>
-          <Field label="시군" orientation="horizontal" mb={15}>
-            <Input
-              value={franchiseCity}
-              onChange={(e) => setFranchiseCity(e.target.value)}
-            />
-          </Field>
-        </HStack>
         <Field label="비고" orientation="horizontal" mb={15}>
           <Textarea
             value={franchiseNote}

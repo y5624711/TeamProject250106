@@ -93,6 +93,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               value={franchise.franchiseCode}
               onChange={handleChange}
               readOnly
+              variant="subtle"
             />
           </Field>
         </HStack>

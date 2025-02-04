@@ -185,10 +185,22 @@ export function PurchaseApprove({
         <>
           <Box display="flex" gap={4} mt={15}>
             <Field label="승인자" orientation="horizontal">
-              <Input value={purchase.customerEmployeeName || name} readOnly />
+              <Input
+                value={purchase.customerEmployeeName || name}
+                readOnly
+                variant={
+                  purchase.purchaseConsent !== true ? "subtle" : undefined
+                }
+              />
             </Field>
             <Field label="사번" orientation="horizontal">
-              <Input value={purchase.customerEmployeeNo || id} readOnly />
+              <Input
+                value={purchase.customerEmployeeNo || id}
+                readOnly
+                variant={
+                  purchase.purchaseConsent !== true ? "subtle" : undefined
+                }
+              />
             </Field>
           </Box>
           {purchase.purchaseConsent && (
