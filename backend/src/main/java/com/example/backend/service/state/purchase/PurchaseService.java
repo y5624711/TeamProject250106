@@ -2,7 +2,7 @@ package com.example.backend.service.state.purchase;
 
 import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
-import com.example.backend.mapper.standard.login.LoginMapper;
+import com.example.backend.mapper.standard.employee.EmployeeMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class PurchaseService {
 
     final PurchaseMapper mapper;
     final InstkMapper instkMapper;
-    final LoginMapper loginMapper;
+    final EmployeeMapper employeeMapper;
 
     // 필드 유효성 확인 (사번, 이름은 로그인 정보를 가져오기 때문에 굳이 확인할 필요 없어서 뺌)
     public boolean validate(Purchase purchase) {
@@ -42,8 +42,7 @@ public class PurchaseService {
     }
 
     // 구매 요청
-    public boolean purchaseRequest(Purchase purchase, Authentication auth) {
-        purchase.setEmployeeNo(auth.getName()); // 사용자 정보 가져오기
+    public boolean purchaseRequest(Purchase purchase) {
         int cnt = mapper.purchaseRequest(purchase);
         return cnt == 1;
     }
@@ -52,7 +51,7 @@ public class PurchaseService {
     public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order, Authentication auth) {
 
         // 협력 업체이면 본인껏만
-        String company = loginMapper.selectCompanyByCode(auth.getName());
+        String company = employeeMapper.checkUserCompany(auth.getName());
 
         // SQL 의 LIMIT 키워드에서 사용되는 offset
         Integer offset = (page - 1) * 10;
@@ -96,5 +95,12 @@ public class PurchaseService {
     // 구매 승인 반려
     public boolean disapprovePurchase(String purchaseRequestKey) {
         return mapper.disapprovePurchase(purchaseRequestKey) == 1;
+    }
+
+    // 요청 권한 확인 -> 본사 직원만 가능
+    public boolean checkCustomer(String loginNo) {
+        String company = employeeMapper.checkUserCompany(loginNo);
+        // "CUS"로 시작하면 true, 그렇지 않으면 false 반환
+        return company != null && company.startsWith("CUS");
     }
 }

@@ -207,16 +207,6 @@ public interface PurchaseMapper {
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);
 
-    // 소속 구분 코드 가져오기
-    @Select("""
-            SELECT employee_workplace_code
-            FROM TB_EMPMST
-            WHERE employee_no=#{name}
-            """)
-    String getCustomerCode(String name);
-
-//    List<Purchase> getPurchaseListAuth(String customerCode);
-
     // 구매 승인
     @Insert("""
             INSERT INTO TB_PURCH_APPR
