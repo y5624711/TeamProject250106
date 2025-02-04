@@ -28,7 +28,7 @@ export function MainBuyList({ company, scope }) {
   ];
 
   return (
-    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "240px" }}>
       <Heading mb={3}>구매 현황</Heading>
       <Table.Root size="sm" whitespace={"nowrap"}>
         <Table.Header>
