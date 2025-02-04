@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Center, HStack, Stack, Table } from "@chakra-ui/react";
+import { Box, Center, HStack, Table } from "@chakra-ui/react";
 import { WarehouseDetail } from "./WarehouseDetail.jsx";
 import WarehouseListPage from "./WarehouseListPage.jsx";
 import {
@@ -36,41 +36,39 @@ function WarehouseList({
 
   return (
     <Box>
-      <Stack>
-        <Box>
-          <Table.Root interactive>
-            <Table.Header>
-              <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-                <Sort
-                  sortOptions={sortOptions}
-                  onSortChange={(nextSearchParam) => {
-                    setSearchParams(nextSearchParam);
-                    const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
-                    const sortMatch = searchString.match(/sort=([^&]*)/);
-                    const orderMatch = searchString.match(/order=([^&]*)/);
-                    setSearch({
-                      ...search,
-                      order: orderMatch[1],
-                      sort: sortMatch[1],
-                    });
-                  }}
-                  defaultSortKey={"warehouseKey"}
-                />
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {warehouseList.map((warehouse, index) => (
-                <WarehouseListPage
-                  index={index}
-                  warehouse={warehouse}
-                  setSelectedWarehouseKey={setSelectedWarehouseKey}
-                  setIsDetailDialogOpen={setIsDetailDialogOpen}
-                />
-              ))}
-            </Table.Body>
-          </Table.Root>
-        </Box>
-        <Center p={4}>
+      <Box>
+        <Table.Root interactive>
+          <Table.Header>
+            <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
+              <Sort
+                sortOptions={sortOptions}
+                onSortChange={(nextSearchParam) => {
+                  setSearchParams(nextSearchParam);
+                  const searchString = nextSearchParam.toString(); // 예: "type=all&keyword=test&sort=locationKey"
+                  const sortMatch = searchString.match(/sort=([^&]*)/);
+                  const orderMatch = searchString.match(/order=([^&]*)/);
+                  setSearch({
+                    ...search,
+                    order: orderMatch[1],
+                    sort: sortMatch[1],
+                  });
+                }}
+                defaultSortKey={"warehouseKey"}
+              />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {warehouseList.map((warehouse, index) => (
+              <WarehouseListPage
+                index={index}
+                warehouse={warehouse}
+                setSelectedWarehouseKey={setSelectedWarehouseKey}
+                setIsDetailDialogOpen={setIsDetailDialogOpen}
+              />
+            ))}
+          </Table.Body>
+        </Table.Root>
+        <Center w="100%" p={4}>
           <PaginationRoot
             onPageChange={handlePageChangeClick}
             count={countWarehouse}
@@ -94,7 +92,7 @@ function WarehouseList({
           onClosed={() => setIsDetailDialogOpen(false)}
           refresh={refresh}
         />
-      </Stack>
+      </Box>
     </Box>
   );
 }

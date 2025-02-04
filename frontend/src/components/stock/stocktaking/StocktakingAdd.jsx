@@ -222,17 +222,17 @@ function StocktakingAdd({
                 styles={{
                   control: (base) => ({
                     ...base,
-                    width: "470px", // 너비 고정
+                    width: "538.5px", // 너비 고정
                     height: "40px",
                   }),
                   menu: (base) => ({
                     ...base,
                     zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                    width: "470px",
+                    width: "538.5px",
                   }),
                 }}
               />
-              <Button onClick={onWarehouseClick}>조회</Button>
+              {/*<Button onClick={onWarehouseClick}>조회</Button>*/}
             </Field>
             <Field label="품목" orientation="horizontal" mb={15}>
               <Select

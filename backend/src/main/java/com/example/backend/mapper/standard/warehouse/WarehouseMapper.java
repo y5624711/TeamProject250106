@@ -19,7 +19,8 @@ public interface WarehouseMapper {
                    w.warehouse_tel,
                    cus.customer_name,
                    e.employee_name,
-                   w.warehouse_active
+                   w.warehouse_active,
+                   w.warehouse_tel
             FROM TB_WHMST w
                 LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                 LEFT JOIN TB_EMPMST e ON w.customer_employee_no=e.employee_no
@@ -36,6 +37,7 @@ public interface WarehouseMapper {
                  OR e.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_state LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_city LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR w.warehouse_tel LIKE CONCAT('%',#{searchKeyword},'%')
                 )
                 </if>
                 <if test="searchType != 'all'">
@@ -60,12 +62,17 @@ public interface WarehouseMapper {
                      </when>
                      <when test="searchType == 'warehouseState'">
                     AND(
-                         warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                         w.warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
                          )
                      </when>
                      <when test="searchType == 'warehouseCity'">
                     AND(
-                         warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         w.warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
+                     </when>
+                     <when test="searchType == 'warehouseTel'">
+                    AND(
+                         w.warehouse_tel LIKE CONCAT('%', #{searchKeyword}, '%')
                          )
                      </when>
                      <otherwise>
@@ -174,12 +181,17 @@ public interface WarehouseMapper {
                      </when>
                      <when test="searchType == 'warehouseState'">
                     AND(
-                         warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
+                         w.warehouse_state LIKE CONCAT('%', #{searchKeyword}, '%')
                          )
                      </when>
                      <when test="searchType == 'warehouseCity'">
                     AND(
-                         warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         w.warehouse_city LIKE CONCAT('%', #{searchKeyword}, '%')
+                         )
+                     </when>
+                     <when test="searchType == 'warehouseTel'">
+                    AND(
+                         w.warehouse_tel LIKE CONCAT('%', #{searchKeyword}, '%')
                          )
                      </when>
                      <otherwise>

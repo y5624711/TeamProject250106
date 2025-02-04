@@ -83,6 +83,7 @@ function Location(props) {
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
+            setSearchParams={setSearchParams}
           />
           <Box h={9}></Box>
           <LocationList

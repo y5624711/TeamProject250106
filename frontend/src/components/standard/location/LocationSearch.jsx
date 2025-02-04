@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { HStack, IconButton, Input } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import {
@@ -15,7 +15,23 @@ function LocationSearch({
   setSearch,
   search,
   handleSearchClick,
+  setSearchParams,
 }) {
+  const [inputValue, setInputValue] = useState("");
+  const [selectValue, setSelectValue] = useState(["all"]);
+
+  const resetSearch = () => {
+    setSearchParams("?"); // 검색 파라미터 초기화
+    setSearch({
+      type: "all",
+      keyword: "",
+      sort: "",
+      order: "",
+    });
+    setInputValue(""); // 입력 필드 초기화
+    setSelectValue(["all"]); // 선택 값 초기화
+  };
+
   return (
     <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
@@ -23,7 +39,10 @@ function LocationSearch({
         defaultValue={["all"]}
         size="md"
         width="160px"
-        onValueChange={(oc) => setSearch({ ...search, type: oc.value })}
+        onValueChange={(oc) => {
+          setSelectValue([oc.value]);
+          setSearch({ ...search, type: oc.value });
+        }}
       >
         <SelectTrigger>
           <SelectValueText />
@@ -40,20 +59,22 @@ function LocationSearch({
       <Input
         placeholder="검색어를 입력해 주세요."
         width="50%"
-        onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          setSearch({ ...search, keyword: e.target.value });
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handleSearchClick();
           }
         }}
+        value={inputValue}
       />
       <IconButton
         transform="translateX(-130%) "
         style={{ cursor: "pointer" }}
         variant={"ghost"}
-        onClick={() => {
-          window.location.search = ""; // searchParams 초기화
-        }}
+        onClick={resetSearch}
       >
         <BsArrowCounterclockwise size="25px" />
       </IconButton>
