@@ -32,7 +32,7 @@ public class FranchiseController {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success", "text", "가맹점이 등록되었습니다."), "franchiseKey", franchise.getFranchiseKey()));
             } else {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning", "text", "가맹점 등록에 실패하였습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "가맹점 등록에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
@@ -64,7 +64,7 @@ public class FranchiseController {
             if (service.editFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점 정보가 성공적으로 수정되었습니다.")));
             } else {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error", "text", "가맹점 정보가 수정되지 않았습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "가맹점 정보가 수정되지 않았습니다.")));
             }
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
@@ -77,7 +77,7 @@ public class FranchiseController {
         if (service.deleteFranchise(franchiseKey)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점이 비활성화되었습니다.")));
         } else {
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error", "text", "가맹점 비활성화에 실패하였습니다.")));
+            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "가맹점 비활성화에 실패하였습니다.")));
         }
     }
 }

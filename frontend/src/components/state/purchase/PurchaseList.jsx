@@ -37,7 +37,7 @@ export function PurchaseList({
     { key: "itemCommonName", label: "품목" },
     { key: "employeeName", label: "요청자" },
     { key: "customerEmployeeName", label: "승인자" },
-    { key: "date", label: "날짜" },
+    { key: "purchaseDate", label: "날짜" },
   ];
 
   // URL에서 "state" 파라미터 값을 가져와 초기값으로 설정
@@ -93,7 +93,7 @@ export function PurchaseList({
               onSortChange={(nextSearchParam) =>
                 setSearchParams(nextSearchParam)
               }
-              defaultSortKey={"date"}
+              defaultSortKey={"purchaseDate"}
             />
             <Table.Cell textAlign="center">상태</Table.Cell>
           </Table.Row>

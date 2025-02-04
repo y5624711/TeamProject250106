@@ -12,11 +12,11 @@ public interface PurchaseMapper {
 
     // 품목 구분 코드 리스트 가져오기
     @Select("""
-            SELECT cus.item_code AS item_common_code,
+            SELECT ite.item_common_code AS item_common_code,
                    sys.common_code_name AS item_common_name
-            FROM TB_CUSTMST cus
-            LEFT JOIN TB_SYSCOMM sys ON cus.item_code = sys.common_code
-            WHERE cus.customer_active = 1  -- 협력 업체에서 사용중인 것만 가져오기
+            FROM TB_ITEMMST ite
+            LEFT JOIN TB_SYSCOMM sys ON ite.item_common_code = sys.common_code
+            WHERE ite.item_active = 1  -- 품목에서 사용중인 것만 가져오기
             ORDER BY BINARY(item_common_name)
             """)
     List<Map<String, Object>> getItemCommonCodeList();
@@ -52,7 +52,9 @@ public interface PurchaseMapper {
                 sys.common_code_name AS itemCommonName,
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent,
-                pa.purchase_approve_date AS purchaseApproveDate
+                pa.purchase_approve_date AS purchaseApproveDate,
+            COALESCE(GREATEST(pr.purchase_request_date, pa.purchase_approve_date),
+                              pr.purchase_request_date, pa.purchase_approve_date) AS purchaseDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
@@ -71,6 +73,17 @@ public interface PurchaseMapper {
             </if>
             <if test="state == 'disapprove'">
                 purchase_consent = FALSE
+            </if>
+            <!-- company 값에 따라 조건 추가 -->
+            <if test="company != null">
+                <choose>
+                        <when test="company.startsWith('CUS')">
+                             AND pr.customer_code = #{company}
+                        </when>
+                        <when test="company.startsWith('BIZ')">
+                            AND 1=1
+                        </when>
+                </choose>
             </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
@@ -92,11 +105,17 @@ public interface PurchaseMapper {
                     </trim>
                     )
             </if>
-            ORDER BY ${sort} ${order}
+            <if test="sort != null and sort != ''">
+                    ORDER BY ${sort} ${order}
+            </if>
+            <if test="sort == null or sort == ''">
+                    ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
+                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+            </if>
             LIMIT #{offset}, 10
             </script>
             """)
-    List<Purchase> getPurchaseList(Integer offset, String type, String keyword, String state, String sort, String order);
+    List<Purchase> getPurchaseList(Integer offset, String type, String keyword, String state, String sort, String order, String company);
 
     // 총 데이터 개수 (페이지네이션을 위해 사용)
     @Select("""
@@ -121,6 +140,17 @@ public interface PurchaseMapper {
             <if test="state == 'disapprove'">
                 purchase_consent = false
             </if>
+            <!-- company 값에 따라 조건 추가 -->
+            <if test="company != null">
+                <choose>
+                        <when test="company.startsWith('CUS')">
+                             AND pr.customer_code = #{company}
+                        </when>
+                        <when test="company.startsWith('BIZ')">
+                            AND 1=1
+                        </when>
+                </choose>
+            </if>
             <if test="keyword != null and keyword.trim()!=''">
                 AND (
                     <trim prefixOverrides="OR">
@@ -143,7 +173,7 @@ public interface PurchaseMapper {
             </if>
             </script>
             """)
-    Integer countAll(String type, String keyword, String state);
+    Integer countAll(String type, String keyword, String state, String company);
 
     // 구매 승인 팝업 보기
     @Select("""
@@ -177,14 +207,14 @@ public interface PurchaseMapper {
             """)
     Purchase viewPurchaseApprove(int purchaseRequestKey);
 
-//    // 소속 구분 코드 가져오기
-//    @Select("""
-//            SELECT employee_workplace_code
-//            FROM TB_EMPMST
-//            WHERE employee_no=#{name}
-//            """)
-//    String getCustomerCode(String name);
-//
+    // 소속 구분 코드 가져오기
+    @Select("""
+            SELECT employee_workplace_code
+            FROM TB_EMPMST
+            WHERE employee_no=#{name}
+            """)
+    String getCustomerCode(String name);
+
 //    List<Purchase> getPurchaseListAuth(String customerCode);
 
     // 구매 승인

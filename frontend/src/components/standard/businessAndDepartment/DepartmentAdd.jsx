@@ -104,7 +104,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
                 maxlength={10}
               />
             </Field>
-            <Field label={"대표전화"} orientation="horizontal">
+            <Field label={"전화번호"} orientation="horizontal">
               <Input
                 value={departmentTel}
                 onChange={(e) =>

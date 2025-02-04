@@ -1,7 +1,6 @@
 import {
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -18,7 +17,7 @@ export function EmployeeSelect({ frameworks, formData, handleSelectChange }) {
         position="relative"
       >
         <SelectTrigger>
-          <SelectValueText placeholder={"선택 해 주세요"} />
+          <SelectValueText placeholder={"선택해 주세요."} />
         </SelectTrigger>
         <SelectContent
           style={{

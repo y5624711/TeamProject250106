@@ -25,6 +25,7 @@ public class Purchase {
     private String warehouseName;
     private String purchaseNo;
     private LocalDate purchaseApproveDate;
+    private LocalDate purchaseDate;
     private String purchaseApproveNote;
 
     private Integer inputPrice;

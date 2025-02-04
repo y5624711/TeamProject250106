@@ -2,9 +2,11 @@ package com.example.backend.service.state.purchase;
 
 import com.example.backend.dto.standard.item.Item;
 import com.example.backend.dto.state.purchase.Purchase;
+import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.purchase.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ public class PurchaseService {
 
     final PurchaseMapper mapper;
     final InstkMapper instkMapper;
+    final LoginMapper loginMapper;
 
     // 필드 유효성 확인 (사번, 이름은 로그인 정보를 가져오기 때문에 굳이 확인할 필요 없어서 뺌)
     public boolean validate(Purchase purchase) {
@@ -39,33 +42,24 @@ public class PurchaseService {
     }
 
     // 구매 요청
-    public boolean purchaseRequest(Purchase purchase) {
+    public boolean purchaseRequest(Purchase purchase, Authentication auth) {
+        purchase.setEmployeeNo(auth.getName()); // 사용자 정보 가져오기
         int cnt = mapper.purchaseRequest(purchase);
         return cnt == 1;
     }
 
     // 구매 관리 리스트
-    public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order) {
-        // 요청 날짜, 승인 날짜 합치기
-        if ("date".equals(sort)) {
-            sort = "COALESCE(purchase_request_date, purchase_approve_date)";
-        }
-        // SQL의 LIMIT 키워드에서 사용되는 offset
-        Integer offset = (page - 1) * 10;
-        // 조회되는 게시물들
-        List<Purchase> purchaseList = mapper.getPurchaseList(offset, type, keyword, state, sort, order);
-        // 전체 게시물 수
-        Integer count = mapper.countAll(type, keyword, state);
-        return Map.of("purchaseList", purchaseList, "count", count);
-    }
+    public Map<String, Object> purchaseList(Integer page, String type, String keyword, String state, String sort, String order, Authentication auth) {
 
-//    // 구매 관리 리스트 (권한)
-//    public List<Purchase> getPurchaseListAuth(Authentication auth) {
-//        // 현재 로그인한 사용자의 customerCode 가져오기
-//        String customerCode = mapper.getCustomerCode(auth.getName());
-//        // 본인의 customerCode에 해당하는 창고 목록만 조회
-//        return mapper.getPurchaseListAuth(customerCode);
-//    }
+        // 협력 업체이면 본인껏만
+        String company = loginMapper.selectCompanyByCode(auth.getName());
+
+        // SQL 의 LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+
+        // 구매 관리 리스트와 전체 개수를 반환
+        return Map.of("purchaseList", mapper.getPurchaseList(offset, type, keyword, state, sort, order, company), "count", mapper.countAll(type, keyword, state, company));
+    }
 
     // 구매 승인 팝업 보기
     public Purchase viewPurchaseApprove(int purchaseRequestKey) {
