@@ -22,11 +22,7 @@ public class EmployeeController {
         return service.getOneEmployeeByKey(viewKey);
     }
 
-//     @GetMapping("maxemployeeno")
-//     public int viewMaxEmployeeNo(){
-//
-//         return  service.viewMaxEmployeeNo();
-//     }
+
 
 
 
@@ -51,7 +47,7 @@ public class EmployeeController {
         System.out.println("convertedSort = " + convertedSort);
         System.out.println("convertedType = " + convertedType);
         System.out.println("order = " + order);
-
+        System.out.println("isActiveVisible = " + isActiveVisible);
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);
 
