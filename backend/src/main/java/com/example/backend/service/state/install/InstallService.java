@@ -1,9 +1,9 @@
 package com.example.backend.service.state.install;
 
 import com.example.backend.dto.state.install.Install;
-import com.example.backend.mapper.standard.login.LoginMapper;
 import com.example.backend.mapper.state.install.InstallMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class InstallService {
 
     final InstallMapper mapper;
-    final LoginMapper loginMapper;
 
     // 가맹점명, 품목, 수량 입력됐는지 검증
     public boolean requestValidate(Install install) {
@@ -56,18 +56,18 @@ public class InstallService {
         return mapper.getCustomerEmployee(installKey);
     }
 
-    // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+    // 설치 승인 권한
     public boolean approveAuth(Authentication authentication, Install install) {
-        // 로그인한 사용자의 회사 정보 가져오기
-        String loginCompany = loginMapper.selectCompanyByCode(authentication.getName());
-        if (!loginCompany.startsWith("CUS")) {
+        if (authentication.getName().startsWith("CUS")) {
+            // 로그인한 사용자의 회사 정보 가져오기
+            String loginCompany = mapper.selectCompanyById(authentication.getName());
+            // 설치 요청 키로 담당업체 코드 가져오기
+            String cusCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
+            // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
+            return loginCompany.equals(cusCompany);
+        } else {
             return true;
         }
-        // 설치 요청 키로 담당업체 코드 가져오기
-        String itemCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
-
-        // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
-        return loginCompany.equals(itemCompany);
     }
 
     // 설치 예정일, 설치 기사, 사번 입력됐는지 검증
@@ -138,6 +138,17 @@ public class InstallService {
     public Install getInstallApproveView(int installKey) {
         Install install = mapper.getInstallApproveView(installKey);
         return install;
+    }
+
+    // 설치 완료 권한 검증
+    public boolean configurationAuth(Authentication authentication, Install install) {
+        System.out.println(authentication.getName());
+        System.out.println(install.getCustomerInstallerNo());
+        if (authentication.getName().startsWith("CUS")) {
+            return authentication.getName().equals(install.getCustomerInstallerNo());
+        } else {
+            return true;
+        }
     }
 
     // 설치 완료
@@ -216,7 +227,7 @@ public class InstallService {
         String userId = authentication.getName();
         String company = null;
         if (userId.startsWith("CUS")) {
-            company = loginMapper.selectCompanyByCode(userId);
+            company = mapper.selectCompanyById(userId);
         }
 
         return Map.of("list", mapper.getInstallList(offset, sort, order, state, type, keyword, company),
@@ -225,16 +236,16 @@ public class InstallService {
 
     // 반려에 대한 권한 검증
     public boolean disApproveAuth(Authentication authentication, int installKey) {
-        // 로그인한 사용자의 회사 정보 가져오기
-        String loginCompany = loginMapper.selectCompanyByCode(authentication.getName());
-        if (!loginCompany.startsWith("CUS")) {
+        if (authentication.getName().startsWith("CUS")) {
+            // 로그인한 사용자의 회사 정보 가져오기
+            String loginCompany = mapper.selectCompanyById(authentication.getName());
+            // 설치 요청 키로 담당업체 코드 가져오기
+            String cusCompany = mapper.getCustomerCodeByKey(installKey);
+            // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
+            return loginCompany.equals(cusCompany);
+        } else {
             return true;
         }
-        // 설치 요청 키로 담당업체 코드 가져오기
-        String itemCompany = mapper.getCustomerCodeByKey(installKey);
-
-        // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
-        return loginCompany.equals(itemCompany);
     }
 
     // 설치 요청 반려

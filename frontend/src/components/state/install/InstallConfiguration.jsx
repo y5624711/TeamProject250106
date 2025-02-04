@@ -26,6 +26,7 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { format } from "date-fns";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function InstallConfiguration({
   installKey,
@@ -33,7 +34,7 @@ export function InstallConfiguration({
   onClose,
   setChange,
 }) {
-  const { id, name } = useContext(AuthenticationContext);
+  const { id, company } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
   // const [isConfiguration, setIsConfiguration] = useState(null);
@@ -68,6 +69,7 @@ export function InstallConfiguration({
       franchiseCode: installData.franchiseCode,
       inoutHistoryNote,
       serialNumbers: installData.serialNumbers,
+      customerInstallerNo: installData.customerInstallerNo,
     };
     axios
       .post("/api/install/configuration", configurationData)
@@ -96,6 +98,14 @@ export function InstallConfiguration({
 
   // 오늘 날짜 표기
   const today = format(new Date(), "yyyy-MM-dd");
+
+  // 설치 완료 버튼 활성화 조건
+  const isValid = () => {
+    const isBIZCompany = company?.startsWith("BIZ");
+    const isInstaller = installData?.customerInstallerNo === id;
+
+    return isBIZCompany || isInstaller;
+  };
 
   if (!installData) {
     return null;
@@ -227,7 +237,19 @@ export function InstallConfiguration({
               <Button variant="outline" onClick={handleClose}>
                 취소
               </Button>
-              <Button onClick={handleConfigurationClick}>완료</Button>
+              <Tooltip
+                content="권한이 없습니다."
+                disabled={isValid()}
+                openDelay={100}
+                closeDelay={100}
+              >
+                <Button
+                  onClick={handleConfigurationClick}
+                  disabled={!isValid()}
+                >
+                  완료
+                </Button>
+              </Tooltip>
             </HStack>
           )}
         </DialogFooter>
