@@ -288,6 +288,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           {formData.selectedCommonCode === "EMP" && (
             <Field label={"부서"} orientation="horizontal">
               <Input
+                variant="subtle"
                 name="workPlace"
                 placeholder={""}
                 value={formData.departMent}
@@ -297,10 +298,15 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             </Field>
           )}
 
-          <Field label={"소속 코드"} orientation="horizontal">
+          <Field
+            label={"소속 코드"}
+            orientation="horizontal"
+            variant={viewKey !== -1 ? "subtle" : "outline"}
+          >
             <Input
               name="workPlace"
               placeholder={""}
+              variant="subtle"
               value={formData.workPlace}
               onChange={handleInputChange}
               readOnly={viewKey !== -1}
@@ -314,6 +320,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         required={viewKey !== -1 ? false : true}
       >
         <Input
+          variant={viewKey !== -1 ? "subtle" : "outline"}
           name="name"
           value={formData.name}
           onChange={handleInputChange}
@@ -323,6 +330,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       {viewKey !== -1 && (
         <Field label={"사번"} orientation="horizontal">
           <Input
+            variant={viewKey !== -1 ? "subtle" : "outline"}
             name="employeeNo"
             placeholder={"사번"}
             value={formData.employeeNo}
