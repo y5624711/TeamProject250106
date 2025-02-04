@@ -114,7 +114,7 @@ public class CustomerController {
     public ResponseEntity<Map<String, Object>> editCustomer(@RequestBody Customer customer, Authentication auth) {
 //        System.out.println("customer: " + customer);
         try {
-            //권한자인가
+            //수정 권한자인가?
             if (!returnService.checkApproveEmployee(auth.getName(), customer.getCustomerCode())) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
@@ -128,6 +128,8 @@ public class CustomerController {
                         "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력업체가 존재합니다.")
                 ));
             }
+
+            //복구 권한자인가?
 
             //수정
             if (service.editCustomer(customer)) {
