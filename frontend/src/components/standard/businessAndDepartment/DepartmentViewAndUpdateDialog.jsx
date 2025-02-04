@@ -34,22 +34,16 @@ export function DepartmentViewAndUpdateDialog({
     );
   }
 
-  const formatPhoneNumber = (value) => {
-    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
-    // 숫자만 남기고, 11자리까지만 허용
-    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+  function formatPhoneNumber(value) {
+    value = value.replace(/\D/g, ""); // 숫자만 남기기
 
-    // 정규식에 맞춰 하이픈 추가
-    if (onlyNums.length === 11) {
-      return onlyNums.replace(regPhone, "01$1-$2-$3");
-    } else if (onlyNums.length > 7) {
-      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
-    } else if (onlyNums.length > 3) {
-      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    // 02 지역번호 (서울)
+    if (value.startsWith("02")) {
+      return value.replace(/(\d{2})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 12);
     }
-
-    return onlyNums;
-  };
+    // 휴대폰 및 일반 지역번호 (3자리 지역번호 포함)
+    return value.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 13);
+  }
 
   const handleUpdate = () => {
     axios
@@ -117,6 +111,7 @@ export function DepartmentViewAndUpdateDialog({
             <Field label={"부서코드"} orientation="horizontal">
               <Input
                 value={department.departmentCode || ""}
+                variant={"subtle"}
                 onChange={(e) =>
                   setDepartmentData((prev) => ({
                     ...prev,

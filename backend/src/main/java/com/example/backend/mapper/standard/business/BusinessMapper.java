@@ -23,7 +23,9 @@ public interface BusinessMapper {
                 business_no=#{businessNo},
                 business_tel=#{businessTel},
                 business_fax=#{businessFax},
-                business_address=#{businessAddress}
+                business_address=#{businessAddress},
+                business_industry_type=#{businessIndustryType},
+                business_corp_number=#{businessCorpNumber}
             WHERE business_key =#{businessKey};
             """)
     int updateBusiness(Business business);

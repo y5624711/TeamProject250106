@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Input, Spinner, Text, Textarea } from "@chakra-ui/react";
+import { Box, Button, Input, Text, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import {
@@ -66,7 +66,7 @@ function MemberInfo({ updateCheck }) {
   }
 
   if (loading) {
-    return <Spinner />;
+    return;
   }
 
   const handleSaveInfo = () => {

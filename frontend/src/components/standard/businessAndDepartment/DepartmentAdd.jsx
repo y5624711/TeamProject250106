@@ -97,14 +97,14 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
         </DialogHeader>
         <DialogBody>
           <Stack gap={5}>
-            <Field label={"부서명"} orientation="horizontal">
+            <Field label={"부서명"} orientation="horizontal" required>
               <Input
                 value={departmentName}
                 onChange={(e) => setDepartmentName(e.target.value)}
                 maxlength={10}
               />
             </Field>
-            <Field label={"전화번호"} orientation="horizontal">
+            <Field label={"전화번호"} orientation="horizontal" required>
               <Input
                 value={departmentTel}
                 onChange={(e) =>

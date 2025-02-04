@@ -30,7 +30,7 @@ public interface DepartmentMapper {
                     </if>
                 </trim>)
             ORDER BY ${sortColum} ${sortOrder}
-            LIMIT #{offset},10
+            LIMIT #{offset},5
             </script>
             """)
     List<Department> listDepartmentSelect(Integer offset,
