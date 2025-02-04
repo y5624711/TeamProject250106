@@ -72,12 +72,12 @@ public class CustomerService {
             return false;
         }
 
-        //2 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
+        //3. 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
         String activeCustomer = mapper.getItemCustomer(customer.getItemCode());
         System.out.println("복구: " + customer.getCustomerCode());
         System.out.println("activeCustomer: " + activeCustomer);
 
-        return !activeCustomer.equals(customer.getCustomerCode());
+        return activeCustomer == null || activeCustomer.equals(customer.getCustomerCode());
     }
 
 
