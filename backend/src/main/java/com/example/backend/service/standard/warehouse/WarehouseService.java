@@ -40,6 +40,7 @@ public class WarehouseService {
         sort = resolveType(toSnakeCase(sort));
         String workPlace = auth.getName().substring(0, 3);
 
+
         return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, active), "count", mapper.countAllWarehouse(searchType, searchKeyword, active), "work", workPlace);
     }
 
@@ -120,4 +121,6 @@ public class WarehouseService {
     public List<Warehouse> getWarehouseEmployeeList(String customerCode) {
         return mapper.getWarehouseEmployeeList(customerCode);
     }
+
+
 }

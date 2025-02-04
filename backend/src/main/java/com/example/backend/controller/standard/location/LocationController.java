@@ -6,6 +6,7 @@ import com.example.backend.service.standard.location.LocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class LocationController {
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
-                                    @RequestParam(value = "order", defaultValue = "") String order) {
-        return service.list(searchType, searchKeyword, page, sort, order);
+                                    @RequestParam(value = "order", defaultValue = "") String order, Authentication auth) {
+        return service.list(searchType, searchKeyword, page, sort, order, auth);
     }
 
     @PostMapping("add")
