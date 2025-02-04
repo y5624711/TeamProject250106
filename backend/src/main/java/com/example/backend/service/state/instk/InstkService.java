@@ -104,7 +104,7 @@ public class InstkService {
                 // 품목 상세에서 시리얼 넘버 최대값 가져오기
                 Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
                 // 시리얼 번호 생성 (20자리)
-                String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+                String insertSerialNo ="S"+ String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
 
                 // item_sub 테이블에 추가
                 int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
