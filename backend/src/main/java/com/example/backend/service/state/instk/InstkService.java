@@ -31,6 +31,7 @@ public class InstkService {
         int count = mapper.countByConsent(state,keyword,type);
         int offset = (page - 1) * 10;
          List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
+        System.out.println("instkList = " + instkList);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 

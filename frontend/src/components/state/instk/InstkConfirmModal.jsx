@@ -94,10 +94,11 @@ export function InstkConfirmModal({
       })
       .finally(() => {
         setChangeModal();
+        //반려상세
         onApprovalSuccess();
       });
   };
-  console.log(instk, instkDetail);
+
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent>
@@ -141,7 +142,6 @@ export function InstkConfirmModal({
                 <Input readOnly value={instk.requestApprovalEmployeeNo} />
               </Field>
             </HStack>
-
 
             <HStack>
               <Field label={"담당 업체"} orientation="horizontal">
