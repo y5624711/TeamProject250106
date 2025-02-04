@@ -93,15 +93,17 @@ export function InstallList({
                 <Table.Cell textAlign="center">
                   {install.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{install.outputNo}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {install.outputNo || "-"}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {install.businessEmployeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {install.customerEmployeeName}
+                  {install.customerEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {install.customerInstallerName}
+                  {install.customerInstallerName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {install.warehouseName}
