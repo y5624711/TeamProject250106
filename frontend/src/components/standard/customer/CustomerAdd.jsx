@@ -25,6 +25,9 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { PhoneInput } from "../../tool/masking/PhoneInput.jsx";
+import { CustomerNoInput } from "../../tool/masking/CustomerNoInput.jsx";
+import { CorporateNoInput } from "../../tool/masking/CorporateNoInput.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
@@ -99,7 +102,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     resetState();
     onCancel();
   };
-  console.log("itemCodeList", itemCodeList);
+  // console.log("itemCodeList", itemCodeList);
 
   const myItems = createListCollection({
     items: itemCodeList.map((itemCode) => {
@@ -109,14 +112,23 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       };
     }),
   });
-  // console.log("myItems", myItems);
 
-  // const type = createListCollection({
-  //   items: [
-  //     { label: "업체명", value: "customerName" },
-  //     { label: "취급 물품", value: "itemName" },
-  //   ],
-  // });
+  const Phone = (value) => {
+    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+    // 숫자만 남기고, 11자리까지만 허용
+    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+
+    // 정규식에 맞춰 하이픈 추가
+    if (onlyNums.length === 11) {
+      return onlyNums.replace(regPhone, "01$1-$2-$3");
+    } else if (onlyNums.length > 7) {
+      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (onlyNums.length > 3) {
+      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+
+    return onlyNums;
+  };
 
   const isValid =
     customerName &&
@@ -135,8 +147,9 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
         >
-          <Field orientation="horizontal" label={"협력 업체"}>
+          <Field orientation="horizontal" label={"협력 업체"} required>
             <Input
               required
               value={customerName}
@@ -144,7 +157,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
             />
           </Field>
           <HStack>
-            <Field label={"취급 품목"} orientation={"horizontal"}>
+            <Field label={"취급 품목"} orientation={"horizontal"} required>
               <SelectRoot
                 onValueChange={(e) => {
                   setItemName(e.value);
@@ -164,7 +177,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                   style={{
                     position: "absolute",
                     zIndex: 100,
-                    width: "87%",
+                    width: "710",
                     top: "40px",
                   }}
                 >
@@ -176,54 +189,42 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                 </SelectContent>
               </SelectRoot>
             </Field>
-            <Field orientation="horizontal" label={"업종"}>
+            <Field orientation="horizontal" label={"업종"} required>
               <Input
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
               />
             </Field>
           </HStack>
-          <Field orientation="horizontal" label={"대표자"}>
+          <Field orientation="horizontal" label={"대표자"} required>
             <Input
               value={customerRep}
               onChange={(e) => setCustomerRep(e.target.value)}
             />
           </Field>
           <HStack>
-            <Field orientation="horizontal" label={"사업자 번호"}>
-              <Input
-                value={customerNo}
-                onChange={(e) => setCustomerNo(e.target.value)}
-              />
+            <Field orientation="horizontal" label={"사업자 번호"} required>
+              <CustomerNoInput value={customerNo} onChange={setCustomerNo} />
             </Field>
-            <Field orientation="horizontal" label={"법인 번호"}>
-              <Input
-                value={corporateNo}
-                onChange={(e) => setCorporateNo(e.target.value)}
-              />
+            <Field orientation="horizontal" label={"법인 번호"} required>
+              <CorporateNoInput value={corporateNo} onChange={setCorporateNo} />
             </Field>
           </HStack>
           <HStack>
-            <Field orientation="horizontal" label={"전화번호"}>
-              <Input
-                value={customerTel}
-                onChange={(e) => setCustomerTel(e.target.value)}
-              />
+            <Field orientation="horizontal" label={"전화번호"} required>
+              <PhoneInput value={customerTel} onChange={setCustomerTel} />
             </Field>
             <Field orientation="horizontal" label={"팩스"}>
-              <Input
-                value={customerFax}
-                onChange={(e) => setCustomerFax(e.target.value)}
-              />
+              <PhoneInput value={customerFax} onChange={setCustomerFax} />
             </Field>
           </HStack>
-          <Field orientation="horizontal" label={"우편번호"}>
+          <Field orientation="horizontal" label={"우편번호"} required>
             <Input
               value={customerPost}
               onChange={(e) => setCustomerPost(e.target.value)}
             />
           </Field>
-          <Field orientation="horizontal" label={"주소"}>
+          <Field orientation="horizontal" label={"주소"} required>
             <Input
               value={customerAddress}
               onChange={(e) => setCustomerAddress(e.target.value)}

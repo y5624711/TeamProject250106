@@ -84,12 +84,21 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     />
                   </Field>
                   <Field orientation="horizontal" label={"업체 코드"}>
-                    <Input readOnly value={customer.customerCode || ""} />
+                    <Input
+                      readOnly
+                      value={customer.customerCode || ""}
+                      variant={"subtle"}
+                    />
                   </Field>
                 </HStack>
                 <HStack>
                   <Field orientation="horizontal" label={"취급 품목"}>
-                    <Input readOnly name="itemName" value={customer.itemName} />
+                    <Input
+                      readOnly
+                      name="itemName"
+                      value={customer.itemName}
+                      variant={"subtle"}
+                    />
                   </Field>
                   <Field orientation={"horizontal"} label={"업종"}>
                     <Input
