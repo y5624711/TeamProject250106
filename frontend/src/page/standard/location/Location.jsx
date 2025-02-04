@@ -13,12 +13,15 @@ import LocationSearch from "../../../components/standard/location/LocationSearch
 import { useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
+import { Checkbox } from "../../../components/ui/checkbox.jsx";
 
 function Location(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [checkedActive, setCheckedActive] = useState(false);
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
+    active: checkedActive,
     sort: "",
     order: "",
   });
@@ -55,6 +58,7 @@ function Location(props) {
       sort: search.sort,
       order: search.order,
       page: 1,
+      active: search.active,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
@@ -66,9 +70,20 @@ function Location(props) {
       sort: search.sort,
       order: search.order,
       page: e.page,
+      active: search.active,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
+
+  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
+  const toggleCheckedActive = () => {
+    const nextValue = !checkedActive;
+    setCheckedActive(nextValue);
+    setSearch({ ...search, active: nextValue });
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("active", nextValue.toString());
+    setSearchParams(nextSearchParams);
+  };
 
   return (
     <Box>
@@ -85,7 +100,15 @@ function Location(props) {
             handleSearchClick={handleSearchClick}
             setSearchParams={setSearchParams}
           />
-          <Box h={9}></Box>
+          <Checkbox
+            checked={checkedActive}
+            onChange={toggleCheckedActive}
+            mt={1}
+            mb={3}
+            ml={3}
+          >
+            미사용 포함 조회
+          </Checkbox>
           <LocationList
             countLocation={countLocation}
             locationList={locationList}

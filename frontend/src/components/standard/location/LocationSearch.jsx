@@ -27,6 +27,7 @@ function LocationSearch({
       keyword: "",
       sort: "",
       order: "",
+      active: true,
     });
     setInputValue(""); // 입력 필드 초기화
     setSelectValue(["all"]); // 선택 값 초기화
@@ -36,6 +37,7 @@ function LocationSearch({
     <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
         collection={locationOptionList}
+        value={selectValue.includes("all") ? selectValue : selectValue[0]}
         defaultValue={["all"]}
         size="md"
         width="160px"
