@@ -17,7 +17,7 @@ CREATE TABLE TB_LOCMST
 DROP TABLE TB_INOUT_HIS;
 
 ALTER TABLE TB_LOCMST
-    ADD COLUMN located BOOLEAN DEFAULT FALSE;
+    ADD COLUMN location_active BOOLEAN DEFAULT TRUE;
 
 UPDATE TB_LOCMST
 SET located = true
@@ -25,7 +25,7 @@ WHERE shelf = 1;
 
 DELETE
 FROM TB_LOCMST
-WHERE warehouse_code='WHS0000000007';
+WHERE warehouse_code = 'WHS0000000007';
 
 INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, located, location_note)
 SELECT 'WHS0000000005' AS warehouse_code,

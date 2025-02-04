@@ -12,4 +12,5 @@ public class Location {
     private Integer shelf;
     private Boolean located;
     private String locationNote;
+    private Boolean locationActive;
 }

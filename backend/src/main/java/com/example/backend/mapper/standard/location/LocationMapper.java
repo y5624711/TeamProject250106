@@ -126,7 +126,8 @@ public interface LocationMapper {
                 l.location_key,
                 l.location_note,
                 l.located,
-                w.warehouse_name
+                w.warehouse_name,
+                l.location_active
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             WHERE l.location_key=#{locationKey}
@@ -136,7 +137,7 @@ public interface LocationMapper {
 
     @Update("""
             UPDATE TB_LOCMST
-            SET location_note=#{locationNote}, located=#{located}
+            SET location_note=#{locationNote}, located=#{located}, location_active=#{locationActive}
             WHERE location_key=#{locationKey}
             """)
     Integer edit(Location location);

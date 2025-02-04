@@ -57,6 +57,19 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
           />
         </Box>
       </Field>
+      <Field label="사용 여부" orientation="horizontal" mb={15}>
+        <Box ml={"86px"} style={{ position: "absolute" }}>
+          <Checkbox
+            checked={locationDetail.locationActive}
+            onClick={(e) => {
+              setLocationDetail({
+                ...locationDetail,
+                locationActive: e.target.checked,
+              });
+            }}
+          />
+        </Box>
+      </Field>
     </Box>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "../../ui/pagination.jsx";
 import LocationDetail from "./LocationDetail.jsx";
 import LocationListPage from "./LocationListPage.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { LowColumnSort } from "./LowColumnSort.jsx";
 
 function LocationList({
   locationList,
@@ -27,7 +27,6 @@ function LocationList({
 
   // 정렬 헤더
   const sortOptions = [
-    { key: "locationKey", label: "#" },
     { key: "warehouseName", label: "창고" },
     { key: "row", label: "행" },
     { key: "col", label: "열" },
@@ -41,7 +40,8 @@ function LocationList({
         <Table.Root interactive>
           <Table.Header>
             <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
-              <Sort
+              <LowColumnSort
+                firstColumn={"locationKey"}
                 sortOptions={sortOptions}
                 onSortChange={(nextSearchParam) => {
                   setSearchParams(nextSearchParam);

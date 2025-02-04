@@ -62,4 +62,8 @@ WHERE w.warehouse_code = 'WHS0000000004';
 SELECT COALESCE(MAX(CAST(SUBSTRING(warehouse_code, 4) AS UNSIGNED)), 0) AS maxNumber
 FROM TB_WHMST
 WHERE warehouse_code LIKE CONCAT('WHS', '%')
-  AND warehouse_code REGEXP '^[A-Za-z]+[0-9]+$'
+  AND warehouse_code REGEXP '^[A-Za-z]+[0-9]+$';
+
+UPDATE TB_WHMST
+SET warehouse_code = 'WHS012'
+WHERE warehouse_key = 16;

@@ -42,6 +42,7 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
         locationKey,
         located: locationDetail.located,
         locationNote: locationDetail.locationNote,
+        locationActive: locationDetail.locationActive,
       })
       .then((res) => res.data)
       .then((data) => {
