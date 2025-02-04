@@ -23,6 +23,7 @@ export function DepartmentViewAndUpdateDialog({
   setDepartmentData,
   setAddCheck,
   addCheck,
+  isAdmin,
 }) {
   let disable = false;
   if (department !== null) {
@@ -32,6 +33,23 @@ export function DepartmentViewAndUpdateDialog({
       department.departmentTel.trim().length > 0
     );
   }
+
+  const formatPhoneNumber = (value) => {
+    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+    // 숫자만 남기고, 11자리까지만 허용
+    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+
+    // 정규식에 맞춰 하이픈 추가
+    if (onlyNums.length === 11) {
+      return onlyNums.replace(regPhone, "01$1-$2-$3");
+    } else if (onlyNums.length > 7) {
+      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (onlyNums.length > 3) {
+      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+
+    return onlyNums;
+  };
 
   const handleUpdate = () => {
     axios
@@ -115,7 +133,7 @@ export function DepartmentViewAndUpdateDialog({
                 onChange={(e) =>
                   setDepartmentData((prev) => ({
                     ...prev,
-                    departmentTel: e.target.value,
+                    departmentTel: formatPhoneNumber(e.target.value),
                   }))
                 }
               />
@@ -171,9 +189,11 @@ export function DepartmentViewAndUpdateDialog({
             closeDelay={100}
             disabled={!disable}
           >
-            <Button disabled={disable} onClick={handleUpdate}>
-              확인
-            </Button>
+            {isAdmin && (
+              <Button disabled={disable} onClick={handleUpdate}>
+                확인
+              </Button>
+            )}
           </Tooltip>
         </DialogFooter>
         <DialogCloseTrigger />

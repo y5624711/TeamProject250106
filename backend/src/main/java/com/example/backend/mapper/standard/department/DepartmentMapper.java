@@ -132,4 +132,12 @@ public interface DepartmentMapper {
                     where department_active='1'
             """)
     List<Department> getCodeNames();
+
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_EMPMST
+            WHERE employee_no = #{name}
+            """)
+    int selectEmployee(String name);
 }

@@ -14,7 +14,6 @@ export function FilterRadioGroup({ onRadioChange, radioOptions }) {
 
   const handleRadio = (value) => {
     setFilter(value);
-    console.log(value);
 
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("filter", value);

@@ -32,7 +32,7 @@ export function Navbar() {
   const navigate = useNavigate();
 
   const menuItems = [
-    { label: "기준정보 관리", path: "/business" },
+    { label: "기준정보 관리", path: isAdmin ? "/business" : "/location" },
     { label: "구매/설치 관리", path: "/purchase" },
     { label: "물류 관리", path: "/inoutHistory" },
   ];

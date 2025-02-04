@@ -4,6 +4,8 @@ import com.example.backend.dto.standard.department.Department;
 import com.example.backend.service.standard.department.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,26 +32,34 @@ public class DepartmentController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addDepartment(@RequestBody Department department) {
-        if (service.validateDepartment(department)) {
-            if (service.checkSameNameCheck(department)) {
-                if (service.addDepartment(department)) {
-                    return ResponseEntity.ok().body(Map.of("message",
-                            Map.of("type", "success", "text", "수정 되었습니다.")));
-                } else {
-                    return ResponseEntity.internalServerError().body(Map.of("message",
-                            Map.of("type", "error", "text", "수정 되지 않았습니다.")));
-                }
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> addDepartment(@RequestBody Department department,
+                                                             Authentication auth) {
+        if (service.checkAdmin(auth)) {
+            if (service.validateDepartment(department)) {
+                if (service.checkSameNameCheck(department)) {
+                    if (service.addDepartment(department)) {
+                        return ResponseEntity.ok().body(Map.of("message",
+                                Map.of("type", "success", "text", "저장 되었습니다.")));
+                    } else {
+                        return ResponseEntity.internalServerError().body(Map.of("message",
+                                Map.of("type", "error", "text", "저장 되지 않았습니다.")));
+                    }
 
+                } else {
+                    System.out.println("잘들어옴");
+                    return ResponseEntity.internalServerError().body(Map.of("message",
+                            Map.of("type", "warning", "text", "중복된 이름입니다.")));
+                }
             } else {
-                System.out.println("잘들어옴");
-                return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "warning", "text", "중복된 이름입니다.")));
+                return ResponseEntity.internalServerError().body(
+                        Map.of("message",
+                                Map.of("type", "warning", "text", "내용을 입력해 주세요.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(
                     Map.of("message",
-                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+                            Map.of("type", "error", "text", "권한이 없습니다.")));
         }
     }
 
@@ -66,31 +76,10 @@ public class DepartmentController {
         } else {
             return ResponseEntity.ok().body(
                     Map.of("message",
-                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+                            Map.of("type", "warning", "text", "내용을 입력해 주세요.")));
         }
     }
 
-    @PutMapping("delete")
-    public ResponseEntity<Map<String, Object>> deleteDepartment(@RequestBody Department department) {
-        if (service.deleteDepartment(department.getDepartmentKey())) {
-            return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "삭제 되었습니다.")));
-        } else {
-            return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "삭제 되지 않았습니다.")));
-        }
-    }
-
-    @PutMapping("reUseDepartment")
-    public ResponseEntity<Map<String, Object>> reUseDepartment(@RequestBody Department department) {
-        if (service.reUseDepartment(department.getDepartmentKey())) {
-            return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "해당 부서를 다시 사용합니다.")));
-        } else {
-            return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "오류가 발생했습니다.")));
-        }
-    }
 
     @GetMapping("codenames")
     public List<Department> getCodeNames() {

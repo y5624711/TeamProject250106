@@ -51,7 +51,8 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
     } else if (location.pathname.startsWith("/commonCode")) {
-      // item 경로에선 filter를 URL에서 제거
+      const active = searchParams.get("active") ?? "false";
+      nextSearchParam.set("active", active);
       const filter = searchParams.get("filter") ?? "";
       if (filter) {
         nextSearchParam.set("filter", filter);

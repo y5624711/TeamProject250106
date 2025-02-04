@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function MainInstkList({ company }) {
+export function MainInstkList({ company, scope }) {
   const [mainInstkList, setMainInstkList] = useState([]);
   const navigate = useNavigate("");
 
   useEffect(() => {
     axios
-      .get("/api/main/instkList", { params: { company } })
+      .get("/api/main/instkList", { params: { company, scope } })
       .then((res) => res.data)
       .then((data) => {
         setMainInstkList(data);

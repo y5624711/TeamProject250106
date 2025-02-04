@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function MainInstallList({ company }) {
+export function MainInstallList({ company, scope }) {
   const [installList, setInstallList] = useState([]);
   const navigate = useNavigate("");
 
   useEffect(() => {
     axios
-      .get("/api/main/installList", { params: { company } })
+      .get("/api/main/installList", { params: { company, scope } })
       .then((res) => res.data)
       .then((data) => {
         const formattedList = data.map((item) => {
