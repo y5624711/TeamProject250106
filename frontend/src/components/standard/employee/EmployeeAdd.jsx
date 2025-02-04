@@ -284,7 +284,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
       )}
       {viewKey !== -1 && (
-        <HStack>
+        <HStack gap={5}>
           {formData.selectedCommonCode === "EMP" && (
             <Field label={"부서"} orientation="horizontal">
               <Input

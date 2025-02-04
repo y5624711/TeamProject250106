@@ -36,7 +36,6 @@ public class InstkController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>>  add(@RequestBody Instk instk) {
 
-        System.out.println("instk = " + instk);
 
         boolean success = service.addInstkProcess(instk);
 

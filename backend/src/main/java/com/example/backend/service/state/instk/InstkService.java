@@ -23,15 +23,12 @@ public class InstkService {
     final InstkMapper mapper;
     final ItemMapper itemMapper;
     final CommonMapper commonMapper;
-    final InoutHistoryMapper inoutHistoryMapper;
     final InstkSubMapper instkSubMapper;
-    final LocationMapper locationMapper;
 
     public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type) {
         int count = mapper.countByConsent(state,keyword,type);
         int offset = (page - 1) * 10;
          List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
-        System.out.println("instkList = " + instkList);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 
