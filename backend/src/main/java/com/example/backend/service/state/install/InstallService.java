@@ -108,7 +108,7 @@ public class InstallService {
             // 2. 출고 번호 생성
             String outputCode = "OUT";
             Integer maxNo = mapper.viewMaxOutputNo(outputCode);
-            String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+            String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
             install.setOutputNo(outputCode + newNumber);
 
             // 3. 시리얼 번호 등록
