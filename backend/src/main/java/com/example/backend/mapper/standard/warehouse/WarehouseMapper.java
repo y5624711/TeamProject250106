@@ -216,11 +216,11 @@ public interface WarehouseMapper {
                 <script>
                SELECT COALESCE(MAX(CAST(SUBSTRING(warehouse_code, 4) AS UNSIGNED)), 0) AS maxNumber
                 FROM TB_WHMST
-                WHERE warehouse_code LIKE CONCAT(#{whs}, '%')
+                WHERE warehouse_code LIKE CONCAT('WHS', '%')
                 AND warehouse_code REGEXP '^[A-Za-z]+[0-9]+$'
                 </script>
             """)
-    Integer viewMaxWarehouseCode(String whs);
+    Integer viewMaxWarehouseCode();
 
     @Insert("""
             INSERT INTO TB_WHMST
@@ -256,14 +256,14 @@ public interface WarehouseMapper {
             SELECT * FROM TB_CUSTMST c\s
             LEFT JOIN TB_WHMST w\s
             ON c.customer_code = w.customer_code\s
-            WHERE w.warehouse_code IS NULL
+            WHERE w.warehouse_code IS NULL AND c.customer_active = 1
             
             UNION
             
             SELECT * FROM TB_CUSTMST c\s
             RIGHT JOIN TB_WHMST w\s
             ON c.customer_code = w.customer_code\s
-            WHERE w.warehouse_code IS NULL;
+            WHERE w.warehouse_code IS NULL AND c.customer_active = 1;
             """)
     List<Customer> getWarehouseCustomerList();
 

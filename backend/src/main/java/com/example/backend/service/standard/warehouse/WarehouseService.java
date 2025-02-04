@@ -17,15 +17,22 @@ public class WarehouseService {
 
     //창고 등록
     public Boolean addWarehouse(Warehouse warehouse) {
-        String whs = "WHS";
+
+        String whs;
 
         // 0 또는 숫자 조회
-        Integer maxNo = mapper.viewMaxWarehouseCode(whs);
+        Integer maxNo = mapper.viewMaxWarehouseCode();
 
-        //  부족한 자리수 만큼  0 채우기
-        String newNumber = String.format("%010d", (maxNo == null) ? 1 : maxNo + 1);
+        if (maxNo - 99 < 0) {
+            whs = "WHS0";
+        } else {
+            whs = "WHS";
+        }
 
-        String newWarehouseCode = whs + newNumber;
+        Integer newNumber = maxNo + 1;
+        String num = String.valueOf(newNumber);
+
+        String newWarehouseCode = whs + num;
         warehouse.setWarehouseCode(newWarehouseCode);
 
         warehouse.setWarehouseActive(true);
