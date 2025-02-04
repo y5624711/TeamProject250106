@@ -155,18 +155,37 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
             </Field>
             <Field label="입고가" orientation="horizontal" required>
               <Input
-                type="number"
-                value={itemData.inputPrice}
-                onChange={handleInputChange("inputPrice")}
-                min="1"
+                type="text" // number → text 변경
+                value={
+                  itemData.inputPrice
+                    ? Number(itemData.inputPrice).toLocaleString("ko-KR")
+                    : ""
+                }
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/[^\d]/g, ""); // 숫자 이외의 문자 제거
+                  setItemData((prev) => ({
+                    ...prev,
+                    inputPrice: numericValue ? parseInt(numericValue, 10) : "",
+                  }));
+                }}
               />
             </Field>
+
             <Field label="출고가" orientation="horizontal" required>
               <Input
-                type="number"
-                value={itemData.outputPrice}
-                onChange={handleInputChange("outputPrice")}
-                min="1"
+                type="text"
+                value={
+                  itemData.outputPrice
+                    ? Number(itemData.outputPrice).toLocaleString("ko-KR")
+                    : ""
+                }
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/[^\d]/g, "");
+                  setItemData((prev) => ({
+                    ...prev,
+                    outputPrice: numericValue ? parseInt(numericValue, 10) : "",
+                  }));
+                }}
               />
             </Field>
             <Field label="비고" orientation="horizontal">

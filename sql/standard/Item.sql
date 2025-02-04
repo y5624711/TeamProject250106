@@ -28,3 +28,12 @@ ALTER TABLE TB_ITEMMST
 
 
 drop table TB_ITEMMST;
+
+INSERT INTO TB_ITEMMST (item_common_code, customer_code, input_price, output_price, size, unit, item_note)
+VALUES ('POS', 'CUS001', 500000, 700000, '300x200x150', 'mm', '최신형 포스기'),
+       ('MIC', 'CUS002', 200000, 350000, '500x300x250', 'mm', '전자레인지 1000W'),
+       ('RAM', 'CUS003', 1500000, 2000000, '700x500x300', 'mm', '자동 라면 제조기'),
+       ('REF', 'CUS004', 1200000, 1800000, '1800x800x700', 'mm', '대형 냉장고'),
+       ('FRE', 'CUS005', 1400000, 2000000, '2000x900x800', 'mm', '업소용 냉동실'),
+       ('WAR', 'CUS006', 800000, 1100000, '1200x600x500', 'mm', '온장고 (따뜻한 보관)');
+

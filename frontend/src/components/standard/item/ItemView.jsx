@@ -128,22 +128,56 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                   </Field>
                   <Field label={"입고가"} orientation="horizontal">
                     <Input
-                      type="number"
+                      type="text" // number → text 변경
                       name="inputPrice"
-                      value={editedItem.inputPrice}
-                      onChange={handleChange}
-                      min="1"
+                      value={
+                        editedItem.inputPrice
+                          ? Number(editedItem.inputPrice).toLocaleString(
+                              "ko-KR",
+                            )
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(
+                          /[^\d]/g,
+                          "",
+                        ); // 숫자 이외의 문자 제거
+                        setEditedItem((prev) => ({
+                          ...prev,
+                          inputPrice: numericValue
+                            ? parseInt(numericValue, 10)
+                            : "",
+                        }));
+                      }}
                     />
                   </Field>
+
                   <Field label={"출고가"} orientation="horizontal">
                     <Input
-                      type="number"
+                      type="text"
                       name="outputPrice"
-                      value={editedItem.outputPrice}
-                      onChange={handleChange}
-                      min="1"
+                      value={
+                        editedItem.outputPrice
+                          ? Number(editedItem.outputPrice).toLocaleString(
+                              "ko-KR",
+                            )
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(
+                          /[^\d]/g,
+                          "",
+                        );
+                        setEditedItem((prev) => ({
+                          ...prev,
+                          outputPrice: numericValue
+                            ? parseInt(numericValue, 10)
+                            : "",
+                        }));
+                      }}
                     />
                   </Field>
+
                   <Field label={"비고"} orientation="horizontal">
                     <Textarea
                       style={{ maxHeight: "100px", overflowY: "auto" }}
