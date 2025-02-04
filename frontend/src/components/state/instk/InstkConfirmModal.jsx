@@ -173,7 +173,15 @@ export function InstkConfirmModal({
               >
                 <Input value={localStorage.getItem("name")} readOnly />
               </Field>
-              <Field label={"사번"} orientation="horizontal">
+              <Field
+                label={"사번"}
+                orientation="horizontal"
+                sx={{
+                  "& .chakra-field__label": {
+                    justifyContent: "center",
+                  },
+                }}
+              >
                 <Input value={id} readOnly />
               </Field>
             </HStack>

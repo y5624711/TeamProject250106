@@ -5,11 +5,10 @@ import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.dto.state.instk.InstkSerialLocation;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
-import com.example.backend.mapper.standard.location.LocationMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.instk.InstkSubMapper;
-import com.example.backend.mapper.stock.inoutHistory.InoutHistoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +24,17 @@ public class InstkService {
     final CommonMapper commonMapper;
     final InstkSubMapper instkSubMapper;
 
-    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type) {
-        int count = mapper.countByConsent(state,keyword,type);
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type, Authentication authentication) {
+
+        String employeeNo=authentication.getName();
+        String company = null;
+        if (employeeNo.startsWith("CUS")) {
+            company = mapper.selectCompanyById(employeeNo);
+        }
+
+        int count = mapper.countByConsent(state,keyword,type,company);
         int offset = (page - 1) * 10;
-         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type,company);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 
