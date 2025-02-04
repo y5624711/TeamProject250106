@@ -161,7 +161,7 @@ export function InstkDetaiViewModal({
                 <Field label={"창고 정보"} orientation="horizontal">
                   <Input
                     readOnly
-                    value={`${detailData.wareHouseName} (Location Key: ${selectLocationKey || ""})`}
+                    value={`${detailData.wareHouseName}${instk.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
                   />
                 </Field>
               </HStack>

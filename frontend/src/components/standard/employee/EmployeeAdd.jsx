@@ -36,9 +36,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive: false,
   });
 
-  console.log(onChange, "onChange");
-  console.log(formData, "폼데이터");
-
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
@@ -84,7 +81,16 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    var { name, value } = e.target;
+
+    if (name === "tel") {
+      value = formatPhoneNumber(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -208,10 +214,21 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
-  const handleCancel = () => {
-    // 예전에 수정 돌아가는거 ,
-    // setIsEditMode(false);
-    // fetchEmployeeData(); // 원래 데이터로 복원
+  const formatPhoneNumber = (value) => {
+    const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+    // 숫자만 남기고, 11자리까지만 허용
+    const onlyNums = value.replace(/\D/g, "").slice(0, 11);
+
+    // 정규식에 맞춰 하이픈 추가
+    if (onlyNums.length === 11) {
+      return onlyNums.replace(regPhone, "01$1-$2-$3");
+    } else if (onlyNums.length > 7) {
+      return onlyNums.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (onlyNums.length > 3) {
+      return onlyNums.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    }
+
+    return onlyNums;
   };
 
   const isCommonCodeSelectedCheck =
@@ -225,9 +242,14 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   return (
     <Stack gap={15}>
-      <Field orientation="horizontal" label={"소속 구분"}>
+      <Field
+        orientation="horizontal"
+        label={"소속 구분"}
+        required={viewKey !== -1 ? false : true}
+      >
         <SelectRoot
           collection={frameworks}
+          variant={viewKey !== -1 ? "subtle" : "outline"}
           value={
             viewKey !== -1
               ? [formData.selectedCommonCode]
@@ -262,10 +284,11 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
       )}
       {viewKey !== -1 && (
-        <HStack>
+        <HStack gap={5}>
           {formData.selectedCommonCode === "EMP" && (
             <Field label={"부서"} orientation="horizontal">
               <Input
+                variant="subtle"
                 name="workPlace"
                 placeholder={""}
                 value={formData.departMent}
@@ -275,10 +298,15 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             </Field>
           )}
 
-          <Field label={"소속 코드"} orientation="horizontal">
+          <Field
+            label={"소속 코드"}
+            orientation="horizontal"
+            variant={viewKey !== -1 ? "subtle" : "outline"}
+          >
             <Input
               name="workPlace"
               placeholder={""}
+              variant="subtle"
               value={formData.workPlace}
               onChange={handleInputChange}
               readOnly={viewKey !== -1}
@@ -286,8 +314,13 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Field>
         </HStack>
       )}
-      <Field label={"직원"} orientation="horizontal">
+      <Field
+        label={"직원"}
+        orientation="horizontal"
+        required={viewKey !== -1 ? false : true}
+      >
         <Input
+          variant={viewKey !== -1 ? "subtle" : "outline"}
           name="name"
           value={formData.name}
           onChange={handleInputChange}
@@ -297,6 +330,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       {viewKey !== -1 && (
         <Field label={"사번"} orientation="horizontal">
           <Input
+            variant={viewKey !== -1 ? "subtle" : "outline"}
             name="employeeNo"
             placeholder={"사번"}
             value={formData.employeeNo}
@@ -309,43 +343,41 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
 
-        {viewKey !== -1 && (
-          <Field label={"비밀번호"} orientation="horizontal">
-            <Input
-              name="password"
-              placeholder={"비밀번호"}
-              value={formData.password}
-              onChange={handleInputChange}
-
-            />
-          </Field>
-        )}
-        <Field label={"비고"} orientation="horizontal">
-          <Textarea
-            name="note"
-            style={{ maxHeight: "100px", overflowY: "auto" }}
-            placeholder={viewKey===-1? "최대 50 글자":""}
-            value={formData.note}
+      {viewKey !== -1 && (
+        <Field label={"비밀번호"} orientation="horizontal">
+          <Input
+            name="password"
+            placeholder={"비밀번호"}
+            value={formData.password}
             onChange={handleInputChange}
-
           />
         </Field>
-        {viewKey !== -1 && (
-          <Field label={"사용 여부"} orientation="horizontal">
-            <Box ml={"86px"} style={{ position: "absolute" }}>
-              <Checkbox
-                name="employeeActive"
-                checked={formData.employeeActive}
-                onCheckedChange={(e) =>
-                  setFormData((prevItem) => ({
-                    ...prevItem,
-                    employeeActive: e.checked,
-                  }))
-                }
-              />
-            </Box>
-          </Field>
-        )}
+      )}
+      <Field label={"비고"} orientation="horizontal">
+        <Textarea
+          name="note"
+          style={{ maxHeight: "100px", overflowY: "auto" }}
+          placeholder={viewKey === -1 ? "최대 50 글자" : ""}
+          value={formData.note}
+          onChange={handleInputChange}
+        />
+      </Field>
+      {viewKey !== -1 && (
+        <Field label={"사용 여부"} orientation="horizontal">
+          <Box ml={"86px"} style={{ position: "absolute" }}>
+            <Checkbox
+              name="employeeActive"
+              checked={formData.employeeActive}
+              onCheckedChange={(e) =>
+                setFormData((prevItem) => ({
+                  ...prevItem,
+                  employeeActive: e.checked,
+                }))
+              }
+            />
+          </Box>
+        </Field>
+      )}
 
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={onChange} mr={2} variant="outline">

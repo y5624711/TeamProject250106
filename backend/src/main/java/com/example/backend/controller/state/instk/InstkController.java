@@ -6,6 +6,8 @@ import com.example.backend.service.state.instk.InstkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,17 +28,18 @@ public class InstkController {
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "") String sort,
-            @RequestParam(value = "order", defaultValue = "DESC") String order
+            @RequestParam(value = "order", defaultValue = "DESC") String order,
+            Authentication authentication
     ) {
-        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order,type);
+        Map<String,Object> returnlist = service.viewlist(state,page,keyword,sort,order,type ,authentication);
         return returnlist;
 
     }
 
     @PostMapping("add")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>>  add(@RequestBody Instk instk) {
 
-        System.out.println("instk = " + instk);
 
         boolean success = service.addInstkProcess(instk);
 
@@ -68,6 +71,7 @@ public class InstkController {
     }
     //reject
     @PutMapping("reject")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> rejectInstk(@RequestBody Instk instk) {
         System.out.println("instk.getInputKey() = " + instk.getInputKey());
 

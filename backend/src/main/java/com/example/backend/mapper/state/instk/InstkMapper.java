@@ -75,6 +75,7 @@ FROM TB_BUYIN BI
     LEFT JOIN TB_EMPMST EM3 
         ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
 WHERE 1=1
+          AND (#{company} IS NULL OR CT.customer_code = #{company})
     <if test="state == 'request'">
         AND input_consent IS NULL
     </if>
@@ -140,7 +141,7 @@ LIMIT #{offset}, 10
             @Param("keyword") String keyword,
             @Param("sort") String sort,
             @Param("order") String order,
-            @Param("type")String type);
+            @Param("type")String type, String company);
 
     @Select("""
             select input_stock_note
@@ -299,6 +300,7 @@ LIMIT #{offset}, 10
         LEFT JOIN TB_EMPMST EM3 
             ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
         WHERE 1=1
+                   AND (#{company} IS NULL OR CT.customer_code = #{company})
         <!-- state 조건 -->
         <if test="state == 'request'">
             AND BI.input_consent IS NULL
@@ -349,7 +351,7 @@ LIMIT #{offset}, 10
     </if>
     </script>
 """)
-    int countByConsent(@Param("state") String state , String keyword, String type);
+    int countByConsent(@Param("state") String state , String keyword, String type, String company);
 
 
     // 입고 승인자의 사번을 창고 코드 조회 해오기
@@ -394,4 +396,13 @@ LIMIT #{offset}, 10
             WHERE BI.input_key=#{inputKey} 
            """)
     String viewRetrunWareHouseCode(int inputKey);
+
+    // 권한 설정 :  로그인 아이디로 회사 코드 가져오기
+    @Select("""
+            SELECT e.employee_workplace_code
+            FROM TB_EMPMST e
+                     JOIN TB_CUSTMST c ON e.employee_workplace_code = c.customer_code
+            WHERE e.employee_no = #{id}
+            """)
+    String selectCompanyById(String id);
 }

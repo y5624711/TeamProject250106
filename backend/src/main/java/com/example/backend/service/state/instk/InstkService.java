@@ -5,11 +5,10 @@ import com.example.backend.dto.state.instk.InstkDetail;
 import com.example.backend.dto.state.instk.InstkSerialLocation;
 import com.example.backend.mapper.standard.commonCode.CommonMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
-import com.example.backend.mapper.standard.location.LocationMapper;
 import com.example.backend.mapper.state.instk.InstkMapper;
 import com.example.backend.mapper.state.instk.InstkSubMapper;
-import com.example.backend.mapper.stock.inoutHistory.InoutHistoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +22,19 @@ public class InstkService {
     final InstkMapper mapper;
     final ItemMapper itemMapper;
     final CommonMapper commonMapper;
-    final InoutHistoryMapper inoutHistoryMapper;
     final InstkSubMapper instkSubMapper;
-    final LocationMapper locationMapper;
 
-    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type) {
-        int count = mapper.countByConsent(state,keyword,type);
+    public  Map<String,Object> viewlist(String state, Integer page, String keyword, String sort, String order, String type, Authentication authentication) {
+
+        String employeeNo=authentication.getName();
+        String company = null;
+        if (employeeNo.startsWith("CUS")) {
+            company = mapper.selectCompanyById(employeeNo);
+        }
+
+        int count = mapper.countByConsent(state,keyword,type,company);
         int offset = (page - 1) * 10;
-         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type);
-        System.out.println("instkList = " + instkList);
+         List<Instk> instkList = mapper.viewBuyInList(offset,state,keyword,sort,order,type,company);
 
          Map<String,Object> returnMap = Map.of("list",instkList ,"count",count);
 
@@ -107,7 +110,7 @@ public class InstkService {
                 // 품목 상세에서 시리얼 넘버 최대값 가져오기
                 Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
                 // 시리얼 번호 생성 (20자리)
-                String insertSerialNo = String.format("%020d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+                String insertSerialNo ="S"+ String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
 
                 // item_sub 테이블에 추가
                 int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
