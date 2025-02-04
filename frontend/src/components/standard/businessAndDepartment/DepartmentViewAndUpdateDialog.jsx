@@ -139,7 +139,7 @@ export function DepartmentViewAndUpdateDialog({
                 onChange={(e) =>
                   setDepartmentData((prev) => ({
                     ...prev,
-                    departmentFax: e.target.value,
+                    departmentFax: formatPhoneNumber(e.target.value),
                   }))
                 }
               />
