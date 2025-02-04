@@ -67,11 +67,12 @@ public class PurchaseService {
     }
 
     // 구매 승인
+    @Transactional
     public boolean purchaseApprove(Purchase purchase) {
         // 상태 현황 업데이트
         mapper.updatePurchaseConsent(purchase.getPurchaseRequestKey());
 
-        // 기존 발주 번호에서 최대 번호를 조회
+        // 기존 발주 번호에서 최대 번호를 조회 (트랜잭션 내에서)
         Long maxNo = mapper.viewMaxPurchaseNo();
 
         // 최대 번호가 없으면 1, 있으면 1을 더한 값을 3자리 형식으로 생성
