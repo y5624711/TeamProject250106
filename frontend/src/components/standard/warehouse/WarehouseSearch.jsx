@@ -16,6 +16,7 @@ function WarehouseSearch({
   handleSearchClick,
   search,
   setSearchParams,
+  setCheckedActive,
 }) {
   const [inputValue, setInputValue] = useState("");
   const [selectValue, setSelectValue] = useState(["all"]);
@@ -27,16 +28,18 @@ function WarehouseSearch({
       keyword: "",
       sort: "",
       order: "",
+      active: false,
     });
     setInputValue(""); // 입력 필드 초기화
     setSelectValue(["all"]); // 선택 값 초기화
+    setCheckedActive(false);
   };
   return (
     <HStack justifyContent="center" w={"100%"} mt={-2}>
       <SelectRoot
         collection={warehouseOptionList}
         defaultValue={["all"]}
-        value={selectValue}
+        value={selectValue.includes("all") ? selectValue : selectValue[0]}
         width="160px"
         onValueChange={(oc) => {
           setSelectValue([oc.value]);

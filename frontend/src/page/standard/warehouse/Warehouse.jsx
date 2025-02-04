@@ -101,6 +101,7 @@ function Warehouse(props) {
             search={search}
             handleSearchClick={handleSearchClick}
             setSearchParams={setSearchParams}
+            setCheckedActive={setCheckedActive}
           />
           <Checkbox
             checked={checkedActive}

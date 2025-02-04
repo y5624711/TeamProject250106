@@ -16,6 +16,7 @@ function LocationSearch({
   search,
   handleSearchClick,
   setSearchParams,
+  setCheckedActive,
 }) {
   const [inputValue, setInputValue] = useState("");
   const [selectValue, setSelectValue] = useState(["all"]);
@@ -27,10 +28,11 @@ function LocationSearch({
       keyword: "",
       sort: "",
       order: "",
-      active: true,
+      active: false,
     });
     setInputValue(""); // 입력 필드 초기화
     setSelectValue(["all"]); // 선택 값 초기화
+    setCheckedActive(false);
   };
 
   return (
