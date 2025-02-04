@@ -59,6 +59,7 @@ export function InstkConfirmModal({
         inputStockEmployeeNo: id,
         inputStockNote: inputStockNote,
         itemCommonName: instk.itemCommonName,
+        customerName: instk.customerName,
         employeeWorkPlaceCode: instkDetail.employeeWorkPlaceCode,
         requestEmployeeNo: instk.requestEmployeeNo,
         itemAmount: instk.itemAmount,
@@ -83,6 +84,7 @@ export function InstkConfirmModal({
     axios
       .put("/api/instk/reject", {
         inputKey: instk.inputKey,
+        customerName: instk.customerName,
       })
       .then((res) => {
         console.log(res.data);
@@ -189,8 +191,6 @@ export function InstkConfirmModal({
                 <Input value={id} readOnly />
               </Field>
             </HStack>
-
-            <Separator />
 
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
