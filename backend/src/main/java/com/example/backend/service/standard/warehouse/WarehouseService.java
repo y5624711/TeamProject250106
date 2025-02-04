@@ -103,10 +103,6 @@ public class WarehouseService {
         return mapper.edit(warehouse) == 1;
     }
 
-    public void delete(Integer warehouseKey) {
-        mapper.delete(warehouseKey);
-    }
-
     // 창고 정보가 다 입력됐는지 확인
     public Boolean validate(Warehouse warehouse) {
         return

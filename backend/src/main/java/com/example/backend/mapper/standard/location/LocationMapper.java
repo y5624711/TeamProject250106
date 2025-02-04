@@ -185,6 +185,7 @@ public interface LocationMapper {
             """)
     Integer checkLocation(String warehouseCode, String row, String col, Integer shelf);
 
+    //    창고 사용여부 변화에 따른 로케이션의 사용여부 변화
     @Update("""
             UPDATE TB_LOCMST
             SET location_active=#{active}
