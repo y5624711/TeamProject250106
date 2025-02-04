@@ -81,7 +81,7 @@ public class InstkService {
         int inputKey = instk.getInputKey();
         String inputStockNote = instk.getInputNote();
         String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
-        String inoutNo=  "IN" + instk.getInputNo().substring(2);
+        String inoutNo=   instk.getInputNo();
         String inputCommonCode=instk.getInputCommonCode();
 
         //String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());

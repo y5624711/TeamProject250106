@@ -178,7 +178,7 @@ export function InstkDetaiViewModal({
               </Field>
               {instk.inputConsent && (
                 <HStack>
-                  <Field label={"입고 승인자"} orientation="horizontal">
+                  <Field label={"반려/승인자"} orientation="horizontal">
                     <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
                   <Field label={"사번"} orientation="horizontal">

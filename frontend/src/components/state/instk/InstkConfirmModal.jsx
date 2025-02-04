@@ -91,6 +91,8 @@ export function InstkConfirmModal({
       })
       .catch((error) => {
         console.log("입고 반려 중 오류 ", error);
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
       })
       .finally(() => {
         setChangeModal();
