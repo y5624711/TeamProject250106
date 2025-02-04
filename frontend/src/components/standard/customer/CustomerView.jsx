@@ -31,7 +31,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
         .get(`/api/customer/view/${customerKey}`)
         .then((res) => {
           setCustomer(res.data);
-          console.log("back 반환", res.data);
+          // console.log("back 반환", res.data);
         })
         .catch((error) => console.error("오류 발생", error));
     }
