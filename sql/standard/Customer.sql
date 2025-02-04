@@ -38,3 +38,13 @@ WHERE customer_code = 'CUS0000000011';
 SELECT *
 FROM TB_ITEMMST
 WHERE customer_code = 'CUS0000000011';
+
+SELECT ic.*
+FROM TB_SYSCOMM ic
+         LEFT JOIN (SELECT DISTINCT item_code
+                    FROM TB_CUSTMST
+                    WHERE customer_active = TRUE) cm
+                   ON ic.common_code = cm.item_code
+WHERE cm.item_code IS NULL
+  AND ic.common_code_active = TRUE
+  AND common_code_type = 'ITEM'

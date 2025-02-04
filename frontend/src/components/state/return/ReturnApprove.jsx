@@ -110,6 +110,9 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
           type: data.message.type,
           description: data.message.text,
         });
+        onClose();
+        setRefreshKey((prevKey) => prevKey + 1);
+        if (onApprove) onApprove();
       })
       .catch((e) => {
         const data = e.response.data;
