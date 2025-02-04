@@ -32,6 +32,7 @@ function Warehouse(props) {
     parseInt(searchParams.get("page")) || 1,
   );
   const [reborn, setReborn] = useState(false);
+  const [auth, setAuth] = useState("");
 
   function refresh() {
     setReborn(!reborn);
@@ -42,6 +43,7 @@ function Warehouse(props) {
     axios.get(`/api/warehouse/list?${searchParams.toString()}`).then((res) => {
       setWarehouseList(res.data.list);
       setCountWarehouse(res.data.count);
+      setAuth(res.data.work);
     });
     window.scrollTo(0, 0);
   }, [searchParams, checkedActive, isAddDialogOpen, reborn]);

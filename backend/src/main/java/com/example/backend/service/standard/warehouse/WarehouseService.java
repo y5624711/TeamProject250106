@@ -4,6 +4,7 @@ import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,12 +42,13 @@ public class WarehouseService {
         return count == 1;
     }
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Boolean active) {
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Boolean active, Authentication auth) {
 
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
+        String workPlace = auth.getName().substring(0, 3);
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, active), "count", mapper.countAllWarehouse(searchType, searchKeyword, active));
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, active), "count", mapper.countAllWarehouse(searchType, searchKeyword, active), "work", workPlace);
     }
 
     // camelCase를 snake_case로 변환하는 로직

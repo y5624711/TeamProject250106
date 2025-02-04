@@ -5,6 +5,7 @@ import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.service.standard.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class WarehouseController {
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
                                     @RequestParam(value = "order", defaultValue = "") String order,
-                                    @RequestParam(value = "active", defaultValue = "false") Boolean active) {
-        return service.list(searchType, searchKeyword, page, sort, order, active);
+                                    @RequestParam(value = "active", defaultValue = "false") Boolean active,
+                                    Authentication auth) {
+        return service.list(searchType, searchKeyword, page, sort, order, active, auth);
     }
 
     @GetMapping("view/{warehouseKey}")
