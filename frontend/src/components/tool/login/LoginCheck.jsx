@@ -14,7 +14,7 @@ export function LoginCheck() {
   const adminList = [
     "/business",
     "/commonCode",
-    // "/employee",
+    "/employee",
     "/item",
     "/customer",
     "/franchise",

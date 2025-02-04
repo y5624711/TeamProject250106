@@ -57,12 +57,11 @@ public class EmployeeController {
     }
 
     // 회원 등록
-
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee , Authentication authentication) {
 
-        //협력업체 직원이 누르게 될경우 
+        //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
@@ -86,7 +85,7 @@ public class EmployeeController {
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee ,Authentication authentication) {
-        //협력업체 직원이 누르게 될경우
+        //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
@@ -109,7 +108,7 @@ public class EmployeeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee ,Authentication authentication) {
 
-        //협력업체 직원이 누르게 될경우
+        //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",

@@ -405,4 +405,17 @@ LIMIT #{offset}, 10
             WHERE e.employee_no = #{id}
             """)
     String selectCompanyById(String id);
+
+
+    @Select("""
+        SELECT C.customer_code 
+        FROM TB_CUSTMST C 
+        WHERE C.customer_name = #{customerName} 
+        AND C.customer_code = (
+            SELECT E.employee_workplace_code
+            FROM TB_EMPMST E 
+            WHERE E.employee_no = #{loginEmployeeNo}
+        )
+        """)
+    String  authorityCheck(String loginEmployeeNo, String customerName);
 }

@@ -186,4 +186,16 @@ public class InstkService {
         int updateResult = mapper.rejectInstk(inputKey);
         return new Boolean[] {currentStatus, updateResult == 1};
     }
+
+    public boolean authorityCheck(Authentication authentication, String customerName) {
+
+        if (authentication.getName().startsWith("CUS")) {
+            String loginEmployeeNo= authentication.getName();
+            String same = mapper.authorityCheck(loginEmployeeNo ,customerName);
+            return same != null;
+        }
+        //biz 본사직원이면 성공
+        return true;
+
+    }
 }

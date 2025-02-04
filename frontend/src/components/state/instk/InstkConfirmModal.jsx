@@ -47,6 +47,8 @@ export function InstkConfirmModal({
       });
   }, []);
 
+  console.log(instk);
+
   // 입고 추가
   const handleAddInstk = () => {
     axios
