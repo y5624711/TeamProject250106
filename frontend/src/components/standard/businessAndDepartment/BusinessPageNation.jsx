@@ -13,7 +13,7 @@ export function BusinessPageNation({ page, count, handlePageChange }) {
         size={"md"}
         onPageChange={handlePageChange}
         count={count}
-        pageSize={10}
+        pageSize={5}
         page={page}
         variant="solid"
       >

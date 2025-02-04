@@ -14,4 +14,6 @@ public class Business {
     private String businessTel;
     private String businessFax;
     private String businessAddress;
+    private String businessIndustryType;
+    private String businessCorpNumber;
 }

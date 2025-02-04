@@ -29,7 +29,7 @@ export function MainInstkList({ company, scope }) {
   ];
 
   return (
-    <Box whiteSpace={"nowrap"} style={{ minHeight: "200px" }}>
+    <Box whiteSpace={"nowrap"} style={{ minHeight: "240px" }}>
       <Heading mb={3}>입고 현황</Heading>
       <Table.Root size="sm">
         <Table.Header>

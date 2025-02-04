@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import { useNavigate } from "react-router-dom";
@@ -12,32 +12,26 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
 
   return (
     <Box
-      position="relative"
       minW="400px"
-      h="600px"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      textAlign="center"
-      mt={3}
+      h="700px"
+      backgroundImage="url('/mainInfo.jpg')" // 배경 이미지 적용
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      display="flex" // Flexbox 활성화
+      alignItems="center" // 세로 정렬 (중앙)
+      justifyContent="center" // 가로 정렬 (중앙)
     >
-      {/* 배경 이미지 */}
-      <Image
-        src="/mainInfo.jpg"
-        alt="background"
-        objectFit="cover"
-        w="100%"
-        h="100%"
-        position="absolute"
-        opacity="0.5"
-        zIndex="-1"
-        filter="brightness(80%) contrast(120%) sepia(20%)" // ✅ 색상 조절
-      />
-
       {/* 텍스트 박스 */}
-      <Box position="relative" color="black" fontWeight="bold">
+      <Box
+        color="black"
+        fontWeight="bold"
+        backgroundColor="whiteAlpha.700" // 반투명 흰색 배경
+        p={5} // 패딩 추가
+        textAlign="center"
+      >
         <Box
-          backgroundColor="whiteAlpha.800" // 반투명 흰색 배경
+          backgroundColor="whiteAlpha.500" // 반투명 흰색 배경
           p={5} // 패딩 추가
           borderRadius="md" // 모서리 둥글게
           textAlign="center"

@@ -33,6 +33,8 @@ export function BusinessView() {
         businessTel: business.businessTel,
         businessFax: business.businessFax,
         businessAddress: business.businessAddress,
+        businessCorpNumber: business.businessCorpNumber,
+        businessIndustryType: business.businessIndustryType,
       })
       .then((res) => res.data)
       .then((data) => {
