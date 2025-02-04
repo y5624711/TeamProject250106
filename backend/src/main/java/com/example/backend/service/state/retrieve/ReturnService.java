@@ -115,6 +115,8 @@ public class ReturnService {
 
     //요청자 자격
     public boolean checkCustomer(String loginNo) {
+//        System.out.println("사용여부 권한자 확인");
+
         String userCompany = employeeMapper.checkUserCompany(loginNo);
 
         // "CUS"로 시작하면 true, 그렇지 않으면 false 반환
@@ -123,6 +125,7 @@ public class ReturnService {
 
     //승인자 (제한)자격
     public boolean checkApproveEmployee(String loginNo, String CustomerCode) {
+//        System.out.println("수정권한자 확인");
         //1. 본사 사람인가? 2. 해당 협석사 직원인가?
         String userCompany = employeeMapper.checkUserCompany(loginNo);
 //        System.out.println("유저 소속: " + userCompany);
