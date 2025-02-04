@@ -3,6 +3,7 @@ package com.example.backend.controller.standard.customer;
 import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.service.standard.customer.CustomerService;
+import com.example.backend.service.state.retrieve.ReturnService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,34 +19,49 @@ import java.util.Map;
 @RequestMapping("/api/customer")
 public class CustomerController {
     final CustomerService service;
+    final ReturnService returnService;
 
     //협력사 등록
     @PostMapping("add")
 //    @PreAuthorize("hasAuthority('SCOPE_BIZ')")
     public ResponseEntity<Map<String, Object>> addCustomer(@RequestBody Customer customer, Authentication auth) {
-        //협력사 입력란 빈칸 검증
-        if (!service.checkEmptyCustomer(customer)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
-            ));
-        }
+        try {
+            //본사 사람만 등록 가능
+            if (returnService.checkCustomer(auth.getName())) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "요청 권한이 없습니다.")));
+            }
 
-        //중복 여부 확인
-        if (service.checkDuplicateCustomer(customer)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "중복된 정보가 존재합니다.")
-            ));
-        }
+            //협력사 입력란 빈칸 검증
+            if (!service.checkEmptyCustomer(customer)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
+                ));
+            }
 
-        if (service.addCustomer(customer)) {
-            return ResponseEntity.ok(Map.of("message",
-                    Map.of("type", "success",
-                            "text", "등록하였습니다.")));
-        } else {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message",
-                            Map.of("type", "error",
-                                    "text", "등록 중 문제가 발생하였습니다.")));
+            //중복 여부 확인
+            if (service.checkDuplicateCustomer(customer)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "중복된 정보가 존재합니다.")
+                ));
+            }
+
+            if (service.addCustomer(customer)) {
+                return ResponseEntity.ok(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "등록하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "등록 중 문제가 발생하였습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
+            ));
         }
     }
 
@@ -95,26 +111,39 @@ public class CustomerController {
 
     //협력사 정보 수정
     @PutMapping("edit")
-    public ResponseEntity<Map<String, Object>> editCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Map<String, Object>> editCustomer(@RequestBody Customer customer, Authentication auth) {
 //        System.out.println("customer: " + customer);
+        try {
+            //권한자인가
+            if (!returnService.checkApproveEmployee(auth.getName(), customer.getCustomerCode())) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "승인 권한이 없습니다.")));
+            }
 
-        //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
-        if (customer.getCustomerActive() && service.checkActive(customer)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력업체가 존재합니다.")
+            //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
+            if (customer.getCustomerActive() && service.checkActive(customer)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력업체가 존재합니다.")
+                ));
+            }
+
+            //수정
+            if (service.editCustomer(customer)) {
+                return ResponseEntity.ok(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "수정하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "수정 중 문제가 발생하였습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
             ));
-        }
-
-        //수정
-        if (service.editCustomer(customer)) {
-            return ResponseEntity.ok(Map.of("message",
-                    Map.of("type", "success",
-                            "text", "수정하였습니다.")));
-        } else {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message",
-                            Map.of("type", "error",
-                                    "text", "수정 중 문제가 발생하였습니다.")));
         }
     }
 

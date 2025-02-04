@@ -140,7 +140,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
     customerAddress;
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={onCancel} size={"lg"}>
+    <DialogRoot open={isOpen} onOpenChange={handleCancel} size={"lg"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>협력 업체 등록</DialogTitle>
@@ -177,7 +177,7 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
                   style={{
                     position: "absolute",
                     zIndex: 100,
-                    width: "710",
+                    width: "70%",
                     top: "40px",
                   }}
                 >
