@@ -39,11 +39,6 @@ public class PurchaseController {
     @PostMapping("/request")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> purchaseRequest(@RequestBody Purchase purchase, Authentication auth) {
-        // "CUS"로 시작하면 요청 제한
-//        String company = auth.getName();
-//        if (company == null || !company.startsWith("CUS")) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 구매 요청을 할 수 없습니다.")));
-//        }
         if (service.validate(purchase)) {
             if (service.purchaseRequest(purchase, auth)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
