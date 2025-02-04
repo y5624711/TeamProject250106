@@ -15,236 +15,158 @@ function Customer() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [checkedActive, setCheckedActive] = useState(false);
+  const [checkedActive, setCheckedActive] = useState(
+    searchParams.get("active") === "true",
+  );
   const [search, setSearch] = useState({
     type: searchParams.get("type") ?? "all",
-    keyword: searchParams.get("key") ?? "",
+    keyword: searchParams.get("keyword") ?? "",
   });
-  const [standard, setStandard] = useState({ sort: "", order: "ASC" });
+  const [standard, setStandard] = useState({
+    sort: searchParams.get("sort") || "customer_key",
+    order: searchParams.get("order") || "DESC",
+  });
 
-  // 초기 데이터 불러오기
-  const fetchInitialCustomerList = () => {
+  // 최신 고객 리스트 가져오기
+  const fetchUpdatedCustomerList = () => {
+    // console.log(search);
     axios
       .get(`/api/customer/list`, {
         params: {
-          sort: "",
-          order: "DESC",
-          page: "1",
-          type: "all",
-          keyword: "",
-          active: "true",
+          sort: standard.sort,
+          order: standard.order,
+          page: searchParams.get("page") || "1",
+          type: search.type,
+          keyword: search.keyword,
+          active: checkedActive.toString(),
         },
       })
       .then((res) => {
-        const { count, customerList } = res.data;
-        setCustomerList(customerList);
-        setCount(count);
-        console.log("initial");
-        // 초기 customerKey 설정
-        // if (customerList.length > 0) {
-        //   setCustomerKey(customerList[0].customerKey);
-        // }
+        setCustomerList(res.data.customerList);
+        setCount(res.data.count);
       })
-      .catch((error) => {
-        console.error("초기 고객 목록 불러오기 오류:", error);
+      .catch((error) =>
+        console.error("업데이트 고객 목록 불러오기 오류:", error),
+      );
+  };
+
+  // searchParams & checkedActive 변경 시 한 번만 실행
+  useEffect(() => {
+    fetchUpdatedCustomerList();
+    setSearch({
+      type: searchParams.get("type") || "all",
+      keyword: searchParams.get("keyword") || "",
+    });
+    setStandard({
+      sort: searchParams.get("sort") || "customer_key",
+      order: searchParams.get("order") || "DESC",
+    });
+    setCheckedActive(searchParams.get("active") === "true");
+  }, [searchParams, checkedActive]);
+
+  // 협력사 등록
+  const handleSaveClick = (customerData) => {
+    axios
+      .post("api/customer/add", customerData)
+      .then((res) => {
+        fetchUpdatedCustomerList();
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
+        setAddDialogOpen(false);
+      })
+      .catch((e) => {
+        toaster.create({
+          type: e.response.data.message.type,
+          description: e.response.data.message.text,
+        });
       });
   };
-  // console.log("p", customerList);
-  // console.log("key", customerKey);
 
-  // 컴포넌트가 마운트될 때 목록 불러오기 및 URL에서 customerKey 설정
-  useEffect(() => {
-    const keyFromURL = searchParams.get("customerKey");
-    if (keyFromURL) {
-      setCustomerKey(keyFromURL);
-    }
-    fetchUpdatedCustomerList();
-  }, [searchParams]);
+  // 협력사 수정
+  const handleEditClick = (customerData) => {
+    axios
+      .put("api/customer/edit", customerData)
+      .then((res) => {
+        fetchUpdatedCustomerList();
+        toaster.create({
+          type: res.data.message.type,
+          description: res.data.message.text,
+        });
+      })
+      .catch((e) => {
+        toaster.create({
+          type: e.response.data.message.type,
+          description: e.response.data.message.text,
+        });
+      });
+  };
 
-  // 리스트 행 클릭 시 동작
+  // 리스트 행 클릭 시
   const handleRowClick = (key) => {
     setCustomerKey(key);
     setEditDialogOpen(true);
   };
 
-  //협력사 등록
-  const handleSaveClick = (customerData) => {
-    axios
-      .post("api/customer/add", customerData)
-      .then((res) => res.data)
-      .then((data) => {
-        fetchUpdatedCustomerList();
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-        setAddDialogOpen(false);
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
-
-  //수정 저장 버튼
-  const handleEditClick = (customerData) => {
-    // console.log(customer);
-    axios
-      .put("api/customer/edit", customerData)
-      .then((res) => res.data)
-      .then((data) => {
-        fetchUpdatedCustomerList();
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      })
-      .catch((e) => {
-        const data = e.response.data;
-        toaster.create({
-          type: data.message.type,
-          description: data.message.text,
-        });
-      });
-  };
-
-  // 삭제 내역 포함 체크박스 상태 토글 및 URL 업데이트
+  // 체크박스 상태 변경 (setSearchParams 최소 호출)
   const toggleCheckedActive = () => {
     setSearchParams((prev) => {
-      const nextValue = !(prev.get("active") === "true");
-      prev.set("active", nextValue.toString());
-      return prev;
+      const next = new URLSearchParams(prev);
+      const newValue = !(prev.get("active") === "true");
+      if (prev.get("active") === newValue.toString()) return prev; // 변경 없으면 업데이트 안 함
+      next.set("active", newValue.toString());
+      next.set("page", "1");
+      return next;
     });
   };
 
-  // 검색 실행 처리 및 URL 업데이트
+  // 검색 실행
   const handleSearchClick = () => {
-    const nextSearchParams = new URLSearchParams(searchParams);
-
-    if (search.keyword.trim().length > 0) {
-      nextSearchParams.set("type", search.type);
-      nextSearchParams.set("keyword", search.keyword);
-      nextSearchParams.set("page", 1);
-    } else {
-      nextSearchParams.delete("type");
-      nextSearchParams.delete("keyword");
-    }
-
-    setSearchParams(nextSearchParams);
-  };
-  // console.log("out checkedActive", checkedActive);
-
-  // 업데이트 데이터 불러오기
-  const fetchUpdatedCustomerList = () => {
-    // console.log("in checkedActive", checkedActive);
-
-    axios
-      .get(`/api/customer/list`, {
-        params: {
-          sort: searchParams.get("sort") || "customer_key",
-          order: searchParams.get("order") || "DESC",
-          page: searchParams.get("page") || "1",
-          type: searchParams.get("type") || "all",
-          keyword: searchParams.get("keyword") || "",
-          active: checkedActive.toString(),
-        },
-      })
-      .then((res) => {
-        const { count, customerList } = res.data;
-        setCustomerList(customerList);
-        setCount(count);
-        // update시 customerKey 설정
-        // if (customerList.length > 0) {
-        //   setCustomerKey(customerList[0].customerKey);
-        // }
-      })
-      .catch((error) => {
-        console.error("업데이트 고객 목록 불러오기 오류:", error);
-      });
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (search.keyword.trim().length > 0) {
+        next.set("type", search.type);
+        next.set("keyword", search.keyword);
+        next.set("page", "1");
+      } else {
+        next.delete("type");
+        next.delete("keyword");
+      }
+      return next;
+    });
   };
 
-  // 상태가 변경될 때만 업데이트된 데이터 불러오기
-  useEffect(() => {
-    if (
-      searchParams.get("page") ||
-      searchParams.get("type") ||
-      searchParams.get("keyword")
-    ) {
-      fetchUpdatedCustomerList();
-      // console.log("second");
-    }
-  }, [searchParams]);
+  // 정렬 처리
+  const handleStandard = (sort) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      const currentSort = prev.get("sort");
+      const currentOrder = prev.get("order") || "ASC";
 
-  // checkbox 변화에 따라 표 업데이트
-  useEffect(() => {
-    fetchUpdatedCustomerList();
-    // console.log("call", checkedActive);
-  }, [checkedActive]);
+      const newOrder =
+        currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
+      if (currentSort === sort && currentOrder === newOrder) return prev; // 변경 없으면 업데이트 안 함
 
-  useEffect(() => {
-    const nextSearch = { ...search };
+      next.set("sort", sort);
+      next.set("order", newOrder);
+      return next;
+    });
+  };
 
-    if (searchParams.get("type")) {
-      nextSearch.type = searchParams.get("type");
-    } else {
-      nextSearch.type = "all";
-    }
+  // 페이지 번호 변경
+  const handlePageChange = (e) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("page", e);
+      return next;
+    });
+  };
 
-    if (searchParams.get("keyword")) {
-      nextSearch.keyword = searchParams.get("keyword");
-    } else {
-      nextSearch.keyword = "";
-    }
-
-    setSearch(nextSearch);
-  }, [searchParams]);
-
-  //pagination
-  const pageParam = searchParams.get("page") ?? "1";
-  const page = Number(pageParam);
-
-  // 페이지 번호 변경 시 URL 의 쿼리 파라미터를 업데이트
-  function handlePageChange(e) {
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("page", e);
-    setSearchParams(nextSearchParams);
-  }
-
-  // useEffect(() => {
-  //   const pageParam = Number(searchParams.get("page") || "1");
-  //   setCurrentPage(page);
-  // }, [searchParams]);
-
-  //정렬 기준
-  function handleStandard(sort) {
-    const currentSort = searchParams.get("sort");
-    const currentOrder = searchParams.get("order") || "ASC";
-
-    const newOrder =
-      currentSort === sort && currentOrder === "ASC" ? "DESC" : "ASC";
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("sort", sort);
-    nextSearchParams.set("order", newOrder);
-
-    setSearchParams(nextSearchParams);
-  }
-
-  //정렬 기호 표시 변경
-  useEffect(() => {
-    const sort = searchParams.get("sort") || "customer_key";
-    const order = searchParams.get("order") || "DESC";
-    setStandard({ sort, order });
-    setCheckedActive(searchParams.get("active") === "true");
-  }, [searchParams]);
-
-  // console.log("p", standard);
-
+  // 검색 초기화
   const handleResetClick = () => {
-    setSearchParams();
+    setSearchParams({ page: "1" }); // searchParams 초기화
+    setSearch({ type: "all", keyword: "" }); // search 상태도 초기화
   };
 
   return (
@@ -273,14 +195,14 @@ function Customer() {
             onNewClick={() => setAddDialogOpen(true)}
           />
         </Stack>
-        {/*Dialog*/}
+
+        {/* Dialog */}
         <div>
           <CustomerAdd
             isOpen={addDialogOpen}
             onCancel={() => setAddDialogOpen(false)}
             onSave={handleSaveClick}
           />
-
           <CustomerView
             isOpen={editDialogOpen}
             customerKey={customerKey}
