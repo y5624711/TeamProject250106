@@ -5,6 +5,7 @@ import com.example.backend.service.standard.franchise.FranchiseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,6 +20,7 @@ public class FranchiseController {
 
     // 가맹점 등록하기
     @PostMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise) {
         // 중복 체크
         int duplicateCount = service.duplicateFranchise(franchise);
