@@ -5,6 +5,8 @@ CREATE TABLE TB_CUSTMST
     customer_code            VARCHAR(13) NOT NULL UNIQUE,
     customer_name            VARCHAR(30) NOT NULL UNIQUE,
     customer_rep             VARCHAR(5)  NOT NULL,
+    industry                 VARCHAR(30) NOT NULL,
+    corporate_no             VARCHAR(13) UNIQUE,
     customer_no              VARCHAR(13) NOT NULL UNIQUE,
     customer_tel             VARCHAR(15) NOT NULL UNIQUE,
     customer_fax             VARCHAR(15),
@@ -14,6 +16,7 @@ CREATE TABLE TB_CUSTMST
     customer_active          BOOLEAN DEFAULT true,
     customer_note            VARCHAR(50)
 );
+
 
 
 DROP TABLE TB_CUSTMST;

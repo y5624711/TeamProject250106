@@ -332,6 +332,9 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             </Button>
           ) : (
             <HStack>
+              <Button onClick={onClose} variant="outline">
+                닫기
+              </Button>
               <Button onClick={handleDisapproveButton} variant="outline">
                 반려
               </Button>

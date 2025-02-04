@@ -28,11 +28,12 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave }) {
   const [customerName, setCustomerName] = useState("");
-  // const [customerCode, setCustomerCode] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [itemName, setItemName] = useState("");
   const [itemCodeList, setItemCodeList] = useState([]);
   const [customerRep, setCustomerRep] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [corporateNo, setCorporateNo] = useState("");
   const [customerNo, setCustomerNo] = useState("");
   const [customerTel, setCustomerTel] = useState("");
   const [customerFax, setCustomerFax] = useState("");
@@ -46,16 +47,17 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
   useEffect(() => {
     axios.get("/api/customer/itemCode/list").then((res) => {
       setItemCodeList(res.data);
-      console.log("호출", itemCodeList);
+      // console.log("호출", itemCodeList);
     });
   }, []);
 
   const resetState = () => {
     setCustomerName("");
-    // setCustomerCode("");
     setItemCode("");
     setItemName("");
+    setIndustry("");
     setCustomerRep("");
+    setCorporateNo("");
     setCustomerNo("");
     setCustomerTel("");
     setCustomerFax("");
@@ -75,10 +77,11 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
       return;
     }
     const customerData = {
-      // customerCode,
       customerName,
       customerRep,
       itemCode,
+      industry,
+      corporateNo,
       customerNo,
       customerTel,
       customerFax,
@@ -140,49 +143,63 @@ function CustomerAdd({ isOpen, onCancel, onSave }) {
               onChange={(e) => setCustomerName(e.target.value)}
             />
           </Field>
-          <Field label={"취급 품목"} orientation={"horizontal"}>
-            <SelectRoot
-              onValueChange={(e) => {
-                setItemName(e.value);
-                const selectedItem = itemCodeList.find(
-                  (item) => item.commonCodeName == e.value,
-                );
-                // console.log("내부", selectedItem);
-                if (selectedItem) {
-                  setItemCode(selectedItem.commonCode); // 선택된 품목 코드 설정
-                }
-              }}
-            >
-              <SelectTrigger>
-                <SelectValueText>{itemName || "품목 선택"}</SelectValueText>
-              </SelectTrigger>
-              <SelectContent
-                style={{
-                  position: "absolute",
-                  zIndex: 100,
-                  width: "87%",
-                  top: "40px",
+          <HStack>
+            <Field label={"취급 품목"} orientation={"horizontal"}>
+              <SelectRoot
+                onValueChange={(e) => {
+                  setItemName(e.value);
+                  const selectedItem = itemCodeList.find(
+                    (item) => item.commonCodeName == e.value,
+                  );
+                  // console.log("내부", selectedItem);
+                  if (selectedItem) {
+                    setItemCode(selectedItem.commonCode); // 선택된 품목 코드 설정
+                  }
                 }}
               >
-                {myItems.items.map((item) => (
-                  <SelectItem key={item.value} item={item.label}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
-          </Field>
-          <HStack>
-            <Field orientation="horizontal" label={"대표자"}>
+                <SelectTrigger>
+                  <SelectValueText>{itemName || "품목 선택"}</SelectValueText>
+                </SelectTrigger>
+                <SelectContent
+                  style={{
+                    position: "absolute",
+                    zIndex: 100,
+                    width: "87%",
+                    top: "40px",
+                  }}
+                >
+                  {myItems.items.map((item) => (
+                    <SelectItem key={item.value} item={item.label}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            </Field>
+            <Field orientation="horizontal" label={"업종"}>
               <Input
-                value={customerRep}
-                onChange={(e) => setCustomerRep(e.target.value)}
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
               />
             </Field>
+          </HStack>
+          <Field orientation="horizontal" label={"대표자"}>
+            <Input
+              value={customerRep}
+              onChange={(e) => setCustomerRep(e.target.value)}
+            />
+          </Field>
+          <HStack>
             <Field orientation="horizontal" label={"사업자 번호"}>
               <Input
                 value={customerNo}
                 onChange={(e) => setCustomerNo(e.target.value)}
+              />
+            </Field>
+            <Field orientation="horizontal" label={"법인 번호"}>
+              <Input
+                value={corporateNo}
+                onChange={(e) => setCorporateNo(e.target.value)}
               />
             </Field>
           </HStack>

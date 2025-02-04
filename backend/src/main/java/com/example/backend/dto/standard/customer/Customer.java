@@ -10,6 +10,8 @@ public class Customer {
     private String itemCode;
     private String itemName;
     private String customerRep;
+    private String industry;
+    private String corporateNo;
     private String customerNo;
     private String customerTel;
     private String customerFax;
