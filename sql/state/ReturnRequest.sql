@@ -3,13 +3,25 @@ USE teamPrj0106;
 CREATE TABLE TB_RTN_REQ
 (
     return_request_key   INT PRIMARY KEY AUTO_INCREMENT,
-    serial_no            VARCHAR(20) NOT NULL REFERENCES TB_ITEMSUB (serial_no),
-    franchise_code       VARCHAR(13) NOT NULL REFERENCES TB_FRNCHSMST (franchise_code),
-    business_employee_no VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
-    customer_code        VARCHAR(13) NOT NULL REFERENCES TB_CUSTMST (customer_code),
+    serial_no            VARCHAR(6) NOT NULL,
+    franchise_code       VARCHAR(6) NOT NULL,
+    business_employee_no VARCHAR(9) NOT NULL,
+    customer_code        VARCHAR(6) NOT NULL,
     return_request_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_consent       BOOLEAN,
-    return_request_note  VARCHAR(50)
+    return_request_note  VARCHAR(50),
+    FOREIGN KEY (serial_no) REFERENCES TB_ITEMSUB (serial_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (franchise_code) REFERENCES TB_FRNCHSMST (franchise_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (business_employee_no) REFERENCES TB_EMPMST (employee_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (customer_code) REFERENCES TB_CUSTMST (customer_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 DROP TABLE TB_RTN_REQ;

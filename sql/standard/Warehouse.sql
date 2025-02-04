@@ -3,10 +3,10 @@ USE teamPrj0106;
 CREATE TABLE TB_WHMST
 (
     warehouse_key            INT PRIMARY KEY NULL AUTO_INCREMENT,
-    customer_code            VARCHAR(13)     NOT NULL,
-    customer_employee_no     VARCHAR(13)     NOT NULL,
+    customer_code            VARCHAR(6)      NOT NULL,
+    customer_employee_no     VARCHAR(9)      NOT NULL,
     warehouse_name           VARCHAR(30)     NOT NULL,
-    warehouse_code           VARCHAR(13)     NOT NULL UNIQUE,
+    warehouse_code           VARCHAR(6)      NOT NULL UNIQUE,
     warehouse_tel            VARCHAR(13)     NOT NULL,
     warehouse_address        VARCHAR(50)     NOT NULL,
     warehouse_address_detail VARCHAR(20)     NULL,
@@ -67,3 +67,6 @@ WHERE warehouse_code LIKE CONCAT('WHS', '%')
 UPDATE TB_WHMST
 SET warehouse_code = 'WHS012'
 WHERE warehouse_key = 16;
+
+
+DROP TABLE TB_PURCH_REQ;

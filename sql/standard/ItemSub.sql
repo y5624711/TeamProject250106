@@ -3,8 +3,8 @@ USE teamPrj0106;
 CREATE TABLE TB_ITEMSUB
 (
     item_sub_key     INT PRIMARY KEY AUTO_INCREMENT,
-    item_common_code VARCHAR(5)  NOT NULL,
-    serial_no        VARCHAR(20) NOT NULL UNIQUE,
+    item_common_code VARCHAR(5) NOT NULL,
+    serial_no        VARCHAR(6) NOT NULL UNIQUE,
     item_sub_active  BOOLEAN DEFAULT TRUE,
     item_sub_note    VARCHAR(50),
 
@@ -44,5 +44,5 @@ DROP TABLE TB_ITEMSUB;
 desc TB_ITEMSUB;
 
 #  ITEMSUB 에 현재 위치 나타내는 컬럼 없길래 추가  > VARCHAR 5 아니면 수정좀 부탁드려요
-ALTER TABLE  TB_ITEMSUB
- add column  current_common_code VARCHAR(5);
+ALTER TABLE TB_ITEMSUB
+    add column current_common_code VARCHAR(5);

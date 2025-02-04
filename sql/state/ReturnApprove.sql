@@ -3,13 +3,22 @@ USE teamPrj0106;
 CREATE TABLE TB_RTN_APPR
 (
     return_approve_key     INT PRIMARY KEY AUTO_INCREMENT,
-    return_request_key     INT         NOT NULL REFERENCES TB_RTN_REQ (return_request_key),
-    customer_configurer_no VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
-    customer_employee_no   VARCHAR(13) NOT NULL REFERENCES TB_EMPMST (employee_no),
-    return_no              VARCHAR(13) NOT NULL UNIQUE,
+    return_request_key     INT        NOT NULL,
+    customer_configurer_no VARCHAR(9) NOT NULL,
+    customer_employee_no   VARCHAR(9) NOT NULL,
+    return_no              VARCHAR(6) NOT NULL UNIQUE,
     return_approve_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     return_date            DATE,
-    return_approve_note    VARCHAR(50)
+    return_approve_note    VARCHAR(50),
+    FOREIGN KEY (return_request_key) REFERENCES TB_RTN_REQ (return_request_key)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (customer_configurer_no) REFERENCES TB_EMPMST (employee_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (customer_employee_no) REFERENCES TB_EMPMST (employee_no)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 DROP TABLE TB_RTN_APPR;

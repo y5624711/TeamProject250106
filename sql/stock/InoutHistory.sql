@@ -3,16 +3,16 @@ USE teamPrj0106;
 CREATE TABLE TB_INOUT_HIS
 (
     inout_history_key    INT         NULL AUTO_INCREMENT PRIMARY KEY,
-    serial_no            VARCHAR(20) NOT NULL,
-    warehouse_code       VARCHAR(13) NOT NULL,
+    serial_no            VARCHAR(6)  NOT NULL,
+    warehouse_code       VARCHAR(6)  NOT NULL,
     inout_common_code    VARCHAR(5)  NOT NULL,
-    customer_employee_no VARCHAR(13) NOT NULL,
-    business_employee_no VARCHAR(13) NOT NULL,
-    franchise_code       VARCHAR(13) NULL,
+    customer_employee_no VARCHAR(9)  NOT NULL,
+    business_employee_no VARCHAR(9)  NOT NULL,
+    franchise_code       VARCHAR(6)  NULL,
     location_key         INT         NULL,
     inout_history_date   DATETIME DEFAULT NOW(),
     inout_history_note   VARCHAR(50) NULL,
-    inout_no             VARCHAR(13),
+    inout_no             VARCHAR(6),
     FOREIGN KEY (serial_no) REFERENCES TB_ITEMSUB (serial_no)
         ON DELETE CASCADE
         ON UPDATE CASCADE,

@@ -2,13 +2,14 @@ USE teamPrj0106;
 
 CREATE TABLE TB_LOCMST
 (
-    location_key   INT         NULL AUTO_INCREMENT PRIMARY KEY,
-    warehouse_code VARCHAR(13) NOT NULL,
-    row            VARCHAR(2)  NOT NULL,
-    col            VARCHAR(2)  NOT NULL,
-    shelf          INT         NOT NULL,
-    located        BOOLEAN DEFAULT FALSE,
-    location_note  VARCHAR(50) NULL,
+    location_key    INT         NULL AUTO_INCREMENT PRIMARY KEY,
+    warehouse_code  VARCHAR(6)  NOT NULL,
+    row             VARCHAR(2)  NOT NULL,
+    col             VARCHAR(2)  NOT NULL,
+    shelf           INT         NOT NULL,
+    located         BOOLEAN DEFAULT FALSE,
+    location_active BOOLEAN DEFAULT TRUE,
+    location_note   VARCHAR(50) NULL,
     FOREIGN KEY (warehouse_code) REFERENCES TB_WHMST (warehouse_code)
         ON DELETE CASCADE
         ON UPDATE CASCADE

@@ -1,11 +1,11 @@
 CREATE TABLE TB_INSTL_REQ
 (
     install_request_key     INT PRIMARY KEY AUTO_INCREMENT,
-    item_common_code        VARCHAR(5)  NOT NULL,
-    franchise_code          VARCHAR(13) NOT NULL,
-    business_employee_no    VARCHAR(13) NOT NULL,
-    customer_code           VARCHAR(13) NOT NULL,
-    install_request_amount  INT         NOT NULL,
+    item_common_code        VARCHAR(5) NOT NULL,
+    franchise_code          VARCHAR(6) NOT NULL,
+    business_employee_no    VARCHAR(9) NOT NULL,
+    customer_code           VARCHAR(6) NOT NULL,
+    install_request_amount  INT        NOT NULL,
     install_request_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     install_request_consent BOOLEAN,
     install_request_note    VARCHAR(50),
@@ -13,11 +13,11 @@ CREATE TABLE TB_INSTL_REQ
     CONSTRAINT fk_install_request_common FOREIGN KEY (item_common_code)
         REFERENCES TB_SYSCOMM (common_code) ON UPDATE CASCADE,
     CONSTRAINT fk_install_request_franchise FOREIGN KEY (franchise_code)
-        REFERENCES TB_FRNCHSMST (franchise_code),
+        REFERENCES TB_FRNCHSMST (franchise_code) ON UPDATE CASCADE,
     CONSTRAINT fk_install_request_business FOREIGN KEY (business_employee_no)
-        REFERENCES TB_EMPMST (employee_no),
+        REFERENCES TB_EMPMST (employee_no) ON UPDATE CASCADE,
     CONSTRAINT fk_install_request_customer FOREIGN KEY (customer_code)
-        REFERENCES TB_CUSTMST (customer_code)
+        REFERENCES TB_CUSTMST (customer_code) ON UPDATE CASCADE
 );
 SELECT i.install_request_key,
        f.franchise_name,

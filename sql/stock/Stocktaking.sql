@@ -2,14 +2,14 @@ USE teamPrj0106;
 
 CREATE TABLE TB_STKTK
 (
-    stocktaking_key      INT         NULL AUTO_INCREMENT PRIMARY KEY,
-    item_code            VARCHAR(5)  NOT NULL,
-    warehouse_code       VARCHAR(13) NOT NULL,
-    customer_employee_no VARCHAR(13) NOT NULL,
-    count_current        INT         NULL,
-    count_configuration  INT         NULL,
+    stocktaking_key      INT        NULL AUTO_INCREMENT PRIMARY KEY,
+    item_code            VARCHAR(5) NOT NULL,
+    warehouse_code       VARCHAR(6) NOT NULL,
+    customer_employee_no VARCHAR(9) NOT NULL,
+    count_current        INT        NULL,
+    count_configuration  INT        NULL,
     count_difference     INT AS (count_configuration - count_current) STORED,
-    stocktaking_type     BOOLEAN     NOT NULL,
+    stocktaking_type     BOOLEAN    NOT NULL,
     stocktaking_date     DATETIME DEFAULT NOW(),
     FOREIGN KEY (item_code) REFERENCES TB_SYSCOMM (common_code)
         ON DELETE CASCADE

@@ -4,8 +4,8 @@ use teamPrj0106;
 CREATE TABLE TB_EMPMST (
                          employee_key INT AUTO_INCREMENT PRIMARY KEY,
                          employee_common_code VARCHAR(5) NOT NULL,
-                        employee_workplace_code VARCHAR(13) NOT NULL ,
-                         employee_no VARCHAR(13) NOT NULL,
+                        employee_workplace_code VARCHAR(6) NOT NULL ,
+                         employee_no VARCHAR(9) NOT NULL,
                         employee_password VARCHAR(20) default 1234,
                         employee_name VARCHAR(5) NOT NULL ,
                         employee_tel VARCHAR(15) NOT NULL ,
