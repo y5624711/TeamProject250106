@@ -184,4 +184,11 @@ public interface LocationMapper {
             WHERE warehouse_code=#{warehouseCode} AND row=#{row} AND col=#{col} AND shelf=#{shelf}
             """)
     Integer checkLocation(String warehouseCode, String row, String col, Integer shelf);
+
+    @Update("""
+            UPDATE TB_LOCMST
+            SET location_active=#{active}
+            WHERE warehouse_code=#{warehouseCode}
+            """)
+    int changeLocationActive(String warehouseCode, Boolean active);
 }

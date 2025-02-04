@@ -273,4 +273,11 @@ public interface WarehouseMapper {
             WHERE employee_workplace_code=#{customerCode}
             """)
     List<Warehouse> getWarehouseEmployeeList(String customerCode);
+
+    @Select("""
+            SELECT warehouse_active
+            FROM TB_WHMST
+            WHERE warehouse_code=#{warehouseCode}
+            """)
+    Boolean checkChangeActive(String warehouseCode);
 }
