@@ -44,5 +44,8 @@ public class Install {
     private Integer countItem;
     private LocalDate inoutHistoryDate;
     private LocalDate installDate;
-    private String installDisapproveNote;
+    private String disapproveNote;
+    private LocalDate disapproveDate;
+    private String disapproveEmployeeNo;
+    private String disapproveEmployeeName;
 }

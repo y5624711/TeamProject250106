@@ -23,6 +23,12 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 반려 후 추가 데이터(반려 날짜, 반려자, 반려 비고) 가져오기
+    @GetMapping("/disapproveData/{installKey}")
+    public Install getInstallDisapproveData(@PathVariable int installKey) {
+        return service.getInstalldisApproveData(installKey);
+    }
+
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @GetMapping("/approveData/{installKey}")
     public Install getInstallApproveData(@PathVariable int installKey) {

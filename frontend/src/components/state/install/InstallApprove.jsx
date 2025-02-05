@@ -41,6 +41,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const [installRequest, setInstallRequest] = useState({});
   const [customerEmployeeList, setCustomerEmployeeList] = useState([]);
   const [isApproved, setIsApproved] = useState(null);
+  const [disapproveData, setDisapproveData] = useState([]);
 
   const handleClose = () => {
     setInstallApprove(initialInstallApprove);
@@ -77,6 +78,17 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     }
   }, [installKey, isApproved]);
 
+  // 반려 상태일땐 반려 데이터 가져오기
+  useEffect(() => {
+    if (installRequest.installRequestConsent === false) {
+      axios
+        .get(`/api/install/disapproveData/${installKey}`)
+        .then((response) => {
+          setDisapproveData(response.data);
+        });
+    }
+  }, [installRequest]);
+
   // 설치 승인
   const handleApproveClick = () => {
     const approveData = {
@@ -103,10 +115,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           ...prev,
           outputNo: res.data.outputNo,
           installApproveDate: res.data.installApproveDate,
-          // customerInstallerName: prev.customerInstallerName,
-          // customerInstallerNo: prev.customerInstallerNo,
-          // installScheduleDate: prev.installScheduleDate,
-          // installApproveNote: prev.installApproveNote,
         }));
         setChange((prev) => !prev);
         setIsApproved(true);
@@ -122,7 +130,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
     const disapproveData = {
       installRequestKey: installKey,
       customerEmployeeNo: id, // 협력업체 직원 사번 (로그인된 사용자 = 반려자)
-      installDisapproveNote: installApprove.installApproveNote,
+      disapproveNote: installApprove.installApproveNote,
     };
 
     axios
@@ -133,6 +141,9 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           description: data.message.text,
           type: data.message.type,
         });
+        return axios.get(`/api/install/disapproveData/${installKey}`);
+      })
+      .then(() => {
         setChange((prev) => !prev);
         setIsApproved(false);
       })
@@ -294,7 +305,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     <Field label={"사번"} orientation="horizontal">
                       <Input
                         value={installApprove.customerInstallerNo}
-                        variant="subtle"
+                        variant={isApproved == null ? "subtle" : "outline"}
                         readOnly
                       />
                     </Field>
@@ -329,18 +340,26 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     label={isApproved != true ? "비고" : "승인 비고"}
                     orientation="horizontal"
                   >
-                    <Textarea
-                      placeholder={isApproved ? "" : "최대 50자"}
-                      value={installApprove.installApproveNote}
-                      onChange={(e) =>
-                        setInstallApprove({
-                          ...installApprove,
-                          installApproveNote: e.target.value,
-                        })
-                      }
-                      maxHeight={"40px"}
-                      readOnly={isApproved}
-                    />
+                    {isApproved != true ? (
+                      <Textarea
+                        placeholder={"최대 50자"}
+                        onChange={(e) =>
+                          setInstallApprove({
+                            ...installApprove,
+                            installApproveNote: e.target.value,
+                          })
+                        }
+                        maxHeight={"100px"}
+                      />
+                    ) : installApprove.installApproveNote ? (
+                      <Textarea
+                        readOnly
+                        value={installApprove.installApproveNote}
+                        maxHeight={"40px"}
+                      />
+                    ) : (
+                      <Input readOnly value={"내용 없음"} />
+                    )}
                   </Field>
                 </Stack>
               )}
@@ -348,17 +367,31 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 <Stack gap={"15px"}>
                   <HStack>
                     <Field label={"반려자"} orientation="horizontal">
-                      <Input value={"222"} readOnly />
+                      <Input
+                        value={disapproveData.disapproveEmployeeName}
+                        readOnly
+                      />
                     </Field>
                     <Field label={"사번"} orientation="horizontal">
-                      <Input value={"222222222"} readOnly />
+                      <Input
+                        value={disapproveData.disapproveEmployeeNo}
+                        readOnly
+                      />
                     </Field>
                   </HStack>
                   <Field label={"반려 날짜"} orientation="horizontal">
-                    <Input value={"2222-22-22"} readOnly />
+                    <Input value={disapproveData.disapproveDate} readOnly />
                   </Field>
                   <Field label={"반려 비고"} orientation="horizontal">
-                    <Input value={"erse"} readOnly />
+                    {disapproveData.disapproveNote ? (
+                      <Textarea
+                        readOnly
+                        value={disapproveData.disapproveNote}
+                        maxHeight={"100px"}
+                      />
+                    ) : (
+                      <Input readOnly value={"내용 없음"} />
+                    )}
                   </Field>
                 </Stack>
               )}

@@ -291,4 +291,10 @@ public class InstallService {
     public Install getInstallApproveData(int installKey) {
         return mapper.getInstallApproveData(installKey);
     }
+
+    // 설치 반려 후 추가 데이터(반려 날짜, 반려자, 반려 비고) 가져오기
+    public Install getInstalldisApproveData(int installKey) {
+        return mapper.getInstalldisApproveData(installKey);
+    }
+
 }

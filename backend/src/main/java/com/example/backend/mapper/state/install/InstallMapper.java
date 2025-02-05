@@ -215,23 +215,32 @@ public interface InstallMapper {
                     ir.install_request_consent as requestConsent,
                     ia.output_no               as outputNo,
                     ia.customer_employee_no,
-                    e2.employee_name           as customerEmployeeName,
+                    -- 반려자가 있는 경우 반려자 이름을 customerEmployeeName으로 설정
+                    CASE
+                        WHEN ir.install_request_consent = 0 THEN e4.employee_name
+                        ELSE e2.employee_name
+                    END AS customerEmployeeName,
                     e3.employee_name           as customerInstallerName,
                     ia.install_approve_date    as installApproveDate,
                     ir.install_request_date    as installRequestDate,
                     ih.inout_history_date      as inoutHistoryDate,
                     ia.install_approve_consent as approveConsent,
-                    COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date, ih.inout_history_date),
-                                           ir.install_request_date,
-                                           ia.install_approve_date,
-                                           ih.inout_history_date) AS installDate
+                    -- NULL을 고려하여 최댓값을 정확하게 선택
+                    GREATEST(
+                        COALESCE(ir.install_request_date, '0001-01-01'),
+                        COALESCE(ia.install_approve_date, '0001-01-01'),
+                        COALESCE(ih.inout_history_date, '0001-01-01'),
+                        COALESCE(da.disapprove_date, '0001-01-01')
+                    ) AS installDate
                 FROM TB_INSTL_REQ ir
                     LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                    LEFT JOIN TB_DISPR da ON ir.install_request_key = da.state_request_key
                     LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
                     LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
                     LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 요청자 조인
                     LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no -- 승인자 조인
                     LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no -- 설치자 조인
+                    LEFT JOIN TB_EMPMST e4 ON da.disapprove_employee_no = e4.employee_no -- 반려자 조인
                     LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                     LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                     LEFT JOIN TB_INOUT_HIS ih ON ia.output_no = ih.inout_no
@@ -383,7 +392,7 @@ public interface InstallMapper {
     @Insert("""
             INSERT INTO TB_DISPR
             (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
-            VALUES (#{installRequestKey},'OUT', #{customerEmployeeNo}, #{installDisapproveNote})
+            VALUES (#{installRequestKey},'OUT', #{customerEmployeeNo}, #{disapproveNote})
             """)
     int installDisapprove(Install install);
 
@@ -412,4 +421,12 @@ public interface InstallMapper {
             """)
     String selectCompanyById(String id);
 
+    // 설치 반려 후 추가 데이터(반려 날짜, 반려자, 반려 비고) 가져오기
+    @Select("""
+            SELECT d.disapprove_employee_no, e.employee_name as disapproveEmployeeName, d.disapprove_date, d.disapprove_note
+            FROM TB_DISPR d
+                LEFT JOIN TB_EMPMST e ON d.disapprove_employee_no = e.employee_no
+            WHERE state_request_key = #{installKey}
+            """)
+    Install getInstalldisApproveData(int installKey);
 }
