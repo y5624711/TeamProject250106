@@ -1,7 +1,6 @@
 package com.example.backend.mapper.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
-import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -260,12 +259,21 @@ public interface StocktakingMapper {
 
     //    실제 수량이 더 많을 때 사용
     @Select("""
-            SELECT l.location_key, ist.serial_no
+            SELECT l.location_key
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-            LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
-            LEFT JOIN TB_ITEMSUB ist ON cus.item_code=ist.item_common_code
             WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
             """)
-    List<StocktakingItem> getStocktakingLocationList(String warehouseCode, Integer getCode);
+    List<Integer> getStocktakingLocationList(String warehouseCode, Integer getCode);
+
+//    //    실제 수량이 더 많을 때 사용
+//    @Select("""
+//            SELECT l.location_key
+//            FROM TB_LOCMST l
+//            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+//            LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+//            LEFT JOIN TB_ITEMSUB ist ON cus.item_code=ist.item_common_code
+//            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
+//            """)
+//    List<StocktakingItem> getStocktakingLocationList(String warehouseCode, Integer getCode);
 }

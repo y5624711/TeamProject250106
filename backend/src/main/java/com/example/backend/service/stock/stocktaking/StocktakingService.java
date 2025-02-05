@@ -1,7 +1,6 @@
 package com.example.backend.service.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
-import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -121,25 +120,18 @@ public class StocktakingService {
         return countCurrent;
     }
 
-    public List<StocktakingItem> getStocktakingLocationList(String warehouseCode, String difference) {
+    public List<Integer> getStocktakingLocationList(String warehouseCode, String difference) {
 
         Integer getCode;
 
         if (difference.equals("1")) {
 //            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
             getCode = 1;
-            System.out.println(getCode);
-            System.out.println(mapper.getStocktakingLocationList(warehouseCode, getCode));
             return mapper.getStocktakingLocationList(warehouseCode, getCode);
-
         } else {
 //            실제수량이 많을 경우
-
             getCode = 0;
-            System.out.println(getCode);
-            System.out.println(mapper.getStocktakingLocationList(warehouseCode, getCode));
             return mapper.getStocktakingLocationList(warehouseCode, getCode);
-
         }
 
     }

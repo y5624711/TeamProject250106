@@ -100,7 +100,7 @@ function StocktakingAdd({
 
   // 로케이션 정보 가져오기
   useEffect(() => {
-    if (warehouseCode) {
+    if (warehouseCode && difference) {
       axios
         .get(`/api/stocktaking/location/${warehouseCode}/${difference}`)
         .then((res) => {
@@ -111,7 +111,7 @@ function StocktakingAdd({
           setLocationList(locationOptions);
         });
     }
-  }, [warehouseCode]);
+  }, [warehouseCode, difference]);
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {

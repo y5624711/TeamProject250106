@@ -1,7 +1,6 @@
 package com.example.backend.controller.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
-import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -83,7 +82,7 @@ public class StocktakingController {
 
     //    창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
     @GetMapping("location/{warehouseCode}/{difference}")
-    public List<StocktakingItem> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
+    public List<Integer> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
         return service.getStocktakingLocationList(warehouseCode, difference);
     }
 
