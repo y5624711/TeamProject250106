@@ -99,7 +99,7 @@ public class LocationController {
 
     //    창고 정보 컬렉션으로 불러오기
     @GetMapping("warehouse")
-    public List<Location> warehouseList() {
-        return service.getLocationWarehouseList();
+    public List<Location> warehouseList(Authentication auth) {
+        return service.getLocationWarehouseList(auth);
     }
 }

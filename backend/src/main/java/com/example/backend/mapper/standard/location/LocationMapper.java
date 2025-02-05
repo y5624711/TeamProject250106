@@ -190,10 +190,17 @@ public interface LocationMapper {
     Integer edit(Location location);
 
     @Select("""
-            SELECT warehouse_code, warehouse_name 
+            <script>
+            SELECT warehouse_code, warehouse_name
             FROM TB_WHMST
+            <if test="workplace == 'BIZ'">
+            </if>
+            <if test="workplace == 'CUS'">
+            WHERE customer_code=#{workplaceCode}
+            </if>
+            </script>
             """)
-    List<Location> getLocationWarehouseList();
+    List<Location> getLocationWarehouseList(String workplaceCode, String workplace);
 
     @Select("""
             SELECT COUNT(*)

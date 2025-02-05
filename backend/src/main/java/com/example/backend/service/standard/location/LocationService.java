@@ -77,8 +77,12 @@ public class LocationService {
         return mapper.edit(location) == 1;
     }
 
-    public List<Location> getLocationWarehouseList() {
-        return mapper.getLocationWarehouseList();
+    public List<Location> getLocationWarehouseList(Authentication auth) {
+
+        String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
+        String workplace = workplaceCode.substring(0, 3);
+
+        return mapper.getLocationWarehouseList(workplaceCode, workplace);
     }
 
     // 로케이션 정보가 다 입력됐는지 확인
