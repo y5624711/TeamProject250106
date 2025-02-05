@@ -21,17 +21,26 @@ public interface LocationMapper {
                 l.location_key,
                 l.location_note,
                 l.located,
-                w.warehouse_name
+                w.warehouse_name,
+                l.location_active
             FROM TB_LOCMST l
-            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_WHMST w ON l.warehouse_code = w.warehouse_code
             WHERE 
+                <if test="active == false">
+                    location_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND (
                     <if test="workplace == 'CUS'">
                         w.customer_code=#{workplaceCode}
                     </if>
                     <if test="workplace == 'BIZ'">
                         1=1
                     </if>
-                    <if test="searchType == 'all'">
+                )  
+                <if test="searchType == 'all'">
                     AND (
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -39,38 +48,38 @@ public interface LocationMapper {
                      OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.location_note LIKE CONCAT('%',#{searchKeyword},'%')
-                        )                   
-                    </if>
-                    <if test="searchType != 'all'">
-                         <choose>
-                             <when test="searchType == 'warehouse'">
-                                AND (
-                                 l.warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
-                                    )
-                              OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
-                             </when>
-                             <when test="searchType == 'row'">
-                                AND (
-                                 l.row LIKE CONCAT('%', #{searchKeyword}, '%')
-                                    )
-                             </when>
-                             <when test="searchType == 'col'">
-                                AND (
-                                 l.col LIKE CONCAT('%', #{searchKeyword}, '%')
-                                    )
-                             </when>
-                             <when test="searchType == 'shelf'">
-                                AND (
-                                 l.shelf LIKE CONCAT('%', #{searchKeyword}, '%')
-                                    )
-                             </when>
-                             <when test="searchType == 'note'">
-                                AND (
-                                 l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
-                                    )
-                             </when>
-                         </choose>
-                     </if>
+                    )                   
+                </if>
+                <if test="searchType != 'all'">
+                    <choose>
+                        <when test="searchType == 'warehouse'">
+                            AND (
+                                l.warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                            OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        </when>
+                        <when test="searchType == 'row'">
+                            AND (
+                                l.row LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                        </when>
+                        <when test="searchType == 'col'">
+                            AND (
+                                l.col LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                        </when>
+                        <when test="searchType == 'shelf'">
+                            AND (
+                                l.shelf LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                        </when>
+                        <when test="searchType == 'note'">
+                            AND (
+                                l.location_note LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                        </when>
+                    </choose>
+                </if>
                 ORDER BY
                 <if test="sort != null and sort != ''">
                     ${sort} ${order}
@@ -82,7 +91,7 @@ public interface LocationMapper {
             
             </script>
             """)
-    List<Location> list(String searchType, String searchKeyword, Integer pageList, String sort, String order, String workplaceCode, String workplace);
+    List<Location> list(String searchType, String searchKeyword, Integer pageList, String sort, String order, String workplaceCode, String workplace, Boolean active);
 
     @Insert("""
             INSERT INTO TB_LOCMST (warehouse_code, row, col, shelf, location_note)
@@ -95,7 +104,14 @@ public interface LocationMapper {
             SELECT COUNT(*)
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-            WHERE 
+            WHERE
+                <if test="active == false">
+                    location_active = TRUE
+                </if>
+                <if test="active == true">
+                    1=1
+                </if>
+                AND (
                     <if test="workplace == 'CUS'">
                         w.customer_code=#{workplaceCode}
                     </if>
@@ -103,6 +119,7 @@ public interface LocationMapper {
                         1=1
                     </if>
                     <if test="searchType == 'all'">
+                )
                     AND (
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -144,7 +161,7 @@ public interface LocationMapper {
                      </if>
             </script>
             """)
-    Integer countAllLocation(String searchType, String searchKeyword, String workplaceCode, String workplace);
+    Integer countAllLocation(String searchType, String searchKeyword, String workplaceCode, String workplace, Boolean active);
 
     @Select("""
             <script>

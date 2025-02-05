@@ -44,7 +44,7 @@ function Location(props) {
       setCountLocation(res.data.count);
     });
     window.scrollTo(0, 0);
-  }, [searchParams, isAddDialogOpen, reborn]);
+  }, [searchParams, isAddDialogOpen, reborn, checkedActive]);
 
   useEffect(() => {
     const page = parseInt(searchParams.get("page")) || 1;
@@ -103,7 +103,7 @@ function Location(props) {
           />
           <Checkbox
             checked={checkedActive}
-            onChange={toggleCheckedActive}
+            onCheckedChange={toggleCheckedActive}
             mt={1}
             mb={3}
             ml={3}

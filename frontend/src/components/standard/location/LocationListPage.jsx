@@ -11,15 +11,13 @@ function WarehouseListPage({
   return (
     <>
       <Table.Row
-        style={{
-          cursor: "pointer",
-        }}
         key={location.locationKey}
         onDoubleClick={() => {
           setIsDetailDialogOpen(true);
           setSelectedLocationKey(location.locationKey);
         }}
-        _hover={{ backgroundColor: "gray.200" }}
+        _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
+        bg={location.locationActive ? "white" : "gray.200"}
       >
         <Table.Cell textAlign="center" verticalAlign="middle">
           {index + 1}

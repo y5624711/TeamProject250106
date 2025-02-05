@@ -25,8 +25,11 @@ public class LocationController {
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
                                     @RequestParam(value = "sort", defaultValue = "") String sort,
-                                    @RequestParam(value = "order", defaultValue = "") String order, Authentication auth) {
-        return service.list(searchType, searchKeyword, page, sort, order, auth);
+                                    @RequestParam(value = "order", defaultValue = "") String order,
+                                    @RequestParam(value = "active", defaultValue = "false") Boolean active,
+                                    Authentication auth) {
+//        System.out.println("active: " + active);
+        return service.list(searchType, searchKeyword, page, sort, order, auth, active);
     }
 
     @PostMapping("add")
