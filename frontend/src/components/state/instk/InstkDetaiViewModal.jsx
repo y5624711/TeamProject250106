@@ -183,7 +183,7 @@ export function InstkDetaiViewModal({
                   <Field label={"사번"} orientation="horizontal">
                     <Input readOnly value={instk.inputStockEmployeeNo} />
                   </Field>
-                </HStack>
+                </HStack>ㅋ
               ) : (
                 <HStack>
                   <Field label={"반려/승인자"} orientation="horizontal">
