@@ -113,6 +113,17 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     }));
   };
 
+  const checkPasswordLength = (password, note) => {
+    if (password.length > 20 || note.length > 50) {
+      toaster.create({
+        type: "warning",
+        description: "비밀번호 20자, 비고 50자 이하만 입력 가능합니다.",
+      });
+      return false;
+    }
+    return true;
+  };
+
   const formDataClear = () => {
     setFormData({
       employeeNo: "",
@@ -129,6 +140,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const handleSubmit = () => {
     // 수정일 때
     if (viewKey !== -1) {
+      if (!checkPasswordLength(formData.password, formData.note)) return;
       const data = {
         employeeKey: viewKey,
         employeeCommonCode: formData.selectedCommonCode,
