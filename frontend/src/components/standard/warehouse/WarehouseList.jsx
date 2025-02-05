@@ -60,6 +60,7 @@ function WarehouseList({
           <Table.Body>
             {warehouseList.map((warehouse, index) => (
               <WarehouseListPage
+                key={warehouse.warehouseKey}
                 index={index}
                 warehouse={warehouse}
                 setSelectedWarehouseKey={setSelectedWarehouseKey}

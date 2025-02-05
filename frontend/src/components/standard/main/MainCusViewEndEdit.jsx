@@ -144,24 +144,33 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   gap: "15px",
                 }}
               >
-                <HStack>
-                  <Field orientation="horizontal" label={"업체명"}>
+                <Box display="flex" gap={5}>
+                  <Field orientation="horizontal" label={"업체명"} flex={0.75}>
                     <Input
                       name="customerName"
                       value={customer.customerName || ""}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"업체 코드"}>
+                  <Field
+                    orientation="horizontal"
+                    label={"업체 코드"}
+                    css={{ "--field-label-width": "80px" }}
+                    flex={0.8}
+                  >
                     <Input
                       readOnly
                       value={customer.customerCode || ""}
                       variant={"subtle"}
                     />
                   </Field>
-                </HStack>
-                <HStack>
-                  <Field orientation="horizontal" label={"취급 품목"}>
+                </Box>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={"취급 품목"}
+                    flex={0.75}
+                  >
                     <Input
                       readOnly
                       name="itemName"
@@ -169,14 +178,19 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                       variant={"subtle"}
                     />
                   </Field>
-                  <Field orientation={"horizontal"} label={"업종"}>
+                  <Field
+                    orientation={"horizontal"}
+                    label={"업종"}
+                    css={{ "--field-label-width": "80px" }}
+                    flex={0.8}
+                  >
                     <Input
                       readOnly
                       name={"industry"}
                       value={customer.industry}
                     ></Input>
                   </Field>
-                </HStack>
+                </Box>
                 <Field orientation="horizontal" label={"대표자"}>
                   <Input
                     name="customerRep"
@@ -184,38 +198,56 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     onChange={handleInputChange}
                   />
                 </Field>
-                <HStack>
-                  <Field orientation="horizontal" label={"사업자 번호"}>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={"사업자 번호"}
+                    flex={0.75}
+                  >
                     <Input
                       name="customerNo"
                       value={customer.customerNo}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"법인 번호"}>
+                  <Field
+                    orientation="horizontal"
+                    label={"법인 번호"}
+                    css={{ "--field-label-width": "80px" }}
+                    flex={0.8}
+                  >
                     <Input
                       name="corporateNo"
                       value={customer.corporateNo}
                       onChange={handleInputChange}
                     ></Input>
                   </Field>
-                </HStack>
-                <HStack>
-                  <Field orientation="horizontal" label={"전화번호"}>
+                </Box>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={"전화번호"}
+                    flex={0.75}
+                  >
                     <Input
                       name="customerTel"
                       value={customer.customerTel}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"팩스"}>
+                  <Field
+                    orientation="horizontal"
+                    label={"팩스"}
+                    css={{ "--field-label-width": "80px" }}
+                    flex={0.8}
+                  >
                     <Input
                       name="customerFax"
                       value={customer.customerFax}
                       onChange={handleInputChange}
                     />
                   </Field>
-                </HStack>
+                </Box>
                 <Field orientation="horizontal" label={"우편번호"}>
                   <Input
                     name={"customerPost"}

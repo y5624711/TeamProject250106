@@ -76,4 +76,14 @@ public class LoginService {
             return mapper.selectBusinessByCode(employee.getEmployeeNo());
         }
     }
+
+    public Boolean checkUseId(Employee employee) {
+        Boolean isActive = mapper.selectIdCheckUse(employee.getEmployeeNo());
+        return isActive != null ? isActive : Boolean.FALSE;
+    }
+
+    public Boolean checkId(Employee employee) {
+        Integer cnt = mapper.selectCheckId(employee.getEmployeeNo());
+        return cnt != null && cnt > 0;
+    }
 }

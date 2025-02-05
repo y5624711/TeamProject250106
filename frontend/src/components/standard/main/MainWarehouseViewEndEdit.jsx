@@ -106,42 +106,78 @@ export function MainWarehouseViewEndEdit({
         >
           {warehouse ? (
             <>
-              <Box display="flex" gap={4}>
-                <Field label="창고" orientation="horizontal" mb={15}>
+              <Box display="flex" gap={5}>
+                <Field label="창고" orientation="horizontal" flex={0.75}>
                   <Input
                     name={"warehouseName"}
                     value={warehouse.warehouseName || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label="창고 코드" orientation="horizontal" mb={15}>
-                  <Input value={warehouse.warehouseCode || ""} readOnly />
+                <Field
+                  label="창고 코드"
+                  orientation="horizontal"
+                  css={{ "--field-label-width": "80px" }}
+                  flex={0.8}
+                >
+                  <Input
+                    value={warehouse.warehouseCode || ""}
+                    readOnly
+                    variant={"subtle"}
+                  />
                 </Field>
               </Box>
-              <Box display="flex" gap={4}>
-                <Field label="담당 업체" orientation="horizontal" mb={15}>
-                  <Input value={warehouse.customerName || ""} readOnly />
+              <Box display="flex" gap={5}>
+                <Field label="담당 업체" orientation="horizontal" flex={0.75}>
+                  <Input
+                    value={warehouse.customerName || ""}
+                    readOnly
+                    variant={"subtle"}
+                  />
                 </Field>
-                <Field label="업체 코드" orientation="horizontal" mb={15}>
-                  <Input value={warehouse.customerCode || ""} readOnly />
+                <Field
+                  label="업체 코드"
+                  orientation="horizontal"
+                  css={{ "--field-label-width": "80px" }}
+                  flex={0.8}
+                >
+                  <Input
+                    value={warehouse.customerCode || ""}
+                    variant={"subtle"}
+                    readOnly
+                  />
                 </Field>
               </Box>
-              <Box display="flex" gap={4}>
-                <Field label="관리자" orientation="horizontal" mb={15}>
-                  <Input value={warehouse.employeeName || ""} readOnly />
+              <Box display="flex" gap={5}>
+                <Field label="관리자" orientation="horizontal" flex={0.75}>
+                  <Input
+                    value={warehouse.employeeName || ""}
+                    variant={"subtle"}
+                    readOnly
+                  />
                 </Field>
-                <Field label="사번" orientation="horizontal" mb={15}>
-                  <Input value={warehouse.customerEmployeeNo || ""} readOnly />
+                <Field
+                  label="사번"
+                  orientation="horizontal"
+                  css={{ "--field-label-width": "80px" }}
+                  flex={0.8}
+                >
+                  <Input
+                    value={warehouse.customerEmployeeNo || ""}
+                    variant={"subtle"}
+                    readOnly
+                  />
                 </Field>
               </Box>
-              <Field label="전화번호" orientation="horizontal" mb={15}>
+
+              <Field label="전화번호" orientation="horizontal">
                 <Input
                   name={"warehouseTel"}
                   value={warehouse.warehouseTel || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="우편번호" orientation="horizontal" mb={15}>
+              <Field label="우편번호" orientation="horizontal">
                 <Input
                   name={"warehousePost"}
                   value={warehouse.warehousePost || ""}
@@ -149,15 +185,20 @@ export function MainWarehouseViewEndEdit({
                 />
               </Field>
 
-              <Box display="flex" gap={4}>
-                <Field label="광역시도" orientation="horizontal" mb={15}>
+              <Box display="flex" gap={5}>
+                <Field label="광역시도" orientation="horizontal" flex={0.75}>
                   <Input
                     name={"warehouseState"}
                     value={warehouse.warehouseState || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field label="시군" orientation="horizontal" mb={15}>
+                <Field
+                  label="시군"
+                  orientation="horizontal"
+                  css={{ "--field-label-width": "80px" }}
+                  flex={0.8}
+                >
                   <Input
                     name={"warehouseCity"}
                     value={warehouse.warehouseCity || ""}
@@ -165,21 +206,21 @@ export function MainWarehouseViewEndEdit({
                   />
                 </Field>
               </Box>
-              <Field label="주소" orientation="horizontal" mb={15}>
+              <Field label="주소" orientation="horizontal">
                 <Input
                   name={"warehouseAddress"}
                   value={warehouse.warehouseAddress || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="상세 주소" orientation="horizontal" mb={15}>
+              <Field label="상세 주소" orientation="horizontal">
                 <Input
                   name={"warehouseAddressDetail"}
                   value={warehouse.warehouseAddressDetail || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="비고" orientation="horizontal" mb={15}>
+              <Field label="비고" orientation="horizontal">
                 <Textarea
                   style={{ maxHeight: "100px", overflowY: "auto" }}
                   placeholder="최대 50자"
