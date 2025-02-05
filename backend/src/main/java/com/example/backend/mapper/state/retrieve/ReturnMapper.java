@@ -256,7 +256,7 @@ public interface ReturnMapper {
     @Insert("""
             INSERT INTO TB_DISPR
             (state_request_key, state_common_code, disapprove_employee_no, disapprove_note) 
-            VALUES (#{returnRequestKey}, 'RETRN', #{customerEmployeeNo}, #{approveNote})
+            VALUES (#{returnRequestKey}, 'RETRN', #{customerEmployeeNo}, #{returnApproveNote})
             """)
     int addDisapprove(Return disapproveInfo);
 

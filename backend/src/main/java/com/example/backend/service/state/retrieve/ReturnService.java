@@ -106,7 +106,7 @@ public class ReturnService {
         //DISPR에 정보 추가
         int t2 = mapper.addDisapprove(disapproveInfo);
 
-        return t1 == 1;
+        return t1 == 1 && t2 == 1;
     }
 
     // 가맹점 코드로 시리얼번호 조회

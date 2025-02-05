@@ -101,6 +101,8 @@ function ReturnList({
     setLocalType(searchParams.get("type") || "all");
   }, [searchParams]);
 
+  console.log(returnList);
+
   return (
     <Box>
       {/*검색*/}
@@ -291,7 +293,7 @@ function ReturnList({
               <Table.Cell textAlign="center">
                 {data.customerEmployeeName
                   ? data.customerEmployeeName
-                  : data.disapproveName}
+                  : data.disapproveEmployeeName}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.customerConfigurerName
