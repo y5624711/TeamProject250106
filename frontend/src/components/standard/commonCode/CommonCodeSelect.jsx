@@ -7,14 +7,20 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
+import { createListCollection } from "@chakra-ui/react";
 
-export function CommonCodeSelect({ codeOptions, onSelectChange }) {
+export function CommonCodeSelect({ onSelectChange }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filter, setFilter] = useState(searchParams.get("filter") || "ALL");
+  const codeOptions = createListCollection({
+    items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
+  });
+  const defaultFilter = codeOptions.items[0].value;
+  const [filter, setFilter] = useState(defaultFilter);
 
   useEffect(() => {
-    const currentFilter = searchParams.get("filter") || "all";
-    setFilter(currentFilter);
+    const paramFilter =
+      searchParams.get("filter")?.toUpperCase() || defaultFilter;
+    setFilter(paramFilter);
   }, [searchParams]);
 
   const handleSelect = (selectedValue) => {
@@ -35,17 +41,17 @@ export function CommonCodeSelect({ codeOptions, onSelectChange }) {
       collection={codeOptions}
       width="160px"
       position="relative"
-      value={filter.toUpperCase()}
-      onValueChange={(value) => handleSelect(value.value)}
+      value={[filter]}
+      onValueChange={(e) => handleSelect(e.value)}
     >
       <SelectTrigger>
-        <SelectValueText placeholder={filter.toUpperCase()} />
+        <SelectValueText placeholder={filter} />
       </SelectTrigger>
 
       <SelectContent>
         {codeOptions?.items.map((option) => (
-          <SelectItem item={option.value.toUpperCase()} key={option.value}>
-            {option.value.toUpperCase()}
+          <SelectItem item={option.value} key={option.value}>
+            {option.value}
           </SelectItem>
         ))}
       </SelectContent>

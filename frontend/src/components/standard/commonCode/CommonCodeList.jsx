@@ -37,11 +37,6 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
-  // 코드 구분
-  const codeOptions = createListCollection({
-    items: ["all", "item", "standard", "state"].map((value) => ({ value })),
-  });
-
   return (
     <Box>
       <SearchBar
@@ -55,7 +50,6 @@ export function CommonCodeList({
         <Box css={{ "--field-label-width": "70px" }}>
           <Field label={"코드 구분"} orientation="horizontal" gap={0}>
             <CommonCodeSelect
-              codeOptions={codeOptions}
               onSelectChange={(nextSearchParam) =>
                 setSearchParams(nextSearchParam)
               }
