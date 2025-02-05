@@ -12,6 +12,7 @@ export function SelectCode({ selectOptions, onChange, selectValue }) {
   const handleSelect = (selectedItem) => {
     if (onChange) {
       onChange(selectedItem.value); // 선택된 값 전달
+      console.log(selectValue);
     }
   };
 
@@ -32,7 +33,7 @@ export function SelectCode({ selectOptions, onChange, selectValue }) {
         >
           {selectOptions.items.map((option) => (
             <SelectItem item={option} key={option.value}>
-              {option.label}
+              {option.value}
             </SelectItem>
           ))}
         </SelectContent>

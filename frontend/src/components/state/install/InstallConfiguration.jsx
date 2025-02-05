@@ -112,7 +112,12 @@ export function InstallConfiguration({
   }
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={handleClose}
+      size="lg"
+      scrollBehavior={"none"}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -211,17 +216,21 @@ export function InstallConfiguration({
               </Field>
             </HStack>
             <Field label={"완료 비고"} orientation="horizontal">
-              <Textarea
-                value={
-                  installData?.inoutHistoryDate
-                    ? installData?.inoutHistoryNote || "내용없음"
-                    : inoutHistoryNote
-                }
-                placeholder={installData?.inoutHistoryDate ? "" : "최대 50자"}
-                onChange={(e) => setInoutHistoryNote(e.target.value)}
-                maxHeight={"100px"}
-                readOnly={!!installData?.inoutHistoryDate} // 완료되었으면 읽기 전용
-              />
+              {!installData?.inoutHistoryDate ? (
+                <Textarea
+                  placeholder={"최대 50자"}
+                  onChange={(e) => setInoutHistoryNote(e.target.value)}
+                  maxHeight={"100px"}
+                />
+              ) : installData.inoutHistoryNote ? (
+                <Textarea
+                  readOnly
+                  value={installData.inoutHistoryNote}
+                  maxHeight={"40px"}
+                />
+              ) : (
+                <Input readOnly value={"내용 없음"} />
+              )}
             </Field>
           </Stack>
         </DialogBody>

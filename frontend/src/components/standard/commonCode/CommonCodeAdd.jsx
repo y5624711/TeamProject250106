@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import {
-  createListCollection,
   Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   Stack,
   Text,
   Textarea,
@@ -20,17 +24,14 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { SelectCode } from "./SelectCode.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
-  const selectOptions = createListCollection({
-    items: [
-      { label: "기준 코드", value: "STANDARD" },
-      { label: "품목 코드", value: "ITEM" },
-      { label: "상태 코드", value: "STATE" },
-    ],
-  });
+  const selectOptions = [
+    { label: "품목 코드", value: "ITEM" },
+    { label: "기준 코드", value: "STANDARD" },
+    { label: "상태 코드", value: "STATE" },
+  ];
 
   const initialCodeData = {
     commonCode: "",
@@ -38,7 +39,6 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     commonCodeNote: "",
     commonCodeType: "",
   };
-
   const [codeData, setCodeData] = useState(initialCodeData);
   const [checkCodeSelect, setCheckCodeSelect] = useState(false);
   const [codeType, setCodeType] = useState("");
@@ -57,12 +57,13 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
     setCodeData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // SelectCode에서 선택된 값을 반영하는 함수
-  const handleCodeTypeChange = (value) => {
-    // 배열이 아닌 단일 값으로 처리
-    const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
-    setCodeData((prev) => ({ ...prev, commonCodeType: stringValue }));
-    setCodeType(stringValue);
+  // 코드 타입 선택 처리
+  const handleCodeTypeChange = (selectedValue) => {
+    setCodeType(selectedValue.value[0]);
+    setCodeData((prev) => ({
+      ...prev,
+      commonCodeType: selectedValue.value[0],
+    }));
     setCheckCodeSelect(true);
   };
 
@@ -75,14 +76,6 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
 
   // 공통 코드 등록하기
   const handleAddClick = () => {
-    if (!isValid) {
-      toaster.create({
-        description: "공통 코드 형식을 맞춰주세요.",
-        type: "error",
-      });
-      return;
-    }
-
     axios
       .post("/api/commonCode/add", codeData)
       .then((res) => res.data)
@@ -109,20 +102,41 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Text fontSize={"xs"} mt={-5} mb={3}>
-            시스템코드는 대문자 3~5자리, 품목 코드는 대문자 3자리로 입력해야
-            합니다.
+            {codeType === "ITEM" || codeType === "STANDARD"
+              ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
+              : codeType === "STATE"
+                ? "싱태 코드는 대문자 3~5자리로 입력해야 합니다."
+                : "  "}
           </Text>
           <Stack gap={"15px"}>
-            <SelectCode
-              selectOptions={selectOptions}
-              onChange={handleCodeTypeChange}
-            />
+            <Field label={"코드 구분"} orientation="horizontal">
+              <SelectRoot onValueChange={handleCodeTypeChange}>
+                <SelectTrigger>
+                  <SelectValueText>
+                    {codeType || "코드 구분 선택"}
+                  </SelectValueText>
+                </SelectTrigger>
+                <SelectContent
+                  style={{
+                    width: "85%",
+                    top: "40px",
+                    position: "absolute",
+                  }}
+                >
+                  {selectOptions.map((option) => (
+                    <SelectItem key={option.value} item={option.value}>
+                      {option.value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            </Field>
             <Field label="코드" orientation="horizontal">
               <Input
                 value={codeData.commonCode || ""}
                 onChange={handleInputChange("commonCode")}
                 maxLength={
-                  codeType === "ITEM"
+                  codeType === "ITEM" || codeType === "STANDARD"
                     ? 3
                     : codeType === "SYSTEM"
                       ? 5
@@ -155,7 +169,7 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           </DialogActionTrigger>
           <Tooltip
             content="입력을 완료해주세요."
-            openDelay={500}
+            openDelay={100}
             closeDelay={100}
             disabled={isValid}
           >

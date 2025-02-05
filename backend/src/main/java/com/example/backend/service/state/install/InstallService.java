@@ -115,7 +115,7 @@ public class InstallService {
             for (String serial : serialList) {
                 install.setSerialNo(serial);
                 mapper.addSerialToApprove(install);
-
+                // 우선 시리얼 번호 active 0으로 변경
                 int updatedRows = mapper.updateItemSubActiveFalse(serial);
                 if (updatedRows <= 0) {
                     throw new InstallApproveException("설치 승인 실패: 시리얼 번호 [" + serial + "] 등록 중 오류 발생");
@@ -176,6 +176,16 @@ public class InstallService {
                 int updateResult = mapper.updateSerialCurrent(serial);
                 if (updateResult != 1) {
                     throw new IllegalStateException("시리얼 번호 현재 위치 업데이트 실패");
+                }
+
+                // 시리얼 번호에 맞는 location 키 가져오가
+                List<Integer> locationKeyList = mapper.getLocationKeyList(serial);
+                for (Integer locationKey : locationKeyList) {
+                    // 시리얼 번호에 맞는 location 비활성화
+                    Integer updateLocation = mapper.updateLocaionActive(locationKey);
+                    if (updateLocation != 1) {
+                        throw new IllegalStateException("로케이션 비활성화 실패");
+                    }
                 }
             }
 
@@ -243,12 +253,12 @@ public class InstallService {
     }
 
     // 반려에 대한 권한 검증
-    public boolean disApproveAuth(Authentication authentication, int installKey) {
+    public boolean disApproveAuth(Authentication authentication, Install install) {
         if (authentication.getName().startsWith("CUS")) {
             // 로그인한 사용자의 회사 정보 가져오기
             String loginCompany = mapper.selectCompanyById(authentication.getName());
             // 설치 요청 키로 담당업체 코드 가져오기
-            String cusCompany = mapper.getCustomerCodeByKey(installKey);
+            String cusCompany = mapper.getCustomerCodeByKey(install.getInstallRequestKey());
             // 로그인한 회사와 설치 요청의 담당업체가 일치하는지 확인
             return loginCompany.equals(cusCompany);
         } else {
@@ -256,14 +266,35 @@ public class InstallService {
         }
     }
 
-    // 설치 요청 반려
-    public boolean installDisapprove(int installKey) {
-        int cnt = mapper.installDisapprove(installKey);
-        return cnt == 1;
+    @Transactional
+    public boolean installDisapprove(Install install) {
+        try {
+            // 승인 테이블에 반려 상태 업데이트
+            int updateDisapprove = mapper.updateDisapprove(install);
+
+            // 반려 테이블에 추가
+            int addDisapprove = mapper.installDisapprove(install);
+
+            // 하나라도 실패하면 예외 발생 → 트랜잭션 롤백
+            if (updateDisapprove != 1 || addDisapprove != 1) {
+                throw new IllegalStateException("반려 처리 중 오류 발생");
+            }
+            return true;
+
+        } catch (Exception e) {
+            throw new IllegalStateException("반려 처리 중 오류 발생", e);
+        }
     }
+
 
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     public Install getInstallApproveData(int installKey) {
         return mapper.getInstallApproveData(installKey);
     }
+
+    // 설치 반려 후 추가 데이터(반려 날짜, 반려자, 반려 비고) 가져오기
+    public Install getInstalldisApproveData(int installKey) {
+        return mapper.getInstalldisApproveData(installKey);
+    }
+
 }

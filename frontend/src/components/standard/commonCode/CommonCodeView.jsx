@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  createListCollection,
   HStack,
   Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   Stack,
   Text,
   Textarea,
@@ -13,6 +17,7 @@ import { Field } from "../../ui/field.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import {
+  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -23,7 +28,6 @@ import {
 } from "../../ui/dialog.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
-import { SelectCode } from "./SelectCode.jsx";
 
 export function CommonCodeView({
   commonCodeKey,
@@ -40,69 +44,50 @@ export function CommonCodeView({
     commonCodeActive: false,
   });
 
-  const selectOptions = createListCollection({
-    items: [
-      { label: "기준 코드", value: "STANDARD" },
-      { label: "품목 코드", value: "ITEM" },
-      { label: "상태 코드", value: "STATE" },
-    ],
-  });
+  const selectOptions = [
+    { label: "품목 코드", value: "ITEM" },
+    { label: "기준 코드", value: "STANDARD" },
+    { label: "상태 코드", value: "STATE" },
+  ];
 
   // 공통 코드 상세 정보 가져오기
   useEffect(() => {
-    if (commonCodeKey) {
+    if (commonCodeKey && isOpen) {
       axios
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
           setEditedCommonCode(res.data[0]);
         })
         .catch((error) => {
-          console.error("공통 코드 정보 요청 중 오류 발생: ", error);
+          console.error("공통 코드 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [commonCodeKey]);
+  }, [commonCodeKey, isOpen]);
 
-  // 창이 닫히면 수정 상태 취소
-  const handleClose = () => {
-    onClose();
-    setEditedCommonCode(null);
-    setCommonCodeKey(null);
-  };
-
-  // 폼 입력 값 변경 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedCommonCode((prevItem) => ({
-      ...prevItem,
+    setEditedCommonCode((prevCode) => ({
+      ...prevCode,
       [name]: value,
     }));
   };
 
-  // SelectCode에서 선택된 값을 반영하는 함수
-  const handleCodeTypeChange = (value) => {
-    // 배열이 아닌 단일 값으로 처리
-    const stringValue = Array.isArray(value) ? value.join(",") : value; // 필요 시 배열을 문자열로 변환
-    setEditedCommonCode((prev) => ({ ...prev, commonCodeType: stringValue }));
+  const handleCodeTypeChange = (selectedValue) => {
+    setEditedCommonCode((prev) => ({
+      ...prev,
+      commonCodeType: selectedValue.value[0],
+    }));
   };
 
-  const isValid =
-    (editedCommonCode != null &&
-      editedCommonCode.commonCodeType === "ITEM" &&
-      /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
-    (editedCommonCode != null &&
-      (editedCommonCode.commonCodeType === "STANDARD" ||
-        editedCommonCode.commonCodeType === "STATE") && // OR 연산자로 수정
-      /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
-      editedCommonCode.commonCodeName.trim() !== "");
+  // 상태 변화 감지 후 로그 출력
+  useEffect(() => {
+    console.log("Updated commonCodeType:", editedCommonCode.commonCodeType);
+  }, [editedCommonCode.commonCodeType]);
 
   // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSaveClick = () => {
-    const updatedCommonCode = {
-      ...editedCommonCode,
-    };
-
     axios
-      .put(`/api/commonCode/edit/${commonCodeKey}`, updatedCommonCode)
+      .put(`/api/commonCode/edit/${commonCodeKey}`, editedCommonCode)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -118,78 +103,113 @@ export function CommonCodeView({
       });
   };
 
+  const isValid =
+    (editedCommonCode != null &&
+      editedCommonCode.commonCodeType === "ITEM" &&
+      /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
+    (editedCommonCode != null &&
+      (editedCommonCode.commonCodeType === "STANDARD" ||
+        editedCommonCode.commonCodeType === "STATE") &&
+      /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
+      editedCommonCode.commonCodeName.trim() !== "");
+
   if (!editedCommonCode) {
     return;
   }
 
   return (
     <Box>
-      <DialogRoot open={isOpen} onOpenChange={handleClose} size="lg">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={() => {
+          onClose();
+        }}
+        size="lg"
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>공통 코드 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Box>
-              <Text fontSize={"xs"} mt={-5} mb={3}>
-                시스템코드는 대문자 3~5자리, 품목 코드는 대문자 3자리로 입력해야
-                합니다.
-              </Text>
-              <Stack gap="15px">
-                <SelectCode
-                  selectOptions={selectOptions}
-                  onChange={handleCodeTypeChange}
-                  selectValue={editedCommonCode.commonCodeType}
+            <Text fontSize={"xs"} mt={-5} mb={3}>
+              {editedCommonCode.commonCodeType === "ITEM" ||
+              editedCommonCode.commonCodeType === "STANDARD"
+                ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
+                : editedCommonCode.commonCodeType === "STATE"
+                  ? "상태 코드는 대문자 3~5자리로 입력해야 합니다."
+                  : ""}
+            </Text>
+            <Stack gap="15px">
+              <Field label={"코드 구분"} orientation="horizontal">
+                <SelectRoot onValueChange={handleCodeTypeChange}>
+                  <SelectTrigger>
+                    <SelectValueText>
+                      {editedCommonCode.commonCodeType || "코드 구분 선택"}
+                    </SelectValueText>
+                  </SelectTrigger>
+                  <SelectContent
+                    style={{
+                      width: "85%",
+                      top: "40px",
+                      position: "absolute",
+                    }}
+                  >
+                    {selectOptions.map((option) => (
+                      <SelectItem key={option.value} item={option.value}>
+                        {option.value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+              </Field>
+              <Field label={"코드"} orientation="horizontal">
+                <Input
+                  name="commonCode"
+                  placeholder="코드"
+                  value={editedCommonCode.commonCode}
+                  onChange={handleChange}
+                  maxLength={5}
                 />
-                <Field label={"코드"} orientation="horizontal">
-                  <Input
-                    name="commonCode"
-                    placeholder="코드"
-                    value={editedCommonCode.commonCode}
-                    onChange={handleChange}
-                    maxLength={5}
-                  />
-                </Field>
-                <Field label={"코드명"} orientation="horizontal">
-                  <Input
-                    name="commonCodeName"
-                    placeholder="코드명"
-                    value={editedCommonCode.commonCodeName}
-                    onChange={handleChange}
-                  />
-                </Field>
-                <Field label={"비고"} orientation="horizontal">
-                  <Textarea
-                    name="commonCodeNote"
-                    placeholder=""
-                    value={editedCommonCode.commonCodeNote}
-                    onChange={handleChange}
-                    maxHeight={"100px"}
-                  />
-                </Field>
-                <Field label={"사용 여부"} orientation="horizontal" mb={15}>
-                  <Checkbox
-                    style={{ marginRight: "550px" }}
-                    defaultChecked={editedCommonCode.commonCodeActive}
-                    onChange={(e) =>
-                      setEditedCommonCode((prev) => ({
-                        ...prev,
-                        commonCodeActive: e.target.checked,
-                      }))
-                    }
-                  />
-                </Field>
-              </Stack>
-            </Box>
+              </Field>
+              <Field label={"코드명"} orientation="horizontal">
+                <Input
+                  name="commonCodeName"
+                  placeholder="코드명"
+                  value={editedCommonCode.commonCodeName}
+                  onChange={handleChange}
+                />
+              </Field>
+              <Field label={"비고"} orientation="horizontal">
+                <Textarea
+                  name="commonCodeNote"
+                  placeholder={"최대 50자"}
+                  value={editedCommonCode.commonCodeNote}
+                  onChange={handleChange}
+                  maxHeight={"100px"}
+                />
+              </Field>
+              <Field label={"사용 여부"} orientation="horizontal" mb={15}>
+                <Checkbox
+                  style={{ marginRight: "550px" }}
+                  defaultChecked={editedCommonCode.commonCodeActive}
+                  onChange={(e) =>
+                    setEditedCommonCode((prev) => ({
+                      ...prev,
+                      commonCodeActive: e.target.checked,
+                    }))
+                  }
+                />
+              </Field>
+            </Stack>
           </DialogBody>
           <DialogFooter>
             <HStack>
-              <Button variant="outline" onClick={handleClose}>
-                취소
-              </Button>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">취소</Button>
+              </DialogActionTrigger>
               <Tooltip
                 content="입력을 완료해주세요."
-                openDelay={500}
+                openDelay={100}
                 closeDelay={100}
                 disabled={isValid}
               >

@@ -77,8 +77,12 @@ export function ItemList({
                 <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">{item.size || "-"}</Table.Cell>
                 <Table.Cell textAlign="center">{item.unit || "-"}</Table.Cell>
-                <Table.Cell textAlign="center">{item.inputPrice}</Table.Cell>
-                <Table.Cell textAlign="center">{item.outputPrice}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.inputPrice.toLocaleString("ko-KR")}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {item.outputPrice.toLocaleString("ko-KR")}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

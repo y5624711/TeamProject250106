@@ -20,7 +20,7 @@ export function InstallList({
     { key: "customerName", label: "담당 업체" },
     { key: "outputNo", label: "출고 번호" },
     { key: "businessEmployeeName", label: "요청자" },
-    { key: "customerEmployeeName", label: "승인자" },
+    { key: "customerEmployeeName", label: "반려/승인자" },
     { key: "customerInstallerName", label: "설치 기사" },
     { key: "warehouseName", label: "창고" },
     { key: "installDate", label: "날짜" },
@@ -35,7 +35,7 @@ export function InstallList({
       { label: "담당 업체", value: "customerName" },
       { label: "출고 번호", value: "outputNo" },
       { label: "요청자", value: "businessEmployeeName" },
-      { label: "승인자", value: "customerEmployeeName" },
+      { label: "반려/승인자", value: "customerEmployeeName" },
       { label: "설치 기사", value: "customerInstallerName" },
       { label: "창고", value: "warehouseName" },
     ],
@@ -48,7 +48,6 @@ export function InstallList({
     { value: "configuration", label: "완료" },
     { value: "disapprove", label: "반려" },
   ];
-  console.log(installList?.installDate);
 
   return (
     <Box>

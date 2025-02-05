@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   createListCollection,
@@ -10,8 +10,14 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Button } from "../../ui/button.jsx";
-import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
+import { Field } from "../../ui/field.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -19,7 +25,6 @@ export function CommonCodeList({
   searchParams,
   setSearchParams,
   onRowClick,
-  setAddDialogOpen,
 }) {
   // 검색 옵션
   const searchOptions = createListCollection({
@@ -38,27 +43,49 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
-  const radioOptions = [
-    { value: "all", label: "전체" },
-    { value: "system", label: "시스템 코드" },
-    { value: "item", label: "품목 코드" },
-  ];
+  const codeOptions = createListCollection({
+    items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
+  });
+
+  const [code, setCode] = useState("ALL");
 
   return (
-    <Box w={"100%"}>
+    <Box>
       <SearchBar
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <Flex gap={5} alignItems="center">
+      <HStack alignItems="center" justifyContent="space-between" width="100%">
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
-        <FilterRadioGroup
-          radioOptions={radioOptions}
-          onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
-        />
-      </Flex>
+        <Box>
+          <Field label={"코드 구분"} orientation="horizontal">
+            <SelectRoot
+              collection={codeOptions}
+              width="160px"
+              position="relative"
+              value={code}
+              onValueChange={(value) => {
+                setCode({ value });
+              }}
+            >
+              <SelectTrigger>
+                <SelectValueText placeholder="ALL"></SelectValueText>{" "}
+                {/* 선택된 값 표시 */}
+              </SelectTrigger>
+
+              <SelectContent>
+                {codeOptions?.items.map((option) => (
+                  <SelectItem item={option.value} key={option.value}>
+                    {option.value} {/* label 대신 value 사용 */}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+          </Field>
+        </Box>
+      </HStack>
       <Box>
         <Table.Root>
           <Table.Header>
@@ -73,30 +100,25 @@ export function CommonCodeList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {commonCodeList?.map((item, index) => (
+            {commonCodeList?.map((code, index) => (
               <Table.Row
-                key={item.commonCodeKey ? item.commonCodeKey : index}
+                key={code.commonCodeKey ? code.commonCodeKey : index}
                 onDoubleClick={() => {
-                  console.log("클릭");
-                  onRowClick(item.commonCodeKey);
+                  onRowClick(code.commonCodeKey);
                 }}
                 style={{
                   cursor: "pointer",
                 }}
-                bg={item.commonCodeActive ? "white" : "gray.100"}
+                bg={code.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {index + 1}
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {code.commonCodeType}
                 </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCodeType}
-                </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCode}
-                </Table.Cell>
-                <Table.Cell verticalAlign="middle" textAlign="center">
-                  {item.commonCodeName}
+                <Table.Cell textAlign="center">{code.commonCode}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {code.commonCodeName}
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -113,13 +135,6 @@ export function CommonCodeList({
                 setSearchParams(nextSearchParam);
               }}
             />
-            <Button
-              size="lg"
-              float={"right"}
-              onClick={() => setAddDialogOpen(true)}
-            >
-              코드 등록
-            </Button>
           </HStack>
         </Flex>
       </Box>

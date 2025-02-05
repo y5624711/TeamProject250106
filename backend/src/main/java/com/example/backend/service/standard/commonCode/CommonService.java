@@ -46,14 +46,14 @@ public class CommonService {
     public boolean validateCommonCode(CommonCode commonCode) {
         // 공통 코드 유형(SYSTEM/ITEM)에 따른 코드 길이 제한 검증
         boolean isValidCommonCode = false;
-        if ("ITEM".equals(commonCode.getCommonCodeType())) {
-            // ITEM일 경우 대문자 3자리 검증
+
+        if ("ITEM".equals(commonCode.getCommonCodeType()) || "STANDARD".equals(commonCode.getCommonCodeType())) {
+            // ITEM 및 STANDARD는 대문자 3자리 검증
             isValidCommonCode = commonCode.getCommonCode() != null &&
                     !commonCode.getCommonCode().trim().isEmpty() &&
                     commonCode.getCommonCode().matches("^[A-Z]{3}$");
-        } else if ("STATE".equals(commonCode.getCommonCodeType()) ||
-                "STANDARD".equals(commonCode.getCommonCodeType())) {
-            // 기준 or 상태 경우 대문자 3~5자리 검증
+        } else if ("STATE".equals(commonCode.getCommonCodeType())) {
+            // STATE는 대문자 3~5자리 검증
             isValidCommonCode = commonCode.getCommonCode() != null &&
                     !commonCode.getCommonCode().trim().isEmpty() &&
                     commonCode.getCommonCode().matches("^[A-Z]{3,5}$");

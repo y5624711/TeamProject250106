@@ -23,6 +23,12 @@ public class InstallController {
 
     final InstallService service;
 
+    // 설치 반려 후 추가 데이터(반려 날짜, 반려자, 반려 비고) 가져오기
+    @GetMapping("/disapproveData/{installKey}")
+    public Install getInstallDisapproveData(@PathVariable int installKey) {
+        return service.getInstalldisApproveData(installKey);
+    }
+
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @GetMapping("/approveData/{installKey}")
     public Install getInstallApproveData(@PathVariable int installKey) {
@@ -30,24 +36,24 @@ public class InstallController {
     }
 
     // 설치 요청 반려
-    @PutMapping("disapprove/{installKey}")
+    @PostMapping("disapprove")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> installDisapprove(@PathVariable int installKey, Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> installDisapprove(@RequestBody Install install, Authentication authentication) {
         // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
-        if (!service.disApproveAuth(authentication, installKey)) {
+        if (!service.disApproveAuth(authentication, install)) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
                             "text", "설치 반려 권한이 없습니다.")));
         }
 
-        // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
-        if (service.installDisapprove(installKey)) {
+        // 설치 반려
+        if (service.installDisapprove(install)) {
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
             ));
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 요청 반려를 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "반려를 실패하였습니다.")
             ));
         }
     }
