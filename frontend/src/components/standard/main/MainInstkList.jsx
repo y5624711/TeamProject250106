@@ -63,7 +63,7 @@ export function MainInstkList({ company, scope }) {
                   {item.requestEmployeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {item.inputStockEmployeeName}
+                  {item.inputStockEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {item.inputStockDate || item.requestDate}
