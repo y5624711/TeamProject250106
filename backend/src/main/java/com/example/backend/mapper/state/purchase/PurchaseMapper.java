@@ -181,6 +181,7 @@ public interface PurchaseMapper {
                 pr.purchase_request_key AS purchaseRequestKey,
                 pr.employee_no AS employeeNo,
                 emp1.employee_name AS employeeName,
+                pr.customer_code AS customerCode,
                 cus.customer_name AS customerName,
                 pa.customer_employee_no AS customerEmployeeNo,
                 emp2.employee_name AS customerEmployeeName,
@@ -237,9 +238,26 @@ public interface PurchaseMapper {
             UPDATE TB_PURCH_REQ
             SET purchase_consent = FALSE
             WHERE purchase_request_key = #{purchaseRequestKey};
-
-            INSERT INTO TB_DISPR (state_request_key, state_common_code, disapprove_employee_no, disapprove_date, disapprove_note)
-            VALUES (#{purchaseRequestKey}, (SELECT common_code FROM TB_SYSCOMM WHERE common_code = 'PURCH' LIMIT 1), #{employeeNo}, NOW(), (SELECT purchase_approve_note FROM TB_PURCH_REQ WHERE purchase_request_key = #{purchaseRequestKey} LIMIT 1)
             """)
-    int disapprovePurchase(String purchaseRequestKey);
+    int disapprovePurchase(Integer purchaseRequestKey);
+
+    // 구매 승인 반려에 값 인서트
+    @Insert("""
+            INSERT INTO TB_DISPR
+            (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
+            VALUES (#{purchaseRequestKey}, 'PURCH', #{customerEmployeeNo}, #{purchaseApproveNote})
+            """)
+    int insetDisapprove(Purchase purchase);
+
+    // 반려 데이터 가져오기
+    @Select("""
+            SELECT dis.disapprove_employee_no AS disapproveEmployeeNo,
+                   emp.employee_name AS disapproveEmployeeName,
+                   dis.disapprove_date AS disapproveDate,
+                   dis.disapprove_note AS disapproveNote
+            FROM TB_DISPR dis
+            LEFT JOIN TB_EMPMST emp ON dis.disapprove_employee_no = emp.employee_no
+            WHERE state_request_key = #{purchaseRequestKey}
+            """)
+    Purchase getPurchaseDisapprove(int purchaseRequestKey);
 }

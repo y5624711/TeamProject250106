@@ -93,8 +93,15 @@ public class PurchaseService {
     }
 
     // 구매 승인 반려
-    public boolean disapprovePurchase(String purchaseRequestKey) {
-        return mapper.disapprovePurchase(purchaseRequestKey) == 1;
+    public boolean disapprovePurchase(Purchase purchase) {
+        int updateDisapprove = mapper.disapprovePurchase(purchase.getPurchaseRequestKey());
+        int insertDisapprove = mapper.insetDisapprove(purchase);
+        return updateDisapprove == 1 && insertDisapprove == 1;
+    }
+
+    // 반려 데이터 가져오기
+    public Purchase getPurchaseDisapprove(int purchaseRequestKey) {
+        return mapper.getPurchaseDisapprove(purchaseRequestKey);
     }
 
     // 요청 권한 확인 -> 본사 직원만 가능
@@ -105,9 +112,8 @@ public class PurchaseService {
     }
 
     // 승인 권한 확인 -> 본사 or 해당 협력 업체 직원만 가능
-    public boolean checkApproveEmployee(String loginNo, String customerCode) {
+    public boolean checkApproveEmployee(String loginNo, String CustomerCode) {
         String company = employeeMapper.checkUserCompany(loginNo);
-        System.out.println("유저 소속: " + company);
-        return company.equals(customerCode) || company.startsWith("BIZ");
+        return company.equals(CustomerCode) || company.startsWith("BIZ");
     }
 }
