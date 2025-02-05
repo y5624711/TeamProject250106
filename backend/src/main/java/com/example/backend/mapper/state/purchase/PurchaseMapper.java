@@ -181,6 +181,7 @@ public interface PurchaseMapper {
                 pr.purchase_request_key AS purchaseRequestKey,
                 pr.employee_no AS employeeNo,
                 emp1.employee_name AS employeeName,
+                pr.customer_code AS customerCode,
                 cus.customer_name AS customerName,
                 pa.customer_employee_no AS customerEmployeeNo,
                 emp2.employee_name AS customerEmployeeName,

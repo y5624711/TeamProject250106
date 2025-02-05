@@ -107,9 +107,8 @@ public class PurchaseService {
     }
 
     // 승인 권한 확인 -> 본사 or 해당 협력 업체 직원만 가능
-    public boolean checkApproveEmployee(String loginNo, String customerCode) {
+    public boolean checkApproveEmployee(String loginNo, String CustomerCode) {
         String company = employeeMapper.checkUserCompany(loginNo);
-        System.out.println("유저 소속: " + company);
-        return company.equals(customerCode) || company.startsWith("BIZ");
+        return company.equals(CustomerCode) || company.startsWith("BIZ");
     }
 }
