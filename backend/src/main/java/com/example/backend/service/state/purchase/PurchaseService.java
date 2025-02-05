@@ -99,6 +99,11 @@ public class PurchaseService {
         return updateDisapprove == 1 && insertDisapprove == 1;
     }
 
+    // 반려 데이터 가져오기
+    public Purchase getPurchaseDisapprove(int purchaseRequestKey) {
+        return mapper.getPurchaseDisapprove(purchaseRequestKey);
+    }
+
     // 요청 권한 확인 -> 본사 직원만 가능
     public boolean checkCustomer(String loginNo) {
         String company = employeeMapper.checkUserCompany(loginNo);

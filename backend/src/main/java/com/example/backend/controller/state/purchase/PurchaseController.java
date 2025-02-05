@@ -107,4 +107,10 @@ public class PurchaseController {
             return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 반려에 실패하였습니다.")));
         }
     }
+
+    // 반려 데이터 가져오기
+    @GetMapping("disapprove/{purchaseRequestKey}")
+    public Purchase disapprovePurchase2(@PathVariable int purchaseRequestKey) {
+        return service.getPurchaseDisapprove(purchaseRequestKey);
+    }
 }

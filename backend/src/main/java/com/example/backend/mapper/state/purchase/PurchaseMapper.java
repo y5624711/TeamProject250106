@@ -248,4 +248,16 @@ public interface PurchaseMapper {
             VALUES (#{purchaseRequestKey}, 'PURCH', #{customerEmployeeNo}, #{purchaseApproveNote})
             """)
     int insetDisapprove(Purchase purchase);
+
+    // 반려 데이터 가져오기
+    @Select("""
+            SELECT dis.disapprove_employee_no AS disapproveEmployeeNo,
+                   emp.employee_name AS disapproveEmployeeName,
+                   dis.disapprove_date AS disapproveDate,
+                   dis.disapprove_note AS disapproveNote
+            FROM TB_DISPR dis
+            LEFT JOIN TB_EMPMST emp ON dis.disapprove_employee_no = emp.employee_no
+            WHERE state_request_key = #{purchaseRequestKey}
+            """)
+    Purchase getPurchaseDisapprove(int purchaseRequestKey);
 }

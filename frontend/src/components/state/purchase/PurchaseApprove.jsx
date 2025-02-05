@@ -30,7 +30,7 @@ export function PurchaseApprove({
         .get(`/api/purchase/approve/${purchaseRequestKey}`)
         .then((res) => {
           setPurchase(res.data);
-          setPurchaseConsent(res.data.purchaseConsent); // 승인 상태 전달
+          setPurchaseConsent(res.data.purchaseConsent);
           setLoading(false);
         })
         .catch((error) => {
@@ -38,6 +38,24 @@ export function PurchaseApprove({
         });
     }
   }, [purchaseRequestKey]);
+
+  // 반려된 구매 요청 데이터 가져오기
+  useEffect(() => {
+    if (purchaseRequestKey && purchase?.purchaseConsent === false) {
+      axios
+        .get(`/api/purchase/disapprove/${purchaseRequestKey}`)
+        .then((res) => {
+          console.log("데이터:", res.data);
+          setPurchase((prevPurchase) => ({
+            ...prevPurchase,
+            ...res.data,
+          }));
+        })
+        .catch((error) => {
+          console.error("반려 데이터를 가져오는 데 실패했습니다:", error);
+        });
+    }
+  }, [purchaseRequestKey, purchase?.purchaseConsent]);
 
   // 구매 요청 승인하기 (warehouseCode 즉, 창고 정보가 없으면 승인 안됨)
   const handleApprove = () => {
@@ -63,8 +81,7 @@ export function PurchaseApprove({
         });
 
         if (res.data.purchaseNo) {
-          // 리스트 상태 즉시 업데이트
-          setPurchaseConsent(true); // 상태 변경
+          setPurchaseConsent(true);
           setPurchase((prevPurchase) => ({
             ...prevPurchase,
             customerEmployeeNo: id,
@@ -74,7 +91,6 @@ export function PurchaseApprove({
             purchaseConsent: true,
           }));
 
-          // 리스트 갱신 함수 호출
           onUpdateList();
         }
       })
@@ -87,25 +103,34 @@ export function PurchaseApprove({
       });
   };
 
-  // 구매 요청 반려
+  // 구매 요청 반려하기
   const handleDisapprove = () => {
+    const updatedPurchase = {
+      ...purchase,
+      disapproveEmployeeNo: id,
+      disapproveEmployeeName: name,
+      disapproveDate: new Date().toISOString(),
+      disapproveNote: purchase.purchaseApproveNote,
+    };
+
     axios
-      .put(`api/purchase/disapprove/${purchaseRequestKey}`)
-      .then((res) => res.data)
-      .then((data) => {
+      .post(`/api/purchase/disapprove`, updatedPurchase)
+      .then((res) => {
+        const data = res.data;
         toaster.create({
           type: data.message.type,
           description: data.message.text,
         });
 
-        // 리스트 상태 즉시 업데이트
-        setPurchaseConsent(false);
         setPurchase((prevPurchase) => ({
           ...prevPurchase,
           purchaseConsent: false,
+          disapproveEmployeeNo: data.disapproveEmployeeNo,
+          disapproveEmployeeName: data.disapproveEmployeeName,
+          disapproveDate: data.disapproveDate,
+          disapproveNote: data.disapproveNote,
         }));
 
-        // 리스트 갱신 함수 호출
         onUpdateList();
       })
       .catch((e) => {
@@ -194,23 +219,23 @@ export function PurchaseApprove({
           <Box mt={4}>
             <HStack>
               <Field label="반려자" orientation="horizontal" mb={15}>
-                <Input value={purchase.employeeName || name} readOnly />
+                <Input value={purchase.disapproveEmployeeName} readOnly />
               </Field>
               <Field label="사번" orientation="horizontal" mb={15}>
-                <Input value={purchase.employeeNo} readOnly />
+                <Input value={purchase.disapproveEmployeeNo} readOnly />
               </Field>
             </HStack>
             <Field label="반려 날짜" orientation="horizontal" mb={15}>
               <Input
-                value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
+                value={purchase.disapproveDate?.split("T")[0] || "N/A"}
                 readOnly
               />
             </Field>
           </Box>
           <Field label="반려 비고" orientation="horizontal" mb={15}>
-            {purchase.purchaseApproveNote ? (
+            {purchase.disapproveNote ? (
               <Textarea
-                value={purchase.purchaseApproveNote}
+                value={purchase.disapproveNote}
                 readOnly
                 style={{ maxHeight: "100px", overflowY: "auto" }}
               />
