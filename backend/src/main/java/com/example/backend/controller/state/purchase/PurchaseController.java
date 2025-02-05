@@ -98,11 +98,10 @@ public class PurchaseController {
         }
     }
 
-
     // 구매 승인 반려
-    @PutMapping("/disapprove/{purchaseRequestKey}")
-    public ResponseEntity<Map<String, Object>> disapprovePurchase(@PathVariable String purchaseRequestKey) {
-        if (service.disapprovePurchase(purchaseRequestKey)) {
+    @PostMapping("disapprove")
+    public ResponseEntity<Map<String, Object>> disapprovePurchase(@RequestBody Purchase purchase) {
+        if (service.disapprovePurchase(purchase)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 반려되었습니다.")));
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 반려에 실패하였습니다.")));

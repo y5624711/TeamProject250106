@@ -93,8 +93,10 @@ public class PurchaseService {
     }
 
     // 구매 승인 반려
-    public boolean disapprovePurchase(String purchaseRequestKey) {
-        return mapper.disapprovePurchase(purchaseRequestKey) == 1;
+    public boolean disapprovePurchase(Purchase purchase) {
+        int updateDisapprove = mapper.disapprovePurchase(purchase.getPurchaseRequestKey());
+        int insertDisapprove = mapper.insetDisapprove(purchase);
+        return updateDisapprove == 1 && insertDisapprove == 1;
     }
 
     // 요청 권한 확인 -> 본사 직원만 가능
