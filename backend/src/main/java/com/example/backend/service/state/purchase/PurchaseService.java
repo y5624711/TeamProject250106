@@ -103,4 +103,11 @@ public class PurchaseService {
         // "CUS"로 시작하면 true, 그렇지 않으면 false 반환
         return company != null && company.startsWith("CUS");
     }
+
+    // 승인 권한 확인 -> 본사 or 해당 협력 업체 직원만 가능
+    public boolean checkApproveEmployee(String loginNo, String customerCode) {
+        String company = employeeMapper.checkUserCompany(loginNo);
+        System.out.println("유저 소속: " + company);
+        return company.equals(customerCode) || company.startsWith("BIZ");
+    }
 }

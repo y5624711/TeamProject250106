@@ -236,7 +236,10 @@ public interface PurchaseMapper {
     @Update("""
             UPDATE TB_PURCH_REQ
             SET purchase_consent = FALSE
-            WHERE purchase_request_key = #{purchaseRequestKey}
+            WHERE purchase_request_key = #{purchaseRequestKey};
+
+            INSERT INTO TB_DISPR (state_request_key, state_common_code, disapprove_employee_no, disapprove_date, disapprove_note)
+            VALUES (#{purchaseRequestKey}, (SELECT common_code FROM TB_SYSCOMM WHERE common_code = 'PURCH' LIMIT 1), #{employeeNo}, NOW(), (SELECT purchase_approve_note FROM TB_PURCH_REQ WHERE purchase_request_key = #{purchaseRequestKey} LIMIT 1)
             """)
     int disapprovePurchase(String purchaseRequestKey);
 }

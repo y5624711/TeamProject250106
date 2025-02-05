@@ -188,6 +188,39 @@ export function PurchaseApprove({
         )}
       </Field>
 
+      {/* 반려일 경우 */}
+      {purchase.purchaseConsent === false && (
+        <>
+          <Box mt={4}>
+            <HStack>
+              <Field label="반려자" orientation="horizontal" mb={15}>
+                <Input value={purchase.employeeName || name} readOnly />
+              </Field>
+              <Field label="사번" orientation="horizontal" mb={15}>
+                <Input value={purchase.employeeNo} readOnly />
+              </Field>
+            </HStack>
+            <Field label="반려일" orientation="horizontal" mb={15}>
+              <Input
+                value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
+                readOnly
+              />
+            </Field>
+          </Box>
+          <Field label="반려 비고" orientation="horizontal" mb={15}>
+            {purchase.purchaseApproveNote ? (
+              <Textarea
+                value={purchase.purchaseApproveNote}
+                readOnly
+                style={{ maxHeight: "100px", overflowY: "auto" }}
+              />
+            ) : (
+              <Input readOnly value={"내용 없음"} />
+            )}
+          </Field>
+        </>
+      )}
+
       {/* 승인 여부가 승인/반려이면 숨기고, 승인 여부가 정해지지 않은 경우에만 표시 */}
       {purchase.purchaseConsent === undefined && <Separator />}
 

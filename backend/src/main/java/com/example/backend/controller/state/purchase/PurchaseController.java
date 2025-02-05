@@ -81,13 +81,23 @@ public class PurchaseController {
 
     // 구매 승인
     @PostMapping("/approve/{purchaseRequestKey}")
-    public ResponseEntity<Map<String, Object>> approvePurchase(@RequestBody Purchase purchase) {
-        if (service.purchaseApprove(purchase)) {
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
-        } else {
-            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 승인에 실패하였습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> approvePurchase(@RequestBody Purchase purchase, Authentication auth) {
+        try {
+            // 승인 권한 확인 -> 본사 or 해당 협력 업체 직원만 가능
+            if (!service.checkApproveEmployee(auth.getName(), purchase.getCustomerCode())) {
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "승인 권한이 없습니다.")));
+            }
+            if (service.purchaseApprove(purchase)) {
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 승인에 실패하였습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "처리 중 오류가 발생하였습니다.")));
         }
     }
+
 
     // 구매 승인 반려
     @PutMapping("/disapprove/{purchaseRequestKey}")
