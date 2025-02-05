@@ -3,7 +3,10 @@ package com.example.backend.controller.standard.commonCode;
 import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.service.standard.commonCode.CommonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,23 +19,31 @@ public class CommonController {
     final CommonService service;
 
     @PutMapping("edit/{commonCodeKey}")
-    public ResponseEntity<Map<String, Object>> editCommonCode(@PathVariable int commonCodeKey, @RequestBody CommonCode commonCode) {
-        // 공통 코드 입력 검증
-        if (!service.validateCommonCode(commonCode)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
-            ));
-        }
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> editCommonCode(@PathVariable int commonCodeKey, @RequestBody CommonCode commonCode, Authentication authentication) {
 
-        if (service.editCommonCode(commonCodeKey, commonCode)) {
-            return ResponseEntity.ok(Map.of("message",
-                    Map.of("type", "success",
-                            "text", "공통 코드 정보를 수정하였습니다.")));
+        String userId = authentication.getName();
+        if (userId.startsWith("BIZ")) {
+            // 공통 코드 입력 검증
+            if (!service.validateCommonCode(commonCode)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
+                ));
+            }
+
+            if (service.editCommonCode(commonCodeKey, commonCode)) {
+                return ResponseEntity.ok(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "공통 코드 정보를 수정하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "error",
+                                        "text", "공통 코드 수정 중 문제가 발생하였습니다")));
+            }
         } else {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message",
-                            Map.of("type", "error",
-                                    "text", "공통 코드 수정 중 문제가 발생하였습니다")));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 공통 코드를 수정할 수 없습니다.")));
         }
     }
 
@@ -67,30 +78,39 @@ public class CommonController {
 
     // 공통 코드 등록
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> addCommonCode(@RequestBody CommonCode commonCode) {
-        // 공통 코드 입력 검증
-        if (!service.validateCommonCode(commonCode)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
-            ));
-        }
-        // 중복 체크
-        if (service.duplicateCommonCode(commonCode.getCommonCode(), commonCode.getCommonCodeName())) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 등록된 공통 코드입니다.")
-            ));
-        }
-        // 공통 코드 등록
-        if (service.addCommonCode(commonCode)) {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success",
-                            "text", "공통 코드가 등록되었습니다."),
-                    "data", commonCode
-            ));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> addCommonCode(@RequestBody CommonCode commonCode, Authentication authentication) {
+
+        String userId = authentication.getName();
+
+        if (userId.startsWith("BIZ")) {
+            // 공통 코드 입력 검증
+            if (!service.validateCommonCode(commonCode)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
+                ));
+            }
+            // 중복 체크
+            if (service.duplicateCommonCode(commonCode.getCommonCode(), commonCode.getCommonCodeName())) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "이미 등록된 공통 코드입니다.")
+                ));
+            }
+            // 공통 코드 등록
+            if (service.addCommonCode(commonCode)) {
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success",
+                                "text", "공통 코드가 등록되었습니다."),
+                        "data", commonCode
+                ));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of(
+                        "message", Map.of("type", "error", "text", "공통 코드 등록이 실패하였습니다.")
+                ));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "공통 코드 등록이 실패하였습니다.")
-            ));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 공통 코드를 등록할 수 없습니다.")));
         }
     }
 
