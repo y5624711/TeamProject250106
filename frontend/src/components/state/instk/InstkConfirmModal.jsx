@@ -114,7 +114,13 @@ export function InstkConfirmModal({
         <DialogBody>
           <Stack gap={3}>
             <HStack gap={3}>
-              <Field orientation="horizontal" label={"입고 구분"}>
+              <Field
+                orientation="horizontal"
+                label={"입고 구분"}
+                sx={{
+                  "& > div": { justifyContent: "center" },
+                }}
+              >
                 <Input value={instk.inputCommonCodeName} readOnly />
               </Field>
               <Field label={"주문 번호"} orientation="horizontal">
@@ -163,6 +169,7 @@ export function InstkConfirmModal({
                 <Textarea
                   value={instk.inputNote}
                   readOnly
+                  style={{ maxHeight: "100px", overflowY: "auto" }}
                   placeholder={"최대50자"}
                 />
               ) : (
@@ -195,6 +202,7 @@ export function InstkConfirmModal({
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
                 value={inputStockNote}
+                style={{ maxHeight: "100px", overflowY: "auto" }}
                 placeholder={"최대50자"}
                 onChange={(e) => {
                   setInputStockNote(e.target.value);
