@@ -102,6 +102,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   </Field>
                   <Field orientation={"horizontal"} label={"업종"}>
                     <Input
+                      variant={"subtle"}
                       readOnly
                       name={"industry"}
                       value={customer.industry}
