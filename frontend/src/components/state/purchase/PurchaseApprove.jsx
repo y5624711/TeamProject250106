@@ -200,7 +200,7 @@ export function PurchaseApprove({
                 <Input value={purchase.employeeNo} readOnly />
               </Field>
             </HStack>
-            <Field label="반려일" orientation="horizontal" mb={15}>
+            <Field label="반려 날짜" orientation="horizontal" mb={15}>
               <Input
                 value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
                 readOnly
@@ -228,7 +228,12 @@ export function PurchaseApprove({
       {purchase.purchaseConsent !== false && (
         <>
           <Box display="flex" gap={4} mt={15}>
-            <Field label="반려/승인자" orientation="horizontal">
+            <Field
+              label={
+                purchase.purchaseConsent === true ? "승인자" : "반려/승인자"
+              }
+              orientation="horizontal"
+            >
               <Input
                 value={purchase.customerEmployeeName || name}
                 readOnly
@@ -249,7 +254,7 @@ export function PurchaseApprove({
           </Box>
           {purchase.purchaseConsent && (
             <Box mt={4}>
-              <Field label="승인일" orientation="horizontal" mb={15}>
+              <Field label="승인 날짜" orientation="horizontal" mb={15}>
                 <Input
                   value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
                   readOnly
