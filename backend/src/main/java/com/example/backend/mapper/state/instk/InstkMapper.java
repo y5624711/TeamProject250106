@@ -205,7 +205,7 @@ LIMIT #{offset}, 10
     //가입고 상태 false
     @Update("""
         UPDATE TB_BUYIN
-        SET input_consent = TRUE
+        SET input_consent = FALSE
         WHERE input_key = #{inputKey}
        """)
     int updateFalseBuyInConsentByInputKey(int inputKey);

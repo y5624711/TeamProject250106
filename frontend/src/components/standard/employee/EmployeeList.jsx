@@ -117,8 +117,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   }
 
   function handleSearchButton() {
-    // setPage(1); // 페이지를 1로 초기화
-
     const newParams = new URLSearchParams(searchParams); // 기존 파라미터 복사 (깊은 복사)
     newParams.set("type", type); // type 값 업데이트
     newParams.set("keyword", keyword); // keyword 값 업데이트
@@ -300,7 +298,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Box>
 
         {/*페이지네이션과 동일값 */}
-        <Box p={4}>
+        <Box m={4}>
           <Button
             onClick={() => {
               setIsModalOpen(true);

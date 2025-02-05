@@ -36,6 +36,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive: false,
   });
 
+  console.log("onChange,", onChange);
+
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
@@ -111,6 +113,17 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     }));
   };
 
+  const checkPasswordLength = (password, note) => {
+    if (password.length > 20 || note.length > 50) {
+      toaster.create({
+        type: "warning",
+        description: "비밀번호 20자, 비고 50자 이하만 입력 가능합니다.",
+      });
+      return false;
+    }
+    return true;
+  };
+
   const formDataClear = () => {
     setFormData({
       employeeNo: "",
@@ -127,6 +140,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const handleSubmit = () => {
     // 수정일 때
     if (viewKey !== -1) {
+      // 길이체크 false 면 바로종료
+      if (!checkPasswordLength(formData.password, formData.note)) return;
       const data = {
         employeeKey: viewKey,
         employeeCommonCode: formData.selectedCommonCode,
@@ -147,7 +162,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             type: res.data.message.type,
             description: res.data.message.text,
           });
-          setIsEditMode(false);
           onChange();
         })
         .catch((error) => {
@@ -209,6 +223,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
+  // 핸드폰 번호 정규식 함수
   const formatPhoneNumber = (value) => {
     const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
     // 숫자만 남기고, 11자리까지만 허용
@@ -233,7 +248,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     formData.name.trim().length > 0 && // 공백만 있는 경우 방지
     formData.name.length < 6 && // 이름 길이 제한
     !!formData.selectedCommonCode && // 존재 여부 확인 (불리언 변환)
-    !!formData.workPlace; // 존재 여부 확인 (불리언 변환)
+    !!formData.workPlace &&
+    formData.note.length < 60; // 존재 여부 확인 (불리언 변환)
 
   return (
     <Stack gap={15}>

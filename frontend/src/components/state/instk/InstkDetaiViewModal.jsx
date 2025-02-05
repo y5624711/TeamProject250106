@@ -124,6 +124,7 @@ export function InstkDetaiViewModal({
                       value={item || ""}
                       onValueChange={handleSerialChange}
                       position="relative"
+                      readOnly
                     >
                       <SelectTrigger>
                         <SelectValueText placeholder={"내역 확인"} />
@@ -204,7 +205,10 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={detailData.disapproveDate} />
                 </Field>
               )}
+
+              {/*true고  비고 없으면 필드 , */}
               {instk.inputConsent === true ? (
+                // true
                 <Field label={"승인 비고"} orientation="horizontal">
                   {instk.inputStockNote ? (
                     <Textarea
@@ -217,8 +221,17 @@ export function InstkDetaiViewModal({
                   )}
                 </Field>
               ) : (
+                // false
                 <Field label={"반려 비고"} orientation="horizontal">
-                  <Input readOnly value={detailData.disapproveNote} />
+                  {instk.inputStockNote ? (
+                    <Textarea
+                      readOnly
+                      value={instk.inputStockNote}
+                      style={{ maxHeight: "100px", overflowY: "auto" }}
+                    />
+                  ) : (
+                    <Input readOnly value={"내용 없음"} />
+                  )}
                 </Field>
               )}
             </Stack>
