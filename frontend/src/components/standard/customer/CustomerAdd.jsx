@@ -135,7 +135,7 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
         >
           <Field
             orientation="horizontal"
-            label={<SpacedLabel text="협력 업체" req />}
+            label={<SpacedLabel text="업체" req />}
             required
           >
             <Input

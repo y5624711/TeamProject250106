@@ -123,7 +123,7 @@ function CustomerList({
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
-              width="90px" // 더 좁게 설정 가능
+              width="90px"
               textAlign="center"
               onClick={() => onHeader("customer_key")}
             >
@@ -134,30 +134,40 @@ function CustomerList({
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
+              width="19%"
               textAlign="center"
               onClick={() => onHeader("customer_name")}
             >
               <HStack alignItems="center" justify="center">
-                업체명
+                업체
                 {standard.sort === "customer_name" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => onHeader("customer_no")}>
+            <Table.ColumnHeader
+              width="19%"
+              onClick={() => onHeader("customer_no")}
+            >
               <HStack alignItems="center" justify="center">
                 사업자 번호
                 {standard.sort === "customer_no" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => onHeader("common_code_name")}>
+            <Table.ColumnHeader
+              width="19%"
+              onClick={() => onHeader("common_code_name")}
+            >
               <HStack alignItems="center" justify="center">
                 취급 품목
                 {standard.sort === "common_code_name" &&
                   (standard.order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
-            <Table.ColumnHeader onClick={() => onHeader("customer_rep")}>
+            <Table.ColumnHeader
+              width="13%"
+              onClick={() => onHeader("customer_rep")}
+            >
               <HStack alignItems="center" justify="center">
                 대표자
                 {standard.sort === "customer_rep" &&
