@@ -48,6 +48,8 @@ function StocktakingAdd({
   const [itemList, setItemList] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
+  const [difference, setDifference] = useState(null);
+  const [stockLocation, setStockLocation] = useState([]);
 
   const resetState = () => {
     setWarehouseCode("");
@@ -197,9 +199,21 @@ function StocktakingAdd({
       countConfiguration !== null &&
       countConfiguration !== undefined &&
       countConfiguration !== "" &&
-      stocktakingType !== null
+      stocktakingType !== null &&
+      difference !== null
     );
   };
+
+  const handleDifferentClick = () => {
+    {
+      countCurrent > countConfiguration
+        ? setDifference("1")
+        : countCurrent < countConfiguration
+          ? setDifference("2")
+          : setDifference("0");
+    }
+  };
+  console.log(difference);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
@@ -276,9 +290,13 @@ function StocktakingAdd({
                 <Input
                   type={"text"}
                   value={countConfiguration}
-                  onChange={(e) => setCountConfiguration(e.target.value)}
+                  onChange={(e) => {
+                    setCountConfiguration(e.target.value);
+                    setDifference(null);
+                  }}
                 />
               </Field>
+              <Button onClick={handleDifferentClick}>조회</Button>
             </Box>
 
             <Field label="비고" orientation="horizontal" mb={15}>
