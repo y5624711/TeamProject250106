@@ -19,12 +19,20 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
         <Field label="창고 코드" orientation="horizontal" mb={15}>
-          <Input value={warehouseDetail.warehouseCode} readOnly />
+          <Input
+            value={warehouseDetail.warehouseCode}
+            readOnly
+            variant="subtle"
+          />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
         <Field label="담당 업체" orientation="horizontal" mb={15}>
-          <Input value={warehouseDetail.customerName} readOnly />
+          <Input
+            value={warehouseDetail.customerName}
+            readOnly
+            variant="subtle"
+          />
         </Field>
         <Field label="업체 코드" orientation="horizontal" mb={15}>
           <Input
@@ -35,13 +43,18 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
                 customerCode: e.target.value,
               })
             }
+            variant="subtle"
             readOnly
           />
         </Field>
       </Box>
       <Box display="flex" gap={4}>
         <Field label="관리자" orientation="horizontal" mb={15}>
-          <Input value={warehouseDetail.employeeName} readOnly />
+          <Input
+            value={warehouseDetail.employeeName}
+            readOnly
+            variant="subtle"
+          />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
           <Input
@@ -52,6 +65,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
                 customerEmployeeNo: e.target.value,
               })
             }
+            variant="subtle"
             readOnly
           />
         </Field>

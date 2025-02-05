@@ -70,3 +70,7 @@ WHERE warehouse_key = 16;
 
 
 DROP TABLE TB_PURCH_REQ;
+
+SELECT l.location_key
+FROM TB_LOCMST l
+LEFT JOIN
