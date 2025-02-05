@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   createListCollection,
@@ -47,7 +47,23 @@ export function CommonCodeList({
     items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
   });
 
-  const [code, setCode] = useState("ALL");
+  const [filter, setFilter] = useState(searchParams.get("filter") || "ALL");
+
+  useEffect(() => {
+    const currentFilter = searchParams.get("filter") || "all";
+    setFilter(currentFilter.toUpperCase());
+    console.log(filter);
+  }, [searchParams]);
+
+  const handleSelect = (selected) => {
+    setFilter(selected.value[0]);
+
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("filter", selected.value[0].toLowerCase());
+    nextSearchParams.set("page", "1");
+
+    setSearchParams(nextSearchParams);
+  };
 
   return (
     <Box>
@@ -59,26 +75,23 @@ export function CommonCodeList({
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
-        <Box>
-          <Field label={"코드 구분"} orientation="horizontal">
+        <Box css={{ "--field-label-width": "70px" }}>
+          <Field label={"코드 구분"} orientation="horizontal" gap={0}>
             <SelectRoot
               collection={codeOptions}
               width="160px"
               position="relative"
-              value={code}
-              onValueChange={(value) => {
-                setCode({ value });
-              }}
+              value={filter}
+              onValueChange={handleSelect}
             >
               <SelectTrigger>
-                <SelectValueText placeholder="ALL"></SelectValueText>{" "}
-                {/* 선택된 값 표시 */}
+                <SelectValueText placeholder="ALL" />
               </SelectTrigger>
 
               <SelectContent>
                 {codeOptions?.items.map((option) => (
                   <SelectItem item={option.value} key={option.value}>
-                    {option.value} {/* label 대신 value 사용 */}
+                    {option.value}
                   </SelectItem>
                 ))}
               </SelectContent>
