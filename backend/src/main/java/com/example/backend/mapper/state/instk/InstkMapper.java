@@ -132,7 +132,7 @@ WHERE 1=1
                                OR EM4.employee_no LIKE CONCAT('%', #{keyword}, '%')
                            ))
                        )
-                   </when>
+            </when>
             <otherwise>
                 AND (
                     SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
@@ -141,7 +141,7 @@ WHERE 1=1
                     CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM3.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-                    EM4.employee_name LIKE CONCAT('%', #{keyword}, '%') OR                                   
+                    EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')                                    
                 )
             </otherwise>
         </choose>
@@ -375,8 +375,17 @@ LIMIT #{offset}, 10
                 OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_stock_employee_name'">
-                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
+                       AND (
+                           (BI.input_consent = TRUE AND (
+                               EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                           OR
+                           (BI.input_consent = FALSE AND (
+                               EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM4.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                       )
             </when>
             <otherwise>
                 AND (
@@ -385,7 +394,8 @@ LIMIT #{offset}, 10
                     SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
                     CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                     EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')   
                 )
             </otherwise>
         </choose>

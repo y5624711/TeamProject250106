@@ -267,8 +267,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>
               <Table.Cell textAlign="center">
-                {" "}
-                {item.employeeWorkPlaceCode}{" "}
+                {item.employeeWorkPlaceCode}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {item.employeeCommonCode === "CUS"
