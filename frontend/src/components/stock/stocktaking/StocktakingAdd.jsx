@@ -62,6 +62,8 @@ function StocktakingAdd({
     setCountConfiguration("");
     setStocktakingNote("");
     setStocktakingType(true);
+    setSearchClick(false);
+    setDifference(null);
   };
 
   // 요청 창 닫히면 초기화
@@ -220,7 +222,6 @@ function StocktakingAdd({
       setSearchClick(true);
     }
   };
-  console.log(difference);
 
   useEffect(() => {
     console.log("difference 값 변경됨:", difference);
