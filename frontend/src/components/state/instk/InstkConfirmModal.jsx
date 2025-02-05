@@ -47,6 +47,8 @@ export function InstkConfirmModal({
       });
   }, []);
 
+  console.log(instk);
+
   // 입고 추가
   const handleAddInstk = () => {
     axios
@@ -57,6 +59,7 @@ export function InstkConfirmModal({
         inputStockEmployeeNo: id,
         inputStockNote: inputStockNote,
         itemCommonName: instk.itemCommonName,
+        customerName: instk.customerName,
         employeeWorkPlaceCode: instkDetail.employeeWorkPlaceCode,
         requestEmployeeNo: instk.requestEmployeeNo,
         itemAmount: instk.itemAmount,
@@ -81,6 +84,9 @@ export function InstkConfirmModal({
     axios
       .put("/api/instk/reject", {
         inputKey: instk.inputKey,
+        customerName: instk.customerName,
+        disapproveEmployeeNo: id,
+        disapproveNote: inputStockNote,
       })
       .then((res) => {
         console.log(res.data);
@@ -91,6 +97,8 @@ export function InstkConfirmModal({
       })
       .catch((error) => {
         console.log("입고 반려 중 오류 ", error);
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
       })
       .finally(() => {
         setChangeModal();
@@ -108,7 +116,18 @@ export function InstkConfirmModal({
         <DialogBody>
           <Stack gap={3}>
             <HStack gap={3}>
-              <Field orientation="horizontal" label={"입고 구분"}>
+              <Field
+                orientation="horizontal"
+                label={"입고 구분"}
+                labelProps={{
+                  sx: {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%", // 전체 너비 설정
+                  },
+                }}
+              >
                 <Input value={instk.inputCommonCodeName} readOnly />
               </Field>
               <Field label={"주문 번호"} orientation="horizontal">
@@ -157,6 +176,7 @@ export function InstkConfirmModal({
                 <Textarea
                   value={instk.inputNote}
                   readOnly
+                  style={{ maxHeight: "100px", overflowY: "auto" }}
                   placeholder={"최대50자"}
                 />
               ) : (
@@ -186,11 +206,10 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <Separator />
-
             <Field label={"입고 비고"} orientation="horizontal">
               <Textarea
                 value={inputStockNote}
+                style={{ maxHeight: "100px", overflowY: "auto" }}
                 placeholder={"최대50자"}
                 onChange={(e) => {
                   setInputStockNote(e.target.value);
@@ -200,9 +219,18 @@ export function InstkConfirmModal({
           </Stack>
         </DialogBody>
         <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setChangeModal();
+            }}
+          >
+            취소
+          </Button>
           <DialogActionTrigger asChild>
             <Button
               variant="outline"
+              colorPalette="red"
               onClick={() => {
                 handleRejectInstk();
               }}

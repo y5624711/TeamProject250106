@@ -144,12 +144,12 @@ public interface ItemMapper {
     List<String> getUsedItemCommonCode();
 
 
-    //    코드중 시리얼 넘버 최댓값 가져오기
+    //    코드중 시리얼 넘버 최댓값 가져오기 > 정수값으로 변환하도록
     @Select("""
-            SELECT  MAX(serial_no)
-            FROM TB_ITEMSUB
-            
-            """)
+    SELECT MAX(CAST(SUBSTRING(serial_no, 2) AS UNSIGNED))
+    FROM TB_ITEMSUB
+    WHERE serial_no LIKE 'S%'
+""")
     Integer viewMaxSerialNoByItemCode(String itemCommonCode);
 
     @Insert("""

@@ -48,11 +48,9 @@ public class InstkService {
         List<InstkSerialLocation>  serialLocationList= instkSubMapper.getSerialNoByInputKey(inputKey);
         String inoutNo=  "IN" + inputNo.substring(2);
 
-//      Map<String,Integer> map= inoutHistoryMapper.getSerialNoAndLocationKeyByInputNo(inoutNo);
         //  입고시 비고내용
          String inputStockNote= mapper.getInstkNoteByInputKey(inputKey);
 
-        System.out.println("inputStockNote = " + inputStockNote);
         String warehouseName="";
 
          if(inputCommonCodeName.equals("입고")) {
@@ -61,7 +59,6 @@ public class InstkService {
              warehouseName=mapper.viewReturnWareHouseName(inputKey);
          }
 
-        System.out.println("warehouseName = " + warehouseName);
 
       Instk instk = new Instk();
       instk.setInputStockNote(inputStockNote);
@@ -81,7 +78,7 @@ public class InstkService {
         int inputKey = instk.getInputKey();
         String inputStockNote = instk.getInputNote();
         String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
-        String inoutNo=  "IN" + instk.getInputNo().substring(2);
+        String inoutNo=   instk.getInputNo();
         String inputCommonCode=instk.getInputCommonCode();
 
         //String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());
@@ -109,9 +106,12 @@ public class InstkService {
 
                 // 품목 상세에서 시리얼 넘버 최대값 가져오기
                 Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(itemCommonCode);
+
                 // 시리얼 번호 생성 (20자리)
                 String insertSerialNo ="S"+ String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
 
+                System.out.println("insertSerialNo = " + insertSerialNo);
+                System.out.println("maxSerialNo = " + maxSerialNo);
                 // item_sub 테이블에 추가
                 int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
 
@@ -176,11 +176,29 @@ public class InstkService {
     }
 
     // 입고 반려
-    public Boolean[] rejectInstk(int inputKey) {
+    public boolean rejectInstk(Instk instk) {
         //반려 체크
-        Boolean currentStatus = mapper.selectedConsent(inputKey);
+//        Boolean currentStatus = mapper.selectedConsent(instk.getInputKey());
         //업데이트 체크
-        int updateResult = mapper.rejectInstk(inputKey);
-        return new Boolean[] {currentStatus, updateResult == 1};
+        int inputKey=instk.getInputKey();
+        String disApproveNote=instk.getDisapproveNote();
+        String disApproveEmployeeNo=instk.getDisapproveEmployeeNo();
+        //1.가입고 테이블 상태 변경
+        int updateBuyInConsentByInputKey=mapper.updateFalseBuyInConsentByInputKey(inputKey);
+        //반려테이블에 집어넣기 
+        int updateResult = mapper.rejectInstk(inputKey,disApproveEmployeeNo,disApproveNote);
+        return updateResult == 1;
+    }
+
+    public boolean authorityCheck(Authentication authentication, String customerName) {
+
+        if (authentication.getName().startsWith("CUS")) {
+            String loginEmployeeNo= authentication.getName();
+            String same = mapper.authorityCheck(loginEmployeeNo ,customerName);
+            return same != null;
+        }
+        //biz 본사직원이면 성공
+        return true;
+
     }
 }

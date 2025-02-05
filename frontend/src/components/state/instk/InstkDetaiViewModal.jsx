@@ -84,7 +84,6 @@ export function InstkDetaiViewModal({
   }
 
   const handleSerialChange = (e) => {
-    // console.log(e);
     setItem(e.value);
     setSelectLocationKey(e.value);
   };
@@ -176,9 +175,18 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={"내용 없음"} />
                 )}
               </Field>
-              {instk.inputConsent && (
+              {instk.inputConsent === true ? (
                 <HStack>
-                  <Field label={"입고 승인자"} orientation="horizontal">
+                  <Field label={"반려/승인자"} orientation="horizontal">
+                    <Input readOnly value={instk.inputStockEmployeeName} />
+                  </Field>
+                  <Field label={"사번"} orientation="horizontal">
+                    <Input readOnly value={instk.inputStockEmployeeNo} />
+                  </Field>
+                </HStack>
+              ) : (
+                <HStack>
+                  <Field label={"반려/승인자"} orientation="horizontal">
                     <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
                   <Field label={"사번"} orientation="horizontal">

@@ -38,7 +38,16 @@ public class InstkController {
 
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>>  add(@RequestBody Instk instk) {
+    public ResponseEntity<Map<String, Object>>  add(@RequestBody Instk instk ,Authentication authentication) {
+        
+        //권한 확인
+        if( !service.authorityCheck(authentication,instk.getCustomerName()) ){
+            return  ResponseEntity.status(401)
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "등록 권한이 없습니다.")));
+
+        };
+
 
 
         boolean success = service.addInstkProcess(instk);
@@ -48,7 +57,7 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."\{instk.getInputKey()}번 승인 처리  했습니다.")));
         }else {
-            return  ResponseEntity.ok()
+            return  ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", STR."\{instk.getInputKey()}번 승인 실패  했습니다.")));
         }
@@ -72,19 +81,26 @@ public class InstkController {
     //reject
     @PutMapping("reject")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> rejectInstk(@RequestBody Instk instk) {
-        System.out.println("instk.getInputKey() = " + instk.getInputKey());
+    public ResponseEntity<Map<String, Object>> rejectInstk(@RequestBody Instk instk ,Authentication authentication) {
 
-        Boolean[] result = service.rejectInstk(instk.getInputKey());
+        //권한 확인
+        if( !service.authorityCheck(authentication,instk.getCustomerName()) ){
+            return  ResponseEntity.status(401)
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "반려 권한이 없습니다.")));
+
+        };
+
+        boolean result = service.rejectInstk(instk);
 
         // 이미 반려된 상태
-        if (result[0] != null && !result[0]) {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
-        }
+//        if (result) {
+//            return ResponseEntity.ok()
+//                    .body(Map.of("message", Map.of("type", "error",
+//                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
+//        }
         // 반려 성공
-        else if (result[1]) {
+         if (result) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."\{instk.getInputKey()}번 주문 반려 되었습니다.")));

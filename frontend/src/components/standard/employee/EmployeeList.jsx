@@ -105,12 +105,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
   const handleVisible = () => {
     const active = searchParams.get("active");
-    const insertActive = active === true ? true : false;
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev); // 복사본 생성
-      newParams.set("active", insertActive); // "active" 키에 새로운 값 설정
-      return newParams;
-    });
+
+    // active 값이 없으면 true, 있으면 반대로 변경
+    const insertActive = active === null ? true : active !== "true";
+
+    const newParams = new URLSearchParams(searchParams); // 기존 파라미터 복사
+    newParams.set("active", insertActive); // "active" 키에 새로운 값 설정
+
+    setSearchParams(newParams);
   };
 
   //  페이지 버튼 클릭시
@@ -234,7 +236,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       </HStack>
       <Checkbox
         my={3}
-        checked={searchParams.get("active")}
+        checked={searchParams.get("active") === "true" ? true : false}
         onCheckedChange={(e) => handleVisible()}
       >
         미사용 포함 조회

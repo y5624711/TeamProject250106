@@ -35,6 +35,11 @@ public class Instk {
     private String inputStockEmployeeNo;
     private String inputStockEmployeeName;
 
+    //반려
+    private String disapproveEmployeeNo;
+    private String disapproveEmployeeName;
+    private String disapproveNote;
+
     private List<String> serialList;
 
     private String wareHouseName;
