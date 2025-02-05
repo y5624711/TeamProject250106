@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   createListCollection,
@@ -10,14 +10,8 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../ui/select.jsx";
 import { Field } from "../../ui/field.jsx";
+import { CommonCodeSelect } from "./CommonCodeSelect.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -43,27 +37,10 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
+  // 코드 구분
   const codeOptions = createListCollection({
-    items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
+    items: ["all", "item", "standard", "state"].map((value) => ({ value })),
   });
-
-  const [filter, setFilter] = useState(searchParams.get("filter") || "ALL");
-
-  useEffect(() => {
-    const currentFilter = searchParams.get("filter") || "all";
-    setFilter(currentFilter.toUpperCase());
-    console.log(filter);
-  }, [searchParams]);
-
-  const handleSelect = (selected) => {
-    setFilter(selected.value[0]);
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("filter", selected.value[0].toLowerCase());
-    nextSearchParams.set("page", "1");
-
-    setSearchParams(nextSearchParams);
-  };
 
   return (
     <Box>
@@ -77,25 +54,12 @@ export function CommonCodeList({
         />
         <Box css={{ "--field-label-width": "70px" }}>
           <Field label={"코드 구분"} orientation="horizontal" gap={0}>
-            <SelectRoot
-              collection={codeOptions}
-              width="160px"
-              position="relative"
-              value={filter}
-              onValueChange={handleSelect}
-            >
-              <SelectTrigger>
-                <SelectValueText placeholder="ALL" />
-              </SelectTrigger>
-
-              <SelectContent>
-                {codeOptions?.items.map((option) => (
-                  <SelectItem item={option.value} key={option.value}>
-                    {option.value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
+            <CommonCodeSelect
+              codeOptions={codeOptions}
+              onSelectChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+            />
           </Field>
         </Box>
       </HStack>
