@@ -27,7 +27,7 @@ export function PurchaseList({
       { label: "담당 업체", value: "customerName" },
       { label: "품목", value: "itemCommonName" },
       { label: "요청자", value: "employeeName" },
-      { label: "승인자", value: "customerEmployeeName" },
+      { label: "반려/승인자", value: "customerEmployeeName" },
     ],
   });
 
@@ -36,7 +36,7 @@ export function PurchaseList({
     { key: "customerName", label: "담당 업체" },
     { key: "itemCommonName", label: "품목" },
     { key: "employeeName", label: "요청자" },
-    { key: "customerEmployeeName", label: "승인자" },
+    { key: "customerEmployeeName", label: "반려/승인자" },
     { key: "purchaseDate", label: "날짜" },
   ];
 
@@ -123,7 +123,9 @@ export function PurchaseList({
                   {purchase.customerEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {purchase.purchaseApproveDate || purchase.purchaseRequestDate}
+                  {purchase.purchaseApproveDate ||
+                    purchase.purchaseDisapproveDate ||
+                    purchase.purchaseRequestDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {purchase.purchaseConsent == 1

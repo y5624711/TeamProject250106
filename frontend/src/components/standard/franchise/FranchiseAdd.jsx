@@ -199,6 +199,7 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
           </Button>
           <Tooltip
             content="입력을 완료해 주세요."
+            disabled={validate()}
             openDelay={100}
             closeDelay={100}
           >

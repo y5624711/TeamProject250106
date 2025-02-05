@@ -30,4 +30,10 @@ public class Purchase {
 
     private Integer inputPrice;
     private Integer totalPrice;
+
+    private Integer stateRequestKey;
+    private String stateCommonCode;
+    private String disapproveEmployeeNo;
+    private LocalDate disapproveDate;
+    private String disapproveNote;
 }
