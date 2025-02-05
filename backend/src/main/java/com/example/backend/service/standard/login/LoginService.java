@@ -78,6 +78,12 @@ public class LoginService {
     }
 
     public Boolean checkUseId(Employee employee) {
-        return mapper.selectIdCheckUse(employee.getEmployeeNo());
+        Boolean isActive = mapper.selectIdCheckUse(employee.getEmployeeNo());
+        return isActive != null ? isActive : Boolean.FALSE;
+    }
+
+    public Boolean checkId(Employee employee) {
+        Integer cnt = mapper.selectCheckId(employee.getEmployeeNo());
+        return cnt != null && cnt > 0;
     }
 }

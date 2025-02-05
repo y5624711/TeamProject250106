@@ -51,5 +51,12 @@ public interface LoginMapper {
             FROM TB_EMPMST
             WHERE employee_no = #{employeeNo}
             """)
-    boolean selectIdCheckUse(String employeeNo);
+    Boolean selectIdCheckUse(String employeeNo);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_EMPMST
+            WHERE employee_no = #{employeeNo}
+            """)
+    Integer selectCheckId(String employeeNo);
 }
