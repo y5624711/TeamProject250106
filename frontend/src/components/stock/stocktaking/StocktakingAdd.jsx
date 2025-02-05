@@ -48,6 +48,10 @@ function StocktakingAdd({
   const [itemList, setItemList] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
+  const [difference, setDifference] = useState(null);
+  const [stockLocation, setStockLocation] = useState([]);
+  const [searchClick, setSearchClick] = useState(false);
+  const [makeDifference, setMakeDifference] = useState(0);
 
   const resetState = () => {
     setWarehouseCode("");
@@ -58,6 +62,8 @@ function StocktakingAdd({
     setCountConfiguration("");
     setStocktakingNote("");
     setStocktakingType(true);
+    setSearchClick(false);
+    setDifference(null);
   };
 
   // 요청 창 닫히면 초기화
@@ -197,9 +203,29 @@ function StocktakingAdd({
       countConfiguration !== null &&
       countConfiguration !== undefined &&
       countConfiguration !== "" &&
-      stocktakingType !== null
+      stocktakingType !== null &&
+      difference !== null &&
+      searchClick === true &&
+      makeDifference + countCurrent - countConfiguration === 0
+      //   makeDifference 를 통해 값이 같을 때 등록 가능하게 하기
     );
   };
+
+  const handleDifferentClick = () => {
+    {
+      countCurrent > countConfiguration
+        ? setDifference("1")
+        : countCurrent < countConfiguration
+          ? setDifference("2")
+          : setDifference("0");
+
+      setSearchClick(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log("difference 값 변경됨:", difference);
+  }, [difference]);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
@@ -276,9 +302,13 @@ function StocktakingAdd({
                 <Input
                   type={"text"}
                   value={countConfiguration}
-                  onChange={(e) => setCountConfiguration(e.target.value)}
+                  onChange={(e) => {
+                    setCountConfiguration(e.target.value);
+                    setSearchClick(false);
+                  }}
                 />
               </Field>
+              <Button onClick={handleDifferentClick}>조회</Button>
             </Box>
 
             <Field label="비고" orientation="horizontal" mb={15}>
@@ -315,8 +345,24 @@ function StocktakingAdd({
                 {/*/>*/}
               </Field>
             </Box>
+            {difference !== null && (
+              <>
+                {difference === "1" && (
+                  <>
+                    <hr />
+                    전산 더 많음
+                  </>
+                )}
+                {difference === "2" && (
+                  <>
+                    <hr />
+                    실제 더 많음
+                  </>
+                )}
+                <Box></Box>
+              </>
+            )}
           </Box>
-
           {/*  TODO: 실사유형 radio로 체크  */}
         </DialogBody>
         <DialogFooter>
@@ -327,7 +373,11 @@ function StocktakingAdd({
             </Button>
           </DialogActionTrigger>
           <Tooltip
-            content="입력을 완료해 주세요."
+            content={
+              searchClick === false
+                ? "입력 완료 후 조회 버튼을 눌러주세요."
+                : "재고 실사가 맞지 않습니다."
+            }
             openDelay={100}
             closeDelay={100}
             disabled={validate()}
