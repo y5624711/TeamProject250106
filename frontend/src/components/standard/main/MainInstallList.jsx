@@ -78,12 +78,14 @@ export function MainInstallList({ company, scope }) {
                 <Table.Cell textAlign="center">{row.franchiseName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
-                <Table.Cell textAlign="center">{row.outputNo}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {row.outputNo || "-"}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.businessEmployeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {row.customerEmployeeName}
+                  {row.customerEmployeeName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {!row.installApproveKey

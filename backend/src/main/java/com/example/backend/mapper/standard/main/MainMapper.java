@@ -193,68 +193,69 @@ public interface MainMapper {
     int selectCheckInstallByRequseter(String auth);
 
     @Select("""
-            SELECT BI.input_key,
-                   BI.input_common_code,
-                   BI.business_employee_no,
-                   BI.input_no,
-                   BI.input_consent,
-                   BI.input_note,
-                   SC2.common_code_name AS input_common_code_name,
-                   SC.common_code_name  AS item_common_name,
-                   CT.customer_name     as customer_name,
-                   EM.employee_name     as request_approval_employee_name,
-                   EM.employee_no       as request_approval_employee_no,
-                   EM2.employee_name    as request_employee_name,
-                   EM2.employee_no      as request_employee_no,
-                   CASE
-                       WHEN BI.input_consent = TRUE THEN INS.input_stock_date
-                       ELSE NULL
-                       END              AS input_stock_date,
-                   CASE
-                       WHEN BI.input_consent = TRUE THEN EM3.employee_name
-                       ELSE NULL
-                       END              AS input_stock_employee_name,
-                   CASE
-                       WHEN BI.input_consent = TRUE THEN EM3.employee_no
-                       ELSE NULL
-                       END              AS input_stock_employee_no,
-                   CASE
-                       WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount
-                       ELSE 1
-                       END              AS item_amount,
-                   CASE
-                       WHEN BI.input_common_code = 'INSTK' THEN PRQ.purchase_request_date
-                       WHEN BI.input_common_code = 'RETRN' THEN RNRQ.return_request_date
-                       ELSE NULL
-                       END              AS request_date
-            FROM TB_BUYIN BI
-                     LEFT JOIN TB_PURCH_APPR PR
-                               ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
-                     LEFT JOIN TB_PURCH_REQ PRQ
-                               ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
-                     LEFT JOIN TB_RTN_APPR RN
-                               ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
-                     LEFT JOIN TB_RTN_REQ RNRQ
-                               ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
-                     LEFT JOIN TB_EMPMST EM
-                               ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
-                                   OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-                     LEFT JOIN TB_EMPMST EM2
-                               ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
-                                   OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
-                     LEFT JOIN TB_CUSTMST CT
-                               ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
-                                   OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)
-                     LEFT JOIN TB_SYSCOMM SC
-                               ON SC.common_code = CT.item_code
-                     LEFT JOIN TB_SYSCOMM SC2
-                               ON SC2.common_code = BI.input_common_code
-                     LEFT JOIN TB_INSTK INS
-                               ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
-                     LEFT JOIN TB_EMPMST EM3
-                               ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
+               SELECT
+                BI.input_key,
+                BI.input_common_code,
+                BI.business_employee_no,
+                BI.input_no,
+                BI.input_consent,
+                BI.input_note, 
+                SC2.common_code_name AS input_common_code_name,
+                SC.common_code_name AS item_common_name, 
+                CT.customer_name as customer_name,
+                EM.employee_name as request_approval_employee_name,
+                EM.employee_no as request_approval_employee_no,
+                EM2.employee_name as request_employee_name,
+                EM2.employee_no as request_employee_no,
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN INS.input_stock_date 
+                    ELSE NULL
+                END AS input_stock_date,
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN EM3.employee_name 
+                    ELSE NULL
+                END AS input_stock_employee_name,
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
+                    ELSE NULL
+                END AS input_stock_employee_no,
+                CASE 
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount 
+                    ELSE 1
+                END AS item_amount,
+                CASE
+                    WHEN BI.input_common_code='INSTK'  THEN PRQ.purchase_request_date 
+                    WHEN BI.input_common_code='RETRN'  THEN RNRQ.return_request_date
+                    ELSE NULL
+                END AS request_date
+            FROM TB_BUYIN BI  
+                LEFT JOIN TB_PURCH_APPR PR
+                    ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
+                LEFT JOIN TB_PURCH_REQ PRQ  
+                    ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
+                LEFT JOIN TB_RTN_APPR RN
+                    ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
+                LEFT JOIN TB_RTN_REQ RNRQ 
+                    ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
+                LEFT JOIN TB_EMPMST EM        
+                    ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
+                LEFT JOIN TB_EMPMST EM2        
+                    ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
+                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
+                LEFT JOIN TB_CUSTMST CT  
+                     ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
+                    OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)    
+                LEFT JOIN TB_SYSCOMM SC 
+                    ON SC.common_code = CT.item_code
+                LEFT JOIN TB_SYSCOMM SC2 
+                    ON SC2.common_code = BI.input_common_code
+                LEFT JOIN TB_INSTK INS 
+                    ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
+                LEFT JOIN TB_EMPMST EM3 
+                    ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
             WHERE EM2.employee_no = #{name}
-            ORDER BY GREATEST(input_stock_date, CAST(request_date AS DATE)) DESC
+            ORDER BY COALESCE(INS.input_stock_date, request_date) DESC
             LIMIT 3;
             """)
     List<Instk> selectInstkList(String name);
@@ -266,63 +267,64 @@ public interface MainMapper {
                 BI.business_employee_no,
                 BI.input_no,
                 BI.input_consent,
-                BI.input_note,
+                BI.input_note, 
                 SC2.common_code_name AS input_common_code_name,
-                SC.common_code_name AS item_common_name,
-                CT.customer_name AS customer_name,
-                EM.employee_name AS request_approval_employee_name,
-                EM.employee_no AS request_approval_employee_no,
-                EM2.employee_name AS request_employee_name,
-                EM2.employee_no AS request_employee_no,
-                CASE
-                    WHEN BI.input_consent = TRUE THEN INS.input_stock_date
+                SC.common_code_name AS item_common_name, 
+                CT.customer_name as customer_name,
+                EM.employee_name as request_approval_employee_name,
+                EM.employee_no as request_approval_employee_no,
+                EM2.employee_name as request_employee_name,
+                EM2.employee_no as request_employee_no,
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN INS.input_stock_date 
                     ELSE NULL
                 END AS input_stock_date,
-                CASE
-                    WHEN BI.input_consent = TRUE THEN EM3.employee_name
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN EM3.employee_name 
                     ELSE NULL
                 END AS input_stock_employee_name,
-                CASE
-                    WHEN BI.input_consent = TRUE THEN EM3.employee_no
+                CASE 
+                    WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
                     ELSE NULL
                 END AS input_stock_employee_no,
-                CASE
-                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount
+                CASE 
+                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount 
                     ELSE 1
                 END AS item_amount,
                 CASE
-                    WHEN BI.input_common_code = 'INSTK' THEN PRQ.purchase_request_date
-                    WHEN BI.input_common_code = 'RETRN' THEN RNRQ.return_request_date
+                    WHEN BI.input_common_code='INSTK'  THEN PRQ.purchase_request_date 
+                    WHEN BI.input_common_code='RETRN'  THEN RNRQ.return_request_date
                     ELSE NULL
                 END AS request_date
-            FROM TB_BUYIN BI 
+            FROM TB_BUYIN BI  
                 LEFT JOIN TB_PURCH_APPR PR
                     ON BI.input_common_code = 'INSTK' AND PR.purchase_no = BI.input_no
-                LEFT JOIN TB_PURCH_REQ PRQ 
+                LEFT JOIN TB_PURCH_REQ PRQ  
                     ON BI.input_common_code = 'INSTK' AND PRQ.purchase_request_key = PR.purchase_request_key
                 LEFT JOIN TB_RTN_APPR RN
                     ON BI.input_common_code = 'RETRN' AND RN.return_no = BI.input_no
-                LEFT JOIN TB_RTN_REQ RNRQ
+                LEFT JOIN TB_RTN_REQ RNRQ 
                     ON BI.input_common_code = 'RETRN' AND RNRQ.return_request_key = RN.return_request_key
-                LEFT JOIN TB_EMPMST EM
+                LEFT JOIN TB_EMPMST EM        
                     ON (BI.input_common_code = 'INSTK' AND EM.employee_no = PR.customer_employee_no)
                     OR (BI.input_common_code = 'RETRN' AND EM.employee_no = RN.customer_employee_no)
-                LEFT JOIN TB_EMPMST EM2
+                LEFT JOIN TB_EMPMST EM2        
                     ON (BI.input_common_code = 'INSTK' AND EM2.employee_no = PRQ.employee_no)
-                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)
-                LEFT JOIN TB_CUSTMST CT
-                    ON CT.customer_code = EM.employee_workplace_code
-                LEFT JOIN TB_SYSCOMM SC
+                    OR (BI.input_common_code = 'RETRN' AND EM2.employee_no = RNRQ.business_employee_no)    
+                LEFT JOIN TB_CUSTMST CT  
+                     ON (BI.input_common_code = 'INSTK' AND PRQ.customer_code = CT.customer_code)
+                    OR (BI.input_common_code = 'RETRN' AND RNRQ.customer_code = CT.customer_code)    
+                LEFT JOIN TB_SYSCOMM SC 
                     ON SC.common_code = CT.item_code
-                LEFT JOIN TB_SYSCOMM SC2
+                LEFT JOIN TB_SYSCOMM SC2 
                     ON SC2.common_code = BI.input_common_code
-                LEFT JOIN TB_INSTK INS
-                    ON INS.input_key = BI.input_key  -- 수정
-                LEFT JOIN TB_EMPMST EM3
-                    ON EM3.employee_no = INS.customer_employee_no  -- 수정
-            WHERE CT.customer_code = #{company}
-            ORDER BY GREATEST(input_stock_date, CAST(request_date AS DATE)) DESC
-            LIMIT 3;  -- 수정
+                LEFT JOIN TB_INSTK INS 
+                    ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
+                LEFT JOIN TB_EMPMST EM3 
+                    ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
+                    WHERE CT.customer_code = #{company}
+                    ORDER BY COALESCE(INS.input_stock_date, request_date) DESC
+                    LIMIT 3;  -- 수정
             """)
     List<Instk> selectInstkListByCustomer(String company);
 
