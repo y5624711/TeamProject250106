@@ -97,9 +97,14 @@ public class ReturnService {
     }
 
     //반품 반려
-    public boolean disapproveReturn(String returnRequestKey) {
+    public boolean disapproveReturn(Return disapproveInfo) {
         //return_consent = false
-        return mapper.disapproveReturn(returnRequestKey) == 1;
+        int t1 = mapper.disapproveReturn(disapproveInfo.getReturnRequestKey());
+
+        //DISPR에 정보 추가
+        int t2 = mapper.addDisapprove(disapproveInfo);
+
+        return t1 == 1;
     }
 
     // 가맹점 코드로 시리얼번호 조회

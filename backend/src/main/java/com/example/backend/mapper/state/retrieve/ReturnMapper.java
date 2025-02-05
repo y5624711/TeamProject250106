@@ -117,7 +117,8 @@ public interface ReturnMapper {
             SELECT rr.return_request_key, rr.franchise_code, f.franchise_name, ra.return_no, rr.serial_no, itc.common_code_name itemCommonName, 
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
-                   return_request_date, return_approve_date,return_date, return_consent, return_request_note, return_approve_note
+                   return_request_date, return_approve_date,return_date, return_consent, return_request_note, return_approve_note,
+                   disapprove_employee_no, disapprove_date, disapprove_note
             FROM TB_RTN_REQ rr
             LEFT JOIN TB_RTN_APPR ra
             ON ra.return_request_key = rr.return_request_key
@@ -127,8 +128,10 @@ public interface ReturnMapper {
             LEFT JOIN TB_SYSCOMM itc ON itc.common_code = its.item_common_code
             LEFT JOIN TB_EMPMST emb ON emb.employee_no = rr.business_employee_no
             LEFT JOIN TB_EMPMST emce ON emce.employee_no = ra.customer_employee_no    
-            LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no    
-            WHERE rr.return_request_key = #{returnRequestKey}
+            LEFT JOIN TB_EMPMST emcc ON emcc.employee_no = ra.customer_configurer_no
+            LEFT JOIN (SELECT * FROM TB_DISPR WHERE state_common_code='RETRN') d ON rr.return_request_key = d.state_request_key
+            LEFT JOIN TB_EMPMST emd ON emd.employee_no = d.disapprove_employee_no    
+            WHERE rr.return_request_key = #{returnRequestKey};
             """)
     List<Return> getRequestInfo(String returnRequestKey);
 
@@ -239,7 +242,16 @@ public interface ReturnMapper {
             SET return_consent = false
             WHERE return_request_key=#{returnRequestKey}
             """)
-    int disapproveReturn(String returnRequestKey);
+    int disapproveReturn(Integer returnRequestKey);
+
+    //반품 반려 : 반려테이블이 삽입
+    @Insert("""
+            INSERT INTO TB_DISPR
+            (state_request_key, state_common_code, disapprove_employee_no, disapprove_note) 
+            VALUES (#{returnRequestKey}, 'RETRN', #{customerEmployeeNo}, #{approveNote})
+            """)
+    int addDisapprove(Return disapproveInfo);
+
 
     // 가맹점 코드로 시리얼 번호 목록 반환 (대기, 승인인 것 제외)
     @Select("""
@@ -262,4 +274,5 @@ public interface ReturnMapper {
             WHERE r.return_request_key = #{returnRequestKey}
             """)
     List<Map<String, Object>> getConfigurerList(String returnRequestKey);
+
 }

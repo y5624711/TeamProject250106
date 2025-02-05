@@ -8,6 +8,8 @@ import java.time.LocalDate;
 public class Return {
     Integer returnRequestKey;
     Integer returnApproveKey;
+    Integer disapproveKey;
+    Integer stateRequestKey;
     String serialNo;
     String itemCommonCode;
     String itemCommonName;
@@ -22,10 +24,13 @@ public class Return {
     String customerConfigurerName;
     String customerEmployeeNo;
     String customerEmployeeName;
+    String disapproveEmployeeNo;
     LocalDate returnRequestDate;
     LocalDate returnApproveDate;
     LocalDate returnDate;
+    LocalDate disapproveDate;
     String returnConsent;
     String returnRequestNote;
     String returnApproveNote;
+    String disapproveNote;
 }

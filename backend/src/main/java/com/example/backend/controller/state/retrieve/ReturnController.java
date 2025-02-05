@@ -121,9 +121,9 @@ public class ReturnController {
     }
 
     //반품 반려
-    @PutMapping("disapprove/{returnRequestKey}")
-    public ResponseEntity<Map<String, Object>> disapproveReturn(@PathVariable String returnRequestKey) {
-        if (service.disapproveReturn(returnRequestKey)) {
+    @PostMapping("disapprove")
+    public ResponseEntity<Map<String, Object>> disapproveReturn(@RequestBody Return disapproveInfo, Authentication auth) {
+        if (service.disapproveReturn(disapproveInfo)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",
                             "text", "반려하였습니다.")));

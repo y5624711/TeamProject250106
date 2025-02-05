@@ -102,8 +102,14 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
 
   //반려 전달
   const handleDisapproveButton = () => {
+    const updatedApproveData = {
+      ...approveData,
+      customerEmployeeName: name,
+      customerEmployeeNo: id,
+    };
+
     axios
-      .put(`api/return/disapprove/${returnRequestKey}`)
+      .post(`api/return/disapprove`, updatedApproveData)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -248,21 +254,21 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             >
               <HStack>
                 <Field orientation="horizontal" label="반려자">
-                  <Input readOnly value={"임시"} />
+                  <Input readOnly value={approveData.disapproveEmployName} />
                 </Field>
                 <Field orientation="horizontal" label="사번">
-                  <Input readOnly value={"임시"} />
+                  <Input readOnly value={approveData.disapproveEmployeeNo} />
                 </Field>
               </HStack>
 
               <Field orientation="horizontal" label="반려 날짜">
-                <Input readOnly value={"임시"} />
+                <Input readOnly value={approveData.disapproveDate} />
               </Field>
               <Field orientation="horizontal" label="반려 비고">
-                {approveData.returnApproveNote ? (
+                {approveData.returnDisapproveNote ? (
                   <Textarea
                     readOnly
-                    value={approveData.returnApproveNote}
+                    value={approveData.returnDisapproveNote}
                     style={{ maxHeight: "100px", overflowY: "auto" }}
                   />
                 ) : (
