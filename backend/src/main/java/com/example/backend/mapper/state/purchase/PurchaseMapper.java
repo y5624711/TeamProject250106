@@ -104,6 +104,8 @@ public interface PurchaseMapper {
                         <if test="type=='all' or type=='customerEmployeeName'">
                             OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR emp3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR disapprove_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )
@@ -170,6 +172,8 @@ public interface PurchaseMapper {
                         <if test="type=='all' or type=='customerEmployeeName'">
                             OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR emp3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR disapprove_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )
