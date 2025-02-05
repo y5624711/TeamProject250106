@@ -347,12 +347,19 @@ function StocktakingAdd({
             </Box>
             {difference !== null && (
               <>
-                <hr />
-                <Box>
-                  {difference === "1" && "전산 수량이 더 많아"}
-                  {difference === "2" && "실제 수량이 더 많아"}
-                  {difference === "0" && "수량이 동일해"}
-                </Box>
+                {difference === "1" && (
+                  <>
+                    <hr />
+                    전산 더 많음
+                  </>
+                )}
+                {difference === "2" && (
+                  <>
+                    <hr />
+                    실제 더 많음
+                  </>
+                )}
+                <Box></Box>
               </>
             )}
           </Box>
@@ -366,7 +373,11 @@ function StocktakingAdd({
             </Button>
           </DialogActionTrigger>
           <Tooltip
-            content="입력을 완료해 주세요."
+            content={
+              searchClick === false
+                ? "입력 완료 후 조회 버튼을 눌러주세요."
+                : "재고 실사가 맞지 않습니다."
+            }
             openDelay={100}
             closeDelay={100}
             disabled={validate()}
