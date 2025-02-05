@@ -37,3 +37,12 @@ VALUES ('POS', 'WH4328332', 'CUSEMP0000024', '100', '100');
 DELETE
 FROM TB_STKTK
 WHERE stocktaking_key = 3;
+
+SELECT l.location_key, ist.serial_no
+FROM TB_LOCMST l
+         LEFT JOIN TB_WHMST w ON l.warehouse_code = w.warehouse_code
+         LEFT JOIN TB_CUSTMST cus ON w.customer_code = cus.customer_code
+         LEFT JOIN TB_ITEMSUB ist ON cus.item_code = ist.item_common_code
+WHERE w.warehouse_code = 'WHS001'
+  AND l.located IS TRUE
+  AND l.location_active IS TRUE;

@@ -81,6 +81,7 @@ public class StocktakingController {
         return service.getStocktakingCountCurrent(warehouseCode, itemCode);
     }
 
+    //    창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
     @GetMapping("location/{warehouseCode}/{difference}")
     public List<StocktakingItem> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
         return service.getStocktakingLocationList(warehouseCode, difference);

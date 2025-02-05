@@ -265,7 +265,7 @@ public interface StocktakingMapper {
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
             LEFT JOIN TB_ITEMSUB ist ON cus.item_code=ist.item_common_code
-            WHERE w.warehouse_code=#{warehouseCode}
+            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
             """)
-    List<StocktakingItem> getStocktakingLocationList(String warehouseCode, String getCode);
+    List<StocktakingItem> getStocktakingLocationList(String warehouseCode, Integer getCode);
 }
