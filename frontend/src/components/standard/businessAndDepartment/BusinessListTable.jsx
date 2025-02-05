@@ -44,14 +44,16 @@ export function BusinessListTable({
               onDoubleClick={() => openDialog(list)}
               bg={list.departmentActive ? "white" : "gray.200"}
             >
-              <Table.Cell textAlign="center">{index + 1 || "-"}</Table.Cell>
+              <Table.Cell textAlign="center" width="90px">
+                {index + 1 || "-"}
+              </Table.Cell>
               <Table.Cell textAlign="center">
                 {list.departmentName || "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" w={"20%"}>
                 {list.departmentTel || "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" w={"20%"}>
                 {list.departmentFax || "-"}
               </Table.Cell>
             </Table.Row>
