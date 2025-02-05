@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/stocktaking")
@@ -80,10 +81,23 @@ public class StocktakingController {
         return service.getStocktakingCountCurrent(warehouseCode, itemCode);
     }
 
-    //    창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
-    @GetMapping("location/{warehouseCode}/{difference}")
-    public List<Integer> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
-        return service.getStocktakingLocationList(warehouseCode, difference);
+    //    row 값 불러오기
+    @GetMapping("row/{warehouseCode}/{difference}")
+    public Set<String> rowList(@PathVariable String warehouseCode, @PathVariable String difference) {
+        return service.getWarehouseRowList(warehouseCode, difference);
     }
+
+    //    col 값 불러오기
+    @GetMapping("col/{warehouseCode}/{difference}/{row}")
+    public Set<String> rowList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row) {
+        return service.getWarehouseColList(warehouseCode, difference, row);
+    }
+
+
+    //    창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
+//    @GetMapping("location/{warehouseCode}/{difference}")
+//    public List<Integer> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
+//        return service.getStocktakingLocationList(warehouseCode, difference);
+//    }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -120,19 +121,54 @@ public class StocktakingService {
         return countCurrent;
     }
 
-    public List<Integer> getStocktakingLocationList(String warehouseCode, String difference) {
-
+    public Set<String> getWarehouseRowList(String warehouseCode, String difference) {
         Integer getCode;
 
         if (difference.equals("1")) {
 //            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
             getCode = 1;
-            return mapper.getStocktakingLocationList(warehouseCode, getCode);
+
+            return mapper.getWarehouseRowList(warehouseCode, getCode);
         } else {
 //            실제수량이 많을 경우
             getCode = 0;
-            return mapper.getStocktakingLocationList(warehouseCode, getCode);
+
+            return mapper.getWarehouseRowList(warehouseCode, getCode);
         }
 
     }
+
+    public Set<String> getWarehouseColList(String warehouseCode, String difference, String row) {
+        Integer getCode;
+
+        if (difference.equals("1")) {
+//            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
+            getCode = 1;
+
+            return mapper.getWarehouseColList(warehouseCode, getCode, row);
+        } else {
+//            실제수량이 많을 경우
+            getCode = 0;
+
+            return mapper.getWarehouseColList(warehouseCode, getCode, row);
+        }
+    }
+
+
+//    로케이션 정보 불러오기.
+//    public List<Integer> getStocktakingLocationList(String warehouseCode, String difference) {
+//
+//        Integer getCode;
+//
+//        if (difference.equals("1")) {
+////            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
+//            getCode = 1;
+//            return mapper.getStocktakingLocationList(warehouseCode, getCode);
+//        } else {
+////            실제수량이 많을 경우
+//            getCode = 0;
+//            return mapper.getStocktakingLocationList(warehouseCode, getCode);
+//        }
+//
+//    }
 }

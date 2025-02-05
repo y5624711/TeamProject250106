@@ -53,6 +53,15 @@ function StocktakingAdd({
   const [searchClick, setSearchClick] = useState(false);
   const [makeDifference, setMakeDifference] = useState(0);
   const [locationList, setLocationList] = useState([]);
+  const [rowList, setRowList] = useState([]);
+  const [row, setRow] = useState("");
+  const [selectedRow, setSelectedRow] = useState("");
+  const [colList, setColList] = useState([]);
+  const [col, setCol] = useState("");
+  const [selectedCol, setSelectedCol] = useState("");
+  const [shelfList, setShelfList] = useState([]);
+  const [shelf, setShelf] = useState("");
+  const [selectedShelf, setSelectedShelf] = useState("");
 
   const resetState = () => {
     setWarehouseCode("");
@@ -98,20 +107,35 @@ function StocktakingAdd({
     }
   }, [warehouseCode]);
 
-  // 로케이션 정보 가져오기
+  // location row 정보 가져오기
   useEffect(() => {
-    if (warehouseCode && difference) {
+    if (warehouseCode && difference !== "0") {
       axios
-        .get(`/api/stocktaking/location/${warehouseCode}/${difference}`)
+        .get(`/api/stocktaking/row/${warehouseCode}/${difference}`)
         .then((res) => {
-          const locationOptions = res.data.map((location) => ({
-            value: location.itemCode,
-            label: location.itemName,
+          const rowOptions = res.data.map((location) => ({
+            value: location,
+            label: location,
           }));
-          setLocationList(locationOptions);
+          setRowList(rowOptions);
         });
     }
   }, [warehouseCode, difference]);
+
+  // location col 정보 가져오기
+  useEffect(() => {
+    if (warehouseCode && difference !== "0" && row) {
+      axios
+        .get(`/api/stocktaking/col/${warehouseCode}/${difference}/${row}`)
+        .then((res) => {
+          const colOptions = res.data.map((col) => ({
+            value: col,
+            label: col,
+          }));
+          setColList(colOptions);
+        });
+    }
+  }, [warehouseCode, difference, row]);
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {
@@ -146,6 +170,43 @@ function StocktakingAdd({
       ...prev,
       warehouseName: selectedOption.label,
       warehouseCode: selectedOption.value,
+    }));
+  };
+
+  // 행 변경 시 열 컬렉션 생성
+  const handleRowChange = (selectedOption) => {
+    setRow(selectedOption.label);
+    setRow(selectedOption.value);
+    setSelectedRow(selectedOption);
+
+    // 선택 즉시 stocktakingAdd 업데이트
+    setStocktakingAdd((prev) => ({
+      ...prev,
+      row: selectedOption.value,
+    }));
+  };
+  // 열 변경 시 단 컬렉션 생성
+  const handleColChange = (selectedOption) => {
+    setCol(selectedOption.label);
+    setCol(selectedOption.value);
+    setSelectedCol(selectedOption);
+
+    // 선택 즉시 stocktakingAdd 업데이트
+    setStocktakingAdd((prev) => ({
+      ...prev,
+      col: selectedOption.value,
+    }));
+  };
+  // 단 변경
+  const handleShelfChange = (selectedOption) => {
+    setShelf(selectedOption.label);
+    setShelf(selectedOption.value);
+    setSelectedShelf(selectedOption);
+
+    // 선택 즉시 stocktakingAdd 업데이트
+    setStocktakingAdd((prev) => ({
+      ...prev,
+      shelf: selectedOption.value,
     }));
   };
 
@@ -405,15 +466,75 @@ function StocktakingAdd({
                       orientation="horizontal"
                       mb={15}
                     ></Field>
-                    <Box display="flex" gap={20}>
+                    <Box display="flex" gap={18}>
                       <Field label="행" orientation="horizontal" mb={15}>
-                        <Input type={"text"} />
+                        <Select
+                          options={rowList}
+                          value={rowList.find(
+                            (opt) => opt.value === stocktakingAdd.row,
+                          )}
+                          onChange={handleRowChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
+                          }}
+                        />
                       </Field>
                       <Field label="열" orientation="horizontal" mb={15}>
-                        <Input type={"text"} />
+                        <Select
+                          options={colList}
+                          value={colList.find(
+                            (opt) => opt.value === stocktakingAdd.col,
+                          )}
+                          onChange={handleColChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
+                          }}
+                        />
                       </Field>
                       <Field label="단" orientation="horizontal" mb={15}>
-                        <Input type={"text"} />
+                        <Select
+                          options={shelfList}
+                          value={shelfList.find(
+                            (opt) => opt.value === stocktakingAdd.shelf,
+                          )}
+                          onChange={handleShelfChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
+                          }}
+                        />
                       </Field>
                     </Box>
                   </>

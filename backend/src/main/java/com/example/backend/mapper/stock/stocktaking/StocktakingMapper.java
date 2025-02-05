@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface StocktakingMapper {
@@ -257,14 +258,32 @@ public interface StocktakingMapper {
             """)
     String getWorkplaceCode(String name);
 
-    //    실제 수량이 더 많을 때 사용
     @Select("""
-            SELECT l.location_key
+            SELECT l.row
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
+            ORDER BY l.row ASC
             """)
-    List<Integer> getStocktakingLocationList(String warehouseCode, Integer getCode);
+    Set<String> getWarehouseRowList(String warehouseCode, Integer getCode);
+
+    @Select("""
+            SELECT l.col
+            FROM TB_LOCMST l
+            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1 AND l.row=#{row}
+            ORDER BY l.col ASC
+            """)
+    Set<String> getWarehouseColList(String warehouseCode, Integer getCode, String row);
+
+    //    실제 수량이 더 많을 때 사용
+//    @Select("""
+//            SELECT l.location_key
+//            FROM TB_LOCMST l
+//            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+//            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
+//            """)
+//    List<Integer> getStocktakingLocationList(String warehouseCode, Integer getCode);
 
 //    //    실제 수량이 더 많을 때 사용
 //    @Select("""
