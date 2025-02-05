@@ -97,7 +97,7 @@ public class InstallService {
     @Transactional
     public void installApprove(Install install) {
         try {
-            // 1. 요청 수량만큼 시리얼 번호 가져오기
+            // 요청 수량만큼 시리얼 번호 가져오기
             int num = install.getInstallRequestAmount();
             List<String> serialList = mapper.getSerials(install.getItemCommonCode(), num);
 
@@ -105,30 +105,31 @@ public class InstallService {
                 throw new InstallApproveException("요청 수량이 많습니다. 사용 가능한 시리얼 번호: " + serialList.size());
             }
 
-            // 2. 출고 번호 생성
+            // 출고 번호 생성
             String outputCode = "OUT";
             Integer maxNo = mapper.viewMaxOutputNo(outputCode);
             String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
             install.setOutputNo(outputCode + newNumber);
 
-            // 3. 시리얼 번호 등록
+            // 시리얼 번호 등록
             for (String serial : serialList) {
                 install.setSerialNo(serial);
+                // INSTL_SUB에 데이터 추가
                 mapper.addSerialToApprove(install);
-                // 우선 시리얼 번호 active 0으로 변경
+                // ITEMSUB 시리얼 번호 active 0으로 변경
                 int updatedRows = mapper.updateItemSubActiveFalse(serial);
                 if (updatedRows <= 0) {
                     throw new InstallApproveException("설치 승인 실패: 시리얼 번호 [" + serial + "] 등록 중 오류 발생");
                 }
             }
 
-            // 4. 설치 승인 테이블에 추가
+            // 설치 승인 테이블에 추가
             int approve = mapper.installApprove(install);
             if (approve <= 0) {
                 throw new InstallApproveException("설치 승인 실패: 발주 번호 등록 실패");
             }
 
-            // 5. 요청 승인 여부 업데이트
+            // 요청 승인 여부 업데이트
             int updateRequestConsent = mapper.updateRequestConsent(install.getInstallRequestKey());
             if (updateRequestConsent <= 0) {
                 throw new InstallApproveException("설치 승인 실패: 요청 테이블 승인 처리 실패");
@@ -150,8 +151,6 @@ public class InstallService {
 
     // 설치 완료 권한 검증
     public boolean configurationAuth(Authentication authentication, Install install) {
-        System.out.println(authentication.getName());
-        System.out.println(install.getCustomerInstallerNo());
         if (authentication.getName().startsWith("CUS")) {
             return authentication.getName().equals(install.getCustomerInstallerNo());
         } else {
@@ -166,7 +165,7 @@ public class InstallService {
             // ITEM_INSTL_SUB에서 해당 발주 번호의 시리얼 번호 가져오기
             List<String> serialList = mapper.getConfigurationSerials(install.getOutputNo());
 
-            // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 1으로 업데이트
+            // ITEM_SUB에서 해당 시리얼 번호 품목의 active 값을 1로 업데이트
             for (String serial : serialList) {
                 int updatedSerial = mapper.updateItemSubActiveTrue(serial);
                 if (updatedSerial <= 0) {
