@@ -109,9 +109,10 @@ public class CustomerService {
             String warehouseCode = warehouseMapper.getWarehouseCode(customer.getCustomerCode());
             locationMapper.changeLocationActive(warehouseCode, customer.getCustomerActive());
 
-            employeeMapper.changeEmployeeActive(customer);
-
-            System.out.println("수정 완료");
+            if (customer.getCustomerActive() == false) {
+                employeeMapper.changeEmployeeActive(customer);
+                System.out.println("수정 완료");
+            }
         }
 
         // active 외 수정

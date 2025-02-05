@@ -25,9 +25,6 @@ public class EmployeeController {
     }
 
 
-
-
-
     @GetMapping("/list")  //  모든 멤버 출력
     public EmployeeResponse getAllEmployees(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -35,21 +32,21 @@ public class EmployeeController {
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "sort", defaultValue = "employee_key") String sort,
             @RequestParam(value = "order", defaultValue = "desc") String order,
-            @RequestParam(value="isActiveVisible", defaultValue="false") Boolean isActiveVisible
-            ) {
+            @RequestParam(value = "isActiveVisible", defaultValue = "false") Boolean isActiveVisible
+    ) {
 
         // 컬럼명 숨길려고  서버에서 처리
         String convertedType = Employee.correctType(type);
 
-        System.out.println("sort = " + sort);
+//        System.out.println("sort = " + sort);
 
         String convertedSort = Employee.correctCommonCode(sort);
 
-        System.out.println("page = " + page);
-        System.out.println("convertedSort = " + convertedSort);
-        System.out.println("convertedType = " + convertedType);
-        System.out.println("order = " + order);
-        System.out.println("isActiveVisible = " + isActiveVisible);
+//        System.out.println("page = " + page);
+//        System.out.println("convertedSort = " + convertedSort);
+//        System.out.println("convertedType = " + convertedType);
+//        System.out.println("order = " + order);
+//        System.out.println("isActiveVisible = " + isActiveVisible);
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);
 
@@ -59,7 +56,7 @@ public class EmployeeController {
     // 회원 등록
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee , Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee, Authentication authentication) {
 
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
@@ -84,7 +81,7 @@ public class EmployeeController {
     // 회원 수정
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee ,Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> editEmployee(@RequestBody Employee employee, Authentication authentication) {
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
@@ -106,7 +103,7 @@ public class EmployeeController {
 
     @PutMapping("delete")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee ,Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> deleteEmployeeByKey(@RequestBody Employee employee, Authentication authentication) {
 
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {

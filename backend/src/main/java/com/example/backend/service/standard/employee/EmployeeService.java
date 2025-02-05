@@ -17,13 +17,13 @@ public class EmployeeService {
     final EmployeeMapper mapper;
 
     public boolean addEmployee(Employee employee) {
-        String workPlace= employee.getEmployeeWorkPlaceCode().substring(0,3);
+        String workPlace = employee.getEmployeeWorkPlaceCode().substring(0, 3);
 
         // 0 또는 숫자 조회
         Integer maxNo = mapper.viewMaxEmployeeNo(workPlace);
         //  부족한 자리수 만큼  0 채우기
         String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
-        String insertEmployeeNo = workPlace+"EMP" + newNumber;
+        String insertEmployeeNo = workPlace + "EMP" + newNumber;
         employee.setEmployeeNo(insertEmployeeNo);
 
         int cnt = mapper.addEmployee(employee);
@@ -51,8 +51,8 @@ public class EmployeeService {
 
     // 인사관리 리스트 클릭시 상세정보 가져오는 서비스
     public Employee getOneEmployeeByKey(int viewKey) {
-        System.out.println(" mapper.getOneEmployeeByKey(viewKey) = " +  mapper.getOneEmployeeByKey(viewKey));
-        return  mapper.getOneEmployeeByKey(viewKey);
+//        System.out.println(" mapper.getOneEmployeeByKey(viewKey) = " +  mapper.getOneEmployeeByKey(viewKey));
+        return mapper.getOneEmployeeByKey(viewKey);
 
     }
 
@@ -67,7 +67,6 @@ public class EmployeeService {
         int cnt = mapper.deleteEmployeeByKey(employeeKey);
         return cnt == 1;
     }
-
 
 
 }
