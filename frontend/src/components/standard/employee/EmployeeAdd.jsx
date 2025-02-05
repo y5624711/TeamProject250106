@@ -127,11 +127,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const handleSubmit = () => {
     // 수정일 때
     if (viewKey !== -1) {
-      if (!isEditMode) {
-        setIsEditMode(true);
-        return;
-      }
-
       const data = {
         employeeKey: viewKey,
         employeeCommonCode: formData.selectedCommonCode,
