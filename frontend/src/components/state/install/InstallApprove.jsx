@@ -238,7 +238,6 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     <Field
                       label={isApproved != true ? "반려/승인자" : "승인자"}
                       orientation="horizontal"
-                      flex={0.75}
                     >
                       <Input
                         value={name}
@@ -308,7 +307,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         </SelectContent>
                       </SelectRoot>
                     </Field>
-                    <Field label={"사번사번 사"} orientation="horizontal">
+                    <Field label={"사번"} orientation="horizontal">
                       <Input
                         value={installApprove.customerInstallerNo}
                         variant={isApproved == null ? "subtle" : "outline"}
