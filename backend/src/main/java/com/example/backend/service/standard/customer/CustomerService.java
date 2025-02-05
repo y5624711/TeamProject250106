@@ -99,13 +99,16 @@ public class CustomerService {
 
     //협력사 정보 수정
     public Boolean editCustomer(Customer customer) {
-        //현재 active 확인
-        Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
         // active 수정 시
-        if (customer.getCustomerActive() != oldActive) {
+        if (checkActiveChange(customer)) {
             // customerActive = false 이면 itemActive = false
             mapper.editCustomerActive(customer);
             itemMapper.editItemActive(customer);
+            warehouseMapper.editWarehouseActive(customer);
+
+            String warehouseCode = warehouseMapper.getWarehouseCode(customer.getCustomerCode());
+            locationMapper.changeLocationActive(warehouseCode, customer.getCustomerActive());
+            System.out.println("수정 완료");
         }
 
         // active 외 수정
