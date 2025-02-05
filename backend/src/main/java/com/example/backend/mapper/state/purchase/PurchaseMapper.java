@@ -54,8 +54,12 @@ public interface PurchaseMapper {
                 pr.purchase_consent AS purchaseConsent,
                 pa.purchase_approve_date AS purchaseApproveDate,
                 emp3.employee_name AS disapproveEmployeeName,
-            COALESCE(GREATEST(pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date),
-                              pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date) AS purchaseDate
+                COALESCE(
+                        GREATEST(pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date),
+                        pr.purchase_request_date,
+                        pa.purchase_approve_date,
+                        dis.disapprove_date
+                    ) AS purchaseDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
@@ -114,8 +118,7 @@ public interface PurchaseMapper {
                     ORDER BY ${sort} ${order}
             </if>
             <if test="sort == null or sort == ''">
-                    ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
-                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+                ORDER BY purchaseDate DESC
             </if>
             LIMIT #{offset}, 10
             </script>
