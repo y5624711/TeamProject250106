@@ -138,6 +138,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
   };
 
   // console.log("결과", approveData);
+  console.log(approveData);
 
   return (
     <DialogRoot
@@ -254,7 +255,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
             >
               <HStack>
                 <Field orientation="horizontal" label="반려자">
-                  <Input readOnly value={approveData.disapproveEmployName} />
+                  <Input readOnly value={approveData.disapproveEmployeeName} />
                 </Field>
                 <Field orientation="horizontal" label="사번">
                   <Input readOnly value={approveData.disapproveEmployeeNo} />

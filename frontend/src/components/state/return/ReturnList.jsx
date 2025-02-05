@@ -101,7 +101,7 @@ function ReturnList({
     setLocalType(searchParams.get("type") || "all");
   }, [searchParams]);
 
-  console.log(returnList);
+  // console.log(returnList);
 
   return (
     <Box>

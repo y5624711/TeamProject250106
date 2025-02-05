@@ -122,7 +122,7 @@ public interface ReturnMapper {
                    rr.business_employee_no, emb.employee_name AS businessEmployeeName, customer_employee_no, emce.employee_name AS customerEmployeeName, 
                    customer_configurer_no, emcc.employee_name AS customerConfigurerName, rr.customer_code, customer_name, ra.customer_employee_no,
                    return_request_date, return_approve_date,return_date, return_consent, return_request_note, return_approve_note,
-                   disapprove_employee_no, disapprove_date, disapprove_note
+                   disapprove_employee_no, disapprove_date, disapprove_note, emd.employee_name disapproveEmployeeName
             FROM TB_RTN_REQ rr
             LEFT JOIN TB_RTN_APPR ra
             ON ra.return_request_key = rr.return_request_key
