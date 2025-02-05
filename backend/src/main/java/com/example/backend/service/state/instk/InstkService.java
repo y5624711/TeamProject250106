@@ -57,10 +57,12 @@ public class InstkService {
         if(inputConsent) {
             //(입고,회수)된 시리얼 번호 목록
             List<InstkSerialLocation> serialLocationList = instkSubMapper.getSerialNoByInputKey(inputKey);
-            //  입고시 비고내용
+            //  (입고,회수)시 비고내용
             String inputStockNote = mapper.getInstkNoteByInputKey(inputKey);
 
             //일반 입고와 회수입고 창고에서 가져오는 위치
+
+            System.out.println("serialLocationList = " + serialLocationList);
 
             Instk instk = new Instk();
             instk.setInputStockNote(inputStockNote);
@@ -91,7 +93,7 @@ public class InstkService {
         String inoutNo=   instk.getInputNo();
         String inputCommonCode=instk.getInputCommonCode();
 
-        //String wareHouseCode=mapper.viewWareHouseCode(instk.getInputStockEmployeeNo());
+
         // 가입고  상태 변환
          int updateChecked =   mapper.updateBuyInConsentByInputKey(inputKey);
 
@@ -120,8 +122,6 @@ public class InstkService {
                 // 시리얼 번호 생성 (20자리)
                 String insertSerialNo ="S"+ String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
 
-                System.out.println("insertSerialNo = " + insertSerialNo);
-                System.out.println("maxSerialNo = " + maxSerialNo);
                 // item_sub 테이블에 추가
                 int insertItemSub = itemMapper.addItemSub(itemCommonCode, insertSerialNo, "WHS");
 
@@ -141,7 +141,7 @@ public class InstkService {
                 checked &= (insertItemSub == 1) & (insertItstkSub == 1) & (inInoutHistory == 1);
             }
             // 다 들어갔는지 체크하는거 필요함
-            return checked;
+            return checked && updateChecked == 1 && insertInstk == 1;
         }
             // 회수 입고 , 품목상세에서 현재 위치 변경 , 입출내역에 추가
         else if(instk.getInputCommonCode().equals("RETRN")) {
@@ -162,7 +162,7 @@ public class InstkService {
             // 인풋
             int inInoutHistory= mapper.addInOutHistory(itemSerialNo,inputCommonCode.trim(),wareHouseCode,instk.getInputStockEmployeeNo(),instk.getRequestEmployeeNo(),instk.getInputStockNote(),inoutNo ,inputKey);
 
-            return (currentCommonCode == 1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1);
+            return (currentCommonCode == 1 && insertInstk == 1 && insertItstkSub == 1 && inInoutHistory == 1 &&updateChecked==1);
         }
         // 둘 다 아닐때
         return false;
@@ -193,11 +193,12 @@ public class InstkService {
         int inputKey=instk.getInputKey();
         String disApproveNote=instk.getDisapproveNote();
         String disApproveEmployeeNo=instk.getDisapproveEmployeeNo();
+
         //1.가입고 테이블 상태 변경
         int updateBuyInConsentByInputKey=mapper.updateFalseBuyInConsentByInputKey(inputKey);
         //반려테이블에 집어넣기 
         int updateResult = mapper.rejectInstk(inputKey,disApproveEmployeeNo,disApproveNote);
-        return updateResult == 1;
+        return updateResult == updateBuyInConsentByInputKey;
     }
 
     public boolean authorityCheck(Authentication authentication, String customerName) {
