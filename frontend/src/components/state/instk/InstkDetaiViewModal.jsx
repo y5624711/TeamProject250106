@@ -124,6 +124,7 @@ export function InstkDetaiViewModal({
                       value={item || ""}
                       onValueChange={handleSerialChange}
                       position="relative"
+                      readOnly
                     >
                       <SelectTrigger>
                         <SelectValueText placeholder={"내역 확인"} />

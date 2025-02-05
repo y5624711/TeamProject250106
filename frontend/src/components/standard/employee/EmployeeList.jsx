@@ -301,7 +301,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Box>
 
         {/*페이지네이션과 동일값 */}
-        <Box p={4}>
+        <Box m={4}>
           <Button
             onClick={() => {
               setIsModalOpen(true);
