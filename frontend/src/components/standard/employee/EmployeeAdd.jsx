@@ -36,6 +36,8 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive: false,
   });
 
+  console.log("onChange,", onChange);
+
   const frameworks = createListCollection({
     items: [
       { label: "협력업체", value: "CUS" },
@@ -147,7 +149,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
             type: res.data.message.type,
             description: res.data.message.text,
           });
-          setIsEditMode(false);
+          // setIsEditMode(false);
           onChange();
         })
         .catch((error) => {
@@ -209,6 +211,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       });
   };
 
+  // 핸드폰 번호 정규식 함수
   const formatPhoneNumber = (value) => {
     const regPhone = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
     // 숫자만 남기고, 11자리까지만 허용
