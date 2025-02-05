@@ -39,6 +39,18 @@ public interface InstkMapper {
         WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
         ELSE NULL
     END AS input_stock_employee_no,
+     CASE 
+        WHEN BI.input_consent=FALSE  THEN EM4.employee_name 
+        ELSE NULL
+    END AS disapprove_employee_name,
+    CASE 
+        WHEN BI.input_consent=FALSE  THEN EM4.employee_no 
+        ELSE NULL
+    END AS disapprove_employee_no,
+    CASE 
+        WHEN BI.input_consent=FALSE  THEN DISP.disapprove_date 
+        ELSE NULL
+    END AS disapprove_date ,
     CASE 
         WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount 
         ELSE 1
@@ -74,6 +86,11 @@ FROM TB_BUYIN BI
         ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
     LEFT JOIN TB_EMPMST EM3 
         ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
+    LEFT JOIN TB_DISPR DISP
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK")
+    LEFT JOIN TB_EMPMST EM4 
+            ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
+
 WHERE 1=1
           AND (#{company} IS NULL OR CT.customer_code = #{company})
     <if test="state == 'request'">
@@ -104,8 +121,17 @@ WHERE 1=1
                 OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_stock_employee_name'">
-                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
+                       AND (
+                           (BI.input_consent = TRUE AND (
+                               EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                           OR
+                           (BI.input_consent = FALSE AND (
+                               EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM4.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                       )
             </when>
             <otherwise>
                 AND (
@@ -114,24 +140,25 @@ WHERE 1=1
                     SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
                     CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')                                    
                 )
             </otherwise>
         </choose>
     </if>
         <if test="sort != null and sort != ''">
-                  <choose>
+            <choose>
                 <when test="sort == 'combined_date'">
-                ORDER BY COALESCE(INS.input_stock_date, request_date) ${order}
+                               ORDER BY COALESCE(INS.input_stock_date,DISP.disapprove_date, request_date ) ${order}
                  </when>
                   <otherwise>
                                ORDER BY ${sort} ${order}
                   </otherwise>
-                  </choose>
-                </if>
-            <if test="sort == null or sort == ''">
-                        ORDER BY COALESCE(INS.input_stock_date, request_date) DESC
-                     </if>
+            </choose>
+        </if>
+        <if test="sort == null or sort == ''">
+                ORDER BY COALESCE(INS.input_stock_date,DISP.disapprove_date, request_date) DESC
+        </if>
 LIMIT #{offset}, 10    
 </script>
 """)
@@ -308,6 +335,11 @@ LIMIT #{offset}, 10
             ON BI.input_consent = TRUE AND INS.input_key = BI.input_key
         LEFT JOIN TB_EMPMST EM3 
             ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
+        LEFT JOIN TB_DISPR DISP
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key
+         LEFT JOIN TB_EMPMST EM4 
+            ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
+        
         WHERE 1=1
                    AND (#{company} IS NULL OR CT.customer_code = #{company})
         <!-- state 조건 -->
@@ -343,8 +375,17 @@ LIMIT #{offset}, 10
                 OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_stock_employee_name'">
-                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
+                       AND (
+                           (BI.input_consent = TRUE AND (
+                               EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                           OR
+                           (BI.input_consent = FALSE AND (
+                               EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM4.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                       )
             </when>
             <otherwise>
                 AND (
@@ -353,7 +394,8 @@ LIMIT #{offset}, 10
                     SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
                     CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                     EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')   
                 )
             </otherwise>
         </choose>
@@ -427,4 +469,12 @@ LIMIT #{offset}, 10
         )
         """)
     String  authorityCheck(String loginEmployeeNo, String customerName);
+
+    @Select("""
+            SELECT D.disapprove_employee_no,D.disapprove_date,D.disapprove_note,E.employee_name as disapprove_employee_name
+            FROM TB_DISPR D 
+            JOIN TB_EMPMST E ON D.disapprove_employee_no=E.employee_no
+            WHERE state_common_code="INSTK" AND state_request_key=#{inputKey}
+            """)
+    Instk viewDisapproveByInputKey(int inputKey);
 }

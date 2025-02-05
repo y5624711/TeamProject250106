@@ -162,10 +162,14 @@ export function InstkList() {
                     {item.requestEmployeeName}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    {item.inputStockEmployeeName || "-"}
+                    {item.inputStockEmployeeName ||
+                      item.disapproveEmployeeName ||
+                      "-"}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    {item.inputStockDate || item.requestDate}
+                    {item.inputStockDate ||
+                      item.disapproveDate ||
+                      item.requestDate}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
                     {item.inputConsent === true
