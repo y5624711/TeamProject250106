@@ -40,7 +40,7 @@ function TextItem({ children, path, ...rest }) {
 }
 
 function MemberInfo({ updateCheck }) {
-  const { id, name } = useContext(AuthenticationContext);
+  const { id } = useContext(AuthenticationContext);
   const [employee, setEmployee] = useState(null);
   const [empChange, setEmpChange] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -67,6 +67,17 @@ function MemberInfo({ updateCheck }) {
 
   if (loading) {
     return;
+  }
+
+  function formatPhoneNumber(value) {
+    value = value.replace(/\D/g, ""); // 숫자만 남기기
+
+    // 02 지역번호 (서울)
+    if (value.startsWith("02")) {
+      return value.replace(/(\d{2})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 12);
+    }
+    // 휴대폰 및 일반 지역번호 (3자리 지역번호 포함)
+    return value.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 13);
   }
 
   const handleSaveInfo = () => {
@@ -118,7 +129,7 @@ function MemberInfo({ updateCheck }) {
             setEmployee(empChange);
           }}
         >
-          {name}
+          {employee.employeeName}
         </TextItem>
       </DialogTrigger>
       <DialogContent>
@@ -164,13 +175,14 @@ function MemberInfo({ updateCheck }) {
               onChange={(e) =>
                 setEmployee((prev) => ({
                   ...prev,
-                  employeeTel: e.target.value,
+                  employeeTel: formatPhoneNumber(e.target.value),
                 }))
               }
             />
           </Field>
           <Field label={"비고"} orientation="horizontal" mb={15}>
             <Textarea
+              placeholder={"최대 50자"}
               value={employee.employeeNote}
               onChange={(e) =>
                 setEmployee((prev) => ({
@@ -178,7 +190,7 @@ function MemberInfo({ updateCheck }) {
                   employeeNote: e.target.value,
                 }))
               }
-              resize={"none"}
+              maxHeight={"100px"}
             />
           </Field>
         </DialogBody>

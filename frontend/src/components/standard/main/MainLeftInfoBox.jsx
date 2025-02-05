@@ -4,6 +4,7 @@ import { Button } from "../../ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { MainCusViewEndEdit } from "./MainCusViewEndEdit.jsx";
 import { MainWarehouseViewEndEdit } from "./MainWarehouseViewEndEdit.jsx";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
 
   return (
     <Box
-      minW="400px"
+      minW="420px"
       h="700px"
       backgroundImage="url('/mainInfo.jpg')" // 배경 이미지 적용
       backgroundSize="cover"
@@ -67,6 +68,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
           {!isAdmin && (
             <HStack gap={5} mt={5}>
               <Button
+                size={"sm"}
                 variant={"ghost"}
                 colorPalette={"blue"}
                 fontWeight="bold"
@@ -75,6 +77,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
                 업체 정보
               </Button>
               <Button
+                size={"sm"}
                 variant={"ghost"}
                 colorPalette={"blue"}
                 fontWeight="bold"
@@ -83,12 +86,14 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
                 창고 정보
               </Button>
               <Button
+                size={"sm"}
                 variant={"ghost"}
                 colorPalette={"blue"}
                 fontWeight="bold"
                 onClick={() => navigate("/location")}
               >
-                로케이션 관리
+                로케이션
+                <FaArrowRightFromBracket />
               </Button>
             </HStack>
           )}

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Spacer, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationProvider.jsx";
 import { useNavigate } from "react-router-dom";
@@ -40,13 +40,14 @@ export function Navbar() {
   return (
     <Box>
       <Flex gap={5} mt={3} mb={2} w={"98%"} mx={"auto"}>
-        <Heading
-          fontWeight="bold"
+        <Image
+          src={"/title.png"}
+          maxWidth={{ base: "250px", md: "250px" }}
+          objectFit="contain"
           _hover={{ cursor: "pointer" }}
           onClick={() => navigate("/")}
-        >
-          Choongang System
-        </Heading>
+          ml={"-2"}
+        />
         <Spacer />
         {isAuthenticated && (
           <Flex alignItems="center">
