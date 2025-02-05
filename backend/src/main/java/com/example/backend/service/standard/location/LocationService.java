@@ -2,7 +2,9 @@ package com.example.backend.service.standard.location;
 
 import com.example.backend.dto.standard.location.Location;
 import com.example.backend.mapper.standard.location.LocationMapper;
+import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +17,17 @@ import java.util.Map;
 public class LocationService {
 
     final LocationMapper mapper;
+    final StocktakingMapper stocktakingMapper;
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order) {
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth) {
 
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order), "count", mapper.countAllLocation(searchType, searchKeyword));
+        String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
+        String workplace = workplaceCode.substring(0, 3);
+
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace), "count", mapper.countAllLocation(searchType, searchKeyword, workplaceCode, workplace));
     }
 
     // camelCase를 snake_case로 변환하는 로직

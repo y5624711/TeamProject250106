@@ -73,7 +73,7 @@ function Warehouse(props) {
       sort: search.sort,
       order: search.order,
       page: e.page,
-      active: search.active,
+      active: checkedActive,
     };
     setSearchParams(new URLSearchParams(searchInfo)); // searchParams 업데이트
   }
@@ -82,10 +82,13 @@ function Warehouse(props) {
   const toggleCheckedActive = () => {
     const nextValue = !checkedActive;
     setCheckedActive(nextValue);
-    setSearch({ ...search, active: nextValue });
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", nextValue.toString());
-    setSearchParams(nextSearchParams);
+
+    // 기존 searchParams를 복사한 후 active 값 업데이트, page 값 1
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("active", nextValue);
+    newParams.set("page", 1);
+
+    setSearchParams(newParams);
   };
 
   return (

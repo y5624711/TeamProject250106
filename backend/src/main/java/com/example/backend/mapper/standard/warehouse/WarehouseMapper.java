@@ -2,7 +2,10 @@ package com.example.backend.mapper.standard.warehouse;
 
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -131,12 +134,6 @@ public interface WarehouseMapper {
             WHERE warehouse_key=#{warehouseKey}
             """)
     int edit(Warehouse warehouse);
-
-    @Delete("""
-            DELETE FROM TB_WHMST
-            WHERE warehouse_key=#{warehouseKey}
-            """)
-    int delete(Integer warehouseKey);
 
     @Select("""
             <script>
@@ -273,4 +270,12 @@ public interface WarehouseMapper {
             WHERE employee_workplace_code=#{customerCode}
             """)
     List<Warehouse> getWarehouseEmployeeList(String customerCode);
+
+    //    창고의 사용여부가 변경되었는지 확인
+    @Select("""
+            SELECT warehouse_active
+            FROM TB_WHMST
+            WHERE warehouse_code=#{warehouseCode}
+            """)
+    Boolean checkChangeActive(String warehouseCode);
 }

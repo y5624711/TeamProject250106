@@ -196,7 +196,8 @@ function StocktakingAdd({
       countCurrent !== undefined && // ✅ 0도 유효한 값이므로 null/undefined만 체크
       countConfiguration !== null &&
       countConfiguration !== undefined &&
-      countConfiguration !== ""
+      countConfiguration !== "" &&
+      stocktakingType !== null
     );
   };
 
@@ -210,7 +211,7 @@ function StocktakingAdd({
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
           <Box>
-            <Field label="창고" orientation="horizontal" mb={15}>
+            <Field label="창고" orientation="horizontal" mb={15} required>
               <Select
                 options={warehouseList}
                 value={warehouseList.find(
@@ -234,7 +235,7 @@ function StocktakingAdd({
               />
               {/*<Button onClick={onWarehouseClick}>조회</Button>*/}
             </Field>
-            <Field label="품목" orientation="horizontal" mb={15}>
+            <Field label="품목" orientation="horizontal" mb={15} required>
               <Select
                 options={itemList}
                 value={itemList.find(
@@ -258,10 +259,20 @@ function StocktakingAdd({
               />
             </Field>
             <Box display="flex" gap={4}>
-              <Field label="전산 수량" orientation="horizontal" mb={15}>
+              <Field
+                label="전산 수량"
+                orientation="horizontal"
+                mb={15}
+                required
+              >
                 <Input type={"text"} value={countCurrent} readOnly />
               </Field>
-              <Field label="실제 수량" orientation="horizontal" mb={15}>
+              <Field
+                label="실제 수량"
+                orientation="horizontal"
+                mb={15}
+                required
+              >
                 <Input
                   type={"text"}
                   value={countConfiguration}
@@ -280,7 +291,12 @@ function StocktakingAdd({
               />
             </Field>
             <Box display="flex" gap={4}>
-              <Field label="실사 유형" orientation="horizontal" mb={15}>
+              <Field
+                label="실사 유형"
+                orientation="horizontal"
+                mb={15}
+                required
+              >
                 <Box ml={"86px"} style={{ position: "absolute" }}>
                   <RadioGroup
                     defaultValue="true" // ✅ Boolean 값을 문자열로 변환

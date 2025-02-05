@@ -36,4 +36,4 @@ VALUES ('POS', 'WH4328332', 'CUSEMP0000024', '100', '100');
 
 DELETE
 FROM TB_STKTK
-WHERE stocktaking_key = 5;
+WHERE stocktaking_key = 3;

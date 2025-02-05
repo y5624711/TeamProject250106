@@ -2,6 +2,7 @@ package com.example.backend.service.standard.warehouse;
 
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.dto.standard.warehouse.Warehouse;
+import com.example.backend.mapper.standard.location.LocationMapper;
 import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class WarehouseService {
 
     final WarehouseMapper mapper;
+    final LocationMapper locationMapper;
 
     //창고 등록
     public Boolean addWarehouse(Warehouse warehouse) {
@@ -39,6 +41,7 @@ public class WarehouseService {
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
         String workPlace = auth.getName().substring(0, 3);
+
 
         return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, active), "count", mapper.countAllWarehouse(searchType, searchKeyword, active), "work", workPlace);
     }
@@ -84,11 +87,20 @@ public class WarehouseService {
 
 
     public Boolean edit(Warehouse warehouse) {
-        return mapper.edit(warehouse) == 1;
-    }
 
-    public void delete(Integer warehouseKey) {
-        mapper.delete(warehouseKey);
+        String warehouseCode = warehouse.getWarehouseCode();
+        Boolean active = warehouse.getWarehouseActive();
+
+//        수정할 때 창고의 사용여부 변경에 따른 로케이션 변경
+        if (mapper.checkChangeActive(warehouseCode) != active) {
+            if (!active) {
+                locationMapper.changeLocationActive(warehouseCode, active);
+            } else {
+                locationMapper.changeLocationActive(warehouseCode, active);
+            }
+        }
+
+        return mapper.edit(warehouse) == 1;
     }
 
     // 창고 정보가 다 입력됐는지 확인
@@ -120,4 +132,6 @@ public class WarehouseService {
     public List<Warehouse> getWarehouseEmployeeList(String customerCode) {
         return mapper.getWarehouseEmployeeList(customerCode);
     }
+
+
 }

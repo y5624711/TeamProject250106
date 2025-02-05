@@ -5,6 +5,7 @@ import com.example.backend.dto.standard.warehouse.Warehouse;
 import com.example.backend.service.standard.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class WarehouseController {
     final WarehouseService service;
 
     @GetMapping("list")
+    @PreAuthorize("#auth.name.startsWith('BIZ')")
     public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "type", defaultValue = "all") String searchType,
                                     @RequestParam(value = "keyword", defaultValue = "") String searchKeyword,
