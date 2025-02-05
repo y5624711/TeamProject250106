@@ -39,6 +39,18 @@ public interface InstkMapper {
         WHEN BI.input_consent=TRUE  THEN EM3.employee_no 
         ELSE NULL
     END AS input_stock_employee_no,
+     CASE 
+        WHEN BI.input_consent=FALSE  THEN EM4.employee_name 
+        ELSE NULL
+    END AS disapprove_employee_name,
+    CASE 
+        WHEN BI.input_consent=FALSE  THEN EM4.employee_no 
+        ELSE NULL
+    END AS disapprove_employee_no,
+    CASE 
+        WHEN BI.input_consent=FALSE  THEN DISP.disapprove_date 
+        ELSE NULL
+    END AS disapprove_date ,
     CASE 
         WHEN BI.input_common_code = 'INSTK' THEN PRQ.amount 
         ELSE 1
@@ -74,6 +86,11 @@ FROM TB_BUYIN BI
         ON (BI.input_consent = TRUE AND INS.input_key = BI.input_key)
     LEFT JOIN TB_EMPMST EM3 
         ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
+    LEFT JOIN TB_DISPR DISP
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK" OR DISP.state_common_code="RETRN")
+    LEFT JOIN TB_EMPMST EM4 
+            ON BI.input_consent = FALSE AND EM3.employee_no = INS.customer_employee_no
+
 WHERE 1=1
           AND (#{company} IS NULL OR CT.customer_code = #{company})
     <if test="state == 'request'">
@@ -308,6 +325,11 @@ LIMIT #{offset}, 10
             ON BI.input_consent = TRUE AND INS.input_key = BI.input_key
         LEFT JOIN TB_EMPMST EM3 
             ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
+        LEFT JOIN TB_DISPR DISP
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key
+         LEFT JOIN TB_EMPMST EM4 
+            ON BI.input_consent = FALSE AND EM3.employee_no = INS.customer_employee_no
+        
         WHERE 1=1
                    AND (#{company} IS NULL OR CT.customer_code = #{company})
         <!-- state 조건 -->
