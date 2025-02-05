@@ -21,7 +21,15 @@ function InoutHistoryListPage({
         _hover={{ backgroundColor: "gray.200" }}
       >
         {/* TODO: inoutHistoryKey 대신 index 주기 */}
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell
+          textAlign="center"
+          verticalAlign="middle"
+          style={{
+            width: "90px", // 더 좁게 설정 가능
+            minWidth: "90px",
+            maxWidth: "90px",
+          }}
+        >
           {index + 1}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
