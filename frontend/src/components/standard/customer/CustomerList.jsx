@@ -123,6 +123,7 @@ function CustomerList({
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
+              width="90px" // 더 좁게 설정 가능
               textAlign="center"
               onClick={() => onHeader("customer_key")}
             >
