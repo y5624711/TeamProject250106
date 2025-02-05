@@ -119,7 +119,7 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "수정 권한이 없습니다.")));
+                                        "text", "협력 업체 수정 권한이 없습니다.")));
             }
 
             //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
@@ -134,7 +134,7 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "사용여부 수정 권한이 없습니다.")));
+                                        "text", "사용 여부 수정 권한이 없습니다.")));
             }
 
             //수정

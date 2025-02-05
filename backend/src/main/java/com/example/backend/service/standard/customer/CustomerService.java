@@ -3,7 +3,10 @@ package com.example.backend.service.standard.customer;
 import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.mapper.standard.customer.CustomerMapper;
+import com.example.backend.mapper.standard.employee.EmployeeMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
+import com.example.backend.mapper.standard.location.LocationMapper;
+import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,9 @@ import java.util.Map;
 public class CustomerService {
     final CustomerMapper mapper;
     final ItemMapper itemMapper;
+    final WarehouseMapper warehouseMapper;
+    final LocationMapper locationMapper;
+    final EmployeeMapper employeeMapper;
 
     //협력업체 등록
     public Boolean addCustomer(Customer customer) {
