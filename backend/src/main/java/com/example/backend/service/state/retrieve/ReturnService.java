@@ -26,9 +26,11 @@ public class ReturnService {
 
     //반환 관리 리스트
     public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order, Authentication auth) {
-        // 날짜순은 두개 합쳐야함
+        // 날짜순은 3개 합쳐야함 : 승인/반려가 없으면
         if ("date".equals(sort)) {
-            sort = "COALESCE(return_approve_date, return_request_date)";
+            sort = "COALESCE(return_approve_date, disapprove_date, return_request_date)";
+        } else if ("customerEmployeeName".equals(sort)) {
+            sort = "COALESCE(customerEmployeeName, disapproveEmployeeName)";
         }
         Integer offset = (page - 1) * 10;
 

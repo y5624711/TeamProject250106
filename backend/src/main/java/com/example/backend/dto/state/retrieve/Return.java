@@ -25,6 +25,7 @@ public class Return {
     String customerEmployeeNo;
     String customerEmployeeName;
     String disapproveEmployeeNo;
+    String disapproveEmployeeName;
     LocalDate returnRequestDate;
     LocalDate returnApproveDate;
     LocalDate returnDate;

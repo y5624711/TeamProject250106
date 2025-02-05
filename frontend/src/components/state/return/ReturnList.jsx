@@ -60,7 +60,7 @@ function ReturnList({
       { label: "시리얼 번호", value: "serialNo" },
       { label: "반품 번호", value: "returnNo" },
       { label: "요청자", value: "businessEmployeeName" },
-      { label: "승인자", value: "customerEmployeeName" },
+      { label: "반려/승인자", value: "customerEmployeeName" },
       { label: "검수 기사", value: "customerConfigurerName" },
     ],
   });
@@ -240,7 +240,7 @@ function ReturnList({
               onClick={() => handleSort("emce.employee_name")}
             >
               <HStack alignItems="center" justify="center">
-                승인자
+                반려/승인자
                 {sort === "emce.employee_name" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
@@ -289,7 +289,9 @@ function ReturnList({
                 {data.businessEmployeeName}
               </Table.Cell>
               <Table.Cell textAlign="center">
-                {data.customerEmployeeName ? data.customerEmployeeName : "-"}
+                {data.customerEmployeeName
+                  ? data.customerEmployeeName
+                  : data.disapproveName}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.customerConfigurerName
@@ -297,7 +299,11 @@ function ReturnList({
                   : "-"}
               </Table.Cell>
               <Table.Cell textAlign="center">
-                {data.returnApproveDate || data.returnRequestDate}
+                {data.returnConsent == 1
+                  ? data.returnApproveDate
+                  : data.returnConsent == 0
+                    ? data.disapproveDate
+                    : data.returnRequestDate}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.returnConsent == 1
