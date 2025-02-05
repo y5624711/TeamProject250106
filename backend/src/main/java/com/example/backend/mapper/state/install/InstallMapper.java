@@ -281,6 +281,8 @@ public interface InstallMapper {
                             <if test="type=='all' or type=='customerEmployeeName'">
                                 OR e2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                                 OR e2.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                                OR e4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR e4.employee_no LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='customerInstallerName'">
                                 OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
@@ -313,11 +315,13 @@ public interface InstallMapper {
                 SELECT COUNT(DISTINCT ir.install_request_key)
                 FROM TB_INSTL_REQ ir
                 LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                LEFT JOIN TB_DISPR da ON ir.install_request_key = da.state_request_key
                 LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
                 LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
                 LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no 
                 LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no
                 LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no 
+                LEFT JOIN TB_EMPMST e4 ON da.disapprove_employee_no = e4.employee_no
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                 WHERE 1=1
@@ -361,6 +365,8 @@ public interface InstallMapper {
                         <if test="type=='all' or type=='customerInstallerName'">
                             OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR e3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR e4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR e4.employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='warehouseName'">
                             OR w.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
