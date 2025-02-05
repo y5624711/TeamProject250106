@@ -65,10 +65,9 @@ public class InstkController {
 
     //승인 상세
     @GetMapping("detailview/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName ,@RequestParam String inputNo  ) {
+    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName ,@RequestParam boolean inputConsent  ) {
 
-        System.out.println("inputNo = " + inputNo);
-        return service.detailView(inputKey,inputCommonCodeName,inputNo);
+        return service.detailView(inputKey,inputCommonCodeName,inputConsent);
 
     }
     //확인 상세

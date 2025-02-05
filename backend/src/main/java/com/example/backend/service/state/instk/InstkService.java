@@ -42,30 +42,40 @@ public class InstkService {
 
     }
 
-    public Instk detailView(int inputKey, String inputCommonCodeName, String inputNo) {
+    // 일반입고 , 회수 입고 , 반려 , 각 상태에따라 상태정보 불러오는 함수
+    public Instk detailView(int inputKey, String inputCommonCodeName, boolean inputConsent) {
+        
+        //창고 가져오는곳은 동일 해서 앞으로 뺌
+        String warehouseName = "";
+        if (inputCommonCodeName.equals("입고")) {
+            warehouseName = mapper.viewWareHouseName(inputKey);
+        } else {
+            warehouseName = mapper.viewReturnWareHouseName(inputKey);
+        }
 
-        //시리얼 번호 목록 
-        List<InstkSerialLocation>  serialLocationList= instkSubMapper.getSerialNoByInputKey(inputKey);
-        String inoutNo=  "IN" + inputNo.substring(2);
+        // 입고 회수 / 
+        if(inputConsent) {
+            //(입고,회수)된 시리얼 번호 목록
+            List<InstkSerialLocation> serialLocationList = instkSubMapper.getSerialNoByInputKey(inputKey);
+            //  입고시 비고내용
+            String inputStockNote = mapper.getInstkNoteByInputKey(inputKey);
 
-        //  입고시 비고내용
-         String inputStockNote= mapper.getInstkNoteByInputKey(inputKey);
+            //일반 입고와 회수입고 창고에서 가져오는 위치
 
-        String warehouseName="";
+            Instk instk = new Instk();
+            instk.setInputStockNote(inputStockNote);
+            instk.setSerialLocationList(serialLocationList);
+            instk.setWareHouseName(warehouseName);
+            System.out.println("instk = " + instk);
+            return instk;
+        }else {  //반려 처리
 
-         if(inputCommonCodeName.equals("입고")) {
-             warehouseName = mapper.viewWareHouseName(inputKey);
-         }else {
-             warehouseName=mapper.viewReturnWareHouseName(inputKey);
-         }
+            //반려 승인자 , 반려자 사번 ,  반려 노트 ,  반려 날짜
+           Instk instk= mapper.viewDisapproveByInputKey(inputKey);
+            instk.setWareHouseName(warehouseName);
+            return instk;
+        }
 
-
-      Instk instk = new Instk();
-      instk.setInputStockNote(inputStockNote);
-      instk.setSerialLocationList(serialLocationList);
-      instk.setWareHouseName(warehouseName);
-        System.out.println("instk = " + instk);
-      return instk;
 
     }
 

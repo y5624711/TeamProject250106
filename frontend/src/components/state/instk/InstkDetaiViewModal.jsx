@@ -51,13 +51,13 @@ export function InstkDetaiViewModal({
       .get(`/api/instk/detailview/${instk.inputKey}`, {
         params: {
           inputCommonCodeName: instk.inputCommonCodeName,
-          inputNo: instk.inputNo,
+          inputConsent: instk.inputConsent,
         },
       })
       .then((res) => {
         setDetailData(res.data);
+        console.log("detail", detailData);
         const list = res.data?.serialLocationList || [];
-        // console.log(list, "list");
         if (list.length > 0) {
           const formattedList = createListCollection({
             items: list.map((item) => ({
@@ -177,31 +177,35 @@ export function InstkDetaiViewModal({
               </Field>
               {instk.inputConsent === true ? (
                 <HStack>
-                  <Field label={"반려/승인자"} orientation="horizontal">
-                    <Input readOnly value={instk.inputStockEmployeeName} />
-                  </Field>
-                  <Field label={"사번"} orientation="horizontal">
-                    <Input readOnly value={instk.inputStockEmployeeNo} />
-                  </Field>
-                </HStack>ㅋ
-              ) : (
-                <HStack>
-                  <Field label={"반려/승인자"} orientation="horizontal">
+                  <Field label={"승인자"} orientation="horizontal">
                     <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
                   <Field label={"사번"} orientation="horizontal">
                     <Input readOnly value={instk.inputStockEmployeeNo} />
                   </Field>
                 </HStack>
+              ) : (
+                <HStack>
+                  <Field label={"반려자"} orientation="horizontal">
+                    <Input readOnly value={detailData.disapproveEmployeeName} />
+                  </Field>
+                  <Field label={"사번"} orientation="horizontal">
+                    <Input readOnly value={detailData.disapproveEmployeeNo} />
+                  </Field>
+                </HStack>
               )}
 
-              {instk.inputConsent && (
-                <Field label={"입고 날짜"} orientation="horizontal">
+              {instk.inputConsent === true ? (
+                <Field label={"승인 날짜"} orientation="horizontal">
                   <Input readOnly value={instk.inputStockDate} />
                 </Field>
+              ) : (
+                <Field label={"반려 날짜"} orientation="horizontal">
+                  <Input readOnly value={detailData.disapproveDate} />
+                </Field>
               )}
-              {instk.inputConsent && (
-                <Field label={"입고 비고"} orientation="horizontal">
+              {instk.inputConsent === true ? (
+                <Field label={"승인 비고"} orientation="horizontal">
                   {instk.inputStockNote ? (
                     <Textarea
                       readOnly
@@ -211,6 +215,10 @@ export function InstkDetaiViewModal({
                   ) : (
                     <Input readOnly value={"내용 없음"} />
                   )}
+                </Field>
+              ) : (
+                <Field label={"반려 비고"} orientation="horizontal">
+                  <Input readOnly value={detailData.disapproveNote} />
                 </Field>
               )}
             </Stack>

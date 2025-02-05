@@ -427,4 +427,12 @@ LIMIT #{offset}, 10
         )
         """)
     String  authorityCheck(String loginEmployeeNo, String customerName);
+
+    @Select("""
+            SELECT D.disapprove_employee_no,D.disapprove_date,D.disapprove_note,E.employee_name as disapprove_employee_name
+            FROM TB_DISPR D 
+            JOIN TB_EMPMST E ON D.disapprove_employee_no=E.employee_no
+            WHERE state_common_code="INSTK" AND state_request_key=#{inputKey}
+            """)
+    Instk viewDisapproveByInputKey(int inputKey);
 }

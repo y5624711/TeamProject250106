@@ -39,6 +39,7 @@ public class Instk {
     private String disapproveEmployeeNo;
     private String disapproveEmployeeName;
     private String disapproveNote;
+    private java.sql.Date disapproveDate;
 
     private List<String> serialList;
 
