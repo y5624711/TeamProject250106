@@ -36,29 +36,21 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       nextSearchParam.delete("keyword");
     }
 
-    // 검색해도 active, sort, order 값 유지 -> active 는 왜 유지하는거지?
-    // const active = searchParams.get("active") ?? "false";
-    // nextSearchParam.set("active", active);
-
-    // 경로별로 다른 파라미터 추가 (active, state 구분)
+    // 경로별로 다른 파라미터 추가
     if (location.pathname.startsWith("/item")) {
       const active = searchParams.get("active") ?? "false";
       nextSearchParam.set("active", active);
+    } else if (location.pathname.startsWith("/commonCode")) {
+      const active = searchParams.get("active") ?? "false";
+      nextSearchParam.set("active", active);
+      const filter = searchParams.get("filter") ?? "all";
+      nextSearchParam.set("filter", filter);
     } else if (location.pathname.startsWith("/purchase")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
     } else if (location.pathname.startsWith("/install")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
-    } else if (location.pathname.startsWith("/commonCode")) {
-      const active = searchParams.get("active") ?? "false";
-      nextSearchParam.set("active", active);
-      const filter = searchParams.get("filter") ?? "";
-      if (filter) {
-        nextSearchParam.set("filter", filter);
-      } else {
-        nextSearchParam.delete("filter");
-      }
     } else if (location.pathname.startsWith("/instk")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);

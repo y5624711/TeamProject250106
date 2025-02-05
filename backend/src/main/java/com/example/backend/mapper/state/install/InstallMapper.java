@@ -234,7 +234,7 @@ public interface InstallMapper {
                     ) AS installDate
                 FROM TB_INSTL_REQ ir
                     LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
-                    LEFT JOIN TB_DISPR da ON ir.install_request_key = da.state_request_key
+                    LEFT JOIN TB_DISPR da ON ir.install_request_key = da.state_request_key AND da.state_common_code = 'INSTL'
                     LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
                     LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
                     LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no -- 요청자 조인
@@ -281,6 +281,8 @@ public interface InstallMapper {
                             <if test="type=='all' or type=='customerEmployeeName'">
                                 OR e2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                                 OR e2.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                                OR e4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                                OR e4.employee_no LIKE CONCAT('%', #{keyword}, '%')
                             </if>
                             <if test="type=='all' or type=='customerInstallerName'">
                                 OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
@@ -313,11 +315,13 @@ public interface InstallMapper {
                 SELECT COUNT(DISTINCT ir.install_request_key)
                 FROM TB_INSTL_REQ ir
                 LEFT JOIN TB_INSTL_APPR ia ON ir.install_request_key = ia.install_request_key
+                LEFT JOIN TB_DISPR da ON ir.install_request_key = da.state_request_key
                 LEFT JOIN TB_FRNCHSMST f ON ir.franchise_code = f.franchise_code
                 LEFT JOIN TB_SYSCOMM sc ON ir.item_common_code = sc.common_code
                 LEFT JOIN TB_EMPMST e1 ON ir.business_employee_no = e1.employee_no 
                 LEFT JOIN TB_EMPMST e2 ON ia.customer_employee_no = e2.employee_no
                 LEFT JOIN TB_EMPMST e3 ON ia.customer_installer_no = e3.employee_no 
+                LEFT JOIN TB_EMPMST e4 ON da.disapprove_employee_no = e4.employee_no
                 LEFT JOIN TB_CUSTMST c ON sc.common_code = c.item_code
                 LEFT JOIN TB_WHMST w ON ir.customer_code = w.customer_code
                 WHERE 1=1
@@ -361,6 +365,8 @@ public interface InstallMapper {
                         <if test="type=='all' or type=='customerInstallerName'">
                             OR e3.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR e3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR e4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR e4.employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='warehouseName'">
                             OR w.warehouse_name LIKE CONCAT('%', #{keyword}, '%')
@@ -392,7 +398,7 @@ public interface InstallMapper {
     @Insert("""
             INSERT INTO TB_DISPR
             (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
-            VALUES (#{installRequestKey},'OUT', #{customerEmployeeNo}, #{disapproveNote})
+            VALUES (#{installRequestKey},'INSTL', #{customerEmployeeNo}, #{disapproveNote})
             """)
     int installDisapprove(Install install);
 
@@ -427,6 +433,7 @@ public interface InstallMapper {
             FROM TB_DISPR d
                 LEFT JOIN TB_EMPMST e ON d.disapprove_employee_no = e.employee_no
             WHERE state_request_key = #{installKey}
+            AND state_common_code = 'INSTL'
             """)
     Install getInstalldisApproveData(int installKey);
 }

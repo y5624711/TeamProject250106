@@ -23,12 +23,12 @@ public class CommonService {
                                                  String order,
                                                  String type,
                                                  String keyword,
-                                                 String radio) {
+                                                 String filter) {
         Integer offset = (page - 1) * 10;
         type = toSnakeCase(type);
         sort = toSnakeCase(sort);
-        return Map.of("list", mapper.getCommonCodeList(offset, active, sort, order, type, keyword, radio),
-                "count", mapper.countAll(active, type, keyword, radio));
+        return Map.of("list", mapper.getCommonCodeList(offset, active, sort, order, type, keyword, filter),
+                "count", mapper.countAll(active, type, keyword, filter));
     }
 
     // camelCase를 snake_case로 변환하는 로직

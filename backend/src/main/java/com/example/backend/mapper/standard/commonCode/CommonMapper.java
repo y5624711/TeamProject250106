@@ -16,12 +16,15 @@ public interface CommonMapper {
                     <if test="active == false">
                         AND common_code_active = TRUE
                     </if>
-                <if test="radio != null">
+                <if test="filter != null">
                     <choose>
-                        <when test="radio == 'system'">
-                            AND common_code_type = 'SYSTEM'
+                        <when test="filter == 'standard'">
+                            AND common_code_type = 'STANDARD'
                         </when>
-                        <when test="radio == 'item'">
+                        <when test="filter == 'state'">
+                            AND common_code_type = 'STATE'
+                        </when>
+                        <when test="filter == 'item'">
                             AND common_code_type = 'ITEM'
                         </when>
                         <otherwise>
@@ -52,7 +55,7 @@ public interface CommonMapper {
                 </script>
             """)
     List<CommonCode> getCommonCodeList(Integer offset, Boolean active, String sort, String order, String type,
-                                       String keyword, String radio);
+                                       String keyword, String filter);
 
     @Select("""
             <script>
@@ -62,12 +65,15 @@ public interface CommonMapper {
                 <if test="active == false">
                     AND common_code_active = TRUE
                 </if>
-                <if test="radio != null">
+                <if test="filter != null">
                     <choose>
-                        <when test="radio == 'system'">
-                            AND common_code_type = 'SYSTEM'
+                        <when test="filter == 'standard'">
+                            AND common_code_type = 'STANDARD'
                         </when>
-                        <when test="radio == 'item'">
+                        <when test="filter == 'state'">
+                            AND common_code_type = 'STATE'
+                        </when>
+                        <when test="filter == 'item'">
                             AND common_code_type = 'ITEM'
                         </when>
                         <otherwise>
@@ -88,7 +94,7 @@ public interface CommonMapper {
                 </if>
             </script>
             """)
-    Integer countAll(Boolean active, String type, String keyword, String radio);
+    Integer countAll(Boolean active, String type, String keyword, String filter);
 
     @Select("""
             SELECT COUNT(*)

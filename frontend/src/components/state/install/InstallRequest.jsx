@@ -71,18 +71,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     }));
   };
 
-  // 가맹점 조회 시
-  const onFranchiseClick = () => {
-    if (selectedFranchise) {
-      setInstallRequest((prev) => ({
-        ...prev,
-        franchiseName: selectedFranchise.label,
-        franchiseCode: selectedFranchise.value,
-        franchiseAddress: selectedFranchise.address || "", // 선택된 가맹점의 주소 설정
-      }));
-    }
-  };
-
   // 데이터 로딩 (가맹점 목록, 품목 목록)
   useEffect(() => {
     const fetchData = async () => {
@@ -144,131 +132,131 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
           <DialogTitle>설치 요청</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={5}>
-            <HStack>
-              <Field orientation="horizontal" label="가맹점" required>
-                <Select
-                  options={franchiseList}
-                  value={franchiseList.find(
-                    (opt) => opt.value === installRequest.franchiseName,
-                  )}
-                  onChange={handleFranchiseChange}
-                  placeholder="가맹점 선택"
-                  isSearchable
-                  styles={{
-                    control: (base) => ({
-                      ...base,
-                      width: "537px",
-                      height: "42px",
-                    }),
-                    menu: (base) => ({
-                      ...base,
-                      zIndex: 100,
-                      // width: "470px",
-                    }),
-                  }}
-                />
-                {/*<Button onClick={onFranchiseClick}>조회</Button>*/}
-              </Field>
-            </HStack>
+          <Box css={{ "--field-label-width": "85px" }}>
+            <Stack gap={5}>
+              <HStack>
+                <Field orientation="horizontal" label="가맹점" required>
+                  <Select
+                    options={franchiseList}
+                    value={franchiseList.find(
+                      (opt) => opt.value === installRequest.franchiseName,
+                    )}
+                    onChange={handleFranchiseChange}
+                    placeholder="가맹점 선택"
+                    isSearchable
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        width: "537px",
+                        height: "42px",
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        zIndex: 100,
+                      }),
+                    }}
+                  />
+                </Field>
+              </HStack>
 
-            <Field label="품목" orientation="horizontal" required>
-              <SelectRoot
-                onValueChange={(e) => {
-                  const selectedItem = installItemList.find(
-                    (item) => item.item_common_name === e.value[0],
-                  );
-                  if (selectedItem) {
-                    setInstallRequest((prev) => ({
-                      ...prev,
-                      itemCommonCode: selectedItem.item_common_code || "",
-                      itemCommonName: selectedItem.item_common_name || "",
-                      customerName: selectedItem.customer_name || "",
-                      customerCode: selectedItem.customer_code || "",
-                      countItem: selectedItem.count_item,
-                    }));
-                  }
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValueText>
-                    {installRequest.itemCommonName || "품목 선택"}
-                  </SelectValueText>
-                </SelectTrigger>
-                <SelectContent
-                  style={{
-                    width: "85%",
-                    top: "40px",
-                    position: "absolute",
+              <Field label="품목" orientation="horizontal" required>
+                <SelectRoot
+                  onValueChange={(e) => {
+                    const selectedItem = installItemList.find(
+                      (item) => item.item_common_name === e.value[0],
+                    );
+                    if (selectedItem) {
+                      setInstallRequest((prev) => ({
+                        ...prev,
+                        itemCommonCode: selectedItem.item_common_code || "",
+                        itemCommonName: selectedItem.item_common_name || "",
+                        customerName: selectedItem.customer_name || "",
+                        customerCode: selectedItem.customer_code || "",
+                        countItem: selectedItem.count_item,
+                      }));
+                    }
                   }}
                 >
-                  {installItemList
-                    .filter((item) => item.item_common_name) // 빈 데이터 필터링
-                    .map((item) => (
-                      <SelectItem
-                        key={item.item_common_code}
-                        item={item.item_common_name}
-                      >
-                        {item.item_common_name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
-            <Box display="flex" justifyContent="flex-end">
-              <Heading size="xs" color="gray.500" my={-3}>
-                가능한 수량:{" "}
-                {installRequest.countItem > 0 ? installRequest.countItem : 0}
-              </Heading>
-            </Box>
-            <Field label="수량" orientation="horizontal" required>
-              <Input
-                type="number"
-                value={installRequest.installRequestAmount}
-                onChange={handleInputChange("installRequestAmount")}
-                min="1"
-                max={installRequest.countItem}
-              />
-            </Field>
-            {installRequest.installRequestAmount > installRequest.countItem && (
-              <Box display="flex">
-                <Heading size="xs" color="red.500" my={-3} ml={"90px"}>
-                  설치 요청 수량이 많습니다.{" "}
+                  <SelectTrigger>
+                    <SelectValueText>
+                      {installRequest.itemCommonName || "품목 선택"}
+                    </SelectValueText>
+                  </SelectTrigger>
+                  <SelectContent
+                    style={{
+                      width: "85%",
+                      top: "40px",
+                      position: "absolute",
+                    }}
+                  >
+                    {installItemList
+                      .filter((item) => item.item_common_name) // 빈 데이터 필터링
+                      .map((item) => (
+                        <SelectItem
+                          key={item.item_common_code}
+                          item={item.item_common_name}
+                        >
+                          {item.item_common_name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </SelectRoot>
+              </Field>
+              <Box display="flex" justifyContent="flex-end">
+                <Heading size="xs" color="gray.500" my={-3}>
+                  가능한 수량:{" "}
+                  {installRequest.countItem > 0 ? installRequest.countItem : 0}
                 </Heading>
               </Box>
-            )}
-            <Field label="가맹점 주소" orientation="horizontal">
-              <Input
-                variant="subtle"
-                value={installRequest.franchiseAddress}
-                onChange={handleInputChange("franchiseAddress")}
-              />
-            </Field>
-            <HStack width="100%" justifyContent="space-between">
-              <Field label="요청자" orientation="horizontal">
-                <Input value={name} variant="subtle" />
+              <Field label="수량" orientation="horizontal" required>
+                <Input
+                  type="number"
+                  value={installRequest.installRequestAmount}
+                  onChange={handleInputChange("installRequestAmount")}
+                  min="1"
+                  max={installRequest.countItem}
+                />
               </Field>
-              <Field label="사번" orientation="horizontal">
-                <Input value={id} variant="subtle" />
+              {installRequest.installRequestAmount >
+                installRequest.countItem && (
+                <Box display="flex">
+                  <Heading size="xs" color="red.500" my={-3} ml={"90px"}>
+                    설치 요청 수량이 많습니다.{" "}
+                  </Heading>
+                </Box>
+              )}
+              <Field label="가맹점 주소" orientation="horizontal">
+                <Input
+                  variant="subtle"
+                  value={installRequest.franchiseAddress}
+                  onChange={handleInputChange("franchiseAddress")}
+                />
               </Field>
-            </HStack>
-
-            <Field label="담당 업체" orientation="horizontal">
-              <Input
-                readOnly
-                value={installRequest.customerName}
-                variant="subtle"
-              />
-            </Field>
-            <Field label="비고" orientation="horizontal">
-              <Textarea
-                value={installRequest.installRequestNote}
-                placeholder="최대 50자"
-                onChange={handleInputChange("installRequestNote")}
-                maxHeight={"100px"}
-              />
-            </Field>
-          </Stack>
+              <Box display="flex" gap={5}>
+                <Field label="요청자" orientation="horizontal">
+                  <Input value={name} variant="subtle" />
+                </Field>
+                <Field label="사번" orientation="horizontal">
+                  <Input value={id} variant="subtle" />
+                </Field>
+              </Box>
+              <Field label="담당 업체" orientation="horizontal">
+                <Input
+                  readOnly
+                  value={installRequest.customerName}
+                  variant="subtle"
+                />
+              </Field>
+              <Field label="비고" orientation="horizontal">
+                <Textarea
+                  value={installRequest.installRequestNote}
+                  placeholder="최대 50자"
+                  onChange={handleInputChange("installRequestNote")}
+                  maxHeight={"100px"}
+                />
+              </Field>
+            </Stack>
+          </Box>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>

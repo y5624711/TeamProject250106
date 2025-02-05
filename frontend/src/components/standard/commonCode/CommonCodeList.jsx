@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   createListCollection,
@@ -10,14 +10,8 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../ui/select.jsx";
 import { Field } from "../../ui/field.jsx";
+import { CommonCodeSelect } from "./CommonCodeSelect.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -43,12 +37,6 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
-  const codeOptions = createListCollection({
-    items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
-  });
-
-  const [code, setCode] = useState("ALL");
-
   return (
     <Box>
       <SearchBar
@@ -59,30 +47,13 @@ export function CommonCodeList({
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
-        <Box>
-          <Field label={"코드 구분"} orientation="horizontal">
-            <SelectRoot
-              collection={codeOptions}
-              width="160px"
-              position="relative"
-              value={code}
-              onValueChange={(value) => {
-                setCode({ value });
-              }}
-            >
-              <SelectTrigger>
-                <SelectValueText placeholder="ALL"></SelectValueText>{" "}
-                {/* 선택된 값 표시 */}
-              </SelectTrigger>
-
-              <SelectContent>
-                {codeOptions?.items.map((option) => (
-                  <SelectItem item={option.value} key={option.value}>
-                    {option.value} {/* label 대신 value 사용 */}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
+        <Box css={{ "--field-label-width": "70px" }}>
+          <Field label={"코드 구분"} orientation="horizontal" gap={0}>
+            <CommonCodeSelect
+              onSelectChange={(nextSearchParam) =>
+                setSearchParams(nextSearchParam)
+              }
+            />
           </Field>
         </Box>
       </HStack>
