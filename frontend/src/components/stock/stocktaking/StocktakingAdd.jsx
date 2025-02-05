@@ -50,6 +50,7 @@ function StocktakingAdd({
   const [selectedItem, setSelectedItem] = useState("");
   const [difference, setDifference] = useState(null);
   const [stockLocation, setStockLocation] = useState([]);
+  const [searchClick, setSearchClick] = useState(false);
 
   const resetState = () => {
     setWarehouseCode("");
@@ -200,7 +201,8 @@ function StocktakingAdd({
       countConfiguration !== undefined &&
       countConfiguration !== "" &&
       stocktakingType !== null &&
-      difference !== null
+      difference !== null &&
+      searchClick === true
     );
   };
 
@@ -211,9 +213,15 @@ function StocktakingAdd({
         : countCurrent < countConfiguration
           ? setDifference("2")
           : setDifference("0");
+
+      setSearchClick(true);
     }
   };
   console.log(difference);
+
+  useEffect(() => {
+    console.log("difference 값 변경됨:", difference);
+  }, [difference]);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
@@ -292,7 +300,7 @@ function StocktakingAdd({
                   value={countConfiguration}
                   onChange={(e) => {
                     setCountConfiguration(e.target.value);
-                    setDifference(null);
+                    setSearchClick(false);
                   }}
                 />
               </Field>
@@ -333,8 +341,17 @@ function StocktakingAdd({
                 {/*/>*/}
               </Field>
             </Box>
+            {difference !== null && (
+              <>
+                <hr />
+                <Box>
+                  {difference === "1" && "전산 수량이 더 많아"}
+                  {difference === "2" && "실제 수량이 더 많아"}
+                  {difference === "0" && "수량이 동일해"}
+                </Box>
+              </>
+            )}
           </Box>
-
           {/*  TODO: 실사유형 radio로 체크  */}
         </DialogBody>
         <DialogFooter>
