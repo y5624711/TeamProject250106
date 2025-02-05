@@ -34,6 +34,7 @@ public class Purchase {
     private Integer stateRequestKey;
     private String stateCommonCode;
     private String disapproveEmployeeNo;
+    private String disapproveEmployeeName;
     private LocalDate disapproveDate;
     private String disapproveNote;
 }
