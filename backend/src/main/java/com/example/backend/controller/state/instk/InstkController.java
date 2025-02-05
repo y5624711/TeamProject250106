@@ -82,7 +82,6 @@ public class InstkController {
     @PutMapping("reject")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> rejectInstk(@RequestBody Instk instk ,Authentication authentication) {
-        System.out.println("instk.getInputKey() = " + instk.getInputKey());
 
         //권한 확인
         if( !service.authorityCheck(authentication,instk.getCustomerName()) ){
@@ -92,16 +91,16 @@ public class InstkController {
 
         };
 
-        Boolean[] result = service.rejectInstk(instk.getInputKey());
+        boolean result = service.rejectInstk(instk);
 
         // 이미 반려된 상태
-        if (result[0] != null && !result[0]) {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
-        }
+//        if (result) {
+//            return ResponseEntity.ok()
+//                    .body(Map.of("message", Map.of("type", "error",
+//                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
+//        }
         // 반려 성공
-        else if (result[1]) {
+         if (result) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
                             "text", STR."\{instk.getInputKey()}번 주문 반려 되었습니다.")));

@@ -175,6 +175,14 @@ LIMIT #{offset}, 10
        """)
     int updateBuyInConsentByInputKey(int inputKey);
 
+    //가입고 상태 false
+    @Update("""
+        UPDATE TB_BUYIN
+        SET input_consent = TRUE
+        WHERE input_key = #{inputKey}
+       """)
+    int updateFalseBuyInConsentByInputKey(int inputKey);
+
     @Insert("""
             INSERT INTO TB_INSTK
             (input_key, customer_employee_no,input_stock_note)
@@ -184,7 +192,7 @@ LIMIT #{offset}, 10
     int addInstk(int inputKey, String inputStockNote, String inputStockEmployeeNo);
 
 
-    // 구매 입고시  창고 주소  TODO 창고 로케이션도 추가로 해야할거 같은데.
+    // 구매 입고시  창고 주소  
     @Select("""
            SELECT  AR.warehouse_code ,WHMST.warehouse_address 
            FROM TB_PURCH_APPR AR
@@ -194,7 +202,7 @@ LIMIT #{offset}, 10
            """)
     InstkDetail viewWareHouse(String inputNo);
 
-    // 반품 입고시 창고 주소 가져오는 DTO
+    // 반품 입고시 창고 주소 가져오는 쿼리
     @Select("""
              SELECT  WHM.warehouse_address
            FROM  TB_RTN_APPR APPR
@@ -246,12 +254,13 @@ LIMIT #{offset}, 10
             @Param("inoutNo") String inoutNo, int inputKey);
 
     // 입고 반려 버튼 클릭시 거절
-    @Update("""
-            UPDATE TB_BUYIN
-            SET input_consent=FALSE
-            WHERE input_key = #{inputKey}
+    @Insert("""
+            INSERT INTO TB_DISPR
+           (state_request_key,state_common_code,disapprove_employee_no,disapprove_note)
+           VALUES (#{inputKey},"INSTK",#{disApproveEmployeeNo},#{disApproveNote});
+        
             """)
-    int rejectInstk(int inputKey);
+    int rejectInstk(int inputKey, String disApproveEmployeeNo, String disApproveNote);
 
     //  입고키 기준 입고 상태 가져오는 쿼리
     @Select("""

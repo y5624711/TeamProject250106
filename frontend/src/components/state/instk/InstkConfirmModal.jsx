@@ -85,6 +85,8 @@ export function InstkConfirmModal({
       .put("/api/instk/reject", {
         inputKey: instk.inputKey,
         customerName: instk.customerName,
+        disapproveEmployeeNo: id,
+        disapproveNote: inputStockNote,
       })
       .then((res) => {
         console.log(res.data);
@@ -117,8 +119,13 @@ export function InstkConfirmModal({
               <Field
                 orientation="horizontal"
                 label={"입고 구분"}
-                sx={{
-                  "& > div": { justifyContent: "center" },
+                labelProps={{
+                  sx: {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%", // 전체 너비 설정
+                  },
                 }}
               >
                 <Input value={instk.inputCommonCodeName} readOnly />

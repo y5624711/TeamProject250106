@@ -48,11 +48,9 @@ public class InstkService {
         List<InstkSerialLocation>  serialLocationList= instkSubMapper.getSerialNoByInputKey(inputKey);
         String inoutNo=  "IN" + inputNo.substring(2);
 
-//      Map<String,Integer> map= inoutHistoryMapper.getSerialNoAndLocationKeyByInputNo(inoutNo);
         //  입고시 비고내용
          String inputStockNote= mapper.getInstkNoteByInputKey(inputKey);
 
-        System.out.println("inputStockNote = " + inputStockNote);
         String warehouseName="";
 
          if(inputCommonCodeName.equals("입고")) {
@@ -61,7 +59,6 @@ public class InstkService {
              warehouseName=mapper.viewReturnWareHouseName(inputKey);
          }
 
-        System.out.println("warehouseName = " + warehouseName);
 
       Instk instk = new Instk();
       instk.setInputStockNote(inputStockNote);
@@ -179,12 +176,18 @@ public class InstkService {
     }
 
     // 입고 반려
-    public Boolean[] rejectInstk(int inputKey) {
+    public boolean rejectInstk(Instk instk) {
         //반려 체크
-        Boolean currentStatus = mapper.selectedConsent(inputKey);
+//        Boolean currentStatus = mapper.selectedConsent(instk.getInputKey());
         //업데이트 체크
-        int updateResult = mapper.rejectInstk(inputKey);
-        return new Boolean[] {currentStatus, updateResult == 1};
+        int inputKey=instk.getInputKey();
+        String disApproveNote=instk.getDisapproveNote();
+        String disApproveEmployeeNo=instk.getDisapproveEmployeeNo();
+        //1.가입고 테이블 상태 변경
+        int updateBuyInConsentByInputKey=mapper.updateFalseBuyInConsentByInputKey(inputKey);
+        //반려테이블에 집어넣기 
+        int updateResult = mapper.rejectInstk(inputKey,disApproveEmployeeNo,disApproveNote);
+        return updateResult == 1;
     }
 
     public boolean authorityCheck(Authentication authentication, String customerName) {
