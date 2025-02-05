@@ -240,28 +240,34 @@ function StocktakingAdd({
   };
 
   const handleSaveClick = () => {
-    axios
-      .post(`/api/stocktaking/add`, {
-        warehouseCode,
-        itemCode,
-        countCurrent,
-        countConfiguration,
-        stocktakingNote,
-        stocktakingType,
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        toaster.create({
-          description: data.message.text,
-          type: data.message.type,
+    if (countConfiguration === countConfiguration) {
+      axios
+        .post(`/api/stocktaking/add`, {
+          warehouseCode,
+          itemCode,
+          countCurrent,
+          countConfiguration,
+          stocktakingNote,
+          stocktakingType,
+        })
+        .then((res) => res.data)
+        .then((data) => {
+          toaster.create({
+            description: data.message.text,
+            type: data.message.type,
+          });
+          handleClose();
+          onClose();
+        })
+        .catch((e) => {
+          const message = e.response?.data?.message;
+          toaster.create({ description: message.text, type: message.type });
         });
-        handleClose();
-        onClose();
-      })
-      .catch((e) => {
-        const message = e.response?.data?.message;
-        toaster.create({ description: message.text, type: message.type });
-      });
+    } else if (countCurrent > countConfiguration) {
+      //   전산수량이 더 많을 때
+    } else {
+      //   실제수량이 더 많을 때
+    }
   };
 
   useEffect(() => {
