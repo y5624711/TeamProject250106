@@ -51,6 +51,7 @@ function StocktakingAdd({
   const [difference, setDifference] = useState(null);
   const [stockLocation, setStockLocation] = useState([]);
   const [searchClick, setSearchClick] = useState(false);
+  const [makeDifference, setMakeDifference] = useState(0);
 
   const resetState = () => {
     setWarehouseCode("");
@@ -202,7 +203,9 @@ function StocktakingAdd({
       countConfiguration !== "" &&
       stocktakingType !== null &&
       difference !== null &&
-      searchClick === true
+      searchClick === true &&
+      makeDifference + countCurrent - countConfiguration === 0
+      //   makeDifference 를 통해 값이 같을 때 등록 가능하게 하기
     );
   };
 
