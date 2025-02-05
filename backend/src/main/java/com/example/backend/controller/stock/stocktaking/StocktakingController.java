@@ -1,6 +1,7 @@
 package com.example.backend.controller.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -68,13 +69,21 @@ public class StocktakingController {
         return service.getStocktakingWarehouseList(auth);
     }
 
+    //    아이템 목록 불러오기
     @GetMapping("item/{warehouseCode}")
     public List<Stocktaking> itemList(@PathVariable String warehouseCode) {
         return service.getStocktakingItemList(warehouseCode);
     }
 
+    //    전산 수량 불러오기
     @GetMapping("count/{warehouseCode}/{itemCode}")
     public Integer count(@PathVariable String warehouseCode, @PathVariable String itemCode) {
         return service.getStocktakingCountCurrent(warehouseCode, itemCode);
     }
+
+    @GetMapping("location/{warehouseCode}/{difference}")
+    public List<StocktakingItem> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
+        return service.getStocktakingLocationList(warehouseCode, difference);
+    }
+
 }

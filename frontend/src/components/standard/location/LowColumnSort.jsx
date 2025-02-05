@@ -39,9 +39,9 @@ export function LowColumnSort({
         onClick={() => handleSort(firstColumn)}
         style={{
           cursor: "pointer",
-          width: "100px", // 더 좁게 설정 가능
-          minWidth: "100px",
-          maxWidth: "100px",
+          width: "90px", // 더 좁게 설정 가능
+          minWidth: "90px",
+          maxWidth: "90px",
         }}
       >
         <HStack justify="center" align="center" width="100%">

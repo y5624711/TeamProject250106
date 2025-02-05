@@ -1,6 +1,7 @@
 package com.example.backend.service.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -90,7 +91,6 @@ public class StocktakingService {
 
     public List<Stocktaking> getStocktakingItemList(String warehouseCode) {
 
-        System.out.println(mapper.getStocktakingItemList(warehouseCode));
         return mapper.getStocktakingItemList(warehouseCode);
     }
 
@@ -119,5 +119,20 @@ public class StocktakingService {
         Integer countCurrent = all - out - out;
 
         return countCurrent;
+    }
+
+    public List<StocktakingItem> getStocktakingLocationList(String warehouseCode, String difference) {
+
+        String getCode = "all";
+
+        if (difference.equals("1")) {
+            getCode = "";
+        } else {
+            getCode = "";
+        }
+
+        System.out.println(getCode);
+        return mapper.getStocktakingLocationList(warehouseCode, getCode);
+
     }
 }

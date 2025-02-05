@@ -52,6 +52,7 @@ function StocktakingAdd({
   const [stockLocation, setStockLocation] = useState([]);
   const [searchClick, setSearchClick] = useState(false);
   const [makeDifference, setMakeDifference] = useState(0);
+  const [locationList, setLocationList] = useState([]);
 
   const resetState = () => {
     setWarehouseCode("");
@@ -94,6 +95,21 @@ function StocktakingAdd({
         }));
         setItemList(itemOptions);
       });
+    }
+  }, [warehouseCode]);
+
+  // 로케이션 정보 가져오기
+  useEffect(() => {
+    if (warehouseCode) {
+      axios
+        .get(`/api/stocktaking/location/${warehouseCode}/${difference}`)
+        .then((res) => {
+          const locationOptions = res.data.map((location) => ({
+            value: location.itemCode,
+            label: location.itemName,
+          }));
+          setLocationList(locationOptions);
+        });
     }
   }, [warehouseCode]);
 
@@ -349,14 +365,57 @@ function StocktakingAdd({
               <>
                 {difference === "1" && (
                   <>
+                    {/* 전산이 더 많음*/}
                     <hr />
-                    전산 더 많음
+                    <Box display="flex" gap={4}>
+                      <Field
+                        label="로케이션"
+                        orientation="horizontal"
+                        mb={15}
+                        required
+                      >
+                        <Input type={"text"} />
+                      </Field>
+                      <Field
+                        label="실제 수량"
+                        orientation="horizontal"
+                        mb={15}
+                        required
+                      >
+                        <Input
+                          type={"text"}
+                          value={countConfiguration}
+                          onChange={(e) => {
+                            setCountConfiguration(e.target.value);
+                            setSearchClick(false);
+                          }}
+                        />
+                      </Field>
+                      <Button onClick={handleDifferentClick}>조회</Button>
+                    </Box>
                   </>
                 )}
                 {difference === "2" && (
                   <>
                     <hr />
-                    실제 더 많음
+                    <br />
+                    {/*실제 더 많음*/}
+                    <Field
+                      label="로케이션"
+                      orientation="horizontal"
+                      mb={15}
+                    ></Field>
+                    <Box display="flex" gap={20}>
+                      <Field label="행" orientation="horizontal" mb={15}>
+                        <Input type={"text"} />
+                      </Field>
+                      <Field label="열" orientation="horizontal" mb={15}>
+                        <Input type={"text"} />
+                      </Field>
+                      <Field label="단" orientation="horizontal" mb={15}>
+                        <Input type={"text"} />
+                      </Field>
+                    </Box>
                   </>
                 )}
                 <Box></Box>
