@@ -11,6 +11,7 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import {
+  Box,
   HStack,
   Input,
   SelectContent,
@@ -125,114 +126,119 @@ export function InstallConfiguration({
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap={"15px"}>
-            <Field label={"가맹점"} orientation="horizontal">
-              <Input value={installData.franchiseName} readOnly />
-            </Field>
-            <Field label={"가맹점 주소"} orientation="horizontal">
-              <Input value={installData.franchiseAddress} readOnly />
-            </Field>
-            <HStack>
-              <Field label={"품목"} orientation="horizontal">
-                <Input value={installData.itemCommonName} readOnly />
+          <Box css={{ "--field-label-width": "85px" }}>
+            <Stack gap={"15px"}>
+              <Field label={"가맹점"} orientation="horizontal">
+                <Input value={installData.franchiseName} readOnly />
               </Field>
-              <Field label={"수량"} orientation="horizontal">
-                <Input value={installData.installRequestAmount} readOnly />
+              <Field label={"가맹점 주소"} orientation="horizontal">
+                <Input value={installData.franchiseAddress} readOnly />
               </Field>
-            </HStack>
-            <HStack>
-              <Field label={"요청자"} orientation="horizontal">
-                <Input value={installData.businessEmployeeName} readOnly />
+              <Box display="flex" gap={5}>
+                <Field label={"품목"} orientation="horizontal">
+                  <Input value={installData.itemCommonName} readOnly />
+                </Field>
+                <Field label={"수량"} orientation="horizontal">
+                  <Input value={installData.installRequestAmount} readOnly />
+                </Field>
+              </Box>
+              <Box display="flex" gap={5}>
+                <Field label={"요청자"} orientation="horizontal">
+                  <Input value={installData.businessEmployeeName} readOnly />
+                </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={installData.businessEmployeeNo} readOnly />
+                </Field>
+              </Box>
+              <Box display="flex" gap={5}>
+                <Field label={"승인자"} orientation="horizontal">
+                  <Input value={installData.customerEmployeeName} readOnly />
+                </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={installData.customerEmployeeNo} readOnly />
+                </Field>
+              </Box>
+              <Box display="flex" gap={5}>
+                <Field label={"설치 기사"} orientation="horizontal">
+                  <Input value={installData.customerInstallerName} readOnly />
+                </Field>
+                <Field label={"사번"} orientation="horizontal">
+                  <Input value={installData.customerInstallerNo} readOnly />
+                </Field>
+              </Box>
+              <Field label={"승인 날짜"} orientation="horizontal">
+                <Input value={installData.installRequestDate} readOnly />
               </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input value={installData.businessEmployeeNo} readOnly />
-              </Field>
-            </HStack>
-            <HStack>
-              <Field label={"승인자"} orientation="horizontal">
-                <Input value={installData.customerEmployeeName} readOnly />
-              </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input value={installData.customerEmployeeNo} readOnly />
-              </Field>
-            </HStack>
-            <HStack>
-              <Field label={"설치 기사"} orientation="horizontal">
-                <Input value={installData.customerInstallerName} readOnly />
-              </Field>
-              <Field label={"사번"} orientation="horizontal">
-                <Input value={installData.customerInstallerNo} readOnly />
-              </Field>
-            </HStack>
-            <Field label={"승인 날짜"} orientation="horizontal">
-              <Input value={installData.installRequestDate} readOnly />
-            </Field>
-            <Field label={"승인 비고"} orientation="horizontal">
-              <Input
-                value={installData.installApproveNote || "내용없음"}
-                readOnly
-              />
-            </Field>
-            {installData.installApproveConsent && <Separator />}
-            <HStack>
-              <Field label={"출고 번호"} orientation="horizontal">
-                <Input value={installData.outputNo} readOnly />
-              </Field>
-              <Field label={"시리얼 번호"} orientation="horizontal">
-                <SelectRoot>
-                  <SelectTrigger>
-                    <SelectValueText>{serialList[0]}</SelectValueText>
-                  </SelectTrigger>
-                  <SelectContent
-                    style={{
-                      width: "220px",
-                      top: "40px",
-                      position: "absolute",
-                    }}
-                  >
-                    {serialList.map((serial) => (
-                      <SelectItem key={serial} item={serial}>
-                        {serial}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </SelectRoot>
-              </Field>
-            </HStack>
-            <HStack>
-              <Field label={"설치 예정일"} orientation="horizontal">
-                <Input value={installData.installScheduleDate} readOnly />
-              </Field>
-              <Field
-                label={
-                  installData?.inoutHistoryDate ? "설치 완료일" : "설치 확정일"
-                }
-                orientation="horizontal"
-              >
+              <Field label={"승인 비고"} orientation="horizontal">
                 <Input
-                  value={installData?.inoutHistoryDate || today}
+                  value={installData.installApproveNote || "내용없음"}
                   readOnly
                 />
               </Field>
-            </HStack>
-            <Field label={"완료 비고"} orientation="horizontal">
-              {!installData?.inoutHistoryDate ? (
-                <Textarea
-                  placeholder={"최대 50자"}
-                  onChange={(e) => setInoutHistoryNote(e.target.value)}
-                  maxHeight={"100px"}
-                />
-              ) : installData.inoutHistoryNote ? (
-                <Textarea
-                  readOnly
-                  value={installData.inoutHistoryNote}
-                  maxHeight={"40px"}
-                />
-              ) : (
-                <Input readOnly value={"내용 없음"} />
-              )}
-            </Field>
-          </Stack>
+              {installData.installApproveConsent && <Separator />}
+              <Box display="flex" gap={5}>
+                <Field label={"출고 번호"} orientation="horizontal">
+                  <Input value={installData.outputNo} readOnly />
+                </Field>
+                <Field label={"시리얼 번호"} orientation="horizontal">
+                  <SelectRoot>
+                    <SelectTrigger>
+                      <SelectValueText>{serialList[0]}</SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        width: "220px",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {serialList.map((serial) => (
+                        <SelectItem key={serial} item={serial}>
+                          {serial}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                </Field>
+              </Box>
+
+              <Box display="flex" gap={5}>
+                <Field label={"설치 예정일"} orientation="horizontal">
+                  <Input value={installData.installScheduleDate} readOnly />
+                </Field>
+                <Field
+                  label={
+                    installData?.inoutHistoryDate
+                      ? "설치 완료일"
+                      : "설치 확정일"
+                  }
+                  orientation="horizontal"
+                >
+                  <Input
+                    value={installData?.inoutHistoryDate || today}
+                    readOnly
+                  />
+                </Field>
+              </Box>
+              <Field label={"완료 비고"} orientation="horizontal">
+                {!installData?.inoutHistoryDate ? (
+                  <Textarea
+                    placeholder={"최대 50자"}
+                    onChange={(e) => setInoutHistoryNote(e.target.value)}
+                    maxHeight={"100px"}
+                  />
+                ) : installData.inoutHistoryNote ? (
+                  <Textarea
+                    readOnly
+                    value={installData.inoutHistoryNote}
+                    maxHeight={"40px"}
+                  />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
+                )}
+              </Field>
+            </Stack>
+          </Box>
         </DialogBody>
         <DialogFooter>
           {installData?.inoutHistoryDate ? (
