@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   createListCollection,
@@ -10,7 +10,14 @@ import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
 import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { FilterRadioGroup } from "./FilterRadioGroup.jsx";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select.jsx";
+import { Field } from "../../ui/field.jsx";
 
 export function CommonCodeList({
   commonCodeList,
@@ -36,11 +43,11 @@ export function CommonCodeList({
     { key: "commonCodeName", label: "코드명" },
   ];
 
-  const radioOptions = [
-    { value: "all", label: "전체" },
-    { value: "system", label: "시스템 코드" },
-    { value: "item", label: "품목 코드" },
-  ];
+  const codeOptions = createListCollection({
+    items: ["ALL", "ITEM", "STANDARD", "STATE"].map((value) => ({ value })),
+  });
+
+  const [code, setCode] = useState("ALL");
 
   return (
     <Box>
@@ -48,15 +55,37 @@ export function CommonCodeList({
         searchOptions={searchOptions}
         onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
       />
-      <Flex gap={5} alignItems="center">
+      <HStack alignItems="center" justifyContent="space-between" width="100%">
         <ActiveSwitch
           onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
         />
-        <FilterRadioGroup
-          radioOptions={radioOptions}
-          onRadioChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
-        />
-      </Flex>
+        <Box>
+          <Field label={"코드 구분"} orientation="horizontal">
+            <SelectRoot
+              collection={codeOptions}
+              width="160px"
+              position="relative"
+              value={code}
+              onValueChange={(value) => {
+                setCode({ value });
+              }}
+            >
+              <SelectTrigger>
+                <SelectValueText placeholder="ALL"></SelectValueText>{" "}
+                {/* 선택된 값 표시 */}
+              </SelectTrigger>
+
+              <SelectContent>
+                {codeOptions?.items.map((option) => (
+                  <SelectItem item={option.value} key={option.value}>
+                    {option.value} {/* label 대신 value 사용 */}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+          </Field>
+        </Box>
+      </HStack>
       <Box>
         <Table.Root>
           <Table.Header>
