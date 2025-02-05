@@ -123,6 +123,7 @@ function CustomerList({
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
+              width="90px" // 더 좁게 설정 가능
               textAlign="center"
               onClick={() => onHeader("customer_key")}
             >
@@ -187,7 +188,7 @@ function CustomerList({
               onDoubleClick={() => {
                 onRowClick(customer.customerKey);
               }}
-              _hover={{ cursor: "pointer" }}
+              _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               bg={customer.customerActive ? "white" : "gray.200"}
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>

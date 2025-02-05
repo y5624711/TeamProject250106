@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "../../ui/button.jsx";
 import {
+  Box,
   createListCollection,
-  HStack,
   Input,
   SelectContent,
   SelectItem,
@@ -139,7 +139,7 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
               onChange={(e) => setCustomerName(e.target.value)}
             />
           </Field>
-          <HStack>
+          <Box display="flex" gap={5}>
             <Field label={"취급 품목"} orientation={"horizontal"} required>
               <SelectRoot
                 onValueChange={(e) => {
@@ -172,35 +172,74 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
                 </SelectContent>
               </SelectRoot>
             </Field>
-            <Field orientation="horizontal" label={"업종"} required>
+            <Field
+              orientation="horizontal"
+              label={
+                <span
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {"업종".split("").map((c) => (
+                    <span>{c}</span>
+                  ))}
+                </span>
+              }
+              required
+            >
               <Input
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
               />
             </Field>
-          </HStack>
+          </Box>
           <Field orientation="horizontal" label={"대표자"} required>
             <Input
               value={customerRep}
               onChange={(e) => setCustomerRep(e.target.value)}
             />
           </Field>
-          <HStack>
+          <Box display={"flex"} gap={5}>
             <Field orientation="horizontal" label={"사업자 번호"} required>
               <CustomerNoInput value={customerNo} onChange={setCustomerNo} />
             </Field>
             <Field orientation="horizontal" label={"법인 번호"} required>
               <CorporateNoInput value={corporateNo} onChange={setCorporateNo} />
             </Field>
-          </HStack>
-          <HStack>
-            <Field orientation="horizontal" label={"전화번호"} required>
+          </Box>
+          <Box display="flex" gap={5}>
+            <Field
+              orientation="horizontal"
+              label={
+                <span
+                  style={{
+                    letterSpacing: "4.5px",
+                  }}
+                >
+                  전화번호
+                </span>
+              }
+              required
+            >
               <PhoneInput value={customerTel} onChange={setCustomerTel} />
             </Field>
-            <Field orientation="horizontal" label={"팩스"}>
+            <Field
+              orientation="horizontal"
+              label={
+                <span
+                  style={{
+                    letterSpacing: "28.5px",
+                  }}
+                >
+                  팩스
+                </span>
+              }
+            >
               <PhoneInput value={customerFax} onChange={setCustomerFax} />
             </Field>
-          </HStack>
+          </Box>
           <Field orientation="horizontal" label={"우편번호"} required>
             <Input
               value={customerPost}

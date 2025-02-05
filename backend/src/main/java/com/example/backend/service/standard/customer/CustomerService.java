@@ -3,7 +3,10 @@ package com.example.backend.service.standard.customer;
 import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
 import com.example.backend.mapper.standard.customer.CustomerMapper;
+import com.example.backend.mapper.standard.employee.EmployeeMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
+import com.example.backend.mapper.standard.location.LocationMapper;
+import com.example.backend.mapper.standard.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,9 @@ import java.util.Map;
 public class CustomerService {
     final CustomerMapper mapper;
     final ItemMapper itemMapper;
+    final WarehouseMapper warehouseMapper;
+    final LocationMapper locationMapper;
+    final EmployeeMapper employeeMapper;
 
     //협력업체 등록
     public Boolean addCustomer(Customer customer) {
@@ -93,13 +99,20 @@ public class CustomerService {
 
     //협력사 정보 수정
     public Boolean editCustomer(Customer customer) {
-        //현재 active 확인
-        Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
         // active 수정 시
-        if (customer.getCustomerActive() != oldActive) {
+        if (checkActiveChange(customer)) {
             // customerActive = false 이면 itemActive = false
             mapper.editCustomerActive(customer);
             itemMapper.editItemActive(customer);
+            warehouseMapper.editWarehouseActive(customer);
+
+            String warehouseCode = warehouseMapper.getWarehouseCode(customer.getCustomerCode());
+            locationMapper.changeLocationActive(warehouseCode, customer.getCustomerActive());
+
+            if (customer.getCustomerActive() == false) {
+                employeeMapper.changeEmployeeActive(customer);
+                System.out.println("수정 완료");
+            }
         }
 
         // active 외 수정

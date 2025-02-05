@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { EmployeeList } from "../../../components/standard/employee/EmployeeList.jsx";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
@@ -20,19 +20,21 @@ export function Employee() {
   };
 
   return (
-    <Box display={"flex"}>
-      <StandardSideBar />
-      <Box p={5} w={"100%"}>
-        <Heading size="xl" p={2}>
-          기준정보 관리 {">"} 인사 관리
-        </Heading>
-        <EmployeeList
-          onSelect={handleSelectedNo}
-          updateList={addCheck}
-          viewKey={selectedEmployeeNo}
-          onChange={handleAddCheck}
-        />
-      </Box>
+    <Box>
+      <HStack align={"flex-start"} w={"100%"}>
+        <StandardSideBar />
+        <Stack flex={1} p={5}>
+          <Heading size="xl" p={2} mb={3}>
+            기준정보 관리 {">"} 인사 관리
+          </Heading>
+          <EmployeeList
+            onSelect={handleSelectedNo}
+            updateList={addCheck}
+            viewKey={selectedEmployeeNo}
+            onChange={handleAddCheck}
+          />
+        </Stack>
+      </HStack>
     </Box>
   );
 }

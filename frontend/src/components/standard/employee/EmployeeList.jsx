@@ -170,14 +170,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   ];
 
   return (
-    <Box p={5}>
-      <HStack
-        justifyContent="center"
-        w={"100%"}
-        style={{
-          alignItems: "flex-start",
-        }}
-      >
+    <Box>
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <Box>
           <SelectRoot
             collection={frameworks}
@@ -224,7 +218,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Button>
       </HStack>
       <Checkbox
-        my={3}
+        mt={3}
+        mb={5}
+        ml={3}
         checked={searchParams.get("active") === "true" ? true : false}
         onCheckedChange={(e) => handleVisible()}
       >

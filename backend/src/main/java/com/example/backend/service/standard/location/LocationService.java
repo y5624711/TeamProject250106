@@ -19,7 +19,7 @@ public class LocationService {
     final LocationMapper mapper;
     final StocktakingMapper stocktakingMapper;
 
-    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth) {
+    public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth, Boolean active) {
 
         Integer pageList = (page - 1) * 10;
         sort = resolveType(toSnakeCase(sort));
@@ -27,7 +27,7 @@ public class LocationService {
         String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
         String workplace = workplaceCode.substring(0, 3);
 
-        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace), "count", mapper.countAllLocation(searchType, searchKeyword, workplaceCode, workplace));
+        return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace, active), "count", mapper.countAllLocation(searchType, searchKeyword, workplaceCode, workplace, active));
     }
 
     // camelCase를 snake_case로 변환하는 로직

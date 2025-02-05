@@ -93,11 +93,7 @@ public class WarehouseService {
 
 //        수정할 때 창고의 사용여부 변경에 따른 로케이션 변경
         if (mapper.checkChangeActive(warehouseCode) != active) {
-            if (!active) {
-                locationMapper.changeLocationActive(warehouseCode, active);
-            } else {
-                locationMapper.changeLocationActive(warehouseCode, active);
-            }
+            locationMapper.changeLocationActive(warehouseCode, active);
         }
 
         return mapper.edit(warehouse) == 1;

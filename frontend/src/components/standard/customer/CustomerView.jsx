@@ -76,7 +76,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                 }}
               >
                 <HStack>
-                  <Field orientation="horizontal" label={"업체명"}>
+                  <Field orientation="horizontal" label={"업체"}>
                     <Input
                       name="customerName"
                       value={customer.customerName || ""}
@@ -102,6 +102,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   </Field>
                   <Field orientation={"horizontal"} label={"업종"}>
                     <Input
+                      variant={"subtle"}
                       readOnly
                       name={"industry"}
                       value={customer.industry}

@@ -278,4 +278,19 @@ public interface WarehouseMapper {
             WHERE warehouse_code=#{warehouseCode}
             """)
     Boolean checkChangeActive(String warehouseCode);
+
+    //협력사 코드로 창고 사용여부 수정
+    @Update("""
+            UPDATE TB_WHMST
+            SET warehouse_active = #{customerActive}
+            WHERE customer_code = #{customerCode}
+            """)
+    int editWarehouseActive(Customer customer);
+
+    @Select("""
+            SELECT warehouse_code
+            FROM TB_WHMST
+            WHERE customer_code = #{customerCode}
+            """)
+    String getWarehouseCode(String customerCode);
 }
