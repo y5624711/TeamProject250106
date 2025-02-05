@@ -291,9 +291,11 @@ function ReturnList({
                 {data.businessEmployeeName}
               </Table.Cell>
               <Table.Cell textAlign="center">
-                {data.customerEmployeeName
+                {data.returnConsent == 1
                   ? data.customerEmployeeName
-                  : data.disapproveEmployeeName}
+                  : data.returnConsent == 0
+                    ? data.disapproveEmployeeName
+                    : "-"}
               </Table.Cell>
               <Table.Cell textAlign="center">
                 {data.customerConfigurerName
