@@ -266,11 +266,26 @@ public class InstallService {
         }
     }
 
-    // 설치 요청 반려
-//    public boolean installDisapprove(Install install) {
-//        int cnt = mapper.installDisapprove(install);
-//        return cnt == 1;
-//    }
+    @Transactional
+    public boolean installDisapprove(Install install) {
+        try {
+            // 승인 테이블에 반려 상태 업데이트
+            int updateDisapprove = mapper.updateDisapprove(install);
+
+            // 반려 테이블에 추가
+            int addDisapprove = mapper.installDisapprove(install);
+
+            // 하나라도 실패하면 예외 발생 → 트랜잭션 롤백
+            if (updateDisapprove != 1 || addDisapprove != 1) {
+                throw new IllegalStateException("반려 처리 중 오류 발생");
+            }
+            return true;
+
+        } catch (Exception e) {
+            throw new IllegalStateException("반려 처리 중 오류 발생", e);
+        }
+    }
+
 
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     public Install getInstallApproveData(int installKey) {

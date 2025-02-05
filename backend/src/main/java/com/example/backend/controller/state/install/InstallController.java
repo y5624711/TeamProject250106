@@ -30,27 +30,27 @@ public class InstallController {
     }
 
     // 설치 요청 반려
-//    @PostMapping("disapprove}")
-//    @PreAuthorize("isAuthenticated()")
-//    public ResponseEntity<Map<String, Object>> installDisapprove(@RequestBody Install install, Authentication authentication) {
-//        // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
-//        if (!service.disApproveAuth(authentication, install)) {
-//            return ResponseEntity.badRequest()
-//                    .body(Map.of("message", Map.of("type", "error",
-//                            "text", "설치 반려 권한이 없습니다.")));
-//        }
-//
-//        // 설치가 성공하면 품목 입출력 테이블에 추가 작업 수행
-//        if (service.installDisapprove(install)) {
-//            return ResponseEntity.ok().body(Map.of(
-//                    "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
-//            ));
-//        } else {
-//            return ResponseEntity.internalServerError().body(Map.of(
-//                    "message", Map.of("type", "error", "text", "설치 요청 반려를 실패하였습니다.")
-//            ));
-//        }
-//    }
+    @PostMapping("disapprove")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> installDisapprove(@RequestBody Install install, Authentication authentication) {
+        // 설치 요청에 대한 품목 담당업체와 로그인한 직원의 담당업체가 일치하는지 구분
+        if (!service.disApproveAuth(authentication, install)) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "error",
+                            "text", "설치 반려 권한이 없습니다.")));
+        }
+
+        // 설치 반려
+        if (service.installDisapprove(install)) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
+            ));
+        } else {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "message", Map.of("type", "error", "text", "반려를 실패하였습니다.")
+            ));
+        }
+    }
 
 
     // 설치 요청, 승인 리스트 가져오기

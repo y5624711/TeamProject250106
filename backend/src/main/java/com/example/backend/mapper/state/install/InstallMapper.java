@@ -371,13 +371,21 @@ public interface InstallMapper {
             """)
     List<String> getConfigurationSerials(String outputNo);
 
-    // 설치 요청 반려
-//    @Insert("""
-//            INSERT INTO
-//            (install_request_key, customer_name, install_disapprove_note)
-//            VALUES ( #{installRequestKey}, #{customerName}, #{installDisapproveNote})
-//            """)
-//    int installDisapprove(Install install);
+    // 설치 승인 반려 상태 업데이트
+    @Update("""
+            UPDATE TB_INSTL_REQ
+            SET install_request_consent = 0
+            WHERE install_request_key=#{installRequestKey}
+            """)
+    int updateDisapprove(Install install);
+
+    // 설치 요청 반려 테이블에 추가
+    @Insert("""
+            INSERT INTO TB_DISPR
+            (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
+            VALUES (#{installRequestKey},'OUT', #{customerEmployeeNo}, #{installDisapproveNote})
+            """)
+    int installDisapprove(Install install);
 
     // 설치 요청 키로 담당업체 코드 가져오기
     @Select("""
