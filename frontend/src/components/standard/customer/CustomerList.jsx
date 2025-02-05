@@ -187,7 +187,7 @@ function CustomerList({
               onDoubleClick={() => {
                 onRowClick(customer.customerKey);
               }}
-              _hover={{ cursor: "pointer" }}
+              _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               bg={customer.customerActive ? "white" : "gray.200"}
             >
               <Table.Cell textAlign="center">{index + 1}</Table.Cell>
