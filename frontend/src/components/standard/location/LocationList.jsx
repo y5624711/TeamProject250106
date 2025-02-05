@@ -61,6 +61,7 @@ function LocationList({
           <Table.Body>
             {locationList.map((location, index) => (
               <LocationListPage
+                key={location.locationKey}
                 index={index}
                 location={location}
                 setSelectedLocationKey={setSelectedLocationKey}

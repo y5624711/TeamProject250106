@@ -76,4 +76,8 @@ public class LoginService {
             return mapper.selectBusinessByCode(employee.getEmployeeNo());
         }
     }
+
+    public Boolean checkUseId(Employee employee) {
+        return mapper.selectIdCheckUse(employee.getEmployeeNo());
+    }
 }

@@ -45,4 +45,11 @@ public interface LoginMapper {
             WHERE a.employee_no = #{employeeNo}
             """)
     String selectBusinessByCode(String employeeNo);
+
+    @Select("""
+            SELECT employee_active
+            FROM TB_EMPMST
+            WHERE employee_no = #{employeeNo}
+            """)
+    boolean selectIdCheckUse(String employeeNo);
 }

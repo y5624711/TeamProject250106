@@ -19,17 +19,8 @@ import {
 } from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../ui/pagination.jsx";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
-import * as PropTypes from "prop-types";
-import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
@@ -283,7 +274,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
-          {memberList.length === 0 && <Box> 조회 결과 x</Box>}
+          {memberList.length === 0 && (
+            <Table.Row>
+              <Table.Cell colSpan={7} textAlign="center">
+                조회 결과 없음
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
         <Table.Footer></Table.Footer>
       </Table.Root>
