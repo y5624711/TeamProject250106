@@ -87,9 +87,9 @@ FROM TB_BUYIN BI
     LEFT JOIN TB_EMPMST EM3 
         ON (BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no)
     LEFT JOIN TB_DISPR DISP
-            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK" OR DISP.state_common_code="RETRN")
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK")
     LEFT JOIN TB_EMPMST EM4 
-            ON BI.input_consent = FALSE AND EM3.employee_no = INS.customer_employee_no
+            ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
 
 WHERE 1=1
           AND (#{company} IS NULL OR CT.customer_code = #{company})
@@ -121,9 +121,18 @@ WHERE 1=1
                 OR  EM2.employee_no    LIKE CONCAT('%', #{keyword}, '%')
             </when>
             <when test="type == 'input_stock_employee_name'">
-                AND EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
-                AND EM3.employee_no    LIKE CONCAT('%', #{keyword}, '%')
-            </when>
+                       AND (
+                           (BI.input_consent = TRUE AND (
+                               EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM3.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                           OR
+                           (BI.input_consent = FALSE AND (
+                               EM4.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                               OR EM4.employee_no LIKE CONCAT('%', #{keyword}, '%')
+                           ))
+                       )
+                   </when>
             <otherwise>
                 AND (
                     SC2.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
@@ -131,24 +140,25 @@ WHERE 1=1
                     SC.common_code_name LIKE CONCAT('%', #{keyword}, '%') OR
                     CT.customer_name LIKE CONCAT('%', #{keyword}, '%') OR
                     EM2.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
-                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                    EM3.employee_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    EM4.employee_name LIKE CONCAT('%', #{keyword}, '%') OR                                   
                 )
             </otherwise>
         </choose>
     </if>
         <if test="sort != null and sort != ''">
-                  <choose>
+            <choose>
                 <when test="sort == 'combined_date'">
-                ORDER BY COALESCE(INS.input_stock_date, request_date) ${order}
+                               ORDER BY COALESCE(INS.input_stock_date,DISP.disapprove_date, request_date ) ${order}
                  </when>
                   <otherwise>
                                ORDER BY ${sort} ${order}
                   </otherwise>
-                  </choose>
-                </if>
-            <if test="sort == null or sort == ''">
-                        ORDER BY COALESCE(INS.input_stock_date, request_date) DESC
-                     </if>
+            </choose>
+        </if>
+        <if test="sort == null or sort == ''">
+                ORDER BY COALESCE(INS.input_stock_date,DISP.disapprove_date, request_date) DESC
+        </if>
 LIMIT #{offset}, 10    
 </script>
 """)
@@ -328,7 +338,7 @@ LIMIT #{offset}, 10
         LEFT JOIN TB_DISPR DISP
             ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key
          LEFT JOIN TB_EMPMST EM4 
-            ON BI.input_consent = FALSE AND EM3.employee_no = INS.customer_employee_no
+            ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
         
         WHERE 1=1
                    AND (#{company} IS NULL OR CT.customer_code = #{company})
