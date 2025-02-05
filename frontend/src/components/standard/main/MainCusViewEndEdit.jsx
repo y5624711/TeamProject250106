@@ -15,6 +15,7 @@ import { Field } from "../../ui/field.jsx";
 import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { Checkbox } from "../../ui/checkbox.jsx";
 
 export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
   const [customer, setCustomer] = useState();
@@ -44,11 +45,50 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
     );
   }
 
+  function formatPhoneNumber(value) {
+    value = value.replace(/\D/g, ""); // 숫자만 남기기
+
+    // 02 지역번호 (서울)
+    if (value.startsWith("02")) {
+      return value.replace(/(\d{2})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 12);
+    }
+    // 휴대폰 및 일반 지역번호 (3자리 지역번호 포함)
+    return value.replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3").slice(0, 13);
+  }
+
+  // 사업자등록번호 정규식 (자동으로 하이픈 입력)
+  function formatBusinessNumber(value) {
+    return value
+      .replace(/\D/g, "") // 숫자만 남기기
+      .replace(/(\d{3})(\d{2})(\d{5})/, "$1-$2-$3") // 하이픈 자동 삽입
+      .slice(0, 12); // 최대 길이 제한
+  }
+
+  // 법인등록번호 정규식 (자동으로 하이픈 입력)
+  function formatCorporateNumber(value) {
+    return value
+      .replace(/\D/g, "") // 숫자만 남기기
+      .replace(/(\d{6})(\d{7})/, "$1-$2") // 하이픈 자동 삽입
+      .slice(0, 14); // 최대 길이 제한
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    let formattedValue = value;
+
+    if (name === "customerTel") {
+      formattedValue = formatPhoneNumber(value);
+    } else if (name === "customerFax") {
+      formattedValue = formatPhoneNumber(value);
+    } else if (name === "customerNo") {
+      formattedValue = formatBusinessNumber(value);
+    } else if (name === "corporateNo") {
+      formattedValue = formatCorporateNumber(value);
+    }
     setCustomer((prevCustomer) => ({
       ...prevCustomer,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -113,27 +153,51 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     />
                   </Field>
                   <Field orientation="horizontal" label={"업체 코드"}>
-                    <Input readOnly value={customer.customerCode || ""} />
-                  </Field>
-                </HStack>
-                <Field orientation="horizontal" label={"취급 품목"}>
-                  <Input readOnly name="itemName" value={customer.itemName} />
-                </Field>
-                <HStack>
-                  <Field orientation="horizontal" label={"대표자"}>
                     <Input
-                      name="customerRep"
-                      value={customer.customerRep}
-                      onChange={handleInputChange}
+                      readOnly
+                      value={customer.customerCode || ""}
+                      variant={"subtle"}
                     />
                   </Field>
-
+                </HStack>
+                <HStack>
+                  <Field orientation="horizontal" label={"취급 품목"}>
+                    <Input
+                      readOnly
+                      name="itemName"
+                      value={customer.itemName}
+                      variant={"subtle"}
+                    />
+                  </Field>
+                  <Field orientation={"horizontal"} label={"업종"}>
+                    <Input
+                      readOnly
+                      name={"industry"}
+                      value={customer.industry}
+                    ></Input>
+                  </Field>
+                </HStack>
+                <Field orientation="horizontal" label={"대표자"}>
+                  <Input
+                    name="customerRep"
+                    value={customer.customerRep}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <HStack>
                   <Field orientation="horizontal" label={"사업자 번호"}>
                     <Input
                       name="customerNo"
                       value={customer.customerNo}
                       onChange={handleInputChange}
                     />
+                  </Field>
+                  <Field orientation="horizontal" label={"법인 번호"}>
+                    <Input
+                      name="corporateNo"
+                      value={customer.corporateNo}
+                      onChange={handleInputChange}
+                    ></Input>
                   </Field>
                 </HStack>
                 <HStack>
@@ -175,11 +239,29 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                 </Field>
                 <Field orientation="horizontal" label={"비고"}>
                   <Textarea
-                    style={{ maxHeight: "100px", overflowY: "auto" }}
-                    placeholder="최대 50자"
+                    placeholder={"최대 50자"}
                     name={"customerNote"}
                     value={customer.customerNote}
                     onChange={handleInputChange}
+                    maxHeight={"100px"}
+                  />
+                </Field>
+                <Field orientation="horizontal" label={"사용 여부"}>
+                  <Checkbox
+                    transform="translateX(-2590%)"
+                    name={"customerActive"}
+                    checked={customer.customerActive}
+                    onCheckedChange={(e) => {
+                      // console.log("체크박스 변경 전 값:", customer.customerActive);
+                      // console.log("체크박스 변경 후 값:", e);
+                      const checked =
+                        e.checked !== undefined ? e.checked : e.target.checked;
+                      setCustomer((prevCustomer) => ({
+                        ...prevCustomer,
+                        customerActive: checked, // 상태 업데이트
+                      }));
+                      // console.log("그 후?", checked);
+                    }}
                   />
                 </Field>
               </Box>
