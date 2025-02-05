@@ -19,17 +19,8 @@ import {
 } from "../../ui/select.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "../../ui/pagination.jsx";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
-import * as PropTypes from "prop-types";
-import { SortColumnHeader } from "./SortColumnHeader.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { Sort } from "../../tool/list/Sort.jsx";
 import { Pagination } from "../../tool/list/Pagination.jsx";
@@ -181,14 +172,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   ];
 
   return (
-    <Box p={5}>
-      <HStack
-        justifyContent="center"
-        w={"100%"}
-        style={{
-          alignItems: "flex-start",
-        }}
-      >
+    <Box>
+      <HStack justifyContent="center" w={"100%"} mt={-2}>
         <Box>
           <SelectRoot
             collection={frameworks}
@@ -235,7 +220,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         </Button>
       </HStack>
       <Checkbox
-        my={3}
+        mt={3}
+        mb={5}
+        ml={3}
         checked={searchParams.get("active") === "true" ? true : false}
         onCheckedChange={(e) => handleVisible()}
       >

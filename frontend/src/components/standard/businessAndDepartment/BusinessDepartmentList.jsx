@@ -149,7 +149,11 @@ export function BusinessDepartmentList() {
       />
       <Box pt={5}>
         {isAdmin && (
-          <Button float={"right"} onClick={() => setIsAddOpen(true)}>
+          <Button
+            float={"right"}
+            onClick={() => setIsAddOpen(true)}
+            size={"lg"}
+          >
             부서 등록
           </Button>
         )}
