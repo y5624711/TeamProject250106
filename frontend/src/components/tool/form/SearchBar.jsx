@@ -72,8 +72,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
   };
 
   const handleResetClick = () => {
-    // setSearchParams("");
-    setSearchParams({ page: "1" }); // searchParams 초기화
+    setSearchParams("");
     setSearch({ type: "all", keyword: "" });
   };
 
