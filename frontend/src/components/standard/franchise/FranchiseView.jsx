@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  HStack,
-  Input,
-  Spinner,
-  Textarea,
-} from "@chakra-ui/react";
+import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
@@ -79,15 +73,23 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   return (
     <Box>
       <Box>
-        <HStack>
-          <Field label="가맹점" orientation="horizontal" mb={15}>
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="가맹점" />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseName"
               value={franchise.franchiseName}
               onChange={handleChange}
             />
           </Field>
-          <Field label="가맹점 코드" orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text="가맹점 코드" req />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseCode"
               value={franchise.franchiseCode}
@@ -96,68 +98,104 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
               variant="subtle"
             />
           </Field>
-        </HStack>
-        <Field label="사업자 번호" orientation="horizontal" mb={15}>
+        </Box>
+        <Field
+          label={<SpacedLabel text="사업자 번호" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             name="franchiseNo"
             value={franchise.franchiseNo}
             onChange={handleChange}
           />
         </Field>
-        <HStack>
-          <Field label="대표자" orientation="horizontal" mb={15}>
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="대표자" />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseRep"
               value={franchise.franchiseRep}
               onChange={handleChange}
             />
           </Field>
-          <Field label="전화번호" orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text="전화번호" />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseTel"
               value={franchise.franchiseTel}
               onChange={handleChange}
             />
           </Field>
-        </HStack>
-        <Field label="우편번호" orientation="horizontal" mb={15}>
+        </Box>
+        <Field
+          label={<SpacedLabel text="우편번호" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             name="franchisePost"
             value={franchise.franchisePost}
             onChange={handleChange}
           />
         </Field>
-        <HStack>
-          <Field label="광역시도" orientation="horizontal" mb={15}>
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="광역시도" />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseState"
               value={franchise.franchiseState}
               onChange={handleChange}
             />
           </Field>
-          <Field label="시군" orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text="시군" />}
+            orientation="horizontal"
+            mb={15}
+          >
             <Input
               name="franchiseCity"
               value={franchise.franchiseCity}
               onChange={handleChange}
             />
           </Field>
-        </HStack>
-        <Field label="주소" orientation="horizontal" mb={15}>
+        </Box>
+        <Field
+          label={<SpacedLabel text="주소" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             name="franchiseAddress"
             value={franchise.franchiseAddress}
             onChange={handleChange}
           />
         </Field>
-        <Field label="상세 주소" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="상세 주소" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             name="franchiseAddressDetail"
             value={franchise.franchiseAddressDetail}
             onChange={handleChange}
           />
         </Field>
-        <Field label="비고" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="비고" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Textarea
             name="franchiseNote"
             value={franchise.franchiseNote}
@@ -166,7 +204,10 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             style={{ maxHeight: "100px", overflowY: "auto" }}
           />
         </Field>
-        <Field label="사용 여부" orientation="horizontal">
+        <Field
+          label={<SpacedLabel text="사용 여부" />}
+          orientation="horizontal"
+        >
           <Checkbox
             style={{ marginRight: "550px" }}
             checked={franchise.franchiseActive}

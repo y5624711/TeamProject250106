@@ -16,6 +16,7 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function PurchaseRequest({ onSave, onClose }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -126,7 +127,12 @@ export function PurchaseRequest({ onSave, onClose }) {
 
   return (
     <Box>
-      <Field label="품목" orientation="horizontal" mb={15} required>
+      <Field
+        label={<SpacedLabel text="품목" req />}
+        orientation="horizontal"
+        mb={15}
+        required
+      >
         <SelectRoot
           onValueChange={(e) => {
             const selectedItem = itemCommonCodeList.find(
@@ -162,15 +168,24 @@ export function PurchaseRequest({ onSave, onClose }) {
           </SelectContent>
         </SelectRoot>
       </Field>
-      <Field label="담당 업체" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="담당 업체" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={itemData.customerName}
           onChange={(e) => setCustomerName(e.target.value)}
           variant="subtle"
         />
       </Field>
-      <HStack>
-        <Field label="수량" orientation="horizontal" mb={15} required>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="수량" req />}
+          orientation="horizontal"
+          mb={15}
+          required
+        >
           <Input
             type="number"
             value={amount}
@@ -178,7 +193,11 @@ export function PurchaseRequest({ onSave, onClose }) {
             min={1}
           />
         </Field>
-        <Field label="가격" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="가격" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={
               itemData.inputPrice && amount
@@ -189,16 +208,28 @@ export function PurchaseRequest({ onSave, onClose }) {
             variant="subtle"
           />
         </Field>
-      </HStack>
-      <HStack>
-        <Field label="요청자" orientation="horizontal" mb={15}>
+      </Box>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="요청자" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={name} readOnly variant="subtle" />
         </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="사번" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={id} readOnly variant="subtle" />
         </Field>
-      </HStack>
-      <Field label="비고" orientation="horizontal" mb={15}>
+      </Box>
+      <Field
+        label={<SpacedLabel text="비고" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Textarea
           value={purchaseRequestNote}
           onChange={(e) => setPurchaseRequestNote(e.target.value)}
