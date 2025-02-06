@@ -28,6 +28,7 @@ import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { format } from "date-fns";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function InstallConfiguration({
   installKey,
@@ -126,48 +127,84 @@ export function InstallConfiguration({
         <DialogBody>
           <Box css={{ "--field-label-width": "85px" }}>
             <Stack gap={"15px"}>
-              <Field label={"가맹점"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="가맹점" />}
+                orientation="horizontal"
+              >
                 <Input value={installData.franchiseName} readOnly />
               </Field>
-              <Field label={"가맹점 주소"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="가맹점 주소" />}
+                orientation="horizontal"
+              >
                 <Input value={installData.franchiseAddress} readOnly />
               </Field>
               <Box display="flex" gap={5}>
-                <Field label={"품목"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="품목" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.itemCommonName} readOnly />
                 </Field>
-                <Field label={"수량"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="수량" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.installRequestAmount} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"요청자"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="요청자" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.businessEmployeeName} readOnly />
                 </Field>
-                <Field label={"사번"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.businessEmployeeNo} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"승인자"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="승인자" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.customerEmployeeName} readOnly />
                 </Field>
-                <Field label={"사번"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.customerEmployeeNo} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"설치 기사"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="설치 기사" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.customerInstallerName} readOnly />
                 </Field>
-                <Field label={"사번"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.customerInstallerNo} readOnly />
                 </Field>
               </Box>
-              <Field label={"승인 날짜"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="승인 날짜" />}
+                orientation="horizontal"
+              >
                 <Input value={installData.installRequestDate} readOnly />
               </Field>
-              <Field label={"승인 비고"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="승인 비고" />}
+                orientation="horizontal"
+              >
                 <Input
                   value={installData.installApproveNote || "내용없음"}
                   readOnly
@@ -175,10 +212,16 @@ export function InstallConfiguration({
               </Field>
               {installData.installApproveConsent && <Separator />}
               <Box display="flex" gap={5}>
-                <Field label={"출고 번호"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="출고 번호" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.outputNo} readOnly />
                 </Field>
-                <Field label={"시리얼 번호"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="시리얼 번호" />}
+                  orientation="horizontal"
+                >
                   <SelectRoot>
                     <SelectTrigger>
                       <SelectValueText>{serialList[0]}</SelectValueText>
@@ -201,14 +244,21 @@ export function InstallConfiguration({
               </Box>
 
               <Box display="flex" gap={5}>
-                <Field label={"설치 예정일"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="설치 예정일" />}
+                  orientation="horizontal"
+                >
                   <Input value={installData.installScheduleDate} readOnly />
                 </Field>
                 <Field
                   label={
-                    installData?.inoutHistoryDate
-                      ? "설치 완료일"
-                      : "설치 확정일"
+                    <SpacedLabel
+                      text={
+                        installData?.inoutHistoryDate
+                          ? "설치 완료일"
+                          : "설치 확정일"
+                      }
+                    />
                   }
                   orientation="horizontal"
                 >
@@ -218,7 +268,10 @@ export function InstallConfiguration({
                   />
                 </Field>
               </Box>
-              <Field label={"완료 비고"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="완료 비고" />}
+                orientation="horizontal"
+              >
                 {!installData?.inoutHistoryDate ? (
                   <Textarea
                     placeholder={"최대 50자"}

@@ -29,6 +29,7 @@ import { AuthenticationContext } from "../../../context/AuthenticationProvider.j
 import { toaster } from "../../ui/toaster.jsx";
 import Select from "react-select";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function InstallRequest({ isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -133,7 +134,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
           <Box css={{ "--field-label-width": "85px" }}>
             <Stack gap={5}>
               <HStack>
-                <Field orientation="horizontal" label="가맹점" required>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="가맹점" req />}
+                  required
+                >
                   <Select
                     options={franchiseList}
                     value={franchiseList.find(
@@ -157,7 +162,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                 </Field>
               </HStack>
 
-              <Field label="품목" orientation="horizontal" required>
+              <Field
+                label={<SpacedLabel text="품목" req />}
+                orientation="horizontal"
+                required
+              >
                 <SelectRoot
                   onValueChange={(e) => {
                     const selectedItem = installItemList.find(
@@ -206,7 +215,11 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   {installRequest.countItem > 0 ? installRequest.countItem : 0}
                 </Heading>
               </Box>
-              <Field label="수량" orientation="horizontal" required>
+              <Field
+                label={<SpacedLabel text="수량" req />}
+                orientation="horizontal"
+                required
+              >
                 <Input
                   type="number"
                   value={installRequest.installRequestAmount}
@@ -231,7 +244,10 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   </Heading>
                 </Box>
               )}
-              <Field label="가맹점 주소" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="가맹점 주소" />}
+                orientation="horizontal"
+              >
                 <Input
                   variant="subtle"
                   value={installRequest.franchiseAddress}
@@ -239,21 +255,30 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                 />
               </Field>
               <Box display="flex" gap={5}>
-                <Field label="요청자" orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="요청자" />}
+                  orientation="horizontal"
+                >
                   <Input value={name} variant="subtle" />
                 </Field>
                 <Field label="사번" orientation="horizontal">
                   <Input value={id} variant="subtle" />
                 </Field>
               </Box>
-              <Field label="담당 업체" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="담당 업체" />}
+                orientation="horizontal"
+              >
                 <Input
                   readOnly
                   value={installRequest.customerName}
                   variant="subtle"
                 />
               </Field>
-              <Field label="비고" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+              >
                 <Textarea
                   value={installRequest.installRequestNote}
                   placeholder="최대 50자"
