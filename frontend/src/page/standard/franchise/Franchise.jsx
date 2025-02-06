@@ -25,14 +25,14 @@ export function Franchise() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams("");
   const [search, setSearch] = useState({
     type: "all",
     keyword: "",
   });
-  const [checkedActive, setCheckedActive] = useState(
-    searchParams.get("active") === "true",
-  );
+  // const [checkedActive, setCheckedActive] = useState(
+  //   searchParams.get("active") === "true",
+  // );
   const [franchiseList, setFranchiseList] = useState([]);
   const [count, setCount] = useState(0);
   // 페이지네이션
@@ -44,14 +44,15 @@ export function Franchise() {
     setIsLoading(true);
     axios
       .get("/api/franchise/list", {
-        params: {
-          active: checkedActive,
-          page: searchParams.get("page") || "1",
-          type: searchParams.get("type") || "all",
-          keyword: searchParams.get("keyword") || "",
-          sort: searchParams.get("sort"),
-          order: searchParams.get("order"),
-        },
+        params: searchParams,
+
+        // active: checkedActive,
+        // page: searchParams.get("page") || "1",
+        // type: searchParams.get("type") || "all",
+        // keyword: searchParams.get("keyword") || "",
+        // sort: searchParams.get("sort"),
+        // order: searchParams.get("order"),
+        // },
       })
       .then((res) => res.data)
       .then((data) => {
@@ -59,7 +60,7 @@ export function Franchise() {
         setFranchiseList(data.franchiseList);
         setIsLoading(false);
       });
-  }, [searchParams, checkedActive]);
+  }, [searchParams]);
 
   // 검색 상태를 URLSearchParams에 맞게 업데이트
   useEffect(() => {
@@ -97,16 +98,16 @@ export function Franchise() {
     setSearchParams(nextSearchParam);
   };
 
-  // 체크 박스 상태 변경 시 URL 파라미터 업데이트
-  const toggleCheckedActive = () => {
-    const nextValue = !checkedActive;
-    setCheckedActive(nextValue);
-
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("active", nextValue.toString());
-    nextSearchParams.set("page", "1");
-    setSearchParams(nextSearchParams);
-  };
+  // // 체크 박스 상태 변경 시 URL 파라미터 업데이트
+  // const toggleCheckedActive = () => {
+  //   const nextValue = !checkedActive;
+  //   setCheckedActive(nextValue);
+  //
+  //   const nextSearchParams = new URLSearchParams(searchParams);
+  //   nextSearchParams.set("active", nextValue.toString());
+  //   nextSearchParams.set("page", "1");
+  //   setSearchParams(nextSearchParams);
+  // };
 
   // 새로운 가맹점 추가 또는 수정
   const handleSave = (newFranchise) => {
@@ -160,14 +161,15 @@ export function Franchise() {
     // 삭제 후 데이터 재조회: 현재 페이지의 가맹점 리스트 업데이트
     axios
       .get("/api/franchise/list", {
-        params: {
-          active: checkedActive,
-          page: currentPage,
-          type: searchParams.get("type") || "all",
-          keyword: searchParams.get("keyword") || "",
-          sort: searchParams.get("sort"),
-          order: searchParams.get("order"),
-        },
+        params: searchParams,
+
+        // active: checkedActive,
+        // page: searchParams.get("page") || "1",
+        // type: searchParams.get("type") || "all",
+        // keyword: searchParams.get("keyword") || "",
+        // sort: searchParams.get("sort"),
+        // order: searchParams.get("order"),
+        // },
       })
       .then((res) => res.data)
       .then((data) => {
@@ -187,9 +189,9 @@ export function Franchise() {
 
   // 검색 초기화
   const handleResetClick = () => {
-    const nextSearchParams = new URLSearchParams();
-    setSearchParams(nextSearchParams);
-    setCheckedActive(false);
+    setSearchParams("");
+    // setSearchParams({ page: "1" }); // searchParams 초기화
+    setSearch({ type: "all", keyword: "" }); // search 상태도 초기화
   };
 
   // 가맹점 등록 버튼 클릭 시 다이얼로그 열림
@@ -225,9 +227,9 @@ export function Franchise() {
             setSearchParams={setSearchParams}
             handleSearchClick={handleSearchClick}
             onReset={handleResetClick}
-            checkedActive={checkedActive}
-            setCheckedActive={setCheckedActive}
-            toggleCheckedActive={toggleCheckedActive}
+            // checkedActive={checkedActive}
+            // setCheckedActive={setCheckedActive}
+            // toggleCheckedActive={toggleCheckedActive}
             handlePageChange={handlePageChange}
             onFranchiseClick={handleFranchiseClick}
           />

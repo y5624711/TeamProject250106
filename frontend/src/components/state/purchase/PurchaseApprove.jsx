@@ -12,6 +12,7 @@ import { Field } from "../../ui/field.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function PurchaseApprove({
   purchaseRequestKey,
@@ -155,20 +156,36 @@ export function PurchaseApprove({
     <Box>
       {/* 승인 여부에 따라 발주 번호 추가 */}
       {purchase.purchaseConsent ? (
-        <Field label="발주 번호" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="발주 번호" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase.purchaseNo} readOnly />
         </Field>
       ) : null}
 
       {/* 요청 필드 */}
-      <Field label="품목" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="품목" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input value={purchase.itemCommonName} readOnly />
       </Field>
-      <HStack>
-        <Field label="수량" orientation="horizontal" mb={15}>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="수량" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase.amount} readOnly />
         </Field>
-        <Field label="가격" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="가격" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={
               purchase?.totalPrice
@@ -178,30 +195,54 @@ export function PurchaseApprove({
             readOnly
           />
         </Field>
-      </HStack>
-      <HStack>
-        <Field label="담당 업체" orientation="horizontal" mb={15}>
+      </Box>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="담당 업체" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase.customerName} readOnly />
         </Field>
-        <Field label="창고" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="창고" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase?.warehouseName || "창고 정보 없음"} readOnly />
         </Field>
-      </HStack>
-      <HStack>
-        <Field label="요청자" orientation="horizontal" mb={15}>
+      </Box>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="요청자" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase.employeeName} readOnly />
         </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="사번" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input value={purchase.employeeNo} readOnly />
         </Field>
-      </HStack>
-      <Field label="요청일" orientation="horizontal" mb={15}>
+      </Box>
+      <Field
+        label={<SpacedLabel text="요청일" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={purchase.purchaseRequestDate?.split("T")[0] || "N/A"}
           readOnly
         />
       </Field>
-      <Field label="요청 비고" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="요청 비고" />}
+        orientation="horizontal"
+        mb={15}
+      >
         {purchase.purchaseRequestNote ? (
           <Textarea
             value={purchase.purchaseRequestNote}
@@ -217,22 +258,38 @@ export function PurchaseApprove({
       {purchase.purchaseConsent === false && (
         <>
           <Box mt={4}>
-            <HStack>
-              <Field label="반려자" orientation="horizontal" mb={15}>
+            <Box display="flex" gap={5}>
+              <Field
+                label={<SpacedLabel text="반려자" />}
+                orientation="horizontal"
+                mb={15}
+              >
                 <Input value={purchase.disapproveEmployeeName} readOnly />
               </Field>
-              <Field label="사번" orientation="horizontal" mb={15}>
+              <Field
+                label={<SpacedLabel text="사번" />}
+                orientation="horizontal"
+                mb={15}
+              >
                 <Input value={purchase.disapproveEmployeeNo} readOnly />
               </Field>
-            </HStack>
-            <Field label="반려 날짜" orientation="horizontal" mb={15}>
+            </Box>
+            <Field
+              label={<SpacedLabel text="반려일" />}
+              orientation="horizontal"
+              mb={15}
+            >
               <Input
                 value={purchase.disapproveDate?.split("T")[0] || "N/A"}
                 readOnly
               />
             </Field>
           </Box>
-          <Field label="반려 비고" orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text="반려 비고" />}
+            orientation="horizontal"
+            mb={15}
+          >
             {purchase.disapproveNote ? (
               <Textarea
                 value={purchase.disapproveNote}
@@ -255,7 +312,12 @@ export function PurchaseApprove({
           <Box display="flex" gap={4} mt={15}>
             <Field
               label={
-                purchase.purchaseConsent === true ? "승인자" : "반려/승인자"
+                <SpacedLabel
+                  text={
+                    purchase.purchaseConsent === true ? "승인자" : "반려/승인자"
+                  }
+                  req
+                />
               }
               orientation="horizontal"
             >
@@ -267,7 +329,7 @@ export function PurchaseApprove({
                 }
               />
             </Field>
-            <Field label="사번" orientation="horizontal">
+            <Field label={<SpacedLabel text="사번" />} orientation="horizontal">
               <Input
                 value={purchase.customerEmployeeNo || id}
                 readOnly
@@ -279,7 +341,11 @@ export function PurchaseApprove({
           </Box>
           {purchase.purchaseConsent && (
             <Box mt={4}>
-              <Field label="승인 날짜" orientation="horizontal" mb={15}>
+              <Field
+                label={<SpacedLabel text="승인일" />}
+                orientation="horizontal"
+                mb={15}
+              >
                 <Input
                   value={purchase.purchaseApproveDate?.split("T")[0] || "N/A"}
                   readOnly
@@ -287,7 +353,11 @@ export function PurchaseApprove({
               </Field>
             </Box>
           )}
-          <Field label="비고" orientation="horizontal" mt={15}>
+          <Field
+            label={<SpacedLabel text="비고" />}
+            orientation="horizontal"
+            mt={15}
+          >
             {purchase.purchaseConsent ? (
               purchase.purchaseApproveNote ? (
                 <Textarea

@@ -1,9 +1,10 @@
-import { Box, Button, HStack, Input, Textarea } from "@chakra-ui/react";
+import { Box, Button, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function FranchiseAdd({ onClose, onSave, onCancel }) {
   const [franchiseCode, setFranchiseCode] = useState("");
@@ -123,27 +124,47 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
   return (
     <Box css={{ "--field-label-width": "85px" }}>
       <Box>
-        <Field label="가맹점" orientation="horizontal" mb={15} required>
+        <Field
+          label={<SpacedLabel text="가맹점" req />}
+          orientation="horizontal"
+          mb={15}
+          required
+        >
           <Input
             value={franchiseName}
             onChange={(e) => setFranchiseName(e.target.value)}
           />
         </Field>
-        <Field label="사업자 번호" orientation="horizontal" mb={15} required>
+        <Field
+          label={<SpacedLabel text="사업자 번호" req />}
+          orientation="horizontal"
+          mb={15}
+          required
+        >
           <Input
             value={franchiseNo}
             onChange={(e) => setFranchiseNo(formatFranchiseNo(e.target.value))}
             maxLength={12}
           />
         </Field>
-        <HStack>
-          <Field label="대표자" orientation="horizontal" mb={15} required>
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="대표자" req />}
+            orientation="horizontal"
+            mb={15}
+            required
+          >
             <Input
               value={franchiseRep}
               onChange={(e) => setFranchiseRep(e.target.value)}
             />
           </Field>
-          <Field label="전화번호" orientation="horizontal" mb={15} required>
+          <Field
+            label={<SpacedLabel text="전화번호" req />}
+            orientation="horizontal"
+            mb={15}
+            required
+          >
             <Input
               value={franchiseTel}
               onChange={(e) =>
@@ -152,40 +173,68 @@ export function FranchiseAdd({ onClose, onSave, onCancel }) {
               maxLength={13}
             />
           </Field>
-        </HStack>
-        <HStack>
-          <Field label="광역시도" orientation="horizontal" mb={15} required>
+        </Box>
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="광역시도" req />}
+            orientation="horizontal"
+            mb={15}
+            required
+          >
             <Input
               value={franchiseState}
               onChange={(e) => setFranchiseState(e.target.value)}
             />
           </Field>
-          <Field label="시군" orientation="horizontal" mb={15} required>
+          <Field
+            label={<SpacedLabel text="시군" req />}
+            orientation="horizontal"
+            mb={15}
+            required
+          >
             <Input
               value={franchiseCity}
               onChange={(e) => setFranchiseCity(e.target.value)}
             />
           </Field>
-        </HStack>
-        <Field label="우편번호" orientation="horizontal" mb={15} required>
+        </Box>
+        <Field
+          label={<SpacedLabel text="우편번호" req />}
+          orientation="horizontal"
+          mb={15}
+          required
+        >
           <Input
             value={franchisePost}
             onChange={(e) => setFranchisePost(e.target.value)}
           />
         </Field>
-        <Field label="주소" orientation="horizontal" mb={15} required>
+        <Field
+          label={<SpacedLabel text="주소" req />}
+          orientation="horizontal"
+          mb={15}
+          required
+        >
           <Input
             value={franchiseAddress}
             onChange={(e) => setFranchiseAddress(e.target.value)}
           />
         </Field>
-        <Field label="상세 주소" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="상세 주소" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={franchiseAddressDetail}
             onChange={(e) => setFranchiseAddressDetail(e.target.value)}
           />
         </Field>
-        <Field label="비고" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="비고" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Textarea
             value={franchiseNote}
             onChange={(e) => setFranchiseNote(e.target.value)}

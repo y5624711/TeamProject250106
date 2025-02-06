@@ -36,6 +36,7 @@ export function PurchaseDialog({
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
         >
           {isAddDialogOpen ? (
             <PurchaseRequest onSave={onSave} onClose={onClose} />

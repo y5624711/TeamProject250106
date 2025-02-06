@@ -54,12 +54,12 @@ public interface PurchaseMapper {
                 pr.purchase_consent AS purchaseConsent,
                 pa.purchase_approve_date AS purchaseApproveDate,
                 emp3.employee_name AS disapproveEmployeeName,
-                COALESCE(
-                        GREATEST(pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date),
-                        pr.purchase_request_date,
-                        pa.purchase_approve_date,
-                        dis.disapprove_date
-                    ) AS purchaseDate
+                dis.disapprove_date AS disapproveDate,
+                GREATEST(
+                        COALESCE(pr.purchase_request_date, '0001-01-01'), -- NULL이면 기본값 '0001-01-01'
+                        COALESCE(pa.purchase_approve_date, '0001-01-01'),
+                        COALESCE(dis.disapprove_date, '0001-01-01')
+                        ) AS purchaseDate -- 최종적으로 가장 최근 날짜를 purchaseDate로 설정
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
