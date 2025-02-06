@@ -21,8 +21,8 @@ public class Instk {
     private String itemCommonName;
     private String customerName;
     private String itemAmount;
-    private LocalDateTime requestDate;
-    private LocalDateTime inputStockDate;
+    private java.sql.Date requestDate;
+    private java.sql.Date inputStockDate;
     private String employeeName;
 
     // 요청
@@ -40,7 +40,7 @@ public class Instk {
     private String disapproveEmployeeNo;
     private String disapproveEmployeeName;
     private String disapproveNote;
-    private LocalDateTime disapproveDate;
+    private java.sql.Date disapproveDate;
 
     private List<String> serialList;
 

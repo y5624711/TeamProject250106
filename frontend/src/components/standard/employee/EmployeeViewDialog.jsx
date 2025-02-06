@@ -40,7 +40,6 @@ export function EmployeeViewDialog({
             onSelect={onSelect}
           />
         </DialogBody>
-        <DialogFooter></DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
