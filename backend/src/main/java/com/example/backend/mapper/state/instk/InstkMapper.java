@@ -337,7 +337,7 @@ LIMIT #{offset}, 10
         LEFT JOIN TB_EMPMST EM3 
             ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
         LEFT JOIN TB_DISPR DISP
-            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK")
          LEFT JOIN TB_EMPMST EM4 
             ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
         
