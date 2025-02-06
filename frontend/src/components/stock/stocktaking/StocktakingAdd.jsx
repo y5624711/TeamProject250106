@@ -131,7 +131,6 @@ function StocktakingAdd({
     }
   }, [warehouseCode]);
 
-  console.log(itemCode);
   // location row 정보 가져오기
   useEffect(() => {
     if (warehouseCode && itemCode !== null) {
@@ -379,8 +378,8 @@ function StocktakingAdd({
       setPutStocktakingType("");
       if (
         res.data === ""
-          ? setMakeDifference("실사 입고") || setPutStocktakingType("new")
-          : setMakeDifference("실사 출고") || setPutStocktakingType("lost")
+          ? setMakeDifference("in") || setPutStocktakingType("new")
+          : setMakeDifference("out") || setPutStocktakingType("lost")
       );
     });
     setTooltip(true);
@@ -390,18 +389,36 @@ function StocktakingAdd({
     console.log("difference 값 변경됨:", difference);
   }, [difference]);
 
-  const handleAddLocation = () => {
-    console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
+  console.log(warehouseCode);
 
-    // axios.post(`/api/stocktaking/updateStock`, {
-    //   locationKey,
-    //   row,
-    //   col,
-    //   shelf,
-    //   serialNo,
-    //   makeDifference,
-    //   putStocktakingType,
-    // });
+  const handleAddLocation = () => {
+    axios
+      .post(`/api/stocktaking/updateStock`, {
+        locationKey,
+        row,
+        col,
+        shelf,
+        serialNo,
+        makeDifference,
+        putStocktakingType,
+        warehouseCode,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
+        });
+        if (makeDifference === "out") {
+          setCountConfiguration(countConfiguration - 1);
+        } else if (makeDifference === "in") {
+          setCountConfiguration(countConfiguration + 1);
+        }
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
 
     setMakeDifference(null);
     setPutStocktakingType(null);
@@ -421,7 +438,6 @@ function StocktakingAdd({
 
     // axios.put(`/api/stocktaking/stockStatus`)
   };
-
   useEffect(() => {
     if (putStocktakingType === "old") {
       setSerialNo("");
@@ -464,7 +480,12 @@ function StocktakingAdd({
                   mb={15}
                   required
                 >
-                  <Input type={"text"} value={countCurrent} readOnly />
+                  <Input
+                    type={"text"}
+                    value={countCurrent}
+                    readOnly
+                    variant="subtle"
+                  />
                 </Field>
                 <Field
                   label="실제 수량"
@@ -480,6 +501,7 @@ function StocktakingAdd({
                       setSearchClick(false);
                     }}
                     readOnly
+                    variant="subtle"
                   />
                 </Field>
               </Box>
@@ -614,7 +636,7 @@ function StocktakingAdd({
                     </Button>
                   </Tooltip>
                 </Box>
-              ) : makeDifference === "실사 입고" ? (
+              ) : makeDifference === "in" ? (
                 putStocktakingType === "new" ? (
                   <>
                     <Box display="flex" gap={18}>

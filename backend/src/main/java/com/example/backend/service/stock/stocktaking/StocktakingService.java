@@ -1,6 +1,7 @@
 package com.example.backend.service.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -97,6 +98,7 @@ public class StocktakingService {
     public Boolean validate(Stocktaking stocktaking, Authentication auth) {
         stocktaking.setCustomerEmployeeNo(auth.getName());
 
+
         return
                 !(
                         stocktaking.getWarehouseCode() == null || stocktaking.getWarehouseCode().trim().isEmpty() ||
@@ -105,6 +107,20 @@ public class StocktakingService {
                                 stocktaking.getCountConfiguration() == null ||
                                 stocktaking.getStocktakingType() == null ||
                                 stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
+    }
+
+    // 권한 확인
+    public Boolean checkAccess(String warehouseCode, Authentication auth) {
+
+
+        String employeeNo = auth.getName();
+
+
+        String workType = employeeNo.substring(0, 3);
+
+        Integer access = mapper.checkAccess(warehouseCode, workType, employeeNo);
+
+        return access == 1;
     }
 
     public Integer getStocktakingCountCurrent(String warehouseCode) {
@@ -142,6 +158,16 @@ public class StocktakingService {
 
     public String getLocationValue(Integer locationKey) {
         return mapper.getLocationValue(locationKey);
+    }
+
+    // 반영할 때 정보 모두 썼는지
+    public Boolean validateUpdate(StocktakingItem stocktakingItem, Authentication auth) {
+        return true;
+    }
+
+    public Boolean updateLocation(StocktakingItem stocktakingItem) {
+
+        return 1 == 1;
     }
 
 

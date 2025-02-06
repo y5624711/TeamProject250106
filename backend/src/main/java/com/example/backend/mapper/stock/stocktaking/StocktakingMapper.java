@@ -292,6 +292,23 @@ public interface StocktakingMapper {
             """)
     Integer getAllLocated(String warehouseCode);
 
+    @Select("""
+            <script>
+            <if test="workType == 'BIZ'">
+            SELECT COUNT(*)
+            FROM TB_EMPMST
+            WHERE employee_no=#{employeeNo}
+            </if>
+            <if test="workType == 'CUS'">
+            SELECT COUNT(*)
+            FROM TB_WHMST w
+            LEFT JOIN TB_EMPMST emp ON w.customer_code=emp.employee_workplace_code
+            WHERE w.warehouse_code=#{warehouseCode} AND emp.employee_no=#{employeeNo}
+            </if>
+            </script>
+            """)
+    Integer checkAccess(String warehouseCode, String workType, String employeeNo);
+
     //    실제 수량이 더 많을 때 사용
 //    @Select("""
 //            SELECT l.location_key
