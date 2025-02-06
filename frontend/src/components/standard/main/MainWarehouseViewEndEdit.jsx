@@ -15,6 +15,7 @@ import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function MainWarehouseViewEndEdit({
   company,
@@ -102,33 +103,40 @@ export function MainWarehouseViewEndEdit({
           </DialogTitle>
         </DialogHeader>
         <DialogBody
-          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+          }}
+          css={{ "--field-label-width": "85px" }}
         >
           {warehouse ? (
             <>
+              <Field
+                label={<SpacedLabel text="창고" />}
+                orientation="horizontal"
+              >
+                <Input
+                  name={"warehouseName"}
+                  value={warehouse.warehouseName || ""}
+                  onChange={handleInputChange}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="창고 코드" />}
+                orientation="horizontal"
+              >
+                <Input
+                  value={warehouse.warehouseCode || ""}
+                  readOnly
+                  variant={"subtle"}
+                />
+              </Field>
               <Box display="flex" gap={5}>
-                <Field label="창고" orientation="horizontal" flex={0.75}>
-                  <Input
-                    name={"warehouseName"}
-                    value={warehouse.warehouseName || ""}
-                    onChange={handleInputChange}
-                  />
-                </Field>
                 <Field
-                  label="창고 코드"
+                  label={<SpacedLabel text="담당 업체" />}
                   orientation="horizontal"
-                  css={{ "--field-label-width": "80px" }}
-                  flex={0.8}
                 >
-                  <Input
-                    value={warehouse.warehouseCode || ""}
-                    readOnly
-                    variant={"subtle"}
-                  />
-                </Field>
-              </Box>
-              <Box display="flex" gap={5}>
-                <Field label="담당 업체" orientation="horizontal" flex={0.75}>
                   <Input
                     value={warehouse.customerName || ""}
                     readOnly
@@ -136,10 +144,8 @@ export function MainWarehouseViewEndEdit({
                   />
                 </Field>
                 <Field
-                  label="업체 코드"
+                  label={<SpacedLabel text="업체 코드" />}
                   orientation="horizontal"
-                  css={{ "--field-label-width": "80px" }}
-                  flex={0.8}
                 >
                   <Input
                     value={warehouse.customerCode || ""}
@@ -149,7 +155,10 @@ export function MainWarehouseViewEndEdit({
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label="관리자" orientation="horizontal" flex={0.75}>
+                <Field
+                  label={<SpacedLabel text="관리자" />}
+                  orientation="horizontal"
+                >
                   <Input
                     value={warehouse.employeeName || ""}
                     variant={"subtle"}
@@ -157,10 +166,8 @@ export function MainWarehouseViewEndEdit({
                   />
                 </Field>
                 <Field
-                  label="사번"
+                  label={<SpacedLabel text="사번" />}
                   orientation="horizontal"
-                  css={{ "--field-label-width": "80px" }}
-                  flex={0.8}
                 >
                   <Input
                     value={warehouse.customerEmployeeNo || ""}
@@ -170,14 +177,20 @@ export function MainWarehouseViewEndEdit({
                 </Field>
               </Box>
 
-              <Field label="전화번호" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="전화번호" />}
+                orientation="horizontal"
+              >
                 <Input
                   name={"warehouseTel"}
                   value={warehouse.warehouseTel || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="우편번호" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="우편번호" />}
+                orientation="horizontal"
+              >
                 <Input
                   name={"warehousePost"}
                   value={warehouse.warehousePost || ""}
@@ -186,7 +199,10 @@ export function MainWarehouseViewEndEdit({
               </Field>
 
               <Box display="flex" gap={5}>
-                <Field label="광역시도" orientation="horizontal" flex={0.75}>
+                <Field
+                  label={<SpacedLabel text="광역시도" />}
+                  orientation="horizontal"
+                >
                   <Input
                     name={"warehouseState"}
                     value={warehouse.warehouseState || ""}
@@ -194,10 +210,8 @@ export function MainWarehouseViewEndEdit({
                   />
                 </Field>
                 <Field
-                  label="시군"
+                  label={<SpacedLabel text="시군" />}
                   orientation="horizontal"
-                  css={{ "--field-label-width": "80px" }}
-                  flex={0.8}
                 >
                   <Input
                     name={"warehouseCity"}
@@ -206,23 +220,32 @@ export function MainWarehouseViewEndEdit({
                   />
                 </Field>
               </Box>
-              <Field label="주소" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="주소" />}
+                orientation="horizontal"
+              >
                 <Input
                   name={"warehouseAddress"}
                   value={warehouse.warehouseAddress || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="상세 주소" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="상세주소" />}
+                orientation="horizontal"
+              >
                 <Input
                   name={"warehouseAddressDetail"}
                   value={warehouse.warehouseAddressDetail || ""}
                   onChange={handleInputChange}
                 />
               </Field>
-              <Field label="비고" orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+              >
                 <Textarea
-                  style={{ maxHeight: "100px", overflowY: "auto" }}
+                  style={{ maxHeight: "100px" }}
                   placeholder="최대 50자"
                   name="warehouseNote"
                   value={warehouse.warehouseNote || ""}

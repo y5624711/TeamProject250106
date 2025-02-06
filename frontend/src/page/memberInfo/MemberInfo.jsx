@@ -14,9 +14,10 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { useNavigate } from "react-router-dom";
-import { Field } from "../../components/ui/field.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { Tooltip } from "../../components/ui/tooltip.jsx";
+import { Field } from "../../components/ui/field.jsx";
+import { SpacedLabel } from "../../components/tool/form/SpaceLabel.jsx";
 
 function TextItem({ children, path, ...rest }) {
   const navigate = useNavigate();
@@ -136,18 +137,24 @@ function MemberInfo({ updateCheck }) {
         <DialogHeader>
           <DialogTitle>내 정보</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <Field label={"소속"} orientation="horizontal" mb={15}>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+        >
+          <Field label={<SpacedLabel text={"소속"} />} orientation="horizontal">
             <Input
               value={employee.employeeWorkPlaceName}
               readOnly
               variant="subtle"
             />
           </Field>
-          <Field label={"아이디"} orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text={"아이디"} />}
+            orientation="horizontal"
+          >
             <Input value={employee.employeeNo} readOnly variant="subtle" />
           </Field>
-          <Field label={"이름"} orientation="horizontal" mb={15}>
+          <Field label={<SpacedLabel text={"이름"} />} orientation="horizontal">
             <Input
               value={employee.employeeName}
               onChange={(e) =>
@@ -158,7 +165,10 @@ function MemberInfo({ updateCheck }) {
               }
             />
           </Field>
-          <Field label={"비밀번호"} orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text={"비밀번호"} />}
+            orientation="horizontal"
+          >
             <Input
               value={employee.employeePassword}
               onChange={(e) =>
@@ -169,7 +179,10 @@ function MemberInfo({ updateCheck }) {
               }
             />
           </Field>
-          <Field label={"전화번호"} orientation="horizontal" mb={15}>
+          <Field
+            label={<SpacedLabel text={"전화번호"} />}
+            orientation="horizontal"
+          >
             <Input
               value={employee.employeeTel}
               onChange={(e) =>
@@ -180,7 +193,7 @@ function MemberInfo({ updateCheck }) {
               }
             />
           </Field>
-          <Field label={"비고"} orientation="horizontal" mb={15}>
+          <Field label={<SpacedLabel text={"비고"} />} orientation="horizontal">
             <Textarea
               placeholder={"최대 50자"}
               value={employee.employeeNote}

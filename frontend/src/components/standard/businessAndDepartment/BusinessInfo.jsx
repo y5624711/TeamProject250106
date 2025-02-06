@@ -1,15 +1,9 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Input,
-  Spacer,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Input, Spacer } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
+import React from "react";
 
 export function BusinessInfo({
   business,
@@ -75,15 +69,22 @@ export function BusinessInfo({
         <Flex>
           <Heading>{business.businessName}</Heading>
           <Spacer />
-          <Box pt={3}>
-            <Button mt={-4} mb={5} size="sm" onClick={handleSave}>
+          <Box>
+            <Button mt={-4} size="sm" onClick={handleSave}>
               저장
             </Button>
           </Box>
         </Flex>
-        <Stack>
-          <HStack gap={5}>
-            <Field label={"대표자"} orientation="horizontal" mb={3}>
+        <Box
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+          mt={2}
+        >
+          <Box display={"flex"} gap={5}>
+            <Field
+              label={<SpacedLabel text="대표자" />}
+              orientation="horizontal"
+            >
               <Input
                 variant="filed"
                 value={business.businessRep}
@@ -95,7 +96,7 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label={"업태"} orientation="horizontal" mb={3}>
+            <Field label={<SpacedLabel text="업태" />} orientation="horizontal">
               <Input
                 variant="filled"
                 value={business.businessIndustryType || ""}
@@ -107,9 +108,12 @@ export function BusinessInfo({
                 }
               />
             </Field>
-          </HStack>
-          <HStack gap={5}>
-            <Field label="사업자 번호" orientation="horizontal" mb={3}>
+          </Box>
+          <Box display={"flex"} gap={5}>
+            <Field
+              label={<SpacedLabel text="사업자번호" />}
+              orientation="horizontal"
+            >
               <Input
                 variant="filled"
                 value={business.businessNo || ""}
@@ -121,7 +125,10 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label="법인 번호" orientation="horizontal" mb={3}>
+            <Field
+              label={<SpacedLabel text="법인번호" />}
+              orientation="horizontal"
+            >
               <Input
                 variant="filled"
                 value={business.businessCorpNumber || ""}
@@ -133,9 +140,12 @@ export function BusinessInfo({
                 }
               />
             </Field>
-          </HStack>
-          <HStack gap={5}>
-            <Field label={"전화번호"} orientation="horizontal" mb={3}>
+          </Box>
+          <Box display={"flex"} gap={5}>
+            <Field
+              label={<SpacedLabel text="전화번호" />}
+              orientation="horizontal"
+            >
               <Input
                 variant="filled"
                 value={business.businessTel || ""}
@@ -147,7 +157,7 @@ export function BusinessInfo({
                 }
               />
             </Field>
-            <Field label={"팩스"} orientation="horizontal" mb={3}>
+            <Field label={<SpacedLabel text="팩스" />} orientation="horizontal">
               <Input
                 variant="filled"
                 value={business.businessFax || ""}
@@ -159,8 +169,8 @@ export function BusinessInfo({
                 }
               />
             </Field>
-          </HStack>
-          <Field label={"주소"} orientation="horizontal">
+          </Box>
+          <Field label={<SpacedLabel text="주소" />} orientation="horizontal">
             <Input
               variant="filled"
               value={business.businessAddress || ""}
@@ -172,7 +182,7 @@ export function BusinessInfo({
               }
             />
           </Field>
-        </Stack>
+        </Box>
       </Box>
     </Box>
   );
