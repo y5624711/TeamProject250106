@@ -1,6 +1,7 @@
 package com.example.backend.controller.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -89,15 +90,21 @@ public class StocktakingController {
 
     //    col 값 불러오기
     @GetMapping("col/{warehouseCode}/{difference}/{row}")
-    public Set<String> rowList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row) {
+    public Set<String> colList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row) {
         return service.getWarehouseColList(warehouseCode, difference, row);
     }
 
+    //    shelf 값 불러오기
+    @GetMapping("shelf/{warehouseCode}/{difference}/{row}/{col}")
+    public Set<Integer> shelfList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row, @PathVariable String col) {
+        return service.getWarehouseShelfList(warehouseCode, difference, row, col);
+    }
 
-    //    창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
-//    @GetMapping("location/{warehouseCode}/{difference}")
-//    public List<Integer> locationList(@PathVariable String warehouseCode, @PathVariable String difference) {
-//        return service.getStocktakingLocationList(warehouseCode, difference);
-//    }
+
+    //        창고 코드와 실사 차이에 따른 필요 로케이션 불러오기
+    @GetMapping("location/{warehouseCode}/{row}/{col}/{shelf}")
+    public StocktakingItem location(@PathVariable String warehouseCode, @PathVariable String row, @PathVariable String col, @PathVariable Integer shelf) {
+        return service.getStocktakingLocationList(warehouseCode, row, col, shelf);
+    }
 
 }

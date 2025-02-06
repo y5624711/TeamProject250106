@@ -51,6 +51,7 @@ function StocktakingAdd({
   const [difference, setDifference] = useState(null);
   const [stockLocation, setStockLocation] = useState([]);
   const [searchClick, setSearchClick] = useState(false);
+  // 여기서부터 새롭게 추가된 실사에 쓰이는 애들
   const [makeDifference, setMakeDifference] = useState(0);
   const [locationList, setLocationList] = useState([]);
   const [rowList, setRowList] = useState([]);
@@ -62,6 +63,7 @@ function StocktakingAdd({
   const [shelfList, setShelfList] = useState([]);
   const [shelf, setShelf] = useState("");
   const [selectedShelf, setSelectedShelf] = useState("");
+  const [locationKey, setLocationKey] = useState("");
 
   const resetState = () => {
     setWarehouseCode("");
@@ -136,6 +138,38 @@ function StocktakingAdd({
         });
     }
   }, [warehouseCode, difference, row]);
+
+  // location shelf 정보 가져오기
+  useEffect(() => {
+    if (warehouseCode && difference !== "0" && row && col) {
+      axios
+        .get(
+          `/api/stocktaking/shelf/${warehouseCode}/${difference}/${row}/${col}`,
+        )
+        .then((res) => {
+          const shelfOptions = res.data.map((shelf) => ({
+            value: shelf,
+            label: shelf,
+          }));
+          setShelfList(shelfOptions);
+        });
+    }
+  }, [warehouseCode, difference, row, col]);
+
+  // location_key 정보 가져오기
+  useEffect(() => {
+    if (warehouseCode && difference !== "0" && row && col && shelf) {
+      axios
+        .get(
+          `/api/stocktaking/location/${warehouseCode}/${row}/${col}/${shelf}`,
+        )
+        .then((res) => {
+          setLocationKey(res.data);
+        });
+    }
+  }, [warehouseCode, difference, row, col, shelf]);
+
+  console.log(locationKey);
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {

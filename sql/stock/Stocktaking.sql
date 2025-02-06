@@ -46,3 +46,12 @@ FROM TB_LOCMST l
 WHERE w.warehouse_code = 'WHS001'
   AND l.located IS TRUE
   AND l.location_active IS TRUE;
+
+SELECT l.location_key
+FROM TB_LOCMST l
+         LEFT JOIN TB_WHMST w ON l.warehouse_code = w.warehouse_code
+WHERE w.warehouse_code = 'WHS003'
+  AND l.row = '1'
+  AND l.col = '4'
+  AND l.shelf = '1'
+  AND l.location_active = 1;
