@@ -104,12 +104,11 @@ export function CommonCodeView({
   };
 
   const isValid =
-    (editedCommonCode != null &&
-      editedCommonCode.commonCodeType === "ITEM" &&
+    (editedCommonCode != null && editedCommonCode.commonCodeType === "ITEM") ||
+    (editedCommonCode.commonCodeType === "STANDARD" &&
       /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
     (editedCommonCode != null &&
-      (editedCommonCode.commonCodeType === "STANDARD" ||
-        editedCommonCode.commonCodeType === "STATE") &&
+      editedCommonCode.commonCodeType === "STATE" &&
       /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
       editedCommonCode.commonCodeName.trim() !== "");
 
