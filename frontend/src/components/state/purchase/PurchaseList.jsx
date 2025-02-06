@@ -112,26 +112,26 @@ export function PurchaseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="17%">
                   {purchase.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {purchase.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {purchase.employeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {purchase.customerEmployeeName ||
                     purchase.disapproveEmployeeName ||
                     "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {purchase.purchaseApproveDate ||
                     purchase.purchaseDisapproveDate ||
                     purchase.purchaseRequestDate}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="13%">
                   {purchase.purchaseConsent == 1
                     ? "승인"
                     : purchase.purchaseConsent == 0

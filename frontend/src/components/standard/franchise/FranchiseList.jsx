@@ -139,22 +139,22 @@ export function FranchiseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}{" "}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseNo}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseRep}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseTel}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseState}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="14%">
                   {franchise.franchiseCity}
                 </Table.Cell>
               </Table.Row>
