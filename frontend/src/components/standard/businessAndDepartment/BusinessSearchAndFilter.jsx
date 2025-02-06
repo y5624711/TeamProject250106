@@ -94,7 +94,7 @@ export function BusinessSearchAndFilter({
         onKeyDown={handlePressKey}
       />
       <IconButton
-        variant={"ghost"}
+        variant={"none"}
         style={{ cursor: "pointer" }}
         transform="translateX(-130%) "
         onClick={handleReset}
