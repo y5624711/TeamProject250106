@@ -696,37 +696,6 @@ function StocktakingAdd({
                     </Button>
                   </Tooltip>
                 </Box>
-                <Field
-                  label="위치 분류"
-                  orientation="horizontal"
-                  mb={15}
-                  required
-                >
-                  <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
-                    <RadioGroup
-                      value={putStocktakingType} // ✅ Boolean 값을 문자열로 변환
-                      onChange={(e) => setPutStocktakingType(e.target.value)}
-                    >
-                      <HStack gap="4">
-                        <Radio value="lost">분실</Radio>
-                        <Radio value="frn">출고</Radio>
-                      </HStack>
-                    </RadioGroup>
-                  </Box>
-                  {/*<Input*/}
-                  {/*  type={"text"}*/}
-                  {/*  value={stocktakingType}*/}
-                  {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
-                  {/*/>*/}
-                </Field>
-                {putStocktakingType === "frn" ? (
-                  <>
-                    <Field label="가맹점" orientation="horizontal" mb={15}>
-                      <Input />
-                    </Field>
-                  </>
-                ) : // 분실인 경우 가맹점 선택 안함
-                null}
               </>
             )}
             <Field label="비고" orientation="horizontal" mb={15}>
@@ -756,11 +725,6 @@ function StocktakingAdd({
                     </HStack>
                   </RadioGroup>
                 </Box>
-                {/*<Input*/}
-                {/*  type={"text"}*/}
-                {/*  value={stocktakingType}*/}
-                {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
-                {/*/>*/}
               </Field>
             </Box>
           </Box>
