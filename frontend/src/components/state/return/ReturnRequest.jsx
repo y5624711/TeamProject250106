@@ -11,7 +11,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import {
-  HStack,
+  Box,
   Input,
   SelectContent,
   SelectItem,
@@ -206,7 +206,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             />
             <Button onClick={onFranchiseClick}>조회</Button>
           </Field>
-          <HStack>
+          <Box display={"flex"} gap={5}>
             <Field orientation="horizontal" label="시리얼 번호" required>
               <SelectRoot
                 value={requestData.serialNo}
@@ -247,7 +247,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 // placeholder={"OOOO"}
               />
             </Field>
-          </HStack>
+          </Box>
           <Field orientation="horizontal" label="담당 업체">
             <Input
               variant={"subtle"}
@@ -256,7 +256,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               // placeholder="OOOO"
             />
           </Field>
-          <HStack>
+          <Box display={"flex"} gap={5}>
             <Field orientation="horizontal" label="요청자">
               <Input
                 variant={"subtle"}
@@ -273,7 +273,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 // onChange={handleInput("businessEmployeeNo")}
               />
             </Field>
-          </HStack>
+          </Box>
           <Field orientation="horizontal" label="비고">
             <Textarea
               value={requestData.returnRequestNote}

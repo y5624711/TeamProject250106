@@ -138,7 +138,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
   };
 
   // console.log("결과", approveData);
-  console.log(approveData);
+  // console.log(approveData);
 
   return (
     <DialogRoot

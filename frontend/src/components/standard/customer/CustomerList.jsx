@@ -134,7 +134,7 @@ function CustomerList({
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
-              width="19%"
+              width="21%"
               textAlign="center"
               onClick={() => onHeader("customer_name")}
             >
