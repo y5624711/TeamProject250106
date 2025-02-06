@@ -19,7 +19,7 @@ export function EmployeeViewDialog({
 }) {
   const changeModalView = () => {
     onChange();
-    // modalChange();
+    modalChange();
   };
 
   return (
