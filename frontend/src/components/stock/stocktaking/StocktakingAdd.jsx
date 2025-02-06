@@ -25,7 +25,7 @@ function StocktakingAdd({
   setStocktakingList,
   searchParams,
 }) {
-  const [warehouseCode, setWarehouseCode] = useState("");
+  const [warehouseCode, setWarehouseCode] = useState(null);
   const [warehouseName, setWarehouseName] = useState("");
   const [itemName, setItemName] = useState("");
   const [itemCode, setItemCode] = useState("");
@@ -35,27 +35,30 @@ function StocktakingAdd({
   const [stocktakingType, setStocktakingType] = useState(true);
   const initialStocktakingAdd = {
     warehouseName: "",
-    warehouseCode: "",
+    warehouseCode: null,
     itemCode: "",
     itemName: "",
     countCurrent: "",
     countConfiguration: "",
     stocktakingNote: "",
     stocktakingType: true,
-    row: "",
-    col: "",
-    shelf: "",
-    locationKey: "",
+    row: null,
+    col: null,
+    shelf: null,
+    locationKey: null,
+    setRowList: [],
+    setColList: [],
+    setShelfList: [],
   };
   const [stocktakingAdd, setStocktakingAdd] = useState(initialStocktakingAdd);
   const [warehouseList, setWarehouseList] = useState([]);
   const [itemList, setItemList] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState("");
   const [selectedItem, setSelectedItem] = useState("");
-  const [difference, setDifference] = useState(null);
   const [stockLocation, setStockLocation] = useState([]);
   const [searchClick, setSearchClick] = useState(false);
   // 여기서부터 새롭게 추가된 실사에 쓰이는 애들
+  const [difference, setDifference] = useState(null);
   const [makeDifference, setMakeDifference] = useState(0);
   const [locationList, setLocationList] = useState([]);
   const [rowList, setRowList] = useState([]);
@@ -72,10 +75,10 @@ function StocktakingAdd({
   const [serialNo, setSerialNo] = useState("");
 
   const resetState = () => {
-    setWarehouseCode("");
+    setWarehouseCode(null);
     setWarehouseName("");
     setItemName("");
-    setItemCode("");
+    setItemCode(null);
     setCountCurrent("");
     setCountConfiguration("");
     setStocktakingNote("");
@@ -84,6 +87,13 @@ function StocktakingAdd({
     setDifference(null);
     setSerialNo("");
     setPutStocktakingType("");
+    setLocationKey(null);
+    setRow(null);
+    setCol(null);
+    setShelf(null);
+    setRowList([]);
+    setColList([]);
+    setShelfList([]);
   };
 
   // 요청 창 닫히면 초기화
@@ -119,41 +129,35 @@ function StocktakingAdd({
 
   // location row 정보 가져오기
   useEffect(() => {
-    if (warehouseCode && difference !== "0") {
-      axios
-        .get(`/api/stocktaking/row/${warehouseCode}/${difference}`)
-        .then((res) => {
-          const rowOptions = res.data.map((location) => ({
-            value: location,
-            label: location,
-          }));
-          setRowList(rowOptions);
-        });
+    if (warehouseCode) {
+      axios.get(`/api/stocktaking/row/${warehouseCode}`).then((res) => {
+        const rowOptions = res.data.map((location) => ({
+          value: location,
+          label: location,
+        }));
+        setRowList(rowOptions);
+      });
     }
-  }, [warehouseCode, difference]);
+  }, [warehouseCode]);
 
   // location col 정보 가져오기
   useEffect(() => {
-    if (warehouseCode && difference !== "0" && row) {
-      axios
-        .get(`/api/stocktaking/col/${warehouseCode}/${difference}/${row}`)
-        .then((res) => {
-          const colOptions = res.data.map((col) => ({
-            value: col,
-            label: col,
-          }));
-          setColList(colOptions);
-        });
+    if (warehouseCode && row) {
+      axios.get(`/api/stocktaking/col/${warehouseCode}/${row}`).then((res) => {
+        const colOptions = res.data.map((col) => ({
+          value: col,
+          label: col,
+        }));
+        setColList(colOptions);
+      });
     }
-  }, [warehouseCode, difference, row]);
+  }, [warehouseCode, row]);
 
   // location shelf 정보 가져오기
   useEffect(() => {
-    if (warehouseCode && difference !== "0" && row && col) {
+    if (warehouseCode && row && col) {
       axios
-        .get(
-          `/api/stocktaking/shelf/${warehouseCode}/${difference}/${row}/${col}`,
-        )
+        .get(`/api/stocktaking/shelf/${warehouseCode}/${row}/${col}`)
         .then((res) => {
           const shelfOptions = res.data.map((shelf) => ({
             value: shelf,
@@ -162,11 +166,11 @@ function StocktakingAdd({
           setShelfList(shelfOptions);
         });
     }
-  }, [warehouseCode, difference, row, col]);
+  }, [warehouseCode, row, col]);
 
   // location_key 정보 가져오기
   useEffect(() => {
-    if (warehouseCode && difference !== "0" && row && col && shelf) {
+    if (warehouseCode && row && col && shelf) {
       axios
         .get(
           `/api/stocktaking/location/${warehouseCode}/${row}/${col}/${shelf}`,
@@ -175,9 +179,7 @@ function StocktakingAdd({
           setLocationKey(res.data);
         });
     }
-  }, [warehouseCode, difference, row, col, shelf]);
-
-  console.log(locationKey);
+  }, [warehouseCode, row, col, shelf]);
 
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {
@@ -187,6 +189,7 @@ function StocktakingAdd({
         .then((res) => {
           console.log(res.data);
           setCountCurrent(res.data); // 백엔드에서 받은 전산 수량 값 설정
+          setCountConfiguration(res.data); // 초기 실제수량은 전산 값과 동일
           setStocktakingAdd((prev) => ({
             ...prev,
             countCurrent: res.data, // stocktakingAdd에도 값 반영
@@ -318,13 +321,6 @@ function StocktakingAdd({
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    setRow("");
-    setCol("");
-    setShelf("");
-    setLocationKey("");
-  }, [difference]);
-
   //유효성 검사
   const validate = () => {
     return (
@@ -337,8 +333,7 @@ function StocktakingAdd({
       countConfiguration !== "" &&
       stocktakingType !== null &&
       difference !== null &&
-      searchClick === true &&
-      makeDifference + countCurrent - countConfiguration === 0
+      searchClick === true
       //   makeDifference 를 통해 값이 같을 때 등록 가능하게 하기
     );
   };
@@ -348,33 +343,9 @@ function StocktakingAdd({
   };
 
   const handleDifferentClick = () => {
-    {
-      countCurrent > countConfiguration
-        ? setDifference("1")
-        : countCurrent < countConfiguration
-          ? setDifference("2")
-          : setDifference("0");
-
-      setSearchClick(true);
-      setRow("");
-      setCol("");
-      setShelf("");
-      setLocationKey("");
-      setStocktakingAdd({
-        warehouseName: warehouseName,
-        warehouseCode: warehouseCode,
-        itemCode: itemCode,
-        itemName: itemName,
-        countCurrent: countCurrent,
-        countConfiguration: countConfiguration,
-        stocktakingNote: stocktakingNote,
-        stocktakingType: stocktakingType,
-        row: "",
-        col: "",
-        shelf: "",
-        locationKey: "",
-      });
-    }
+    axios.get(`/api/stocktaking/checkLocation/${locationKey}`).then((res) => {
+      setSerialNo(res.data);
+    });
   };
 
   useEffect(() => {
@@ -464,14 +435,14 @@ function StocktakingAdd({
                     setCountConfiguration(e.target.value);
                     setSearchClick(false);
                   }}
+                  readOnly
                 />
               </Field>
-              <Button onClick={handleDifferentClick}>조회</Button>
             </Box>
 
             {/*조회 드가자*/}
             <Field label="로케이션" orientation="horizontal" mb={15}></Field>
-            <Box display="flex" gap={18}>
+            <Box display="flex" gap={35}>
               <Field label="행" orientation="horizontal" mb={15}>
                 <Select
                   options={rowList}
@@ -542,6 +513,12 @@ function StocktakingAdd({
                 />
               </Field>
             </Box>
+            <Box display="flex" gap={18}>
+              <Field label="시리얼 번호" orientation="horizontal" mb={15}>
+                <Input />
+              </Field>
+              <Button onClick={handleDifferentClick}>조회</Button>
+            </Box>
             <Field label="비고" orientation="horizontal" mb={15}>
               <Textarea
                 style={{ maxHeight: "100px", overflowY: "auto" }}
@@ -576,16 +553,6 @@ function StocktakingAdd({
                 {/*/>*/}
               </Field>
             </Box>
-            {difference !== null && (
-              <>
-                {difference === "1" && (
-                  <>
-                    {/*  TODO : 로케이션 등록 후 해당 로케이션에 있는 시리얼 번호 불러오기.*/}
-                  </>
-                )}
-                {difference === "2" && <></>}
-              </>
-            )}
           </Box>
           {/*  TODO: 실사유형 radio로 체크  */}
         </DialogBody>

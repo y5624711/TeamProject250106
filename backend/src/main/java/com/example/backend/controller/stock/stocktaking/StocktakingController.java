@@ -83,21 +83,21 @@ public class StocktakingController {
     }
 
     //    row 값 불러오기
-    @GetMapping("row/{warehouseCode}/{difference}")
-    public Set<String> rowList(@PathVariable String warehouseCode, @PathVariable String difference) {
-        return service.getWarehouseRowList(warehouseCode, difference);
+    @GetMapping("row/{warehouseCode}")
+    public Set<String> rowList(@PathVariable String warehouseCode) {
+        return service.getWarehouseRowList(warehouseCode);
     }
 
     //    col 값 불러오기
-    @GetMapping("col/{warehouseCode}/{difference}/{row}")
-    public Set<String> colList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row) {
-        return service.getWarehouseColList(warehouseCode, difference, row);
+    @GetMapping("col/{warehouseCode}/{row}")
+    public Set<String> colList(@PathVariable String warehouseCode, @PathVariable String row) {
+        return service.getWarehouseColList(warehouseCode, row);
     }
 
     //    shelf 값 불러오기
-    @GetMapping("shelf/{warehouseCode}/{difference}/{row}/{col}")
-    public Set<Integer> shelfList(@PathVariable String warehouseCode, @PathVariable String difference, @PathVariable String row, @PathVariable String col) {
-        return service.getWarehouseShelfList(warehouseCode, difference, row, col);
+    @GetMapping("shelf/{warehouseCode}/{row}/{col}")
+    public Set<Integer> shelfList(@PathVariable String warehouseCode, @PathVariable String row, @PathVariable String col) {
+        return service.getWarehouseShelfList(warehouseCode, row, col);
     }
 
 

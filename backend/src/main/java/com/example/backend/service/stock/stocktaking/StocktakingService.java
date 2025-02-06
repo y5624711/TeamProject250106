@@ -122,54 +122,22 @@ public class StocktakingService {
         return countCurrent;
     }
 
-    public Set<String> getWarehouseRowList(String warehouseCode, String difference) {
-        Integer getCode;
+    public Set<String> getWarehouseRowList(String warehouseCode) {
 
-        if (difference.equals("1")) {
-//            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
-            getCode = 1;
-
-            return mapper.getWarehouseRowList(warehouseCode, getCode);
-        } else {
-//            실제수량이 많을 경우
-            getCode = 0;
-
-            return mapper.getWarehouseRowList(warehouseCode, getCode);
-        }
+        return mapper.getWarehouseRowList(warehouseCode);
 
     }
 
-    public Set<String> getWarehouseColList(String warehouseCode, String difference, String row) {
-        Integer getCode;
+    public Set<String> getWarehouseColList(String warehouseCode, String row) {
 
-        if (difference.equals("1")) {
-//            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
-            getCode = 1;
+        return mapper.getWarehouseColList(warehouseCode, row);
 
-            return mapper.getWarehouseColList(warehouseCode, getCode, row);
-        } else {
-//            실제수량이 많을 경우
-            getCode = 0;
-
-            return mapper.getWarehouseColList(warehouseCode, getCode, row);
-        }
     }
 
-    public Set<Integer> getWarehouseShelfList(String warehouseCode, String difference, String row, String col) {
-        Integer getCode;
+    public Set<Integer> getWarehouseShelfList(String warehouseCode, String row, String col) {
 
-        if (difference.equals("1")) {
-//            전산수량이 많을 경우 > 물품을 삭제해야 함 > located = true 불러옴
-            getCode = 1;
+        return mapper.getWarehouseShelfList(warehouseCode, row, col);
 
-
-            return mapper.getWarehouseShelfList(warehouseCode, getCode, row, col);
-        } else {
-//            실제수량이 많을 경우
-            getCode = 0;
-
-            return mapper.getWarehouseShelfList(warehouseCode, getCode, row, col);
-        }
 
     }
 

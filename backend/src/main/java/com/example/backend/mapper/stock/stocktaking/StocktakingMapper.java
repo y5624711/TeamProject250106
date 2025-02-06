@@ -263,28 +263,28 @@ public interface StocktakingMapper {
             SELECT l.row
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
+            WHERE w.warehouse_code=#{warehouseCode}  AND l.location_active=1
             ORDER BY l.row ASC
             """)
-    Set<String> getWarehouseRowList(String warehouseCode, Integer getCode);
+    Set<String> getWarehouseRowList(String warehouseCode);
 
     @Select("""
             SELECT l.col
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1 AND l.row=#{row}
+            WHERE w.warehouse_code=#{warehouseCode}  AND l.location_active=1 AND l.row=#{row}
             ORDER BY l.col ASC
             """)
-    Set<String> getWarehouseColList(String warehouseCode, Integer getCode, String row);
+    Set<String> getWarehouseColList(String warehouseCode, String row);
 
     @Select("""
             SELECT l.shelf
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1 AND l.row=#{row} AND l.col=#{col}
+            WHERE w.warehouse_code=#{warehouseCode}  AND l.location_active=1 AND l.row=#{row} AND l.col=#{col}
             ORDER BY l.shelf ASC
             """)
-    Set<Integer> getWarehouseShelfList(String warehouseCode, Integer getCode, String row, String col);
+    Set<Integer> getWarehouseShelfList(String warehouseCode, String row, String col);
 
     @Select("""
             SELECT l.location_key
