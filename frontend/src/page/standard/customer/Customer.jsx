@@ -181,7 +181,7 @@ function Customer() {
         <StandardSideBar />
         <Stack flex={1} p={5} pb={0}>
           <Heading size="xl" mb={3} p={2}>
-            기준정보 관리 {">"} 협력업체 관리
+            기준정보 관리 {">"} 협력 업체 관리
           </Heading>
 
           <CustomerList

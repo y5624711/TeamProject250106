@@ -188,6 +188,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                       readOnly
                       name={"industry"}
                       value={customer.industry}
+                      variant={"subtle"}
                     ></Input>
                   </Field>
                 </Box>

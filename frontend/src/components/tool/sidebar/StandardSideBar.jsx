@@ -54,7 +54,7 @@ export function StandardSideBar() {
               <SidebarItem path="/business">사업장/부서 관리</SidebarItem>
               <SidebarItem path="/employee">인사 관리</SidebarItem>
               <SidebarItem path="/franchise">가맹점 관리</SidebarItem>
-              <SidebarItem path="/customer">협력업체 관리</SidebarItem>
+              <SidebarItem path="/customer">협력 업체 관리</SidebarItem>
               <SidebarItem path="/item">품목 관리</SidebarItem>
               <SidebarItem path="/warehouse">창고 관리</SidebarItem>
             </>
