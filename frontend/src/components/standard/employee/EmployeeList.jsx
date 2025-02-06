@@ -163,7 +163,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     { key: "기본키", label: "#" },
     { key: "소속구분", label: "소속 구분" },
     { key: "기업명", label: "기업" },
-    { key: "기업번호", label: "기업 번호" },
+    { key: "기업번호", label: "회사 전화번호" },
     { key: "직원명", label: "직원" },
     { key: "직원전화번호", label: "직원 전화번호" },
     { key: "사번", label: "사번" },

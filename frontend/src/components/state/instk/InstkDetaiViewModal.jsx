@@ -169,13 +169,19 @@ export function InstkDetaiViewModal({
                 <Field label={"담당 업체"} orientation="horizontal">
                   <Input readOnly value={instk.customerName} />
                 </Field>
-                <Field label={"창고 정보"} orientation="horizontal">
-                  <Input
-                    readOnly
-                    value={`${detailData.wareHouseName}${instk.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
-                  />
+
+                <Field label={"창고 주소"} orientation="horizontal">
+                  <Input readOnly value={detailData.wareHouseAddress} />
                 </Field>
               </HStack>
+
+              <Field label={"창고 정보"} orientation="horizontal">
+                <Input
+                  readOnly
+                  value={`${detailData.wareHouseName}${instk.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
+                />
+              </Field>
+
               <Field label={"주문 비고"} orientation="horizontal">
                 {instk.inputNote ? (
                   <Textarea

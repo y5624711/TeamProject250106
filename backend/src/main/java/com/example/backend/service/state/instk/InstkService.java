@@ -47,13 +47,19 @@ public class InstkService {
         
         //창고 가져오는곳은 동일 해서 앞으로 뺌
         String warehouseName = "";
+        String warehouseAddress = "";
         if (inputCommonCodeName.equals("입고")) {
-            warehouseName = mapper.viewWareHouseName(inputKey);
+            Map<String, Object> whmData = mapper.viewWareHouseName(inputKey);
+            warehouseName = (String) whmData.get("warehouseName");
+            warehouseAddress = (String) whmData.get("warehouseAddress");
+
         } else {
-            warehouseName = mapper.viewReturnWareHouseName(inputKey);
+            Map<String, Object> whmData =mapper.viewReturnWareHouseName(inputKey);
+            warehouseName = (String) whmData.get("warehouseName");
+            warehouseAddress = (String) whmData.get("warehouseAddress");
         }
 
-        // 입고 회수 / 
+        // 입고 회수 /
         if(inputConsent) {
             //(입고,회수)된 시리얼 번호 목록
             List<InstkSerialLocation> serialLocationList = instkSubMapper.getSerialNoByInputKey(inputKey);
@@ -68,6 +74,7 @@ public class InstkService {
             instk.setInputStockNote(inputStockNote);
             instk.setSerialLocationList(serialLocationList);
             instk.setWareHouseName(warehouseName);
+            instk.setWareHouseAddress(warehouseAddress);
             System.out.println("instk = " + instk);
             return instk;
         }else {  //반려 처리
@@ -75,6 +82,10 @@ public class InstkService {
             //반려 승인자 , 반려자 사번 ,  반려 노트 ,  반려 날짜
            Instk instk= mapper.viewDisapproveByInputKey(inputKey);
             instk.setWareHouseName(warehouseName);
+
+
+
+            instk.setWareHouseAddress(warehouseAddress);
             return instk;
         }
 
