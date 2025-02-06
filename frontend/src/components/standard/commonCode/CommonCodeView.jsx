@@ -182,10 +182,10 @@ export function CommonCodeView({
                 <Checkbox
                   style={{ marginRight: "550px" }}
                   checked={commonCode.commonCodeActive}
-                  onChange={(e) =>
+                  onCheckedChange={(e) =>
                     setCommonCode((prev) => ({
                       ...prev,
-                      commonCodeActive: e.target.checked,
+                      commonCodeActive: e.checked,
                     }))
                   }
                   disabled={
