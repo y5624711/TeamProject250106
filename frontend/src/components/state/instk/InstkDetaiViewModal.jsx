@@ -94,8 +94,6 @@ export function InstkDetaiViewModal({
     setSelectLocationKey(e.value);
   };
 
-  console.log(serialLocationList, "serialLocati");
-
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent ref={contentRef}>

@@ -146,7 +146,9 @@ export function InstkList() {
                   key={index}
                   _hover={{ backgroundColor: "gray.200" }}
                 >
-                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                  <Table.Cell textAlign="center" width="90px">
+                    {index + 1}
+                  </Table.Cell>
                   <Table.Cell textAlign="center">
                     {item.inputCommonCodeName}
                   </Table.Cell>

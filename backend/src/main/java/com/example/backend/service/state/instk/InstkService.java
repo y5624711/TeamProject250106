@@ -48,6 +48,9 @@ public class InstkService {
         //창고 가져오는곳은 동일 해서 앞으로 뺌
         String warehouseName = "";
         String warehouseAddress = "";
+
+
+
         if (inputCommonCodeName.equals("입고")) {
             Map<String, Object> whmData = mapper.viewWareHouseName(inputKey);
             warehouseName = (String) whmData.get("warehouseName");

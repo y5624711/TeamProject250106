@@ -244,6 +244,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         <Table.Body>
           {memberList.map((item, index) => (
             <Table.Row
+              style={{ cursor: "pointer" }}
               key={item.employeeKey}
               onDoubleClick={() => {
                 handleSelectedItem(item.employeeKey);
@@ -263,11 +264,14 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width="120px">
                 {item.employeeWorkPlaceTel}
               </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
-              <Table.Cell textAlign="center"> {item.employeeTel} </Table.Cell>
+              <Table.Cell textAlign="center" width="120px">
+                {" "}
+                {item.employeeTel}{" "}
+              </Table.Cell>
               <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
             </Table.Row>
           ))}
