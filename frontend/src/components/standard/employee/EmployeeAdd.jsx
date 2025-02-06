@@ -1,8 +1,6 @@
 import {
   Box,
   createListCollection,
-  Flex,
-  Heading,
   HStack,
   Input,
   SelectContent,
@@ -40,7 +38,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   const frameworks = createListCollection({
     items: [
-      { label: "협력업체", value: "CUS" },
+      { label: "협력 업체", value: "CUS" },
       { label: "본사직원", value: "EMP" },
     ],
   });

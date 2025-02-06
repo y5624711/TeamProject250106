@@ -191,7 +191,7 @@ public class InstallController {
         String userId = authentication.getName();
         if (userId.startsWith("CUS")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN) // 설치 요청 거부
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 설치 요청을 할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 설치를 요청할 수 없습니다.")));
         }
 
         if (service.requestValidate(install)) {

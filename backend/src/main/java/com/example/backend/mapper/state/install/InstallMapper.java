@@ -21,6 +21,7 @@ public interface InstallMapper {
     @Select("""
             SELECT franchise_code, franchise_name, franchise_address
             FROM TB_FRNCHSMST
+            WHERE franchise_active=1
             """)
     List<Map<String, String>> getInstallFranchiseList();
 

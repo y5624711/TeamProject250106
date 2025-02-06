@@ -89,7 +89,7 @@ public class EmployeeController {
                             "text", "회원 수정 권한이 없습니다.")));
         }
 
-        System.out.println("employee = " + employee);
+//        System.out.println("employee = " + employee);
         if (service.editEmployeeByKey(employee)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
@@ -112,7 +112,7 @@ public class EmployeeController {
                             "text", "회원 삭제 권한이 없습니다.")));
         }
 
-        System.out.println("employee = " + employee);
+//        System.out.println("employee = " + employee);
         if (service.deleteEmployeeByKey(employee.getEmployeeKey())) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",

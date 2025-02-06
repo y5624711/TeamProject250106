@@ -205,10 +205,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
               <Input readOnly value={approveData.businessEmployeeNo} />
             </Field>
           </Box>
-          <Field
-            orientation="horizontal"
-            label={<SpacedLabel text="요청 날짜" />}
-          >
+          <Field orientation="horizontal" label={<SpacedLabel text="요청일" />}>
             <Input readOnly value={approveData.returnRequestDate} />
           </Field>
           <Field
@@ -268,7 +265,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                 </Field>
                 <Field
                   orientation="horizontal"
-                  label={<SpacedLabel text="승인 날짜" />}
+                  label={<SpacedLabel text="승인일" />}
                 >
                   <Input readOnly value={approveData.returnApproveDate} />
                 </Field>
@@ -310,7 +307,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
 
               <Field
                 orientation="horizontal"
-                label={<SpacedLabel text="반려 날짜" />}
+                label={<SpacedLabel text="반려일" />}
               >
                 <Input readOnly value={approveData.disapproveDate} />
               </Field>

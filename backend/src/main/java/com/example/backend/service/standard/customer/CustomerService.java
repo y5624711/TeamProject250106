@@ -77,18 +77,11 @@ public class CustomerService {
     //active 복구 가능한지
     public boolean checkActive(Customer customer) {
 //        System.out.println("복구 가능 여부 확인");
-        //1. active에 변화가 있는지 확인
-//        Boolean oldActive = mapper.getOldActive(customer.getCustomerCode());
-//
-//        if (oldActive == customer.getCustomerActive()) {
-//            //복구 하려는 거 아니편 패스
-//            return false;
-//        }
         if (!checkActiveChange(customer)) {
             return false;
         }
 
-        //3. 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
+        // 사용함으로 복구할 시 같은 아이템을 담당하는 사용중인 회사 여부 확인
         String activeCustomer = mapper.getItemCustomer(customer.getItemCode());
 //        System.out.println("복구: " + customer.getCustomerCode());
 //        System.out.println("activeCustomer: " + activeCustomer);
@@ -104,13 +97,15 @@ public class CustomerService {
             // customerActive = false 이면 itemActive = false
             mapper.editCustomerActive(customer);
             itemMapper.editItemActive(customer);
-            warehouseMapper.editWarehouseActive(customer);
 
-            String warehouseCode = warehouseMapper.getWarehouseCode(customer.getCustomerCode());
-            locationMapper.changeLocationActive(warehouseCode, customer.getCustomerActive());
-
+            //창고, 사람, 로케이션은 비활성만 연동. 자동 활성화는 안됨
             if (customer.getCustomerActive() == false) {
                 employeeMapper.changeEmployeeActive(customer);
+                warehouseMapper.editWarehouseActive(customer);
+
+                String warehouseCode = warehouseMapper.getWarehouseCode(customer.getCustomerCode());
+                locationMapper.changeLocationActive(warehouseCode, customer.getCustomerActive());
+
                 System.out.println("수정 완료");
             }
         }

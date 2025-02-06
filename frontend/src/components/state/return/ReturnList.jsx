@@ -4,20 +4,9 @@ import {
   Center,
   createListCollection,
   HStack,
-  IconButton,
-  Input,
   Table,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import { Button } from "../../ui/button.jsx";
-import { BsArrowCounterclockwise } from "react-icons/bs";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../ui/select.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -26,6 +15,7 @@ import {
 } from "../../ui/pagination.jsx";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { useSearchParams } from "react-router-dom";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
 
 function ReturnList({
   returnList,
@@ -106,45 +96,10 @@ function ReturnList({
   return (
     <Box>
       {/*검색*/}
-      <HStack justifyContent="center" w={"100%"} mt={-2}>
-        <SelectRoot
-          collection={returnSearchKeywords}
-          width={"160px"}
-          value={getLabelByValue(localType)}
-          onValueChange={(e) => {
-            setLocalType(e.value[0]);
-          }}
-        >
-          <SelectTrigger>
-            <SelectValueText placeholder={getLabelByValue(localType)} />
-          </SelectTrigger>
-          <SelectContent>
-            {returnSearchKeywords.items.map((e) => (
-              <SelectItem item={e} key={e.value} value={e.value}>
-                {e.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-        <Input
-          width="50%"
-          value={localKeyword}
-          onChange={(e) => setLocalKeyword(e.target.value)}
-          placeholder="검색어를 입력해 주세요."
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <IconButton
-          transform="translateX(-130%) "
-          style={{ cursor: "pointer" }}
-          variant={"ghost"}
-          onClick={() => setSearchParams(new URLSearchParams())}
-        >
-          <BsArrowCounterclockwise size="25px" />
-        </IconButton>
-        <Button onClick={handleSearch} transform="translateX(-75%)">
-          검색
-        </Button>
-      </HStack>
+      <SearchBar
+        searchOptions={returnSearchKeywords}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
 
       {/* 상태 분류 */}
       <RadioGroup
@@ -163,7 +118,7 @@ function ReturnList({
       </RadioGroup>
 
       {/*리스트*/}
-      <Table.Root interactive my={3} style={{ cursor: "pointer" }}>
+      <Table.Root my={3} style={{ cursor: "pointer" }}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
@@ -239,11 +194,11 @@ function ReturnList({
 
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleSort("emce.employee_name")}
+              onClick={() => handleSort("customerEmployeeName")}
             >
               <HStack alignItems="center" justify="center">
                 반려/승인자
-                {sort === "emce.employee_name" &&
+                {sort === "customerEmployeeName" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
@@ -277,32 +232,43 @@ function ReturnList({
               onDoubleClick={() => {
                 onRowClick(data.returnRequestKey);
               }}
+              _hover={{ backgroundColor: "gray.200", cursor: "pointer" }}
             >
-              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-              <Table.Cell textAlign="center">{data.franchiseName}</Table.Cell>
-              <Table.Cell textAlign="center">{data.itemCommonName}</Table.Cell>
-              <Table.Cell textAlign="center">{data.customerName}</Table.Cell>
+              <Table.Cell textAlign="center" width={"90px"}>
+                {index + 1}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.franchiseName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.itemCommonName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.customerName}
+              </Table.Cell>
 
-              <Table.Cell textAlign="center">{data.serialNo}</Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"11%"}>
+                {data.serialNo}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnNo ? data.returnNo : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"9%"}>
                 {data.businessEmployeeName}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnConsent == 1
                   ? data.customerEmployeeName
                   : data.returnConsent == 0
                     ? data.disapproveEmployeeName
                     : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.customerConfigurerName
                   ? data.customerConfigurerName
                   : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnConsent == 1
                   ? data.returnApproveDate
                   : data.returnConsent == 0

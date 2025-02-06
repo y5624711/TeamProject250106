@@ -97,7 +97,7 @@ function CustomerList({
         <IconButton
           transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
-          variant={"ghost"}
+          variant={"none"}
           onClick={onReset}
         >
           <BsArrowCounterclockwise size="25px" />
@@ -231,7 +231,7 @@ function CustomerList({
       {/*협력사 등록*/}
       <Box display="flex" justifyContent="flex-end">
         <Button onClick={onNewClick} size={"lg"} mt={-55}>
-          협력업체 등록
+          협력 업체 등록
         </Button>
       </Box>
     </Box>

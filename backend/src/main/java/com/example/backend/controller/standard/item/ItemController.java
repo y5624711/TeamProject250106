@@ -50,7 +50,7 @@ public class ItemController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 품목을 수정할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 품목을 수정할 수 없습니다.")));
 
         }
     }
@@ -117,7 +117,7 @@ public class ItemController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력업체는 품목을 등록할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 품목을 등록할 수 없습니다.")));
 
         }
     }

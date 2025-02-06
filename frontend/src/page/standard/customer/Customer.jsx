@@ -29,7 +29,7 @@ function Customer() {
 
   // 최신 고객 리스트 가져오기
   const fetchUpdatedCustomerList = () => {
-    // console.log(search);
+    // console.log("standard", standard);
     axios
       .get(`/api/customer/list`, {
         params: {
@@ -49,6 +49,8 @@ function Customer() {
         console.error("업데이트 고객 목록 불러오기 오류:", error),
       );
   };
+
+  // console.log("out", standard);
 
   // searchParams & checkedActive 변경 시 한 번만 실행
   useEffect(() => {
@@ -150,6 +152,10 @@ function Customer() {
 
       next.set("sort", sort);
       next.set("order", newOrder);
+
+      setStandard({ sort, order: newOrder });
+      // console.log("next", sort, ",", newOrder);
+
       return next;
     });
   };
@@ -175,7 +181,7 @@ function Customer() {
         <StandardSideBar />
         <Stack flex={1} p={5} pb={0}>
           <Heading size="xl" mb={3} p={2}>
-            기준정보 관리 {">"} 협력업체 관리
+            기준정보 관리 {">"} 협력 업체 관리
           </Heading>
 
           <CustomerList

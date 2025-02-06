@@ -158,7 +158,7 @@ public interface ReturnMapper {
     //발주 최대값 조회
     @Select("""
             <script>
-                SELECT COALESCE(MAX(CAST(return_no AS UNSIGNED)), 0) AS maxReturnNo
+                SELECT COALESCE(MAX(CAST(SUBSTRING(return_no, 4) AS UNSIGNED)), 0) AS maxReturnNo
                 FROM TB_RTN_APPR
             </script>
             """)

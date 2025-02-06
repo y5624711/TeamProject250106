@@ -48,7 +48,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
   const [localFranchiseName, setLocalFranchiseName] = useState("");
   const [localFranchiseCode, setLocalFranchiseCode] = useState("");
   const [serialNoList, setSerialNoList] = useState([
-    { value: "", label: "내용 없음" },
+    { value: "", label: "내역 없음" },
   ]);
   const [requestData, setRequestData] = useState(initialRequestData);
   // console.log(requestData);
@@ -237,7 +237,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                     top: "40px",
                     position: "absolute",
                     zIndex: 100,
-                    width: "72.5%",
+                    width: "70%",
                   }}
                 >
                   {serialNoList.map((option) => (
