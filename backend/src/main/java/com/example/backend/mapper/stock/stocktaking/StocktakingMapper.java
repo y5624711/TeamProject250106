@@ -303,6 +303,13 @@ public interface StocktakingMapper {
             """)
     String getLocationValue(Integer locationKey);
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_LOCMST
+            WHERE warehouse_code=#{warehouseCode} AND located=1
+            """)
+    Integer getAllLocated(String warehouseCode);
+
     //    실제 수량이 더 많을 때 사용
 //    @Select("""
 //            SELECT l.location_key

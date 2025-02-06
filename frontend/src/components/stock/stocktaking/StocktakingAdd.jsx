@@ -186,7 +186,7 @@ function StocktakingAdd({
   useEffect(() => {
     if (warehouseCode && itemCode) {
       axios
-        .get(`/api/stocktaking/count/${warehouseCode}/${itemCode}`)
+        .get(`/api/stocktaking/count/${warehouseCode}`)
         .then((res) => {
           console.log(res.data);
           setCountCurrent(res.data); // 백엔드에서 받은 전산 수량 값 설정
@@ -728,7 +728,6 @@ function StocktakingAdd({
               </Field>
             </Box>
           </Box>
-          {/*  TODO: 실사유형 radio로 체크  */}
           <Box></Box>
         </DialogBody>
         <DialogFooter>

@@ -76,9 +76,9 @@ public class StocktakingController {
     }
 
     //    전산 수량 불러오기
-    @GetMapping("count/{warehouseCode}/{itemCode}")
-    public Integer count(@PathVariable String warehouseCode, @PathVariable String itemCode) {
-        return service.getStocktakingCountCurrent(warehouseCode, itemCode);
+    @GetMapping("count/{warehouseCode}")
+    public Integer count(@PathVariable String warehouseCode) {
+        return service.getStocktakingCountCurrent(warehouseCode);
     }
 
     //    row 값 불러오기

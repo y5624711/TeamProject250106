@@ -107,16 +107,9 @@ public class StocktakingService {
                                 stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
     }
 
-    public Integer getStocktakingCountCurrent(String warehouseCode, String itemCode) {
+    public Integer getStocktakingCountCurrent(String warehouseCode) {
 
-        // 전체 개수 가져오기
-        Integer all = mapper.getStocktakingAll(warehouseCode, itemCode);
-
-        // 출고 개수 가져오기
-        Integer out = mapper.getStocktakingOut(warehouseCode, itemCode);
-
-
-        Integer countCurrent = all - out - out;
+        Integer countCurrent = mapper.getAllLocated(warehouseCode);
 
         return countCurrent;
     }
