@@ -46,7 +46,7 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "등록 권한이 없습니다.")));
 
-        };
+        }
 
 
         boolean success = service.addInstkProcess(instk);
@@ -89,16 +89,11 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "반려 권한이 없습니다.")));
 
-        };
+        }
 
         boolean result = service.rejectInstk(instk);
 
-        // 이미 반려된 상태
-//        if (result) {
-//            return ResponseEntity.ok()
-//                    .body(Map.of("message", Map.of("type", "error",
-//                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
-//        }
+
         // 반려 성공
          if (result) {
             return ResponseEntity.ok()

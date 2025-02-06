@@ -457,6 +457,7 @@ LIMIT #{offset}, 10
     String selectCompanyById(String id);
 
 
+    //다루는 협력업체 이름과 ,  품목 코드가 같은걸 찾아서
     @Select("""
         SELECT C.customer_code 
         FROM TB_CUSTMST C 

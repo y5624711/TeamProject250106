@@ -67,6 +67,7 @@ export function InstkList() {
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
+    setSelectedIndex(index);
     handleDetailViewModal(); // 상세 모달 열기
   };
 
