@@ -73,6 +73,7 @@ function StocktakingAdd({
   const [locationKey, setLocationKey] = useState("");
   const [putStocktakingType, setPutStocktakingType] = useState(null);
   const [serialNo, setSerialNo] = useState(null);
+  const [tooltip, setTooltip] = useState(false);
 
   const resetState = () => {
     setWarehouseCode(null);
@@ -327,7 +328,7 @@ function StocktakingAdd({
   };
 
   const serialValidate = () => {
-    return serialNo !== "" && serialNo !== null;
+    return serialNo !== "" && serialNo !== null && tooltip === true;
   };
 
   const handleDifferentClick = () => {
@@ -340,6 +341,7 @@ function StocktakingAdd({
           : setMakeDifference("실사 출고") || setPutStocktakingType("lost")
       );
     });
+    setTooltip(true);
   };
 
   useEffect(() => {
@@ -348,6 +350,16 @@ function StocktakingAdd({
 
   const handleAddLocation = () => {
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
+
+    axios.post(`/api/stocktaking/updateStock`, {
+      locationKey,
+      row,
+      col,
+      shelf,
+      serialNo,
+      makeDifference,
+      putStocktakingType,
+    });
 
     setMakeDifference(null);
     setPutStocktakingType(null);
@@ -375,6 +387,14 @@ function StocktakingAdd({
       setSerialNo("NewCode");
     }
   }, [putStocktakingType]);
+
+  useEffect(() => {
+    setTooltip(false);
+  }, [row, col, shelf]);
+
+  console.log(makeDifference);
+  console.log(putStocktakingType);
+  console.log(row);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
