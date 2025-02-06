@@ -476,4 +476,11 @@ LIMIT #{offset}, 10
             WHERE state_common_code="INSTK" AND state_request_key=#{inputKey}
             """)
     Instk viewDisapproveByInputKey(int inputKey);
+
+    @Select("""
+            SELECT  BI.input_consent
+            FROM TB_BUYIN BI
+            WHERE input_key=#{inputKey}
+            """)
+    boolean viewInputConsetByInputKey(int inputKey);
 }

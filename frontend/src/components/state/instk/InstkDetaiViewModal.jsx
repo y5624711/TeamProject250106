@@ -56,7 +56,6 @@ export function InstkDetaiViewModal({
       .get(`/api/instk/detailview/${instk.inputKey}`, {
         params: {
           inputCommonCodeName: instk.inputCommonCodeName,
-          inputConsent: instk.inputConsent,
         },
       })
       .then((res) => {
@@ -99,7 +98,7 @@ export function InstkDetaiViewModal({
       <DialogContent ref={contentRef}>
         <DialogHeader>
           <DialogTitle>
-            {instk.inputConsent == true ? "입고 상세" : "입고 반려"}
+            {detailData.inputConsent == true ? "입고 상세" : "입고 반려"}
           </DialogTitle>
         </DialogHeader>
         {isLoading ? (
@@ -133,7 +132,7 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
 
-                {instk.inputConsent && (
+                {detailData.inputConsent && (
                   <Field
                     orientation="horizontal"
                     label={<SpacedLabel text="시리얼번호" req />}
@@ -204,7 +203,7 @@ export function InstkDetaiViewModal({
               >
                 <Input
                   readOnly
-                  value={`${detailData.wareHouseName}${instk.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
+                  value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
                 />
               </Field>
 
@@ -222,7 +221,7 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={"내용 없음"} />
                 )}
               </Field>
-              {instk.inputConsent === true ? (
+              {detailData.inputConsent === true ? (
                 <HStack>
                   <Field
                     label={<SpacedLabel text="승인자" req />}
@@ -254,7 +253,7 @@ export function InstkDetaiViewModal({
                 </HStack>
               )}
 
-              {instk.inputConsent === true ? (
+              {detailData.inputConsent === true ? (
                 <Field
                   label={<SpacedLabel text="승인날짜" req />}
                   orientation="horizontal"
@@ -271,7 +270,7 @@ export function InstkDetaiViewModal({
               )}
 
               {/*true고  비고 없으면 필드 , */}
-              {instk.inputConsent === true ? (
+              {detailData.inputConsent === true ? (
                 // true
                 <Field
                   label={<SpacedLabel text="승인비고" req />}
