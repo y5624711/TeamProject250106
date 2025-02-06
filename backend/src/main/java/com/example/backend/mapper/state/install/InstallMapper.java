@@ -21,7 +21,7 @@ public interface InstallMapper {
     @Select("""
             SELECT franchise_code, franchise_name, franchise_address
             FROM TB_FRNCHSMST
-            WHERE franchise_active=1
+            WHERE franchise_active = 1
             """)
     List<Map<String, String>> getInstallFranchiseList();
 
@@ -51,7 +51,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.item_common_code = c.item_code
             WHERE i.install_request_key = #{installKey}
             """)
-    List<Install> getInstallRequestView(int installKey);
+    Install getInstallRequestView(int installKey);
 
     // 설치 기사 사번으로 이름 가져오기
     @Select("""
@@ -60,6 +60,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON c.customer_code = e.employee_workplace_code
             WHERE i.install_request_key = #{installKey}
+            AND e.employee_active = 1
             """)
     List<Map<String, Object>> getCustomerEmployee(int installKey);
 
@@ -300,10 +301,7 @@ public interface InstallMapper {
                     ORDER BY ${sort} ${order}
                 </if>
                 <if test="sort == null or sort == ''">
-                    ORDER BY COALESCE(GREATEST(ir.install_request_date, ia.install_approve_date, ih.inout_history_date),
-                                     ir.install_request_date,
-                                     ia.install_approve_date,
-                                     ih.inout_history_date) DESC
+                    ORDER BY installDate DESC
                 </if>
                 LIMIT #{offset}, 10
             </script>

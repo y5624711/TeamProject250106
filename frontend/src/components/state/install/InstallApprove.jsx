@@ -28,6 +28,7 @@ import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -53,7 +54,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const fetchInstallRequest = async () => {
     try {
       const response = await axios.get(`/api/install/request/${installKey}`);
-      setInstallRequest(response.data[0] || {});
+      setInstallRequest(response.data);
     } catch (error) {
       console.error("설치 요청 정보 조회 실패:", error);
     }
@@ -125,7 +126,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
-  // 설치 요청 반려 (기본키, 요청키, 반려자, 반려날짜, 비고)
+  // 설치 요청 반려 (기본키, 요청키, 반려자, 반려일, 비고)
   const handleDisapproveClick = () => {
     const disapproveData = {
       installRequestKey: installKey,
@@ -179,46 +180,79 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           <Box css={{ "--field-label-width": "85px" }}>
             <Stack gap={"15px"}>
               {isApproved == true && (
-                <Field label={"출고 번호"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="출고 번호" />}
+                  orientation="horizontal"
+                >
                   <Input value={installApprove.outputNo} readOnly />
                 </Field>
               )}
               <Box display="flex" gap={5}>
-                <Field label={"가맹점"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="가맹점" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.franchiseName} readOnly />
                 </Field>
-                <Field label={"주소"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="주소" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.franchiseAddress} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"품목"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="품목" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.itemCommonName} readOnly />
                 </Field>
-                <Field label={"수량"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="수량" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.installRequestAmount} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"담당 업체"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="담당 업체" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.customerName} readOnly />
                 </Field>
-                <Field label={"창고"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="창고" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.warehouseName} readOnly />
                 </Field>
               </Box>
               <Box display="flex" gap={5}>
-                <Field label={"요청자"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="요청자" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.businessEmployeeName} readOnly />
                 </Field>
-                <Field label={"사번"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
                   <Input value={installRequest.businessEmployeeNo} readOnly />
                 </Field>
               </Box>
-              <Field label={"요청 날짜"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="요청일" />}
+                orientation="horizontal"
+              >
                 <Input value={installRequest.installRequestDate} readOnly />
               </Field>
-              <Field label={"요청 비고"} orientation="horizontal">
+              <Field
+                label={<SpacedLabel text="요청 비고" />}
+                orientation="horizontal"
+              >
                 {installRequest.installRequestNote ? (
                   <Textarea
                     value={installRequest.installRequestNote}
@@ -236,7 +270,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 <Stack gap={"15px"}>
                   <Box display="flex" gap={5}>
                     <Field
-                      label={isApproved != true ? "반려/승인자" : "승인자"}
+                      label={
+                        <SpacedLabel
+                          text={isApproved != true ? "반려/승인자" : "승인자"}
+                        />
+                      }
                       orientation="horizontal"
                     >
                       <Input
@@ -245,7 +283,10 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         variant={isApproved == null ? "subtle" : "outline"}
                       />
                     </Field>
-                    <Field label={"사번"} orientation="horizontal">
+                    <Field
+                      label={<SpacedLabel text="사번" />}
+                      orientation="horizontal"
+                    >
                       <Input
                         value={id}
                         readOnly
@@ -256,7 +297,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
 
                   <Box display="flex" gap={5}>
                     <Field
-                      label="설치 기사"
+                      label={<SpacedLabel text="설치 기사" req />}
                       orientation="horizontal"
                       required={isApproved == null}
                     >
@@ -307,7 +348,10 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                         </SelectContent>
                       </SelectRoot>
                     </Field>
-                    <Field label={"사번"} orientation="horizontal">
+                    <Field
+                      label={<SpacedLabel text="사번" />}
+                      orientation="horizontal"
+                    >
                       <Input
                         value={installApprove.customerInstallerNo}
                         variant={isApproved == null ? "subtle" : "outline"}
@@ -316,7 +360,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     </Field>
                   </Box>
                   <Field
-                    label={"설치 예정일"}
+                    label={<SpacedLabel text="설치 예정일" req />}
                     orientation="horizontal"
                     required={isApproved == null}
                   >
@@ -334,7 +378,10 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     />
                   </Field>
                   {isApproved == true && (
-                    <Field label={"승인 날짜"} orientation="horizontal">
+                    <Field
+                      label={<SpacedLabel text="승인일" />}
+                      orientation="horizontal"
+                    >
                       <Input
                         value={installApprove.installApproveDate}
                         readOnly={isApproved}
@@ -342,7 +389,11 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     </Field>
                   )}
                   <Field
-                    label={isApproved != true ? "비고" : "승인 비고"}
+                    label={
+                      <SpacedLabel
+                        text={isApproved != true ? "비고" : "승인 비고"}
+                      />
+                    }
                     orientation="horizontal"
                   >
                     {isApproved != true ? (
@@ -371,23 +422,35 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
               {installRequest.installRequestConsent == false && (
                 <Stack gap={"15px"}>
                   <Box display="flex" gap={5}>
-                    <Field label={"반려자"} orientation="horizontal">
+                    <Field
+                      label={<SpacedLabel text="반려자" />}
+                      orientation="horizontal"
+                    >
                       <Input
                         value={disapproveData.disapproveEmployeeName}
                         readOnly
                       />
                     </Field>
-                    <Field label={"사번"} orientation="horizontal">
+                    <Field
+                      label={<SpacedLabel text="사번" />}
+                      orientation="horizontal"
+                    >
                       <Input
                         value={disapproveData.disapproveEmployeeNo}
                         readOnly
                       />
                     </Field>
                   </Box>
-                  <Field label={"반려 날짜"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="반려일" />}
+                    orientation="horizontal"
+                  >
                     <Input value={disapproveData.disapproveDate} readOnly />
                   </Field>
-                  <Field label={"반려 비고"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="반려 비고" />}
+                    orientation="horizontal"
+                  >
                     {disapproveData.disapproveNote ? (
                       <Textarea
                         readOnly

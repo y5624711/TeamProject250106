@@ -12,4 +12,7 @@ public class CommonCode {
     private String commonCodeName;
     private boolean commonCodeActive;
     private String commonCodeNote;
+
+    private Integer usedCommonCodeByCustomer;
 }
+

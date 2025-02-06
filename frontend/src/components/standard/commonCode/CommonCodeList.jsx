@@ -86,13 +86,13 @@ export function CommonCodeList({
                 <Table.Cell textAlign="center" width={"90px"}>
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"150px"}>
+                <Table.Cell textAlign="center" width="30%">
                   {code.commonCodeType}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"150px"}>
+                <Table.Cell textAlign="center" width="30%">
                   {code.commonCode}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"150px"}>
+                <Table.Cell textAlign="center" width="30%">
                   {code.commonCodeName}
                 </Table.Cell>
               </Table.Row>

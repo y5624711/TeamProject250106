@@ -76,6 +76,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
 
   const handleResetClick = () => {
     setSearchParams("");
+    setSearch({ type: "all", keyword: "" });
   };
 
   return (

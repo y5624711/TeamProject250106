@@ -2,11 +2,12 @@ USE teamPrj0106;
 
 CREATE TABLE TB_ITEMSUB
 (
-    item_sub_key     INT PRIMARY KEY AUTO_INCREMENT,
-    item_common_code VARCHAR(5) NOT NULL,
-    serial_no        VARCHAR(6) NOT NULL UNIQUE,
-    item_sub_active  BOOLEAN DEFAULT TRUE,
-    item_sub_note    VARCHAR(50),
+    item_sub_key        INT PRIMARY KEY AUTO_INCREMENT,
+    item_common_code    VARCHAR(5) NOT NULL,
+    serial_no           VARCHAR(6) NOT NULL UNIQUE,
+    item_sub_active     BOOLEAN DEFAULT TRUE,
+    item_sub_note       VARCHAR(50),
+    current_common_code VARCHAR(5) NOT NULL,
 
     CONSTRAINT fk_item_sub FOREIGN KEY (item_common_code)
         REFERENCES TB_SYSCOMM (common_code) ON UPDATE CASCADE

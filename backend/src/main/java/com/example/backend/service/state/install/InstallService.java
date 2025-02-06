@@ -47,7 +47,7 @@ public class InstallService {
     }
 
     // 설치 요청에 대한 정보 가져오기
-    public List<Install> getInstallRequestView(int installKey) {
+    public Install getInstallRequestView(int installKey) {
         return mapper.getInstallRequestView(installKey);
     }
 

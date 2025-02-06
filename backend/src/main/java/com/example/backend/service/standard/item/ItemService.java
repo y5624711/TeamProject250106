@@ -89,10 +89,10 @@ public class ItemService {
     }
 
     // 품목 1개 정보 가져오기
-    public List<Item> getItemView(int itemKey) {
+    public Item getItemView(int itemKey) {
         return mapper.getItemView(itemKey);
     }
-    
+
 
     // 품목 수정하기
     public boolean editItem(int itemKey, Item item) {

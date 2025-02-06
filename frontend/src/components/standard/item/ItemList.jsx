@@ -70,25 +70,23 @@ export function ItemList({
                 bg={item.itemActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell textAlign="center" width={"90px"}>
+                <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"170px"}>
+                <Table.Cell textAlign="center" width="20%">
                   {item.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"150px"}>
+                <Table.Cell textAlign="center" width="20%">
                   {item.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"100px"}>
+                <Table.Cell textAlign="center" width="10%">
                   {item.size || "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"100px"}>
-                  {item.unit || "-"}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width={"130px"}>
+                <Table.Cell textAlign="center">{item.unit || "-"}</Table.Cell>
+                <Table.Cell textAlign="center" width="15%">
                   {item.inputPrice.toLocaleString("ko-KR")}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"130px"}>
+                <Table.Cell textAlign="center" width="15%">
                   {item.outputPrice.toLocaleString("ko-KR")}
                 </Table.Cell>
               </Table.Row>

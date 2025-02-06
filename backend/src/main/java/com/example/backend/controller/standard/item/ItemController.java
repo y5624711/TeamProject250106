@@ -58,7 +58,7 @@ public class ItemController {
 
     // 품목 1개의 정보 가져오기
     @GetMapping("view/{itemKey}")
-    public List<Item> itemView(@PathVariable int itemKey) {
+    public Item itemView(@PathVariable int itemKey) {
         return service.getItemView(itemKey);
     }
 

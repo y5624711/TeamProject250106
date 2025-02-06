@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -72,7 +71,7 @@ public class CommonController {
 
     // 공통 코드 1개의 정보 가져오기
     @GetMapping("view/{commonCodeKey}")
-    public List<CommonCode> getCommonCodeView(@PathVariable int commonCodeKey) {
+    public CommonCode getCommonCodeView(@PathVariable int commonCodeKey) {
         return service.getCommonCodeView(commonCodeKey);
     }
 
