@@ -73,7 +73,7 @@ GROUP BY a.warehouse_code, d.common_code, d.common_code_name;
 
 DROP VIEW V_ITEM_CRNT;
 
-##최최최최종
+###최최최최종
 CREATE VIEW V_ITEM_CRNT AS
 SELECT d.common_code,
        a.warehouse_code,
