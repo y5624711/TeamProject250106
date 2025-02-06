@@ -126,7 +126,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
       });
   };
 
-  // 설치 요청 반려 (기본키, 요청키, 반려자, 반려날짜, 비고)
+  // 설치 요청 반려 (기본키, 요청키, 반려자, 반려일, 비고)
   const handleDisapproveClick = () => {
     const disapproveData = {
       installRequestKey: installKey,
@@ -244,7 +244,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                 </Field>
               </Box>
               <Field
-                label={<SpacedLabel text="요청 날짜" />}
+                label={<SpacedLabel text="요청일" />}
                 orientation="horizontal"
               >
                 <Input value={installRequest.installRequestDate} readOnly />
@@ -379,7 +379,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   </Field>
                   {isApproved == true && (
                     <Field
-                      label={<SpacedLabel text="승인 날짜" />}
+                      label={<SpacedLabel text="승인일" />}
                       orientation="horizontal"
                     >
                       <Input
@@ -442,7 +442,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                     </Field>
                   </Box>
                   <Field
-                    label={<SpacedLabel text="반려 날짜" />}
+                    label={<SpacedLabel text="반려일" />}
                     orientation="horizontal"
                   >
                     <Input value={disapproveData.disapproveDate} readOnly />

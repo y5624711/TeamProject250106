@@ -196,7 +196,7 @@ export function InstallConfiguration({
                 </Field>
               </Box>
               <Field
-                label={<SpacedLabel text="승인 날짜" />}
+                label={<SpacedLabel text="승인일" />}
                 orientation="horizontal"
               >
                 <Input value={installData.installRequestDate} readOnly />
