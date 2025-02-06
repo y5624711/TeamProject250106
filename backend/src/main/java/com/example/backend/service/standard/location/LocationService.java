@@ -26,10 +26,6 @@ public class LocationService {
 
         String workplaceCode = stocktakingMapper.getWorkplaceCode(auth.getName());
         String workplace = workplaceCode.substring(0, 3);
-        System.out.println("searchType: " + searchType);
-        System.out.println("searchKey: " + searchKeyword);
-        System.out.println("1. " + mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace, active));
-        System.out.println("2. " + mapper.countAllLocation(searchType, searchKeyword, workplaceCode, workplace, active));
 
         return Map.of("list", mapper.list(searchType, searchKeyword, pageList, sort, order, workplaceCode, workplace, active),
                 "count", mapper.countAllLocation(searchType, searchKeyword, workplaceCode, workplace, active));
