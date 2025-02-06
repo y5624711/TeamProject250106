@@ -17,6 +17,7 @@ import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import StockSerialInput from "./StockSerialInput.jsx";
 
 function StocktakingAdd({
   isOpen,
@@ -69,6 +70,7 @@ function StocktakingAdd({
   const [selectedShelf, setSelectedShelf] = useState("");
   const [locationKey, setLocationKey] = useState("");
   const [putStocktakingType, setPutStocktakingType] = useState("");
+  const [serialNo, setSerialNo] = useState("");
 
   const resetState = () => {
     setWarehouseCode("");
@@ -81,6 +83,8 @@ function StocktakingAdd({
     setStocktakingType(true);
     setSearchClick(false);
     setDifference(null);
+    setSerialNo("");
+    setPutStocktakingType("");
   };
 
   // 요청 창 닫히면 초기화
@@ -580,34 +584,8 @@ function StocktakingAdd({
                 {difference === "2" && (
                   <>
                     <hr />
+
                     <br />
-                    실제 더 많음
-                    <br />
-                    <Field
-                      label="등록 분류"
-                      orientation="horizontal"
-                      mb={15}
-                      required
-                    >
-                      <Box ml={"86px"} style={{ position: "absolute" }}>
-                        <RadioGroup
-                          defaultValue="true" // ✅ Boolean 값을 문자열로 변환
-                          onChange={(e) =>
-                            setPutStocktakingType(e.target.value)
-                          }
-                        >
-                          <HStack gap="6">
-                            <Radio value="true">새 물품 등록</Radio>
-                            <Radio value="false">기존 물품 등록</Radio>
-                          </HStack>
-                        </RadioGroup>
-                      </Box>
-                      {/*<Input*/}
-                      {/*  type={"text"}*/}
-                      {/*  value={stocktakingType}*/}
-                      {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
-                      {/*/>*/}
-                    </Field>
                     <Field
                       label="로케이션"
                       orientation="horizontal"
@@ -684,6 +662,49 @@ function StocktakingAdd({
                         />
                       </Field>
                     </Box>
+                    <Field
+                      label="등록 분류"
+                      orientation="horizontal"
+                      mb={15}
+                      required
+                    >
+                      <Box
+                        ml={"86px"}
+                        style={{ position: "absolute" }}
+                        gap={18}
+                      >
+                        <RadioGroup
+                          defaultValue="new" // ✅ Boolean 값을 문자열로 변환
+                          onChange={(e) =>
+                            setPutStocktakingType(e.target.value)
+                          }
+                        >
+                          <HStack gap="4">
+                            <Radio value="new">새 물품</Radio>
+                            <Radio value="old">기존 물품</Radio>
+                          </HStack>
+                        </RadioGroup>
+                      </Box>
+
+                      {/*<Input*/}
+                      {/*  type={"text"}*/}
+                      {/*  value={stocktakingType}*/}
+                      {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
+                      {/*/>*/}
+                    </Field>
+                    {putStocktakingType === "old" ? (
+                      <Field
+                        label="시리얼 번호"
+                        orientation="horizontal"
+                        mb={15}
+                        required
+                      >
+                        <StockSerialInput
+                          serialNo={serialNo}
+                          setSerialNo={setSerialNo}
+                        />
+                      </Field>
+                    ) : null}
                   </>
                 )}
                 <Box></Box>
