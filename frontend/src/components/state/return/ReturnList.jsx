@@ -163,7 +163,7 @@ function ReturnList({
       </RadioGroup>
 
       {/*리스트*/}
-      <Table.Root interactive my={3} style={{ cursor: "pointer" }}>
+      <Table.Root my={3} style={{ cursor: "pointer" }}>
         <Table.Header>
           <Table.Row whiteSpace={"nowrap"} bg={"gray.100"}>
             <Table.ColumnHeader
@@ -277,6 +277,7 @@ function ReturnList({
               onDoubleClick={() => {
                 onRowClick(data.returnRequestKey);
               }}
+              _hover={{ backgroundColor: "gray.200", cursor: "pointer" }}
             >
               <Table.Cell textAlign="center" width={"90px"}>
                 {index + 1}
