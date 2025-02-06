@@ -278,31 +278,41 @@ function ReturnList({
                 onRowClick(data.returnRequestKey);
               }}
             >
-              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-              <Table.Cell textAlign="center">{data.franchiseName}</Table.Cell>
-              <Table.Cell textAlign="center">{data.itemCommonName}</Table.Cell>
-              <Table.Cell textAlign="center">{data.customerName}</Table.Cell>
+              <Table.Cell textAlign="center" width={"90px"}>
+                {index + 1}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.franchiseName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.itemCommonName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"9%"}>
+                {data.customerName}
+              </Table.Cell>
 
-              <Table.Cell textAlign="center">{data.serialNo}</Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"11%"}>
+                {data.serialNo}
+              </Table.Cell>
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnNo ? data.returnNo : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"9%"}>
                 {data.businessEmployeeName}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnConsent == 1
                   ? data.customerEmployeeName
                   : data.returnConsent == 0
                     ? data.disapproveEmployeeName
                     : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.customerConfigurerName
                   ? data.customerConfigurerName
                   : "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width={"10%"}>
                 {data.returnConsent == 1
                   ? data.returnApproveDate
                   : data.returnConsent == 0
