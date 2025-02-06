@@ -35,7 +35,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
   const initialInstallRequest = {
     franchiseName: "",
     itemCommonName: "",
-    installRequestAmount: "",
+    installRequestAmount: 1,
     franchiseAddress: "",
     customerName: "",
     installRequestNote: "",
@@ -43,9 +43,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
   const [installRequest, setInstallRequest] = useState(initialInstallRequest);
   const [installItemList, setInstallItemList] = useState([]);
   const [franchiseList, setFranchiseList] = useState([]);
-  // const [localFranchiseName, setLocalFranchiseName] = useState("");
-  // const [localFranchiseCode, setLocalFranchiseCode] = useState("");
-  // const [selectedFranchise, setSelectedFranchise] = useState(null);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
