@@ -54,6 +54,9 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     } else if (location.pathname.startsWith("/instk")) {
       const state = searchParams.get("state") ?? "all";
       nextSearchParam.set("state", state);
+    } else if (location.pathname.startsWith("/return")) {
+      const state = searchParams.get("state") ?? "all";
+      nextSearchParam.set("state", state);
     }
 
     const sort = searchParams.get("sort") ?? "";
@@ -111,7 +114,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       <IconButton
         transform="translateX(-130%) "
         style={{ cursor: "pointer" }}
-        variant={"ghost"}
+        variant={"none"}
         onClick={handleResetClick}
       >
         <BsArrowCounterclockwise size="25px" />

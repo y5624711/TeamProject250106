@@ -97,7 +97,7 @@ function CustomerList({
         <IconButton
           transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
-          variant={"ghost"}
+          variant={"none"}
           onClick={onReset}
         >
           <BsArrowCounterclockwise size="25px" />

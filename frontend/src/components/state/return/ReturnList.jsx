@@ -4,20 +4,9 @@ import {
   Center,
   createListCollection,
   HStack,
-  IconButton,
-  Input,
   Table,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import { Button } from "../../ui/button.jsx";
-import { BsArrowCounterclockwise } from "react-icons/bs";
-import {
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from "../../ui/select.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -26,6 +15,7 @@ import {
 } from "../../ui/pagination.jsx";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { useSearchParams } from "react-router-dom";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
 
 function ReturnList({
   returnList,
@@ -106,45 +96,10 @@ function ReturnList({
   return (
     <Box>
       {/*검색*/}
-      <HStack justifyContent="center" w={"100%"} mt={-2}>
-        <SelectRoot
-          collection={returnSearchKeywords}
-          width={"160px"}
-          value={getLabelByValue(localType)}
-          onValueChange={(e) => {
-            setLocalType(e.value[0]);
-          }}
-        >
-          <SelectTrigger>
-            <SelectValueText placeholder={getLabelByValue(localType)} />
-          </SelectTrigger>
-          <SelectContent>
-            {returnSearchKeywords.items.map((e) => (
-              <SelectItem item={e} key={e.value} value={e.value}>
-                {e.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-        <Input
-          width="50%"
-          value={localKeyword}
-          onChange={(e) => setLocalKeyword(e.target.value)}
-          placeholder="검색어를 입력해 주세요."
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <IconButton
-          transform="translateX(-130%) "
-          style={{ cursor: "pointer" }}
-          variant={"ghost"}
-          onClick={() => setSearchParams(new URLSearchParams())}
-        >
-          <BsArrowCounterclockwise size="25px" />
-        </IconButton>
-        <Button onClick={handleSearch} transform="translateX(-75%)">
-          검색
-        </Button>
-      </HStack>
+      <SearchBar
+        searchOptions={returnSearchKeywords}
+        onSearchChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
 
       {/* 상태 분류 */}
       <RadioGroup
