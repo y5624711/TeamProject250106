@@ -15,10 +15,10 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "../../ui/select.jsx";
-import { Checkbox } from "../../ui/checkbox.jsx";
 import React from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { Sort } from "../../tool/form/Sort.jsx";
+import { ActiveSwitch } from "../../tool/form/ActiveSwitch.jsx";
 
 export function FranchiseList({
   franchiseList,
@@ -27,8 +27,8 @@ export function FranchiseList({
   setSearchParams,
   handleSearchClick,
   onReset,
-  checkedActive,
-  toggleCheckedActive,
+  // checkedActive,
+  // toggleCheckedActive,
   onFranchiseClick,
 }) {
   const FranchiseOptionList = createListCollection({
@@ -102,16 +102,21 @@ export function FranchiseList({
         </Button>
       </HStack>
 
-      {/* 전체 조회 체크 박스 */}
-      <Checkbox
-        mt={3}
-        mb={5}
-        ml={3}
-        checked={checkedActive}
-        onChange={toggleCheckedActive}
-      >
-        미사용 포함 조회
-      </Checkbox>
+      {/*/!* 전체 조회 체크 박스 *!/*/}
+      {/*<Checkbox*/}
+      {/*  mt={3}*/}
+      {/*  mb={5}*/}
+      {/*  ml={3}*/}
+      {/*  checked={checkedActive}*/}
+      {/*  onChange={toggleCheckedActive}*/}
+      {/*>*/}
+      {/*  미사용 포함 조회*/}
+      {/*</Checkbox>*/}
+
+      {/* 체크 박스 */}
+      <ActiveSwitch
+        onActiveChange={(nextSearchParam) => setSearchParams(nextSearchParam)}
+      />
 
       {/* 테이블 */}
       <Table.Root interactive style={{ cursor: "pointer" }}>
