@@ -2,10 +2,12 @@ package com.example.backend.controller.standard.franchise;
 
 import com.example.backend.dto.standard.franchise.Franchise;
 import com.example.backend.service.standard.franchise.FranchiseService;
+import com.example.backend.service.state.purchase.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -17,11 +19,16 @@ import java.util.Map;
 public class FranchiseController {
 
     final FranchiseService service;
+    private final PurchaseService purchaseService;
 
     // 가맹점 등록하기
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise) {
+    public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise, Authentication auth) {
+        // 등록 권한 확인 -> 본사 사람만 가능
+        if (purchaseService.checkCustomer(auth.getName())) {
+            return ResponseEntity.badRequest().body(Map.of("message",Map.of("type", "error","text", "등록 권한이 없습니다.")));
+        }
         // 중복 체크
         int duplicateCount = service.duplicateFranchise(franchise);
         if (duplicateCount > 0) {
@@ -32,7 +39,8 @@ public class FranchiseController {
         if (service.validate(franchise)) {
             if (service.addFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success", "text", "가맹점이 등록되었습니다."), "franchiseKey", franchise.getFranchiseKey()));
+                        "message", Map.of("type", "success", "text", "가맹점이 등록되었습니다."),
+                        "franchiseKey", franchise.getFranchiseKey()));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "가맹점 등록에 실패하였습니다.")));
             }

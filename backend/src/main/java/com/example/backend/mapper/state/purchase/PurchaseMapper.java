@@ -53,14 +53,21 @@ public interface PurchaseMapper {
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent,
                 pa.purchase_approve_date AS purchaseApproveDate,
-            COALESCE(GREATEST(pr.purchase_request_date, pa.purchase_approve_date),
-                              pr.purchase_request_date, pa.purchase_approve_date) AS purchaseDate
+                emp3.employee_name AS disapproveEmployeeName,
+                COALESCE(
+                        GREATEST(pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date),
+                        pr.purchase_request_date,
+                        pa.purchase_approve_date,
+                        dis.disapprove_date
+                    ) AS purchaseDate
             FROM TB_PURCH_REQ pr
             LEFT JOIN TB_PURCH_APPR pa ON pr.purchase_request_key = pa.purchase_request_key
             LEFT JOIN TB_EMPMST emp1 ON pr.employee_no = emp1.employee_no
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
+            LEFT JOIN (SELECT * FROM TB_DISPR WHERE state_common_code='PURCH') dis ON pr.purchase_request_key = dis.state_request_key
+            LEFT JOIN TB_EMPMST emp3 ON emp3.employee_no = dis.disapprove_employee_no
             WHERE
             <if test="state == 'all'">
                 (1=1 || purchase_consent IS NOT TRUE || purchase_consent IS NOT FALSE)
@@ -101,6 +108,8 @@ public interface PurchaseMapper {
                         <if test="type=='all' or type=='customerEmployeeName'">
                             OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR emp3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR disapprove_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )
@@ -109,8 +118,7 @@ public interface PurchaseMapper {
                     ORDER BY ${sort} ${order}
             </if>
             <if test="sort == null or sort == ''">
-                    ORDER BY COALESCE(GREATEST(pr.purchase_request_date,pa.purchase_approve_date),
-                            pr.purchase_request_date,pa.purchase_approve_date) DESC
+                ORDER BY purchaseDate DESC
             </if>
             LIMIT #{offset}, 10
             </script>
@@ -127,6 +135,8 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
+            LEFT JOIN (SELECT * FROM TB_DISPR WHERE state_common_code='PURCH') dis ON pr.purchase_request_key = dis.state_request_key
+            LEFT JOIN TB_EMPMST emp3 ON emp3.employee_no = dis.disapprove_employee_no
             WHERE
             <if test="state == 'all'">
                 (1=1 || purchase_consent IS NOT TRUE || purchase_consent IS NOT FALSE)
@@ -167,6 +177,8 @@ public interface PurchaseMapper {
                         <if test="type=='all' or type=='customerEmployeeName'">
                             OR emp2.employee_name LIKE CONCAT('%', #{keyword}, '%')
                             OR pa.customer_employee_no LIKE CONCAT('%', #{keyword}, '%')
+                            OR emp3.employee_name LIKE CONCAT('%', #{keyword}, '%')
+                            OR disapprove_employee_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                     </trim>
                     )
@@ -245,7 +257,7 @@ public interface PurchaseMapper {
     @Insert("""
             INSERT INTO TB_DISPR
             (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
-            VALUES (#{purchaseRequestKey}, 'PURCH', #{customerEmployeeNo}, #{purchaseApproveNote})
+            VALUES (#{purchaseRequestKey}, 'PURCH', #{disapproveEmployeeNo}, #{purchaseApproveNote})
             """)
     int insetDisapprove(Purchase purchase);
 
@@ -258,6 +270,7 @@ public interface PurchaseMapper {
             FROM TB_DISPR dis
             LEFT JOIN TB_EMPMST emp ON dis.disapprove_employee_no = emp.employee_no
             WHERE state_request_key = #{purchaseRequestKey}
+            AND state_common_code = 'PURCH'
             """)
     Purchase getPurchaseDisapprove(int purchaseRequestKey);
 }

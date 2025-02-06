@@ -109,7 +109,9 @@ export function PurchaseList({
                 textAlign="center"
                 verticalAlign="middle"
               >
-                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center" width="90px">
+                  {index + 1}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {purchase.customerName}
                 </Table.Cell>
