@@ -229,7 +229,7 @@ export function PurchaseApprove({
         </Field>
       </Box>
       <Field
-        label={<SpacedLabel text="요청 날짜" />}
+        label={<SpacedLabel text="요청일" />}
         orientation="horizontal"
         mb={15}
       >
@@ -275,7 +275,7 @@ export function PurchaseApprove({
               </Field>
             </Box>
             <Field
-              label={<SpacedLabel text="반려 날짜" />}
+              label={<SpacedLabel text="반려일" />}
               orientation="horizontal"
               mb={15}
             >
@@ -342,7 +342,7 @@ export function PurchaseApprove({
           {purchase.purchaseConsent && (
             <Box mt={4}>
               <Field
-                label={<SpacedLabel text="승인 날짜" />}
+                label={<SpacedLabel text="승인일" />}
                 orientation="horizontal"
                 mb={15}
               >
