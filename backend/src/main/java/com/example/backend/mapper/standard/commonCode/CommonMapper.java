@@ -120,7 +120,7 @@ public interface CommonMapper {
             LEFT OUTER JOIN TB_CUSTMST c ON sc.common_code = c.item_code
             WHERE common_code_key = #{commonCodeKey}
             """)
-    List<CommonCode> getCommonCodeView(int commonCodeKey);
+    CommonCode getCommonCodeView(int commonCodeKey);
 
     @Update("""
             UPDATE TB_SYSCOMM

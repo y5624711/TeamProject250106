@@ -79,7 +79,7 @@ public class CommonService {
     }
 
     // 공통 코드 1개 정보 가져오기
-    public List<CommonCode> getCommonCodeView(int commonCodeKey) {
+    public CommonCode getCommonCodeView(int commonCodeKey) {
         return mapper.getCommonCodeView(commonCodeKey);
     }
 

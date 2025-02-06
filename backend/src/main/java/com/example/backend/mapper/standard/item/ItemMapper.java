@@ -109,7 +109,7 @@ public interface ItemMapper {
                               LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             WHERE i.item_key = #{itemKey}
             """)
-    List<Item> getItemView(Integer itemKey);
+    Item getItemView(Integer itemKey);
 
     @Update("""
             UPDATE TB_ITEMMST
@@ -117,13 +117,6 @@ public interface ItemMapper {
             WHERE customer_code = #{customerCode}
             """)
     int editItemActive(Customer customer);
-
-    @Select("""
-            SELECT customer_name, customer_code
-            FROM TB_CUSTMST
-            WHERE item_code = #{itemCommonCode}
-            """)
-    List<Item> getCustomerName(String itemCommonCode);
 
     @Update("""
             UPDATE TB_ITEMMST
@@ -144,12 +137,12 @@ public interface ItemMapper {
     List<String> getUsedItemCommonCode();
 
 
-    //    코드중 시리얼 넘버 최댓값 가져오기 > 정수값으로 변환하도록
+    // 코드중 시리얼 넘버 최댓값 가져오기 > 정수값으로 변환하도록
     @Select("""
-    SELECT MAX(CAST(SUBSTRING(serial_no, 2) AS UNSIGNED))
-    FROM TB_ITEMSUB
-    WHERE serial_no LIKE 'S%'
-""")
+                SELECT MAX(CAST(SUBSTRING(serial_no, 2) AS UNSIGNED))
+                FROM TB_ITEMSUB
+                WHERE serial_no LIKE 'S%'
+            """)
     Integer viewMaxSerialNoByItemCode(String itemCommonCode);
 
     @Insert("""

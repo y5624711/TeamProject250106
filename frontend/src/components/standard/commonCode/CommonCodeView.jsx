@@ -36,13 +36,7 @@ export function CommonCodeView({
   setChange,
   setCommonCodeKey,
 }) {
-  const [editedCommonCode, setEditedCommonCode] = useState({
-    commonCode: "",
-    commonCodeName: "",
-    commonCodeNote: "",
-    commonCodeType: "",
-    commonCodeActive: "",
-  });
+  const [commonCode, setCommonCode] = useState(null);
 
   const selectOptions = [
     { label: "품목 코드", value: "ITEM" },
@@ -56,7 +50,7 @@ export function CommonCodeView({
       axios
         .get(`/api/commonCode/view/${commonCodeKey}`)
         .then((res) => {
-          setEditedCommonCode(res.data[0]);
+          setCommonCode(res.data);
         })
         .catch((error) => {
           console.error("공통 코드 상세 정보 요청 중 오류 발생: ", error);
@@ -64,30 +58,27 @@ export function CommonCodeView({
     }
   }, [commonCodeKey, isOpen]);
 
+  console.log(commonCode);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedCommonCode((prevCode) => ({
+    setCommonCode((prevCode) => ({
       ...prevCode,
       [name]: value,
     }));
   };
 
   const handleCodeTypeChange = (selectedValue) => {
-    setEditedCommonCode((prev) => ({
+    setCommonCode((prev) => ({
       ...prev,
       commonCodeType: selectedValue.value[0],
     }));
   };
 
-  // 상태 변화 감지 후 로그 출력
-  useEffect(() => {
-    console.log("Updated commonCodeType:", editedCommonCode.commonCodeType);
-  }, [editedCommonCode.commonCodeType]);
-
   // 수정된 품목 공통 코드 데이터 서버로 전송
   const handleSaveClick = () => {
     axios
-      .put(`/api/commonCode/edit/${commonCodeKey}`, editedCommonCode)
+      .put(`/api/commonCode/edit/${commonCodeKey}`, commonCode)
       .then((res) => res.data)
       .then((data) => {
         toaster.create({
@@ -104,15 +95,15 @@ export function CommonCodeView({
   };
 
   const isValid =
-    editedCommonCode &&
-    (editedCommonCode.commonCodeType === "ITEM" ||
-      (editedCommonCode.commonCodeType === "STANDARD" &&
-        /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
-      (editedCommonCode.commonCodeType === "STATE" &&
-        /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
-        editedCommonCode.commonCodeName.trim() !== ""));
+    commonCode &&
+    (commonCode.commonCodeType === "ITEM" ||
+      (commonCode.commonCodeType === "STANDARD" &&
+        /^[A-Z]{3}$/.test(commonCode.commonCode)) ||
+      (commonCode.commonCodeType === "STATE" &&
+        /^[A-Z]{3,5}$/.test(commonCode.commonCode) &&
+        commonCode.commonCodeName.trim() !== ""));
 
-  if (!editedCommonCode) {
+  if (!commonCode) {
     return;
   }
 
@@ -131,10 +122,10 @@ export function CommonCodeView({
           </DialogHeader>
           <DialogBody>
             <Text fontSize={"xs"} mt={-5} mb={3}>
-              {editedCommonCode.commonCodeType === "ITEM" ||
-              editedCommonCode.commonCodeType === "STANDARD"
+              {commonCode.commonCodeType === "ITEM" ||
+              commonCode.commonCodeType === "STANDARD"
                 ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
-                : editedCommonCode.commonCodeType === "STATE"
+                : commonCode.commonCodeType === "STATE"
                   ? "상태 코드는 대문자 3~5자리로 입력해야 합니다."
                   : ""}
             </Text>
@@ -143,7 +134,7 @@ export function CommonCodeView({
                 <SelectRoot onValueChange={handleCodeTypeChange}>
                   <SelectTrigger>
                     <SelectValueText>
-                      {editedCommonCode.commonCodeType || "코드 구분 선택"}
+                      {commonCode.commonCodeType || "코드 구분 선택"}
                     </SelectValueText>
                   </SelectTrigger>
                   <SelectContent
@@ -165,7 +156,7 @@ export function CommonCodeView({
                 <Input
                   name="commonCode"
                   placeholder="코드"
-                  value={editedCommonCode.commonCode}
+                  value={commonCode.commonCode}
                   onChange={handleChange}
                   maxLength={5}
                 />
@@ -174,7 +165,7 @@ export function CommonCodeView({
                 <Input
                   name="commonCodeName"
                   placeholder="코드명"
-                  value={editedCommonCode.commonCodeName}
+                  value={commonCode.commonCodeName}
                   onChange={handleChange}
                 />
               </Field>
@@ -182,7 +173,7 @@ export function CommonCodeView({
                 <Textarea
                   name="commonCodeNote"
                   placeholder={"최대 50자"}
-                  value={editedCommonCode.commonCodeNote}
+                  value={commonCode.commonCodeNote}
                   onChange={handleChange}
                   maxHeight={"100px"}
                 />
@@ -190,30 +181,27 @@ export function CommonCodeView({
               <Field label={"사용 여부"} orientation="horizontal">
                 <Checkbox
                   style={{ marginRight: "550px" }}
-                  name="commonCodeActive"
-                  checked={editedCommonCode.commonCodeActive}
-                  onChange={(e) => {
-                    const checked =
-                      e.checked !== undefined ? e.checked : e.target.checked;
-                    setEditedCommonCode((prev) => ({
+                  checked={commonCode.commonCodeActive}
+                  onChange={(e) =>
+                    setCommonCode((prev) => ({
                       ...prev,
-                      commonCodeActive: checked,
-                    }));
-                  }}
+                      commonCodeActive: e.target.checked,
+                    }))
+                  }
                   disabled={
-                    editedCommonCode.usedCommonCodeByCustomer ||
-                    editedCommonCode.commonCodeType === "STATE" ||
-                    editedCommonCode.commonCodeType === "STANDARD"
+                    commonCode.usedCommonCodeByCustomer > 0 ||
+                    commonCode.commonCodeType === "STATE" ||
+                    commonCode.commonCodeType === "STANDARD"
                   }
                 />
               </Field>
-              {(editedCommonCode.usedCommonCodeByCustomer >= 1 ||
-                editedCommonCode.commonCodeType === "STATE" ||
-                editedCommonCode.commonCodeType === "STANDARD") && (
+              {(commonCode.usedCommonCodeByCustomer > 0 ||
+                commonCode.commonCodeType === "STATE" ||
+                commonCode.commonCodeType === "STANDARD") && (
                 <Text fontSize={"xs"} mb={18} mt={-2} ml={"85px"}>
-                  {editedCommonCode.commonCodeType === "STATE"
+                  {commonCode.commonCodeType === "STATE"
                     ? "STATE 코드는 사용 여부를 변경할 수 없습니다."
-                    : editedCommonCode.commonCodeType === "STANDARD"
+                    : commonCode.commonCodeType === "STANDARD"
                       ? "STANDARD 코드는 사용 여부를 변경할 수 없습니다."
                       : "협력업체가 사용 중인 품목 코드는 사용 여부를 변경할 수 없습니다."}
                 </Text>
