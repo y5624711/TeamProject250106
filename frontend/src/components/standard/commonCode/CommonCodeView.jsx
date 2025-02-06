@@ -191,7 +191,7 @@ export function CommonCodeView({
               <Field label={"사용 여부"} orientation="horizontal" mb={15}>
                 <Checkbox
                   style={{ marginRight: "550px" }}
-                  defaultChecked={editedCommonCode.commonCodeActive}
+                  checked={editedCommonCode.commonCodeActive}
                   onChange={(e) =>
                     setEditedCommonCode((prev) => ({
                       ...prev,
