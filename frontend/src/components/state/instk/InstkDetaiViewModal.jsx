@@ -56,8 +56,8 @@ export function InstkDetaiViewModal({
       })
       .then((res) => {
         setDetailData(res.data);
-        console.log("detail", detailData);
         const list = res.data?.serialLocationList || [];
+
         if (list.length > 0) {
           const formattedList = createListCollection({
             items: list.map((item) => ({
@@ -65,6 +65,7 @@ export function InstkDetaiViewModal({
               value: item.locationKey,
             })),
           });
+          console.log(formattedList, "formait:리스트컬렉션");
           setSerialLocationList(formattedList);
         } else {
           setSerialLocationList([]); // 빈 배열로 설정하여 오류 방지
@@ -88,6 +89,8 @@ export function InstkDetaiViewModal({
     setSelectLocationKey(e.value);
   };
 
+  console.log(serialLocationList, "serialLocati");
+
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
       <DialogContent>
@@ -107,7 +110,7 @@ export function InstkDetaiViewModal({
             <Stack gap={15}>
               <HStack>
                 <Field orientation="horizontal" label={"입고 구분"}>
-                  <Input value={instk.inputCommonCodeName} />
+                  <Input readOnly value={instk.inputCommonCodeName} />
                 </Field>
                 <Field orientation="horizontal" label={"주문 번호"}>
                   <Input readOnly value={instk.inputNo} />
@@ -117,7 +120,7 @@ export function InstkDetaiViewModal({
                 <Field orientation="horizontal" label={"품목"}>
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
-                {instk.inputConsent && ( // 오류 방지
+                {instk.inputConsent && (
                   <Field label={"시리얼 번호"} orientation="horizontal">
                     <SelectRoot
                       collection={serialLocationList}
