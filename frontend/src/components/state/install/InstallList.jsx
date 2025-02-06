@@ -82,7 +82,9 @@ export function InstallList({
                 }}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center" width="90px">
+                  {index + 1}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {install.franchiseName}
                 </Table.Cell>
@@ -92,16 +94,16 @@ export function InstallList({
                 <Table.Cell textAlign="center">
                   {install.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="10%">
                   {install.outputNo || "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="8%">
                   {install.businessEmployeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="8%">
                   {install.customerEmployeeName || "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="8%">
                   {install.customerInstallerName || "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">

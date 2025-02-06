@@ -59,7 +59,7 @@ public class CommonService {
                     commonCode.getCommonCode().matches("^[A-Z]{3,5}$");
         }
 
-        // 품목명도 null이 아니고, 공백이 아닌지 확인
+        // 코드명도 null이 아니고, 공백이 아닌지 확인
         boolean isValidCommonName = commonCode.getCommonCodeName() != null &&
                 !commonCode.getCommonCodeName().trim().isEmpty();
 
