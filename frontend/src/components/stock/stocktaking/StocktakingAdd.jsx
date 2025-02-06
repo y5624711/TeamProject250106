@@ -17,7 +17,6 @@ import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
-import StockSerialInput from "./StockSerialInput.jsx";
 
 function StocktakingAdd({
   isOpen,
@@ -470,6 +469,79 @@ function StocktakingAdd({
               <Button onClick={handleDifferentClick}>조회</Button>
             </Box>
 
+            {/*조회 드가자*/}
+            <Field label="로케이션" orientation="horizontal" mb={15}></Field>
+            <Box display="flex" gap={18}>
+              <Field label="행" orientation="horizontal" mb={15}>
+                <Select
+                  options={rowList}
+                  value={rowList.find(
+                    (opt) => opt.value === stocktakingAdd.row,
+                  )}
+                  onChange={handleRowChange}
+                  placeholder="선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "100px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "100px",
+                    }),
+                  }}
+                />
+              </Field>
+              <Field label="열" orientation="horizontal" mb={15}>
+                <Select
+                  options={colList}
+                  value={colList.find(
+                    (opt) => opt.value === stocktakingAdd.col,
+                  )}
+                  onChange={handleColChange}
+                  placeholder="선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "100px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "100px",
+                    }),
+                  }}
+                />
+              </Field>
+              <Field label="단" orientation="horizontal" mb={15}>
+                <Select
+                  options={shelfList}
+                  value={shelfList.find(
+                    (opt) => opt.value === stocktakingAdd.shelf,
+                  )}
+                  onChange={handleShelfChange}
+                  placeholder="선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "100px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "100px",
+                    }),
+                  }}
+                />
+              </Field>
+            </Box>
             <Field label="비고" orientation="horizontal" mb={15}>
               <Textarea
                 style={{ maxHeight: "100px", overflowY: "auto" }}
@@ -508,234 +580,10 @@ function StocktakingAdd({
               <>
                 {difference === "1" && (
                   <>
-                    <hr />
-                    <br />
-                    전산이 더 많음
-                    <Field
-                      label="로케이션"
-                      orientation="horizontal"
-                      mb={15}
-                    ></Field>
-                    <Box display="flex" gap={18}>
-                      <Field label="행" orientation="horizontal" mb={15}>
-                        <Select
-                          options={rowList}
-                          value={rowList.find(
-                            (opt) => opt.value === stocktakingAdd.row,
-                          )}
-                          onChange={handleRowChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                      <Field label="열" orientation="horizontal" mb={15}>
-                        <Select
-                          options={colList}
-                          value={colList.find(
-                            (opt) => opt.value === stocktakingAdd.col,
-                          )}
-                          onChange={handleColChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                      <Field label="단" orientation="horizontal" mb={15}>
-                        <Select
-                          options={shelfList}
-                          value={shelfList.find(
-                            (opt) => opt.value === stocktakingAdd.shelf,
-                          )}
-                          onChange={handleShelfChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                    </Box>
+                    {/*  TODO : 로케이션 등록 후 해당 로케이션에 있는 시리얼 번호 불러오기.*/}
                   </>
                 )}
-                {difference === "2" && (
-                  <>
-                    <hr />
-
-                    <br />
-                    <Field
-                      label="로케이션"
-                      orientation="horizontal"
-                      mb={15}
-                    ></Field>
-                    <Box display="flex" gap={18}>
-                      <Field label="행" orientation="horizontal" mb={15}>
-                        <Select
-                          options={rowList}
-                          value={rowList.find(
-                            (opt) => opt.value === stocktakingAdd.row,
-                          )}
-                          onChange={handleRowChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                      <Field label="열" orientation="horizontal" mb={15}>
-                        <Select
-                          options={colList}
-                          value={colList.find(
-                            (opt) => opt.value === stocktakingAdd.col,
-                          )}
-                          onChange={handleColChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                      <Field label="단" orientation="horizontal" mb={15}>
-                        <Select
-                          options={shelfList}
-                          value={shelfList.find(
-                            (opt) => opt.value === stocktakingAdd.shelf,
-                          )}
-                          onChange={handleShelfChange}
-                          placeholder="선택"
-                          isSearchable
-                          styles={{
-                            control: (base) => ({
-                              ...base,
-                              width: "100px", // 너비 고정
-                              height: "40px",
-                            }),
-                            menu: (base) => ({
-                              ...base,
-                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                              width: "100px",
-                            }),
-                          }}
-                        />
-                      </Field>
-                    </Box>
-                    <Field
-                      label="등록 분류"
-                      orientation="horizontal"
-                      mb={15}
-                      required
-                    >
-                      <Box
-                        ml={"86px"}
-                        style={{ position: "absolute" }}
-                        gap={18}
-                      >
-                        <RadioGroup
-                          defaultValue="new" // ✅ Boolean 값을 문자열로 변환
-                          onChange={(e) =>
-                            setPutStocktakingType(e.target.value)
-                          }
-                        >
-                          <HStack gap="4">
-                            <Radio value="new">새 물품</Radio>
-                            <Radio value="old">기존 물품</Radio>
-                          </HStack>
-                        </RadioGroup>
-                      </Box>
-
-                      {/*<Input*/}
-                      {/*  type={"text"}*/}
-                      {/*  value={stocktakingType}*/}
-                      {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
-                      {/*/>*/}
-                    </Field>
-                    {putStocktakingType === "old" ? (
-                      <>
-                        <Field
-                          label="시리얼 번호"
-                          orientation="horizontal"
-                          mb={15}
-                        >
-                          <StockSerialInput
-                            serialNo={serialNo}
-                            setSerialNo={setSerialNo}
-                          />
-                        </Field>
-                        <Box display="flex" justifyContent="flex-end">
-                          <Tooltip
-                            content={"올바른 시리얼 번호를 입력해 주세요."}
-                            openDelay={100}
-                            closeDelay={100}
-                            disabled={serialValidate()}
-                          >
-                            <Button
-                              onClick={handleAddLocation}
-                              disabled={!serialValidate()}
-                            >
-                              재고 등록
-                            </Button>
-                          </Tooltip>
-                        </Box>
-                      </>
-                    ) : (
-                      <Box display="flex" justifyContent="flex-end">
-                        <Button onClick={handleAddLocation}>재고 등록</Button>
-                      </Box>
-                    )}
-                  </>
-                )}
-                <Box></Box>
+                {difference === "2" && <></>}
               </>
             )}
           </Box>
