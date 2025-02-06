@@ -30,7 +30,10 @@ export function EmployeeViewDialog({
             {viewKey === -1 ? "회원 등록" : "회원 정보"}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+        >
           <EmployeeAdd
             viewKey={viewKey}
             onChange={changeModalView}

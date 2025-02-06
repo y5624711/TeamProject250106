@@ -21,6 +21,7 @@ import { Field } from "../../ui/field.jsx";
 import { SelectViewComp } from "./SelectViewComp.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -255,7 +256,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     <Stack gap={15}>
       <Field
         orientation="horizontal"
-        label={"소속 구분"}
+        label={<SpacedLabel text="소속 구분" req />}
         required={viewKey !== -1 ? false : true}
       >
         <SelectRoot
@@ -326,7 +327,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         </HStack>
       )}
       <Field
-        label={"직원"}
+        label={<SpacedLabel text="직원" req />}
         orientation="horizontal"
         required={viewKey !== -1 ? false : true}
       >
@@ -339,7 +340,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
       </Field>
       {viewKey !== -1 && (
-        <Field label={"사번"} orientation="horizontal">
+        <Field label={<SpacedLabel text="사번" req />} orientation="horizontal">
           <Input
             variant={viewKey !== -1 ? "subtle" : "outline"}
             name="employeeNo"
@@ -350,12 +351,18 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
       )}
-      <Field label={"전화 번호"} orientation="horizontal">
+      <Field
+        label={<SpacedLabel text="전화 번호" req />}
+        orientation="horizontal"
+      >
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
 
       {viewKey !== -1 && (
-        <Field label={"비밀번호"} orientation="horizontal">
+        <Field
+          label={<SpacedLabel text="비밀 번호" req />}
+          orientation="horizontal"
+        >
           <Input
             name="password"
             placeholder={"비밀번호"}
@@ -364,7 +371,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
       )}
-      <Field label={"비고"} orientation="horizontal">
+      <Field label={<SpacedLabel text="비고" req />} orientation="horizontal">
         <Textarea
           name="note"
           style={{ maxHeight: "100px", overflowY: "auto" }}
