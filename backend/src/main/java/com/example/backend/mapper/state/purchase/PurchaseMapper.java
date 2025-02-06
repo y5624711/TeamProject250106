@@ -135,6 +135,8 @@ public interface PurchaseMapper {
             LEFT JOIN TB_EMPMST emp2 ON pa.customer_employee_no = emp2.employee_no
             LEFT JOIN TB_CUSTMST cus ON pr.customer_code = cus.customer_code
             LEFT JOIN TB_SYSCOMM sys ON pr.item_common_code = sys.common_code
+            LEFT JOIN (SELECT * FROM TB_DISPR WHERE state_common_code='PURCH') dis ON pr.purchase_request_key = dis.state_request_key
+            LEFT JOIN TB_EMPMST emp3 ON emp3.employee_no = dis.disapprove_employee_no
             WHERE
             <if test="state == 'all'">
                 (1=1 || purchase_consent IS NOT TRUE || purchase_consent IS NOT FALSE)
@@ -255,7 +257,7 @@ public interface PurchaseMapper {
     @Insert("""
             INSERT INTO TB_DISPR
             (state_request_key, state_common_code, disapprove_employee_no, disapprove_note)
-            VALUES (#{purchaseRequestKey}, 'PURCH', #{customerEmployeeNo}, #{purchaseApproveNote})
+            VALUES (#{purchaseRequestKey}, 'PURCH', #{disapproveEmployeeNo}, #{purchaseApproveNote})
             """)
     int insetDisapprove(Purchase purchase);
 
