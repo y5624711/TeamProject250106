@@ -239,11 +239,11 @@ function ReturnList({
 
             <Table.ColumnHeader
               textAlign="center"
-              onClick={() => handleSort("emce.employee_name")}
+              onClick={() => handleSort("customerEmployeeName")}
             >
               <HStack alignItems="center" justify="center">
                 반려/승인자
-                {sort === "emce.employee_name" &&
+                {sort === "customerEmployeeName" &&
                   (order === "ASC" ? <FaCaretUp /> : <FaCaretDown />)}
               </HStack>
             </Table.ColumnHeader>
