@@ -113,7 +113,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
       <IconButton
         transform="translateX(-130%) "
         style={{ cursor: "pointer" }}
-        variant={"ghost"}
+        variant={"none"}
         onClick={handleResetClick}
       >
         <BsArrowCounterclockwise size="25px" />
