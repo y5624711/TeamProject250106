@@ -184,32 +184,6 @@ function StocktakingAdd({
     }
   }, [warehouseCode, row, col, shelf]);
 
-  useEffect(() => {
-    setRow(null);
-    setCol(null);
-    setShelf(null);
-    setLocationKey("");
-    setItemCode(null);
-    setItemName(null);
-    setCountCurrent("");
-    setCountConfiguration("");
-    setStocktakingAdd({
-      row: null,
-      col: null,
-      shelf: null,
-      itemCode: null,
-      itemName: null,
-      countCurrent: null,
-      countConfiguration: null,
-      setRowList: [],
-      setColList: [],
-      setShelfList: [],
-    });
-    setRowList([]);
-    setColList([]);
-    setShelfList([]);
-  }, [warehouseCode]);
-
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {
     if (warehouseCode && itemCode !== null) {
@@ -238,6 +212,34 @@ function StocktakingAdd({
     setWarehouseName(selectedOption.label);
     setWarehouseCode(selectedOption.value);
     setSelectedWarehouse(selectedOption);
+
+    setMakeDifference(null);
+    setPutStocktakingType(null);
+    setRow(null);
+    setCol(null);
+    setShelf(null);
+    setStocktakingAdd({
+      row: null,
+      col: null,
+      shelf: null,
+      itemCode: null,
+      itemName: null,
+      countCurrent: null,
+      countConfiguration: null,
+      setRowList: [],
+      setColList: [],
+      setShelfList: [],
+    });
+    setSerialNo(null);
+    setColList([]);
+    setLocationKey("");
+
+    setShelfList([]);
+
+    setItemCode(null);
+    setItemName(null);
+    setCountCurrent("");
+    setCountConfiguration("");
 
     // 선택 즉시 stocktakingAdd 업데이트
     setStocktakingAdd((prev) => ({
@@ -303,34 +305,28 @@ function StocktakingAdd({
   };
 
   const handleSaveClick = () => {
-    if (countConfiguration === countConfiguration) {
-      axios
-        .post(`/api/stocktaking/add`, {
-          warehouseCode,
-          itemCode,
-          countCurrent,
-          countConfiguration,
-          stocktakingNote,
-          stocktakingType,
-        })
-        .then((res) => res.data)
-        .then((data) => {
-          toaster.create({
-            description: data.message.text,
-            type: data.message.type,
-          });
-          handleClose();
-          onClose();
-        })
-        .catch((e) => {
-          const message = e.response?.data?.message;
-          toaster.create({ description: message.text, type: message.type });
+    axios
+      .post(`/api/stocktaking/add`, {
+        warehouseCode,
+        itemCode,
+        countCurrent,
+        countConfiguration,
+        stocktakingNote,
+        stocktakingType,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        toaster.create({
+          description: data.message.text,
+          type: data.message.type,
         });
-    } else if (countCurrent > countConfiguration) {
-      //   전산수량이 더 많을 때
-    } else {
-      //   실제수량이 더 많을 때
-    }
+        handleClose();
+        onClose();
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message;
+        toaster.create({ description: message.text, type: message.type });
+      });
   };
 
   useEffect(() => {
@@ -395,15 +391,15 @@ function StocktakingAdd({
   const handleAddLocation = () => {
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
 
-    axios.post(`/api/stocktaking/updateStock`, {
-      locationKey,
-      row,
-      col,
-      shelf,
-      serialNo,
-      makeDifference,
-      putStocktakingType,
-    });
+    // axios.post(`/api/stocktaking/updateStock`, {
+    //   locationKey,
+    //   row,
+    //   col,
+    //   shelf,
+    //   serialNo,
+    //   makeDifference,
+    //   putStocktakingType,
+    // });
 
     setMakeDifference(null);
     setPutStocktakingType(null);
@@ -437,10 +433,6 @@ function StocktakingAdd({
     setSerialNo("");
   }, [row, col, shelf, warehouseCode, itemCode]);
 
-  console.log(makeDifference);
-  console.log(putStocktakingType);
-  console.log(row);
-
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -454,9 +446,12 @@ function StocktakingAdd({
             <Field label="창고" orientation="horizontal" mb={15} required>
               <Select
                 options={warehouseList}
-                value={warehouseList.find(
-                  (opt) => opt.value === stocktakingAdd.warehouseName,
-                )}
+                value={
+                  warehouseName &&
+                  warehouseList.find(
+                    (opt) => opt.value === stocktakingAdd.warehouseName,
+                  )
+                }
                 onChange={handleWarehouseChange}
                 placeholder="창고 선택"
                 isSearchable
