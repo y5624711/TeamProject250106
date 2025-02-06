@@ -44,6 +44,7 @@ public class Instk {
     private List<String> serialList;
 
     private String wareHouseName;
+    private String wareHouseAddress;
 
     private List<InstkSerialLocation> serialLocationList;
 

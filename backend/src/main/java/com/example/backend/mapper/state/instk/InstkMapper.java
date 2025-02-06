@@ -7,6 +7,7 @@ import com.example.backend.dto.state.retrieve.Return;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface InstkMapper {
@@ -336,7 +337,7 @@ LIMIT #{offset}, 10
         LEFT JOIN TB_EMPMST EM3 
             ON BI.input_consent = TRUE AND EM3.employee_no = INS.customer_employee_no
         LEFT JOIN TB_DISPR DISP
-            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key
+            ON BI.input_consent = FALSE AND DISP.state_request_key = BI.input_key AND (DISP.state_common_code="INSTK")
          LEFT JOIN TB_EMPMST EM4 
             ON BI.input_consent = FALSE AND EM4.employee_no = DISP.disapprove_employee_no
         
@@ -418,25 +419,23 @@ LIMIT #{offset}, 10
 
     // 일반입고  창고이름
     @Select("""
-            SELECT  WHM.warehouse_name
+            SELECT  WHM.warehouse_name AS warehouseName, WHM.warehouse_address AS warehouseAddress
             FROM TB_BUYIN BI
             LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no=BI.input_no
             LEFT JOIN TB_WHMST  WHM  ON WHM.warehouse_code=APPR.warehouse_code
             WHERE BI.input_key=#{inputKey} 
             """)
-    String viewWareHouseName(int inputKey);
+    Map<String, Object> viewWareHouseName(int inputKey);
 
     //반품입고 창고이름
     @Select("""
-            SELECT  WHM.warehouse_name
-            FROM TB_BUYIN BI
-            LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
-            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
-            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
-            WHERE BI.input_key=#{inputKey} 
-             """)
-    
-    String viewReturnWareHouseName(int inputKey);
+        SELECT WHM.warehouse_name AS warehouseName, WHM.warehouse_address AS warehouseAddress
+        FROM TB_BUYIN BI
+        LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no = BI.input_no
+        LEFT JOIN TB_WHMST WHM ON WHM.warehouse_code = APPR.warehouse_code
+        WHERE BI.input_key = #{inputKey}
+        """)
+    Map<String, Object> viewReturnWareHouseName(int inputKey);
 
     @Select("""
             SELECT  WHM.warehouse_code
@@ -458,6 +457,7 @@ LIMIT #{offset}, 10
     String selectCompanyById(String id);
 
 
+    //다루는 협력업체 이름과 ,  품목 코드가 같은걸 찾아서
     @Select("""
         SELECT C.customer_code 
         FROM TB_CUSTMST C 
@@ -477,4 +477,11 @@ LIMIT #{offset}, 10
             WHERE state_common_code="INSTK" AND state_request_key=#{inputKey}
             """)
     Instk viewDisapproveByInputKey(int inputKey);
+
+    @Select("""
+            SELECT  BI.input_consent
+            FROM TB_BUYIN BI
+            WHERE input_key=#{inputKey}
+            """)
+    boolean viewInputConsetByInputKey(int inputKey);
 }

@@ -46,7 +46,7 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "등록 권한이 없습니다.")));
 
-        };
+        }
 
 
         boolean success = service.addInstkProcess(instk);
@@ -64,13 +64,11 @@ public class InstkController {
 
     //승인 상세
     @GetMapping("detailview/{inputKey}")
-    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName ,@RequestParam boolean inputConsent  ) {
+    public Instk detailView(@PathVariable int inputKey ,@RequestParam String inputCommonCodeName   ) {
 
-        System.out.println("inputConsent = " + inputConsent);
 
-        Instk returnInstk=        service.detailView(inputKey,inputCommonCodeName,inputConsent);
-        System.out.println("returnInstk = " + returnInstk);
-        return returnInstk;
+        return  service.detailView(inputKey,inputCommonCodeName);
+
     }
 
     //확인 상세
@@ -91,16 +89,11 @@ public class InstkController {
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "반려 권한이 없습니다.")));
 
-        };
+        }
 
         boolean result = service.rejectInstk(instk);
 
-        // 이미 반려된 상태
-//        if (result) {
-//            return ResponseEntity.ok()
-//                    .body(Map.of("message", Map.of("type", "error",
-//                            "text", STR."\{instk.getInputKey()} 이미 반려된 주문입니다.")));
-//        }
+
         // 반려 성공
          if (result) {
             return ResponseEntity.ok()

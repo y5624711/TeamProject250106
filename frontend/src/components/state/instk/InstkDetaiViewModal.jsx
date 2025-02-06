@@ -16,6 +16,7 @@ import {
   Input,
   SelectContent,
   SelectItem,
+  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -23,11 +24,13 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
+
 import { Field } from "../../ui/field.jsx";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 import Select from "react-select";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function InstkDetaiViewModal({
   isModalOpen,
@@ -42,6 +45,8 @@ export function InstkDetaiViewModal({
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [selectLocationKey, setSelectLocationKey] = useState();
 
+  const contentRef = useRef(null);
+
   useEffect(() => {
     if (!instk?.inputKey) return; // instk가 없으면 실행 안 함
 
@@ -51,7 +56,6 @@ export function InstkDetaiViewModal({
       .get(`/api/instk/detailview/${instk.inputKey}`, {
         params: {
           inputCommonCodeName: instk.inputCommonCodeName,
-          inputConsent: instk.inputConsent,
         },
       })
       .then((res) => {
@@ -89,14 +93,12 @@ export function InstkDetaiViewModal({
     setSelectLocationKey(e.value);
   };
 
-  console.log(serialLocationList, "serialLocati");
-
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
-      <DialogContent>
+      <DialogContent ref={contentRef}>
         <DialogHeader>
           <DialogTitle>
-            {instk.inputConsent == true ? "입고 상세" : "입고 반려"}
+            {detailData.inputConsent == true ? "입고 상세" : "입고 반려"}
           </DialogTitle>
         </DialogHeader>
         {isLoading ? (
@@ -109,30 +111,46 @@ export function InstkDetaiViewModal({
           <DialogBody>
             <Stack gap={15}>
               <HStack>
-                <Field orientation="horizontal" label={"입고 구분"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="입고 구분" req />}
+                >
                   <Input readOnly value={instk.inputCommonCodeName} />
                 </Field>
-                <Field orientation="horizontal" label={"주문 번호"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="주문번호" req />}
+                >
                   <Input readOnly value={instk.inputNo} />
                 </Field>
               </HStack>
               <HStack>
-                <Field orientation="horizontal" label={"품목"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="품목" req />}
+                >
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
-                {instk.inputConsent && (
-                  <Field label={"시리얼 번호"} orientation="horizontal">
+
+                {detailData.inputConsent && (
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="시리얼번호" req />}
+                  >
                     <SelectRoot
                       collection={serialLocationList}
                       value={item || ""}
-                      onValueChange={handleSerialChange}
                       position="relative"
-                      readOnly
+                      onValueChange={handleSerialChange}
                     >
+                      {/*<SelectLabel orientation="horizontal">*/}
+                      {/*  시리얼 번호*/}
+                      {/*</SelectLabel>*/}
                       <SelectTrigger>
                         <SelectValueText placeholder={"내역 확인"} />
                       </SelectTrigger>
                       <SelectContent
+                        portalRef={contentRef}
                         style={{
                           width: "100%",
                           top: "40px",
@@ -150,25 +168,49 @@ export function InstkDetaiViewModal({
                 )}
               </HStack>
               <HStack>
-                <Field label={"주문 요청자"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="주문요청자" req />}
+                  orientation="horizontal"
+                >
                   <Input readOnly value={instk.requestEmployeeName} />
                 </Field>
-                <Field label={"사번"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" req />}
+                  orientation="horizontal"
+                >
                   <Input readOnly value={instk.requestEmployeeNo} />
                 </Field>
               </HStack>
               <HStack>
-                <Field label={"담당 업체"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="담당업체" req />}
+                  orientation="horizontal"
+                >
                   <Input readOnly value={instk.customerName} />
                 </Field>
-                <Field label={"창고 정보"} orientation="horizontal">
-                  <Input
-                    readOnly
-                    value={`${detailData.wareHouseName}${instk.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
-                  />
+
+                <Field
+                  label={<SpacedLabel text="창고주소" req />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={detailData.wareHouseAddress} />
                 </Field>
               </HStack>
-              <Field label={"주문 비고"} orientation="horizontal">
+
+              <Field
+                label={<SpacedLabel text="창고정보" req />}
+                orientation="horizontal"
+              >
+                <Input
+                  readOnly
+                  value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
+                />
+              </Field>
+
+              <Field
+                label={<SpacedLabel text="주문비고" req />}
+                orientation="horizontal"
+              >
                 {instk.inputNote ? (
                   <Textarea
                     readOnly
@@ -179,40 +221,61 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={"내용 없음"} />
                 )}
               </Field>
-              {instk.inputConsent === true ? (
+              {detailData.inputConsent === true ? (
                 <HStack>
-                  <Field label={"승인자"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="승인자" req />}
+                    orientation="horizontal"
+                  >
                     <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
-                  <Field label={"사번"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="사번" req />}
+                    orientation="horizontal"
+                  >
                     <Input readOnly value={instk.inputStockEmployeeNo} />
                   </Field>
                 </HStack>
               ) : (
                 <HStack>
-                  <Field label={"반려자"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="반려자" req />}
+                    orientation="horizontal"
+                  >
                     <Input readOnly value={detailData.disapproveEmployeeName} />
                   </Field>
-                  <Field label={"사번"} orientation="horizontal">
+                  <Field
+                    label={<SpacedLabel text="사번" req />}
+                    orientation="horizontal"
+                  >
                     <Input readOnly value={detailData.disapproveEmployeeNo} />
                   </Field>
                 </HStack>
               )}
 
-              {instk.inputConsent === true ? (
-                <Field label={"승인 날짜"} orientation="horizontal">
+              {detailData.inputConsent === true ? (
+                <Field
+                  label={<SpacedLabel text="승인날짜" req />}
+                  orientation="horizontal"
+                >
                   <Input readOnly value={instk.inputStockDate} />
                 </Field>
               ) : (
-                <Field label={"반려 날짜"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="반려날짜" req />}
+                  orientation="horizontal"
+                >
                   <Input readOnly value={detailData.disapproveDate} />
                 </Field>
               )}
 
               {/*true고  비고 없으면 필드 , */}
-              {instk.inputConsent === true ? (
+              {detailData.inputConsent === true ? (
                 // true
-                <Field label={"승인 비고"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="승인비고" req />}
+                  orientation="horizontal"
+                >
                   {instk.inputStockNote ? (
                     <Textarea
                       readOnly
@@ -225,7 +288,10 @@ export function InstkDetaiViewModal({
                 </Field>
               ) : (
                 // false
-                <Field label={"반려 비고"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="반려비고" req />}
+                  orientation="horizontal"
+                >
                   {instk.inputStockNote ? (
                     <Textarea
                       readOnly

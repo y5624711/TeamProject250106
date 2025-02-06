@@ -59,22 +59,31 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    checkState === true
-      ? handleDetailViewModal()
-      : checkState === false
-        ? handleDetailViewModal()
-        : handleApproveModal();
+    if (checkState === null || checkState === undefined) {
+      console.log("이프");
+      // 대기 상태인 항목은 승인 모달을 보여줍니다
+      setIsApproveModalOpen(true);
+    } else {
+      console.log("엘스");
+      // 승인됐거나 반려된 항목은 상세 보기를 보여줍니다
+      setIsDetailViewModalOpen(true);
+    }
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
-    handleDetailViewModal(); // 상세 모달 열기
+    handleApproveModal(); // 승인 모달 닫기
+
+    // refreshData 후의 업데이트된 상태로 모달 열기
+    const updatedState = instkList[selectedIndex].inputConsent;
+    console.log(instkList);
+    handleSelectModal(updatedState);
   };
 
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
       { label: "입고 구분", value: "input_common_code" },
-      { label: "발주 번호", value: "input_no" },
+      { label: "주문 번호", value: "input_no" },
       { label: "품목", value: "item_common_name" },
       { label: "담당 업체", value: "customer_name" },
       { label: "요청자", value: "request_employee_name" },
@@ -84,7 +93,7 @@ export function InstkList() {
   const sortOptions = [
     { key: "input_key", label: "#" },
     { key: "input_common_code", label: "입고 구분" },
-    { key: "input_no", label: "발주 번호" },
+    { key: "input_no", label: "주문 번호" },
     { key: "item_common_name", label: "품목" },
     { key: "customer_name", label: "담당 업체" },
     { key: "request_employee_name", label: "요청자" },
@@ -146,7 +155,9 @@ export function InstkList() {
                   key={index}
                   _hover={{ backgroundColor: "gray.200" }}
                 >
-                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                  <Table.Cell textAlign="center" width="90px">
+                    {index + 1}
+                  </Table.Cell>
                   <Table.Cell textAlign="center">
                     {item.inputCommonCodeName}
                   </Table.Cell>

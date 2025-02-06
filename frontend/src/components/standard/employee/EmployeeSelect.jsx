@@ -6,10 +6,16 @@ import {
   SelectValueText,
 } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
+import React from "react";
 
 export function EmployeeSelect({ frameworks, formData, handleSelectChange }) {
   return (
-    <Field orientation="horizontal" label={"부서 구분"} required>
+    <Field
+      orientation="horizontal"
+      label={<SpacedLabel text="부서 구분" req />}
+      required
+    >
       <SelectRoot
         collection={frameworks}
         value={formData.workPlace}
