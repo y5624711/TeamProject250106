@@ -42,6 +42,10 @@ function StocktakingAdd({
     countConfiguration: "",
     stocktakingNote: "",
     stocktakingType: true,
+    row: "",
+    col: "",
+    shelf: "",
+    locationKey: "",
   };
   const [stocktakingAdd, setStocktakingAdd] = useState(initialStocktakingAdd);
   const [warehouseList, setWarehouseList] = useState([]);
@@ -310,6 +314,13 @@ function StocktakingAdd({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    setRow("");
+    setCol("");
+    setShelf("");
+    setLocationKey("");
+  }, [difference]);
+
   //유효성 검사
   const validate = () => {
     return (
@@ -337,6 +348,24 @@ function StocktakingAdd({
           : setDifference("0");
 
       setSearchClick(true);
+      setRow("");
+      setCol("");
+      setShelf("");
+      setLocationKey("");
+      setStocktakingAdd({
+        warehouseName: warehouseName,
+        warehouseCode: warehouseCode,
+        itemCode: itemCode,
+        itemName: itemName,
+        countCurrent: countCurrent,
+        countConfiguration: countConfiguration,
+        stocktakingNote: stocktakingNote,
+        stocktakingType: stocktakingType,
+        row: "",
+        col: "",
+        shelf: "",
+        locationKey: "",
+      });
     }
   };
 
@@ -466,33 +495,84 @@ function StocktakingAdd({
               <>
                 {difference === "1" && (
                   <>
-                    {/* 전산이 더 많음*/}
                     <hr />
-                    <Box display="flex" gap={4}>
-                      <Field
-                        label="로케이션"
-                        orientation="horizontal"
-                        mb={15}
-                        required
-                      >
-                        <Input type={"text"} />
-                      </Field>
-                      <Field
-                        label="실제 수량"
-                        orientation="horizontal"
-                        mb={15}
-                        required
-                      >
-                        <Input
-                          type={"text"}
-                          value={countConfiguration}
-                          onChange={(e) => {
-                            setCountConfiguration(e.target.value);
-                            setSearchClick(false);
+                    <br />
+                    전산이 더 많음
+                    <Field
+                      label="로케이션"
+                      orientation="horizontal"
+                      mb={15}
+                    ></Field>
+                    <Box display="flex" gap={18}>
+                      <Field label="행" orientation="horizontal" mb={15}>
+                        <Select
+                          options={rowList}
+                          value={rowList.find(
+                            (opt) => opt.value === stocktakingAdd.row,
+                          )}
+                          onChange={handleRowChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
                           }}
                         />
                       </Field>
-                      <Button onClick={handleDifferentClick}>조회</Button>
+                      <Field label="열" orientation="horizontal" mb={15}>
+                        <Select
+                          options={colList}
+                          value={colList.find(
+                            (opt) => opt.value === stocktakingAdd.col,
+                          )}
+                          onChange={handleColChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
+                          }}
+                        />
+                      </Field>
+                      <Field label="단" orientation="horizontal" mb={15}>
+                        <Select
+                          options={shelfList}
+                          value={shelfList.find(
+                            (opt) => opt.value === stocktakingAdd.shelf,
+                          )}
+                          onChange={handleShelfChange}
+                          placeholder="선택"
+                          isSearchable
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              width: "100px", // 너비 고정
+                              height: "40px",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                              width: "100px",
+                            }),
+                          }}
+                        />
+                      </Field>
                     </Box>
                   </>
                 )}
@@ -500,7 +580,7 @@ function StocktakingAdd({
                   <>
                     <hr />
                     <br />
-                    {/*실제 더 많음*/}
+                    실제 더 많음
                     <Field
                       label="로케이션"
                       orientation="horizontal"
