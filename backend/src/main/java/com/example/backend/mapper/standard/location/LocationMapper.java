@@ -118,8 +118,8 @@ public interface LocationMapper {
                     <if test="workplace == 'BIZ'">
                         1=1
                     </if>
-                    <if test="searchType == 'all'">
-                )
+                )  
+                <if test="searchType == 'all'">
                     AND (
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
@@ -127,8 +127,8 @@ public interface LocationMapper {
                      OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.location_note LIKE CONCAT('%',#{searchKeyword},'%')
-                        )                   
-                    </if>
+                    )                   
+                </if>
                     <if test="searchType != 'all'">
                          <choose>
                              <when test="searchType == 'warehouse'">

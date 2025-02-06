@@ -10,10 +10,10 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import WarehouseList from "../../../components/standard/warehouse/WarehouseList.jsx";
-import WarehouseSearch from "../../../components/standard/warehouse/WarehouseSearch.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { WarehouseAdd } from "../../../components/standard/warehouse/WarehouseAdd.jsx";
 import { Checkbox } from "../../../components/ui/checkbox.jsx";
+import { SearchBar } from "../../../components/tool/form/SearchBar.jsx";
 
 function Warehouse(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -115,14 +115,20 @@ function Warehouse(props) {
             기준정보 관리 {">"} 창고 관리
           </Heading>
           {/*검색 jsx*/}
-          <WarehouseSearch
-            warehouseOptionList={warehouseOptionList}
-            setSearch={setSearch}
-            search={search}
-            handleSearchClick={handleSearchClick}
-            setSearchParams={setSearchParams}
-            setCheckedActive={setCheckedActive}
+          <SearchBar
+            searchOptions={warehouseOptionList}
+            onSearchChange={(nextSearchParam) =>
+              setSearchParams(nextSearchParam)
+            }
           />
+          {/*<WarehouseSearch*/}
+          {/*  warehouseOptionList={warehouseOptionList}*/}
+          {/*  setSearch={setSearch}*/}
+          {/*  search={search}*/}
+          {/*  handleSearchClick={handleSearchClick}*/}
+          {/*  setSearchParams={setSearchParams}*/}
+          {/*  setCheckedActive={setCheckedActive}*/}
+          {/*/>*/}
           <Checkbox
             checked={checkedActive}
             onCheckedChange={toggleCheckedActive}

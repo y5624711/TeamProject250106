@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
 import { Checkbox } from "../../../components/ui/checkbox.jsx";
+import { SearchBar } from "../../../components/tool/form/SearchBar.jsx";
 
 function Location(props) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -109,6 +110,12 @@ function Location(props) {
           <Heading size={"xl"} p={2} mb={3}>
             기준정보 관리 {">"} 로케이션 관리
           </Heading>
+          <SearchBar
+            searchOptions={locationOptionList}
+            onSearchChange={(nextSearchParam) =>
+              setSearchParams(nextSearchParam)
+            }
+          />
           <LocationSearch
             locationOptionList={locationOptionList}
             setSearch={setSearch}
