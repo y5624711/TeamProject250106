@@ -1,13 +1,14 @@
 CREATE TABLE TB_INSTL_APPR
 (
-    install_approve_key   INT PRIMARY KEY AUTO_INCREMENT,
-    install_request_key   INT        NOT NULL,
-    customer_employee_no  VARCHAR(9) NOT NULL,
-    customer_installer_no VARCHAR(9) NOT NULL,
-    output_no             VARCHAR(6) NOT NULL UNIQUE,
-    install_schedule_date DATE,
-    install_approve_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    install_approve_note  VARCHAR(50),
+    install_approve_key     INT PRIMARY KEY AUTO_INCREMENT,
+    install_request_key     INT        NOT NULL,
+    customer_employee_no    VARCHAR(9) NOT NULL,
+    customer_installer_no   VARCHAR(9) NOT NULL,
+    output_no               VARCHAR(6) NOT NULL UNIQUE,
+    install_schedule_date   DATE,
+    install_approve_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    install_approve_note    VARCHAR(50),
+    install_approve_consent BOOLEAN,
 
     CONSTRAINT fk_install_request_key FOREIGN KEY (install_request_key)
         REFERENCES TB_INSTL_REQ (install_request_key) ON UPDATE CASCADE,
