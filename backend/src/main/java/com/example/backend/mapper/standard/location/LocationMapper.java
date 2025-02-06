@@ -216,4 +216,11 @@ public interface LocationMapper {
             WHERE warehouse_code=#{warehouseCode}
             """)
     int changeLocationActive(String warehouseCode, Boolean active);
+
+    @Select("""
+            SELECT warehouse_name
+            FROM TB_WHMST
+            WHERE warehouse_code=#{warehouseCode}
+            """)
+    String getWarehouseName(String warehouseCode);
 }

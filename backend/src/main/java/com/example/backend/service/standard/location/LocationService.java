@@ -66,7 +66,9 @@ public class LocationService {
     }
 
     public Boolean add(Location location) {
+
         return mapper.add(location) == 1;
+
     }
 
     public Location view(Integer locationKey) {
@@ -97,12 +99,26 @@ public class LocationService {
 
     // 로케이션 중복 검증
     public boolean duplicate(Location location) {
+
         String warehouseCode = location.getWarehouseCode();
-        System.out.println(warehouseCode);
         String row = location.getRow();
         String col = location.getCol();
+
+        String warehouseName = mapper.getWarehouseName(location.getWarehouseCode());
+
+        location.setWarehouseName(warehouseName);
+//
+        if (row.length() == 1) {
+            location.setRow("0" + row);
+        }
+        if (col.length() == 1) {
+            location.setCol("0" + col);
+        }
+//
+
+
         Integer shelf = location.getShelf();
-        Integer check = mapper.checkLocation(warehouseCode, row, col, shelf);
+        Integer check = mapper.checkLocation(warehouseCode, location.getRow(), location.getCol(), shelf);
         return check == 0;
     }
 }
