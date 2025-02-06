@@ -331,10 +331,8 @@ function StocktakingAdd({
       countCurrent !== undefined && // ✅ 0도 유효한 값이므로 null/undefined만 체크
       countConfiguration !== null &&
       countConfiguration !== undefined &&
-      countConfiguration !== "" &&
-      stocktakingType !== null &&
-      difference !== null &&
-      searchClick === true
+      countConfiguration !== ""
+
       //   makeDifference 를 통해 값이 같을 때 등록 가능하게 하기
     );
   };
@@ -355,14 +353,32 @@ function StocktakingAdd({
     });
   };
 
-  console.log(makeDifference);
-  console.log(putStocktakingType);
   useEffect(() => {
     console.log("difference 값 변경됨:", difference);
   }, [difference]);
 
   const handleAddLocation = () => {
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
+    console.log("실사 분류: " + makeDifference);
+    console.log("위치 분류: " + putStocktakingType);
+    console.log("행: " + row);
+    console.log("열: " + col);
+    console.log("단: " + shelf);
+    console.log("시리얼: " + serialNo);
+    setMakeDifference(null);
+    setPutStocktakingType(null);
+    setRow(null);
+    setCol(null);
+    setShelf(null);
+    setSerialNo(null);
+    setColList([]);
+    setStocktakingAdd({
+      col: null,
+    });
+
+    setShelfList([]);
+
+    // axios.put(`/api/stocktaking/stockStatus`)
   };
 
   useEffect(() => {
@@ -373,8 +389,10 @@ function StocktakingAdd({
     }
   }, [putStocktakingType]);
 
-  console.log(serialNo);
-
+  console.log(row);
+  console.log(col);
+  console.log(shelf);
+  console.log(stocktakingAdd.col);
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -541,12 +559,17 @@ function StocktakingAdd({
                   조회
                 </Button>
                 <Tooltip
-                  content={"양식을 모두 입력해 주세요."}
+                  content={"시리얼 번호를 입력해 주세요."}
                   openDelay={100}
                   closeDelay={100}
                   disabled={serialValidate()}
                 >
-                  <Button disabled={!serialValidate()}>반영</Button>
+                  <Button
+                    onClick={handleAddLocation}
+                    disabled={!serialValidate()}
+                  >
+                    반영
+                  </Button>
                 </Tooltip>
               </Box>
             ) : makeDifference === "" ? (
@@ -558,12 +581,17 @@ function StocktakingAdd({
                   조회
                 </Button>
                 <Tooltip
-                  content={"양식을 모두 입력해 주세요."}
+                  content={"시리얼 번호를 입력해 주세요."}
                   openDelay={100}
                   closeDelay={100}
                   disabled={serialValidate()}
                 >
-                  <Button disabled={!serialValidate()}>반영</Button>
+                  <Button
+                    onClick={handleAddLocation}
+                    disabled={!serialValidate()}
+                  >
+                    반영
+                  </Button>
                 </Tooltip>
               </Box>
             ) : makeDifference === "실사 입고" ? (
@@ -577,12 +605,17 @@ function StocktakingAdd({
                       조회
                     </Button>
                     <Tooltip
-                      content={"양식을 모두 입력해 주세요."}
+                      content={"시리얼 번호를 입력해 주세요."}
                       openDelay={100}
                       closeDelay={100}
                       disabled={serialValidate()}
                     >
-                      <Button disabled={!serialValidate()}>반영</Button>
+                      <Button
+                        onClick={handleAddLocation}
+                        disabled={!serialValidate()}
+                      >
+                        반영
+                      </Button>
                     </Tooltip>
                   </Box>
                   <Field
@@ -623,12 +656,17 @@ function StocktakingAdd({
                       조회
                     </Button>
                     <Tooltip
-                      content={"양식을 모두 입력해 주세요."}
+                      content={"시리얼 번호를 입력해 주세요."}
                       openDelay={100}
                       closeDelay={100}
                       disabled={serialValidate()}
                     >
-                      <Button disabled={!serialValidate()}>반영</Button>
+                      <Button
+                        onClick={handleAddLocation}
+                        disabled={!serialValidate()}
+                      >
+                        반영
+                      </Button>
                     </Tooltip>
                   </Box>
                   <Field
@@ -662,12 +700,17 @@ function StocktakingAdd({
                     조회
                   </Button>
                   <Tooltip
-                    content={"양식을 모두 입력해 주세요."}
+                    content={"시리얼 번호를 입력해 주세요."}
                     openDelay={100}
                     closeDelay={100}
                     disabled={serialValidate()}
                   >
-                    <Button disabled={!serialValidate()}>반영</Button>
+                    <Button
+                      onClick={handleAddLocation}
+                      disabled={!serialValidate()}
+                    >
+                      반영
+                    </Button>
                   </Tooltip>
                 </Box>
                 <Field
@@ -749,11 +792,7 @@ function StocktakingAdd({
             </Button>
           </DialogActionTrigger>
           <Tooltip
-            content={
-              searchClick === false
-                ? "입력 완료 후 조회 버튼을 눌러주세요."
-                : "재고 실사가 맞지 않습니다."
-            }
+            content={"입력을 완료해 주세요."}
             openDelay={100}
             closeDelay={100}
             disabled={validate()}
