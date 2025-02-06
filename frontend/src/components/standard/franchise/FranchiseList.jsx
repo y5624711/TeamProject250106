@@ -92,7 +92,7 @@ export function FranchiseList({
         <IconButton
           style={{ cursor: "pointer" }}
           transform="translateX(-130%) "
-          variant={"ghost"}
+          variant={"none"}
           onClick={onReset}
         >
           <BsArrowCounterclockwise size="25px" />
