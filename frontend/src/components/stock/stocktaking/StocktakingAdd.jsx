@@ -28,7 +28,7 @@ function StocktakingAdd({
   const [warehouseCode, setWarehouseCode] = useState(null);
   const [warehouseName, setWarehouseName] = useState("");
   const [itemName, setItemName] = useState("");
-  const [itemCode, setItemCode] = useState("");
+  const [itemCode, setItemCode] = useState(null);
   const [countCurrent, setCountCurrent] = useState("");
   const [countConfiguration, setCountConfiguration] = useState("");
   const [stocktakingNote, setStocktakingNote] = useState("");
@@ -129,9 +129,10 @@ function StocktakingAdd({
     }
   }, [warehouseCode]);
 
+  console.log(itemCode);
   // location row 정보 가져오기
   useEffect(() => {
-    if (warehouseCode) {
+    if (warehouseCode && itemCode !== null) {
       axios.get(`/api/stocktaking/row/${warehouseCode}`).then((res) => {
         const rowOptions = res.data.map((location) => ({
           value: location,
@@ -140,7 +141,7 @@ function StocktakingAdd({
         setRowList(rowOptions);
       });
     }
-  }, [warehouseCode]);
+  }, [warehouseCode, itemCode]);
 
   // location col 정보 가져오기
   useEffect(() => {
@@ -183,9 +184,35 @@ function StocktakingAdd({
     }
   }, [warehouseCode, row, col, shelf]);
 
+  useEffect(() => {
+    setRow(null);
+    setCol(null);
+    setShelf(null);
+    setLocationKey("");
+    setItemCode(null);
+    setItemName(null);
+    setCountCurrent("");
+    setCountConfiguration("");
+    setStocktakingAdd({
+      row: null,
+      col: null,
+      shelf: null,
+      itemCode: null,
+      itemName: null,
+      countCurrent: null,
+      countConfiguration: null,
+      setRowList: [],
+      setColList: [],
+      setShelfList: [],
+    });
+    setRowList([]);
+    setColList([]);
+    setShelfList([]);
+  }, [warehouseCode]);
+
   // 창고 & 품목 변경 시 전산 수량(countCurrent) 불러오기
   useEffect(() => {
-    if (warehouseCode && itemCode) {
+    if (warehouseCode && itemCode !== null) {
       axios
         .get(`/api/stocktaking/count/${warehouseCode}`)
         .then((res) => {
@@ -331,6 +358,23 @@ function StocktakingAdd({
     return serialNo !== "" && serialNo !== null && tooltip === true;
   };
 
+  const shelfValidate = () => {
+    return (
+      shelf !== "" &&
+      shelf !== null &&
+      stocktakingAdd.shelf !== "" &&
+      stocktakingAdd.shelf !== null &&
+      col !== "" &&
+      col !== null &&
+      stocktakingAdd.col !== "" &&
+      stocktakingAdd.col !== null &&
+      row !== "" &&
+      row !== null &&
+      stocktakingAdd.row !== "" &&
+      stocktakingAdd.row !== null
+    );
+  };
+
   const handleDifferentClick = () => {
     axios.get(`/api/stocktaking/checkLocation/${locationKey}`).then((res) => {
       setSerialNo(res.data);
@@ -390,7 +434,8 @@ function StocktakingAdd({
 
   useEffect(() => {
     setTooltip(false);
-  }, [row, col, shelf]);
+    setSerialNo("");
+  }, [row, col, shelf, warehouseCode, itemCode]);
 
   console.log(makeDifference);
   console.log(putStocktakingType);
@@ -433,9 +478,10 @@ function StocktakingAdd({
             <Field label="품목" orientation="horizontal" mb={15} required>
               <Select
                 options={itemList}
-                value={itemList.find(
-                  (opt) => opt.value === stocktakingAdd.itemName,
-                )}
+                value={
+                  itemName &&
+                  itemList.find((opt) => opt.value === stocktakingAdd.itemName)
+                }
                 onChange={handleItemChange}
                 placeholder="물품 선택"
                 isSearchable
@@ -547,9 +593,20 @@ function StocktakingAdd({
                 <Field label="시리얼 번호" orientation="horizontal" mb={15}>
                   <Input value={serialNo} readOnly />
                 </Field>
-                <Button onClick={handleDifferentClick} variant="outline">
-                  조회
-                </Button>
+                <Tooltip
+                  content={"로케이션 입력을 완료해 주세요."}
+                  openDelay={100}
+                  closeDelay={100}
+                  disabled={shelfValidate()}
+                >
+                  <Button
+                    onClick={handleDifferentClick}
+                    disabled={!shelfValidate()}
+                    variant="outline"
+                  >
+                    조회
+                  </Button>
+                </Tooltip>
                 <Tooltip
                   content={"시리얼 번호를 입력해 주세요."}
                   openDelay={100}
@@ -569,9 +626,20 @@ function StocktakingAdd({
                 <Field label="시리얼 번호" orientation="horizontal" mb={15}>
                   <Input value={serialNo} readOnly />
                 </Field>
-                <Button onClick={handleDifferentClick} variant="outline">
-                  조회
-                </Button>
+                <Tooltip
+                  content={"로케이션 입력을 완료해 주세요."}
+                  openDelay={100}
+                  closeDelay={100}
+                  disabled={shelfValidate()}
+                >
+                  <Button
+                    onClick={handleDifferentClick}
+                    disabled={!shelfValidate()}
+                    variant="outline"
+                  >
+                    조회
+                  </Button>
+                </Tooltip>
                 <Tooltip
                   content={"시리얼 번호를 입력해 주세요."}
                   openDelay={100}
@@ -593,9 +661,20 @@ function StocktakingAdd({
                     <Field label="시리얼 번호" orientation="horizontal" mb={15}>
                       <Input type={"text"} value="" readOnly />
                     </Field>
-                    <Button onClick={handleDifferentClick} variant="outline">
-                      조회
-                    </Button>
+                    <Tooltip
+                      content={"로케이션 입력을 완료해 주세요."}
+                      openDelay={100}
+                      closeDelay={100}
+                      disabled={shelfValidate()}
+                    >
+                      <Button
+                        onClick={handleDifferentClick}
+                        disabled={!shelfValidate()}
+                        variant="outline"
+                      >
+                        조회
+                      </Button>
+                    </Tooltip>
                     <Tooltip
                       content={"시리얼 번호를 입력해 주세요."}
                       openDelay={100}
@@ -644,9 +723,20 @@ function StocktakingAdd({
                         onChange={(e) => setSerialNo(e.target.value)}
                       />
                     </Field>
-                    <Button onClick={handleDifferentClick} variant="outline">
-                      조회
-                    </Button>
+                    <Tooltip
+                      content={"로케이션 입력을 완료해 주세요."}
+                      openDelay={100}
+                      closeDelay={100}
+                      disabled={shelfValidate()}
+                    >
+                      <Button
+                        onClick={handleDifferentClick}
+                        disabled={!shelfValidate()}
+                        variant="outline"
+                      >
+                        조회
+                      </Button>
+                    </Tooltip>
                     <Tooltip
                       content={"시리얼 번호를 입력해 주세요."}
                       openDelay={100}
@@ -688,9 +778,20 @@ function StocktakingAdd({
                   <Field label="시리얼 번호" orientation="horizontal" mb={15}>
                     <Input type={"text"} value={serialNo} readOnly />
                   </Field>
-                  <Button onClick={handleDifferentClick} variant="outline">
-                    조회
-                  </Button>
+                  <Tooltip
+                    content={"로케이션 입력을 완료해 주세요."}
+                    openDelay={100}
+                    closeDelay={100}
+                    disabled={shelfValidate()}
+                  >
+                    <Button
+                      onClick={handleDifferentClick}
+                      disabled={!shelfValidate()}
+                      variant="outline"
+                    >
+                      조회
+                    </Button>
+                  </Tooltip>
                   <Tooltip
                     content={"시리얼 번호를 입력해 주세요."}
                     openDelay={100}
