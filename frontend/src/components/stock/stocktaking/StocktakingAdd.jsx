@@ -359,12 +359,7 @@ function StocktakingAdd({
 
   const handleAddLocation = () => {
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
-    console.log("실사 분류: " + makeDifference);
-    console.log("위치 분류: " + putStocktakingType);
-    console.log("행: " + row);
-    console.log("열: " + col);
-    console.log("단: " + shelf);
-    console.log("시리얼: " + serialNo);
+
     setMakeDifference(null);
     setPutStocktakingType(null);
     setRow(null);
@@ -372,8 +367,11 @@ function StocktakingAdd({
     setShelf(null);
     setSerialNo(null);
     setColList([]);
+    setLocationKey("");
     setStocktakingAdd({
+      row: null,
       col: null,
+      shelf: null,
     });
 
     setShelfList([]);
@@ -389,10 +387,6 @@ function StocktakingAdd({
     }
   }, [putStocktakingType]);
 
-  console.log(row);
-  console.log(col);
-  console.log(shelf);
-  console.log(stocktakingAdd.col);
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -483,9 +477,7 @@ function StocktakingAdd({
               <Field label="행" orientation="horizontal" mb={15}>
                 <Select
                   options={rowList}
-                  value={rowList.find(
-                    (opt) => opt.value === stocktakingAdd.row,
-                  )}
+                  value={row && rowList.find((opt) => opt.value === row)}
                   onChange={handleRowChange}
                   placeholder="선택"
                   isSearchable
@@ -506,9 +498,7 @@ function StocktakingAdd({
               <Field label="열" orientation="horizontal" mb={15}>
                 <Select
                   options={colList}
-                  value={colList.find(
-                    (opt) => opt.value === stocktakingAdd.col,
-                  )}
+                  value={col && colList.find((opt) => opt.value === col)}
                   onChange={handleColChange}
                   placeholder="선택"
                   isSearchable
@@ -529,9 +519,7 @@ function StocktakingAdd({
               <Field label="단" orientation="horizontal" mb={15}>
                 <Select
                   options={shelfList}
-                  value={shelfList.find(
-                    (opt) => opt.value === stocktakingAdd.shelf,
-                  )}
+                  value={shelf && shelfList.find((opt) => opt.value === shelf)}
                   onChange={handleShelfChange}
                   placeholder="선택"
                   isSearchable
