@@ -191,7 +191,11 @@ export function InstkConfirmModal({
                 orientation="horizontal"
                 sx={{ justifyContent: "center" }}
               >
-                <Input value={localStorage.getItem("name")} readOnly />
+                <Input
+                  variant={"subtle"}
+                  value={localStorage.getItem("name")}
+                  readOnly
+                />
               </Field>
               <Field
                 label={"사번"}
@@ -202,7 +206,7 @@ export function InstkConfirmModal({
                   },
                 }}
               >
-                <Input value={id} readOnly />
+                <Input variant={"subtle"} value={id} readOnly />
               </Field>
             </HStack>
 

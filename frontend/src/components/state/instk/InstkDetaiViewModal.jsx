@@ -124,8 +124,9 @@ export function InstkDetaiViewModal({
                 <Field orientation="horizontal" label={"품목"}>
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
-                <Field orientation="horizontal" label={"시리얼 번호"}>
-                  {instk.inputConsent && (
+
+                {instk.inputConsent && (
+                  <Field orientation="horizontal" label={"시리얼 번호"}>
                     <SelectRoot
                       collection={serialLocationList}
                       value={item || ""}
@@ -153,8 +154,8 @@ export function InstkDetaiViewModal({
                         ))}
                       </SelectContent>
                     </SelectRoot>
-                  )}
-                </Field>
+                  </Field>
+                )}
               </HStack>
               <HStack>
                 <Field label={"주문 요청자"} orientation="horizontal">
