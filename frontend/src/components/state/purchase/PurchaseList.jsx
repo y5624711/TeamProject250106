@@ -7,9 +7,9 @@ import {
   TableHeader,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Pagination } from "../../tool/list/Pagination.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 import React, { useEffect, useState } from "react";
 
 export function PurchaseList({
@@ -120,7 +120,9 @@ export function PurchaseList({
                   {purchase.employeeName}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {purchase.customerEmployeeName || purchase.disapproveEmployeeName || "-"}
+                  {purchase.customerEmployeeName ||
+                    purchase.disapproveEmployeeName ||
+                    "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {purchase.purchaseApproveDate ||

@@ -11,7 +11,7 @@ import {
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Button } from "../../ui/button.jsx";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
-import { Pagination } from "../../tool/list/Pagination.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
 import {
   SelectContent,
   SelectItem,

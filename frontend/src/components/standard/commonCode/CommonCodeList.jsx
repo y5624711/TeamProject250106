@@ -6,10 +6,10 @@ import {
   HStack,
   Table,
 } from "@chakra-ui/react";
-import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
-import { Pagination } from "../../tool/list/Pagination.jsx";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
+import { ActiveSwitch } from "../../tool/form/ActiveSwitch.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
 import { Field } from "../../ui/field.jsx";
 import { CommonCodeSelect } from "./CommonCodeSelect.jsx";
 
