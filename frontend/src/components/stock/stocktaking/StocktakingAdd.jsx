@@ -344,6 +344,10 @@ function StocktakingAdd({
     );
   };
 
+  const serialValidate = () => {
+    return serialNo != "" && serialNo !== null;
+  };
+
   const handleDifferentClick = () => {
     {
       countCurrent > countConfiguration
@@ -377,6 +381,10 @@ function StocktakingAdd({
   useEffect(() => {
     console.log("difference 값 변경됨:", difference);
   }, [difference]);
+
+  const handleAddLocation = () => {
+    console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
+  };
 
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
@@ -693,18 +701,38 @@ function StocktakingAdd({
                       {/*/>*/}
                     </Field>
                     {putStocktakingType === "old" ? (
-                      <Field
-                        label="시리얼 번호"
-                        orientation="horizontal"
-                        mb={15}
-                        required
-                      >
-                        <StockSerialInput
-                          serialNo={serialNo}
-                          setSerialNo={setSerialNo}
-                        />
-                      </Field>
-                    ) : null}
+                      <>
+                        <Field
+                          label="시리얼 번호"
+                          orientation="horizontal"
+                          mb={15}
+                        >
+                          <StockSerialInput
+                            serialNo={serialNo}
+                            setSerialNo={setSerialNo}
+                          />
+                        </Field>
+                        <Box display="flex" justifyContent="flex-end">
+                          <Tooltip
+                            content={"올바른 시리얼 번호를 입력해 주세요."}
+                            openDelay={100}
+                            closeDelay={100}
+                            disabled={serialValidate()}
+                          >
+                            <Button
+                              onClick={handleAddLocation}
+                              disabled={!serialValidate()}
+                            >
+                              재고 등록
+                            </Button>
+                          </Tooltip>
+                        </Box>
+                      </>
+                    ) : (
+                      <Box display="flex" justifyContent="flex-end">
+                        <Button onClick={handleAddLocation}>재고 등록</Button>
+                      </Box>
+                    )}
                   </>
                 )}
                 <Box></Box>
