@@ -59,16 +59,24 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    checkState === true
-      ? handleDetailViewModal()
-      : checkState === false
-        ? handleDetailViewModal()
-        : handleApproveModal();
+    if (checkState === null || checkState === undefined) {
+      console.log("이프");
+      // 대기 상태인 항목은 승인 모달을 보여줍니다
+      setIsApproveModalOpen(true);
+    } else {
+      console.log("엘스");
+      // 승인됐거나 반려된 항목은 상세 보기를 보여줍니다
+      setIsDetailViewModalOpen(true);
+    }
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
-    setSelectedIndex(index);
-    handleDetailViewModal(); // 상세 모달 열기
+    handleApproveModal(); // 승인 모달 닫기
+
+    // refreshData 후의 업데이트된 상태로 모달 열기
+    const updatedState = instkList[selectedIndex].inputConsent;
+    console.log(instkList);
+    handleSelectModal(updatedState);
   };
 
   const searchOptions = createListCollection({
