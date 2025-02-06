@@ -14,17 +14,20 @@ import {
   createListCollection,
   HStack,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Spinner,
   Stack,
   Textarea,
 } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "../../ui/select";
 import { Field } from "../../ui/field.jsx";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
 import Select from "react-select";
@@ -41,6 +44,8 @@ export function InstkDetaiViewModal({
   const [item, setItem] = useState(null);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [selectLocationKey, setSelectLocationKey] = useState();
+
+  const contentRef = useRef(null);
 
   useEffect(() => {
     if (!instk?.inputKey) return; // instk가 없으면 실행 안 함
@@ -93,7 +98,7 @@ export function InstkDetaiViewModal({
 
   return (
     <DialogRoot size={"lg"} open={isModalOpen} onOpenChange={setChangeModal}>
-      <DialogContent>
+      <DialogContent ref={contentRef}>
         <DialogHeader>
           <DialogTitle>
             {instk.inputConsent == true ? "입고 상세" : "입고 반려"}
@@ -121,32 +126,25 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
                 {instk.inputConsent && (
-                  <Field label={"시리얼 번호"} orientation="horizontal">
-                    <SelectRoot
-                      collection={serialLocationList}
-                      value={item || ""}
-                      onValueChange={handleSerialChange}
-                      position="relative"
-                      readOnly
-                    >
-                      <SelectTrigger>
-                        <SelectValueText placeholder={"내역 확인"} />
-                      </SelectTrigger>
-                      <SelectContent
-                        style={{
-                          width: "100%",
-                          top: "40px",
-                          position: "absolute",
-                        }}
-                      >
-                        {serialLocationList.items.map((code, index) => (
-                          <SelectItem item={code} key={index}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </SelectRoot>
-                  </Field>
+                  <SelectRoot
+                    collection={serialLocationList}
+                    value={item || ""}
+                    onValueChange={handleSerialChange}
+                  >
+                    <SelectLabel orientation="horizontal">
+                      시리얼 번호
+                    </SelectLabel>
+                    <SelectTrigger>
+                      <SelectValueText placeholder={"내역 확인"} />
+                    </SelectTrigger>
+                    <SelectContent portalRef={contentRef}>
+                      {serialLocationList.items.map((code, index) => (
+                        <SelectItem item={code} key={index}>
+                          {code.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
                 )}
               </HStack>
               <HStack>
