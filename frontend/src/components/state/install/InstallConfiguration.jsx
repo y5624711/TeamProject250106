@@ -127,6 +127,37 @@ export function InstallConfiguration({
         <DialogBody>
           <Box css={{ "--field-label-width": "85px" }}>
             <Stack gap={"15px"}>
+              <Box display="flex" gap={5}>
+                <Field
+                  label={<SpacedLabel text="출고 번호" />}
+                  orientation="horizontal"
+                >
+                  <Input value={installData.outputNo} readOnly />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="시리얼 번호" />}
+                  orientation="horizontal"
+                >
+                  <SelectRoot>
+                    <SelectTrigger>
+                      <SelectValueText>내역 확인</SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        width: "210px",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {serialList.map((serial) => (
+                        <SelectItem key={serial} item={serial}>
+                          {serial}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                </Field>
+              </Box>
               <Field
                 label={<SpacedLabel text="가맹점" />}
                 orientation="horizontal"
@@ -211,37 +242,6 @@ export function InstallConfiguration({
                 />
               </Field>
               {installData.installApproveConsent && <Separator />}
-              <Box display="flex" gap={5}>
-                <Field
-                  label={<SpacedLabel text="출고 번호" />}
-                  orientation="horizontal"
-                >
-                  <Input value={installData.outputNo} readOnly />
-                </Field>
-                <Field
-                  label={<SpacedLabel text="시리얼 번호" />}
-                  orientation="horizontal"
-                >
-                  <SelectRoot>
-                    <SelectTrigger>
-                      <SelectValueText>{serialList[0]}</SelectValueText>
-                    </SelectTrigger>
-                    <SelectContent
-                      style={{
-                        width: "220px",
-                        top: "40px",
-                        position: "absolute",
-                      }}
-                    >
-                      {serialList.map((serial) => (
-                        <SelectItem key={serial} item={serial}>
-                          {serial}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                </Field>
-              </Box>
 
               <Box display="flex" gap={5}>
                 <Field
