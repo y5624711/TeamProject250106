@@ -118,7 +118,7 @@ public class CustomerService {
 
     //품목 목록
     public List<CommonCode> itemCodeList() {
-//        System.out.println("itemcodelist" + mapper.itemCodeList());
+        System.out.println("itemcodelist" + mapper.itemCodeList());
         return mapper.itemCodeList();
     }
 
