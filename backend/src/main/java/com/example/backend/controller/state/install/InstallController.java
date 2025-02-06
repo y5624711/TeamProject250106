@@ -166,7 +166,7 @@ public class InstallController {
 
     // 설치 요청에 대한 정보 가져오기
     @GetMapping("/request/{installKey}")
-    public List<Install> getInstallRequestView(@PathVariable int installKey) {
+    public Install getInstallRequestView(@PathVariable int installKey) {
         return service.getInstallRequestView(installKey);
     }
 

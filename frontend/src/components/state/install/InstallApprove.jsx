@@ -54,7 +54,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
   const fetchInstallRequest = async () => {
     try {
       const response = await axios.get(`/api/install/request/${installKey}`);
-      setInstallRequest(response.data[0] || {});
+      setInstallRequest(response.data);
     } catch (error) {
       console.error("설치 요청 정보 조회 실패:", error);
     }

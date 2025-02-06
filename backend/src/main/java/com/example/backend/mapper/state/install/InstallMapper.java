@@ -51,7 +51,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.item_common_code = c.item_code
             WHERE i.install_request_key = #{installKey}
             """)
-    List<Install> getInstallRequestView(int installKey);
+    Install getInstallRequestView(int installKey);
 
     // 설치 기사 사번으로 이름 가져오기
     @Select("""
