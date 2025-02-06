@@ -14,18 +14,17 @@ import {
   createListCollection,
   HStack,
   Input,
-  Spinner,
-  Stack,
-  Textarea,
-} from "@chakra-ui/react";
-import {
   SelectContent,
   SelectItem,
   SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "../../ui/select";
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
+
 import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
@@ -125,27 +124,37 @@ export function InstkDetaiViewModal({
                 <Field orientation="horizontal" label={"품목"}>
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
-                {instk.inputConsent && (
-                  <SelectRoot
-                    collection={serialLocationList}
-                    value={item || ""}
-                    onValueChange={handleSerialChange}
-                  >
-                    <SelectLabel orientation="horizontal">
-                      시리얼 번호
-                    </SelectLabel>
-                    <SelectTrigger>
-                      <SelectValueText placeholder={"내역 확인"} />
-                    </SelectTrigger>
-                    <SelectContent portalRef={contentRef}>
-                      {serialLocationList.items.map((code, index) => (
-                        <SelectItem item={code} key={index}>
-                          {code.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </SelectRoot>
-                )}
+                <Field orientation="horizontal" label={"시리얼 번호"}>
+                  {instk.inputConsent && (
+                    <SelectRoot
+                      collection={serialLocationList}
+                      value={item || ""}
+                      position="relative"
+                      onValueChange={handleSerialChange}
+                    >
+                      {/*<SelectLabel orientation="horizontal">*/}
+                      {/*  시리얼 번호*/}
+                      {/*</SelectLabel>*/}
+                      <SelectTrigger>
+                        <SelectValueText placeholder={"내역 확인"} />
+                      </SelectTrigger>
+                      <SelectContent
+                        portalRef={contentRef}
+                        style={{
+                          width: "100%",
+                          top: "40px",
+                          position: "absolute",
+                        }}
+                      >
+                        {serialLocationList.items.map((code, index) => (
+                          <SelectItem item={code} key={index}>
+                            {code.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                  )}
+                </Field>
               </HStack>
               <HStack>
                 <Field label={"주문 요청자"} orientation="horizontal">
