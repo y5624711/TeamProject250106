@@ -16,6 +16,7 @@ import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
   const [customer, setCustomer] = useState();
@@ -143,9 +144,13 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   flexDirection: "column",
                   gap: "15px",
                 }}
+                css={{ "--field-label-width": "85px" }}
               >
                 <Box display="flex" gap={5}>
-                  <Field orientation="horizontal" label={"업체명"} flex={0.75}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="업체" />}
+                  >
                     <Input
                       name="customerName"
                       value={customer.customerName || ""}
@@ -154,9 +159,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   </Field>
                   <Field
                     orientation="horizontal"
-                    label={"업체 코드"}
-                    css={{ "--field-label-width": "80px" }}
-                    flex={0.8}
+                    label={<SpacedLabel text="업체코드" />}
                   >
                     <Input
                       readOnly
@@ -168,8 +171,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                 <Box display="flex" gap={5}>
                   <Field
                     orientation="horizontal"
-                    label={"취급 품목"}
-                    flex={0.75}
+                    label={<SpacedLabel text="취급 품목" />}
                   >
                     <Input
                       readOnly
@@ -180,9 +182,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   </Field>
                   <Field
                     orientation={"horizontal"}
-                    label={"업종"}
-                    css={{ "--field-label-width": "80px" }}
-                    flex={0.8}
+                    label={<SpacedLabel text="업종" />}
                   >
                     <Input
                       readOnly
@@ -191,7 +191,10 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     ></Input>
                   </Field>
                 </Box>
-                <Field orientation="horizontal" label={"대표자"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="대표자" />}
+                >
                   <Input
                     name="customerRep"
                     value={customer.customerRep}
@@ -201,8 +204,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                 <Box display="flex" gap={5}>
                   <Field
                     orientation="horizontal"
-                    label={"사업자 번호"}
-                    flex={0.75}
+                    label={<SpacedLabel text="사업자 번호" />}
                   >
                     <Input
                       name="customerNo"
@@ -212,9 +214,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   </Field>
                   <Field
                     orientation="horizontal"
-                    label={"법인 번호"}
-                    css={{ "--field-label-width": "80px" }}
-                    flex={0.8}
+                    label={<SpacedLabel text="법인 번호" />}
                   >
                     <Input
                       name="corporateNo"
@@ -226,8 +226,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                 <Box display="flex" gap={5}>
                   <Field
                     orientation="horizontal"
-                    label={"전화번호"}
-                    flex={0.75}
+                    label={<SpacedLabel text="전화번호" />}
                   >
                     <Input
                       name="customerTel"
@@ -237,9 +236,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   </Field>
                   <Field
                     orientation="horizontal"
-                    label={"팩스"}
-                    css={{ "--field-label-width": "80px" }}
-                    flex={0.8}
+                    label={<SpacedLabel text="팩스" />}
                   >
                     <Input
                       name="customerFax"
@@ -248,28 +245,40 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     />
                   </Field>
                 </Box>
-                <Field orientation="horizontal" label={"우편번호"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="우편번호" />}
+                >
                   <Input
                     name={"customerPost"}
                     value={customer.customerPost}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"주소"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="주소" />}
+                >
                   <Input
                     name={"customerAddress"}
                     value={customer.customerAddress}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"상세 주소"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="상세 주소" />}
+                >
                   <Input
                     name={"customerAddressDetails"}
                     value={customer.customerAddressDetails}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"비고"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="비고" />}
+                >
                   <Textarea
                     placeholder={"최대 50자"}
                     name={"customerNote"}
@@ -278,7 +287,10 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     maxHeight={"100px"}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"사용 여부"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="사용여부" />}
+                >
                   <Checkbox
                     transform="translateX(-2590%)"
                     name={"customerActive"}

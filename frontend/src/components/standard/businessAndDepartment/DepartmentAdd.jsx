@@ -9,11 +9,12 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { Input, Stack, Textarea } from "@chakra-ui/react";
+import { Input, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
   const [departmentName, setDepartmentName] = useState("");
@@ -89,43 +90,52 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
         <DialogHeader>
           <DialogTitle>부서 등록</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <Stack gap={5}>
-            <Field label={"부서명"} orientation="horizontal" required>
-              <Input
-                value={departmentName}
-                onChange={(e) => setDepartmentName(e.target.value)}
-                maxlength={10}
-              />
-            </Field>
-            <Field label={"전화번호"} orientation="horizontal" required>
-              <Input
-                value={departmentTel}
-                onChange={(e) =>
-                  setDepartmentTel(formatPhoneNumber(e.target.value))
-                }
-                maxlength={13}
-              />
-            </Field>
-            <Field label={"팩스"} orientation="horizontal">
-              <Input
-                value={departmentFax}
-                onChange={(e) =>
-                  setDepartmentFax(formatPhoneNumber(e.target.value))
-                }
-                maxlength={15}
-              />
-            </Field>
-            <Field label={"비고"} orientation="horizontal">
-              <Textarea
-                value={departmentNote}
-                onChange={(e) => setDepartmentNote(e.target.value)}
-                placeholder={"최대 50자"}
-                maxlength={50}
-                style={{ maxHeight: "100px", overflowY: "auto" }}
-              />
-            </Field>
-          </Stack>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+        >
+          <Field
+            label={<SpacedLabel text="부서" req />}
+            orientation="horizontal"
+            required
+          >
+            <Input
+              value={departmentName}
+              onChange={(e) => setDepartmentName(e.target.value)}
+              maxlength={10}
+            />
+          </Field>
+          <Field
+            label={<SpacedLabel text="업체" req />}
+            orientation="horizontal"
+            required
+          >
+            <Input
+              value={departmentTel}
+              onChange={(e) =>
+                setDepartmentTel(formatPhoneNumber(e.target.value))
+              }
+              maxlength={13}
+            />
+          </Field>
+          <Field label={<SpacedLabel text="팩스" />} orientation="horizontal">
+            <Input
+              value={departmentFax}
+              onChange={(e) =>
+                setDepartmentFax(formatPhoneNumber(e.target.value))
+              }
+              maxlength={15}
+            />
+          </Field>
+          <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
+            <Textarea
+              value={departmentNote}
+              onChange={(e) => setDepartmentNote(e.target.value)}
+              placeholder={"최대 50자"}
+              maxlength={50}
+              style={{ maxHeight: "100px", overflowY: "auto" }}
+            />
+          </Field>
         </DialogBody>
         <DialogFooter>
           <Button variant="outline" onClick={handleCloseButton}>

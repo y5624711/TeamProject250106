@@ -9,12 +9,13 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import { Field } from "../../ui/field.jsx";
-import { Input, Stack, Textarea } from "@chakra-ui/react";
+import { Input, Textarea } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import React from "react";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function DepartmentViewAndUpdateDialog({
   isOpen,
@@ -94,84 +95,94 @@ export function DepartmentViewAndUpdateDialog({
         <DialogHeader>
           <DialogTitle>부서 정보</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <Stack gap={5}>
-            <Field label={"부서명"} orientation="horizontal">
-              <Input
-                value={department.departmentName || ""}
-                onChange={(e) =>
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentName: e.target.value,
-                  }))
-                }
-              />
-            </Field>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+        >
+          <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
+            <Input
+              value={department.departmentName || ""}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentName: e.target.value,
+                }))
+              }
+            />
+          </Field>
 
-            <Field label={"부서코드"} orientation="horizontal">
-              <Input
-                value={department.departmentCode || ""}
-                variant={"subtle"}
-                onChange={(e) =>
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentCode: e.target.value,
-                  }))
-                }
-                readOnly
-              />
-            </Field>
+          <Field
+            label={<SpacedLabel text="부서코드" />}
+            orientation="horizontal"
+          >
+            <Input
+              value={department.departmentCode || ""}
+              variant={"subtle"}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentCode: e.target.value,
+                }))
+              }
+              readOnly
+            />
+          </Field>
 
-            <Field label={"대표전화"} orientation="horizontal">
-              <Input
-                value={department.departmentTel || ""}
-                onChange={(e) =>
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentTel: formatPhoneNumber(e.target.value),
-                  }))
-                }
-              />
-            </Field>
-            <Field label={"팩스"} orientation="horizontal">
-              <Input
-                value={department.departmentFax || ""}
-                onChange={(e) =>
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentFax: formatPhoneNumber(e.target.value),
-                  }))
-                }
-              />
-            </Field>
-            <Field label={"비고"} orientation="horizontal">
-              <Textarea
-                placeholder={"최대 50자"}
-                style={{ maxHeight: "100px", overflowY: "auto" }}
-                maxLength={50}
-                value={department.departmentNote || ""}
-                onChange={(e) => {
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentNote: e.target.value,
-                  }));
-                }}
-              />
-            </Field>
+          <Field
+            label={<SpacedLabel text="전화번호" />}
+            orientation="horizontal"
+          >
+            <Input
+              value={department.departmentTel || ""}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentTel: formatPhoneNumber(e.target.value),
+                }))
+              }
+            />
+          </Field>
+          <Field label={<SpacedLabel text="팩스" />} orientation="horizontal">
+            <Input
+              value={department.departmentFax || ""}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentFax: formatPhoneNumber(e.target.value),
+                }))
+              }
+            />
+          </Field>
+          <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
+            <Textarea
+              placeholder={"최대 50자"}
+              style={{ maxHeight: "100px", overflowY: "auto" }}
+              maxLength={50}
+              value={department.departmentNote || ""}
+              onChange={(e) => {
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentNote: e.target.value,
+                }));
+              }}
+            />
+          </Field>
 
-            <Field label={"사용여부"} orientation="horizontal">
-              <Checkbox
-                style={{ marginRight: "550px" }}
-                defaultChecked={department.departmentActive}
-                onChange={(e) =>
-                  setDepartmentData((prev) => ({
-                    ...prev,
-                    departmentActive: e.target.checked,
-                  }))
-                }
-              />
-            </Field>
-          </Stack>
+          <Field
+            label={<SpacedLabel text="사용여부" />}
+            orientation="horizontal"
+          >
+            <Checkbox
+              style={{ marginRight: "550px" }}
+              defaultChecked={department.departmentActive}
+              onChange={(e) =>
+                setDepartmentData((prev) => ({
+                  ...prev,
+                  departmentActive: e.target.checked,
+                }))
+              }
+            />
+          </Field>
         </DialogBody>
         <DialogFooter>
           <Button variant="outline" onClick={() => onCancel()}>

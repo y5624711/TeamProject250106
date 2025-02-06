@@ -76,7 +76,8 @@ export function SearchInventory({
   };
 
   const handleResetClick = () => {
-    setSearchParams("");
+    setSearchParams({ page: "1" }); // searchParams 초기화
+    setSearch({ type: "all", keyword: "" }); // search 상태도 초기화
   };
   return (
     <HStack justifyContent="center">
@@ -118,7 +119,7 @@ export function SearchInventory({
       <IconButton
         transform="translateX(-130%) "
         style={{ cursor: "pointer" }}
-        variant={"ghost"}
+        variant={"none"}
         onClick={handleResetClick}
       >
         <BsArrowCounterclockwise size="25px" />

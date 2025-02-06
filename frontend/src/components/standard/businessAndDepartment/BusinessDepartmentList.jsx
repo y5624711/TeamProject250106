@@ -111,7 +111,8 @@ export function BusinessDepartmentList() {
   };
 
   const handleResetClick = () => {
-    setSearchParams("");
+    setSearchParams({ page: "1" }); // searchParams 초기화
+    setSearch({ type: "all", keyword: "" }); // search 상태도 초기화
     setSort({ column: "department_code", order: "desc" });
   };
 

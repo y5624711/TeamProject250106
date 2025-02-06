@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Input, Stack } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button.jsx";
@@ -74,9 +74,12 @@ export function LoginPage() {
             flexDirection="column"
             alignItems="center"
           >
-            <Text fontSize={"30px"} fontWeight={"bold"} mb={10}>
-              Choongang System
-            </Text>
+            <Image
+              src={"/title.png"}
+              maxWidth={{ base: "300px", md: "300px" }}
+              objectFit="contain"
+              mb={"10"}
+            />
             <Stack gap={7} w="300px">
               <Field>
                 <Input
