@@ -96,7 +96,7 @@ export function InstkList() {
     { key: "input_consent", label: "상태" },
   ];
 
-  console.log(selectInputKey,"INSTKLIST INPUTKEY")
+
   return (
     <Box>
       <SearchBar
