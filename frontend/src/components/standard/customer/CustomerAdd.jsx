@@ -28,7 +28,7 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 import { PhoneInput } from "../../tool/masking/PhoneInput.jsx";
 import { CustomerNoInput } from "../../tool/masking/CustomerNoInput.jsx";
 import { CorporateNoInput } from "../../tool/masking/CorporateNoInput.jsx";
-import { SpacedLabel } from "../../tool/label/SpaceLabel.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
   const [customerName, setCustomerName] = useState("");

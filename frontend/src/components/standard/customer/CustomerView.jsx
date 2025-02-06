@@ -14,7 +14,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
-import { SpacedLabel } from "../../tool/label/SpaceLabel.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   const initialCustomer = {
@@ -224,7 +224,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   label={<SpacedLabel text="사용 여부" />}
                 >
                   <Checkbox
-                    transform="translateX(-2590%)"
+                    transform="translateX(-2560%)"
                     name={"customerActive"}
                     checked={customer.customerActive}
                     onCheckedChange={(e) => {
