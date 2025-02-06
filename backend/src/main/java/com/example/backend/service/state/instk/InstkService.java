@@ -51,6 +51,8 @@ public class InstkService {
 
        Boolean inputConsent=mapper.viewInputConsetByInputKey(inputKey);
 
+        System.out.println("inputConsent = " + inputConsent);
+
         if (inputCommonCodeName.equals("입고")) {
             Map<String, Object> whmData = mapper.viewWareHouseName(inputKey);
             warehouseName = (String) whmData.get("warehouseName");

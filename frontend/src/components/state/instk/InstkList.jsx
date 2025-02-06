@@ -45,7 +45,6 @@ export function InstkList() {
         setIsLoading(false);
       });
   }, [searchParams]);
-  //페이지 네이션 + 저거 옵션다는거 부터 하자
 
   useEffect(() => {
     refreshData();
@@ -59,16 +58,13 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    if (checkState === null || checkState === undefined) {
-      console.log("이프");
-      // 대기 상태인 항목은 승인 모달을 보여줍니다
-      setIsApproveModalOpen(true);
-    } else {
-      console.log("엘스");
-      // 승인됐거나 반려된 항목은 상세 보기를 보여줍니다
-      setIsDetailViewModalOpen(true);
-    }
+    checkState === true
+      ? handleDetailViewModal()
+      : checkState === false
+        ? handleDetailViewModal()
+        : handleApproveModal();
   };
+
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
 

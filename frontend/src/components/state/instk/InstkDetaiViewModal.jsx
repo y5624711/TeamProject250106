@@ -61,7 +61,6 @@ export function InstkDetaiViewModal({
       .then((res) => {
         setDetailData(res.data);
         const list = res.data?.serialLocationList || [];
-
         if (list.length > 0) {
           const formattedList = createListCollection({
             items: list.map((item) => ({
