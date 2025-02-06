@@ -21,6 +21,7 @@ public interface InstallMapper {
     @Select("""
             SELECT franchise_code, franchise_name, franchise_address
             FROM TB_FRNCHSMST
+            WHERE franchise_active = 1
             """)
     List<Map<String, String>> getInstallFranchiseList();
 
@@ -59,6 +60,7 @@ public interface InstallMapper {
             LEFT JOIN TB_CUSTMST c ON i.customer_code = c.customer_code
             LEFT JOIN TB_EMPMST e ON c.customer_code = e.employee_workplace_code
             WHERE i.install_request_key = #{installKey}
+            AND e.employee_active = 1
             """)
     List<Map<String, Object>> getCustomerEmployee(int installKey);
 
