@@ -127,9 +127,11 @@ export function PurchaseList({
                     "-"}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="15%">
-                  {purchase.purchaseApproveDate ||
-                    purchase.purchaseDisapproveDate ||
-                    purchase.purchaseRequestDate}
+                  {purchase.purchaseConsent == 1
+                    ? purchase.purchaseApproveDate
+                    : purchase.purchaseConsent == 0
+                      ? purchase.disapproveDate
+                      : purchase.purchaseRequestDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="13%">
                   {purchase.purchaseConsent == 1

@@ -54,6 +54,7 @@ public interface PurchaseMapper {
                 pr.purchase_consent AS purchaseConsent,
                 pa.purchase_approve_date AS purchaseApproveDate,
                 emp3.employee_name AS disapproveEmployeeName,
+                dis.disapprove_date AS disapproveDate,
                 COALESCE(
                         GREATEST(pr.purchase_request_date, pa.purchase_approve_date, dis.disapprove_date),
                         pr.purchase_request_date,
