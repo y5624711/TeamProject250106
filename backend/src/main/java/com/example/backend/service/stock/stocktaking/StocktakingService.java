@@ -1,7 +1,6 @@
 package com.example.backend.service.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
-import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -141,11 +140,15 @@ public class StocktakingService {
 
     }
 
-    public StocktakingItem getStocktakingLocationList(String warehouseCode, String row, String col, Integer shelf) {
+    public Integer getStocktakingLocationList(String warehouseCode, String row, String col, Integer shelf) {
 
 
         return mapper.getStocktakingLocation(warehouseCode, row, col, shelf);
 
+    }
+
+    public String getLocationValue(Integer locationKey) {
+        return mapper.getLocationValue(locationKey);
     }
 
 

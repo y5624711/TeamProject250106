@@ -59,7 +59,7 @@ function StocktakingAdd({
   const [searchClick, setSearchClick] = useState(false);
   // 여기서부터 새롭게 추가된 실사에 쓰이는 애들
   const [difference, setDifference] = useState(null);
-  const [makeDifference, setMakeDifference] = useState(0);
+  const [makeDifference, setMakeDifference] = useState(null);
   const [locationList, setLocationList] = useState([]);
   const [rowList, setRowList] = useState([]);
   const [row, setRow] = useState("");
@@ -72,7 +72,7 @@ function StocktakingAdd({
   const [selectedShelf, setSelectedShelf] = useState("");
   const [locationKey, setLocationKey] = useState("");
   const [putStocktakingType, setPutStocktakingType] = useState("");
-  const [serialNo, setSerialNo] = useState("");
+  const [serialNo, setSerialNo] = useState(null);
 
   const resetState = () => {
     setWarehouseCode(null);
@@ -85,7 +85,7 @@ function StocktakingAdd({
     setStocktakingType(true);
     setSearchClick(false);
     setDifference(null);
-    setSerialNo("");
+    setSerialNo(null);
     setPutStocktakingType("");
     setLocationKey(null);
     setRow(null);
@@ -339,12 +339,17 @@ function StocktakingAdd({
   };
 
   const serialValidate = () => {
-    return serialNo != "" && serialNo !== null;
+    return serialNo !== "" && serialNo !== null;
   };
 
   const handleDifferentClick = () => {
     axios.get(`/api/stocktaking/checkLocation/${locationKey}`).then((res) => {
       setSerialNo(res.data);
+      if (
+        res.data === ""
+          ? setMakeDifference("실사 입고")
+          : setMakeDifference("실사 출고")
+      );
     });
   };
 
@@ -515,9 +520,27 @@ function StocktakingAdd({
             </Box>
             <Box display="flex" gap={18}>
               <Field label="시리얼 번호" orientation="horizontal" mb={15}>
-                <Input />
+                {makeDifference === "실사 입고" ? (
+                  <Input
+                    type={"text"}
+                    value={serialNo}
+                    onChange={(e) => setSerialNo(e.target.value)}
+                  />
+                ) : (
+                  <Input value={serialNo} readOnly />
+                )}
               </Field>
-              <Button onClick={handleDifferentClick}>조회</Button>
+              <Button onClick={handleDifferentClick} variant="outline">
+                조회
+              </Button>
+              <Tooltip
+                content={"양식을 모두 입력해 주세요."}
+                openDelay={100}
+                closeDelay={100}
+                disabled={serialValidate()}
+              >
+                <Button disabled={!serialValidate()}>반영</Button>
+              </Tooltip>
             </Box>
             <Field label="비고" orientation="horizontal" mb={15}>
               <Textarea

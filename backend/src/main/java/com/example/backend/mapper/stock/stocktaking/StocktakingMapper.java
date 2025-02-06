@@ -1,7 +1,6 @@
 package com.example.backend.mapper.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
-import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -292,7 +291,17 @@ public interface StocktakingMapper {
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
             WHERE w.warehouse_code=#{warehouseCode} AND l.row=#{row} AND l.col=#{col} AND l.shelf=#{shelf} AND l.location_active=1
             """)
-    StocktakingItem getStocktakingLocation(String warehouseCode, String row, String col, Integer shelf);
+    Integer getStocktakingLocation(String warehouseCode, String row, String col, Integer shelf);
+
+    @Select("""
+            SELECT s.serial_no
+            FROM TB_INSTK_SUB s
+            LEFT JOIN TB_LOCMST l ON s.location_key=l.location_key
+            WHERE l.located=1 AND l.location_active AND s.location_key=#{locationKey}
+            ORDER BY s.input_stock_sub_key DESC
+            LIMIT 1
+            """)
+    String getLocationValue(Integer locationKey);
 
     //    실제 수량이 더 많을 때 사용
 //    @Select("""
