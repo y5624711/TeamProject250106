@@ -99,7 +99,7 @@ export function DepartmentViewAndUpdateDialog({
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           css={{ "--field-label-width": "85px" }}
         >
-          <Field label={<SpacedLabel text="부서명" />} orientation="horizontal">
+          <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
             <Input
               value={department.departmentName || ""}
               onChange={(e) =>
@@ -129,7 +129,7 @@ export function DepartmentViewAndUpdateDialog({
           </Field>
 
           <Field
-            label={<SpacedLabel text="대표전화" />}
+            label={<SpacedLabel text="전화번호" />}
             orientation="horizontal"
           >
             <Input
