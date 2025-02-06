@@ -47,8 +47,22 @@ function Location(props) {
   }, [searchParams, isAddDialogOpen, reborn, checkedActive]);
 
   useEffect(() => {
+    const type = searchParams.get("type") || "all";
+    const keyword = searchParams.get("keyword") || "";
+    const sort = searchParams.get("sort") || "";
+    const order = searchParams.get("order") || "";
+    const active = searchParams.get("active") === "true";
     const page = parseInt(searchParams.get("page")) || 1;
     setCurrentPage(page);
+    setSearch({
+      type,
+      keyword,
+      sort,
+      order,
+      active,
+    });
+
+    setCheckedActive(active);
   }, [searchParams]);
 
   function handleSearchClick() {
@@ -82,6 +96,8 @@ function Location(props) {
     setSearch({ ...search, active: nextValue });
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("active", nextValue.toString());
+    nextSearchParams.set("page", 1);
+
     setSearchParams(nextSearchParams);
   };
 
