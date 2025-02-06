@@ -94,6 +94,7 @@ function StocktakingAdd({
     setRowList([]);
     setColList([]);
     setShelfList([]);
+    setMakeDifference(null);
   };
 
   // 요청 창 닫히면 초기화
@@ -361,6 +362,8 @@ function StocktakingAdd({
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
   };
 
+  console.log(makeDifference);
+
   return (
     <DialogRoot open={isOpen} onOpenChange={onClose} size="lg">
       <DialogContent>
@@ -542,6 +545,51 @@ function StocktakingAdd({
                 <Button disabled={!serialValidate()}>반영</Button>
               </Tooltip>
             </Box>
+            {makeDifference === null ? null : makeDifference ===
+              "" ? null : makeDifference === "실사 입고" ? (
+              <Field
+                label="등록 분류"
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
+                  <RadioGroup
+                    defaultValue="new" // ✅ Boolean 값을 문자열로 변환
+                    onChange={(e) => setPutStocktakingType(e.target.value)}
+                  >
+                    <HStack gap="4">
+                      <Radio value="new">새 물품</Radio>
+                      <Radio value="old">기존 물품</Radio>
+                    </HStack>
+                  </RadioGroup>
+                </Box>
+                {/*<Input*/}
+                {/*  type={"text"}*/}
+                {/*  value={stocktakingType}*/}
+                {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
+                {/*/>*/}
+              </Field>
+            ) : makeDiffernce === "실사 출고" ? (
+              <Field
+                label="등록 분류"
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
+                  <RadioGroup
+                    defaultValue="new" // ✅ Boolean 값을 문자열로 변환
+                    onChange={(e) => setPutStocktakingType(e.target.value)}
+                  >
+                    <HStack gap="4">
+                      <Radio value="new">새 물품</Radio>
+                      <Radio value="old">기존 물품</Radio>
+                    </HStack>
+                  </RadioGroup>
+                </Box>
+              </Field>
+            ) : null}
             <Field label="비고" orientation="horizontal" mb={15}>
               <Textarea
                 style={{ maxHeight: "100px", overflowY: "auto" }}
