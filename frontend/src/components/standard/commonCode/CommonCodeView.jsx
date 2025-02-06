@@ -104,12 +104,11 @@ export function CommonCodeView({
   };
 
   const isValid =
-    (editedCommonCode != null &&
-      editedCommonCode.commonCodeType === "ITEM" &&
+    (editedCommonCode != null && editedCommonCode.commonCodeType === "ITEM") ||
+    (editedCommonCode.commonCodeType === "STANDARD" &&
       /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
     (editedCommonCode != null &&
-      (editedCommonCode.commonCodeType === "STANDARD" ||
-        editedCommonCode.commonCodeType === "STATE") &&
+      editedCommonCode.commonCodeType === "STATE" &&
       /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
       editedCommonCode.commonCodeName.trim() !== "");
 
@@ -191,7 +190,7 @@ export function CommonCodeView({
               <Field label={"사용 여부"} orientation="horizontal" mb={15}>
                 <Checkbox
                   style={{ marginRight: "550px" }}
-                  defaultChecked={editedCommonCode.commonCodeActive}
+                  checked={editedCommonCode.commonCodeActive}
                   onChange={(e) =>
                     setEditedCommonCode((prev) => ({
                       ...prev,

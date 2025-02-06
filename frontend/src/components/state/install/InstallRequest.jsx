@@ -35,7 +35,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
   const initialInstallRequest = {
     franchiseName: "",
     itemCommonName: "",
-    installRequestAmount: "",
+    installRequestAmount: 1,
     franchiseAddress: "",
     customerName: "",
     installRequestNote: "",
@@ -43,9 +43,6 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
   const [installRequest, setInstallRequest] = useState(initialInstallRequest);
   const [installItemList, setInstallItemList] = useState([]);
   const [franchiseList, setFranchiseList] = useState([]);
-  // const [localFranchiseName, setLocalFranchiseName] = useState("");
-  // const [localFranchiseCode, setLocalFranchiseCode] = useState("");
-  // const [selectedFranchise, setSelectedFranchise] = useState(null);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -123,6 +120,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
     installRequest.franchiseName &&
     installRequest.itemCommonName &&
     installRequest.installRequestAmount &&
+    installRequest.installRequestAmount > 0 &&
     installRequest.installRequestAmount <= installRequest.countItem;
 
   return (
@@ -217,6 +215,14 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   max={installRequest.countItem}
                 />
               </Field>
+              {installRequest.installRequestAmount < 1 &&
+                installRequest.installRequestAmount && (
+                  <Box display="flex">
+                    <Heading size="xs" color="red.500" my={-3} ml={"90px"}>
+                      설치 요청 수량은 최소 1개 이상이어야 합니다.
+                    </Heading>
+                  </Box>
+                )}
               {installRequest.installRequestAmount >
                 installRequest.countItem && (
                 <Box display="flex">

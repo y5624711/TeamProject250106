@@ -38,11 +38,9 @@ export function InstallConfiguration({
   const { id, company } = useContext(AuthenticationContext);
   const [installData, setInstallData] = useState(null);
   const [inoutHistoryNote, setInoutHistoryNote] = useState("");
-  // const [isConfiguration, setIsConfiguration] = useState(null);
 
   const handleClose = () => {
     setInoutHistoryNote("");
-    // setIsConfiguration(null);
     onClose();
   };
 

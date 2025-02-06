@@ -83,12 +83,16 @@ export function CommonCodeList({
                 bg={code.commonCodeActive ? "white" : "gray.100"}
                 _hover={{ backgroundColor: "gray.200" }}
               >
-                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width={"90px"}>
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"150px"}>
                   {code.commonCodeType}
                 </Table.Cell>
-                <Table.Cell textAlign="center">{code.commonCode}</Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width={"150px"}>
+                  {code.commonCode}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"150px"}>
                   {code.commonCodeName}
                 </Table.Cell>
               </Table.Row>
