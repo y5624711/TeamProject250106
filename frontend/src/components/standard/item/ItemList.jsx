@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
 
-import { Pagination } from "../../tool/list/Pagination.jsx";
-import { ActiveSwitch } from "../../tool/list/ActiveSwitch.jsx";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
+import { ActiveSwitch } from "../../tool/form/ActiveSwitch.jsx";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 
 export function ItemList({
   itemList,

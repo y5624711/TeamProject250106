@@ -9,11 +9,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { InstkConfirmModal } from "./InstkConfirmModal.jsx";
 import { InstkDetaiViewModal } from "./InstkDetaiViewModal.jsx";
 import axios from "axios";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Pagination } from "../../tool/list/Pagination.jsx";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
 import { Radio, RadioGroup } from "../../ui/radio.jsx";
 import { useSearchParams } from "react-router-dom";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 
 export function InstkList() {
   const [instkList, setInstkList] = useState([]);

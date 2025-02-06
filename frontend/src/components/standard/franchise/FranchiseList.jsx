@@ -18,7 +18,7 @@ import {
 import { Checkbox } from "../../ui/checkbox.jsx";
 import React from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 
 export function FranchiseList({
   franchiseList,

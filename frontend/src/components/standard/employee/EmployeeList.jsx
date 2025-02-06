@@ -22,8 +22,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { EmployeeAddDialog } from "./EmployeeAddDialog.jsx";
 import { EmployeeViewDialog } from "./EmployeeViewDialog.jsx";
 import { BsArrowCounterclockwise } from "react-icons/bs";
-import { Sort } from "../../tool/list/Sort.jsx";
-import { Pagination } from "../../tool/list/Pagination.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
 
 export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
   //검색 옵션

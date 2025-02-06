@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Center, createListCollection, Table } from "@chakra-ui/react";
-import { SearchBar } from "../../tool/list/SearchBar.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
-import { Pagination } from "../../tool/list/Pagination.jsx";
-import { StateRadioGroup } from "../../tool/list/StateRadioGroup.jsx";
+import { SearchBar } from "../../tool/form/SearchBar.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
+import { Pagination } from "../../tool/form/Pagination.jsx";
+import { StateRadioGroup } from "../../tool/form/StateRadioGroup.jsx";
 
 export function InstallList({
   installList,

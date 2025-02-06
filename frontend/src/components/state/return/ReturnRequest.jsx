@@ -11,7 +11,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import {
-  HStack,
+  Box,
   Input,
   SelectContent,
   SelectItem,
@@ -26,6 +26,7 @@ import Select from "react-select";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function ReturnRequest({ isOpen, onClose, onRequest }) {
   const { id, name } = useContext(AuthenticationContext);
@@ -182,7 +183,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           css={{ "--field-label-width": "85px" }}
         >
-          <Field orientation="horizontal" label="가맹점" required>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="가맹점" req />}
+            required
+          >
             <Select
               options={franchiseList}
               value={franchiseList.find(
@@ -206,8 +211,12 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
             />
             <Button onClick={onFranchiseClick}>조회</Button>
           </Field>
-          <HStack>
-            <Field orientation="horizontal" label="시리얼 번호" required>
+          <Box display={"flex"} gap={5}>
+            <Field
+              orientation="horizontal"
+              label={<SpacedLabel text="시리얼 번호" req />}
+              required
+            >
               <SelectRoot
                 value={requestData.serialNo}
                 onValueChange={(e) => {
@@ -239,7 +248,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 </SelectContent>
               </SelectRoot>
             </Field>
-            <Field orientation="horizontal" label="품목">
+            <Field orientation="horizontal" label={<SpacedLabel text="품목" />}>
               <Input
                 variant={"subtle"}
                 readOnly
@@ -247,8 +256,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 // placeholder={"OOOO"}
               />
             </Field>
-          </HStack>
-          <Field orientation="horizontal" label="담당 업체">
+          </Box>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="담당 업체" />}
+          >
             <Input
               variant={"subtle"}
               readOnly
@@ -256,8 +268,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               // placeholder="OOOO"
             />
           </Field>
-          <HStack>
-            <Field orientation="horizontal" label="요청자">
+          <Box display={"flex"} gap={5}>
+            <Field
+              orientation="horizontal"
+              label={<SpacedLabel text="요청자" />}
+            >
               <Input
                 variant={"subtle"}
                 readOnly
@@ -265,7 +280,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 // onChange={handleInput("businessEmployeeName")}
               />
             </Field>
-            <Field orientation="horizontal" label="사번">
+            <Field orientation="horizontal" label={<SpacedLabel text="사번" />}>
               <Input
                 variant={"subtle"}
                 value={requestData.businessEmployeeNo}
@@ -273,8 +288,8 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                 // onChange={handleInput("businessEmployeeNo")}
               />
             </Field>
-          </HStack>
-          <Field orientation="horizontal" label="비고">
+          </Box>
+          <Field orientation="horizontal" label={<SpacedLabel text="비고" />}>
             <Textarea
               value={requestData.returnRequestNote}
               placeholder="최대 50자"

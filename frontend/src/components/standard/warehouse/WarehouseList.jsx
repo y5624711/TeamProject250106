@@ -8,7 +8,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../ui/pagination.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 
 function WarehouseList({
   warehouseList,

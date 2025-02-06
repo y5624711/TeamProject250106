@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Center, HStack, Table } from "@chakra-ui/react";
 import StocktakingListPage from "./StocktakingListPage.jsx";
 import StocktakingDetail from "./StocktakingDetail.jsx";
-import { Sort } from "../../tool/list/Sort.jsx";
+import { Sort } from "../../tool/form/Sort.jsx";
 import {
   PaginationItems,
   PaginationNextTrigger,

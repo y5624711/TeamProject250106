@@ -28,6 +28,7 @@ import { Tooltip } from "../../ui/tooltip.jsx";
 import { PhoneInput } from "../../tool/masking/PhoneInput.jsx";
 import { CustomerNoInput } from "../../tool/masking/CustomerNoInput.jsx";
 import { CorporateNoInput } from "../../tool/masking/CorporateNoInput.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
   const [customerName, setCustomerName] = useState("");
@@ -132,7 +133,11 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           css={{ "--field-label-width": "85px" }}
         >
-          <Field orientation="horizontal" label={"협력 업체"} required>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="업체" req />}
+            required
+          >
             <Input
               required
               value={customerName}
@@ -140,7 +145,11 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
             />
           </Field>
           <Box display="flex" gap={5}>
-            <Field label={"취급 품목"} orientation={"horizontal"} required>
+            <Field
+              label={<SpacedLabel text="취급 품목" req />}
+              orientation={"horizontal"}
+              required
+            >
               <SelectRoot
                 onValueChange={(e) => {
                   setItemName(e.value);
@@ -174,19 +183,7 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
             </Field>
             <Field
               orientation="horizontal"
-              label={
-                <span
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {"업종".split("").map((c) => (
-                    <span>{c}</span>
-                  ))}
-                </span>
-              }
+              label={<SpacedLabel text="업종" req />}
               required
             >
               <Input
@@ -195,70 +192,74 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
               />
             </Field>
           </Box>
-          <Field orientation="horizontal" label={"대표자"} required>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="대표자" req />}
+            required
+          >
             <Input
               value={customerRep}
               onChange={(e) => setCustomerRep(e.target.value)}
             />
           </Field>
           <Box display={"flex"} gap={5}>
-            <Field orientation="horizontal" label={"사업자 번호"} required>
+            <Field
+              orientation="horizontal"
+              label={<SpacedLabel text="사업자 번호" req />}
+              required
+            >
               <CustomerNoInput value={customerNo} onChange={setCustomerNo} />
             </Field>
-            <Field orientation="horizontal" label={"법인 번호"} required>
+            <Field
+              orientation="horizontal"
+              label={<SpacedLabel text="법인 번호" req />}
+              required
+            >
               <CorporateNoInput value={corporateNo} onChange={setCorporateNo} />
             </Field>
           </Box>
           <Box display="flex" gap={5}>
             <Field
               orientation="horizontal"
-              label={
-                <span
-                  style={{
-                    letterSpacing: "4.5px",
-                  }}
-                >
-                  전화번호
-                </span>
-              }
+              label={<SpacedLabel text="전화번호" req />}
               required
             >
               <PhoneInput value={customerTel} onChange={setCustomerTel} />
             </Field>
-            <Field
-              orientation="horizontal"
-              label={
-                <span
-                  style={{
-                    letterSpacing: "28.5px",
-                  }}
-                >
-                  팩스
-                </span>
-              }
-            >
+            <Field orientation="horizontal" label={<SpacedLabel text="팩스" />}>
               <PhoneInput value={customerFax} onChange={setCustomerFax} />
             </Field>
           </Box>
-          <Field orientation="horizontal" label={"우편번호"} required>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="우편번호" req />}
+            required
+          >
             <Input
               value={customerPost}
               onChange={(e) => setCustomerPost(e.target.value)}
             />
           </Field>
-          <Field orientation="horizontal" label={"주소"} required>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="주소" req />}
+            required
+          >
             <Input
               value={customerAddress}
               onChange={(e) => setCustomerAddress(e.target.value)}
             />
           </Field>
-          <Field orientation="horizontal" label={"상세 주소"}>
+          <Field
+            orientation="horizontal"
+            label={<SpacedLabel text="상세 주소" />}
+          >
             <Input
               value={customerAddressDetails}
               onChange={(e) => setCustomerAddressDetails(e.target.value)}
             />
           </Field>
-          <Field orientation="horizontal" label={"비고"}>
+          <Field orientation="horizontal" label={<SpacedLabel text="비고" />}>
             <Textarea
               placeholder="최대 50자"
               value={customerNote}

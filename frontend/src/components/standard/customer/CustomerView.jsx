@@ -14,6 +14,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   const initialCustomer = {
@@ -74,25 +75,35 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   flexDirection: "column",
                   gap: "15px",
                 }}
+                css={{ "--field-label-width": "85px" }}
               >
-                <HStack>
-                  <Field orientation="horizontal" label={"업체"}>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="업체" />}
+                  >
                     <Input
                       name="customerName"
                       value={customer.customerName || ""}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"업체 코드"}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="업체 코드" />}
+                  >
                     <Input
                       readOnly
                       value={customer.customerCode || ""}
                       variant={"subtle"}
                     />
                   </Field>
-                </HStack>
-                <HStack>
-                  <Field orientation="horizontal" label={"취급 품목"}>
+                </Box>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="취급 품목" />}
+                  >
                     <Input
                       readOnly
                       name="itemName"
@@ -100,7 +111,10 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                       variant={"subtle"}
                     />
                   </Field>
-                  <Field orientation={"horizontal"} label={"업종"}>
+                  <Field
+                    orientation={"horizontal"}
+                    label={<SpacedLabel text="업종" />}
+                  >
                     <Input
                       variant={"subtle"}
                       readOnly
@@ -108,68 +122,95 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                       value={customer.industry}
                     ></Input>
                   </Field>
-                </HStack>
-                <Field orientation="horizontal" label={"대표자"}>
+                </Box>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="대표자" />}
+                >
                   <Input
                     name="customerRep"
                     value={customer.customerRep}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <HStack>
-                  <Field orientation="horizontal" label={"사업자 번호"}>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="사업자 번호" />}
+                  >
                     <Input
                       name="customerNo"
                       value={customer.customerNo}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"법인 번호"}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="법인 번호" />}
+                  >
                     <Input
                       name="corporateNo"
                       value={customer.corporateNo}
                       onChange={handleInputChange}
                     ></Input>
                   </Field>
-                </HStack>
-                <HStack>
-                  <Field orientation="horizontal" label={"전화번호"}>
+                </Box>
+                <Box display="flex" gap={5}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="전화번호" />}
+                  >
                     <Input
                       name="customerTel"
                       value={customer.customerTel}
                       onChange={handleInputChange}
                     />
                   </Field>
-                  <Field orientation="horizontal" label={"팩스"}>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="팩스" />}
+                  >
                     <Input
                       name="customerFax"
                       value={customer.customerFax}
                       onChange={handleInputChange}
                     />
                   </Field>
-                </HStack>
-                <Field orientation="horizontal" label={"우편번호"}>
+                </Box>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="우편번호" />}
+                >
                   <Input
                     name={"customerPost"}
                     value={customer.customerPost}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"주소"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="주소" />}
+                >
                   <Input
                     name={"customerAddress"}
                     value={customer.customerAddress}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"상세 주소"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="상세 주소" />}
+                >
                   <Input
                     name={"customerAddressDetails"}
                     value={customer.customerAddressDetails}
                     onChange={handleInputChange}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"비고"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="비고" />}
+                >
                   <Textarea
                     placeholder={"최대 50자"}
                     name={"customerNote"}
@@ -178,9 +219,12 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     maxHeight={"100px"}
                   />
                 </Field>
-                <Field orientation="horizontal" label={"사용 여부"}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="사용 여부" />}
+                >
                   <Checkbox
-                    transform="translateX(-2590%)"
+                    transform="translateX(-2560%)"
                     name={"customerActive"}
                     checked={customer.customerActive}
                     onCheckedChange={(e) => {
