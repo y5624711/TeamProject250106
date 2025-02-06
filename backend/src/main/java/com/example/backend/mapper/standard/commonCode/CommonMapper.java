@@ -9,50 +9,52 @@ import java.util.List;
 public interface CommonMapper {
 
     @Select("""
-                <script>
-                    SELECT *
-                    FROM TB_SYSCOMM
-                    WHERE 1=1
-                    <if test="active == false">
-                        AND common_code_active = TRUE
-                    </if>
-                <if test="filter != null">
-                    <choose>
-                        <when test="filter == 'standard'">
-                            AND common_code_type = 'STANDARD'
-                        </when>
-                        <when test="filter == 'state'">
-                            AND common_code_type = 'STATE'
-                        </when>
-                        <when test="filter == 'item'">
-                            AND common_code_type = 'ITEM'
-                        </when>
-                        <otherwise>
-                            <!-- 'all' 또는 기타 값인 경우 조건 추가하지 않음 -->
-                        </otherwise>
-                    </choose>
-                    </if>
-                        <if test="keyword != null and keyword.trim() != ''">
-                            <if test="type == 'all'">
-                                AND (
-                                    common_code LIKE CONCAT('%', #{keyword}, '%')
-                                    OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
-                                )
-                            </if>
-                            <if test="type != 'all'">
-                                AND ${type} LIKE CONCAT('%', #{keyword}, '%')
-                            </if>
+            <script>
+                SELECT sc.*, COUNT(c.customer_key) AS usedCommonCodeByCustomer
+                FROM TB_SYSCOMM sc
+                LEFT OUTER JOIN TB_CUSTMST c ON sc.common_code = c.item_code AND customer_active = 1
+                WHERE 1=1
+                <if test="active == false">
+                    AND common_code_active = TRUE
+                </if>
+            <if test="filter != null">
+                <choose>
+                    <when test="filter == 'standard'">
+                        AND common_code_type = 'STANDARD'
+                    </when>
+                    <when test="filter == 'state'">
+                        AND common_code_type = 'STATE'
+                    </when>
+                    <when test="filter == 'item'">
+                        AND common_code_type = 'ITEM'
+                    </when>
+                    <otherwise>
+                        <!-- 'all' 또는 기타 값인 경우 조건 추가하지 않음 -->
+                    </otherwise>
+                </choose>
+                </if>
+                    <if test="keyword != null and keyword.trim() != ''">
+                        <if test="type == 'all'">
+                            AND (
+                                common_code LIKE CONCAT('%', #{keyword}, '%')
+                                OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                            )
                         </if>
-                    <choose>
-                        <when test="sort != null and sort != ''">
-                            ORDER BY `${sort}` ${order}
-                        </when>
-                        <otherwise>
-                        ORDER BY common_code_key DESC
-                        </otherwise>
-                    </choose>
-                    LIMIT #{offset}, 10
-                </script>
+                        <if test="type != 'all'">
+                            AND ${type} LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                    </if>
+                GROUP BY sc.common_code_key
+                <choose>
+                    <when test="sort != null and sort != ''">
+                        ORDER BY `${sort}` ${order}
+                    </when>
+                    <otherwise>
+                    ORDER BY common_code_key DESC
+                    </otherwise>
+                </choose>
+                LIMIT #{offset}, 10
+            </script>
             """)
     List<CommonCode> getCommonCodeList(Integer offset, Boolean active, String sort, String order, String type,
                                        String keyword, String filter);
@@ -113,8 +115,9 @@ public interface CommonMapper {
     int addCommonCode(CommonCode commonCode);
 
     @Select("""
-            SELECT *
-            FROM TB_SYSCOMM
+            SELECT sc.*, COUNT(c.customer_key) AS usedCommonCodeByCustomer
+            FROM TB_SYSCOMM sc
+            LEFT OUTER JOIN TB_CUSTMST c ON sc.common_code = c.item_code
             WHERE common_code_key = #{commonCodeKey}
             """)
     List<CommonCode> getCommonCodeView(int commonCodeKey);

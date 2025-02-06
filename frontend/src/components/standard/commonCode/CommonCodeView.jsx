@@ -41,7 +41,7 @@ export function CommonCodeView({
     commonCodeName: "",
     commonCodeNote: "",
     commonCodeType: "",
-    commonCodeActive: false,
+    commonCodeActive: "",
   });
 
   const selectOptions = [
@@ -104,13 +104,13 @@ export function CommonCodeView({
   };
 
   const isValid =
-    (editedCommonCode != null && editedCommonCode.commonCodeType === "ITEM") ||
-    (editedCommonCode.commonCodeType === "STANDARD" &&
-      /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
-    (editedCommonCode != null &&
-      editedCommonCode.commonCodeType === "STATE" &&
-      /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
-      editedCommonCode.commonCodeName.trim() !== "");
+    editedCommonCode &&
+    (editedCommonCode.commonCodeType === "ITEM" ||
+      (editedCommonCode.commonCodeType === "STANDARD" &&
+        /^[A-Z]{3}$/.test(editedCommonCode.commonCode)) ||
+      (editedCommonCode.commonCodeType === "STATE" &&
+        /^[A-Z]{3,5}$/.test(editedCommonCode.commonCode) &&
+        editedCommonCode.commonCodeName.trim() !== ""));
 
   if (!editedCommonCode) {
     return;
@@ -187,18 +187,37 @@ export function CommonCodeView({
                   maxHeight={"100px"}
                 />
               </Field>
-              <Field label={"사용 여부"} orientation="horizontal" mb={15}>
+              <Field label={"사용 여부"} orientation="horizontal">
                 <Checkbox
                   style={{ marginRight: "550px" }}
+                  name="commonCodeActive"
                   checked={editedCommonCode.commonCodeActive}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const checked =
+                      e.checked !== undefined ? e.checked : e.target.checked;
                     setEditedCommonCode((prev) => ({
                       ...prev,
-                      commonCodeActive: e.target.checked,
-                    }))
+                      commonCodeActive: checked,
+                    }));
+                  }}
+                  disabled={
+                    editedCommonCode.usedCommonCodeByCustomer ||
+                    editedCommonCode.commonCodeType === "STATE" ||
+                    editedCommonCode.commonCodeType === "STANDARD"
                   }
                 />
               </Field>
+              {(editedCommonCode.usedCommonCodeByCustomer >= 1 ||
+                editedCommonCode.commonCodeType === "STATE" ||
+                editedCommonCode.commonCodeType === "STANDARD") && (
+                <Text fontSize={"xs"} mb={18} mt={-2} ml={"85px"}>
+                  {editedCommonCode.commonCodeType === "STATE"
+                    ? "STATE 코드는 사용 여부를 변경할 수 없습니다."
+                    : editedCommonCode.commonCodeType === "STANDARD"
+                      ? "STANDARD 코드는 사용 여부를 변경할 수 없습니다."
+                      : "협력업체가 사용 중인 품목 코드는 사용 여부를 변경할 수 없습니다."}
+                </Text>
+              )}
             </Stack>
           </DialogBody>
           <DialogFooter>
