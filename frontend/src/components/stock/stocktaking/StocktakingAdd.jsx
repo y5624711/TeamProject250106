@@ -362,6 +362,13 @@ function StocktakingAdd({
     console.log("여기에 로케이션과 등록 유형, 시리얼번호 등록된 후 초기화");
   };
 
+  useEffect(() => {
+    setSerialNo("");
+    if (putStocktakingType === "new") {
+      setSerialNo("NewCode");
+    }
+  }, [putStocktakingType]);
+
   console.log(serialNo);
 
   return (
@@ -560,7 +567,7 @@ function StocktakingAdd({
                 <>
                   <Box display="flex" gap={18}>
                     <Field label="시리얼 번호" orientation="horizontal" mb={15}>
-                      <Input type={"text"} value={serialNo} readOnly />
+                      <Input type={"text"} value="" readOnly />
                     </Field>
                     <Button onClick={handleDifferentClick} variant="outline">
                       조회
@@ -646,6 +653,7 @@ function StocktakingAdd({
                 </>
               )
             ) : (
+              // TODO: 실사 출고
               <Box display="flex" gap={18}>
                 <Field label="시리얼 번호" orientation="horizontal" mb={15}>
                   <Input type={"text"} value={serialNo} readOnly />
