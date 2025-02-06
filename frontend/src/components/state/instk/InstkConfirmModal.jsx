@@ -95,6 +95,9 @@ export function InstkConfirmModal({
           description: res.data.message.text,
           type: res.data.message.type,
         });
+
+        setChangeModal();
+        onApprovalSuccess();
       })
       .catch((error) => {
         console.log("입고 반려 중 오류 ", error);

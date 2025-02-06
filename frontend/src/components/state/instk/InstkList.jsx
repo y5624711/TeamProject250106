@@ -71,12 +71,9 @@ export function InstkList() {
   };
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
-    handleApproveModal(); // 승인 모달 닫기
 
-    // refreshData 후의 업데이트된 상태로 모달 열기
-    const updatedState = instkList[selectedIndex].inputConsent;
-    console.log(instkList);
-    handleSelectModal(updatedState);
+    // 상세모달띄우기
+    handleDetailViewModal();
   };
 
   const searchOptions = createListCollection({

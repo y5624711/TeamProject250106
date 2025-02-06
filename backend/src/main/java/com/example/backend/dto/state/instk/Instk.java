@@ -2,6 +2,7 @@ package com.example.backend.dto.state.instk;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Instk {
     private String itemCommonName;
     private String customerName;
     private String itemAmount;
-    private java.sql.Date requestDate;
-    private java.sql.Date inputStockDate;
+    private LocalDateTime requestDate;
+    private LocalDateTime inputStockDate;
     private String employeeName;
 
     // 요청
@@ -39,7 +40,7 @@ public class Instk {
     private String disapproveEmployeeNo;
     private String disapproveEmployeeName;
     private String disapproveNote;
-    private java.sql.Date disapproveDate;
+    private LocalDateTime disapproveDate;
 
     private List<String> serialList;
 
