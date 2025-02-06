@@ -88,7 +88,7 @@ export function InstkList() {
     { key: "item_common_name", label: "품목" },
     { key: "customer_name", label: "담당 업체" },
     { key: "request_employee_name", label: "요청자" },
-    { key: "input_stock_employee_name", label: "승인자" },
+    { key: "input_stock_employee_name", label: "반려/승인자" },
     { key: "combined_date", label: "날짜" },
     { key: "input_consent", label: "상태" },
   ];

@@ -192,6 +192,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             </SelectContent>
           </SelectRoot>
         </Box>
+
         <Input
           w={"50%"}
           placeholder={"검색어를 입력해 주세요."}
@@ -205,6 +206,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
             }
           }}
         />
+
         <IconButton
           transform="translateX(-130%) "
           style={{ cursor: "pointer" }}
@@ -250,7 +252,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               bg={item.employeeActive ? "white" : "gray.100"}
               _hover={{ backgroundColor: "gray.200" }}
             >
-              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+              <Table.Cell width="90px" textAlign="center">
+                {index + 1}
+              </Table.Cell>
               <Table.Cell textAlign="center">
                 {item.employeeWorkPlaceCode}
               </Table.Cell>
@@ -280,7 +284,6 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
 
       <Flex justify="space-between">
         <Box />
-
         <Box>
           <Pagination
             count={count}
