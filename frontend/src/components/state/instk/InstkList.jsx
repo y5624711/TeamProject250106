@@ -20,6 +20,7 @@ export function InstkList() {
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectInputKey, setSelectInputKey] = useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,6 +96,7 @@ export function InstkList() {
     { key: "input_consent", label: "상태" },
   ];
 
+  console.log(selectInputKey,"INSTKLIST INPUTKEY")
   return (
     <Box>
       <SearchBar
@@ -140,6 +142,7 @@ export function InstkList() {
                   onDoubleClick={() => {
                     handleSelectModal(item.inputConsent);
                     setSelectedIndex(index);
+                    setSelectInputKey(item.inputKey);
                   }}
                   style={{
                     cursor: "pointer",
@@ -212,6 +215,7 @@ export function InstkList() {
       {isDetailViewModalOpen && (
         <InstkDetaiViewModal
           isModalOpen={isDetailViewModalOpen}
+          selectInputKey={selectInputKey}
           setChangeModal={handleDetailViewModal}
           instk={instkList[selectedIndex]}
           isLoading={isLoading}
