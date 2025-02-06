@@ -346,14 +346,17 @@ function StocktakingAdd({
   const handleDifferentClick = () => {
     axios.get(`/api/stocktaking/checkLocation/${locationKey}`).then((res) => {
       setSerialNo(res.data);
+      setPutStocktakingType("");
       if (
         res.data === ""
           ? setMakeDifference("실사 입고") || setPutStocktakingType("new")
-          : setMakeDifference("실사 출고") || setPutStocktakingType(null)
+          : setMakeDifference("실사 출고") || setPutStocktakingType("lost")
       );
     });
   };
 
+  console.log(makeDifference);
+  console.log(putStocktakingType);
   useEffect(() => {
     console.log("difference 값 변경됨:", difference);
   }, [difference]);
@@ -363,8 +366,9 @@ function StocktakingAdd({
   };
 
   useEffect(() => {
-    setSerialNo("");
-    if (putStocktakingType === "new") {
+    if (putStocktakingType === "old") {
+      setSerialNo("");
+    } else if (putStocktakingType === "new") {
       setSerialNo("NewCode");
     }
   }, [putStocktakingType]);
@@ -589,7 +593,7 @@ function StocktakingAdd({
                   >
                     <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
                       <RadioGroup
-                        defaultValue="new" // ✅ Boolean 값을 문자열로 변환
+                        value={putStocktakingType} // ✅ Boolean 값을 문자열로 변환
                         onChange={(e) => setPutStocktakingType(e.target.value)}
                       >
                         <HStack gap="4">
@@ -635,7 +639,7 @@ function StocktakingAdd({
                   >
                     <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
                       <RadioGroup
-                        defaultValue="new" // ✅ Boolean 값을 문자열로 변환
+                        value={putStocktakingType} // ✅ Boolean 값을 문자열로 변환
                         onChange={(e) => setPutStocktakingType(e.target.value)}
                       >
                         <HStack gap="4">
@@ -644,32 +648,60 @@ function StocktakingAdd({
                         </HStack>
                       </RadioGroup>
                     </Box>
-                    {/*<Input*/}
-                    {/*  type={"text"}*/}
-                    {/*  value={stocktakingType}*/}
-                    {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
-                    {/*/>*/}
                   </Field>
                 </>
               )
             ) : (
               // TODO: 실사 출고
-              <Box display="flex" gap={18}>
-                <Field label="시리얼 번호" orientation="horizontal" mb={15}>
-                  <Input type={"text"} value={serialNo} readOnly />
-                </Field>
-                <Button onClick={handleDifferentClick} variant="outline">
-                  조회
-                </Button>
-                <Tooltip
-                  content={"양식을 모두 입력해 주세요."}
-                  openDelay={100}
-                  closeDelay={100}
-                  disabled={serialValidate()}
+              <>
+                <Box display="flex" gap={18}>
+                  <Field label="시리얼 번호" orientation="horizontal" mb={15}>
+                    <Input type={"text"} value={serialNo} readOnly />
+                  </Field>
+                  <Button onClick={handleDifferentClick} variant="outline">
+                    조회
+                  </Button>
+                  <Tooltip
+                    content={"양식을 모두 입력해 주세요."}
+                    openDelay={100}
+                    closeDelay={100}
+                    disabled={serialValidate()}
+                  >
+                    <Button disabled={!serialValidate()}>반영</Button>
+                  </Tooltip>
+                </Box>
+                <Field
+                  label="위치 분류"
+                  orientation="horizontal"
+                  mb={15}
+                  required
                 >
-                  <Button disabled={!serialValidate()}>반영</Button>
-                </Tooltip>
-              </Box>
+                  <Box ml={"86px"} style={{ position: "absolute" }} gap={18}>
+                    <RadioGroup
+                      value={putStocktakingType} // ✅ Boolean 값을 문자열로 변환
+                      onChange={(e) => setPutStocktakingType(e.target.value)}
+                    >
+                      <HStack gap="4">
+                        <Radio value="lost">분실</Radio>
+                        <Radio value="frn">출고</Radio>
+                      </HStack>
+                    </RadioGroup>
+                  </Box>
+                  {/*<Input*/}
+                  {/*  type={"text"}*/}
+                  {/*  value={stocktakingType}*/}
+                  {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
+                  {/*/>*/}
+                </Field>
+                {putStocktakingType === "frn" ? (
+                  <>
+                    <Field label="가맹점" orientation="horizontal" mb={15}>
+                      <Input />
+                    </Field>
+                  </>
+                ) : // 분실인 경우 가맹점 선택 안함
+                null}
+              </>
             )}
             <Field label="비고" orientation="horizontal" mb={15}>
               <Textarea
@@ -707,6 +739,7 @@ function StocktakingAdd({
             </Box>
           </Box>
           {/*  TODO: 실사유형 radio로 체크  */}
+          <Box></Box>
         </DialogBody>
         <DialogFooter>
           <DialogCloseTrigger onClick={onClose} />
