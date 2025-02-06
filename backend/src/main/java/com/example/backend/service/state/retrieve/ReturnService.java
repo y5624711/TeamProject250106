@@ -26,6 +26,9 @@ public class ReturnService {
 
     //반환 관리 리스트
     public Map<String, Object> returnList(Integer page, String state, String type, String keyword, String sort, String order, Authentication auth) {
+//        System.out.println("return sort: " + sort);
+//        System.out.println("return order: " + order);
+
         // 날짜순은 3개 합쳐야함 : 승인/반려가 없으면
         if ("date".equals(sort)) {
             sort = "COALESCE(return_approve_date, disapprove_date, return_request_date)";
