@@ -90,6 +90,8 @@ public class ReturnService {
         String newNo = String.format("%03d", (max == null) ? 1 : max + 1);
         String newReturnNo = "RTN" + newNo;
         approveInfo.setReturnNo(newReturnNo);
+//        System.out.println("max: " + max);
+//        System.out.println("dto: " + approveInfo.getReturnNo());
 
         //3. 요청 내용 테이블에 추가
         int cnt = mapper.addApprove(approveInfo);
