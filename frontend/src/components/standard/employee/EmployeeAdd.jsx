@@ -298,7 +298,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       {viewKey !== -1 && (
         <HStack gap={5}>
           {formData.selectedCommonCode === "EMP" && (
-            <Field label={"부서"} orientation="horizontal">
+            <Field
+              label={<SpacedLabel text="부 서" req />}
+              orientation="horizontal"
+            >
               <Input
                 variant="subtle"
                 name="workPlace"
@@ -311,7 +314,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           )}
 
           <Field
-            label={"소속 코드"}
+            label={<SpacedLabel text="소속 코드" req />}
             orientation="horizontal"
             variant={viewKey !== -1 ? "subtle" : "outline"}
           >
@@ -381,7 +384,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
       </Field>
       {viewKey !== -1 && (
-        <Field label={"사용 여부"} orientation="horizontal">
+        <Field
+          label={<SpacedLabel text="사용 여부" req />}
+          orientation="horizontal"
+        >
           <Box ml={"86px"} style={{ position: "absolute" }}>
             <Checkbox
               name="employeeActive"
