@@ -233,24 +233,6 @@ public interface StocktakingMapper {
             """)
     List<Stocktaking> getStocktakingItemList(String warehouseCode);
 
-    //    물품입출내역 찍힌 모든 것
-    @Select("""
-            SELECT COUNT(*)
-            FROM TB_INOUT_HIS h
-            LEFT JOIN TB_ITEMSUB s ON h.serial_no=s.serial_no
-            WHERE h.warehouse_code=#{warehouseCode} AND s.item_common_code=#{itemCode}
-            """)
-    Integer getStocktakingAll(String warehouseCode, String itemCode);
-
-    //    물품입출내역에서 OUT 된 애들만
-    @Select("""
-            SELECT COUNT(*)
-            FROM TB_INOUT_HIS h
-            LEFT JOIN TB_ITEMSUB s ON h.serial_no=s.serial_no
-            WHERE h.warehouse_code=#{warehouseCode} AND s.item_common_code=#{itemCode} AND h.inout_common_code='OUT'
-            """)
-    Integer getStocktakingOut(String warehouseCode, String itemCode);
-
     @Select("""
             SELECT employee_workplace_code
             FROM TB_EMPMST

@@ -274,17 +274,6 @@ function StocktakingAdd({
     }));
   };
 
-  // 창고 클릭 시
-  const onWarehouseClick = () => {
-    if (selectedWarehouse) {
-      setStocktakingAdd((prev) => ({
-        ...prev,
-        warehouseName: selectedWarehouse.label,
-        warehouseCode: selectedWarehouse.value,
-      }));
-    }
-  };
-
   const handleSaveClick = () => {
     if (countConfiguration === countConfiguration) {
       axios
