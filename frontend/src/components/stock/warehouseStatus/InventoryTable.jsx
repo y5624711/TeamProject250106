@@ -40,16 +40,30 @@ export function InventoryTable({
             key={item.inoutHistoryNote || index}
             _hover={{ backgroundColor: "gray.200" }}
           >
-            <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-            <Table.Cell textAlign="center">{item.wareHouseName}</Table.Cell>
-            <Table.Cell textAlign="center">{item.wareHouseCity}</Table.Cell>
-            <Table.Cell textAlign="center">{item.wareHouseAddress}</Table.Cell>
-            <Table.Cell textAlign="center">
+            <Table.Cell textAlign="center" w={"90px"}>
+              {index + 1}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"20%"}>
+              {item.wareHouseName}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"10%"}>
+              {item.wareHouseCity}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"15%"}>
+              {item.wareHouseAddress}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"10%"}>
               {item.wareHouseAddressDetail}
             </Table.Cell>
-            <Table.Cell textAlign="center">{item.customerName}</Table.Cell>
-            <Table.Cell textAlign="center">{item.commonCodeName}</Table.Cell>
-            <Table.Cell textAlign="center">{item.count}</Table.Cell>
+            <Table.Cell textAlign="center" w={"20 %"}>
+              {item.customerName}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"15%"}>
+              {item.commonCodeName}
+            </Table.Cell>
+            <Table.Cell textAlign="center" w={"10%"}>
+              {item.count}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
