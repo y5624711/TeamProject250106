@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
-  HStack,
   Input,
   Separator,
   Spinner,
@@ -316,7 +315,6 @@ export function PurchaseApprove({
                   text={
                     purchase.purchaseConsent === true ? "승인자" : "반려/승인자"
                   }
-                  req
                 />
               }
               orientation="horizontal"
@@ -354,7 +352,11 @@ export function PurchaseApprove({
             </Box>
           )}
           <Field
-            label={<SpacedLabel text="비고" />}
+            label={
+              <SpacedLabel
+                text={purchase.purchaseConsent === true ? "승인 비고" : "비고"}
+              />
+            }
             orientation="horizontal"
             mt={15}
           >
