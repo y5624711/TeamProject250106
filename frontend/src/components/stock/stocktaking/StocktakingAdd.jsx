@@ -68,6 +68,7 @@ function StocktakingAdd({
   const [shelf, setShelf] = useState("");
   const [selectedShelf, setSelectedShelf] = useState("");
   const [locationKey, setLocationKey] = useState("");
+  const [putStocktakingType, setPutStocktakingType] = useState("");
 
   const resetState = () => {
     setWarehouseCode("");
@@ -581,6 +582,32 @@ function StocktakingAdd({
                     <hr />
                     <br />
                     실제 더 많음
+                    <br />
+                    <Field
+                      label="등록 분류"
+                      orientation="horizontal"
+                      mb={15}
+                      required
+                    >
+                      <Box ml={"86px"} style={{ position: "absolute" }}>
+                        <RadioGroup
+                          defaultValue="true" // ✅ Boolean 값을 문자열로 변환
+                          onChange={(e) =>
+                            setPutStocktakingType(e.target.value)
+                          }
+                        >
+                          <HStack gap="6">
+                            <Radio value="true">새 물품 등록</Radio>
+                            <Radio value="false">기존 물품 등록</Radio>
+                          </HStack>
+                        </RadioGroup>
+                      </Box>
+                      {/*<Input*/}
+                      {/*  type={"text"}*/}
+                      {/*  value={stocktakingType}*/}
+                      {/*  onChange={(e) => setStocktakingType(e.target.value)}*/}
+                      {/*/>*/}
+                    </Field>
                     <Field
                       label="로케이션"
                       orientation="horizontal"
