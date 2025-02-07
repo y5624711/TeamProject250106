@@ -33,7 +33,7 @@ public class LoginController {
                             "message", Map.of("type", "success", "text", name + "님 환영합니다.")));
                 } else {
                     return ResponseEntity.status(401).body(Map.of("message", Map.of("type", "error",
-                            "text", "아이디와 비밀번호를 확인해 주세요.")));
+                            "text", "아이디 혹은 비밀번호를 확인해 주세요.")));
                 }
             } else {
                 return ResponseEntity.status(401).body(Map.of("message", Map.of("type", "error",
