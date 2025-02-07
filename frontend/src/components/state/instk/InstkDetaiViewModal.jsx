@@ -37,7 +37,7 @@ export function InstkDetaiViewModal({
   setChangeModal,
   instk,
   isLoading,
-  selectInputKey
+  selectInputKey,
 }) {
   const { id } = useContext(AuthenticationContext);
   const [detailData, setDetailData] = useState({ serialList: [] });
@@ -53,7 +53,7 @@ export function InstkDetaiViewModal({
 
     setIsDataLoading(true); // 데이터 로딩 시작
 
-    console.log(selectInputKey,"detailView selectInputKey")
+    console.log(selectInputKey, "detailView selectInputKey");
     axios
       .get(`/api/instk/detailview/${selectInputKey}`, {
         params: {
