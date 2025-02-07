@@ -32,7 +32,7 @@ function InoutHistoryListPage({
         >
           {index + 1}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"7.5%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"12%"}>
           {inoutHistory.inoutCommonCode === "OUT"
             ? "일반 출고"
             : inoutHistory.inoutCommonCode === "RETRN"
@@ -43,16 +43,16 @@ function InoutHistoryListPage({
                   ? "실사 분실"
                   : "실사 입고"}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"11%"}>
           {inoutHistory.itemName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"1%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"12%"}>
           {inoutHistory.serialNo}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {inoutHistory.customerName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {inoutHistory.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle" width={"150px"}>
@@ -63,10 +63,10 @@ function InoutHistoryListPage({
               : "-"}
         </Table.Cell>
 
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {inoutHistory.businessEmployeeName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {inoutHistory.customerEmployeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">

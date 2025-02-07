@@ -22,19 +22,19 @@ function WarehouseListPage({
         <Table.Cell textAlign="center" verticalAlign="middle" width={"90px"}>
           {index + 1}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"45%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"25%"}>
           {location.warehouseName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {location.row}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {location.col}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {location.shelf}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle">
           {location.located === true ? (
             <Box display="flex" justifyContent="center">
               <BsCheckSquareFill />

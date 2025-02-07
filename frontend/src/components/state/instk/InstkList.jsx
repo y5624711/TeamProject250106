@@ -153,28 +153,28 @@ export function InstkList() {
                   <Table.Cell textAlign="center" width="90px">
                     {index + 1}
                   </Table.Cell>
-                  <Table.Cell textAlign="center" width="10%">
+                  <Table.Cell textAlign="center" width="15%">
                     {item.inputCommonCodeName}
                   </Table.Cell>
-                  <Table.Cell textAlign="center" width="15%">
+                  <Table.Cell textAlign="center" width="10%">
                     {item.inputNo}
                   </Table.Cell>
-                  <Table.Cell textAlign="center" width="15%">
+                  <Table.Cell textAlign="center" width="13%">
                     {item.itemCommonName}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="10%">
                     {item.customerName}
                   </Table.Cell>
 
-                  <Table.Cell textAlign="center" width="15%">
+                  <Table.Cell textAlign="center" width="13%">
                     {item.requestEmployeeName}
                   </Table.Cell>
-                  <Table.Cell textAlign="center" width="15%">
+                  <Table.Cell textAlign="center" width="10%">
                     {item.inputStockEmployeeName ||
                       item.disapproveEmployeeName ||
                       "-"}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="13%">
                     {item.inputStockDate ||
                       item.disapproveDate ||
                       item.requestDate}

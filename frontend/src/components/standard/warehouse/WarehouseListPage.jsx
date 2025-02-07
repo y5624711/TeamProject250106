@@ -35,13 +35,13 @@ function WarehouseListPage({
         <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
           {warehouse.warehouseName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {warehouse.customerName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {warehouse.employeeName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {warehouse.warehouseState}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
