@@ -98,11 +98,16 @@ export function InstkDetaiViewModal({
       <DialogContent ref={contentRef}>
         <DialogHeader>
           <DialogTitle>
-            {detailData.inputConsent == true ? "입고 상세" : "입고 반려"}
+            {detailData.inputConsent == true
+              ? "입고 승인 상세"
+              : "입고 반려 상세"}
           </DialogTitle>
         </DialogHeader>
         {isLoading ? (
-          <DialogBody>
+          <DialogBody
+            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            css={{ "--field-label-width": "85px" }}
+          >
             <Center p={4}>
               <Spinner /> {/* 또는 다른 로딩 인디케이터 */}
             </Center>
@@ -169,6 +174,32 @@ export function InstkDetaiViewModal({
               </HStack>
               <HStack>
                 <Field
+                  label={<SpacedLabel text="담당업체" req />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={instk.customerName} />
+                </Field>
+
+                <Field
+                  label={<SpacedLabel text="창고" req />}
+                  orientation="horizontal"
+                >
+                  <Input
+                    readOnly
+                    value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
+                  />
+                </Field>
+              </HStack>
+
+              <Field
+                label={<SpacedLabel text="창고주소" req />}
+                orientation="horizontal"
+              >
+                <Input readOnly value={detailData.wareHouseAddress} />
+              </Field>
+
+              <HStack>
+                <Field
                   label={<SpacedLabel text="주문요청자" req />}
                   orientation="horizontal"
                 >
@@ -181,31 +212,6 @@ export function InstkDetaiViewModal({
                   <Input readOnly value={instk.requestEmployeeNo} />
                 </Field>
               </HStack>
-              <HStack>
-                <Field
-                  label={<SpacedLabel text="담당업체" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={instk.customerName} />
-                </Field>
-
-                <Field
-                  label={<SpacedLabel text="창고주소" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={detailData.wareHouseAddress} />
-                </Field>
-              </HStack>
-
-              <Field
-                label={<SpacedLabel text="창고정보" req />}
-                orientation="horizontal"
-              >
-                <Input
-                  readOnly
-                  value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
-                />
-              </Field>
 
               <Field
                 label={<SpacedLabel text="주문비고" req />}
@@ -255,14 +261,14 @@ export function InstkDetaiViewModal({
 
               {detailData.inputConsent === true ? (
                 <Field
-                  label={<SpacedLabel text="승인날짜" req />}
+                  label={<SpacedLabel text="승인일" req />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={instk.inputStockDate} />
                 </Field>
               ) : (
                 <Field
-                  label={<SpacedLabel text="반려날짜" req />}
+                  label={<SpacedLabel text="반려일" req />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={detailData.disapproveDate} />

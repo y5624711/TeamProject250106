@@ -114,7 +114,10 @@ export function InstkConfirmModal({
         <DialogHeader>
           <DialogTitle>입고 승인</DialogTitle>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody
+          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          css={{ "--field-label-width": "85px" }}
+        >
           <Stack gap={3}>
             <HStack gap={3}>
               <Field
@@ -156,6 +159,21 @@ export function InstkConfirmModal({
 
             <HStack gap={3}>
               <Field
+                label={<SpacedLabel text="담당 업체" req />}
+                orientation="horizontal"
+              >
+                <Input value={instk.customerName} readOnly />
+              </Field>
+              <Field
+                label={<SpacedLabel text="창고주소" req />}
+                orientation="horizontal"
+              >
+                <Input value={instkDetail.warehouseAddress} readOnly />
+              </Field>
+            </HStack>
+
+            <HStack gap={3}>
+              <Field
                 label={<SpacedLabel text="주문 요청자" req />}
                 orientation="horizontal"
               >
@@ -184,23 +202,8 @@ export function InstkConfirmModal({
               </Field>
             </HStack>
 
-            <HStack gap={3}>
-              <Field
-                label={<SpacedLabel text="담당 업체" req />}
-                orientation="horizontal"
-              >
-                <Input value={instk.customerName} readOnly />
-              </Field>
-              <Field
-                label={<SpacedLabel text="창고주소" req />}
-                orientation="horizontal"
-              >
-                <Input value={instkDetail.warehouseAddress} readOnly />
-              </Field>
-            </HStack>
-
             <Field
-              label={<SpacedLabel text="주문비고" req />}
+              label={<SpacedLabel text="주문 비고" req />}
               orientation="horizontal"
             >
               {instk.inputNote ? (
@@ -218,7 +221,7 @@ export function InstkConfirmModal({
             <HStack gap={3}>
               {/*TODO FIELD 텍스트 가운데 정렬 */}
               <Field
-                label={<SpacedLabel text="입고승인자" req />}
+                label={<SpacedLabel text="반려/승인자" req />}
                 orientation="horizontal"
                 sx={{ justifyContent: "center" }}
               >
@@ -242,13 +245,13 @@ export function InstkConfirmModal({
             </HStack>
 
             <Field
-              label={<SpacedLabel text="입고비고" req />}
+              label={<SpacedLabel text="비고" req />}
               orientation="horizontal"
             >
               <Textarea
                 value={inputStockNote}
                 style={{ maxHeight: "100px", overflowY: "auto" }}
-                placeholder={"최대50자"}
+                placeholder={"최대 50자"}
                 onChange={(e) => {
                   setInputStockNote(e.target.value);
                 }}
