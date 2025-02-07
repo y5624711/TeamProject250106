@@ -114,143 +114,154 @@ export function InstkConfirmModal({
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           css={{ "--field-label-width": "85px" }}
         >
-          <Stack gap={3}>
-            <HStack gap={3}>
-              <Field
-                orientation="horizontal"
-                label={<SpacedLabel text="입고 구분" />}
-                labelProps={{
-                  sx: {
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%", // 전체 너비 설정
-                  },
-                }}
-              >
-                <Input value={instk.inputCommonCodeName} readOnly />
-              </Field>
-              <Field
-                label={<SpacedLabel text="주문 번호" />}
-                orientation="horizontal"
-              >
-                <Input value={instk.inputNo} readOnly />
-              </Field>
-            </HStack>
+          <Box css={{ "--field-label-width": "85px" }}>
+            <Stack gap={3}>
+              <HStack gap={3}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="입고 구분" />}
+                  labelProps={{
+                    sx: {
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%", // 전체 너비 설정
+                    },
+                  }}
+                >
+                  <Input value={instk.inputCommonCodeName} readOnly />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="주문 번호" />}
+                  orientation="horizontal"
+                >
+                  <Input value={instk.inputNo} readOnly />
+                </Field>
+              </HStack>
 
-            <HStack gap={3}>
-              <Field
-                orientation="horizontal"
-                label={<SpacedLabel text="품 목" />}
-              >
-                <Input readOnly value={instk.itemCommonName} />
-              </Field>
-              <Field
-                label={<SpacedLabel text="수량" />}
-                orientation="horizontal"
-              >
-                <Input readOnly value={instk.itemAmount} />
-              </Field>
-            </HStack>
+              <HStack gap={3}>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="품 목" />}
+                >
+                  <Input readOnly value={instk.itemCommonName} />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="수량" />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={instk.itemAmount} />
+                </Field>
+              </HStack>
 
-            <HStack gap={3}>
-              <Field
-                label={<SpacedLabel text="담당 업체" />}
-                orientation="horizontal"
-              >
-                <Input value={instk.customerName} readOnly />
-              </Field>
+              <HStack gap={3}>
+                <Field
+                  label={<SpacedLabel text="담당 업체" />}
+                  orientation="horizontal"
+                >
+                  <Input value={instk.customerName} readOnly />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="창고" />}
+                  orientation="horizontal"
+                >
+                  <Input value={instkDetail.warehouseName} readOnly />
+                </Field>
+              </HStack>
               <Field
                 label={<SpacedLabel text="창고주소" />}
                 orientation="horizontal"
               >
                 <Input value={instkDetail.warehouseAddress} readOnly />
               </Field>
-            </HStack>
 
-            <HStack gap={3}>
-              <Field
-                label={<SpacedLabel text="주문 요청자" />}
-                orientation="horizontal"
-              >
-                <Input readOnly value={instk.requestEmployeeName} />
-              </Field>
-              <Field
-                label={<SpacedLabel text="사번" />}
-                orientation="horizontal"
-              >
-                <Input readOnly value={instk.requestEmployeeNo} />
-              </Field>
-            </HStack>
+              <HStack gap={3}>
+                <Field
+                  label={<SpacedLabel text="주문 요청자" />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={instk.requestEmployeeName} />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={instk.requestEmployeeNo} />
+                </Field>
+              </HStack>
 
-            <HStack gap={3}>
-              <Field
-                label={<SpacedLabel text="주문 승인자" />}
-                orientation="horizontal"
-              >
-                <Input value={instk.requestApprovalEmployeeName} />
-              </Field>
-              <Field
-                label={<SpacedLabel text="사 번" />}
-                orientation="horizontal"
-              >
-                <Input readOnly value={instk.requestApprovalEmployeeNo} />
-              </Field>
-            </HStack>
+              <HStack gap={3}>
+                <Field
+                  label={<SpacedLabel text="주문 승인자" />}
+                  orientation="horizontal"
+                >
+                  <Input value={instk.requestApprovalEmployeeName} />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="사 번" />}
+                  orientation="horizontal"
+                >
+                  <Input readOnly value={instk.requestApprovalEmployeeNo} />
+                </Field>
+              </HStack>
 
-            <Field
-              label={<SpacedLabel text="주문 비고" />}
-              orientation="horizontal"
-            >
-              {instk.inputNote ? (
+              <Field
+                label={<SpacedLabel text="주문 비고" />}
+                orientation="horizontal"
+              >
+                {instk.inputNote ? (
+                  <Textarea
+                    value={instk.inputNote}
+                    readOnly
+                    style={{ maxHeight: "100px", overflowY: "auto" }}
+                    placeholder={"최대50자"}
+                  />
+                ) : (
+                  <Input readOnly value={"내용 없음"} />
+                )}
+              </Field>
+              <Separator />
+              <HStack gap={3}>
+                {/*TODO FIELD 텍스트 가운데 정렬 */}
+                <Field
+                  label={<SpacedLabel text="반려/승인자" />}
+                  orientation="horizontal"
+                  sx={{ justifyContent: "center" }}
+                >
+                  <Input
+                    variant={"subtle"}
+                    value={localStorage.getItem("name")}
+                    readOnly
+                  />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                  sx={{
+                    "& .chakra-field__label": {
+                      justifyContent: "center",
+                    },
+                  }}
+                >
+                  <Input variant={"subtle"} value={id} readOnly />
+                </Field>
+              </HStack>
+
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+              >
                 <Textarea
-                  value={instk.inputNote}
-                  readOnly
+                  value={inputStockNote}
                   style={{ maxHeight: "100px", overflowY: "auto" }}
-                  placeholder={"최대50자"}
-                />
-              ) : (
-                <Input readOnly value={"내용 없음"} />
-              )}
-            </Field>
-            <Separator />
-            <HStack gap={3}>
-              {/*TODO FIELD 텍스트 가운데 정렬 */}
-              <Field
-                label={<SpacedLabel text="반려/승인자" />}
-                orientation="horizontal"
-                sx={{ justifyContent: "center" }}
-              >
-                <Input
-                  variant={"subtle"}
-                  value={localStorage.getItem("name")}
-                  readOnly
+                  placeholder={"최대 50자"}
+                  onChange={(e) => {
+                    setInputStockNote(e.target.value);
+                  }}
                 />
               </Field>
-              <Field
-                label={<SpacedLabel text="사번" />}
-                orientation="horizontal"
-                sx={{
-                  "& .chakra-field__label": {
-                    justifyContent: "center",
-                  },
-                }}
-              >
-                <Input variant={"subtle"} value={id} readOnly />
-              </Field>
-            </HStack>
-
-            <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
-              <Textarea
-                value={inputStockNote}
-                style={{ maxHeight: "100px", overflowY: "auto" }}
-                placeholder={"최대 50자"}
-                onChange={(e) => {
-                  setInputStockNote(e.target.value);
-                }}
-              />
-            </Field>
-          </Stack>
+            </Stack>
+          </Box>
         </DialogBody>
         <DialogFooter>
           <Button
