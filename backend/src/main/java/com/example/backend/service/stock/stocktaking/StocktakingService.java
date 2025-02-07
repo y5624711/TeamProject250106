@@ -187,13 +187,6 @@ public class StocktakingService {
 
     public Boolean updateLocation(StocktakingItem stocktakingItem, Authentication auth) {
 
-        System.out.println(stocktakingItem);
-
-        System.out.println(stocktakingItem.getPutStocktakingType());
-        System.out.println(stocktakingItem.getPutStocktakingType().equals("new"));
-        System.out.println(stocktakingItem.getPutStocktakingType().equals("old"));
-        System.out.println(stocktakingItem.getPutStocktakingType().equals("lost"));
-
         if (stocktakingItem.getPutStocktakingType().equals("new")) {
             String currentCommonCode = "WHS";
 
@@ -222,7 +215,14 @@ public class StocktakingService {
             Integer located = 1;
             int insertLocation = mapper.updateLocated(stocktakingItem.getLocationKey(), located);
 
-            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey);
+            // 실사 번호 생성
+            String stocktakingCode = "STK";
+            Integer maxNo = mapper.viewMaxOutputNo(stocktakingCode);
+            String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
+            stocktakingItem.setNewStocktakingNo(stocktakingCode + newNumber);
+            String inoutNo = stocktakingItem.getNewStocktakingNo();
+
+            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey, inoutNo);
 
             return insertItemSub == 1 && insertInstkSub == 1 && insertLocation == 1 && insertInoutHistory == 1;
 
@@ -245,7 +245,14 @@ public class StocktakingService {
             Integer located = 1;
             int insertLocation = mapper.updateLocated(locationKey, located);
 
-            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey);
+            // 실사 번호 생성
+            String stocktakingCode = "STK";
+            Integer maxNo = mapper.viewMaxOutputNo(stocktakingCode);
+            String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
+            stocktakingItem.setNewStocktakingNo(stocktakingCode + newNumber);
+            String inoutNo = stocktakingItem.getNewStocktakingNo();
+
+            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey, inoutNo);
 
 //
             return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1;
@@ -260,15 +267,19 @@ public class StocktakingService {
 
 //            current_common_code를 LOS 상태로 변경
             int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
-            System.out.println("updateItemSub" + updateItemSub);
 
 //            해당 로케이션 위치를 비활성화로 변경
             Integer located = 0;
             int insertLocation = mapper.updateLocated(locationKey, located);
-            System.out.println("insertLocation: " + insertLocation);
 
-            int insertInoutHistory = mapper.addInoutHistoryMinus(serialNo, warehouseCode, inoutCommonCode, employeeNo);
-            System.out.println("insertInoutHistory = " + insertInoutHistory);
+            // 실사 번호 생성
+            String stocktakingCode = "STK";
+            Integer maxNo = mapper.viewMaxOutputNo(stocktakingCode);
+            String newNumber = String.format("%03d", (maxNo == null) ? 1 : maxNo + 1);
+            stocktakingItem.setNewStocktakingNo(stocktakingCode + newNumber);
+            String inoutNo = stocktakingItem.getNewStocktakingNo();
+
+            int insertInoutHistory = mapper.addInoutHistoryMinus(serialNo, warehouseCode, inoutCommonCode, employeeNo, inoutNo);
 
             return updateItemSub == 1 && insertLocation == 1 && insertInoutHistory == 1;
 
