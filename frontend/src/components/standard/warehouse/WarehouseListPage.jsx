@@ -32,19 +32,19 @@ function WarehouseListPage({
         >
           {index + 1}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
           {warehouse.warehouseName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
           {warehouse.customerName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {warehouse.employeeName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {warehouse.warehouseState}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {warehouse.warehouseCity}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
