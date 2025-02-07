@@ -83,12 +83,12 @@ public class StocktakingController {
                     if (service.updateLocation(stocktakingItem)) {
                         return ResponseEntity.ok(Map.of("message",
                                 Map.of("type", "success",
-                                        "text", "실사 반영을 완료되었습니다.")));
+                                        "text", "실사 반영을 완료하였습니다.")));
                     } else {
                         return ResponseEntity.badRequest()
                                 .body(Map.of("message",
                                         Map.of("type", "error",
-                                                "text", "실사 반영 중 문제가 발생하였습니다..")));
+                                                "text", "실사 반영 중 문제가 발생하였습니다.")));
                     }
                 } else {
                     return ResponseEntity.badRequest().body(Map.of(
