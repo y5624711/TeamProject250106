@@ -123,6 +123,5 @@ FROM TB_INOUT_HIS a
          JOIN TB_SYSCOMM d ON b.item_common_code = d.common_code
          JOIN TB_CUSTMST e ON c.customer_code = e.customer_code
 WHERE a.inout_common_code IN ('INSTK', 'RETRN', 'OUT', 'STKP', 'STKM')
-  AND b.item_sub_active = 1
 GROUP BY a.warehouse_code, d.common_code, d.common_code_name;
 
