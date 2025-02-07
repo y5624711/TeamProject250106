@@ -233,24 +233,6 @@ public interface StocktakingMapper {
             """)
     List<Stocktaking> getStocktakingItemList(String warehouseCode);
 
-    //    물품입출내역 찍힌 모든 것
-    @Select("""
-            SELECT COUNT(*)
-            FROM TB_INOUT_HIS h
-            LEFT JOIN TB_ITEMSUB s ON h.serial_no=s.serial_no
-            WHERE h.warehouse_code=#{warehouseCode} AND s.item_common_code=#{itemCode}
-            """)
-    Integer getStocktakingAll(String warehouseCode, String itemCode);
-
-    //    물품입출내역에서 OUT 된 애들만
-    @Select("""
-            SELECT COUNT(*)
-            FROM TB_INOUT_HIS h
-            LEFT JOIN TB_ITEMSUB s ON h.serial_no=s.serial_no
-            WHERE h.warehouse_code=#{warehouseCode} AND s.item_common_code=#{itemCode} AND h.inout_common_code='OUT'
-            """)
-    Integer getStocktakingOut(String warehouseCode, String itemCode);
-
     @Select("""
             SELECT employee_workplace_code
             FROM TB_EMPMST
@@ -302,6 +284,38 @@ public interface StocktakingMapper {
             LIMIT 1
             """)
     String getLocationValue(Integer locationKey);
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_LOCMST
+            WHERE warehouse_code=#{warehouseCode} AND located=1
+            """)
+    Integer getAllLocated(String warehouseCode);
+
+    @Select("""
+            <script>
+            <if test="workType == 'BIZ'">
+            SELECT COUNT(*)
+            FROM TB_EMPMST
+            WHERE employee_no=#{employeeNo}
+            </if>
+            <if test="workType == 'CUS'">
+            SELECT COUNT(*)
+            FROM TB_WHMST w
+            LEFT JOIN TB_EMPMST emp ON w.customer_code=emp.employee_workplace_code
+            WHERE w.warehouse_code=#{warehouseCode} AND emp.employee_no=#{employeeNo}
+            </if>
+            </script>
+            """)
+    Integer checkAccess(String warehouseCode, String workType, String employeeNo);
+
+    @Insert("""
+            INSERT INTO TB_INSTK_SUB
+            (serial_no,
+             location_key)
+            VALUES ( #{serialNo}, #{locationKey})
+            """)
+    int addInstkSub(String serialNo, Integer locationKey);
 
     //    실제 수량이 더 많을 때 사용
 //    @Select("""

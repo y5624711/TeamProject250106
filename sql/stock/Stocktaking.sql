@@ -54,4 +54,4 @@ WHERE w.warehouse_code = 'WHS003'
   AND l.row = '1'
   AND l.col = '4'
   AND l.shelf = '1'
-  AND l.location_active = 1;
+  AND l.location_active IS TRUE;

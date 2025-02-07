@@ -6,6 +6,7 @@ import com.example.backend.service.standard.location.LocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class LocationController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Location location) {
         try {
             // 로케이션 입력 검증
@@ -76,6 +78,7 @@ public class LocationController {
     }
 
     @PutMapping("edit")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> edit(@RequestBody Location location) {
         try {
             if (service.edit(location)) {

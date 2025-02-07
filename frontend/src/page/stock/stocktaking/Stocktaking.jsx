@@ -82,6 +82,7 @@ function Stocktaking(props) {
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
+            setSearchParams={setSearchParams}
           />
           <Box h={6}></Box>
           <Box h={5}></Box>

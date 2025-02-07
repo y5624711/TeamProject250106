@@ -1,6 +1,7 @@
 package com.example.backend.controller.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
 import com.example.backend.service.stock.stocktaking.StocktakingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,22 +39,29 @@ public class StocktakingController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking, Authentication auth) {
         try {
-            // 실사 입력 검증
-            if (service.validate(stocktaking, auth)) {
-                if (service.add(stocktaking)) {
-                    return ResponseEntity.ok(Map.of("message",
-                            Map.of("type", "success",
-                                    "text", "실사를 등록하였습니다.")));
+            if (service.checkAccess(stocktaking.getWarehouseCode(), auth)) {
+                // 실사 입력 검증
+                if (service.validate(stocktaking, auth)) {
+                    if (service.add(stocktaking)) {
+                        return ResponseEntity.ok(Map.of("message",
+                                Map.of("type", "success",
+                                        "text", "실사를 등록하였습니다.")));
+                    } else {
+                        return ResponseEntity.badRequest()
+                                .body(Map.of("message",
+                                        Map.of("type", "error",
+                                                "text", "실사 등록 중 문제가 발생하였습니다..")));
+                    }
                 } else {
-                    return ResponseEntity.badRequest()
-                            .body(Map.of("message",
-                                    Map.of("type", "error",
-                                            "text", "실사 등록 중 문제가 발생하였습니다..")));
+                    return ResponseEntity.badRequest().body(Map.of(
+                            "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                    ));
                 }
             } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                        "message", Map.of("type", "error", "text", "권한이 없습니다.")
                 ));
+
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
@@ -61,6 +69,43 @@ public class StocktakingController {
                             "text", "작성에 실패했습니다.")));
         }
 
+    }
+
+
+    //    재고실사 반영하기
+    @PostMapping("updateStock")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> updateStock(@RequestBody StocktakingItem stocktakingItem, Authentication auth) {
+        try {
+            if (service.checkAccess(stocktakingItem.getWarehouseCode(), auth)) {
+                // TODO : validateUpdate 하기
+                if (service.validateUpdate(stocktakingItem)) {
+                    if (service.updateLocation(stocktakingItem)) {
+                        return ResponseEntity.ok(Map.of("message",
+                                Map.of("type", "success",
+                                        "text", "실사 반영을 완료되었습니다.")));
+                    } else {
+                        return ResponseEntity.badRequest()
+                                .body(Map.of("message",
+                                        Map.of("type", "error",
+                                                "text", "실사 반영 중 문제가 발생하였습니다..")));
+                    }
+                } else {
+                    return ResponseEntity.badRequest().body(Map.of(
+                            "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                    ));
+                }
+            } else {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", Map.of("type", "error", "text", "권한이 없습니다.")
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", Map.of("type", "warning",
+                            "text", "재고 반영에 실패했습니다.")));
+
+        }
     }
 
     // 창고 목록 불러오기
@@ -76,9 +121,9 @@ public class StocktakingController {
     }
 
     //    전산 수량 불러오기
-    @GetMapping("count/{warehouseCode}/{itemCode}")
-    public Integer count(@PathVariable String warehouseCode, @PathVariable String itemCode) {
-        return service.getStocktakingCountCurrent(warehouseCode, itemCode);
+    @GetMapping("count/{warehouseCode}")
+    public Integer count(@PathVariable String warehouseCode) {
+        return service.getStocktakingCountCurrent(warehouseCode);
     }
 
     //    row 값 불러오기

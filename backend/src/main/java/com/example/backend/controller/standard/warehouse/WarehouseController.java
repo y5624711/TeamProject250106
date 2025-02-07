@@ -37,6 +37,7 @@ public class WarehouseController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> addWarehouse(@RequestBody Warehouse warehouse) {
         try {
             // 창고 입력 검증

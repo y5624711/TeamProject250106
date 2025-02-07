@@ -9,7 +9,10 @@ public class StocktakingItem {
     private String serialNo;
     //    창고 위치와 아이템코드로 시리얼번호들 가져올 수 있음
 //
+    private String itemCode;
+    private String itemName;
     private Integer locationKey;
+    private String warehouseCode;
 
     //    로케이션 키 리스트
     private List<Integer> locationKeyList;
@@ -22,8 +25,11 @@ public class StocktakingItem {
     //    단 리스트
     private List<Integer> shelfList;
     private Integer shelf;
-    private Boolean stockMinusState;
-    //    true, false 로 구분하여 if문에 따라 코드입력값 달라지게
-    private Boolean stockPlusState;
+
+    // 실사입고: in, 실사출고: out
+    private String makeDifference;
+
+    // 새 물품: new, 기존 물품: old, 출고: lost
+    private String putStocktakingType;
 
 }

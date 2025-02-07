@@ -55,7 +55,7 @@ function InoutHistoryList({
                     sort: sortMatch[1],
                   });
                 }}
-                defaultSortKey={"inoutHistoryDate"}
+                defaultSortKey={"inoutHistoryKey"}
               />
             </Table.Row>
           </Table.Header>

@@ -1,6 +1,8 @@
 package com.example.backend.service.stock.stocktaking;
 
 import com.example.backend.dto.stock.stocktaking.Stocktaking;
+import com.example.backend.dto.stock.stocktaking.StocktakingItem;
+import com.example.backend.mapper.standard.item.ItemMapper;
 import com.example.backend.mapper.stock.stocktaking.StocktakingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,8 @@ import java.util.Set;
 public class StocktakingService {
 
     final StocktakingMapper mapper;
+    final ItemMapper itemMapper;
+
 
     public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth) {
         Integer pageList = (page - 1) * 10;
@@ -97,6 +101,7 @@ public class StocktakingService {
     public Boolean validate(Stocktaking stocktaking, Authentication auth) {
         stocktaking.setCustomerEmployeeNo(auth.getName());
 
+
         return
                 !(
                         stocktaking.getWarehouseCode() == null || stocktaking.getWarehouseCode().trim().isEmpty() ||
@@ -107,16 +112,23 @@ public class StocktakingService {
                                 stocktaking.getCustomerEmployeeNo() == null || stocktaking.getCustomerEmployeeNo().trim().isEmpty());
     }
 
-    public Integer getStocktakingCountCurrent(String warehouseCode, String itemCode) {
-
-        // 전체 개수 가져오기
-        Integer all = mapper.getStocktakingAll(warehouseCode, itemCode);
-
-        // 출고 개수 가져오기
-        Integer out = mapper.getStocktakingOut(warehouseCode, itemCode);
+    // 권한 확인
+    public Boolean checkAccess(String warehouseCode, Authentication auth) {
 
 
-        Integer countCurrent = all - out - out;
+        String employeeNo = auth.getName();
+
+
+        String workType = employeeNo.substring(0, 3);
+
+        Integer access = mapper.checkAccess(warehouseCode, workType, employeeNo);
+
+        return access == 1;
+    }
+
+    public Integer getStocktakingCountCurrent(String warehouseCode) {
+
+        Integer countCurrent = mapper.getAllLocated(warehouseCode);
 
         return countCurrent;
     }
@@ -149,6 +161,65 @@ public class StocktakingService {
 
     public String getLocationValue(Integer locationKey) {
         return mapper.getLocationValue(locationKey);
+    }
+
+    // 반영할 때 정보 모두 썼는지, 잘 입력 됐는지
+    public Boolean validateUpdate(StocktakingItem stocktakingItem) {
+
+        return
+                !(
+                        stocktakingItem.getWarehouseCode() == null || stocktakingItem.getWarehouseCode().trim().isEmpty() ||
+                                stocktakingItem.getItemCode() == null || stocktakingItem.getItemCode().trim().isEmpty() ||
+                                stocktakingItem.getSerialNo() == null || stocktakingItem.getSerialNo().trim().isEmpty() ||
+                                stocktakingItem.getPutStocktakingType() == null || stocktakingItem.getPutStocktakingType().trim().isEmpty() ||
+                                stocktakingItem.getMakeDifference() == null || stocktakingItem.getMakeDifference().trim().isEmpty() ||
+                                stocktakingItem.getLocationKey() == null ||
+                                stocktakingItem.getRow() == null || stocktakingItem.getRow().trim().isEmpty() ||
+                                stocktakingItem.getCol() == null || stocktakingItem.getCol().trim().isEmpty() ||
+                                stocktakingItem.getShelf() == null
+                );
+    }
+
+    public Boolean updateLocation(StocktakingItem stocktakingItem) {
+
+        System.out.println(stocktakingItem);
+
+
+        if (stocktakingItem.getPutStocktakingType().equals("new")) {
+//            // 품목 상세에서 시리얼 넘버 최대값 가져오기
+//            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(stocktakingItem.getItemCode());
+//
+//            // 시리얼 번호 생성 (20자리)
+//            String insertSerialNo = "S" + String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+//
+//            stocktakingItem.setSerialNo(insertSerialNo);
+//
+//            System.out.println(stocktakingItem.getSerialNo());
+//            // item_sub 테이블에 추가
+//            int insertItemSub = itemMapper.addItemSub(stocktakingItem.getItemCode(), insertSerialNo, "WHS");
+//
+//            int insertInstkSub = mapper.addInstkSub(stocktakingItem.getSerialNo(), stocktakingItem.getLocationKey());
+//            해당 로케이션 위치를 재고여부 활성화로 변경
+//            물품입출내역에 실사 입고
+
+
+            return 1 == 1;
+
+        } else if (stocktakingItem.getPutStocktakingType().equals("old")) {
+//            UPDATE 로 ITEMSUB 의 current_common_code WHS로 바꾸기
+//            해당 로케이션 위치를 재고여부 활성화로 변경
+//            물품입출내역에 실사 입고
+//
+            return 1 == 1;
+        } else {
+//            실사 분실인 상태
+//            current_common_code를 LOS 상태로 변경
+//            해당 로케이션 위치를 비활성화로 변경
+//            물품입출내역에 실사 분실
+            return 1 == 1;
+
+        }
+//        mapper.updateStockStatus(stocktakingItem);
     }
 
 
