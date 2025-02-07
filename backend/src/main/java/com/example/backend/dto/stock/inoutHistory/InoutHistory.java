@@ -22,6 +22,8 @@ public class InoutHistory {
 
     private String warehouseAddress;
 
+    private String inoutNo;
+
     //    아이템 이름
     private String itemName;
     //    아이템 코드
@@ -29,7 +31,8 @@ public class InoutHistory {
     //    창고 이름
     private String warehouseName;
     //    가맹점 이름
-    private String franchiseName;
+    private String installFranchiseName;
+    private String returnFranchiseName;
     //    본사직원 이름
     private String businessEmployeeName;
     //    협력업체 직원 이름

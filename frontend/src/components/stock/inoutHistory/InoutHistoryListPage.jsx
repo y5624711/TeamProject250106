@@ -56,8 +56,13 @@ function InoutHistoryListPage({
           {inoutHistory.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
-          {inoutHistory.franchiseName ? inoutHistory.franchiseName : "-"}
+          {inoutHistory.inoutCommonCode === "RETRN"
+            ? inoutHistory.returnFranchiseName
+            : inoutHistory.inoutCommonCode === "OUT"
+              ? inoutHistory.installFranchiseName
+              : "-"}
         </Table.Cell>
+
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.businessEmployeeName}
         </Table.Cell>

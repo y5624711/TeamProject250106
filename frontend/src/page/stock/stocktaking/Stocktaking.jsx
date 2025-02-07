@@ -84,7 +84,6 @@ function Stocktaking(props) {
             handleSearchClick={handleSearchClick}
             setSearchParams={setSearchParams}
           />
-          <Box h={6}></Box>
           <Box h={5}></Box>
           {/*리스트 jsx*/}
           <StocktakingList

@@ -78,3 +78,33 @@ WHERE employee_no = 'BIZEMP0000004';
 
 ALTER TABLE TB_INOUT_HIS
     ADD inout_no VARCHAR(13);
+
+SELECT h.inout_history_key,
+       h.serial_no,
+       f1.franchise_name,
+       h.warehouse_code,
+       h.inout_common_code,
+       h.customer_employee_no,
+       h.business_employee_no,
+       h.franchise_code,
+       h.location_key,
+       h.inout_history_date,
+       h.inout_history_note,
+       w.warehouse_name,
+       itsb.item_common_code itemCode,
+       itcm.common_code_name itemName,
+       fr.franchise_name,
+       cusemp.employee_name  customerEmployeeName,
+       bizemp.employee_name  businessEmployeeName,
+       cus.customer_name
+FROM TB_INOUT_HIS h
+         LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
+         LEFT JOIN TB_CUSTMST cus ON w.customer_code = cus.customer_code
+         LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
+         LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
+         LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
+         LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
+         LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
+         LEFT JOIN TB_RTN_APPR rtnappr ON h.inout_no = rtnappr.return_no
+         LEFT JOIN TB_RTN_REQ rtnreq ON rtnappr.return_request_key = rtnreq.return_request_key
+         LEFT JOIN TB_FRNCHSMST f1 ON rtnreq.franchise_code = f1.franchise_code;
