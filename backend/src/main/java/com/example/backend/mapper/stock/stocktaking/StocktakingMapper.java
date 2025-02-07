@@ -214,11 +214,11 @@ public interface StocktakingMapper {
             <script>
             SELECT warehouse_name, warehouse_code
             FROM TB_WHMST
+            WHERE warehouse_active=1
             <if test="workplace == 'BIZ'">
             </if>
             <if test="workplace == 'CUS'">
-            WHERE 
-            customer_code=#{workplaceCode}
+            AND customer_code=#{workplaceCode}
             </if>
             </script>
             """)
