@@ -32,12 +32,27 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
   const { id, name } = useContext(AuthenticationContext);
 
   const initialApproveData = {
-    customerEmployeeNo: id,
-    customerEmployeeName: name,
+    customerEmployeeNo: id || "",
+    customerEmployeeName: name || "",
     customerConfigurerNo: "",
     customerConfigurerName: "",
     returnDate: "",
     returnApproveNote: "",
+    returnNo: "",
+    franchiseName: "",
+    itemCommonName: "",
+    serialNo: "",
+    customerName: "",
+    businessEmployeeName: "",
+    businessEmployeeNo: "",
+    returnRequestDate: "",
+    returnRequestNote: "",
+    returnApproveDate: "",
+    returnConsent: "", // 기본값 설정
+    disapproveEmployeeName: "",
+    disapproveEmployeeNo: "",
+    disapproveDate: "",
+    returnDisapproveNote: "",
   };
   const [approveData, setApproveData] = useState(initialApproveData);
   const [configurerList, setConfigurerList] = useState([]);
@@ -354,6 +369,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                 >
                   <SelectRoot
                     onValueChange={(e) => {
+                      if (!e?.value?.length) return;
                       const selectedConfigurer = configurerList.find(
                         (info) => info.customerConfigurerName === e.value[0],
                       );
@@ -370,7 +386,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   >
                     <SelectTrigger>
                       <SelectValueText placeholder={"검수 기사 선택"}>
-                        {approveData.customerConfigurerName}
+                        {approveData.customerConfigurerName || ""}
                       </SelectValueText>
                     </SelectTrigger>
                     <SelectContent
@@ -390,7 +406,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                             key={configurer.customerConfigurerName}
                             item={configurer.customerConfigurerName}
                           >
-                            {configurer.customerConfigurerName}
+                            {configurer.customerConfigurerName || ""}
                           </SelectItem>
                         ))}
                     </SelectContent>
@@ -401,7 +417,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                   orientation="horizontal"
                 >
                   <Input
-                    value={approveData.customerConfigurerNo}
+                    value={approveData.customerConfigurerNo || ""}
                     readOnly
                     variant={"subtle"}
                   />
@@ -425,7 +441,7 @@ function ReturnApprove({ isOpen, onClose, onApprove, returnRequestKey }) {
                 label={<SpacedLabel text="비고" />}
               >
                 <Textarea
-                  value={approveData.returnApproveNote}
+                  value={approveData.returnApproveNote || ""}
                   placeholder="최대 50자"
                   onChange={handleApproveInput("returnApproveNote")}
                   maxHeight={"100px"}

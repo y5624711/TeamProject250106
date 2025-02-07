@@ -18,7 +18,17 @@ import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   const initialCustomer = {
+    customerName: "",
+    customerCode: "",
+    itemName: "",
+    industry: "",
+    customerRep: "",
+    customerNo: "",
+    corporateNo: "",
+    customerTel: "",
     customerFax: "",
+    customerPost: "",
+    customerAddress: "",
     customerAddressDetails: "",
     customerNote: "",
     customerActive: true,
@@ -94,7 +104,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   >
                     <Input
                       readOnly
-                      value={customer.customerCode || ""}
+                      value={customer.customerCode}
                       variant={"subtle"}
                     />
                   </Field>
@@ -129,7 +139,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                 >
                   <Input
                     name="customerRep"
-                    value={customer.customerRep}
+                    value={customer.customerRep || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
@@ -140,7 +150,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   >
                     <Input
                       name="customerNo"
-                      value={customer.customerNo}
+                      value={customer.customerNo || ""}
                       onChange={handleInputChange}
                     />
                   </Field>
@@ -150,7 +160,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   >
                     <Input
                       name="corporateNo"
-                      value={customer.corporateNo}
+                      value={customer.corporateNo || ""}
                       onChange={handleInputChange}
                     ></Input>
                   </Field>
@@ -162,7 +172,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   >
                     <Input
                       name="customerTel"
-                      value={customer.customerTel}
+                      value={customer.customerTel || ""}
                       onChange={handleInputChange}
                     />
                   </Field>
@@ -172,7 +182,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   >
                     <Input
                       name="customerFax"
-                      value={customer.customerFax}
+                      value={customer.customerFax || ""}
                       onChange={handleInputChange}
                     />
                   </Field>
@@ -183,7 +193,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                 >
                   <Input
                     name={"customerPost"}
-                    value={customer.customerPost}
+                    value={customer.customerPost || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
@@ -193,7 +203,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                 >
                   <Input
                     name={"customerAddress"}
-                    value={customer.customerAddress}
+                    value={customer.customerAddress || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
@@ -203,7 +213,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                 >
                   <Input
                     name={"customerAddressDetails"}
-                    value={customer.customerAddressDetails}
+                    value={customer.customerAddressDetails || ""}
                     onChange={handleInputChange}
                   />
                 </Field>
@@ -214,7 +224,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   <Textarea
                     placeholder={"최대 50자"}
                     name={"customerNote"}
-                    value={customer.customerNote}
+                    value={customer.customerNote || ""}
                     onChange={handleInputChange}
                     maxHeight={"100px"}
                   />
