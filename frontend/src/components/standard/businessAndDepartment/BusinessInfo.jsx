@@ -67,10 +67,12 @@ export function BusinessInfo({
     <Box p={5} bg="rgba(200, 200, 200, 0.3)">
       <Box>
         <Flex>
-          <Heading>{business.businessName}</Heading>
+          <Heading ml={-1} size="2xl">
+            {business.businessName}
+          </Heading>
           <Spacer />
           <Box>
-            <Button mt={-4} size="sm" onClick={handleSave}>
+            <Button mb={3} size="sm" onClick={handleSave}>
               저장
             </Button>
           </Box>
