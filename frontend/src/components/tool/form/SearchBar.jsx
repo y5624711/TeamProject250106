@@ -60,7 +60,7 @@ export function SearchBar({ onSearchChange, searchOptions }) {
     }
 
     const sort = searchParams.get("sort") ?? "";
-    const order = searchParams.get("order") ?? "asc";
+    const order = searchParams.get("order") ?? "desc";
     nextSearchParam.set("sort", sort);
     nextSearchParam.set("order", order);
     nextSearchParam.set("page", "1"); // 페이지는 1로 리셋

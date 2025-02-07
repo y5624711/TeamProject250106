@@ -119,13 +119,13 @@ export function InstkDetaiViewModal({
               <HStack>
                 <Field
                   orientation="horizontal"
-                  label={<SpacedLabel text="입고 구분" req />}
+                  label={<SpacedLabel text="입고 구분" />}
                 >
                   <Input readOnly value={instk.inputCommonCodeName} />
                 </Field>
                 <Field
                   orientation="horizontal"
-                  label={<SpacedLabel text="주문번호" req />}
+                  label={<SpacedLabel text="주문번호" />}
                 >
                   <Input readOnly value={instk.inputNo} />
                 </Field>
@@ -133,7 +133,7 @@ export function InstkDetaiViewModal({
               <HStack>
                 <Field
                   orientation="horizontal"
-                  label={<SpacedLabel text="품목" req />}
+                  label={<SpacedLabel text="품목" />}
                 >
                   <Input readOnly value={instk.itemCommonName} />
                 </Field>
@@ -141,7 +141,7 @@ export function InstkDetaiViewModal({
                 {detailData.inputConsent && (
                   <Field
                     orientation="horizontal"
-                    label={<SpacedLabel text="시리얼번호" req />}
+                    label={<SpacedLabel text="시리얼번호" />}
                   >
                     <SelectRoot
                       collection={serialLocationList}
@@ -175,14 +175,14 @@ export function InstkDetaiViewModal({
               </HStack>
               <HStack>
                 <Field
-                  label={<SpacedLabel text="담당업체" req />}
+                  label={<SpacedLabel text="담당업체" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={instk.customerName} />
                 </Field>
 
                 <Field
-                  label={<SpacedLabel text="창고" req />}
+                  label={<SpacedLabel text="창고" />}
                   orientation="horizontal"
                 >
                   <Input
@@ -193,7 +193,7 @@ export function InstkDetaiViewModal({
               </HStack>
 
               <Field
-                label={<SpacedLabel text="창고주소" req />}
+                label={<SpacedLabel text="창고주소" />}
                 orientation="horizontal"
               >
                 <Input readOnly value={detailData.wareHouseAddress} />
@@ -201,13 +201,13 @@ export function InstkDetaiViewModal({
 
               <HStack>
                 <Field
-                  label={<SpacedLabel text="주문요청자" req />}
+                  label={<SpacedLabel text="주문요청자" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={instk.requestEmployeeName} />
                 </Field>
                 <Field
-                  label={<SpacedLabel text="사번" req />}
+                  label={<SpacedLabel text="사번" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={instk.requestEmployeeNo} />
@@ -215,7 +215,7 @@ export function InstkDetaiViewModal({
               </HStack>
 
               <Field
-                label={<SpacedLabel text="주문비고" req />}
+                label={<SpacedLabel text="주문비고" />}
                 orientation="horizontal"
               >
                 {instk.inputNote ? (
@@ -231,13 +231,13 @@ export function InstkDetaiViewModal({
               {detailData.inputConsent === true ? (
                 <HStack>
                   <Field
-                    label={<SpacedLabel text="승인자" req />}
+                    label={<SpacedLabel text="승인자" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={instk.inputStockEmployeeName} />
                   </Field>
                   <Field
-                    label={<SpacedLabel text="사번" req />}
+                    label={<SpacedLabel text="사번" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={instk.inputStockEmployeeNo} />
@@ -246,13 +246,13 @@ export function InstkDetaiViewModal({
               ) : (
                 <HStack>
                   <Field
-                    label={<SpacedLabel text="반려자" req />}
+                    label={<SpacedLabel text="반려자" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={detailData.disapproveEmployeeName} />
                   </Field>
                   <Field
-                    label={<SpacedLabel text="사번" req />}
+                    label={<SpacedLabel text="사번" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={detailData.disapproveEmployeeNo} />
@@ -262,14 +262,14 @@ export function InstkDetaiViewModal({
 
               {detailData.inputConsent === true ? (
                 <Field
-                  label={<SpacedLabel text="승인일" req />}
+                  label={<SpacedLabel text="승인일" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={instk.inputStockDate} />
                 </Field>
               ) : (
                 <Field
-                  label={<SpacedLabel text="반려일" req />}
+                  label={<SpacedLabel text="반려일" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={detailData.disapproveDate} />
@@ -280,7 +280,7 @@ export function InstkDetaiViewModal({
               {detailData.inputConsent === true ? (
                 // true
                 <Field
-                  label={<SpacedLabel text="승인비고" req />}
+                  label={<SpacedLabel text="승인비고" />}
                   orientation="horizontal"
                 >
                   {instk.inputStockNote ? (
@@ -296,7 +296,7 @@ export function InstkDetaiViewModal({
               ) : (
                 // false
                 <Field
-                  label={<SpacedLabel text="반려비고" req />}
+                  label={<SpacedLabel text="반려비고" />}
                   orientation="horizontal"
                 >
                   {instk.inputStockNote ? (

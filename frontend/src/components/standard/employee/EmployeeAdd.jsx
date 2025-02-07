@@ -297,7 +297,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         <HStack gap={5}>
           {formData.selectedCommonCode === "EMP" && (
             <Field
-              label={<SpacedLabel text="부 서" req />}
+              label={<SpacedLabel text="부 서" />}
               orientation="horizontal"
             >
               <Input
@@ -328,7 +328,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         </HStack>
       )}
       <Field
-        label={<SpacedLabel text="직원" req />}
+        label={<SpacedLabel text="직원" />}
         orientation="horizontal"
         required={viewKey !== -1 ? false : true}
       >
@@ -352,18 +352,12 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
       )}
-      <Field
-        label={<SpacedLabel text="전화번호" req />}
-        orientation="horizontal"
-      >
+      <Field label={<SpacedLabel text="전화번호" />} orientation="horizontal">
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
 
       {viewKey !== -1 && (
-        <Field
-          label={<SpacedLabel text="비밀번호" req />}
-          orientation="horizontal"
-        >
+        <Field label={<SpacedLabel text="비밀번호" />} orientation="horizontal">
           <Input
             name="password"
             placeholder={"비밀번호"}
@@ -372,7 +366,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
       )}
-      <Field label={<SpacedLabel text="비고" req />} orientation="horizontal">
+      <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
         <Textarea
           name="note"
           style={{ maxHeight: "100px", overflowY: "auto" }}
@@ -383,7 +377,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       </Field>
       {viewKey !== -1 && (
         <Field
-          label={<SpacedLabel text="사용 여부" req />}
+          label={<SpacedLabel text="사용 여부" />}
           orientation="horizontal"
         >
           <Box ml={"86px"} style={{ position: "absolute" }}>

@@ -222,7 +222,7 @@ LIMIT #{offset}, 10
 
     // 구매 입고시  창고 주소  
     @Select("""
-           SELECT  AR.warehouse_code ,WHMST.warehouse_address 
+           SELECT  AR.warehouse_code ,WHMST.warehouse_address ,WHMST.warehouse_name
            FROM TB_PURCH_APPR AR
            LEFT JOIN  TB_WHMST WHMST
            ON AR.warehouse_code=WHMST.warehouse_code
@@ -232,7 +232,7 @@ LIMIT #{offset}, 10
 
     // 반품 입고시 창고 주소 가져오는 쿼리
     @Select("""
-             SELECT  WHM.warehouse_address
+             SELECT  WHM.warehouse_address ,,WHMST.warehouse_name
            FROM  TB_RTN_APPR APPR
             LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
             LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
