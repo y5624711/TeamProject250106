@@ -102,7 +102,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
             <Input
               value={departmentName}
               onChange={(e) => setDepartmentName(e.target.value)}
-              maxlength={10}
+              maxLength={10}
             />
           </Field>
           <Field
@@ -115,7 +115,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
               onChange={(e) =>
                 setDepartmentTel(formatPhoneNumber(e.target.value))
               }
-              maxlength={13}
+              maxLength={13}
             />
           </Field>
           <Field label={<SpacedLabel text="팩스" />} orientation="horizontal">
@@ -124,7 +124,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
               onChange={(e) =>
                 setDepartmentFax(formatPhoneNumber(e.target.value))
               }
-              maxlength={15}
+              maxLength={15}
             />
           </Field>
           <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
@@ -132,7 +132,7 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
               value={departmentNote}
               onChange={(e) => setDepartmentNote(e.target.value)}
               placeholder={"최대 50자"}
-              maxlength={50}
+              maxLength={50}
               style={{ maxHeight: "100px", overflowY: "auto" }}
             />
           </Field>
