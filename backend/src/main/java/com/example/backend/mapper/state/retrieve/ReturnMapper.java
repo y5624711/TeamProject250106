@@ -263,13 +263,21 @@ public interface ReturnMapper {
 
     // 가맹점 코드로 시리얼 번호 목록 반환 (대기, 승인인 것 제외)
     @Select("""
-            SELECT serial_no
-            FROM TB_INOUT_HIS
+            SELECT ioh.serial_no, common_code_name itemCommonName
+            FROM TB_INOUT_HIS ioh
+                LEFT JOIN TB_ITEMSUB its
+                    ON ioh.serial_no = its.serial_no
+                LEFT JOIN TB_SYSCOMM sc
+                    ON its.item_common_code = sc.common_code
             WHERE franchise_code = #{franchiseCode}
             EXCEPT
-            (SELECT serial_no
-             FROM TB_RTN_REQ
-             WHERE return_consent IS NULL || TB_RTN_REQ.return_consent = true
+            (SELECT rr.serial_no, common_code_name itemCommonName
+             FROM TB_RTN_REQ rr
+                LEFT JOIN TB_ITEMSUB its
+                    ON rr.serial_no = its.serial_no
+                LEFT JOIN TB_SYSCOMM sc
+                    ON its.item_common_code = sc.common_code
+             WHERE return_consent IS NULL || rr.return_consent = true
                  AND franchise_code = #{franchiseCode})
             """)
     List<Return> getSerialNoList(String franchiseCode);

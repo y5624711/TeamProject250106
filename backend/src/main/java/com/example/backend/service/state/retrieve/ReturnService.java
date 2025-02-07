@@ -116,6 +116,7 @@ public class ReturnService {
 
     // 가맹점 코드로 시리얼번호 조회
     public List<Return> getSerialNoList(String franchiseCode) {
+//        System.out.println("service: " + mapper.getSerialNoList(franchiseCode));
         return mapper.getSerialNoList(franchiseCode);
     }
 

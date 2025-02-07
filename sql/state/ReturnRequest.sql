@@ -75,3 +75,21 @@ EXCEPT
  FROM TB_RTN_REQ
  WHERE return_consent IS NULL || TB_RTN_REQ.return_consent = true
      AND franchise_code = 'FRN0000000003');
+
+
+SELECT ioh.serial_no, common_code_name
+FROM TB_INOUT_HIS ioh
+         LEFT JOIN TB_ITEMSUB its
+                   ON ioh.serial_no = its.serial_no
+         LEFT JOIN TB_SYSCOMM sc
+                   ON its.item_common_code = sc.common_code
+WHERE franchise_code = 'FRN001'
+EXCEPT
+(SELECT rr.serial_no, common_code_name
+ FROM TB_RTN_REQ rr
+          LEFT JOIN TB_ITEMSUB its
+                    ON rr.serial_no = its.serial_no
+          LEFT JOIN TB_SYSCOMM sc
+                    ON its.item_common_code = sc.common_code
+ WHERE return_consent IS NULL || rr.return_consent = true
+     AND franchise_code = 'FRN001');

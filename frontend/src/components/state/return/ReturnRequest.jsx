@@ -85,10 +85,11 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
       axios
         .get(`api/return/serialNoList/${localFranchiseCode}`)
         .then((res) => {
-          // console.log("serial 반환", res.data);
+          // console.log("serial 반환", res);
           const serialNoOptions = res.data.map((serialNo) => ({
             value: serialNo.serialNo,
             label: serialNo.serialNo,
+            itemName: serialNo.itemCommonName,
           }));
           setSerialNoList(serialNoOptions);
         })
@@ -243,6 +244,9 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
                   {serialNoList.map((option) => (
                     <SelectItem item={option} key={option.value}>
                       {option.label}
+                      {" ( "}
+                      {option.itemName}
+                      {" ) "}
                     </SelectItem>
                   )) || "내역 없음"}
                 </SelectContent>
