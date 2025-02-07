@@ -299,6 +299,7 @@ function ReturnRequest({ isOpen, onClose, onRequest }) {
               placeholder="최대 50자"
               onChange={handleInput("returnRequestNote")}
               style={{ maxHeight: "100px", overflowY: "auto" }}
+              maxLength={50}
             />
           </Field>
         </DialogBody>
