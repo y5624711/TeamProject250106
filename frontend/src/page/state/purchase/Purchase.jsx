@@ -24,7 +24,8 @@ export function Purchase() {
 
   // 구매 관리 리스트 가져오기
   useEffect(() => {
-    const controller = new AbortController();
+    const controller = new AbortController(); // AbortController -> 요청을 취소하는 컨트롤러
+
     axios
       .get("/api/purchase/list", {
         params: searchParams,
@@ -33,13 +34,9 @@ export function Purchase() {
       .then((res) => {
         setPurchaseList(res.data.purchaseList);
         setCount(res.data.count);
-      })
-      .catch((error) => {
-        console.error("구매 목록 요청 중 오류 발생:", error);
       });
-    return () => {
-      controller.abort();
-    };
+
+    return () => controller.abort();
   }, [searchParams]);
 
   // 구매 요청 후 리스트 업데이트
