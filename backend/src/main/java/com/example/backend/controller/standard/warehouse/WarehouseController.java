@@ -48,28 +48,28 @@ public class WarehouseController {
                     if (service.addWarehouse(warehouse)) {
                         return ResponseEntity.ok().body(Map.of(
                                 "message", Map.of("type", "success",
-                                        "text", warehouse.getWarehouseName() + " 창고가 등록되었습니다."),
+                                        "text", "등록되었습니다."),
                                 "data", warehouse
                         ));
                     } else {
                         return ResponseEntity.internalServerError().body(Map.of(
-                                "message", Map.of("type", "error", "text", "창고 등록이 실패하였습니다.")
+                                "message", Map.of("type", "error", "text", "등록에 실패하였습니다.")
                         ));
                     }
                 } else {
                     return ResponseEntity.badRequest().body(Map.of(
-                            "message", Map.of("type", "error", "text", "이미 등록된 창고입니다.")
+                            "message", Map.of("type", "error", "text", "중복된 항목이 존재합니다.")
                     ));
                 }
             } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "작성에 실패했습니다.")));
+                            "text", "등록에 실패하였습니다.")));
         }
 
 
@@ -84,22 +84,22 @@ public class WarehouseController {
                 if (service.edit(warehouse)) {
                     return ResponseEntity.ok(Map.of("message",
                             Map.of("type", "success",
-                                    "text", "창고 정보를 수정하였습니다.")));
+                                    "text", "저장되었습니다.")));
                 } else {
                     return ResponseEntity.badRequest()
                             .body(Map.of("message",
                                     Map.of("type", "error",
-                                            "text", "창고 수정 중 문제가 발생하였습니다..")));
+                                            "text", "저장에 실패하였습니다.")));
                 }
             } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "수정에 실패했습니다.")));
+                            "text", "저장에 실패하였습니다.")));
         }
 
 
