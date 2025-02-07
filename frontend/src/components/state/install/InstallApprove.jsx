@@ -197,7 +197,9 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
                   >
                     <SelectRoot>
                       <SelectTrigger>
-                        <SelectValueText>내역 확인</SelectValueText>
+                        <SelectValueText>
+                          내역 {serialList.length}건 확인
+                        </SelectValueText>
                       </SelectTrigger>
                       <SelectContent
                         style={{
