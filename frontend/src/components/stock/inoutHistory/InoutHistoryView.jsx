@@ -121,7 +121,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
             orientation="horizontal"
             mb={15}
           >
-            <Input value={inoutHistoryDetail.franchiseName} readOnly />
+            <Input value={inoutHistoryDetail.installFranchiseName} readOnly />
           </Field>
         ) : inoutHistoryDetail.inoutCommonCode === "LOS" ? null : (
           <Field
@@ -132,6 +132,15 @@ function InoutHistoryView({ inoutHistoryKey }) {
             <Input value={inoutHistoryDetail.row ? location : ""} readOnly />
           </Field>
         )}
+        {inoutHistoryDetail.inoutCommonCode === "RETRN" ? (
+          <Field
+            label={<SpacedLabel text="가맹점" />}
+            orientation="horizontal"
+            mb={15}
+          >
+            <Input value={inoutHistoryDetail.returnFranchiseName} readOnly />
+          </Field>
+        ) : null}
         {inoutHistoryDetail.inoutCommonCode === "OUT" ||
         inoutHistoryDetail.inoutCommonCode === "RETRN" ||
         inoutHistoryDetail.inoutCommonCode === "INSTK" ? (
