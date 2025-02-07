@@ -58,15 +58,23 @@ function WarehouseList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {warehouseList.map((warehouse, index) => (
-              <WarehouseListPage
-                key={warehouse.warehouseKey}
-                index={index}
-                warehouse={warehouse}
-                setSelectedWarehouseKey={setSelectedWarehouseKey}
-                setIsDetailDialogOpen={setIsDetailDialogOpen}
-              />
-            ))}
+            {warehouseList.length > 0 ? (
+              warehouseList.map((warehouse, index) => (
+                <WarehouseListPage
+                  key={warehouse.warehouseKey}
+                  index={index}
+                  warehouse={warehouse}
+                  setSelectedWarehouseKey={setSelectedWarehouseKey}
+                  setIsDetailDialogOpen={setIsDetailDialogOpen}
+                />
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="7">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table.Root>
         <Center w="100%" p={4}>

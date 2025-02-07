@@ -60,15 +60,23 @@ function InoutHistoryList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {/* 각 입출내역 */}
-            {inoutHistoryList.map((inoutHistory, index) => (
-              <InoutHistoryListPage
-                index={index}
-                inoutHistory={inoutHistory}
-                setSelectedInoutHistory={setSelectedInoutHistory}
-                setIsDetailDialogOpen={setIsDetailDialogOpen}
-              />
-            ))}
+            {inoutHistoryList.length > 0 ? (
+              inoutHistoryList.map((inoutHistory, index) => (
+                <InoutHistoryListPage
+                  key={inoutHistory.inoutHistoryKey}
+                  index={index}
+                  inoutHistory={inoutHistory}
+                  setSelectedInoutHistory={setSelectedInoutHistory}
+                  setIsDetailDialogOpen={setIsDetailDialogOpen}
+                />
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="10">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table.Root>
       </Box>

@@ -62,7 +62,7 @@ export function BusinessListTable({
           ) : (
             <Table.Row>
               <Table.Cell textAlign="center" colSpan="4">
-                데이터가 없습니다.
+                정보가 존재하지 않습니다.
               </Table.Cell>
             </Table.Row>
           )}
