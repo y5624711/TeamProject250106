@@ -48,13 +48,16 @@ public interface InoutHistoryMapper {
                     1=1
                 </if>
                 <if test="state == 'storage'">
-                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="state == 'retrieval'">
                   AND (h.inout_common_code = 'OUT' )
                 </if>
+                <if test="state == 'lost'">
+                  AND (h.inout_common_code = 'LOS' )
+                </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT' OR h.inout_common_code = 'LOS' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="searchType == 'all'">
                 AND(
@@ -205,13 +208,16 @@ public interface InoutHistoryMapper {
                     1=1
                 </if>
                 <if test="state == 'storage'">
-                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="state == 'retrieval'">
                   AND (h.inout_common_code = 'OUT' )
                 </if>
+                <if test="state == 'lost'">
+                  AND (h.inout_common_code = 'LOS' )
+                </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT' OR h.inout_common_code = 'LOS' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="searchType == 'all'">
                 AND(

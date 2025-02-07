@@ -164,6 +164,7 @@ const radioOptions = [
   { value: "all", label: "전체 내역" },
   { value: "storage", label: "입고 내역" },
   { value: "retrieval", label: "출고 내역" },
+  { value: "lost", label: "분실 내역" },
 ];
 
 const inoutHistoryOptionList = createListCollection({
