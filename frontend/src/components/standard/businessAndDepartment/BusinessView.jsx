@@ -59,7 +59,7 @@ export function BusinessView() {
   }
 
   return (
-    <Box>
+    <Box ml={2} mr={2}>
       <Stack>
         <BusinessInfo
           business={business} // 현재 상태 전달
