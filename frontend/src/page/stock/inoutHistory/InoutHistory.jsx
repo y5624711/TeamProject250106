@@ -114,6 +114,8 @@ function InoutHistory(props) {
             setSearch={setSearch}
             search={search}
             handleSearchClick={handleSearchClick}
+            setSearchParams={setSearchParams}
+            setState={setState}
           />
           <RadioGroup
             value={search.state}
