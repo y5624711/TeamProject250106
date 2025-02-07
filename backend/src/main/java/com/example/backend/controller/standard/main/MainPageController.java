@@ -80,7 +80,7 @@ public class MainPageController {
             System.out.println("customer = " + customer);
             if (service.updateCustomer(customer)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "저장 되었습니다.")));
+                        Map.of("type", "success", "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
                         Map.of("type", "error", "text", "저장에 실패하였습니다.")));
@@ -101,7 +101,7 @@ public class MainPageController {
         if (service.validWarehouse(warehouse)) {
             if (service.updateWarehouse(warehouse)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "저장 되었습니다.")));
+                        Map.of("type", "success", "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
                         Map.of("type", "success", "text", "저장에 실패하였습니다.")));

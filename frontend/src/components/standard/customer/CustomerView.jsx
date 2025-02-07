@@ -51,7 +51,17 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   // console.log("key", customerKey);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    // 스킹 처리
+    if (name === "customerTel" || name === "customerFax") {
+      value = formatPhoneNumber(value);
+    } else if (name === "corporateNo") {
+      value = formatCorporateNo(value);
+    } else if (name === "customerNo") {
+      value = formatBusinessNo(value);
+    }
+
     setCustomer((prevCustomer) => ({
       ...prevCustomer,
       [name]: value,
@@ -74,6 +84,40 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
     customer.customerPost &&
     customer.customerAddress;
 
+  const formatPhoneNumber = (value) => {
+    const onlyNums = value.replace(/\D/g, ""); // 숫자 이외 제거
+
+    if (onlyNums.startsWith("02")) {
+      // 서울 지역번호(02)인 경우
+      if (onlyNums.length <= 2) return onlyNums;
+      if (onlyNums.length <= 5)
+        return onlyNums.replace(/(\d{2})(\d+)/, "$1-$2");
+      if (onlyNums.length <= 9)
+        return onlyNums.replace(/(\d{2})(\d{3})(\d+)/, "$1-$2-$3");
+      return onlyNums.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3");
+    } else {
+      // 일반 지역번호 또는 휴대폰 번호
+      if (onlyNums.length <= 3) return onlyNums;
+      if (onlyNums.length <= 6)
+        return onlyNums.replace(/(\d{3})(\d+)/, "$1-$2");
+      if (onlyNums.length <= 10)
+        return onlyNums.replace(/(\d{3})(\d{3,4})(\d+)/, "$1-$2-$3");
+      return onlyNums.slice(0, 11).replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    }
+  };
+
+  const formatCorporateNo = (value) => {
+    const onlyNums = value.replace(/\D/g, ""); // 숫자 이외 제거
+    if (onlyNums.length <= 6) return onlyNums;
+    return onlyNums.slice(0, 13).replace(/(\d{6})(\d{7})/, "$1-$2");
+  };
+
+  const formatBusinessNo = (value) => {
+    const onlyNums = value.replace(/\D/g, ""); // 숫자 이외 제거
+    if (onlyNums.length <= 3) return onlyNums;
+    if (onlyNums.length <= 5) return onlyNums.replace(/(\d{3})(\d+)/, "$1-$2");
+    return onlyNums.slice(0, 10).replace(/(\d{3})(\d{2})(\d{5})/, "$1-$2-$3");
+  };
   return (
     <Box>
       <DialogRoot

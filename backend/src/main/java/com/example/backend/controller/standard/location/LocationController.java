@@ -45,28 +45,28 @@ public class LocationController {
                     if (service.add(location)) {
                         return ResponseEntity.ok().body(Map.of(
                                 "message", Map.of("type", "success",
-                                        "text", location.getWarehouseName() + " 창고에 로케이션이 등록되었습니다."),
+                                        "text", "등록되었습니다."),
                                 "data", location
                         ));
                     } else {
                         return ResponseEntity.internalServerError().body(Map.of(
-                                "message", Map.of("type", "error", "text", "로케이션 등록이 실패하였습니다.")
+                                "message", Map.of("type", "error", "text", "등록에 실패하였습니다.")
                         ));
                     }
                 } else {
                     return ResponseEntity.badRequest().body(Map.of(
-                            "message", Map.of("type", "error", "text", "이미 등록된 로케이션입니다.")
+                            "message", Map.of("type", "error", "text", "중복된 항목이 존재합니다.")
                     ));
                 }
             } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                        "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
                 ));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "작성에 실패했습니다.")));
+                            "text", "등록에 실패하였습니다.")));
         }
 
 
@@ -84,18 +84,18 @@ public class LocationController {
             if (service.edit(location)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", "로케이션이 수정되었습니다."),
+                                "text", "저장되었습니다."),
                         "data", location
                 ));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "로케이션 수정에 실패하였습니다.")
+                        "message", Map.of("type", "error", "text", "저장에 실패하였습니다.")
                 ));
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "수정에 실패했습니다.")));
+                            "text", "저장에 실패하였습니다.")));
         }
 
     }

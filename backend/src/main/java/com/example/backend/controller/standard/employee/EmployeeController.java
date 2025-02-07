@@ -51,7 +51,6 @@ public class EmployeeController {
     public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee, Authentication authentication) {
 
 
-
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
@@ -71,7 +70,7 @@ public class EmployeeController {
         if (service.addEmployee(employee)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", "등록 되었습니다.")));
+                            "text", "등록되었습니다.")));
         } else {
             return ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "error",
@@ -90,12 +89,13 @@ public class EmployeeController {
                             "text", "수정 권한이 없습니다.")));
         }
 
-        if( !service.isValid(employee) ){
+        if (!service.isValid(employee)) {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", Map.of("type", "error", "text", "필요 항목이 입력되지 않았습니다.")
             ));
 
-        };
+        }
+        ;
 
 //        System.out.println("employee = " + employee);
         if (service.editEmployeeByKey(employee)) {

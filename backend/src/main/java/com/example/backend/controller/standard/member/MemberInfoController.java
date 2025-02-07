@@ -40,7 +40,7 @@ public class MemberInfoController {
         }
         if (service.updateId(employee)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of(
-                    "type", "success", "text", "저장 되었습니다.")));
+                    "type", "success", "text", "저장되었습니다.")));
 
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(

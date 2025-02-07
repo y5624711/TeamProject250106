@@ -26,15 +26,15 @@ public class BusinessController {
         if (service.validate(business)) {
             if (service.updateBusiness(business)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "error", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.ok().body(
                     Map.of("message",
-                            Map.of("type", "warning", "text", "내용을 입력해 주세요")));
+                            Map.of("type", "warning", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 

@@ -17,6 +17,7 @@ import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { Tooltip } from "../../ui/tooltip.jsx";
 import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
+import { PhoneInput } from "../../tool/masking/PhoneInput.jsx";
 
 export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
@@ -275,11 +276,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 mb={15}
                 required
               >
-                <Input
-                  type={"text"}
-                  value={warehouseTel}
-                  onChange={(e) => setWarehouseTel(e.target.value)}
-                />
+                <PhoneInput value={warehouseTel} onChange={setWarehouseTel} />
               </Field>
               <Field
                 label={<SpacedLabel text="우편번호" req />}
