@@ -50,12 +50,21 @@ public class EmployeeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee, Authentication authentication) {
 
+
+
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
                             "text", "등록 권한이 없습니다.")));
         }
+
+//        if( !service.isValid(employee) ){
+//            return ResponseEntity.badRequest().body(Map.of(
+//                    "message", Map.of("type", "error", "text", "필요 항목이 입력되지 않았습니다.")
+//            ));
+//
+//        };
 
 
         System.out.println("account = " + employee);
@@ -80,6 +89,13 @@ public class EmployeeController {
                     .body(Map.of("message", Map.of("type", "error",
                             "text", "수정 권한이 없습니다.")));
         }
+
+        if( !service.isValid(employee) ){
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "필요 항목이 입력되지 않았습니다.")
+            ));
+
+        };
 
 //        System.out.println("employee = " + employee);
         if (service.editEmployeeByKey(employee)) {
