@@ -54,11 +54,11 @@ public class InstkController {
         if(success){
             return  ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{instk.getInputKey()}번 승인 처리  했습니다.")));
+                            "text", "승인되었습니다.")));
         }else {
             return  ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", STR."\{instk.getInputKey()}번 승인 실패  했습니다.")));
+                            "text", "승인에 실패하였습니다.")));
         }
     }
 
@@ -98,13 +98,13 @@ public class InstkController {
          if (result) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{instk.getInputKey()}번 주문 반려 되었습니다.")));
+                            "text", "반려되었습니다.")));
         }
         // 실패
         else {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", STR."\{instk.getInputKey()}번 주문 반려 실패했습니다.")));
+                            "text", "반려에 실패하였습니다.")));
         }
 
     }

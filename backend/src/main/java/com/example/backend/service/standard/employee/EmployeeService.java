@@ -69,4 +69,21 @@ public class EmployeeService {
     }
 
 
+    public boolean isValid(Employee employee) {
+        // Validate name length
+        boolean isValidName = employee.getEmployeeName().trim().length() > 0 && employee.getEmployeeName().length() < 6;
+
+        // Validate password length
+        boolean isValidPassword = employee.getEmployeePassword().trim().length() > 0 &&
+                employee.getEmployeePassword().trim().length() < 20;
+
+        // Validate other fields
+        boolean isValidCommonCode = employee.getEmployeeCommonCode() != null && !employee.getEmployeeCommonCode().isEmpty();
+        boolean isValidWorkPlace = employee.getEmployeeWorkPlaceCode() != null && !employee.getEmployeeWorkPlaceCode().isEmpty();
+        boolean isValidNote = employee.getEmployeeNote() != null && employee.getEmployeeNote().length() < 60;
+
+        // Combine all validations (return true if all are valid)
+        return isValidName && isValidPassword && isValidCommonCode && isValidWorkPlace && isValidNote;
+    }
+
 }

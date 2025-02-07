@@ -38,15 +38,7 @@ public class EmployeeController {
         // 컬럼명 숨길려고  서버에서 처리
         String convertedType = Employee.correctType(type);
 
-//        System.out.println("sort = " + sort);
-
         String convertedSort = Employee.correctCommonCode(sort);
-
-//        System.out.println("page = " + page);
-//        System.out.println("convertedSort = " + convertedSort);
-//        System.out.println("convertedType = " + convertedType);
-//        System.out.println("order = " + order);
-//        System.out.println("isActiveVisible = " + isActiveVisible);
 
         EmployeeResponse employeeResponse = service.getAllEmployee(page, isActiveVisible, keyword, convertedType, convertedSort, order);
 
@@ -58,23 +50,32 @@ public class EmployeeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> addEmployee(@RequestBody Employee employee, Authentication authentication) {
 
+
+
         //본사직원이 아닐경우
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "회원 등록 권한이 없습니다.")));
+                            "text", "등록 권한이 없습니다.")));
         }
+
+//        if( !service.isValid(employee) ){
+//            return ResponseEntity.badRequest().body(Map.of(
+//                    "message", Map.of("type", "error", "text", "필요 항목이 입력되지 않았습니다.")
+//            ));
+//
+//        };
 
 
         System.out.println("account = " + employee);
         if (service.addEmployee(employee)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 등록 되었습니다.")));
+                            "text", "등록 되었습니다.")));
         } else {
             return ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 등록 실패했습니다..")));
+                            "text", "등록에 실패하였습니다.")));
         }
     }
 
@@ -86,18 +87,25 @@ public class EmployeeController {
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "회원 수정 권한이 없습니다.")));
+                            "text", "수정 권한이 없습니다.")));
         }
+
+        if( !service.isValid(employee) ){
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", Map.of("type", "error", "text", "필요 항목이 입력되지 않았습니다.")
+            ));
+
+        };
 
 //        System.out.println("employee = " + employee);
         if (service.editEmployeeByKey(employee)) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 되었습니다.")));
+                            "text", "저장되었습니다.")));
         } else {
             return ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 수정 실패했습니다..")));
+                            "text", "저장에 실패하였습니다.")));
         }
     }
 
@@ -109,18 +117,18 @@ public class EmployeeController {
         if (!authentication.getName().startsWith("BIZ")) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "회원 삭제 권한이 없습니다.")));
+                            "text", "삭제 권한이 없습니다.")));
         }
 
 //        System.out.println("employee = " + employee);
         if (service.deleteEmployeeByKey(employee.getEmployeeKey())) {
             return ResponseEntity.ok()
                     .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 삭제 되었습니다.")));
+                            "text", "삭제 되었습니다.")));
         } else {
             return ResponseEntity.status(401)
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", STR."\{employee.getEmployeeKey()}번 직원 삭제 실패했습니다.")));
+                            "text", "  삭제에 실패하였습니다.")));
         }
     }
 

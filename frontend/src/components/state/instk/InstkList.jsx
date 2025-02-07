@@ -96,7 +96,6 @@ export function InstkList() {
     { key: "input_consent", label: "상태" },
   ];
 
-
   return (
     <Box>
       <SearchBar
@@ -154,21 +153,23 @@ export function InstkList() {
                   <Table.Cell textAlign="center" width="90px">
                     {index + 1}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="10%">
                     {item.inputCommonCodeName}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{item.inputNo}</Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="15%">
+                    {item.inputNo}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="15%">
                     {item.itemCommonName}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
                     {item.customerName}
                   </Table.Cell>
 
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="15%">
                     {item.requestEmployeeName}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell textAlign="center" width="15%">
                     {item.inputStockEmployeeName ||
                       item.disapproveEmployeeName ||
                       "-"}
@@ -188,6 +189,13 @@ export function InstkList() {
                 </Table.Row>
               );
             })}
+            {instkList.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={7} textAlign="center">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
           <Table.Footer></Table.Footer>
         </Table.Root>

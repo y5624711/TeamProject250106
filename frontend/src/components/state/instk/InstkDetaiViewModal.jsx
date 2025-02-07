@@ -10,6 +10,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
 import {
+  Box,
   Center,
   createListCollection,
   HStack,
@@ -115,202 +116,215 @@ export function InstkDetaiViewModal({
           </DialogBody>
         ) : (
           <DialogBody>
-            <Stack gap={15}>
-              <HStack>
-                <Field
-                  orientation="horizontal"
-                  label={<SpacedLabel text="입고 구분" req />}
-                >
-                  <Input readOnly value={instk.inputCommonCodeName} />
-                </Field>
-                <Field
-                  orientation="horizontal"
-                  label={<SpacedLabel text="주문번호" req />}
-                >
-                  <Input readOnly value={instk.inputNo} />
-                </Field>
-              </HStack>
-              <HStack>
-                <Field
-                  orientation="horizontal"
-                  label={<SpacedLabel text="품목" req />}
-                >
-                  <Input readOnly value={instk.itemCommonName} />
-                </Field>
-
-                {detailData.inputConsent && (
+            <Box css={{ "--field-label-width": "85px" }}>
+              <Stack gap={15}>
+                <HStack>
                   <Field
                     orientation="horizontal"
-                    label={<SpacedLabel text="시리얼번호" req />}
+                    label={<SpacedLabel text="입고 구분" />}
                   >
-                    <SelectRoot
-                      collection={serialLocationList}
-                      value={item || ""}
-                      position="relative"
-                      onValueChange={handleSerialChange}
+                    <Input readOnly value={instk.inputCommonCodeName} />
+                  </Field>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="주문번호" />}
+                  >
+                    <Input readOnly value={instk.inputNo} />
+                  </Field>
+                </HStack>
+                <HStack>
+                  <Field
+                    orientation="horizontal"
+                    label={<SpacedLabel text="품목" />}
+                  >
+                    <Input readOnly value={instk.itemCommonName} />
+                  </Field>
+
+                  {detailData.inputConsent && (
+                    <Field
+                      orientation="horizontal"
+                      label={<SpacedLabel text="시리얼번호" />}
                     >
-                      {/*<SelectLabel orientation="horizontal">*/}
-                      {/*  시리얼 번호*/}
-                      {/*</SelectLabel>*/}
-                      <SelectTrigger>
-                        <SelectValueText placeholder={"내역 확인"} />
-                      </SelectTrigger>
-                      <SelectContent
-                        portalRef={contentRef}
-                        style={{
-                          width: "100%",
-                          top: "40px",
-                          position: "absolute",
-                        }}
+                      <SelectRoot
+                        collection={serialLocationList}
+                        value={item || ""}
+                        position="relative"
+                        onValueChange={handleSerialChange}
                       >
-                        {serialLocationList.items.map((code, index) => (
-                          <SelectItem item={code} key={index}>
-                            {code.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </SelectRoot>
+                        {/*<SelectLabel orientation="horizontal">*/}
+                        {/*  시리얼 번호*/}
+                        {/*</SelectLabel>*/}
+                        <SelectTrigger>
+                          <SelectValueText
+                            placeholder={`내역 ${serialLocationList.items.length}건 확인`}
+                          />
+                        </SelectTrigger>
+                        <SelectContent
+                          portalRef={contentRef}
+                          style={{
+                            width: "100%",
+                            top: "40px",
+                            position: "absolute",
+                          }}
+                        >
+                          {serialLocationList.items.map((code, index) => (
+                            <SelectItem item={code} key={index}>
+                              {code.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </SelectRoot>
+                    </Field>
+                  )}
+                </HStack>
+                <HStack>
+                  <Field
+                    label={<SpacedLabel text="담당업체" />}
+                    orientation="horizontal"
+                  >
+                    <Input readOnly value={instk.customerName} />
                   </Field>
-                )}
-              </HStack>
-              <HStack>
+
+                  <Field
+                    label={<SpacedLabel text="창고" />}
+                    orientation="horizontal"
+                  >
+                    <Input
+                      readOnly
+                      value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
+                    />
+                  </Field>
+                </HStack>
+
                 <Field
-                  label={<SpacedLabel text="담당업체" req />}
+                  label={<SpacedLabel text="창고주소" />}
                   orientation="horizontal"
                 >
-                  <Input readOnly value={instk.customerName} />
+                  <Input readOnly value={detailData.wareHouseAddress} />
+                </Field>
+
+                <HStack>
+                  <Field
+                    label={<SpacedLabel text="주문요청자" />}
+                    orientation="horizontal"
+                  >
+                    <Input readOnly value={instk.requestEmployeeName} />
+                  </Field>
+                  <Field
+                    label={<SpacedLabel text="사번" />}
+                    orientation="horizontal"
+                  >
+                    <Input readOnly value={instk.requestEmployeeNo} />
+                  </Field>
+                </HStack>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="요청일" />}
+                >
+                  <Input readOnly value={instk.requestDate} />
                 </Field>
 
                 <Field
-                  label={<SpacedLabel text="창고" req />}
+                  label={<SpacedLabel text="주문비고" />}
                   orientation="horizontal"
                 >
-                  <Input
-                    readOnly
-                    value={`${detailData.wareHouseName}${detailData.inputConsent ? ` (Location: ${selectLocationKey || ""})` : ""}`}
-                  />
+                  {instk.inputNote ? (
+                    <Textarea
+                      readOnly
+                      value={instk.inputNote}
+                      style={{ maxHeight: "100px", overflowY: "auto" }}
+                    />
+                  ) : (
+                    <Input readOnly value={"내용 없음"} />
+                  )}
                 </Field>
-              </HStack>
-
-              <Field
-                label={<SpacedLabel text="창고주소" req />}
-                orientation="horizontal"
-              >
-                <Input readOnly value={detailData.wareHouseAddress} />
-              </Field>
-
-              <HStack>
-                <Field
-                  label={<SpacedLabel text="주문요청자" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={instk.requestEmployeeName} />
-                </Field>
-                <Field
-                  label={<SpacedLabel text="사번" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={instk.requestEmployeeNo} />
-                </Field>
-              </HStack>
-
-              <Field
-                label={<SpacedLabel text="주문비고" req />}
-                orientation="horizontal"
-              >
-                {instk.inputNote ? (
-                  <Textarea
-                    readOnly
-                    value={instk.inputNote}
-                    style={{ maxHeight: "100px", overflowY: "auto" }}
-                  />
+                {detailData.inputConsent === true ? (
+                  <HStack>
+                    <Field
+                      label={<SpacedLabel text="승인자" />}
+                      orientation="horizontal"
+                    >
+                      <Input readOnly value={instk.inputStockEmployeeName} />
+                    </Field>
+                    <Field
+                      label={<SpacedLabel text="사번" />}
+                      orientation="horizontal"
+                    >
+                      <Input readOnly value={instk.inputStockEmployeeNo} />
+                    </Field>
+                  </HStack>
                 ) : (
-                  <Input readOnly value={"내용 없음"} />
+                  <HStack>
+                    <Field
+                      label={<SpacedLabel text="반려자" />}
+                      orientation="horizontal"
+                    >
+                      <Input
+                        readOnly
+                        value={detailData.disapproveEmployeeName}
+                      />
+                    </Field>
+                    <Field
+                      label={<SpacedLabel text="사번" />}
+                      orientation="horizontal"
+                    >
+                      <Input readOnly value={detailData.disapproveEmployeeNo} />
+                    </Field>
+                  </HStack>
                 )}
-              </Field>
-              {detailData.inputConsent === true ? (
-                <HStack>
-                  <Field
-                    label={<SpacedLabel text="승인자" req />}
-                    orientation="horizontal"
-                  >
-                    <Input readOnly value={instk.inputStockEmployeeName} />
-                  </Field>
-                  <Field
-                    label={<SpacedLabel text="사번" req />}
-                    orientation="horizontal"
-                  >
-                    <Input readOnly value={instk.inputStockEmployeeNo} />
-                  </Field>
-                </HStack>
-              ) : (
-                <HStack>
-                  <Field
-                    label={<SpacedLabel text="반려자" req />}
-                    orientation="horizontal"
-                  >
-                    <Input readOnly value={detailData.disapproveEmployeeName} />
-                  </Field>
-                  <Field
-                    label={<SpacedLabel text="사번" req />}
-                    orientation="horizontal"
-                  >
-                    <Input readOnly value={detailData.disapproveEmployeeNo} />
-                  </Field>
-                </HStack>
-              )}
 
-              {detailData.inputConsent === true ? (
-                <Field
-                  label={<SpacedLabel text="승인일" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={instk.inputStockDate} />
-                </Field>
-              ) : (
-                <Field
-                  label={<SpacedLabel text="반려일" req />}
-                  orientation="horizontal"
-                >
-                  <Input readOnly value={detailData.disapproveDate} />
-                </Field>
-              )}
+                {detailData.inputConsent === true ? (
+                  <Field
+                    label={<SpacedLabel text="승인일" />}
+                    orientation="horizontal"
+                  >
+                    <Input readOnly value={instk.inputStockDate} />
+                  </Field>
+                ) : (
+                  <Field
+                    label={<SpacedLabel text="반려일" />}
+                    orientation="horizontal"
+                  >
+                    <Input readOnly value={detailData.disapproveDate} />
+                  </Field>
+                )}
 
-              {/*true고  비고 없으면 필드 , */}
-              {detailData.inputConsent === true ? (
-                // true
-                <Field
-                  label={<SpacedLabel text="승인비고" req />}
-                  orientation="horizontal"
-                >
-                  {instk.inputStockNote ? (
-                    <Textarea
-                      readOnly
-                      value={instk.inputStockNote}
-                      style={{ maxHeight: "100px", overflowY: "auto" }}
-                    />
-                  ) : (
-                    <Input readOnly value={"내용 없음"} />
-                  )}
-                </Field>
-              ) : (
-                // false
-                <Field
-                  label={<SpacedLabel text="반려비고" req />}
-                  orientation="horizontal"
-                >
-                  {instk.inputStockNote ? (
-                    <Textarea
-                      readOnly
-                      value={instk.inputStockNote}
-                      style={{ maxHeight: "100px", overflowY: "auto" }}
-                    />
-                  ) : (
-                    <Input readOnly value={"내용 없음"} />
-                  )}
-                </Field>
-              )}
-            </Stack>
+                {/*true고  비고 없으면 필드 , */}
+                {detailData.inputConsent === true ? (
+                  // true
+                  <Field
+                    label={<SpacedLabel text="승인비고" />}
+                    orientation="horizontal"
+                  >
+                    {detailData.inputStockNote ? (
+                      <Textarea
+                        readOnly
+                        value={detailData.inputStockNote}
+                        style={{ maxHeight: "100px", overflowY: "auto" }}
+                      />
+                    ) : (
+                      <Input readOnly value={"내용 없음"} />
+                    )}
+                  </Field>
+                ) : (
+                  // false
+                  <Field
+                    label={<SpacedLabel text="반려비고" />}
+                    orientation="horizontal"
+                  >
+                    {detailData.disapproveNote ? (
+                      <Textarea
+                        readOnly
+                        value={detailData.disapproveNote}
+                        style={{ maxHeight: "100px", overflowY: "auto" }}
+                      />
+                    ) : (
+                      <Input readOnly value={"내용 없음"} />
+                    )}
+                  </Field>
+                )}
+              </Stack>
+            </Box>
           </DialogBody>
         )}
         <DialogFooter>

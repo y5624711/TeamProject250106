@@ -103,7 +103,7 @@ public class InstkService {
         System.out.println("instk = " + instk);
 
         int inputKey = instk.getInputKey();
-        String inputStockNote = instk.getInputNote();
+        String inputStockNote = instk.getInputStockNote();
         String inputStockEmployeeNo=instk.getInputStockEmployeeNo();
         String inoutNo=   instk.getInputNo();
         String inputCommonCode=instk.getInputCommonCode();

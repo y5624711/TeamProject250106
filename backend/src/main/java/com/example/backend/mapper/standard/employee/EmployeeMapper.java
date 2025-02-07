@@ -52,6 +52,7 @@ public interface EmployeeMapper {
                         ON E.employee_common_code = 'CUS'
                         AND E.employee_workplace_code = C.customer_code
                 WHERE 1=1
+                AND E.employee_key !=35
             
                 <if test="isActiveVisible == false">   
                     AND employee_active = true
@@ -166,9 +167,12 @@ public interface EmployeeMapper {
                     LEFT JOIN TB_CUSTMST C
                         ON E.employee_common_code = 'CUS'
                         AND E.employee_workplace_code = C.customer_code
+                    
                 <where>
+                      E.employee_key !=35 
+         
                     <if test="isActiveVisible != null and !isActiveVisible">
-                        employee_active = true
+                       AND employee_active = true
                     </if>
             
                     <if test="type == 'all'">
