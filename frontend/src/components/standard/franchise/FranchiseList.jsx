@@ -144,13 +144,13 @@ export function FranchiseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}{" "}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="20%">
+                <Table.Cell textAlign="center" width="23%">
                   {franchise.franchiseName}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseNo}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="13%">
                   {franchise.franchiseRep}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="15%">
