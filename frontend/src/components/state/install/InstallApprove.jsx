@@ -116,6 +116,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           ...prev,
           outputNo: res.data.outputNo,
           installApproveDate: res.data.installApproveDate,
+          serialNumbers: res.data.serialNumbers,
         }));
         setChange((prev) => !prev);
         setIsApproved(true);
@@ -125,6 +126,9 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         toaster.create({ description: message.text, type: message.type });
       });
   };
+
+  // installApprove의 serialNumbers를 split하여 serialList로 설정
+  const serialList = installApprove?.serialNumbers?.split(",") || [];
 
   // 설치 요청 반려 (기본키, 요청키, 반려자, 반려일, 비고)
   const handleDisapproveClick = () => {
@@ -180,12 +184,37 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
           <Box css={{ "--field-label-width": "85px" }}>
             <Stack gap={"15px"}>
               {isApproved == true && (
-                <Field
-                  label={<SpacedLabel text="출고 번호" />}
-                  orientation="horizontal"
-                >
-                  <Input value={installApprove.outputNo} readOnly />
-                </Field>
+                <Box display="flex" gap={5}>
+                  <Field
+                    label={<SpacedLabel text="출고 번호" />}
+                    orientation="horizontal"
+                  >
+                    <Input value={installApprove.outputNo} readOnly />
+                  </Field>
+                  <Field
+                    label={<SpacedLabel text="시리얼 번호" />}
+                    orientation="horizontal"
+                  >
+                    <SelectRoot>
+                      <SelectTrigger>
+                        <SelectValueText>내역 확인</SelectValueText>
+                      </SelectTrigger>
+                      <SelectContent
+                        style={{
+                          width: "210px",
+                          top: "40px",
+                          position: "absolute",
+                        }}
+                      >
+                        {serialList.map((serial) => (
+                          <SelectItem key={serial} item={serial}>
+                            {serial}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectRoot>
+                  </Field>
+                </Box>
               )}
               <Box display="flex" gap={5}>
                 <Field

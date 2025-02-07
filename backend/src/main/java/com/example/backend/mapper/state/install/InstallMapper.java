@@ -411,8 +411,9 @@ public interface InstallMapper {
 
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @Select("""
-            SELECT output_no, install_approve_date
-            FROM TB_INSTL_APPR
+            SELECT a.output_no, a.install_approve_date, GROUP_CONCAT(DISTINCT s.serial_no) AS serial_numbers
+            FROM TB_INSTL_APPR a
+            LEFT JOIN TB_INSTL_SUB s ON a.output_no = s.output_no
             WHERE install_request_key = #{installKey}
             """)
     Install getInstallApproveData(int installKey);
