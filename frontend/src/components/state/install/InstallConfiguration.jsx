@@ -64,7 +64,7 @@ export function InstallConfiguration({
   const handleConfigurationClick = () => {
     const configurationData = {
       outputNo: installData.outputNo,
-      customerEmployeeNo: id,
+      customerEmployeeNo: installData.customerEmployeeNo,
       businessEmployeeNo: installData.businessEmployeeNo,
       franchiseCode: installData.franchiseCode,
       inoutHistoryNote,
