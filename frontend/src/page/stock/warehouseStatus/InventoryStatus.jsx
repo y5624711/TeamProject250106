@@ -33,7 +33,7 @@ function InventoryStatus() {
       <Stack flex={1} p={5}>
         {/*셀렉트 &&검색창*/}
 
-        <Heading size={"xl"} p={2} mb={3}>
+        <Heading size={"xl"} p={2} mb={1}>
           {"물류 관리 > 위치별 재고 현황"}
         </Heading>
 
