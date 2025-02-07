@@ -264,12 +264,13 @@ public interface ReturnMapper {
     // 가맹점 코드로 시리얼 번호 목록 반환 (대기, 승인인 것 제외)
     @Select("""
             SELECT ioh.serial_no, common_code_name itemCommonName
-            FROM TB_INOUT_HIS ioh
-                LEFT JOIN TB_ITEMSUB its
-                    ON ioh.serial_no = its.serial_no
-                LEFT JOIN TB_SYSCOMM sc
-                    ON its.item_common_code = sc.common_code
-            WHERE franchise_code = #{franchiseCode}
+            FROM TB_ITEMSUB its
+                     LEFT JOIN TB_INOUT_HIS ioh
+                               ON ioh.serial_no = its.serial_no
+                     LEFT JOIN TB_SYSCOMM sc
+                               ON its.item_common_code = sc.common_code
+            WHERE current_common_code = 'FRN'
+              AND franchise_code = #{franchiseCode}
             EXCEPT
             (SELECT rr.serial_no, common_code_name itemCommonName
              FROM TB_RTN_REQ rr

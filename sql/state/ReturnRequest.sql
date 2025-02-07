@@ -78,12 +78,13 @@ EXCEPT
 
 
 SELECT ioh.serial_no, common_code_name
-FROM TB_INOUT_HIS ioh
-         LEFT JOIN TB_ITEMSUB its
+FROM TB_ITEMSUB its
+         LEFT JOIN TB_INOUT_HIS ioh
                    ON ioh.serial_no = its.serial_no
          LEFT JOIN TB_SYSCOMM sc
                    ON its.item_common_code = sc.common_code
-WHERE franchise_code = 'FRN001'
+WHERE current_common_code = 'FRN'
+  AND franchise_code = 'FRN001'
 EXCEPT
 (SELECT rr.serial_no, common_code_name
  FROM TB_RTN_REQ rr
