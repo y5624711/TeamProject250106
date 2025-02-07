@@ -214,7 +214,7 @@ public interface InstallMapper {
                     ir.business_employee_no,
                     e1.employee_name           as businessEmployeeName,
                     w.warehouse_name           as warehouseName,
-                    ir.install_request_consent as requestConsent,
+                    ir.install_request_consent as installRequestConsent,
                     ia.output_no               as outputNo,
                     ia.customer_employee_no,
                     -- 반려자가 있는 경우 반려자 이름을 customerEmployeeName으로 설정
@@ -226,7 +226,7 @@ public interface InstallMapper {
                     ia.install_approve_date    as installApproveDate,
                     ir.install_request_date    as installRequestDate,
                     ih.inout_history_date      as inoutHistoryDate,
-                    ia.install_approve_consent as approveConsent,
+                    ia.install_approve_consent as installApproveConsent,
                     -- NULL을 고려하여 최댓값을 정확하게 선택
                     GREATEST(
                         COALESCE(ir.install_request_date, '0001-01-01'),
