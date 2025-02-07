@@ -28,7 +28,8 @@ public interface InoutHistoryMapper {
                 w.warehouse_name,
                 itsb.item_common_code itemCode,
                 itcm.common_code_name itemName,
-                fr.franchise_name,
+                rfr.franchise_name returnFranchiseName,
+                ifr.franchise_name installFranchiseName,
                 cusemp.employee_name customerEmployeeName,
                 bizemp.employee_name businessEmployeeName,
                 cus.customer_name
@@ -37,9 +38,12 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
                  LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
-                 LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
+                 LEFT JOIN TB_FRNCHSMST ifr ON h.franchise_code = ifr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
+                 LEFT JOIN TB_RTN_APPR rtnappr ON h.inout_no = rtnappr.return_no
+                 LEFT JOIN TB_RTN_REQ rtnreq ON rtnappr.return_request_key = rtnreq.return_request_key
+                 LEFT JOIN TB_FRNCHSMST rfr ON rtnreq.franchise_code = rfr.franchise_code
             WHERE
                 <if test="workplace == 'CUS'">
                     cus.customer_code=#{workplaceCode}
@@ -65,8 +69,8 @@ public interface InoutHistoryMapper {
                  OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
@@ -101,8 +105,8 @@ public interface InoutHistoryMapper {
                          </when>
                          <when test="searchType == 'franchise'">
                          AND(
-                             fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
-                          OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                             ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>
                          <when test="searchType == 'businessEmployee'">
@@ -168,7 +172,7 @@ public interface InoutHistoryMapper {
                 w.warehouse_address,
                 itsb.item_common_code itemCode,
                 itcm.common_code_name itemName,
-                fr.franchise_name,
+                fr.franchise_name installFranchiseName,
                 cusemp.employee_name customerEmployeeName,
                 bizemp.employee_name businessEmployeeName,
                 l.row,
@@ -181,7 +185,7 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-                LEFT JOIN TB_LOCMST l ON h.location_key = l.location_key
+                 LEFT JOIN TB_LOCMST l ON h.location_key = l.location_key
             WHERE h.inout_history_key = ${inoutHistoryKey}
             """)
     InoutHistory view(Integer inoutHistoryKey);
@@ -195,9 +199,12 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
                  LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
-                 LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
+                 LEFT JOIN TB_FRNCHSMST ifr ON h.franchise_code = ifr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
+                 LEFT JOIN TB_RTN_APPR rtnappr ON h.inout_no = rtnappr.return_no
+                 LEFT JOIN TB_RTN_REQ rtnreq ON rtnappr.return_request_key = rtnreq.return_request_key
+                 LEFT JOIN TB_FRNCHSMST rfr ON rtnreq.franchise_code = rfr.franchise_code
             WHERE 
                 <if test="workplace == 'CUS'">
                     cus.customer_code=#{workplaceCode}
@@ -223,8 +230,8 @@ public interface InoutHistoryMapper {
                  OR cus.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
-                 OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
@@ -259,8 +266,8 @@ public interface InoutHistoryMapper {
                          </when>
                          <when test="searchType == 'franchise'">
                          AND(
-                             fr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
-                          OR fr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                             ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>
                          <when test="searchType == 'businessEmployee'">
