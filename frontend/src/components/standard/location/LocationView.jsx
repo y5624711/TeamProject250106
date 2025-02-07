@@ -14,20 +14,20 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
   return (
     <Box>
       <Field label="창고" orientation="horizontal" mb={15}>
-        <Input value={locationDetail.warehouseName} readOnly />
+        <Input value={locationDetail.warehouseName} variant="subtle" readOnly />
       </Field>
       <Field label="로케이션" orientation="horizontal" mb={15}>
-        <Input value={location} readOnly />
+        <Input value={location} readOnly variant="subtle" />
       </Field>
       <Box display="flex" gap={20}>
         <Field label="행" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.row} readOnly />
+          <Input value={locationDetail.row} variant="subtle" readOnly />
         </Field>
         <Field label="열" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.col} readOnly />
+          <Input value={locationDetail.col} variant="subtle" readOnly />
         </Field>
         <Field label="단" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.shelf} readOnly />
+          <Input value={locationDetail.shelf} variant="subtle" readOnly />
         </Field>
       </Box>
 

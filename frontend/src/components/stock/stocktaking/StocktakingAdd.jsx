@@ -446,7 +446,7 @@ function StocktakingAdd({
     if (putStocktakingType === "old") {
       setSerialNo("");
     } else if (putStocktakingType === "new") {
-      setSerialNo("NewCode");
+      setSerialNo("시리얼 번호 생성");
     }
   }, [putStocktakingType]);
 
@@ -639,7 +639,11 @@ function StocktakingAdd({
                         orientation="horizontal"
                         mb={15}
                       >
-                        <Input type={"text"} value="" readOnly />
+                        <Input
+                          type={"text"}
+                          placeholder="시리얼 번호 생성"
+                          readOnly
+                        />
                       </Field>
                       <Tooltip
                         content={"로케이션 입력을 완료해 주세요."}
