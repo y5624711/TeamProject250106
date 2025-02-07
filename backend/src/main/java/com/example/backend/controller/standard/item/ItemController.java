@@ -33,24 +33,23 @@ public class ItemController {
             // 품목 입력 검증
             if (!service.validate(item)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
-
 
             if (service.editItem(itemKey, item)) {
                 return ResponseEntity.ok(Map.of("message",
                         Map.of("type", "success",
-                                "text", "품목 정보를 수정하였습니다.")));
+                                "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "품목 수정 중 문제가 발생하였습니다..")));
+                                        "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 품목을 수정할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "저장 권한이 없습니다.")));
 
         }
     }
@@ -92,14 +91,14 @@ public class ItemController {
             // 품목 입력 검증
             if (!service.validate(item)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "품목 정보가 입력되지 않았습니다.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
 
             // 중복 체크
             if (service.duplicate(item.getItemCommonCode())) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "이미 등록된 품목입니다.")
+                        "message", Map.of("type", "error", "text", "중복된 항목이 존재합니다.")
                 ));
             }
 
@@ -107,17 +106,17 @@ public class ItemController {
             if (service.addItem(item)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", " 새 품목이 등록되었습니다."),
+                                "text", "등록되었습니다."),
                         "data", item
                 ));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "품목 등록이 실패하였습니다.")
+                        "message", Map.of("type", "error", "text", "등록에 실패하였습니다.")
                 ));
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 품목을 등록할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "등록 권한이 없습니다.")));
 
         }
     }

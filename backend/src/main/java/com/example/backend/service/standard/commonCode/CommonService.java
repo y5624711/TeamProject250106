@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,7 +39,6 @@ public class CommonService {
                 .replaceAll("([a-z])([A-Z])", "$1_$2") // 소문자 뒤 대문자에 언더스코어 추가
                 .toLowerCase(); // 전체를 소문자로 변환
     }
-
 
     // 공통 코드 정보 입력됐는지 확인
     public boolean validateCommonCode(CommonCode commonCode) {
@@ -83,23 +81,9 @@ public class CommonService {
         return mapper.getCommonCodeView(commonCodeKey);
     }
 
-    // 삭제된 공통 코드인지 확인
-    public boolean deletedCommonCode(int commonCodeKey) {
-        List<Integer> deletedCommonCodeList = mapper.deletedCommonCode();
-        return deletedCommonCodeList.contains(commonCodeKey);
-    }
-
-    // 공통 코드 삭제하기
-    public boolean deleteCommonCode(int commonCodeKey) {
-        int cnt = mapper.deleteCommonCode(commonCodeKey);
-        return cnt == 1;
-    }
-
     // 공통 코드 수정하기
     public boolean editCommonCode(int commonCodeKey, CommonCode commonCode) {
         int cnt = mapper.editCommonCode(commonCodeKey, commonCode);
         return cnt == 1;
     }
-
-
 }

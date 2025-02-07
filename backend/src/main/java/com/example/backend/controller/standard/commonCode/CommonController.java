@@ -17,6 +17,7 @@ import java.util.Map;
 public class CommonController {
     final CommonService service;
 
+    // 공통 코드 수정
     @PutMapping("edit/{commonCodeKey}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> editCommonCode(@PathVariable int commonCodeKey, @RequestBody CommonCode commonCode, Authentication authentication) {
@@ -26,46 +27,23 @@ public class CommonController {
             // 공통 코드 입력 검증
             if (!service.validateCommonCode(commonCode)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
 
             if (service.editCommonCode(commonCodeKey, commonCode)) {
                 return ResponseEntity.ok(Map.of("message",
                         Map.of("type", "success",
-                                "text", "공통 코드 정보를 수정하였습니다.")));
+                                "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "공통 코드 수정 중 문제가 발생하였습니다")));
+                                        "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 공통 코드를 수정할 수 없습니다.")));
-        }
-    }
-
-    // 공통 코드 삭제하기
-    @PutMapping("delete/{commonCodeKey}")
-    public ResponseEntity<Map<String, Object>> deleteCommonCode(
-            @PathVariable int commonCodeKey) {
-        // 이미 삭제된 공통 코드인지 검증
-        if (service.deletedCommonCode(commonCodeKey)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 삭제된 품목 공통 코드 입니다.")
-            ));
-        }
-
-        if (service.deleteCommonCode(commonCodeKey)) {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."\{commonCodeKey}번 품목 공통 코드가 삭제되었습니다.")));
-
-        } else {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "품목 공통 코드 삭제 중 문제가 발생하였습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "저장 권한이 없습니다.")));
         }
     }
 
@@ -86,30 +64,30 @@ public class CommonController {
             // 공통 코드 입력 검증
             if (!service.validateCommonCode(commonCode)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "공통 코드 정보가 입력되지 않았습니다.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
             // 중복 체크
             if (service.duplicateCommonCode(commonCode.getCommonCode(), commonCode.getCommonCodeName())) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "이미 등록된 공통 코드입니다.")
+                        "message", Map.of("type", "error", "text", "중복된 항목이 존재합니다.")
                 ));
             }
             // 공통 코드 등록
             if (service.addCommonCode(commonCode)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", "공통 코드가 등록되었습니다."),
+                                "text", "등록되었습니다."),
                         "data", commonCode
                 ));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "공통 코드 등록이 실패하였습니다.")
+                        "message", Map.of("type", "error", "text", "등록에 실패하였습니다.")
                 ));
             }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 공통 코드를 등록할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "등록 권한이 없습니다.")));
         }
     }
 

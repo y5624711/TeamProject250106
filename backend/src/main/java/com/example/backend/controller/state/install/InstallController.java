@@ -43,17 +43,17 @@ public class InstallController {
         if (!service.disApproveAuth(authentication, install)) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "설치 반려 권한이 없습니다.")));
+                            "text", "반려 권한이 없습니다.")));
         }
 
         // 설치 반려
         if (service.installDisapprove(install)) {
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success", "text", "설치 요청이 반려되었습니다.")
+                    "message", Map.of("type", "success", "text", "반려되었습니다.")
             ));
         } else {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "반려를 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "반려에 실패하였습니다.")
             ));
         }
     }
@@ -80,21 +80,21 @@ public class InstallController {
             if (!service.configurationAuth(authentication, install)) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", Map.of("type", "error",
-                                "text", "설치 완료 권한이 없습니다.")));
+                                "text", "완료 권한이 없습니다.")));
             }
 
             // 검수 테이블 추가 & 품목 입출력 테이블 추가를 하나의 트랜잭션으로 처리
             if (!service.installConfiguration(install) || !service.addOutHistory(install)) {
-                throw new RuntimeException("설치 또는 출고 처리 중 오류 발생");
+                throw new RuntimeException("완료에 실패하였습니다.");
             }
 
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success", "text", "설치 완료되었습니다."),
+                    "message", Map.of("type", "success", "text", "완료되었습니다."),
                     "data", install
             ));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "설치 완료에 실패하였습니다.")
+                    "message", Map.of("type", "error", "text", "완료에 실패하였습니다.")
             ));
         }
     }
@@ -125,13 +125,13 @@ public class InstallController {
             if (!service.approveAuth(authentication, install)) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", Map.of("type", "error",
-                                "text", "설치 승인 권한이 없습니다.")));
+                                "text", "승인 권한이 없습니다.")));
             }
 
             // 정확히 입력되었는지 검증 후 승인
             if (!service.approveValidate(install)) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("message", Map.of("type", "error", "text", "설치 예정일, 설치 기사, 사번이 입력되지 않았습니다.")));
+                        .body(Map.of("message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
 
             }
 
@@ -140,19 +140,18 @@ public class InstallController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", Map.of("type", "error", "text", "재고가 부족합니다.")));
             }
-            System.out.println("eee2");
 
             // 4. 설치 승인 처리
             service.installApprove(install);
             System.out.println("eee3");
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success",
-                            "text", "설치 승인되었습니다."),
+                            "text", "승인되었습니다."),
                     "data", install));
 
         } catch (InstallService.InstallApproveException e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", e.getMessage())));
+                    "message", Map.of("type", "error", "text", "승인에 실패하였습니다.")));
         }
     }
 
@@ -190,23 +189,23 @@ public class InstallController {
         String userId = authentication.getName();
         if (userId.startsWith("CUS")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN) // 설치 요청 거부
-                    .body(Map.of("message", Map.of("type", "error", "text", "협력 업체는 설치를 요청할 수 없습니다.")));
+                    .body(Map.of("message", Map.of("type", "error", "text", "요청 권한이 없습니다.")));
         }
 
         if (service.requestValidate(install)) {
             if (service.installRequest(install, authentication)) {
                 return ResponseEntity.ok().body(Map.of(
                         "message", Map.of("type", "success",
-                                "text", "설치 요청이 등록되었습니다."),
+                                "text", "요청되었습니다."),
                         "data", install));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
-                        "message", Map.of("type", "error", "text", "설치 요청이 실패하였습니다.")));
+                        "message", Map.of("type", "error", "text", "요청에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "error",
-                            "text", "상품명, 가격, 거래 장소가 입력되지 않았습니다.")));
+                            "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 }
