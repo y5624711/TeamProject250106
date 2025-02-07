@@ -94,7 +94,7 @@ public interface CustomerMapper {
 
     //품목 목록 조회
     @Select("""
-            SELECT ic.*
+            SELECT common_code, common_code_name
             FROM TB_SYSCOMM ic
                      LEFT JOIN (SELECT DISTINCT item_code
                                 FROM TB_CUSTMST
