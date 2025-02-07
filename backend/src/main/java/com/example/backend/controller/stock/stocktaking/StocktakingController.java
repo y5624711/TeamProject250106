@@ -47,28 +47,28 @@ public class StocktakingController {
                     if (service.add(stocktaking)) {
                         return ResponseEntity.ok(Map.of("message",
                                 Map.of("type", "success",
-                                        "text", "실사를 등록하였습니다.")));
+                                        "text", "등록되었습니다.")));
                     } else {
                         return ResponseEntity.badRequest()
                                 .body(Map.of("message",
                                         Map.of("type", "error",
-                                                "text", "실사 등록 중 문제가 발생하였습니다..")));
+                                                "text", "실사 등록에 실패하였습니다.")));
                     }
                 } else {
                     return ResponseEntity.badRequest().body(Map.of(
-                            "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                            "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                     ));
                 }
             } else {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "권한이 없습니다.")
+                        "message", Map.of("type", "error", "text", "등록 권한이 없습니다.")
                 ));
 
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "작성에 실패했습니다.")));
+                            "text", "실사 등록에 실패하였습니다.")));
         }
 
     }
@@ -90,11 +90,11 @@ public class StocktakingController {
                         return ResponseEntity.badRequest()
                                 .body(Map.of("message",
                                         Map.of("type", "error",
-                                                "text", "실사 반영 중 문제가 발생하였습니다.")));
+                                                "text", "실사 반영에 실패하였습니다.")));
                     }
                 } else {
                     return ResponseEntity.badRequest().body(Map.of(
-                            "message", Map.of("type", "error", "text", "정보를 모두 입력해주세요.")
+                            "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                     ));
                 }
             } else {
