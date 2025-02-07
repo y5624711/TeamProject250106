@@ -31,8 +31,8 @@ function InoutHistoryList({
     { key: "customerName", label: "담당 업체" },
     { key: "warehouseName", label: "창고" },
     { key: "franchiseName", label: "가맹점" },
-    { key: "businessEmployeeName", label: "본사 직원" },
-    { key: "customerEmployeeName", label: "협력 업체 직원" },
+    { key: "businessEmployeeName", label: "요청자" },
+    { key: "customerEmployeeName", label: "승인자" },
     { key: "inoutHistoryDate", label: "날짜" },
   ];
 

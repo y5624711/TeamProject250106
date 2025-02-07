@@ -4,6 +4,7 @@ import com.example.backend.dto.stock.stocktaking.Stocktaking;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Set;
@@ -214,11 +215,11 @@ public interface StocktakingMapper {
             <script>
             SELECT warehouse_name, warehouse_code
             FROM TB_WHMST
+            WHERE warehouse_active=1
             <if test="workplace == 'BIZ'">
             </if>
             <if test="workplace == 'CUS'">
-            WHERE 
-            customer_code=#{workplaceCode}
+            AND customer_code=#{workplaceCode}
             </if>
             </script>
             """)
@@ -286,11 +287,14 @@ public interface StocktakingMapper {
     String getLocationValue(Integer locationKey);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM TB_LOCMST
-            WHERE warehouse_code=#{warehouseCode} AND located=1 AND location_active=1
+            SELECT l.location_key
+            FROM TB_LOCMST l 
+            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+            LEFT JOIN TB_ITEMSUB its ON cus.item_code=its.item_common_code
+            WHERE l.warehouse_code=#{warehouseCode} AND l.located=1 AND l.location_active=1 AND its.item_sub_active=1
             """)
-    Integer getAllLocated(String warehouseCode);
+    Set<Integer> getAllLocated(String warehouseCode);
 
     @Select("""
             <script>
@@ -312,10 +316,59 @@ public interface StocktakingMapper {
     @Insert("""
             INSERT INTO TB_INSTK_SUB
             (serial_no,
-             location_key)
-            VALUES ( #{serialNo}, #{locationKey})
+             location_key,
+             input_key)
+            VALUES ( #{serialNo}, #{locationKey}, 0)
             """)
     int addInstkSub(String serialNo, Integer locationKey);
+
+    @Update("""
+            UPDATE TB_LOCMST
+            SET located = #{located}
+            WHERE location_key=#{locationKey}
+            """)
+    int updateLocated(Integer locationKey, Integer located);
+
+    @Update("""
+            UPDATE TB_INSTK_SUB
+            SET location_key=#{locationKey}
+            WHERE serial_no=#{serialNo}
+            """)
+    int updateLocationAtInstkSub(Integer locationKey, String serialNo);
+
+    @Update("""
+            UPDATE TB_ITEMSUB
+            SET current_common_code=#{currentCommonCode}
+            where serial_no=#{serialNo}
+            """)
+    int updateCurrentCommonCodeBySerialNo(String serialNo, String currentCommonCode);
+
+    @Insert("""
+            INSERT INTO TB_INOUT_HIS
+                (
+                serial_no,
+                warehouse_code,
+                inout_common_code,
+                business_employee_no,
+                customer_employee_no,
+                location_key
+                )
+            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo}, #{locationKey})
+            """)
+    int addInoutHistoryPlus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo, Integer locationKey);
+
+    @Insert("""
+            INSERT INTO TB_INOUT_HIS
+                (
+                serial_no,
+                warehouse_code,
+                inout_common_code,
+                business_employee_no,
+                customer_employee_no
+                )
+            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo})
+            """)
+    int addInoutHistoryMinus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo);
 
     //    실제 수량이 더 많을 때 사용
 //    @Select("""

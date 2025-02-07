@@ -13,6 +13,7 @@ import WarehouseView from "./WarehouseView.jsx";
 import { Button } from "../../ui/button.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
   const [warehouseDetail, setWarehouseDetail] = useState([]);
@@ -22,6 +23,7 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
       axios
         .get(`/api/warehouse/view/${warehouseKey}`)
         .then((res) => {
+          console.log(res.data);
           setWarehouseDetail(res.data);
         })
         .catch((error) => {
@@ -61,6 +63,18 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
       });
   }
 
+  //유효성 검사
+  const validate = () => {
+    return (
+      warehouseDetail.warehouseName != "" &&
+      warehouseDetail.warehousePost != "" &&
+      warehouseDetail.warehouseState != "" &&
+      warehouseDetail.warehouseCity != "" &&
+      warehouseDetail.warehouseAddress != "" &&
+      warehouseDetail.warehouseTel != ""
+    );
+  };
+
   return (
     <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
       <DialogContent>
@@ -86,7 +100,16 @@ export function WarehouseDetail({ isOpened, onClosed, warehouseKey, refresh }) {
             <Button variant="outline" onClick={onClosed}>
               취소
             </Button>
-            <Button onClick={handleCheckClick}>확인</Button>
+            <Tooltip
+              content="입력을 완료해 주세요."
+              openDelay={100}
+              closeDelay={100}
+              disabled={validate()}
+            >
+              <Button onClick={handleCheckClick} disabled={!validate()}>
+                확인
+              </Button>
+            </Tooltip>
           </HStack>
         </DialogFooter>
         <DialogCloseTrigger onClick={onClosed} />

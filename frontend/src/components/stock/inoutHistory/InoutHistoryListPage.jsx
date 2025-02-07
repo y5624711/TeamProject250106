@@ -34,10 +34,14 @@ function InoutHistoryListPage({
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.inoutCommonCode === "OUT"
-            ? "출고"
+            ? "일반 출고"
             : inoutHistory.inoutCommonCode === "RETRN"
-              ? "회수"
-              : "입고"}
+              ? "회수 입고"
+              : inoutHistory.inoutCommonCode === "INSTK"
+                ? "일반 입고"
+                : inoutHistory.inoutCommonCode === "LOS"
+                  ? "실사 분실"
+                  : "실사 입고"}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {inoutHistory.itemName}

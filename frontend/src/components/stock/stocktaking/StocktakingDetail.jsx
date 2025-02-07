@@ -19,7 +19,7 @@ function StocktakingDetail({ stocktakingKey, isOpened, onClosed }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <Box>실사 상세</Box>
+            <Box>재고 실사 상세</Box>
           </DialogTitle>
         </DialogHeader>
         <DialogBody

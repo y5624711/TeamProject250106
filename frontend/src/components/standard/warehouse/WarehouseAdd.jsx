@@ -16,6 +16,7 @@ import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function WarehouseAdd({ isOpen, onClose, title }) {
   const [warehouseName, setWarehouseName] = useState("");
@@ -189,115 +190,165 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <DialogBody
-          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-        >
-          <Box>
-            <Field label="창고" orientation="horizontal" mb={15} required>
-              <Input
-                type={"text"}
-                value={warehouseName}
-                onChange={(e) => setWarehouseName(e.target.value)}
-              />
-            </Field>
-            <Field label="담당 업체" orientation="horizontal" mb={15} required>
-              <Select
-                options={customerList}
-                value={customerList.find(
-                  (opt) => opt.value === warehouseAdd.customerName,
-                )}
-                onChange={handleCustomerChange}
-                placeholder="담당 업체 선택"
-                isSearchable
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    width: "538.5px", // 너비 고정
-                    height: "40px",
-                  }),
-                  menu: (base) => ({
-                    ...base,
-                    zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                    width: "538.5px",
-                  }),
-                }}
-              />
-              {/*<Button onClick={onCustomerClick}>조회</Button>*/}
-            </Field>
-            <Field label="관리자" orientation="horizontal" mb={15} required>
-              <Select
-                options={employeeList}
-                value={employeeList.find(
-                  (opt) => opt.value === warehouseAdd.employeeName,
-                )}
-                onChange={handleEmployeeChange}
-                placeholder="관리자 선택"
-                isSearchable
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    width: "538.5px", // 너비 고정
-                    height: "40px",
-                  }),
-                  menu: (base) => ({
-                    ...base,
-                    zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                    width: "538.5px",
-                  }),
-                }}
-              />
-            </Field>
-            <Field label="전화번호" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={warehouseTel}
-                onChange={(e) => setWarehouseTel(e.target.value)}
-              />
-            </Field>
-            <Field label="우편번호" orientation="horizontal" mb={15} required>
-              <Input
-                type={"text"}
-                value={warehousePost}
-                onChange={(e) => setWarehousePost(e.target.value)}
-              />
-            </Field>
-            <Box display="flex" gap={4}>
-              <Field label="광역시도" orientation="horizontal" mb={15} required>
+        <DialogBody>
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "15px",
+            }}
+            css={{ "--field-label-width": "85px" }}
+          >
+            <Box>
+              <Field
+                label={<SpacedLabel text="창고" req />}
+                orientation="horizontal"
+                mb={15}
+                required
+              >
                 <Input
                   type={"text"}
-                  value={warehouseState}
-                  onChange={(e) => setWarehouseState(e.target.value)}
+                  value={warehouseName}
+                  onChange={(e) => setWarehouseName(e.target.value)}
                 />
               </Field>
-              <Field label="시군" orientation="horizontal" mb={15} required>
+              <Field
+                label={<SpacedLabel text="담당 업체" />}
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Select
+                  options={customerList}
+                  value={customerList.find(
+                    (opt) => opt.value === warehouseAdd.customerName,
+                  )}
+                  onChange={handleCustomerChange}
+                  placeholder="담당 업체 선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "538.5px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "538.5px",
+                    }),
+                  }}
+                />
+                {/*<Button onClick={onCustomerClick}>조회</Button>*/}
+              </Field>
+              <Field
+                label={<SpacedLabel text="관리자" />}
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Select
+                  options={employeeList}
+                  value={employeeList.find(
+                    (opt) => opt.value === warehouseAdd.employeeName,
+                  )}
+                  onChange={handleEmployeeChange}
+                  placeholder="관리자 선택"
+                  isSearchable
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "538.5px", // 너비 고정
+                      height: "40px",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 100, // 선택 목록이 다른 요소를 덮도록
+                      width: "538.5px",
+                    }),
+                  }}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="전화번호" />}
+                orientation="horizontal"
+                mb={15}
+              >
                 <Input
                   type={"text"}
-                  value={warehouseCity}
-                  onChange={(e) => setWarehouseCity(e.target.value)}
+                  value={warehouseTel}
+                  onChange={(e) => setWarehouseTel(e.target.value)}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="우편번호" />}
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Input
+                  type={"text"}
+                  value={warehousePost}
+                  onChange={(e) => setWarehousePost(e.target.value)}
+                />
+              </Field>
+              <Box display="flex" gap={5}>
+                <Field
+                  label={<SpacedLabel text="광역시도" />}
+                  orientation="horizontal"
+                  mb={15}
+                  required
+                >
+                  <Input
+                    type={"text"}
+                    value={warehouseState}
+                    onChange={(e) => setWarehouseState(e.target.value)}
+                  />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="시군" />}
+                  orientation="horizontal"
+                  mb={15}
+                  required
+                >
+                  <Input
+                    type={"text"}
+                    value={warehouseCity}
+                    onChange={(e) => setWarehouseCity(e.target.value)}
+                  />
+                </Field>
+              </Box>
+              <Field
+                label={<SpacedLabel text="주소" />}
+                orientation="horizontal"
+                mb={15}
+                required
+              >
+                <Input
+                  type={"text"}
+                  value={warehouseAddress}
+                  onChange={(e) => setWarehouseAddress(e.target.value)}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="상세 주소" />}
+                orientation="horizontal"
+                mb={15}
+              >
+                <Input
+                  type={"text"}
+                  value={warehouseAddressDetail}
+                  onChange={(e) => setWarehouseAddressDetail(e.target.value)}
+                />
+              </Field>
+              <Field label="비고" orientation="horizontal" mb={15}>
+                <Input
+                  type={"text"}
+                  value={warehouseNote}
+                  onChange={(e) => setWarehouseNote(e.target.value)}
                 />
               </Field>
             </Box>
-            <Field label="주소" orientation="horizontal" mb={15} required>
-              <Input
-                type={"text"}
-                value={warehouseAddress}
-                onChange={(e) => setWarehouseAddress(e.target.value)}
-              />
-            </Field>
-            <Field label="상세 주소" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={warehouseAddressDetail}
-                onChange={(e) => setWarehouseAddressDetail(e.target.value)}
-              />
-            </Field>
-            <Field label="비고" orientation="horizontal" mb={15}>
-              <Input
-                type={"text"}
-                value={warehouseNote}
-                onChange={(e) => setWarehouseNote(e.target.value)}
-              />
-            </Field>
           </Box>
         </DialogBody>
         <DialogFooter>

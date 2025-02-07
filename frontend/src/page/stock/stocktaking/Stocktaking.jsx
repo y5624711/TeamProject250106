@@ -109,7 +109,7 @@ function Stocktaking(props) {
           <StocktakingAdd
             isOpen={isAddDialogOpen}
             onClose={() => setIsAddDialogOpen(false)}
-            title="실사 등록"
+            title="재고 실사 등록"
             setStocktakingList={setStocktakingList}
             searchParams={searchParams}
           />

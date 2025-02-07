@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function LocationView({ locationDetail, setLocationDetail, locationKey }) {
   const location =
@@ -13,25 +14,49 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
 
   return (
     <Box>
-      <Field label="창고" orientation="horizontal" mb={15}>
-        <Input value={locationDetail.warehouseName} readOnly />
+      <Field
+        label={<SpacedLabel text="창고" />}
+        orientation="horizontal"
+        mb={15}
+      >
+        <Input value={locationDetail.warehouseName} variant="subtle" readOnly />
       </Field>
-      <Field label="로케이션" orientation="horizontal" mb={15}>
-        <Input value={location} readOnly />
+      <Field
+        label={<SpacedLabel text="로케이션" />}
+        orientation="horizontal"
+        mb={15}
+      >
+        <Input value={location} readOnly variant="subtle" />
       </Field>
       <Box display="flex" gap={20}>
-        <Field label="행" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.row} readOnly />
+        <Field
+          label={<SpacedLabel text="행" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input value={locationDetail.row} variant="subtle" readOnly />
         </Field>
-        <Field label="열" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.col} readOnly />
+        <Field
+          label={<SpacedLabel text="열" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input value={locationDetail.col} variant="subtle" readOnly />
         </Field>
-        <Field label="단" orientation="horizontal" mb={15}>
-          <Input value={locationDetail.shelf} readOnly />
+        <Field
+          label={<SpacedLabel text="단" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input value={locationDetail.shelf} variant="subtle" readOnly />
         </Field>
       </Box>
 
-      <Field label="비고" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="비고" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Textarea
           placeholder="최대 50자"
           style={{ maxHeight: "100px", overflowY: "auto" }}
@@ -44,7 +69,11 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
           }
         />
       </Field>
-      <Field label="재고 여부" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="재고 여부" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Box ml={"86px"} style={{ position: "absolute" }}>
           <Checkbox
             checked={locationDetail.located}
@@ -57,7 +86,11 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
           />
         </Box>
       </Field>
-      <Field label="사용 여부" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="사용 여부" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Box ml={"86px"} style={{ position: "absolute" }}>
           <Checkbox
             checked={locationDetail.locationActive}
