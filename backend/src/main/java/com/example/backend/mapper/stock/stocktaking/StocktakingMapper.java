@@ -309,6 +309,14 @@ public interface StocktakingMapper {
             """)
     Integer checkAccess(String warehouseCode, String workType, String employeeNo);
 
+    @Insert("""
+            INSERT INTO TB_INSTK_SUB
+            (serial_no,
+             location_key)
+            VALUES ( #{serialNo}, #{locationKey})
+            """)
+    int addInstkSub(String serialNo, Integer locationKey);
+
     //    실제 수량이 더 많을 때 사용
 //    @Select("""
 //            SELECT l.location_key

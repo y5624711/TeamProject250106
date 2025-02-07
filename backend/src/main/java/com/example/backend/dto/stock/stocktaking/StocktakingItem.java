@@ -9,6 +9,8 @@ public class StocktakingItem {
     private String serialNo;
     //    창고 위치와 아이템코드로 시리얼번호들 가져올 수 있음
 //
+    private String itemCode;
+    private String itemName;
     private Integer locationKey;
     private String warehouseCode;
 

@@ -99,6 +99,8 @@ function StocktakingAdd({
     setMakeDifference(null);
     setSelectWarehouse(false);
   };
+  console.log(itemCode);
+  console.log(itemName);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -402,6 +404,8 @@ function StocktakingAdd({
         makeDifference,
         putStocktakingType,
         warehouseCode,
+        itemCode,
+        itemName,
       })
       .then((res) => res.data)
       .then((data) => {

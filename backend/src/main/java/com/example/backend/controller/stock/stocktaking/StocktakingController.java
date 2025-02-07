@@ -79,7 +79,7 @@ public class StocktakingController {
         try {
             if (service.checkAccess(stocktakingItem.getWarehouseCode(), auth)) {
                 // TODO : validateUpdate 하기
-                if (service.validateUpdate(stocktakingItem, auth)) {
+                if (service.validateUpdate(stocktakingItem)) {
                     if (service.updateLocation(stocktakingItem)) {
                         return ResponseEntity.ok(Map.of("message",
                                 Map.of("type", "success",
