@@ -41,9 +41,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     { key: "소속구분", label: "소속 구분" },
     { key: "기업명", label: "회사" },
     { key: "기업번호", label: "회사 전화번호" },
+    { key: "사번", label: "사번" },
     { key: "직원명", label: "직원" },
     { key: "직원전화번호", label: "직원 전화번호" },
-    { key: "사번", label: "사번" },
   ];
 
   const navigate = useNavigate();
@@ -259,26 +259,21 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell textAlign="center" width="10%">
                 {item.employeeWorkPlaceCode}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="20%">
+              <Table.Cell textAlign="center" width="25%">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="120px">
+              <Table.Cell textAlign="center">
                 {item.employeeWorkPlaceTel}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="20%">
-                {" "}
-                {item.employeeName}{" "}
+              <Table.Cell textAlign="center" width="5%">
+                {item.employeeNo}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="120px">
-                {" "}
-                {item.employeeTel}{" "}
+              <Table.Cell textAlign="center" width="25%">
+                {item.employeeName}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="10%">
-                {" "}
-                {item.employeeNo}{" "}
-              </Table.Cell>
+              <Table.Cell textAlign="center">{item.employeeTel}</Table.Cell>
             </Table.Row>
           ))}
           {memberList.length === 0 && (
