@@ -37,14 +37,14 @@ public class CustomerController {
             //협력사 입력란 빈칸 검증
             if (!service.checkEmptyCustomer(customer)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "필수 입력값이 입력되지 않았습니다.")
+                        "message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")
                 ));
             }
 
             //중복 여부 확인
             if (service.checkDuplicateCustomer(customer)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "중복된 정보가 존재합니다.")
+                        "message", Map.of("type", "error", "text", "중복된 항목이 존재합니다.")
                 ));
             }
 
@@ -56,11 +56,11 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "등록 중 문제가 발생하였습니다.")));
+                                        "text", "등록에 실패하였습니다.")));
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
+                    "message", Map.of("type", "error", "text", "등록에 실패하였습니다.")
             ));
         }
     }
@@ -86,28 +86,28 @@ public class CustomerController {
         return service.viewCustomer(customerKey);
     }
 
-    //협력사 삭제
-    @PutMapping("delete/{customerKey}")
-    public ResponseEntity<Map<String, Object>> deleteCustomer(
-            @PathVariable("customerKey") String customerKey) {
-        //삭제된 협력사인지 조회
-        if (service.checkDeletedCustomer(customerKey)) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", Map.of("type", "error", "text", "이미 삭제된 정보입니다.")
-            ));
-        }
-
-        if (service.deleteCustomer(customerKey)) {
-            return ResponseEntity.ok()
-                    .body(Map.of("message", Map.of("type", "success",
-                            "text", STR."삭제되었습니다.")));
-
-        } else {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text", "삭제 중 문제가 발생하였습니다.")));
-        }
-    }
+//    //협력사 삭제
+//    @PutMapping("delete/{customerKey}")
+//    public ResponseEntity<Map<String, Object>> deleteCustomer(
+//            @PathVariable("customerKey") String customerKey) {
+//        //삭제된 협력사인지 조회
+//        if (service.checkDeletedCustomer(customerKey)) {
+//            return ResponseEntity.badRequest().body(Map.of(
+//                    "message", Map.of("type", "error", "text", "이미 삭제된 정보입니다.")
+//            ));
+//        }
+//
+//        if (service.deleteCustomer(customerKey)) {
+//            return ResponseEntity.ok()
+//                    .body(Map.of("message", Map.of("type", "success",
+//                            "text", STR."삭제되었습니다.")));
+//
+//        } else {
+//            return ResponseEntity.internalServerError()
+//                    .body(Map.of("message", Map.of("type", "error",
+//                            "text", "삭제 중 문제가 발생하였습니다.")));
+//        }
+//    }
 
     //협력사 정보 수정
     @PutMapping("edit")
@@ -119,13 +119,13 @@ public class CustomerController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "협력 업체 수정 권한이 없습니다.")));
+                                        "text", "저장 권한이 없습니다.")));
             }
 
             //복구 시도 시 복구 가능 여부 : active가 true로 왔을 때 일단 진입
             if (customer.getCustomerActive() && service.checkActiveChange(customer) && !service.checkActive(customer)) {
                 return ResponseEntity.badRequest().body(Map.of(
-                        "message", Map.of("type", "error", "text", "같은 품목을 다루는 협력 업체가 존재합니다.")
+                        "message", Map.of("type", "error", "text", "중복된 품목을 다루는 협력 업체가 존재합니다.")
                 ));
             }
 
@@ -141,16 +141,16 @@ public class CustomerController {
             if (service.editCustomer(customer)) {
                 return ResponseEntity.ok(Map.of("message",
                         Map.of("type", "success",
-                                "text", "수정하였습니다.")));
+                                "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "수정 중 문제가 발생하였습니다.")));
+                                        "text", "저장에 실패하였습니다.")));
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
+                    "message", Map.of("type", "error", "text", "저장에 실패하였습니다.")
             ));
         }
     }

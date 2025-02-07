@@ -27,16 +27,10 @@ public class ReturnController {
             @RequestParam(value = "state", defaultValue = "all") String state,
             @RequestParam(value = "type", defaultValue = "all") String type,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
-            @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, return_request_date)") String sort,
+            @RequestParam(value = "sort", defaultValue = "COALESCE(return_approve_date, disapprove_date, return_request_date)") String sort,
             @RequestParam(value = "order", defaultValue = "DESC") String order,
             Authentication auth
     ) {
-//        System.out.println("page:" + page);
-//        System.out.println("state:" + state);
-//        System.out.println("type:" + type);
-//        System.out.println("keyword:" + keyword);
-//        System.out.println("sort:" + sort);
-//        System.out.println("order:" + order);
 
         return service.returnList(page, state, type, keyword, sort, order, auth);
     }
@@ -64,7 +58,7 @@ public class ReturnController {
             //조건 2 요청 실패 여부 - trans
             if (service.addRequest(requestInfo)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "요청하였습니다."),
+                        Map.of("type", "success", "text", "요청되었습니다."),
                         "data", requestInfo));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of(
@@ -72,7 +66,7 @@ public class ReturnController {
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
+                    "message", Map.of("type", "error", "text", "요청에 실패하였습니다.")
             ));
         }
     }
@@ -106,16 +100,16 @@ public class ReturnController {
             if (service.addApprove(approveInfo)) {
                 return ResponseEntity.ok(Map.of("message",
                         Map.of("type", "success",
-                                "text", "승인하였습니다.")));
+                                "text", "승인되었습니다.")));
             } else {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message",
                                 Map.of("type", "error",
-                                        "text", "문제가 발생하였습니다.")));
+                                        "text", "승인에 실패하였습니다.")));
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of(
-                    "message", Map.of("type", "error", "text", "오류가 발생했습니다.")
+                    "message", Map.of("type", "error", "text", "승인에 실패하였습니다.")
             ));
         }
     }
@@ -126,12 +120,12 @@ public class ReturnController {
         if (service.disapproveReturn(disapproveInfo)) {
             return ResponseEntity.ok(Map.of("message",
                     Map.of("type", "success",
-                            "text", "반려하였습니다.")));
+                            "text", "반려되었습니다.")));
         } else {
             return ResponseEntity.badRequest()
                     .body(Map.of("message",
                             Map.of("type", "error",
-                                    "text", "문제가 발생하였습니다.")));
+                                    "text", "반려에 실패하였습니다.")));
         }
     }
 
