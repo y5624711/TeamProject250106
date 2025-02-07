@@ -16,6 +16,7 @@ public class Employee {
     private String employeeNote;
     private String departmentName;
     private boolean employeeActive;
+    private String customerName;
 
 
     public static String correctCommonCode(String commonCode) {

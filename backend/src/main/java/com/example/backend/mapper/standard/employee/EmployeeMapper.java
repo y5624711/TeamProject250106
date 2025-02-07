@@ -126,14 +126,20 @@ public interface EmployeeMapper {
                 CASE
                     WHEN E.employee_common_code = 'EMP' THEN D.department_name
                     ELSE NULL
-                END AS  department_name
+                END AS department_name,
+                CASE
+                    WHEN E.employee_common_code = 'CUS' THEN C.customer_name
+                    ELSE NULL
+                END AS customer_name 
             FROM TB_EMPMST E
             LEFT JOIN TB_DEPARTMST D 
                 ON E.employee_workplace_code = D.department_code
-                 AND E.employee_common_code = 'EMP'
+                AND E.employee_common_code = 'EMP'
+            LEFT JOIN TB_CUSTMST C
+                ON E.employee_workplace_code = C.customer_code
+                AND E.employee_common_code = 'CUS'
             WHERE E.employee_key = #{viewKey}
-            """
-    )
+        """)
     Employee getOneEmployeeByKey(int viewKey);
 
 

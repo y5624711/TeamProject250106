@@ -40,7 +40,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
   const frameworks = createListCollection({
     items: [
       { label: "협력 업체", value: "CUS" },
-      { label: "본사직원", value: "EMP" },
+      { label: "본사", value: "EMP" },
     ],
   });
 
@@ -77,6 +77,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           name: res.data.employeeName || "",
           employeeActive: res.data.employeeActive || false,
           departMent: res.data.departmentName,
+          customerName: res.data.customerName,
         });
       });
   };
@@ -259,46 +260,92 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   return (
     <Stack gap={15}>
-      <HStack gap={5}>
-        <Field
-          orientation="horizontal"
-          label={<SpacedLabel text="소속 구분" req={viewKey === -1} />}
-          required={viewKey !== -1 ? false : true}
+      <Field
+        orientation="horizontal"
+        label={<SpacedLabel text="소속 구분" req={viewKey === -1} />}
+        required={viewKey !== -1 ? false : true}
+      >
+        <SelectRoot
+          collection={frameworks}
+          variant={viewKey !== -1 ? "subtle" : "outline"}
+          value={
+            viewKey !== -1
+              ? [formData.selectedCommonCode]
+              : formData.selectedCommonCode
+          }
+          onValueChange={handleSelectChange}
+          readOnly={viewKey !== -1}
+          position="relative"
         >
-          <SelectRoot
-            collection={frameworks}
-            variant={viewKey !== -1 ? "subtle" : "outline"}
-            value={
-              viewKey !== -1
-                ? [formData.selectedCommonCode]
-                : formData.selectedCommonCode
-            }
-            onValueChange={handleSelectChange}
-            readOnly={viewKey !== -1}
-            position="relative"
+          <SelectTrigger>
+            <SelectValueText placeholder={"소속을 선택해 주세요."} />
+          </SelectTrigger>
+          <SelectContent
+            style={{
+              width: "100%",
+              top: "40px",
+              position: "absolute",
+            }}
           >
-            <SelectTrigger>
-              <SelectValueText placeholder={"소속을 선택해 주세요."} />
-            </SelectTrigger>
-            <SelectContent
-              style={{
-                width: "100%",
-                top: "40px",
-                position: "absolute",
-              }}
-            >
-              {frameworks.items.map((code) => (
-                <SelectItem item={code} key={code.value}>
-                  {code.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-        </Field>
+            {frameworks.items.map((code) => (
+              <SelectItem item={code} key={code.value}>
+                {code.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Field>
+      {isCommonCodeSelectedCheck && (
+        <SelectViewComp
+          formData={formData}
+          handleSelectChange={handleWorkPlaceChange}
+        />
+      )}
+      {viewKey !== -1 && formData.selectedCommonCode === "EMP" ? (
+        <HStack gap={5}>
+          <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
+            <Input
+              variant="subtle"
+              name="workPlace"
+              placeholder={""}
+              value={formData.departMent}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
 
-        {viewKey !== -1 && (
           <Field
-            label={<SpacedLabel text="소속 코드" />}
+            label={<SpacedLabel text="부서코드" />}
+            orientation="horizontal"
+            variant={viewKey !== -1 ? "subtle" : "outline"}
+          >
+            <Input
+              name="workPlace"
+              variant="subtle"
+              value={formData.workPlace}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+        </HStack>
+      ) : viewKey !== -1 && formData.selectedCommonCode !== "EMP" ? (
+        <HStack gap={5}>
+          <Field
+            label={<SpacedLabel text="협력업체" />}
+            orientation="horizontal"
+            variant={viewKey !== -1 ? "subtle" : "outline"}
+          >
+            <Input
+              name="workPlace"
+              variant="subtle"
+              value={formData.customerName}
+              onChange={handleInputChange}
+              readOnly={viewKey !== -1}
+            />
+          </Field>
+
+          <Field
+            label={<SpacedLabel text="협력코드" />}
             orientation="horizontal"
             variant={viewKey !== -1 ? "subtle" : "outline"}
           >
@@ -311,28 +358,9 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
               readOnly={viewKey !== -1}
             />
           </Field>
-        )}
-      </HStack>
-
-      {isCommonCodeSelectedCheck && (
-        <SelectViewComp
-          formData={formData}
-          handleSelectChange={handleWorkPlaceChange}
-        />
-      )}
-
-      {viewKey !== -1 && formData.selectedCommonCode === "EMP" && (
-        <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
-          <Input
-            variant="subtle"
-            name="workPlace"
-            placeholder={""}
-            value={formData.departMent}
-            onChange={handleInputChange}
-            readOnly={viewKey !== -1}
-          />
-        </Field>
-      )}
+        </HStack>
+      ) : null}{" "}
+      {/* viewKey === -1이면 아무것도 안 보이게 */}
       <Field
         label={<SpacedLabel text="직원" req={viewKey === -1} />}
         orientation="horizontal"
@@ -358,7 +386,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           />
         </Field>
       )}
-
       {viewKey !== -1 && (
         <Field label={<SpacedLabel text="비밀번호" />} orientation="horizontal">
           <Input
@@ -372,7 +399,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
       <Field label={<SpacedLabel text="전화번호" />} orientation="horizontal">
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
       </Field>
-
       <Field label={<SpacedLabel text="비고" />} orientation="horizontal">
         <Textarea
           name="note"
@@ -401,7 +427,6 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Box>
         </Field>
       )}
-
       <Box display="flex" mt={4} justifyContent="flex-end" width="100%">
         <Button onClick={onChange} mr={2} variant="outline">
           취소
