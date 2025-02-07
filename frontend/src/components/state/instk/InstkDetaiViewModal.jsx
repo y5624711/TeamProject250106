@@ -296,10 +296,10 @@ export function InstkDetaiViewModal({
                     label={<SpacedLabel text="승인비고" />}
                     orientation="horizontal"
                   >
-                    {instk.inputStockNote ? (
+                    {detailData.inputStockNote ? (
                       <Textarea
                         readOnly
-                        value={instk.inputStockNote}
+                        value={detailData.inputStockNote}
                         style={{ maxHeight: "100px", overflowY: "auto" }}
                       />
                     ) : (
