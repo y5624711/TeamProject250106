@@ -474,16 +474,11 @@ function StocktakingAdd({
                 <Input value={warehouseName} readOnly variant="subtle" />
                 {/*<Button onClick={onWarehouseClick}>조회</Button>*/}
               </Field>
-              <Field label="품목" orientation="horizontal" mb={15} required>
+              <Field label="품목" orientation="horizontal" mb={15}>
                 <Input value={itemName} readOnly variant="subtle" />
               </Field>
               <Box display="flex" gap={4}>
-                <Field
-                  label="전산 수량"
-                  orientation="horizontal"
-                  mb={15}
-                  required
-                >
+                <Field label="전산 수량" orientation="horizontal" mb={15}>
                   <Input
                     type={"text"}
                     value={countCurrent}
@@ -491,12 +486,7 @@ function StocktakingAdd({
                     variant="subtle"
                   />
                 </Field>
-                <Field
-                  label="실제 수량"
-                  orientation="horizontal"
-                  mb={15}
-                  required
-                >
+                <Field label="실제 수량" orientation="horizontal" mb={15}>
                   <Input
                     type={"text"}
                     value={countConfiguration}
@@ -824,12 +814,7 @@ function StocktakingAdd({
                 />
               </Field>
               <Box display="flex" gap={4}>
-                <Field
-                  label="실사 유형"
-                  orientation="horizontal"
-                  mb={15}
-                  required
-                >
+                <Field label="실사 유형" orientation="horizontal" mb={15}>
                   <Box ml={"86px"} style={{ position: "absolute" }}>
                     <RadioGroup
                       defaultValue="true" // ✅ Boolean 값을 문자열로 변환
