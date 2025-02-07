@@ -114,19 +114,19 @@ export function PurchaseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="14%">
+                <Table.Cell textAlign="center" width="17%">
                   {purchase.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="18%">
+                <Table.Cell textAlign="center" width="16%">
                   {purchase.customerName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="14%">
+                <Table.Cell textAlign="center" width="15%">
                   {purchase.purchaseNo || "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="13%">
+                <Table.Cell textAlign="center" width="12%">
                   {purchase.employeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="13%">
+                <Table.Cell textAlign="center" width="12%">
                   {purchase.customerEmployeeName ||
                     purchase.disapproveEmployeeName ||
                     "-"}

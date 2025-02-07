@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -148,7 +148,16 @@ export function BusinessDepartmentList() {
         handleSort={handleSort}
         openDialog={handleOpenDialog}
       />
-      <Box pt={5}>
+      <Flex pt={5} justifyContent="flex-end">
+        {/*페이지네이션*/}
+        <Box width="88%" textAlign="right">
+          <BusinessPageNation
+            count={count}
+            page={page}
+            handlePageChange={handlePageChange}
+          />
+        </Box>
+
         {isAdmin && (
           <Button
             float={"right"}
@@ -158,14 +167,7 @@ export function BusinessDepartmentList() {
             부서 등록
           </Button>
         )}
-
-        {/*페이지네이션*/}
-        <BusinessPageNation
-          count={count}
-          page={page}
-          handlePageChange={handlePageChange}
-        />
-      </Box>
+      </Flex>
 
       <DepartmentAdd
         saved={handleAddCheck}

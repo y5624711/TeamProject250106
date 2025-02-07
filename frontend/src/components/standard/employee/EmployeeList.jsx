@@ -287,9 +287,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
         <Table.Footer></Table.Footer>
       </Table.Root>
 
-      <Flex justify="space-between">
+      <Flex justify="flex-end">
         <Box />
-        <Box>
+        <Box width="85%" textAlign="right">
           <Pagination
             count={count}
             pageSize={10}
