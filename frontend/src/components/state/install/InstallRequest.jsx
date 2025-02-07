@@ -259,10 +259,10 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   label={<SpacedLabel text="요청자" />}
                   orientation="horizontal"
                 >
-                  <Input value={name} variant="subtle" />
+                  <Input value={name} variant="subtle" readOnly />
                 </Field>
                 <Field label="사번" orientation="horizontal">
-                  <Input value={id} variant="subtle" />
+                  <Input value={id} variant="subtle" readOnly />
                 </Field>
               </Box>
               <Field
