@@ -33,6 +33,7 @@ function InoutHistorySearch({
     setInputValue(""); // 입력 필드 초기화
     setSelectValue(["all"]); // 선택 값 초기화
     setState("all");
+    setSearch.state("all");
   };
 
   return (

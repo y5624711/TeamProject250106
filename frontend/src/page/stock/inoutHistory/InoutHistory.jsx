@@ -118,7 +118,7 @@ function InoutHistory(props) {
             setState={setState}
           />
           <RadioGroup
-            value={search.state}
+            value={state}
             onValueChange={(value) => {
               handleRadio(value.value);
             }}
