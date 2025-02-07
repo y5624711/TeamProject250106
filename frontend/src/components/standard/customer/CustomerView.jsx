@@ -15,6 +15,7 @@ import {
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 
 function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   const initialCustomer = {
@@ -62,6 +63,15 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
     // setIsEditing(false);
     onCancel();
   };
+
+  //비활성화
+  const isValid =
+    customer.customerName &&
+    customer.customerRep &&
+    customer.customerNo &&
+    customer.customerTel &&
+    customer.customerPost &&
+    customer.customerAddress;
 
   return (
     <Box>
@@ -238,15 +248,12 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     name={"customerActive"}
                     checked={customer.customerActive}
                     onCheckedChange={(e) => {
-                      // console.log("체크박스 변경 전 값:", customer.customerActive);
-                      // console.log("체크박스 변경 후 값:", e);
                       const checked =
                         e.checked !== undefined ? e.checked : e.target.checked;
                       setCustomer((prevCustomer) => ({
                         ...prevCustomer,
                         customerActive: checked, // 상태 업데이트
                       }));
-                      // console.log("그 후?", checked);
                     }}
                   />
                 </Field>
@@ -262,7 +269,16 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   취소
                 </Button>
               </DialogActionTrigger>
-              <Button onClick={() => onEdit(customer)}>확인</Button>
+              <Tooltip
+                content="입력을 완료해 주세요."
+                openDelay={100}
+                closeDelay={100}
+                disabled={isValid}
+              >
+                <Button onClick={() => onEdit(customer)} disabled={!isValid}>
+                  확인
+                </Button>
+              </Tooltip>
             </HStack>
             <DialogCloseTrigger />
           </DialogFooter>
