@@ -256,10 +256,10 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell width="90px" textAlign="center">
                 {index + 1}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width="10%">
                 {item.employeeWorkPlaceCode}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width="20%">
                 {item.employeeCommonCode === "CUS"
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
@@ -267,12 +267,18 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell textAlign="center" width="120px">
                 {item.employeeWorkPlaceTel}
               </Table.Cell>
-              <Table.Cell textAlign="center"> {item.employeeName} </Table.Cell>
+              <Table.Cell textAlign="center" width="20%">
+                {" "}
+                {item.employeeName}{" "}
+              </Table.Cell>
               <Table.Cell textAlign="center" width="120px">
                 {" "}
                 {item.employeeTel}{" "}
               </Table.Cell>
-              <Table.Cell textAlign="center"> {item.employeeNo} </Table.Cell>
+              <Table.Cell textAlign="center" width="10%">
+                {" "}
+                {item.employeeNo}{" "}
+              </Table.Cell>
             </Table.Row>
           ))}
           {memberList.length === 0 && (
