@@ -34,10 +34,10 @@ function StocktakingListPage({
         <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {stocktaking.customerName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {stocktaking.itemName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"7.5%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {stocktaking.countCurrent}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle" width={"7.5%"}>
@@ -46,7 +46,7 @@ function StocktakingListPage({
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.countDifference}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"15%"}>
           {stocktaking.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">

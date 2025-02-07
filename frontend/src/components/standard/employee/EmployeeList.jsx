@@ -256,7 +256,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
               <Table.Cell width="90px" textAlign="center">
                 {index + 1}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="6%">
+              <Table.Cell textAlign="center" width="15%">
                 {item.employeeWorkPlaceCode}
               </Table.Cell>
               <Table.Cell textAlign="center" width="20%">
@@ -264,13 +264,13 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
                   ? item.employeeWorkPlaceName
                   : "(주) 중앙 컴퍼니"}
               </Table.Cell>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" width="15%">
                 {item.employeeWorkPlaceTel}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="6%">
+              <Table.Cell textAlign="center" width="15%">
                 {item.employeeNo}
               </Table.Cell>
-              <Table.Cell textAlign="center" width="20%">
+              <Table.Cell textAlign="center" width="15%">
                 {item.employeeName}
               </Table.Cell>
               <Table.Cell textAlign="center">{item.employeeTel}</Table.Cell>

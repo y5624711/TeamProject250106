@@ -32,7 +32,7 @@ export function CommonCodeList({
   // 정렬 헤더
   const sortOptions = [
     { key: "commonCodeKey", label: "#" },
-    { key: "commonCodeType", label: "코드구분" },
+    { key: "commonCodeType", label: "코드 구분" },
     { key: "commonCode", label: "코드" },
     { key: "commonCodeName", label: "코드명" },
   ];

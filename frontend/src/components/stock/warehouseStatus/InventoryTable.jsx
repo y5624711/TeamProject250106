@@ -44,22 +44,22 @@ export function InventoryTable({
               <Table.Cell textAlign="center" w={"90px"}>
                 {index + 1}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"20%"}>
+              <Table.Cell textAlign="center" w={"15%"}>
                 {item.wareHouseName}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"10%"}>
+              <Table.Cell textAlign="center" w={"13%"}>
                 {item.wareHouseCity}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"15%"}>
+              <Table.Cell textAlign="center" w={"18%"}>
                 {item.wareHouseAddress}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"10%"}>
+              <Table.Cell textAlign="center" w={"13%"}>
                 {item.wareHouseAddressDetail}
               </Table.Cell>
               <Table.Cell textAlign="center" w={"20 %"}>
                 {item.customerName}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"15%"}>
+              <Table.Cell textAlign="center" w={"13%"}>
                 {item.commonCodeName}
               </Table.Cell>
               <Table.Cell textAlign="center" w={"10%"}>
