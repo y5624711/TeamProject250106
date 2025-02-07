@@ -37,7 +37,7 @@ public class ItemService {
         return cnt == 1;
     }
 
-    // 품목 구분 코드 가져오기
+    // 품목 구분 코드, 담당 업체 가져오기
     public List<Item> getItemCommonCode() {
         return mapper.getItemCommonCode();
     }
@@ -92,7 +92,6 @@ public class ItemService {
     public Item getItemView(int itemKey) {
         return mapper.getItemView(itemKey);
     }
-
 
     // 품목 수정하기
     public boolean editItem(int itemKey, Item item) {
