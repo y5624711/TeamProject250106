@@ -339,7 +339,7 @@ public interface StocktakingMapper {
     @Update("""
             UPDATE TB_ITEMSUB
             SET current_common_code=#{currentCommonCode}
-            where serial_no=#{itemSerialNo}
+            where serial_no=#{serialNo}
             """)
     int updateCurrentCommonCodeBySerialNo(String serialNo, String currentCommonCode);
 

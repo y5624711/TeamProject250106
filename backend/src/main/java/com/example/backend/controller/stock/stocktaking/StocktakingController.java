@@ -39,7 +39,9 @@ public class StocktakingController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Stocktaking stocktaking, Authentication auth) {
         try {
-            if (service.checkAccess(stocktaking.getWarehouseCode(), auth)) {
+            String warehouseCode = stocktaking.getWarehouseCode();
+
+            if (service.checkAccess(warehouseCode, auth)) {
                 // 실사 입력 검증
                 if (service.validate(stocktaking, auth)) {
                     if (service.add(stocktaking)) {
@@ -77,7 +79,8 @@ public class StocktakingController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> updateStock(@RequestBody StocktakingItem stocktakingItem, Authentication auth) {
         try {
-            if (service.checkAccess(stocktakingItem.getWarehouseCode(), auth)) {
+            String warehouseCode = stocktakingItem.getWarehouseCode();
+            if (service.checkAccess(warehouseCode, auth)) {
                 if (service.validateUpdate(stocktakingItem)) {
                     if (service.updateLocation(stocktakingItem, auth)) {
                         return ResponseEntity.ok(Map.of("message",
@@ -100,6 +103,7 @@ public class StocktakingController {
                 ));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
                             "text", "재고 반영에 실패했습니다.")));

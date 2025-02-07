@@ -119,8 +119,11 @@ public class StocktakingService {
 
         String employeeNo = auth.getName();
 
-
         String workType = employeeNo.substring(0, 3);
+
+        System.out.println(employeeNo);
+        System.out.println(workType);
+        System.out.println(warehouseCode);
 
         Integer access = mapper.checkAccess(warehouseCode, workType, employeeNo);
 
@@ -186,6 +189,10 @@ public class StocktakingService {
 
         System.out.println(stocktakingItem);
 
+        System.out.println(stocktakingItem.getPutStocktakingType());
+        System.out.println(stocktakingItem.getPutStocktakingType().equals("new"));
+        System.out.println(stocktakingItem.getPutStocktakingType().equals("old"));
+        System.out.println(stocktakingItem.getPutStocktakingType().equals("lost"));
 
         if (stocktakingItem.getPutStocktakingType().equals("new")) {
             String currentCommonCode = "WHS";
@@ -242,7 +249,7 @@ public class StocktakingService {
 
 //
             return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1;
-        } else {
+        } else if (stocktakingItem.getPutStocktakingType().equals("lost")) {
 //            실사 분실인 상태
             String serialNo = stocktakingItem.getSerialNo();
             String currentCommonCode = "LOS";
@@ -253,16 +260,20 @@ public class StocktakingService {
 
 //            current_common_code를 LOS 상태로 변경
             int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
+            System.out.println("updateItemSub" + updateItemSub);
 
 //            해당 로케이션 위치를 비활성화로 변경
             Integer located = 0;
             int insertLocation = mapper.updateLocated(locationKey, located);
+            System.out.println("insertLocation: " + insertLocation);
 
             int insertInoutHistory = mapper.addInoutHistoryMinus(serialNo, warehouseCode, inoutCommonCode, employeeNo);
-
+            System.out.println("insertInoutHistory = " + insertInoutHistory);
 
             return updateItemSub == 1 && insertLocation == 1 && insertInoutHistory == 1;
 
+        } else {
+            return false;
         }
 //        mapper.updateStockStatus(stocktakingItem);
     }
