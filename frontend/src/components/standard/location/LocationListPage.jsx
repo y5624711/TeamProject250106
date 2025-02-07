@@ -19,10 +19,10 @@ function WarehouseListPage({
         _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
         bg={location.locationActive ? "white" : "gray.200"}
       >
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"90px"}>
           {index + 1}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"45%"}>
           {location.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
@@ -34,7 +34,7 @@ function WarehouseListPage({
         <Table.Cell textAlign="center" verticalAlign="middle">
           {location.shelf}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {location.located === true ? (
             <Box display="flex" justifyContent="center">
               <BsCheckSquareFill />

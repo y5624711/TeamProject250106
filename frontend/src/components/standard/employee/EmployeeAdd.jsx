@@ -259,10 +259,10 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
   return (
     <Stack gap={15}>
-      <HStack>
+      <HStack gap={5}>
         <Field
           orientation="horizontal"
-          label={<SpacedLabel text="소속 구분" req />}
+          label={<SpacedLabel text="소속 구분" req={viewKey === -1} />}
           required={viewKey !== -1 ? false : true}
         >
           <SelectRoot
@@ -313,6 +313,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           </Field>
         )}
       </HStack>
+
       {isCommonCodeSelectedCheck && (
         <SelectViewComp
           formData={formData}
@@ -320,21 +321,17 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         />
       )}
 
-      {viewKey !== -1 && (
-        <HStack gap={0}>
-          {formData.selectedCommonCode === "EMP" && (
-            <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
-              <Input
-                variant="subtle"
-                name="workPlace"
-                placeholder={""}
-                value={formData.departMent}
-                onChange={handleInputChange}
-                readOnly={viewKey !== -1}
-              />
-            </Field>
-          )}
-        </HStack>
+      {viewKey !== -1 && formData.selectedCommonCode === "EMP" && (
+        <Field label={<SpacedLabel text="부서" />} orientation="horizontal">
+          <Input
+            variant="subtle"
+            name="workPlace"
+            placeholder={""}
+            value={formData.departMent}
+            onChange={handleInputChange}
+            readOnly={viewKey !== -1}
+          />
+        </Field>
       )}
       <Field
         label={<SpacedLabel text="직원" req={viewKey === -1} />}

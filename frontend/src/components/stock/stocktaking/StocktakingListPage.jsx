@@ -31,28 +31,28 @@ function StocktakingListPage({
         >
           {index + 1}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {stocktaking.customerName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
           {stocktaking.itemName}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"7.5%"}>
           {stocktaking.countCurrent}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"7.5%"}>
           {stocktaking.countConfiguration}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.countDifference}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"20%"}>
           {stocktaking.warehouseName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
           {stocktaking.stocktakingType === false ? "비정기" : "정기"}
         </Table.Cell>
-        <Table.Cell textAlign="center" verticalAlign="middle">
+        <Table.Cell textAlign="center" verticalAlign="middle" width={"10%"}>
           {stocktaking.customerEmployeeName}
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
