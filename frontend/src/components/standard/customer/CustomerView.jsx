@@ -51,7 +51,13 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
   // console.log("key", customerKey);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    // 전화번호 및 팩스 필드는 숫자만 허용하고 마스킹 처리
+    if (name === "customerTel" || name === "customerFax") {
+      value = formatPhoneNumber(value);
+    }
+
     setCustomer((prevCustomer) => ({
       ...prevCustomer,
       [name]: value,
@@ -73,6 +79,19 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
     customer.customerTel &&
     customer.customerPost &&
     customer.customerAddress;
+
+  const formatPhoneNumber = (value) => {
+    const onlyNums = value.replace(/\D/g, ""); // 숫자 이외 제거
+
+    if (onlyNums.length <= 2) return onlyNums;
+    if (onlyNums.length <= 6) return onlyNums.replace(/(\d{2})(\d+)/, "$1-$2");
+    if (onlyNums.length <= 10)
+      return onlyNums.replace(/(\d{2,3})(\d{3,4})(\d+)/, "$1-$2-$3");
+
+    return onlyNums
+      .slice(0, 11)
+      .replace(/(\d{2,3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  };
 
   return (
     <Box>
