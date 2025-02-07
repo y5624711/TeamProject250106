@@ -55,7 +55,7 @@ function StocktakingList({
                     sort: sortMatch[1],
                   });
                 }}
-                defaultSortKey={"stocktakingDate"}
+                defaultSortKey={"stocktakingKey"}
               />
             </Table.Row>
           </Table.Header>
