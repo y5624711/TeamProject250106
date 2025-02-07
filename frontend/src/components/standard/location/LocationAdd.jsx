@@ -16,6 +16,7 @@ import { Field } from "../../ui/field.jsx";
 import Select from "react-select";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function LocationAdd({ isOpen, onClose, title }) {
   const [warehouseCode, setWarehouseCode] = useState("");
@@ -121,7 +122,12 @@ function LocationAdd({ isOpen, onClose, title }) {
         </DialogHeader>
         <DialogBody>
           <Box>
-            <Field label="창고" orientation="horizontal" mb={15} required>
+            <Field
+              label={<SpacedLabel text="창고" />}
+              orientation="horizontal"
+              mb={15}
+              required
+            >
               <Select
                 options={warehouseList}
                 value={warehouseList.find(
@@ -167,7 +173,11 @@ function LocationAdd({ isOpen, onClose, title }) {
                 />
               </Field>
             </Box>
-            <Field label="비고" orientation="horizontal" mb={15}>
+            <Field
+              label={<SpacedLabel text="비고" />}
+              orientation="horizontal"
+              mb={15}
+            >
               <Textarea
                 placeholder="최대 50자"
                 style={{ maxHeight: "100px", overflowY: "auto" }}
