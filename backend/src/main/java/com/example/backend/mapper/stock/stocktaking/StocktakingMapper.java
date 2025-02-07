@@ -351,11 +351,12 @@ public interface StocktakingMapper {
                 inout_common_code,
                 business_employee_no,
                 customer_employee_no,
-                location_key
+                location_key,
+                inout_no
                 )
-            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo}, #{locationKey})
+            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo}, #{locationKey}, #{inoutNo})
             """)
-    int addInoutHistoryPlus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo, Integer locationKey);
+    int addInoutHistoryPlus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo, Integer locationKey, String inoutNo);
 
     @Insert("""
             INSERT INTO TB_INOUT_HIS
@@ -364,11 +365,23 @@ public interface StocktakingMapper {
                 warehouse_code,
                 inout_common_code,
                 business_employee_no,
-                customer_employee_no
+                customer_employee_no,
+                inout_no
                 )
-            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo})
+            VALUES (#{serialNo}, #{warehouseCode}, #{inoutCommonCode}, #{employeeNo}, #{employeeNo}, #{inoutNo})
             """)
-    int addInoutHistoryMinus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo);
+    int addInoutHistoryMinus(String serialNo, String warehouseCode, String inoutCommonCode, String employeeNo, String inoutNo);
+
+    //    실사 번호 등록
+    @Select("""
+            <script>
+                SELECT COALESCE(MAX(CAST(SUBSTRING(inout_no, 4) AS UNSIGNED)), 0) AS maxNumber
+                FROM TB_INOUT_HIS
+                WHERE inout_no LIKE CONCAT(#{stocktakingCode}, '%')
+                AND inout_no REGEXP '^[A-Za-z]+[0-9]+$'
+            </script>
+            """)
+    Integer viewMaxOutputNo(String stocktakingCode);
 
     //    실제 수량이 더 많을 때 사용
 //    @Select("""

@@ -52,13 +52,16 @@ public interface InoutHistoryMapper {
                     1=1
                 </if>
                 <if test="state == 'storage'">
-                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="state == 'retrieval'">
                   AND (h.inout_common_code = 'OUT' )
                 </if>
+                <if test="state == 'lost'">
+                  AND (h.inout_common_code = 'LOS' )
+                </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT' OR h.inout_common_code = 'LOS' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="searchType == 'all'">
                 AND(
@@ -177,7 +180,8 @@ public interface InoutHistoryMapper {
                 bizemp.employee_name businessEmployeeName,
                 l.row,
                 l.col,
-                l.shelf
+                l.shelf,
+                h.inout_no
             FROM TB_INOUT_HIS h
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
@@ -213,13 +217,16 @@ public interface InoutHistoryMapper {
                     1=1
                 </if>
                 <if test="state == 'storage'">
-                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK')
+                  AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="state == 'retrieval'">
                   AND (h.inout_common_code = 'OUT' )
                 </if>
+                <if test="state == 'lost'">
+                  AND (h.inout_common_code = 'LOS' )
+                </if>
                 <if test="state == 'all'">
-                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT')
+                   AND (h.inout_common_code = 'RETRN' OR h.inout_common_code = 'INSTK' OR h.inout_common_code = 'OUT' OR h.inout_common_code = 'LOS' OR h.inout_common_code = 'STKP')
                 </if>
                 <if test="searchType == 'all'">
                 AND(

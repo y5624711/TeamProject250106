@@ -14,6 +14,8 @@ public class StocktakingItem {
     private Integer locationKey;
     private String warehouseCode;
 
+    //    입출내역에 들어갈 코드
+    private String newStocktakingNo;
     //    로케이션 키 리스트
     private List<Integer> locationKeyList;
     //    행 리스트
