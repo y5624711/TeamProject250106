@@ -288,7 +288,7 @@ public interface StocktakingMapper {
     @Select("""
             SELECT COUNT(*)
             FROM TB_LOCMST
-            WHERE warehouse_code=#{warehouseCode} AND located=1
+            WHERE warehouse_code=#{warehouseCode} AND located=1 AND location_active=1
             """)
     Integer getAllLocated(String warehouseCode);
 
