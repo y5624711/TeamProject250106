@@ -74,6 +74,8 @@ public interface InoutHistoryMapper {
                  OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR rfr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR rfr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
@@ -110,6 +112,8 @@ public interface InoutHistoryMapper {
                          AND(
                              ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR rfr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR rfr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>
                          <when test="searchType == 'businessEmployee'">
@@ -142,7 +146,12 @@ public interface InoutHistoryMapper {
                  </if>
             ORDER BY 
              <if test="sort != null and sort != ''">
+                <if test="sort == 'franchise_name'">
+                    COALESCE(ifr.franchise_name, rfr.franchise_name) ${order}
+                </if>
+                <if test="sort != 'franchise_name'">
                 ${sort} ${order}
+                </if>
             </if>
             <if test="sort == null">
                h.inout_history_date DESC
@@ -239,6 +248,8 @@ public interface InoutHistoryMapper {
                  OR w.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR rfr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                 OR rfr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                  OR bizemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR cusemp.employee_name LIKE CONCAT('%',#{searchKeyword},'%')
                  OR h.customer_employee_no LIKE CONCAT('%',#{searchKeyword},'%')
@@ -275,6 +286,8 @@ public interface InoutHistoryMapper {
                          AND(
                              ifr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
                           OR ifr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR rfr.franchise_name LIKE CONCAT('%',#{searchKeyword},'%')
+                          OR rfr.franchise_code LIKE CONCAT('%',#{searchKeyword},'%')
                             )
                          </when>
                          <when test="searchType == 'businessEmployee'">

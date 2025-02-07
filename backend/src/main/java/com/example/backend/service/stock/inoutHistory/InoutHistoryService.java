@@ -57,7 +57,7 @@ public class InoutHistoryService {
             case "warehouse_name":
                 return "w.warehouse_name";
             case "franchise_name":
-                return "fr.franchise_name";
+                return "franchise_name";
             case "business_employee_name":
                 return "bizemp.employee_name";
             case "customer_employee_name":
