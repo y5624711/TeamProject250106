@@ -32,12 +32,12 @@ export function Install() {
           let state = null;
 
           if (!list.installApproveKey) {
-            if (!list.installRequestConsent) {
-              state = "대기";
+            if (list.installRequestConsent === false) {
+              state = "반려";
             } else if (list.installRequestConsent === true) {
               state = "승인";
-            } else if (list.installRequestConsent === false) {
-              state = "반려";
+            } else {
+              state = "대기"; // undefined이거나 null일 경우
             }
           } else if (list.installApproveKey) {
             if (!list.installApproveConsent) {
