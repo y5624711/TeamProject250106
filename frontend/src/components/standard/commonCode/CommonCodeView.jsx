@@ -28,6 +28,7 @@ import {
 } from "../../ui/dialog.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function CommonCodeView({
   commonCodeKey,
@@ -121,92 +122,109 @@ export function CommonCodeView({
             <DialogTitle>공통 코드 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Text fontSize={"xs"} mt={-5} mb={3}>
-              {commonCode.commonCodeType === "ITEM" ||
-              commonCode.commonCodeType === "STANDARD"
-                ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
-                : commonCode.commonCodeType === "STATE"
-                  ? "상태 코드는 대문자 3~5자리로 입력해야 합니다."
-                  : ""}
-            </Text>
-            <Stack gap="15px">
-              <Field label={"코드 구분"} orientation="horizontal">
-                <SelectRoot onValueChange={handleCodeTypeChange}>
-                  <SelectTrigger>
-                    <SelectValueText>
-                      {commonCode.commonCodeType || "코드 구분 선택"}
-                    </SelectValueText>
-                  </SelectTrigger>
-                  <SelectContent
-                    style={{
-                      width: "85%",
-                      top: "40px",
-                      position: "absolute",
-                    }}
-                  >
-                    {selectOptions.map((option) => (
-                      <SelectItem key={option.value} item={option.value}>
-                        {option.value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </SelectRoot>
-              </Field>
-              <Field label={"코드"} orientation="horizontal">
-                <Input
-                  name="commonCode"
-                  placeholder="코드"
-                  value={commonCode.commonCode}
-                  onChange={handleChange}
-                  maxLength={5}
-                />
-              </Field>
-              <Field label={"코드명"} orientation="horizontal">
-                <Input
-                  name="commonCodeName"
-                  placeholder="코드명"
-                  value={commonCode.commonCodeName}
-                  onChange={handleChange}
-                />
-              </Field>
-              <Field label={"비고"} orientation="horizontal">
-                <Textarea
-                  name="commonCodeNote"
-                  placeholder={"최대 50자"}
-                  value={commonCode.commonCodeNote}
-                  onChange={handleChange}
-                  maxHeight={"100px"}
-                />
-              </Field>
-              <Field label={"사용 여부"} orientation="horizontal">
-                <Checkbox
-                  style={{ marginRight: "550px" }}
-                  checked={commonCode.commonCodeActive}
-                  onCheckedChange={(e) =>
-                    setCommonCode((prev) => ({
-                      ...prev,
-                      commonCodeActive: e.checked,
-                    }))
-                  }
-                  disabled={
-                    commonCode.usedCommonCodeByCustomer > 0 ||
-                    commonCode.commonCodeType === "STATE" ||
-                    commonCode.commonCodeType === "STANDARD"
-                  }
-                />
-              </Field>
-              {(commonCode.usedCommonCodeByCustomer > 0 ||
-                commonCode.commonCodeType === "STATE" ||
-                commonCode.commonCodeType === "STANDARD") && (
-                <Text fontSize={"xs"} mb={18} mt={-2} ml={"85px"}>
-                  {commonCode.commonCodeType === "STATE"
-                    ? "STATE 코드는 사용 여부를 변경할 수 없습니다."
-                    : commonCode.commonCodeType === "STANDARD"
-                      ? "STANDARD 코드는 사용 여부를 변경할 수 없습니다."
-                      : "협력업체가 사용 중인 품목 코드는 사용 여부를 변경할 수 없습니다."}
-                </Text>
-              )}
-            </Stack>
+            <Box css={{ "--field-label-width": "85px" }}>
+              <Text fontSize={"xs"} mt={-5} mb={3}>
+                {commonCode.commonCodeType === "ITEM" ||
+                commonCode.commonCodeType === "STANDARD"
+                  ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
+                  : commonCode.commonCodeType === "STATE"
+                    ? "상태 코드는 대문자 3~5자리로 입력해야 합니다."
+                    : ""}
+              </Text>
+              <Stack gap="15px">
+                <Field
+                  label={<SpacedLabel text="코드 구분" />}
+                  orientation="horizontal"
+                >
+                  <SelectRoot onValueChange={handleCodeTypeChange}>
+                    <SelectTrigger>
+                      <SelectValueText>
+                        {commonCode.commonCodeType || "코드 구분 선택"}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        width: "85%",
+                        top: "40px",
+                        position: "absolute",
+                      }}
+                    >
+                      {selectOptions.map((option) => (
+                        <SelectItem key={option.value} item={option.value}>
+                          {option.value}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                </Field>
+                <Field
+                  label={<SpacedLabel text="코드" />}
+                  orientation="horizontal"
+                >
+                  <Input
+                    name="commonCode"
+                    placeholder="코드"
+                    value={commonCode.commonCode}
+                    onChange={handleChange}
+                    maxLength={5}
+                  />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="코드명" />}
+                  orientation="horizontal"
+                >
+                  <Input
+                    name="commonCodeName"
+                    placeholder="코드명"
+                    value={commonCode.commonCodeName}
+                    onChange={handleChange}
+                  />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="비고" />}
+                  orientation="horizontal"
+                >
+                  <Textarea
+                    name="commonCodeNote"
+                    placeholder={"최대 50자"}
+                    value={commonCode.commonCodeNote}
+                    onChange={handleChange}
+                    maxHeight={"100px"}
+                  />
+                </Field>
+                <Field
+                  label={<SpacedLabel text="사용 여부" />}
+                  orientation="horizontal"
+                >
+                  <Checkbox
+                    style={{ marginRight: "550px" }}
+                    checked={commonCode.commonCodeActive}
+                    onCheckedChange={(e) =>
+                      setCommonCode((prev) => ({
+                        ...prev,
+                        commonCodeActive: e.checked,
+                      }))
+                    }
+                    disabled={
+                      commonCode.usedCommonCodeByCustomer > 0 ||
+                      commonCode.commonCodeType === "STATE" ||
+                      commonCode.commonCodeType === "STANDARD"
+                    }
+                  />
+                </Field>
+                {(commonCode.usedCommonCodeByCustomer > 0 ||
+                  commonCode.commonCodeType === "STATE" ||
+                  commonCode.commonCodeType === "STANDARD") && (
+                  <Text fontSize={"xs"} mb={18} mt={-2} ml={"85px"}>
+                    {commonCode.commonCodeType === "STATE"
+                      ? "STATE 코드는 사용 여부를 변경할 수 없습니다."
+                      : commonCode.commonCodeType === "STANDARD"
+                        ? "STANDARD 코드는 사용 여부를 변경할 수 없습니다."
+                        : "협력업체가 사용 중인 품목 코드는 사용 여부를 변경할 수 없습니다."}
+                  </Text>
+                )}
+              </Stack>
+            </Box>
           </DialogBody>
           <DialogFooter>
             <HStack>

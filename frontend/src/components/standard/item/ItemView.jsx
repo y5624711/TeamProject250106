@@ -16,6 +16,7 @@ import {
 import { Button } from "../../ui/button.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
   const [item, setItem] = useState([]);
@@ -93,39 +94,52 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
             <DialogTitle>품목 정보</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Stack gap={"15px"}>
-              <>
-                <Field label={"품목 "} orientation="horizontal">
+            <Box css={{ "--field-label-width": "85px" }}>
+              <Stack gap={"15px"}>
+                <Field
+                  label={<SpacedLabel text="품목" />}
+                  orientation="horizontal"
+                >
                   <Input
                     readOnly
                     value={item.itemCommonName}
                     variant={"subtle"}
                   />
                 </Field>
-                <Field label={"담당 업체"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="담당 업체" />}
+                  orientation="horizontal"
+                >
                   <Input
                     readOnly
                     value={item.customerName}
                     variant={"subtle"}
                   />
                 </Field>
-                <Field label={"규격"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="규격" />}
+                  orientation="horizontal"
+                >
                   <Input
                     name="size"
-                    placeholder="규격"
                     value={editedItem.size}
                     onChange={handleChange}
                   />
                 </Field>
-                <Field label={"단위"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="단위" />}
+                  orientation="horizontal"
+                >
                   <Input
                     name="unit"
-                    placeholder="단위"
                     value={editedItem.unit}
                     onChange={handleChange}
                   />
                 </Field>
-                <Field label={"입고가"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="입고가" />}
+                  orientation="horizontal"
+                >
                   <Input
                     type="text" // number → text 변경
                     name="inputPrice"
@@ -146,7 +160,10 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                   />
                 </Field>
 
-                <Field label={"출고가"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="출고가" />}
+                  orientation="horizontal"
+                >
                   <Input
                     type="text"
                     name="outputPrice"
@@ -167,7 +184,10 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                   />
                 </Field>
 
-                <Field label={"비고"} orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="비고" />}
+                  orientation="horizontal"
+                >
                   <Textarea
                     style={{ maxHeight: "100px", overflowY: "auto" }}
                     name="itemNote"
@@ -176,8 +196,11 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                     onChange={handleChange}
                   />
                 </Field>
-                <Field label={"사용 여부"} orientation="horizontal">
-                  <Box ml={"86px"} style={{ position: "absolute" }}>
+                <Field
+                  label={<SpacedLabel text="사용 여부" />}
+                  orientation="horizontal"
+                >
+                  <Box ml={"90px"} style={{ position: "absolute" }}>
                     <Checkbox
                       name="itemActive"
                       checked={editedItem.itemActive}
@@ -185,15 +208,20 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                     />
                   </Box>
                 </Field>
-              </>
-            </Stack>
+              </Stack>
+            </Box>
           </DialogBody>
           <DialogFooter>
             <HStack>
               <DialogActionTrigger asChild>
                 <Button variant="outline">취소</Button>
               </DialogActionTrigger>
-              <Tooltip content="입력을 완료해주세요." disabled={isValid}>
+              <Tooltip
+                content="입력을 완료해주세요."
+                disabled={isValid}
+                openDelay={100}
+                closeDelay={100}
+              >
                 <Button onClick={handleSaveClick} disabled={!isValid}>
                   확인
                 </Button>
