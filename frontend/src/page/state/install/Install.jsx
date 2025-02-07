@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/react";
 import { StateSideBar } from "../../../components/tool/sidebar/StateSideBar.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { InstallList } from "../../../components/state/install/InstallList.jsx";
@@ -85,15 +85,15 @@ export function Install() {
             setSearchParams={setSearchParams}
           />
           {company && !company.startsWith("CUS") && (
-            <Box display="flex" justifyContent="flex-end" mb={4}>
+            <Flex justify="flex-end">
               <Button
                 onClick={() => setRequestDialogOpen(true)}
                 size="lg"
-                mt={"-65px"}
+                mt={-16}
               >
                 설치 요청
               </Button>
-            </Box>
+            </Flex>
           )}
         </Stack>
         <InstallRequest
