@@ -79,10 +79,10 @@ public class MainPageController {
         if (service.validCustomer(customer)) {
             if (service.updateCustomer(customer)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장 되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "success", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
@@ -100,10 +100,10 @@ public class MainPageController {
         if (service.validWarehouse(warehouse)) {
             if (service.updateWarehouse(warehouse)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장 되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "success", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
