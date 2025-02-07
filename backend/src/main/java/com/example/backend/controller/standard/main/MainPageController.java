@@ -86,7 +86,7 @@ public class MainPageController {
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "내용을 입력 해주세요.")));
+                    Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 
@@ -107,7 +107,7 @@ public class MainPageController {
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "내용을 입력 해주세요.")));
+                    Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 

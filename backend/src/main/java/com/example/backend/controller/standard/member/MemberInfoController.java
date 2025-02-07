@@ -37,7 +37,7 @@ public class MemberInfoController {
         }
         if (!service.validate(employee)) {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "error", "text", "아이디 혹은 비밀번호가 입력되지 않았습니다.")));
+                    "type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
         if (service.updateId(employee)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of(
