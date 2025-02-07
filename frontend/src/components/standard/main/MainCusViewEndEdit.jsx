@@ -182,7 +182,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                   </Field>
                   <Field
                     orientation={"horizontal"}
-                    label={<SpacedLabel text="업종" />}
+                    label={<SpacedLabel text="업태" />}
                   >
                     <Input
                       readOnly

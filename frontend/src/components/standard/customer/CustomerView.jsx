@@ -178,7 +178,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                   </Field>
                   <Field
                     orientation={"horizontal"}
-                    label={<SpacedLabel text="업종" />}
+                    label={<SpacedLabel text="업태" />}
                   >
                     <Input
                       variant={"subtle"}
