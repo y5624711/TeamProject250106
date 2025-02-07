@@ -144,7 +144,7 @@ export function FranchiseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}{" "}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="20%">
                   {franchise.franchiseName}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="15%">
@@ -159,7 +159,7 @@ export function FranchiseList({
                 <Table.Cell textAlign="center" width="15%">
                   {franchise.franchiseState}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="14%">
+                <Table.Cell textAlign="center">
                   {franchise.franchiseCity}
                 </Table.Cell>
               </Table.Row>
@@ -167,7 +167,7 @@ export function FranchiseList({
           ) : (
             <Table.Row>
               <Table.Cell textAlign="center" colSpan="7">
-                데이터가 없습니다.
+                정보가 존재하지 않습니다.
               </Table.Cell>
             </Table.Row>
           )}

@@ -27,7 +27,7 @@ public class FranchiseController {
     public ResponseEntity<Map<String, Object>> addFranchise(@RequestBody Franchise franchise, Authentication auth) {
         // 등록 권한 확인 -> 본사 사람만 가능
         if (purchaseService.checkCustomer(auth.getName())) {
-            return ResponseEntity.badRequest().body(Map.of("message",Map.of("type", "error","text", "등록 권한이 없습니다.")));
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "등록 권한이 없습니다.")));
         }
         // 중복 체크
         int duplicateCount = service.duplicateFranchise(franchise);
@@ -39,13 +39,13 @@ public class FranchiseController {
         if (service.validate(franchise)) {
             if (service.addFranchise(franchise)) {
                 return ResponseEntity.ok().body(Map.of(
-                        "message", Map.of("type", "success", "text", "가맹점이 등록되었습니다."),
+                        "message", Map.of("type", "success", "text", "등록되었습니다."),
                         "franchiseKey", franchise.getFranchiseKey()));
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "가맹점 등록에 실패하였습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "등록에 실패하였습니다.")));
             }
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 
@@ -72,12 +72,12 @@ public class FranchiseController {
     public ResponseEntity<Map<String, Object>> editFranchise(@RequestBody Franchise franchise) {
         if (service.validate(franchise)) {
             if (service.editFranchise(franchise)) {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "가맹점 정보가 성공적으로 수정되었습니다.")));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "저장되었습니다.")));
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "가맹점 정보가 수정되지 않았습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "저장에 실패하였습니다.")));
             }
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 

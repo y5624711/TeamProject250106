@@ -50,6 +50,7 @@ public interface PurchaseMapper {
                 pa.customer_employee_no AS customerEmployeeNo,
                 emp2.employee_name AS customerEmployeeName,
                 sys.common_code_name AS itemCommonName,
+                pa.purchase_no AS purchaseNo,
                 pr.purchase_request_date AS purchaseRequestDate,
                 pr.purchase_consent AS purchaseConsent,
                 pa.purchase_approve_date AS purchaseApproveDate,
@@ -100,6 +101,9 @@ public interface PurchaseMapper {
                         </if>
                         <if test="type=='all' or type=='itemCommonName'">
                             OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='purchaseNo'">
+                            OR pa.purchase_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='employeeName'">
                             OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')
@@ -169,6 +173,9 @@ public interface PurchaseMapper {
                         </if>
                         <if test="type=='all' or type=='itemCommonName'">
                             OR sys.common_code_name LIKE CONCAT('%', #{keyword}, '%')
+                        </if>
+                        <if test="type=='all' or type=='purchaseNo'">
+                            OR pa.purchase_no LIKE CONCAT('%', #{keyword}, '%')
                         </if>
                         <if test="type=='all' or type=='employeeName'">
                             OR emp1.employee_name LIKE CONCAT('%', #{keyword}, '%')

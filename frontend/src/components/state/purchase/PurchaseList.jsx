@@ -24,8 +24,9 @@ export function PurchaseList({
   const searchOptions = createListCollection({
     items: [
       { label: "전체", value: "all" },
-      { label: "담당 업체", value: "customerName" },
       { label: "품목", value: "itemCommonName" },
+      { label: "담당 업체", value: "customerName" },
+      { label: "발주 번호", value: "purchaseNo" },
       { label: "요청자", value: "employeeName" },
       { label: "반려/승인자", value: "customerEmployeeName" },
     ],
@@ -33,8 +34,9 @@ export function PurchaseList({
 
   const sortOptions = [
     { key: "purchaseRequestKey", label: "#" },
-    { key: "customerName", label: "담당 업체" },
     { key: "itemCommonName", label: "품목" },
+    { key: "customerName", label: "담당 업체" },
+    { key: "purchaseNo", label: "발주 번호" },
     { key: "employeeName", label: "요청자" },
     { key: "customerEmployeeName", label: "반려/승인자" },
     { key: "purchaseDate", label: "날짜" },
@@ -112,28 +114,31 @@ export function PurchaseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="17%">
-                  {purchase.customerName}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="14%">
                   {purchase.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="18%">
+                  {purchase.customerName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width="14%">
+                  {purchase.purchaseNo || "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width="13%">
                   {purchase.employeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="13%">
                   {purchase.customerEmployeeName ||
                     purchase.disapproveEmployeeName ||
                     "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
+                <Table.Cell textAlign="center" width="14%">
                   {purchase.purchaseConsent == 1
                     ? purchase.purchaseApproveDate
                     : purchase.purchaseConsent == 0
                       ? purchase.disapproveDate
                       : purchase.purchaseRequestDate}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="13%">
+                <Table.Cell textAlign="center">
                   {purchase.purchaseConsent == 1
                     ? "승인"
                     : purchase.purchaseConsent == 0
@@ -145,7 +150,7 @@ export function PurchaseList({
           ) : (
             <Table.Row>
               <Table.Cell textAlign="center" colSpan="9">
-                데이터가 없습니다.
+                정보가 존재하지 않습니다.
               </Table.Cell>
             </Table.Row>
           )}
