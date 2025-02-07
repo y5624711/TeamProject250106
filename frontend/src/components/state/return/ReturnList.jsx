@@ -238,33 +238,33 @@ function ReturnList({
                 <Table.Cell textAlign="center" width={"90px"}>
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"9%"}>
+                <Table.Cell textAlign="center" width={"13%"}>
                   {data.franchiseName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"9%"}>
+                <Table.Cell textAlign="center" width={"10%"}>
                   {data.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"9%"}>
+                <Table.Cell textAlign="center" width={"10%"}>
                   {data.customerName}
                 </Table.Cell>
 
-                <Table.Cell textAlign="center" width={"11%"}>
+                <Table.Cell textAlign="center" width={"10%"}>
                   {data.serialNo}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"10%"}>
+                <Table.Cell textAlign="center" width={"8%"}>
                   {data.returnNo ? data.returnNo : "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"9%"}>
+                <Table.Cell textAlign="center" width={"8%"}>
                   {data.businessEmployeeName}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"10%"}>
+                <Table.Cell textAlign="center" width={"8%"}>
                   {data.returnConsent == 1
                     ? data.customerEmployeeName
                     : data.returnConsent == 0
                       ? data.disapproveEmployeeName
                       : "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width={"10%"}>
+                <Table.Cell textAlign="center" width={"9%"}>
                   {data.customerConfigurerName
                     ? data.customerConfigurerName
                     : "-"}
