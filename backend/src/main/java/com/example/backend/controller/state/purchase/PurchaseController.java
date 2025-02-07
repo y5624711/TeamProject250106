@@ -48,12 +48,12 @@ public class PurchaseController {
             if (service.validate(purchase)) {
                 // 구매 요청 처리
                 if (service.purchaseRequest(purchase)) {
-                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공적으로 구매 요청이 되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
+                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "요청되었습니다."), "franchiseKey", purchase.getPurchaseRequestKey()));
                 } else {
-                    return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청에 실패하였습니다.")));
+                    return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "요청에 실패하였습니다.")));
                 }
             } else {
-                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "입력된 데이터가 유효하지 않습니다.")));
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다..")));
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "오류가 발생하였습니다.")));
@@ -89,12 +89,12 @@ public class PurchaseController {
                 return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "승인 권한이 없습니다.")));
             }
             if (service.purchaseApprove(purchase)) {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "승인되었습니다."), "purchaseNo", purchase.getPurchaseNo()));
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 승인에 실패하였습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "승인에 실패하였습니다.")));
             }
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "처리 중 오류가 발생하였습니다.")));
+            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "오류가 발생하였습니다.")));
         }
     }
 
@@ -104,15 +104,15 @@ public class PurchaseController {
         try {
             // 반려 권한 확인 -> 본사 or 해당 협력 업체 직원만 가능
             if (!service.checkApproveEmployee(auth.getName(), purchase.getCustomerCode())) {
-                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "승인 권한이 없습니다.")));
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "error", "text", "반려 권한이 없습니다.")));
             }
             if (service.disapprovePurchase(purchase)) {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "구매 요청이 반려되었습니다.")));
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "반려되었습니다.")));
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "구매 요청 반려에 실패하였습니다.")));
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "warning", "text", "반려에 실패하였습니다.")));
             }
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "서버 오류가 발생하였습니다.")));
+            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "오류가 발생하였습니다.")));
         }
     }
 
