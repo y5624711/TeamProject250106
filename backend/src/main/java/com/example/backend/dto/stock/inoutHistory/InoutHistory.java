@@ -22,6 +22,8 @@ public class InoutHistory {
 
     private String warehouseAddress;
 
+    private String inoutNo;
+
     //    아이템 이름
     private String itemName;
     //    아이템 코드

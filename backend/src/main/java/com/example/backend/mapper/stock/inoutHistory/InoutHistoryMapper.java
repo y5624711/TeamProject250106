@@ -175,7 +175,8 @@ public interface InoutHistoryMapper {
                 bizemp.employee_name businessEmployeeName,
                 l.row,
                 l.col,
-                l.shelf
+                l.shelf,
+                h.inout_no
             FROM TB_INOUT_HIS h
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no

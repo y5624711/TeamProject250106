@@ -47,6 +47,20 @@ INSERT INTO TB_INOUT_HIS (serial_no, warehouse_code, inout_common_code, customer
 VALUES ('00000000000000000009', 'WH4328332', '', 'CUSEMP0000020', 'BIZEMP0000004',
         'FRN0000000002', '이상 없음');
 
+SELECT re.franchise_code, f.franchise_name
+FROM TB_INOUT_HIS h
+         LEFT JOIN TB_RTN_APPR ra ON h.inout_no = ra.return_no
+         LEFT JOIN TB_RTN_REQ re ON ra.return_request_key = re.return_request_key
+         LEFT JOIN TB_FRNCHSMST f ON re.franchise_code = f.franchise_code
+WHERE h.inout_no = 'RTN020';
+
+SELECT *
+FROM TB_EMPMST
+WHERE employee_no = 'BIZEMP0000004';
+
+ALTER TABLE TB_INOUT_HIS
+    ADD inout_no VARCHAR(13);
+
 SELECT h.inout_history_key,
        h.serial_no,
        h.warehouse_code,
@@ -58,23 +72,22 @@ SELECT h.inout_history_key,
        h.inout_history_date,
        h.inout_history_note,
        w.warehouse_name,
-       itsb.item_common_code,
-       itcm.item_common_name,
+       w.warehouse_address,
+       itsb.item_common_code itemCode,
+       itcm.common_code_name itemName,
        fr.franchise_name,
-       cusemp.employee_name customerEmployeeName,
-       bizemp.employee_name businessEmployeeName
+       cusemp.employee_name  customerEmployeeName,
+       bizemp.employee_name  businessEmployeeName,
+       l.row,
+       l.col,
+       l.shelf,
+       h.inout_no
 FROM TB_INOUT_HIS h
          LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
          LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
-         LEFT JOIN TB_ITEMCOMM itcm ON itsb.item_common_code = itcm.item_common_code
+         LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
          LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
          LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
          LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
-WHERE h.inout_history_key = 1;
-
-SELECT *
-FROM TB_EMPMST
-WHERE employee_no = 'BIZEMP0000004';
-
-ALTER TABLE TB_INOUT_HIS
-    ADD inout_no VARCHAR(13);
+         LEFT JOIN TB_LOCMST l ON h.location_key = l.location_key
+WHERE h.inout_history_key = 91;
