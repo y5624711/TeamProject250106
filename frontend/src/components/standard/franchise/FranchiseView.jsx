@@ -3,12 +3,27 @@ import { Box, Button, Input, Spinner, Textarea } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { Tooltip } from "../../ui/tooltip.jsx";
 import axios from "axios";
 import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   const [franchise, setFranchise] = useState(null);
   const [originalData, setOriginalData] = useState(null);
+
+  // 유효성 검사
+  const validate = () => {
+    return (
+      franchise?.franchiseName?.trim() !== "" &&
+      franchise?.franchiseRep?.trim() !== "" &&
+      franchise?.franchiseNo?.trim() !== "" &&
+      franchise?.franchiseTel?.trim() !== "" &&
+      franchise?.franchiseAddress?.trim() !== "" &&
+      franchise?.franchisePost?.trim() !== "" &&
+      franchise?.franchiseState?.trim() !== "" &&
+      franchise?.franchiseCity?.trim() !== ""
+    );
+  };
 
   // 특정 가맹점 조회
   useEffect(() => {
@@ -38,7 +53,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
     }));
   };
 
-  // // 확인 (수정 후 저장)
+  // 확인 (수정 후 저장)
   const handleSaveClick = () => {
     axios
       .put(`/api/franchise/edit/${franchiseKey}`, franchise)
@@ -61,7 +76,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
       });
   };
 
-  // 취소
+  // 취소 버튼 클릭 시 창 닫기
   const handleCancelClick = () => {
     onClose();
   };
@@ -224,7 +239,16 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
           <Button onClick={handleCancelClick} variant="outline">
             취소
           </Button>
-          <Button onClick={handleSaveClick}>확인</Button>
+          <Tooltip
+            content="입력을 완료해 주세요."
+            disabled={validate()}
+            openDelay={100}
+            closeDelay={100}
+          >
+            <Button onClick={handleSaveClick} disabled={!validate()}>
+              등록
+            </Button>
+          </Tooltip>
         </Box>
       </Box>
     </Box>
