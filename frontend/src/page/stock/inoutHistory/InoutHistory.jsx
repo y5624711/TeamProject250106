@@ -174,8 +174,8 @@ const inoutHistoryOptionList = createListCollection({
     { label: "담당 업체", value: "customer" },
     { label: "창고", value: "warehouse" },
     { label: "가맹점", value: "franchise" },
-    { label: "본사 직원", value: "businessEmployee" },
-    { label: "협력 업체 직원", value: "customerEmployee" },
+    { label: "요청자", value: "businessEmployee" },
+    { label: "승인자", value: "customerEmployee" },
   ],
 });
 

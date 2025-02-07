@@ -65,7 +65,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
         </Field>
       )}
       <Box display="flex" gap={4}>
-        <Field label="직원 (본사)" orientation="horizontal" mb={15}>
+        <Field label="요청자" orientation="horizontal" mb={15}>
           <Input value={inoutHistoryDetail.businessEmployeeName} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
@@ -73,7 +73,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
         </Field>
       </Box>
       <Box display="flex" gap={4}>
-        <Field label="직원 (협력)" orientation="horizontal" mb={15}>
+        <Field label="승인자" orientation="horizontal" mb={15}>
           <Input value={inoutHistoryDetail.customerEmployeeName} readOnly />
         </Field>
         <Field label="사번" orientation="horizontal" mb={15}>
