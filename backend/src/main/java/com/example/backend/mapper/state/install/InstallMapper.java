@@ -214,7 +214,7 @@ public interface InstallMapper {
                     ir.business_employee_no,
                     e1.employee_name           as businessEmployeeName,
                     w.warehouse_name           as warehouseName,
-                    ir.install_request_consent as requestConsent,
+                    ir.install_request_consent as installRequestConsent,
                     ia.output_no               as outputNo,
                     ia.customer_employee_no,
                     -- 반려자가 있는 경우 반려자 이름을 customerEmployeeName으로 설정
@@ -226,7 +226,7 @@ public interface InstallMapper {
                     ia.install_approve_date    as installApproveDate,
                     ir.install_request_date    as installRequestDate,
                     ih.inout_history_date      as inoutHistoryDate,
-                    ia.install_approve_consent as approveConsent,
+                    ia.install_approve_consent as installApproveConsent,
                     -- NULL을 고려하여 최댓값을 정확하게 선택
                     GREATEST(
                         COALESCE(ir.install_request_date, '0001-01-01'),
@@ -411,8 +411,9 @@ public interface InstallMapper {
 
     // 설치 승인 후 추가 데이터(승인 날짜, 출고 번호, 시리얼) 가져오기
     @Select("""
-            SELECT output_no, install_approve_date
-            FROM TB_INSTL_APPR
+            SELECT a.output_no, a.install_approve_date, GROUP_CONCAT(DISTINCT s.serial_no) AS serial_numbers
+            FROM TB_INSTL_APPR a
+            LEFT JOIN TB_INSTL_SUB s ON a.output_no = s.output_no
             WHERE install_request_key = #{installKey}
             """)
     Install getInstallApproveData(int installKey);

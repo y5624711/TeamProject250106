@@ -76,7 +76,7 @@ public class ItemController {
         return service.getItemList(page, active, type, keyword, sort, order);
     }
 
-    // 품목 구분 코드 리스트 가져오기
+    // 품목 구분 코드, 담당 업체 리스트 가져오기
     @GetMapping("commonCode")
     public List<Item> getItemCommonCode() {
         return service.getItemCommonCode();

@@ -7,45 +7,49 @@ import java.time.LocalDate;
 @Data
 public class Install {
     private Integer installRequestKey;
-    private String itemCommonCode;
-    private String franchiseCode;
-    private String businessEmployeeNo;
-    private String customerCode;
-    private Integer installRequestAmount;
-    private LocalDate installRequestDate;
-    private Boolean installRequestConsent;
-    private String installRequestNote;
+    private Integer installApproveKey;
+    private Integer installSubKey;
 
+    private String itemCommonCode;
     private String itemCommonName;
+
+    private String franchiseCode;
     private String franchiseName;
     private String franchiseAddress;
-    private String businessEmployeeName;
+
+    private String customerCode;
     private String customerName;
-    private String warehouseName;
+
+    private String businessEmployeeNo;
+    private String businessEmployeeName;
     private String customerEmployeeNo;
+    private String customerEmployeeName;
     private String customerInstallerNo;
     private String customerInstallerName;
-    private LocalDate installScheduleDate;
-    private String outputNo;
-    private Integer installApproveKey;
-    private String installApproveNote;
-
-    private Integer installSubKey;
-    private String serialNo;
-    private LocalDate installApproveDate;
-    private String customerEmployeeName;
-    private String serialNumbers;
-    private Integer installConfigurationKey;
-    private Boolean installConfiguration;
-    private String warehouseCode;
-    private String inoutHistoryNote;
-    private Boolean requestConsent;
-    private Boolean approveConsent;
-    private Integer countItem;
-    private LocalDate inoutHistoryDate;
-    private LocalDate installDate;
-    private String disapproveNote;
-    private LocalDate disapproveDate;
     private String disapproveEmployeeNo;
     private String disapproveEmployeeName;
+
+    private String warehouseCode;
+    private String warehouseName;
+
+    private LocalDate installRequestDate;
+    private LocalDate installApproveDate;
+    private LocalDate disapproveDate;
+    private LocalDate inoutHistoryDate;
+    private LocalDate installDate; // 설치 리스트에서 사용하는 가장 큰 날짜
+    private LocalDate installScheduleDate;
+
+    private String installRequestNote;
+    private String installApproveNote;
+    private String disapproveNote;
+    private String inoutHistoryNote;
+
+    private Boolean installRequestConsent;
+    private Boolean installApproveConsent;
+
+    private Integer installRequestAmount;
+    private Integer countItem; // 가능한 수량
+    private String outputNo;
+    private String serialNo;
+    private String serialNumbers;
 }

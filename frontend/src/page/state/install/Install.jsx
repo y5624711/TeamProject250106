@@ -27,32 +27,29 @@ export function Install() {
         params: searchParams,
       })
       .then((res) => {
-        const formattedList = res.data.list.map((item) => {
+        const formattedList = res.data.list.map((list) => {
           // requestKey 상태에 따라 "대기", "승인", "반려" 구분
           let state = null;
 
-          if (!item.installApproveKey) {
-            if (
-              item.requestConsent === null ||
-              item.requestConsent === undefined
-            ) {
+          if (!list.installApproveKey) {
+            if (!list.installRequestConsent) {
               state = "대기";
-            } else if (item.requestConsent === true) {
+            } else if (list.installRequestConsent === true) {
               state = "승인";
-            } else if (item.requestConsent === false) {
+            } else if (list.installRequestConsent === false) {
               state = "반려";
             }
-          } else if (item.installApproveKey) {
-            if (!item.approveConsent) {
+          } else if (list.installApproveKey) {
+            if (!list.installApproveConsent) {
               state = "승인";
-            } else if (item.approveConsent === true) {
+            } else if (list.installApproveConsent === true) {
               state = "완료";
-            } else if (item.approveConsent === false) {
+            } else if (list.installApproveConsent === false) {
               state = "반려";
             }
           }
 
-          return { ...item, state };
+          return { ...list, state };
         });
         setInstallList(formattedList || []);
         setCount(res.data.count);

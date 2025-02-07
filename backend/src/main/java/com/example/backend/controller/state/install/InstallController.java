@@ -58,7 +58,6 @@ public class InstallController {
         }
     }
 
-
     // 설치 요청, 승인 리스트 가져오기
     @GetMapping("list")
     public Map<String, Object> getInstallList(
