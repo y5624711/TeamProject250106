@@ -35,7 +35,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
     employeeActive: false,
   });
 
-  console.log("onChange,", onChange);
+  // console.log("onChange,", onChange);
 
   const frameworks = createListCollection({
     items: [

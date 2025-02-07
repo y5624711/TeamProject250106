@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { StandardSideBar } from "../../../components/tool/sidebar/StandardSideBar.jsx";
 import LocationAdd from "../../../components/standard/location/LocationAdd.jsx";
-import LocationSearch from "../../../components/standard/location/LocationSearch.jsx";
 import { useSearchParams } from "react-router-dom";
 import LocationList from "../../../components/standard/location/LocationList.jsx";
 import axios from "axios";
@@ -116,14 +115,14 @@ function Location(props) {
               setSearchParams(nextSearchParam)
             }
           />
-          <LocationSearch
-            locationOptionList={locationOptionList}
-            setSearch={setSearch}
-            search={search}
-            handleSearchClick={handleSearchClick}
-            setSearchParams={setSearchParams}
-            setCheckedActive={setCheckedActive}
-          />
+          {/*<LocationSearch*/}
+          {/*  locationOptionList={locationOptionList}*/}
+          {/*  setSearch={setSearch}*/}
+          {/*  search={search}*/}
+          {/*  handleSearchClick={handleSearchClick}*/}
+          {/*  setSearchParams={setSearchParams}*/}
+          {/*  setCheckedActive={setCheckedActive}*/}
+          {/*/>*/}
           <Checkbox
             checked={checkedActive}
             onCheckedChange={toggleCheckedActive}

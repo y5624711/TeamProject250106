@@ -58,7 +58,7 @@ export function CommonCodeView({
     }
   }, [commonCodeKey, isOpen]);
 
-  console.log(commonCode);
+  // console.log(commonCode);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
