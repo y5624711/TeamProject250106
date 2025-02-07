@@ -28,30 +28,6 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
       >
         <Input value={location} readOnly variant="subtle" />
       </Field>
-      <Box display="flex" gap={20}>
-        <Field
-          label={<SpacedLabel text="행" />}
-          orientation="horizontal"
-          mb={15}
-        >
-          <Input value={locationDetail.row} variant="subtle" readOnly />
-        </Field>
-        <Field
-          label={<SpacedLabel text="열" />}
-          orientation="horizontal"
-          mb={15}
-        >
-          <Input value={locationDetail.col} variant="subtle" readOnly />
-        </Field>
-        <Field
-          label={<SpacedLabel text="단" />}
-          orientation="horizontal"
-          mb={15}
-        >
-          <Input value={locationDetail.shelf} variant="subtle" readOnly />
-        </Field>
-      </Box>
-
       <Field
         label={<SpacedLabel text="비고" />}
         orientation="horizontal"
