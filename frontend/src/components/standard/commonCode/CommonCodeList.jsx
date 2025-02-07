@@ -93,7 +93,7 @@ export function CommonCodeList({
                   <Table.Cell textAlign="center" width="30%">
                     {code.commonCode}
                   </Table.Cell>
-                  <Table.Cell textAlign="center" width="30%">
+                  <Table.Cell textAlign="center">
                     {code.commonCodeName}
                   </Table.Cell>
                 </Table.Row>
