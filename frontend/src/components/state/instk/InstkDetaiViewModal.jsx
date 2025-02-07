@@ -312,10 +312,10 @@ export function InstkDetaiViewModal({
                     label={<SpacedLabel text="반려비고" />}
                     orientation="horizontal"
                   >
-                    {instk.inputStockNote ? (
+                    {detailData.disapproveNote ? (
                       <Textarea
                         readOnly
-                        value={instk.inputStockNote}
+                        value={detailData.disapproveNote}
                         style={{ maxHeight: "100px", overflowY: "auto" }}
                       />
                     ) : (
