@@ -13,14 +13,14 @@ export function MainBuyList({ company, scope }) {
       .then((res) => res.data)
       .then((data) => {
         setPurchaseList(data);
-        console.log(data);
       });
   }, [company]);
 
   const columnHeaders = [
     { label: "#" },
-    { label: "담당 업체" },
     { label: "품목" },
+    { label: "담당 업체" },
+    { label: "발주 번호" },
     { label: "요청자" },
     { label: "승인자" },
     { label: "날짜" },
@@ -50,8 +50,11 @@ export function MainBuyList({ company, scope }) {
                 _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
               >
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
                 <Table.Cell textAlign="center">{row.itemCommonName}</Table.Cell>
+                <Table.Cell textAlign="center">{row.customerName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {row.purchaseNo || "-"}
+                </Table.Cell>
                 <Table.Cell textAlign="center">{row.employeeName}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {row.customerEmployeeName || "-"}

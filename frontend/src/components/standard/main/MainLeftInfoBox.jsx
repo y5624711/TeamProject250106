@@ -13,7 +13,7 @@ export function MainLeftInfoBox({ isAdmin, user, companyStatus, company }) {
 
   return (
     <Box
-      minW="420px"
+      minW="500px"
       h="700px"
       backgroundImage="url('/mainInfo.jpg')" // 배경 이미지 적용
       backgroundSize="cover"

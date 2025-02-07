@@ -77,16 +77,17 @@ public class MainPageController {
     @PutMapping("mainCustomerUpdate")
     public ResponseEntity<Map<String, Object>> mainCustomerUpdate(@RequestBody Customer customer) {
         if (service.validCustomer(customer)) {
+            System.out.println("customer = " + customer);
             if (service.updateCustomer(customer)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장 되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "error", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "내용을 입력 해주세요.")));
+                    Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 
@@ -100,14 +101,14 @@ public class MainPageController {
         if (service.validWarehouse(warehouse)) {
             if (service.updateWarehouse(warehouse)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장 되었습니다.")));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "success", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type", "error", "text", "내용을 입력 해주세요.")));
+                    Map.of("type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 

@@ -40,26 +40,25 @@ public class DepartmentController {
                 if (service.checkSameNameCheck(department)) {
                     if (service.addDepartment(department)) {
                         return ResponseEntity.ok().body(Map.of("message",
-                                Map.of("type", "success", "text", "저장 되었습니다.")));
+                                Map.of("type", "success", "text", "등록 되었습니다.")));
                     } else {
                         return ResponseEntity.internalServerError().body(Map.of("message",
-                                Map.of("type", "error", "text", "저장 되지 않았습니다.")));
+                                Map.of("type", "error", "text", "등록에 실패하였습니다.")));
                     }
 
                 } else {
-                    System.out.println("잘들어옴");
                     return ResponseEntity.internalServerError().body(Map.of("message",
                             Map.of("type", "warning", "text", "중복된 이름입니다.")));
                 }
             } else {
                 return ResponseEntity.internalServerError().body(
                         Map.of("message",
-                                Map.of("type", "warning", "text", "내용을 입력해 주세요.")));
+                                Map.of("type", "warning", "text", "필수 항목이 입력되지 않았습니다.")));
             }
         } else {
             return ResponseEntity.internalServerError().body(
                     Map.of("message",
-                            Map.of("type", "error", "text", "권한이 없습니다.")));
+                            Map.of("type", "error", "text", "작성 권한이 없습니다.")));
         }
     }
 
@@ -68,15 +67,15 @@ public class DepartmentController {
         if (service.validateDepartment(department)) {
             if (service.updateDepartment(department)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "수정 되었습니다.")));
+                        Map.of("type", "success", "text", "저장 되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
-                        Map.of("type", "error", "text", "수정 되지 않았습니다.")));
+                        Map.of("type", "error", "text", "저장에 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.ok().body(
                     Map.of("message",
-                            Map.of("type", "warning", "text", "내용을 입력해 주세요.")));
+                            Map.of("type", "warning", "text", "필수 항목이 입력되지 않았습니다.")));
         }
     }
 

@@ -34,9 +34,3 @@ from TB_SYSCOMM
 where common_code_key = 14;
 
 DROP TABLE TB_SYSCOMM;
-
-ALTER TABLE TB_ITEMCOMM
-    add common_code_type VARCHAR(10) NOT NULL;
-
-alter table TB_ITEMCOMM
-    modify common_code_type varchar(10) NULL;

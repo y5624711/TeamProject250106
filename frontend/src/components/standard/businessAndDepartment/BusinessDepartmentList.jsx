@@ -121,7 +121,7 @@ export function BusinessDepartmentList() {
   }
 
   return (
-    <Box>
+    <Box ml={2} mr={2}>
       {/*검색창&필터*/}
       <BusinessSearchAndFilter
         search={search}

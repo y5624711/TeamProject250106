@@ -22,7 +22,6 @@ public class MemberInfoController {
         if (service.hasAccess(id, auth)) {
             return ResponseEntity.ok(service.getId(id));
         } else {
-            System.out.println("안됨");
             return ResponseEntity.status(403).build();
         }
 //        return service.getMemberInfo();
@@ -33,19 +32,19 @@ public class MemberInfoController {
     public ResponseEntity<Map<String, Object>> updateMemberInfo(@RequestBody Employee employee, Authentication auth) {
         if (!service.hasAccess(employee.getEmployeeNo(), auth)) {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "error", "text", "권한이 없습니다.")));
+                    "type", "error", "text", "저장 권한이 없습니다.")));
         }
         if (!service.validate(employee)) {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "error", "text", "아이디 혹은 비밀번호가 입력되지 않았습니다.")));
+                    "type", "error", "text", "필수 항목이 입력되지 않았습니다.")));
         }
         if (service.updateId(employee)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of(
-                    "type", "success", "text", "수정되었습니다.")));
+                    "type", "success", "text", "저장 되었습니다.")));
 
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of(
-                    "type", "error", "text", "수정되지 않았습니다.")));
+                    "type", "error", "text", "저장에 실패하였습니다.")));
         }
     }
 }

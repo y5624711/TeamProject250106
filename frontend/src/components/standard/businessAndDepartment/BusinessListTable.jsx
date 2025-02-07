@@ -37,27 +37,35 @@ export function BusinessListTable({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {department.map((list, index) => (
-            <Table.Row
-              key={list.departmentKey || index}
-              _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
-              onDoubleClick={() => openDialog(list)}
-              bg={list.departmentActive ? "white" : "gray.200"}
-            >
-              <Table.Cell textAlign="center" width="90px">
-                {index + 1 || "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center">
-                {list.departmentName || "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center" w={"20%"}>
-                {list.departmentTel || "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center" w={"20%"}>
-                {list.departmentFax || "-"}
+          {department.length > 0 ? (
+            department.map((list, index) => (
+              <Table.Row
+                key={list.departmentKey || index}
+                _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
+                onDoubleClick={() => openDialog(list)}
+                bg={list.departmentActive ? "white" : "gray.200"}
+              >
+                <Table.Cell textAlign="center" width="90px">
+                  {index + 1 || "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {list.departmentName || "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" w={"30%"}>
+                  {list.departmentTel || "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" w={"30%"}>
+                  {list.departmentFax || "-"}
+                </Table.Cell>
+              </Table.Row>
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell textAlign="center" colSpan="4">
+                데이터가 없습니다.
               </Table.Cell>
             </Table.Row>
-          ))}
+          )}
         </Table.Body>
       </Table.Root>
     </Box>

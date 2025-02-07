@@ -26,8 +26,8 @@ export function Main() {
   }
 
   return (
-    <Flex w="80%" p={4} mt={6} justify="center" align="center" mx={"auto"}>
-      <Flex w="100%" justify="center" gap={5}>
+    <Flex w="100%" p={4} mt={6} justify="center" align="center" mx={"auto"}>
+      <Flex w="90%" justify="center" gap={20}>
         {/* 왼쪽 박스 */}
         <MainLeftInfoBox
           user={user}
