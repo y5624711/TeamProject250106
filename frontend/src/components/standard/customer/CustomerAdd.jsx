@@ -119,6 +119,7 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
     customerRep &&
     itemCode &&
     customerNo &&
+    corporateNo &&
     customerTel &&
     customerPost &&
     customerAddress;
@@ -238,6 +239,7 @@ function CustomerAdd({ isOpen, onCancel, onSave, customerList }) {
             <Input
               value={customerPost}
               onChange={(e) => setCustomerPost(e.target.value)}
+              maxLength={5}
             />
           </Field>
           <Field

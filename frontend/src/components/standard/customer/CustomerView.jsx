@@ -69,6 +69,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
     customer.customerName &&
     customer.customerRep &&
     customer.customerNo &&
+    customer.corporateNo &&
     customer.customerTel &&
     customer.customerPost &&
     customer.customerAddress;
@@ -162,6 +163,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                       name="customerNo"
                       value={customer.customerNo || ""}
                       onChange={handleInputChange}
+                      maxLength={12}
                     />
                   </Field>
                   <Field
@@ -172,7 +174,8 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                       name="corporateNo"
                       value={customer.corporateNo || ""}
                       onChange={handleInputChange}
-                    ></Input>
+                      maxLength={14}
+                    />
                   </Field>
                 </Box>
                 <Box display="flex" gap={5}>
@@ -184,6 +187,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                       name="customerTel"
                       value={customer.customerTel || ""}
                       onChange={handleInputChange}
+                      maxLength={13}
                     />
                   </Field>
                   <Field
@@ -191,9 +195,11 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     label={<SpacedLabel text="팩스" />}
                   >
                     <Input
+                      type={"tel"}
                       name="customerFax"
                       value={customer.customerFax || ""}
                       onChange={handleInputChange}
+                      maxLength={13}
                     />
                   </Field>
                 </Box>
@@ -205,6 +211,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     name={"customerPost"}
                     value={customer.customerPost || ""}
                     onChange={handleInputChange}
+                    maxLength={5}
                   />
                 </Field>
                 <Field
@@ -237,6 +244,7 @@ function CustomerView({ isOpen, onCancel, customerKey, onEdit }) {
                     value={customer.customerNote || ""}
                     onChange={handleInputChange}
                     maxHeight={"100px"}
+                    maxLength={50}
                   />
                 </Field>
                 <Field
