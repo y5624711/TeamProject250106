@@ -35,37 +35,45 @@ export function InventoryTable({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {inventoryList.map((item, index) => (
-          <Table.Row
-            key={item.inoutHistoryNote || index}
-            _hover={{ backgroundColor: "gray.200" }}
-          >
-            <Table.Cell textAlign="center" w={"90px"}>
-              {index + 1}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"20%"}>
-              {item.wareHouseName}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"10%"}>
-              {item.wareHouseCity}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"15%"}>
-              {item.wareHouseAddress}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"10%"}>
-              {item.wareHouseAddressDetail}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"20 %"}>
-              {item.customerName}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"15%"}>
-              {item.commonCodeName}
-            </Table.Cell>
-            <Table.Cell textAlign="center" w={"10%"}>
-              {item.count}
+        {inventoryList.length > 0 ? (
+          inventoryList.map((item, index) => (
+            <Table.Row
+              key={item.inoutHistoryNote || index}
+              _hover={{ backgroundColor: "gray.200" }}
+            >
+              <Table.Cell textAlign="center" w={"90px"}>
+                {index + 1}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"20%"}>
+                {item.wareHouseName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"10%"}>
+                {item.wareHouseCity}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"15%"}>
+                {item.wareHouseAddress}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"10%"}>
+                {item.wareHouseAddressDetail}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"20 %"}>
+                {item.customerName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"15%"}>
+                {item.commonCodeName}
+              </Table.Cell>
+              <Table.Cell textAlign="center" w={"10%"}>
+                {item.count}
+              </Table.Cell>
+            </Table.Row>
+          ))
+        ) : (
+          <Table.Row>
+            <Table.Cell textAlign="center" colSpan="8">
+              데이터가 없습니다.
             </Table.Cell>
           </Table.Row>
-        ))}
+        )}
       </Table.Body>
     </Table.Root>
   );
