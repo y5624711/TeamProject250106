@@ -112,7 +112,7 @@ export function PurchaseList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="17%">
+                <Table.Cell textAlign="center" width="20%">
                   {purchase.customerName}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="15%">
@@ -133,7 +133,7 @@ export function PurchaseList({
                       ? purchase.disapproveDate
                       : purchase.purchaseRequestDate}
                 </Table.Cell>
-                <Table.Cell textAlign="center" width="13%">
+                <Table.Cell textAlign="center">
                   {purchase.purchaseConsent == 1
                     ? "승인"
                     : purchase.purchaseConsent == 0
