@@ -106,12 +106,13 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
             />
           </Field>
           <Field
-            label={<SpacedLabel text="업체" req />}
+            label={<SpacedLabel text="전화번호" req />}
             orientation="horizontal"
             required
           >
             <Input
               value={departmentTel}
+              placeholder={"- 를 제외하고 입력해 주세요."}
               onChange={(e) =>
                 setDepartmentTel(formatPhoneNumber(e.target.value))
               }
@@ -121,10 +122,11 @@ export function DepartmentAdd({ saved, isOpen, setIsOpen, onCancel }) {
           <Field label={<SpacedLabel text="팩스" />} orientation="horizontal">
             <Input
               value={departmentFax}
+              placeholder={"- 를 제외하고 입력해 주세요."}
               onChange={(e) =>
                 setDepartmentFax(formatPhoneNumber(e.target.value))
               }
-              maxLength={15}
+              maxLength={13}
             />
           </Field>
           <Field label={<SpacedLabel text="비고" />} orientation="horizontal">

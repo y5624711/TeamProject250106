@@ -22,6 +22,28 @@ export function LoginPage() {
     }
   }, [isAuthenticated]);
 
+  const isValid = /^[A-Z0-9]+$/.test(id) && id.length > 0;
+
+  const handleKeyDownEnter = (e) => {
+    if (e.key === "Enter") {
+      if (isValid) {
+        handleLoginClick();
+      } else {
+        if (password.trim().length > 0) {
+          toaster.create({
+            type: "error",
+            description: "아이디를 혹은 비밀번호를 확인해주세요.",
+          });
+        } else {
+          toaster.create({
+            type: "error",
+            description: "비밀번호를 입력해주세요.",
+          });
+        }
+      }
+    }
+  };
+
   function handleLoginClick() {
     axios
       .post("/api/login/siteIn", {
@@ -93,7 +115,7 @@ export function LoginPage() {
                   placeholder="비밀번호"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleLoginClick()}
+                  onKeyDown={handleKeyDownEnter}
                 />
               </Field>
               <Button
