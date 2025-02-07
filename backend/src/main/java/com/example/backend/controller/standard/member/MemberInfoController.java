@@ -22,7 +22,6 @@ public class MemberInfoController {
         if (service.hasAccess(id, auth)) {
             return ResponseEntity.ok(service.getId(id));
         } else {
-            System.out.println("안됨");
             return ResponseEntity.status(403).build();
         }
 //        return service.getMemberInfo();
