@@ -101,6 +101,7 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
   const handleUpdate = () => {
     axios
       .put("/api/main/mainCustomerUpdate", {
+        customerCode: customer.customerCode,
         customerName: customer.customerName,
         customerRep: customer.customerRep,
         customerNo: customer.customerNo,
