@@ -60,37 +60,45 @@ export function ItemList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {itemList?.map((item, index) => (
-              <Table.Row
-                key={item.itemKey}
-                onDoubleClick={() => onRowClick(item.itemKey)}
-                style={{
-                  cursor: "pointer",
-                }}
-                bg={item.itemActive ? "white" : "gray.100"}
-                _hover={{ backgroundColor: "gray.200" }}
-              >
-                <Table.Cell textAlign="center" width="90px">
-                  {index + 1}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="20%">
-                  {item.itemCommonName}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="20%">
-                  {item.customerName}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="10%">
-                  {item.size || "-"}
-                </Table.Cell>
-                <Table.Cell textAlign="center">{item.unit || "-"}</Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
-                  {item.inputPrice.toLocaleString("ko-KR")}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="15%">
-                  {item.outputPrice.toLocaleString("ko-KR")}
+            {itemList.length > 0 ? (
+              itemList?.map((item, index) => (
+                <Table.Row
+                  key={item.itemKey}
+                  onDoubleClick={() => onRowClick(item.itemKey)}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  bg={item.itemActive ? "white" : "gray.100"}
+                  _hover={{ backgroundColor: "gray.200" }}
+                >
+                  <Table.Cell textAlign="center" width="90px">
+                    {index + 1}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="20%">
+                    {item.itemCommonName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="20%">
+                    {item.customerName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {item.size || "-"}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{item.unit || "-"}</Table.Cell>
+                  <Table.Cell textAlign="center" width="15%">
+                    {item.inputPrice.toLocaleString("ko-KR")}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="15%">
+                    {item.outputPrice.toLocaleString("ko-KR")}
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="7">
+                  정보가 존재하지 않습니다.
                 </Table.Cell>
               </Table.Row>
-            ))}
+            )}
           </Table.Body>
         </Table.Root>
         <Center>
