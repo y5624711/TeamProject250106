@@ -215,6 +215,12 @@ export function InstkDetaiViewModal({
                     <Input readOnly value={instk.requestEmployeeNo} />
                   </Field>
                 </HStack>
+                <Field
+                  orientation="horizontal"
+                  label={<SpacedLabel text="요청일" />}
+                >
+                  <Input readOnly value={instk.requestDate} />
+                </Field>
 
                 <Field
                   label={<SpacedLabel text="주문비고" />}

@@ -370,7 +370,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         <Textarea
           name="note"
           style={{ maxHeight: "100px", overflowY: "auto" }}
-          placeholder={viewKey === -1 ? "최대 50 글자" : ""}
+          placeholder={"최대 50 글자"}
           value={formData.note}
           onChange={handleInputChange}
         />
