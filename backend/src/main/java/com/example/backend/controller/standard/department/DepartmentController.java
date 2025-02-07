@@ -40,7 +40,7 @@ public class DepartmentController {
                 if (service.checkSameNameCheck(department)) {
                     if (service.addDepartment(department)) {
                         return ResponseEntity.ok().body(Map.of("message",
-                                Map.of("type", "success", "text", "등록 되었습니다.")));
+                                Map.of("type", "success", "text", "등록되었습니다.")));
                     } else {
                         return ResponseEntity.internalServerError().body(Map.of("message",
                                 Map.of("type", "error", "text", "등록에 실패하였습니다.")));
@@ -67,7 +67,7 @@ public class DepartmentController {
         if (service.validateDepartment(department)) {
             if (service.updateDepartment(department)) {
                 return ResponseEntity.ok().body(Map.of("message",
-                        Map.of("type", "success", "text", "저장 되었습니다.")));
+                        Map.of("type", "success", "text", "저장되었습니다.")));
             } else {
                 return ResponseEntity.internalServerError().body(Map.of("message",
                         Map.of("type", "error", "text", "저장에 실패하였습니다.")));

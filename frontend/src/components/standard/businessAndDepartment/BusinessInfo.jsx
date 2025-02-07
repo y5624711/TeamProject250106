@@ -58,7 +58,7 @@ export function BusinessInfo({
     } else {
       toaster.create({
         type: "warning",
-        description: "내용을 입력해 주세요",
+        description: "필수 항목이 입력되지 않았습니다.",
       });
     }
   };
