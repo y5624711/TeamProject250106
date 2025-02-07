@@ -174,7 +174,7 @@ export function InstallApprove({ installKey, isOpen, onClose, setChange }) {
         <DialogHeader>
           <DialogTitle>
             {installRequest.installRequestConsent === false
-              ? "설치 승인 반려"
+              ? "설치 반려 상세"
               : isApproved
                 ? "설치 승인 상세"
                 : "설치 승인"}
