@@ -78,9 +78,8 @@ public class StocktakingController {
     public ResponseEntity<Map<String, Object>> updateStock(@RequestBody StocktakingItem stocktakingItem, Authentication auth) {
         try {
             if (service.checkAccess(stocktakingItem.getWarehouseCode(), auth)) {
-                // TODO : validateUpdate 하기
                 if (service.validateUpdate(stocktakingItem)) {
-                    if (service.updateLocation(stocktakingItem)) {
+                    if (service.updateLocation(stocktakingItem, auth)) {
                         return ResponseEntity.ok(Map.of("message",
                                 Map.of("type", "success",
                                         "text", "실사 반영을 완료하였습니다.")));

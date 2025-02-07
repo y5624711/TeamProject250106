@@ -19,6 +19,7 @@ public class StocktakingService {
 
     final StocktakingMapper mapper;
     final ItemMapper itemMapper;
+    private final StocktakingMapper stocktakingMapper;
 
 
     public Map<String, Object> list(String searchType, String searchKeyword, Integer page, String sort, String order, Authentication auth) {
@@ -181,43 +182,86 @@ public class StocktakingService {
                 );
     }
 
-    public Boolean updateLocation(StocktakingItem stocktakingItem) {
+    public Boolean updateLocation(StocktakingItem stocktakingItem, Authentication auth) {
 
         System.out.println(stocktakingItem);
 
 
         if (stocktakingItem.getPutStocktakingType().equals("new")) {
-//            // 품목 상세에서 시리얼 넘버 최대값 가져오기
-//            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(stocktakingItem.getItemCode());
-//
-//            // 시리얼 번호 생성 (20자리)
-//            String insertSerialNo = "S" + String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
-//
-//            stocktakingItem.setSerialNo(insertSerialNo);
-//
-//            System.out.println(stocktakingItem.getSerialNo());
-//            // item_sub 테이블에 추가
-//            int insertItemSub = itemMapper.addItemSub(stocktakingItem.getItemCode(), insertSerialNo, "WHS");
-//
-//            int insertInstkSub = mapper.addInstkSub(stocktakingItem.getSerialNo(), stocktakingItem.getLocationKey());
-//            해당 로케이션 위치를 재고여부 활성화로 변경
-//            물품입출내역에 실사 입고
+            String currentCommonCode = "WHS";
 
+            // 품목 상세에서 시리얼 넘버 최대값 가져오기
+            Integer maxSerialNo = itemMapper.viewMaxSerialNoByItemCode(stocktakingItem.getItemCode());
 
-            return 1 == 1;
+            // 시리얼 번호 생성 (20자리)
+            String insertSerialNo = "S" + String.format("%05d", (maxSerialNo == null) ? 1 : maxSerialNo + 1);
+
+            stocktakingItem.setSerialNo(insertSerialNo);
+
+            String warehouseCode = stocktakingItem.getWarehouseCode();
+            String serialNo = stocktakingItem.getSerialNo();
+            String inoutCommonCode = "STKP";
+            String employeeNo = auth.getName();
+            Integer locationKey = stocktakingItem.getLocationKey();
+
+            System.out.println(stocktakingItem.getSerialNo());
+            // item_sub 테이블에 추가
+            int insertItemSub = itemMapper.addItemSub(stocktakingItem.getItemCode(), stocktakingItem.getSerialNo(), currentCommonCode);
+
+//            입고 테이블에 추가
+            int insertInstkSub = mapper.addInstkSub(stocktakingItem.getSerialNo(), stocktakingItem.getLocationKey());
+
+//            해당 로케이션 위치를 재고 여부 활성화로 변경
+            Integer located = 1;
+            int insertLocation = mapper.updateLocated(stocktakingItem.getLocationKey(), located);
+
+            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey);
+
+            return insertItemSub == 1 && insertInstkSub == 1 && insertLocation == 1 && insertInoutHistory == 1;
 
         } else if (stocktakingItem.getPutStocktakingType().equals("old")) {
 //            UPDATE 로 ITEMSUB 의 current_common_code WHS로 바꾸기
+            String serialNo = stocktakingItem.getSerialNo();
+            Integer locationKey = stocktakingItem.getLocationKey();
+            String currentCommonCode = "WHS";
+            String warehouseCode = stocktakingItem.getWarehouseCode();
+            String inoutCommonCode = "STKP";
+            String employeeNo = auth.getName();
+
+
+            int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
+
+//            로케이션 키값 변경
+            int updateLocation = mapper.updateLocationAtInstkSub(locationKey, serialNo);
+
 //            해당 로케이션 위치를 재고여부 활성화로 변경
-//            물품입출내역에 실사 입고
+            Integer located = 1;
+            int insertLocation = mapper.updateLocated(locationKey, located);
+
+            int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey);
+
 //
-            return 1 == 1;
+            return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1;
         } else {
 //            실사 분실인 상태
+            String serialNo = stocktakingItem.getSerialNo();
+            String currentCommonCode = "LOS";
+            Integer locationKey = stocktakingItem.getLocationKey();
+            String warehouseCode = stocktakingItem.getWarehouseCode();
+            String inoutCommonCode = "LOS";
+            String employeeNo = auth.getName();
+
 //            current_common_code를 LOS 상태로 변경
+            int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
+
 //            해당 로케이션 위치를 비활성화로 변경
-//            물품입출내역에 실사 분실
-            return 1 == 1;
+            Integer located = 0;
+            int insertLocation = mapper.updateLocated(locationKey, located);
+
+            int insertInoutHistory = mapper.addInoutHistoryMinus(serialNo, warehouseCode, inoutCommonCode, employeeNo);
+
+
+            return updateItemSub == 1 && insertLocation == 1 && insertInoutHistory == 1;
 
         }
 //        mapper.updateStockStatus(stocktakingItem);
