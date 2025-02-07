@@ -86,13 +86,13 @@ export function InstallList({
                 <Table.Cell textAlign="center" width="90px">
                   {index + 1}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="13%">
                   {install.franchiseName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="10%">
                   {install.itemCommonName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="10%">
                   {install.customerName}
                 </Table.Cell>
                 <Table.Cell textAlign="center" width="10%">
@@ -107,10 +107,10 @@ export function InstallList({
                 <Table.Cell textAlign="center" width="8%">
                   {install.customerInstallerName || "-"}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="10%">
                   {install.warehouseName}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
+                <Table.Cell textAlign="center" width="10%">
                   {install.installDate}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{install.state}</Table.Cell>
