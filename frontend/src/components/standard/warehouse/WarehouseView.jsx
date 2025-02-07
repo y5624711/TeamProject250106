@@ -4,6 +4,20 @@ import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
 
 function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
+  //전화번호 양식
+  const formatPhoneNumber = (value) => {
+    const onlyNums = value.replace(/\D/g, ""); // 숫자 이외 제거
+
+    if (onlyNums.length <= 2) return onlyNums;
+    if (onlyNums.length <= 6) return onlyNums.replace(/(\d{2})(\d+)/, "$1-$2");
+    if (onlyNums.length <= 10)
+      return onlyNums.replace(/(\d{2,3})(\d{3,4})(\d+)/, "$1-$2-$3");
+
+    return onlyNums
+      .slice(0, 11)
+      .replace(/(\d{2,3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  };
+
   return (
     <Box>
       <Box display="flex" gap={4}>
@@ -76,7 +90,7 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           onChange={(e) =>
             setWarehouseDetail({
               ...warehouseDetail,
-              warehouseTel: e.target.value,
+              warehouseTel: formatPhoneNumber(e.target.value),
             })
           }
         />
