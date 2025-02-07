@@ -147,6 +147,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       return newParams; // 새로운 객체를 반환
     });
   };
+
   // 등록 모달창
   const handleModalControl = () => {
     setIsModalOpen(!isModalOpen);
@@ -164,11 +165,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setSort("all"); // 기본 정렬 설정
     setIsActiveVisible(false); // 기본 활성 상태 설정
     setKeyword(""); // 검색어 초기화
-    setType("all"); // 기본 타입 설정
+    setType([]); // 기본 타입 설정
     setOrder("desc"); // 기본 정렬 순서 설정
   };
-
-
 
   return (
     <Box>
