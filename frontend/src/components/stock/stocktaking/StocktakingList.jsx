@@ -60,15 +60,23 @@ function StocktakingList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {/* 재고실사 각각의 내용*/}
-            {stocktakingList.map((stocktaking, index) => (
-              <StocktakingListPage
-                index={index}
-                stocktaking={stocktaking}
-                setSelectedStocktaking={setSelectedStocktaking}
-                setIsDetailDialogOpen={setIsDetailDialogOpen}
-              />
-            ))}
+            {stocktakingList.length > 0 ? (
+              stocktakingList.map((stocktaking, index) => (
+                <StocktakingListPage
+                  key={stocktaking.stocktakingKey}
+                  index={index}
+                  stocktaking={stocktaking}
+                  setSelectedStocktaking={setSelectedStocktaking}
+                  setIsDetailDialogOpen={setIsDetailDialogOpen}
+                />
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="10">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table.Root>
       </Box>

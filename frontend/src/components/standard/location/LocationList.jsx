@@ -59,15 +59,23 @@ function LocationList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {locationList.map((location, index) => (
-              <LocationListPage
-                key={location.locationKey}
-                index={index}
-                location={location}
-                setSelectedLocationKey={setSelectedLocationKey}
-                setIsDetailDialogOpen={setIsDetailDialogOpen}
-              />
-            ))}
+            {locationList.length > 0 ? (
+              locationList.map((location, index) => (
+                <LocationListPage
+                  key={location.locationKey}
+                  index={index}
+                  location={location}
+                  setSelectedLocationKey={setSelectedLocationKey}
+                  setIsDetailDialogOpen={setIsDetailDialogOpen}
+                />
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="6">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table.Root>
       </Box>
