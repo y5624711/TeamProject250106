@@ -37,7 +37,6 @@ export function EmployeeAddDialog({
             onSelect={onSelect}
           />
         </DialogBody>
-        <DialogFooter></DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>

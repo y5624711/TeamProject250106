@@ -430,9 +430,10 @@ LIMIT #{offset}, 10
     //반품입고 창고이름
     @Select("""
         SELECT WHM.warehouse_name AS warehouseName, WHM.warehouse_address AS warehouseAddress
-        FROM TB_BUYIN BI
-        LEFT JOIN TB_PURCH_APPR APPR ON APPR.purchase_no = BI.input_no
-        LEFT JOIN TB_WHMST WHM ON WHM.warehouse_code = APPR.warehouse_code
+       FROM TB_BUYIN BI
+            LEFT JOIN TB_RTN_APPR APPR ON APPR.return_no=BI.input_no
+            LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
+            LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
         WHERE BI.input_key = #{inputKey}
         """)
     Map<String, Object> viewReturnWareHouseName(int inputKey);
@@ -483,5 +484,5 @@ LIMIT #{offset}, 10
             FROM TB_BUYIN BI
             WHERE input_key=#{inputKey}
             """)
-    boolean viewInputConsetByInputKey(int inputKey);
+    Boolean viewInputConsetByInputKey(int inputKey);
 }

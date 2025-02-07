@@ -76,8 +76,7 @@ export function InstkConfirmModal({
       })
       .catch((error) => {
         console.log("입고테이블에 추가중 오류 발생했습니다", error);
-      })
-      .finally(() => {});
+      });
   };
 
   // 입고 반려 메소드
@@ -95,16 +94,13 @@ export function InstkConfirmModal({
           description: res.data.message.text,
           type: res.data.message.type,
         });
+        setChangeModal();
+        onApprovalSuccess();
       })
       .catch((error) => {
         console.log("입고 반려 중 오류 ", error);
         const message = e.response?.data?.message;
         toaster.create({ description: message.text, type: message.type });
-      })
-      .finally(() => {
-        setChangeModal();
-        //반려상세
-        onApprovalSuccess();
       });
   };
 

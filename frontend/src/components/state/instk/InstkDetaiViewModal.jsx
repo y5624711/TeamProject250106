@@ -37,6 +37,7 @@ export function InstkDetaiViewModal({
   setChangeModal,
   instk,
   isLoading,
+  selectInputKey,
 }) {
   const { id } = useContext(AuthenticationContext);
   const [detailData, setDetailData] = useState({ serialList: [] });
@@ -52,8 +53,9 @@ export function InstkDetaiViewModal({
 
     setIsDataLoading(true); // 데이터 로딩 시작
 
+    console.log(selectInputKey, "detailView selectInputKey");
     axios
-      .get(`/api/instk/detailview/${instk.inputKey}`, {
+      .get(`/api/instk/detailview/${selectInputKey}`, {
         params: {
           inputCommonCodeName: instk.inputCommonCodeName,
         },
@@ -61,7 +63,6 @@ export function InstkDetaiViewModal({
       .then((res) => {
         setDetailData(res.data);
         const list = res.data?.serialLocationList || [];
-
         if (list.length > 0) {
           const formattedList = createListCollection({
             items: list.map((item) => ({

@@ -35,6 +35,16 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       { label: "사번", value: "사번" },
     ],
   });
+  // 소트
+  const sortOptions = [
+    { key: "기본키", label: "#" },
+    { key: "소속구분", label: "소속 구분" },
+    { key: "기업명", label: "회사" },
+    { key: "기업번호", label: "회사 전화번호" },
+    { key: "직원명", label: "직원" },
+    { key: "직원전화번호", label: "직원 전화번호" },
+    { key: "사번", label: "사번" },
+  ];
 
   const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
@@ -137,6 +147,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
       return newParams; // 새로운 객체를 반환
     });
   };
+
   // 등록 모달창
   const handleModalControl = () => {
     setIsModalOpen(!isModalOpen);
@@ -154,20 +165,9 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
     setSort("all"); // 기본 정렬 설정
     setIsActiveVisible(false); // 기본 활성 상태 설정
     setKeyword(""); // 검색어 초기화
-    setType("all"); // 기본 타입 설정
+    setType([]); // 기본 타입 설정
     setOrder("desc"); // 기본 정렬 순서 설정
   };
-
-  // 소트
-  const sortOptions = [
-    { key: "기본키", label: "#" },
-    { key: "소속구분", label: "소속 구분" },
-    { key: "기업명", label: "기업" },
-    { key: "기업번호", label: "회사 전화번호" },
-    { key: "직원명", label: "직원" },
-    { key: "직원전화번호", label: "직원 전화번호" },
-    { key: "사번", label: "사번" },
-  ];
 
   return (
     <Box>

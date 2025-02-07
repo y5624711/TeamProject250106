@@ -20,6 +20,7 @@ export function InstkList() {
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDetailViewModalOpen, setIsDetailViewModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectInputKey, setSelectInputKey] = useState(-1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +46,6 @@ export function InstkList() {
         setIsLoading(false);
       });
   }, [searchParams]);
-  //페이지 네이션 + 저거 옵션다는거 부터 하자
 
   useEffect(() => {
     refreshData();
@@ -59,24 +59,18 @@ export function InstkList() {
   };
   // 상태 현황에 따라 다른 모달 띄울 함수
   const handleSelectModal = (checkState) => {
-    if (checkState === null || checkState === undefined) {
-      console.log("이프");
-      // 대기 상태인 항목은 승인 모달을 보여줍니다
-      setIsApproveModalOpen(true);
-    } else {
-      console.log("엘스");
-      // 승인됐거나 반려된 항목은 상세 보기를 보여줍니다
-      setIsDetailViewModalOpen(true);
-    }
+    checkState === true
+      ? handleDetailViewModal()
+      : checkState === false
+        ? handleDetailViewModal()
+        : handleApproveModal();
   };
+
   const handleApprovalSuccess = async () => {
     await refreshData(); // 데이터 새로고침
-    handleApproveModal(); // 승인 모달 닫기
 
-    // refreshData 후의 업데이트된 상태로 모달 열기
-    const updatedState = instkList[selectedIndex].inputConsent;
-    console.log(instkList);
-    handleSelectModal(updatedState);
+    // 상세모달띄우기
+    handleDetailViewModal();
   };
 
   const searchOptions = createListCollection({
@@ -101,6 +95,7 @@ export function InstkList() {
     { key: "combined_date", label: "날짜" },
     { key: "input_consent", label: "상태" },
   ];
+
 
   return (
     <Box>
@@ -147,6 +142,7 @@ export function InstkList() {
                   onDoubleClick={() => {
                     handleSelectModal(item.inputConsent);
                     setSelectedIndex(index);
+                    setSelectInputKey(item.inputKey);
                   }}
                   style={{
                     cursor: "pointer",
@@ -219,6 +215,7 @@ export function InstkList() {
       {isDetailViewModalOpen && (
         <InstkDetaiViewModal
           isModalOpen={isDetailViewModalOpen}
+          selectInputKey={selectInputKey}
           setChangeModal={handleDetailViewModal}
           instk={instkList[selectedIndex]}
           isLoading={isLoading}

@@ -353,7 +353,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
         </Field>
       )}
       <Field
-        label={<SpacedLabel text="전화 번호" req />}
+        label={<SpacedLabel text="전화번호" req />}
         orientation="horizontal"
       >
         <Input name="tel" value={formData.tel} onChange={handleInputChange} />
@@ -361,7 +361,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
 
       {viewKey !== -1 && (
         <Field
-          label={<SpacedLabel text="비밀 번호" req />}
+          label={<SpacedLabel text="비밀번호" req />}
           orientation="horizontal"
         >
           <Input
