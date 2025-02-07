@@ -15,7 +15,6 @@ import { Field } from "../../ui/field.jsx";
 import { Button } from "../../ui/button.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
-import { Checkbox } from "../../ui/checkbox.jsx";
 import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
@@ -188,7 +187,8 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                       readOnly
                       name={"industry"}
                       value={customer.industry}
-                    ></Input>
+                      variant={"subtle"}
+                    />
                   </Field>
                 </Box>
                 <Field
@@ -287,27 +287,24 @@ export function MainCusViewEndEdit({ company, cusViewOpen, onCancel }) {
                     maxHeight={"100px"}
                   />
                 </Field>
-                <Field
-                  orientation="horizontal"
-                  label={<SpacedLabel text="사용여부" />}
-                >
-                  <Checkbox
-                    transform="translateX(-2590%)"
-                    name={"customerActive"}
-                    checked={customer.customerActive}
-                    onCheckedChange={(e) => {
-                      // console.log("체크박스 변경 전 값:", customer.customerActive);
-                      // console.log("체크박스 변경 후 값:", e);
-                      const checked =
-                        e.checked !== undefined ? e.checked : e.target.checked;
-                      setCustomer((prevCustomer) => ({
-                        ...prevCustomer,
-                        customerActive: checked, // 상태 업데이트
-                      }));
-                      // console.log("그 후?", checked);
-                    }}
-                  />
-                </Field>
+                {/*<Field*/}
+                {/*  orientation="horizontal"*/}
+                {/*  label={<SpacedLabel text="사용여부" />}*/}
+                {/*>*/}
+                {/*  <Checkbox*/}
+                {/*    transform="translateX(-2590%)"*/}
+                {/*    name={"customerActive"}*/}
+                {/*    checked={customer.customerActive}*/}
+                {/*    onCheckedChange={(e) => {*/}
+                {/*      const checked =*/}
+                {/*        e.checked !== undefined ? e.checked : e.target.checked;*/}
+                {/*      setCustomer((prevCustomer) => ({*/}
+                {/*        ...prevCustomer,*/}
+                {/*        customerActive: checked, // 상태 업데이트*/}
+                {/*      }));*/}
+                {/*    }}*/}
+                {/*  />*/}
+                {/*</Field>*/}
               </Box>
             ) : (
               <Text>고객 정보를 불러오는 중입니다...</Text>
