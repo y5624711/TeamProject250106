@@ -286,11 +286,14 @@ public interface StocktakingMapper {
     String getLocationValue(Integer locationKey);
 
     @Select("""
-            SELECT COUNT(*)
-            FROM TB_LOCMST
-            WHERE warehouse_code=#{warehouseCode} AND located=1 AND location_active=1
+            SELECT l.location_key
+            FROM TB_LOCMST l 
+            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
+            LEFT JOIN TB_ITEMSUB its ON cus.item_code=its.item_common_code
+            WHERE l.warehouse_code=#{warehouseCode} AND l.located=1 AND l.location_active=1 AND its.item_sub_active=1
             """)
-    Integer getAllLocated(String warehouseCode);
+    Set<Integer> getAllLocated(String warehouseCode);
 
     @Select("""
             <script>

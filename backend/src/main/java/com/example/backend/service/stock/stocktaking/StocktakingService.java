@@ -128,7 +128,8 @@ public class StocktakingService {
 
     public Integer getStocktakingCountCurrent(String warehouseCode) {
 
-        Integer countCurrent = mapper.getAllLocated(warehouseCode);
+        Set<?> locatedList = mapper.getAllLocated(warehouseCode);
+        Integer countCurrent = (locatedList != null) ? locatedList.size() : 0;
 
         return countCurrent;
     }
