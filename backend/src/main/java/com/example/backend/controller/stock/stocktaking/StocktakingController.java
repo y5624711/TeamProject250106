@@ -106,7 +106,7 @@ public class StocktakingController {
             e.printStackTrace();
             return ResponseEntity.badRequest()
                     .body(Map.of("message", Map.of("type", "warning",
-                            "text", "재고 반영에 실패했습니다.")));
+                            "text", "재고 반영에 실패하였습니다.")));
 
         }
     }
