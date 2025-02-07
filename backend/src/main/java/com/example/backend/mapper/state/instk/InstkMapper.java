@@ -94,6 +94,8 @@ FROM TB_BUYIN BI
 
 WHERE 1=1
           AND (#{company} IS NULL OR CT.customer_code = #{company})
+          AND BI.input_key != 0
+                  
     <if test="state == 'request'">
         AND input_consent IS NULL
     </if>
@@ -232,7 +234,7 @@ LIMIT #{offset}, 10
 
     // 반품 입고시 창고 주소 가져오는 쿼리
     @Select("""
-             SELECT  WHM.warehouse_address ,,WHMST.warehouse_name
+             SELECT  WHM.warehouse_address ,WHM.warehouse_name
            FROM  TB_RTN_APPR APPR
             LEFT JOIN TB_RTN_REQ REQ ON REQ.return_request_key=APPR.return_request_key
             LEFT JOIN TB_WHMST WHM ON WHM.customer_code=REQ.customer_code
@@ -343,6 +345,7 @@ LIMIT #{offset}, 10
         
         WHERE 1=1
                    AND (#{company} IS NULL OR CT.customer_code = #{company})
+                   AND BI.input_key != 0
         <!-- state 조건 -->
         <if test="state == 'request'">
             AND BI.input_consent IS NULL

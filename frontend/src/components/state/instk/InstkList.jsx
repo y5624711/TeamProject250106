@@ -96,7 +96,6 @@ export function InstkList() {
     { key: "input_consent", label: "상태" },
   ];
 
-
   return (
     <Box>
       <SearchBar
@@ -188,6 +187,13 @@ export function InstkList() {
                 </Table.Row>
               );
             })}
+            {instkList.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={7} textAlign="center">
+                  정보가 존재하지 않습니다.
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
           <Table.Footer></Table.Footer>
         </Table.Root>

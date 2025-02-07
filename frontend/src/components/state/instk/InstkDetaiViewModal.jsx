@@ -155,7 +155,9 @@ export function InstkDetaiViewModal({
                         {/*  시리얼 번호*/}
                         {/*</SelectLabel>*/}
                         <SelectTrigger>
-                          <SelectValueText placeholder={"내역 확인"} />
+                          <SelectValueText
+                            placeholder={`내역 ${serialLocationList.items.length}건 확인`}
+                          />
                         </SelectTrigger>
                         <SelectContent
                           portalRef={contentRef}

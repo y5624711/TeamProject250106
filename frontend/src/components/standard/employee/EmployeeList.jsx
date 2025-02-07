@@ -278,7 +278,7 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           {memberList.length === 0 && (
             <Table.Row>
               <Table.Cell colSpan={7} textAlign="center">
-                조회 결과 없음
+                정보가 존재하지 않습니다.
               </Table.Cell>
             </Table.Row>
           )}
