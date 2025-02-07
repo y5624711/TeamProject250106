@@ -184,7 +184,8 @@ public interface InoutHistoryMapper {
                 w.warehouse_address,
                 itsb.item_common_code itemCode,
                 itcm.common_code_name itemName,
-                fr.franchise_name installFranchiseName,
+                ifr.franchise_name installFranchiseName,
+                rfr.franchise_name returnFranchiseName,
                 cusemp.employee_name customerEmployeeName,
                 bizemp.employee_name businessEmployeeName,
                 l.row,
@@ -195,10 +196,13 @@ public interface InoutHistoryMapper {
                  LEFT JOIN TB_WHMST w ON h.warehouse_code = w.warehouse_code
                  LEFT JOIN TB_ITEMSUB itsb ON h.serial_no = itsb.serial_no
                  LEFT JOIN TB_SYSCOMM itcm ON itsb.item_common_code = itcm.common_code
-                 LEFT JOIN TB_FRNCHSMST fr ON h.franchise_code = fr.franchise_code
+                 LEFT JOIN TB_FRNCHSMST ifr ON h.franchise_code = ifr.franchise_code
                  LEFT JOIN TB_EMPMST cusemp ON h.customer_employee_no = cusemp.employee_no
                  LEFT JOIN TB_EMPMST bizemp ON h.business_employee_no = bizemp.employee_no
                  LEFT JOIN TB_LOCMST l ON h.location_key = l.location_key
+                 LEFT JOIN TB_RTN_APPR rtna ON h.inout_no=rtna.return_no
+                 LEFT JOIN TB_RTN_REQ rtrq ON rtna.return_request_key=rtrq.return_request_key
+                 LEFT JOIN TB_FRNCHSMST rfr ON rtrq.franchise_code=rfr.franchise_code
             WHERE h.inout_history_key = ${inoutHistoryKey}
             """)
     InoutHistory view(Integer inoutHistoryKey);

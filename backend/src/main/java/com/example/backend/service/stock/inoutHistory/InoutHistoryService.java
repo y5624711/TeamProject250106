@@ -75,5 +75,6 @@ public class InoutHistoryService {
 
     public InoutHistory view(Integer inoutHistoryKey) {
         return mapper.view(inoutHistoryKey);
+
     }
 }
