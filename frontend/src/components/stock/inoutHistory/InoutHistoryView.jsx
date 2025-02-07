@@ -76,6 +76,13 @@ function InoutHistoryView({ inoutHistoryKey }) {
             <Input value="실사 입고" readOnly />
           </Field>
         )}
+        <Field
+          label={<SpacedLabel text="입출 코드" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input value={inoutHistoryDetail.inoutNo} readOnly />
+        </Field>
         <Box display="flex" gap={5}>
           <Field
             label={<SpacedLabel text="품목" />}

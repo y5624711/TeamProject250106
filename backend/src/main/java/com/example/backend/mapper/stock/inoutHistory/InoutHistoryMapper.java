@@ -163,6 +163,7 @@ public interface InoutHistoryMapper {
                 h.location_key,
                 h.inout_history_date,
                 h.inout_history_note,
+                h.inout_no,
                 w.warehouse_name,
                 w.warehouse_address,
                 itsb.item_common_code itemCode,
