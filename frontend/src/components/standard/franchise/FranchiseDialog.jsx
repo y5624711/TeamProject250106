@@ -33,7 +33,6 @@ export function FranchiseDialog({
         </DialogHeader>
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-          css={{ "--field-label-width": "85px" }}
         >
           {isAddDialogOpen ? (
             <FranchiseAdd onClose={onClose} onSave={onSave} />

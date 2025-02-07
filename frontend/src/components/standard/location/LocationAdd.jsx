@@ -123,7 +123,7 @@ function LocationAdd({ isOpen, onClose, title }) {
         <DialogBody>
           <Box>
             <Field
-              label={<SpacedLabel text="창고" />}
+              label={<SpacedLabel text="창고" req />}
               orientation="horizontal"
               mb={15}
               required

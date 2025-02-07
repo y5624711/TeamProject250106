@@ -1,5 +1,4 @@
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -17,7 +16,6 @@ import {
   Input,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -30,7 +28,6 @@ import { Field } from "../../ui/field.jsx";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthenticationContext } from "../../../context/AuthenticationProvider.jsx";
 import axios from "axios";
-import Select from "react-select";
 import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function InstkDetaiViewModal({
@@ -118,7 +115,7 @@ export function InstkDetaiViewModal({
           <DialogBody>
             <Box css={{ "--field-label-width": "85px" }}>
               <Stack gap={15}>
-                <HStack>
+                <Box display={"flex"} gap={5}>
                   <Field
                     orientation="horizontal"
                     label={<SpacedLabel text="입고 구분" />}
@@ -127,12 +124,12 @@ export function InstkDetaiViewModal({
                   </Field>
                   <Field
                     orientation="horizontal"
-                    label={<SpacedLabel text="주문번호" />}
+                    label={<SpacedLabel text="주문 번호" />}
                   >
                     <Input readOnly value={instk.inputNo} />
                   </Field>
-                </HStack>
-                <HStack>
+                </Box>
+                <HStack gap={5}>
                   <Field
                     orientation="horizontal"
                     label={<SpacedLabel text="품목" />}
@@ -143,7 +140,7 @@ export function InstkDetaiViewModal({
                   {detailData.inputConsent && (
                     <Field
                       orientation="horizontal"
-                      label={<SpacedLabel text="시리얼번호" />}
+                      label={<SpacedLabel text="시리얼 번호" />}
                     >
                       <SelectRoot
                         collection={serialLocationList}
@@ -177,9 +174,9 @@ export function InstkDetaiViewModal({
                     </Field>
                   )}
                 </HStack>
-                <HStack>
+                <HStack gap={5}>
                   <Field
-                    label={<SpacedLabel text="담당업체" />}
+                    label={<SpacedLabel text="담당 업체" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={instk.customerName} />
@@ -197,15 +194,15 @@ export function InstkDetaiViewModal({
                 </HStack>
 
                 <Field
-                  label={<SpacedLabel text="창고주소" />}
+                  label={<SpacedLabel text="창고 주소" />}
                   orientation="horizontal"
                 >
                   <Input readOnly value={detailData.wareHouseAddress} />
                 </Field>
 
-                <HStack>
+                <HStack gap={5}>
                   <Field
-                    label={<SpacedLabel text="주문요청자" />}
+                    label={<SpacedLabel text="주문 요청자" />}
                     orientation="horizontal"
                   >
                     <Input readOnly value={instk.requestEmployeeName} />
@@ -225,7 +222,7 @@ export function InstkDetaiViewModal({
                 </Field>
 
                 <Field
-                  label={<SpacedLabel text="주문비고" />}
+                  label={<SpacedLabel text="주문 비고" />}
                   orientation="horizontal"
                 >
                   {instk.inputNote ? (
@@ -239,7 +236,7 @@ export function InstkDetaiViewModal({
                   )}
                 </Field>
                 {detailData.inputConsent === true ? (
-                  <HStack>
+                  <HStack gap={5}>
                     <Field
                       label={<SpacedLabel text="승인자" />}
                       orientation="horizontal"
@@ -254,7 +251,7 @@ export function InstkDetaiViewModal({
                     </Field>
                   </HStack>
                 ) : (
-                  <HStack>
+                  <HStack gap={5}>
                     <Field
                       label={<SpacedLabel text="반려자" />}
                       orientation="horizontal"
@@ -293,7 +290,7 @@ export function InstkDetaiViewModal({
                 {detailData.inputConsent === true ? (
                   // true
                   <Field
-                    label={<SpacedLabel text="승인비고" />}
+                    label={<SpacedLabel text="승인 비고" />}
                     orientation="horizontal"
                   >
                     {detailData.inputStockNote ? (
@@ -309,7 +306,7 @@ export function InstkDetaiViewModal({
                 ) : (
                   // false
                   <Field
-                    label={<SpacedLabel text="반려비고" />}
+                    label={<SpacedLabel text="반려 비고" />}
                     orientation="horizontal"
                   >
                     {detailData.disapproveNote ? (

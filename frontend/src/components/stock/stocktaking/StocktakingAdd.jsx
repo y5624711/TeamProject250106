@@ -862,11 +862,11 @@ function StocktakingAdd({
                 </Field>
                 <Box display="flex" gap={5}>
                   <Field
-                    label={<SpacedLabel text="실사 유형" />}
+                    label={<SpacedLabel text="실사 유형" req />}
                     orientation="horizontal"
-                    mb={15}
+                    required
                   >
-                    <Box ml={"86px"} style={{ position: "absolute" }}>
+                    <Box ml={"92px"} style={{ position: "absolute" }}>
                       <RadioGroup
                         defaultValue="true" // ✅ Boolean 값을 문자열로 변환
                         onChange={(e) => setStocktakingType(e.target.value)} // ✅ 문자열을 다시 Boolean으로 변환

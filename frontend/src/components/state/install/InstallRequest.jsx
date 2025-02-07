@@ -132,7 +132,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
         </DialogHeader>
         <DialogBody>
           <Box css={{ "--field-label-width": "85px" }}>
-            <Stack gap={5}>
+            <Stack gap={15}>
               <HStack>
                 <Field
                   orientation="horizontal"
@@ -263,7 +263,10 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                 >
                   <Input value={name} variant="subtle" readOnly />
                 </Field>
-                <Field label="사번" orientation="horizontal">
+                <Field
+                  label={<SpacedLabel text="사번" />}
+                  orientation="horizontal"
+                >
                   <Input value={id} variant="subtle" readOnly />
                 </Field>
               </Box>

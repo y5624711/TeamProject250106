@@ -86,7 +86,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
   }
 
   return (
-    <Box>
+    <Box css={{ "--field-label-width": "85px" }}>
       <Box>
         <Box display="flex" gap={5}>
           <Field
@@ -101,7 +101,7 @@ export function FranchiseView({ franchiseKey, onSave, onDelete, onClose }) {
             />
           </Field>
           <Field
-            label={<SpacedLabel text="가맹점 코드" req />}
+            label={<SpacedLabel text="가맹점 코드" />}
             orientation="horizontal"
             mb={15}
           >
