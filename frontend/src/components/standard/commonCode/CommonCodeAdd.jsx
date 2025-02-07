@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button.jsx";
 import {
+  Box,
   Input,
   SelectContent,
   SelectItem,
@@ -25,6 +26,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
   const selectOptions = [
@@ -101,65 +103,82 @@ export function CommonCodeAdd({ isOpen, onClose, onAdd, setChange }) {
           <DialogTitle>코드 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Text fontSize={"xs"} mt={-5} mb={3}>
-            {codeType === "ITEM" || codeType === "STANDARD"
-              ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
-              : codeType === "STATE"
-                ? "싱태 코드는 대문자 3~5자리로 입력해야 합니다."
-                : "  "}
-          </Text>
-          <Stack gap={"15px"}>
-            <Field label={"코드 구분"} orientation="horizontal">
-              <SelectRoot onValueChange={handleCodeTypeChange}>
-                <SelectTrigger>
-                  <SelectValueText>
-                    {codeType || "코드 구분 선택"}
-                  </SelectValueText>
-                </SelectTrigger>
-                <SelectContent
-                  style={{
-                    width: "85%",
-                    top: "40px",
-                    position: "absolute",
-                  }}
-                >
-                  {selectOptions.map((option) => (
-                    <SelectItem key={option.value} item={option.value}>
-                      {option.value}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
-            <Field label="코드" orientation="horizontal">
-              <Input
-                value={codeData.commonCode || ""}
-                onChange={handleInputChange("commonCode")}
-                maxLength={
-                  codeType === "ITEM" || codeType === "STANDARD"
-                    ? 3
-                    : codeType === "SYSTEM"
-                      ? 5
-                      : undefined
-                }
-              />
-            </Field>
-            <Field label="코드명" orientation="horizontal">
-              <Input
-                value={codeData.commonCodeName || ""}
-                onChange={handleInputChange("commonCodeName")}
-              />
-            </Field>
-            <Field label="비고" orientation="horizontal">
-              <Textarea
-                resize={"none"}
-                maxLength={50}
-                placeholder="최대 50자"
-                value={codeData.commonCodeNote || ""}
-                onChange={handleInputChange("commonCodeNote")}
-              />
-            </Field>
-          </Stack>
+          <Box css={{ "--field-label-width": "85px" }}>
+            <Text fontSize={"xs"} mt={-5} mb={3}>
+              {codeType === "ITEM" || codeType === "STANDARD"
+                ? "품목/기준 코드는 대문자 3자리로 입력해야 합니다."
+                : codeType === "STATE"
+                  ? "싱태 코드는 대문자 3~5자리로 입력해야 합니다."
+                  : "  "}
+            </Text>
+            <Stack gap={"15px"}>
+              <Field
+                label={<SpacedLabel text="코드 구분" req />}
+                orientation="horizontal"
+                required
+              >
+                <SelectRoot onValueChange={handleCodeTypeChange}>
+                  <SelectTrigger>
+                    <SelectValueText>
+                      {codeType || "코드 구분 선택"}
+                    </SelectValueText>
+                  </SelectTrigger>
+                  <SelectContent
+                    style={{
+                      width: "85%",
+                      top: "40px",
+                      position: "absolute",
+                    }}
+                  >
+                    {selectOptions.map((option) => (
+                      <SelectItem key={option.value} item={option.value}>
+                        {option.value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+              </Field>
+              <Field
+                label={<SpacedLabel text="코드" req />}
+                orientation="horizontal"
+                required
+              >
+                <Input
+                  value={codeData.commonCode || ""}
+                  onChange={handleInputChange("commonCode")}
+                  maxLength={
+                    codeType === "ITEM" || codeType === "STANDARD"
+                      ? 3
+                      : codeType === "SYSTEM"
+                        ? 5
+                        : undefined
+                  }
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="코드명" req />}
+                orientation="horizontal"
+                required
+              >
+                <Input
+                  value={codeData.commonCodeName || ""}
+                  onChange={handleInputChange("commonCodeName")}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+              >
+                <Textarea
+                  resize={"none"}
+                  maxLength={50}
+                  placeholder="최대 50자"
+                  value={codeData.commonCodeNote || ""}
+                  onChange={handleInputChange("commonCodeNote")}
+                />
+              </Field>
+            </Stack>
+          </Box>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>

@@ -74,48 +74,56 @@ export function InstallList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {installList?.map((install, index) => (
-              <Table.Row
-                key={index}
-                onDoubleClick={() => onRowClick(install)}
-                style={{
-                  cursor: "pointer",
-                }}
-                _hover={{ backgroundColor: "gray.200" }}
-              >
-                <Table.Cell textAlign="center" width="90px">
-                  {index + 1}
+            {installList.length > 0 ? (
+              installList?.map((install, index) => (
+                <Table.Row
+                  key={index}
+                  onDoubleClick={() => onRowClick(install)}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  _hover={{ backgroundColor: "gray.200" }}
+                >
+                  <Table.Cell textAlign="center" width="90px">
+                    {index + 1}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="13%">
+                    {install.franchiseName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {install.itemCommonName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {install.customerName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {install.outputNo || "-"}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="8%">
+                    {install.businessEmployeeName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="8%">
+                    {install.customerEmployeeName || "-"}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="8%">
+                    {install.customerInstallerName || "-"}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {install.warehouseName}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="10%">
+                    {install.installDate}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{install.state}</Table.Cell>
+                </Table.Row>
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="11">
+                  정보가 존재하지 않습니다.
                 </Table.Cell>
-                <Table.Cell textAlign="center">
-                  {install.franchiseName}
-                </Table.Cell>
-                <Table.Cell textAlign="center">
-                  {install.itemCommonName}
-                </Table.Cell>
-                <Table.Cell textAlign="center">
-                  {install.customerName}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="10%">
-                  {install.outputNo || "-"}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="8%">
-                  {install.businessEmployeeName}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="8%">
-                  {install.customerEmployeeName || "-"}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="8%">
-                  {install.customerInstallerName || "-"}
-                </Table.Cell>
-                <Table.Cell textAlign="center">
-                  {install.warehouseName}
-                </Table.Cell>
-                <Table.Cell textAlign="center">
-                  {install.installDate}
-                </Table.Cell>
-                <Table.Cell textAlign="center">{install.state}</Table.Cell>
               </Table.Row>
-            ))}
+            )}
           </Table.Body>
         </Table.Root>
         <Center>

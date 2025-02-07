@@ -71,32 +71,40 @@ export function CommonCodeList({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {commonCodeList?.map((code, index) => (
-              <Table.Row
-                key={code.commonCodeKey ? code.commonCodeKey : index}
-                onDoubleClick={() => {
-                  onRowClick(code.commonCodeKey);
-                }}
-                style={{
-                  cursor: "pointer",
-                }}
-                bg={code.commonCodeActive ? "white" : "gray.100"}
-                _hover={{ backgroundColor: "gray.200" }}
-              >
-                <Table.Cell textAlign="center" width={"90px"}>
-                  {index + 1}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="30%">
-                  {code.commonCodeType}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="30%">
-                  {code.commonCode}
-                </Table.Cell>
-                <Table.Cell textAlign="center" width="30%">
-                  {code.commonCodeName}
+            {commonCodeList.length > 0 ? (
+              commonCodeList?.map((code, index) => (
+                <Table.Row
+                  key={code.commonCodeKey ? code.commonCodeKey : index}
+                  onDoubleClick={() => {
+                    onRowClick(code.commonCodeKey);
+                  }}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  bg={code.commonCodeActive ? "white" : "gray.100"}
+                  _hover={{ backgroundColor: "gray.200" }}
+                >
+                  <Table.Cell textAlign="center" width={"90px"}>
+                    {index + 1}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="30%">
+                    {code.commonCodeType}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="30%">
+                    {code.commonCode}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width="30%">
+                    {code.commonCodeName}
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell textAlign="center" colSpan="4">
+                  정보가 존재하지 않습니다.
                 </Table.Cell>
               </Table.Row>
-            ))}
+            )}
           </Table.Body>
         </Table.Root>
         <Flex justify="center">

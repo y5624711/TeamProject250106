@@ -121,14 +121,7 @@ public interface CommonMapper {
             WHERE common_code_key = #{commonCodeKey}
             """)
     CommonCode getCommonCodeView(int commonCodeKey);
-
-    @Update("""
-            UPDATE TB_SYSCOMM
-            SET common_code_active = 0
-            WHERE common_code_key = #{commonCodeKey}
-            """)
-    int deleteCommonCode(int commonCodeKey);
-
+    
     @Update("""
             UPDATE TB_SYSCOMM
             SET common_code = #{commonCode.commonCode},
@@ -139,14 +132,6 @@ public interface CommonMapper {
             WHERE common_code_key = #{commonCodeKey}
             """)
     int editCommonCode(int commonCodeKey, CommonCode commonCode);
-
-    @Select("""
-            SELECT common_code_key
-            FROM TB_SYSCOMM
-            WHERE common_code_active = false
-            """)
-    List<Integer> deletedCommonCode();
-
 
     @Select("""
             SELECT common_code

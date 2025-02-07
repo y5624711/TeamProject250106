@@ -194,6 +194,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                       width: "85%",
                       top: "40px",
                       position: "absolute",
+                      height: "200px",
                     }}
                   >
                     {installItemList
@@ -252,6 +253,7 @@ export function InstallRequest({ isOpen, onClose, setChange }) {
                   variant="subtle"
                   value={installRequest.franchiseAddress}
                   onChange={handleInputChange("franchiseAddress")}
+                  readOnly
                 />
               </Field>
               <Box display="flex" gap={5}>

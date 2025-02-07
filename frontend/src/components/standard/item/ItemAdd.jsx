@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Input,
   SelectContent,
   SelectItem,
@@ -24,6 +25,7 @@ import {
 import { Field } from "../../ui/field.jsx";
 import { toaster } from "../../ui/toaster.jsx";
 import { Tooltip } from "../../ui/tooltip.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
   const initialItemData = {
@@ -92,111 +94,141 @@ export function ItemAdd({ isOpen, onClose, onAdd, setChange }) {
           <DialogTitle>품목 등록</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <Stack gap="15px">
-            <Field label={"품목"} orientation="horizontal" required>
-              <SelectRoot
-                onValueChange={(selectedName) => {
-                  const selectedItem = itemCommonCodeList.find(
-                    (item) => item.itemCommonName === selectedName.value[0],
-                  );
-
-                  if (selectedItem) {
-                    setItemData((prev) => ({
-                      ...prev,
-                      itemCommonName: selectedItem?.itemCommonName,
-                      itemCommonCode: selectedItem?.itemCommonCode || "",
-                      customerName: selectedItem.customerName,
-                      customerCode: selectedItem.customerCode,
-                    }));
-                  }
-                }}
+          <Box css={{ "--field-label-width": "85px" }}>
+            <Stack gap="15px">
+              <Field
+                label={<SpacedLabel text="품목" req />}
+                orientation="horizontal"
+                required
               >
-                <SelectTrigger>
-                  <SelectValueText>
-                    {itemData.itemCommonName || "품목 선택"}
-                  </SelectValueText>
-                </SelectTrigger>
-                <SelectContent
-                  style={{
-                    width: "85%",
-                    top: "40px",
-                    position: "absolute",
+                <SelectRoot
+                  onValueChange={(selectedName) => {
+                    const selectedItem = itemCommonCodeList.find(
+                      (item) => item.itemCommonName === selectedName.value[0],
+                    );
+
+                    if (selectedItem) {
+                      setItemData((prev) => ({
+                        ...prev,
+                        itemCommonName: selectedItem?.itemCommonName,
+                        itemCommonCode: selectedItem?.itemCommonCode || "",
+                        customerName: selectedItem.customerName,
+                        customerCode: selectedItem.customerCode,
+                      }));
+                    }
                   }}
                 >
-                  {itemCommonCodeList.map((item) => (
-                    <SelectItem
-                      key={item.itemCommonCode}
-                      item={item.itemCommonName}
-                    >
-                      {item.itemCommonName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
-            <Field label={"담당 업체"} orientation="horizontal">
-              <Input
-                readOnly
-                value={itemData.customerName}
-                variant={"subtle"}
-              />
-            </Field>
-            <Field label="규격" orientation="horizontal">
-              <Input
-                value={itemData.size}
-                onChange={handleInputChange("size")}
-              />
-            </Field>
-            <Field label="단위" orientation="horizontal">
-              <Input
-                value={itemData.unit}
-                onChange={handleInputChange("unit")}
-              />
-            </Field>
-            <Field label="입고가" orientation="horizontal" required>
-              <Input
-                type="text" // number → text 변경
-                value={
-                  itemData.inputPrice
-                    ? Number(itemData.inputPrice).toLocaleString("ko-KR")
-                    : ""
-                }
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^\d]/g, ""); // 숫자 이외의 문자 제거
-                  setItemData((prev) => ({
-                    ...prev,
-                    inputPrice: numericValue ? parseInt(numericValue, 10) : "",
-                  }));
-                }}
-              />
-            </Field>
+                  <SelectTrigger>
+                    <SelectValueText>
+                      {itemData.itemCommonName || "품목 선택"}
+                    </SelectValueText>
+                  </SelectTrigger>
+                  <SelectContent
+                    style={{
+                      width: "85%",
+                      top: "40px",
+                      position: "absolute",
+                    }}
+                  >
+                    {itemCommonCodeList.map((item) => (
+                      <SelectItem
+                        key={item.itemCommonCode}
+                        item={item.itemCommonName}
+                      >
+                        {item.itemCommonName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+              </Field>
+              <Field
+                label={<SpacedLabel text="담당 업체" />}
+                orientation="horizontal"
+              >
+                <Input
+                  readOnly
+                  value={itemData.customerName}
+                  variant={"subtle"}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="규격" />}
+                orientation="horizontal"
+              >
+                <Input
+                  value={itemData.size}
+                  onChange={handleInputChange("size")}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="단위" />}
+                orientation="horizontal"
+              >
+                <Input
+                  value={itemData.unit}
+                  onChange={handleInputChange("unit")}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="입고가" req />}
+                orientation="horizontal"
+                required
+              >
+                <Input
+                  type="text" // number → text 변경
+                  value={
+                    itemData.inputPrice
+                      ? Number(itemData.inputPrice).toLocaleString("ko-KR")
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^\d]/g, ""); // 숫자 이외의 문자 제거
+                    setItemData((prev) => ({
+                      ...prev,
+                      inputPrice: numericValue
+                        ? parseInt(numericValue, 10)
+                        : "",
+                    }));
+                  }}
+                />
+              </Field>
 
-            <Field label="출고가" orientation="horizontal" required>
-              <Input
-                type="text"
-                value={
-                  itemData.outputPrice
-                    ? Number(itemData.outputPrice).toLocaleString("ko-KR")
-                    : ""
-                }
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^\d]/g, "");
-                  setItemData((prev) => ({
-                    ...prev,
-                    outputPrice: numericValue ? parseInt(numericValue, 10) : "",
-                  }));
-                }}
-              />
-            </Field>
-            <Field label="비고" orientation="horizontal">
-              <Textarea
-                placeholder="최대 50자"
-                style={{ maxHeight: "100px", overflowY: "auto" }}
-                value={itemData.itemNote}
-                onChange={handleInputChange("itemNote")}
-              />
-            </Field>
-          </Stack>
+              <Field
+                label={<SpacedLabel text="출고가" req />}
+                orientation="horizontal"
+                required
+              >
+                <Input
+                  type="text"
+                  value={
+                    itemData.outputPrice
+                      ? Number(itemData.outputPrice).toLocaleString("ko-KR")
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^\d]/g, "");
+                    setItemData((prev) => ({
+                      ...prev,
+                      outputPrice: numericValue
+                        ? parseInt(numericValue, 10)
+                        : "",
+                    }));
+                  }}
+                />
+              </Field>
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+              >
+                <Textarea
+                  placeholder="최대 50자"
+                  style={{ maxHeight: "100px", overflowY: "auto" }}
+                  value={itemData.itemNote}
+                  onChange={handleInputChange("itemNote")}
+                />
+              </Field>
+            </Stack>
+          </Box>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
