@@ -50,10 +50,10 @@ export function BusinessListTable({
               <Table.Cell textAlign="center">
                 {list.departmentName || "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"20%"}>
+              <Table.Cell textAlign="center" w={"30%"}>
                 {list.departmentTel || "-"}
               </Table.Cell>
-              <Table.Cell textAlign="center" w={"20%"}>
+              <Table.Cell textAlign="center" w={"30%"}>
                 {list.departmentFax || "-"}
               </Table.Cell>
             </Table.Row>
