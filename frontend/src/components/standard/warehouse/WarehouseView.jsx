@@ -2,12 +2,17 @@ import React from "react";
 import { Box, Input, Textarea } from "@chakra-ui/react";
 import { Field } from "../../ui/field.jsx";
 import { Checkbox } from "../../ui/checkbox.jsx";
+import { SpacedLabel } from "../../tool/form/SpaceLabel.jsx";
 
 function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
   return (
     <Box>
-      <Box display="flex" gap={4}>
-        <Field label="창고" orientation="horizontal" mb={15}>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="창고" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.warehouseName}
             onChange={(e) =>
@@ -18,7 +23,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
             }
           />
         </Field>
-        <Field label="창고 코드" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="창고 코드" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.warehouseCode}
             readOnly
@@ -26,15 +35,23 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
       </Box>
-      <Box display="flex" gap={4}>
-        <Field label="담당 업체" orientation="horizontal" mb={15}>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="담당 업체" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.customerName}
             readOnly
             variant="subtle"
           />
         </Field>
-        <Field label="업체 코드" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="업체 코드" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.customerCode}
             onChange={(e) =>
@@ -48,15 +65,23 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
       </Box>
-      <Box display="flex" gap={4}>
-        <Field label="관리자" orientation="horizontal" mb={15}>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="관리자" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.employeeName}
             readOnly
             variant="subtle"
           />
         </Field>
-        <Field label="사번" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="사번" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.customerEmployeeNo}
             onChange={(e) =>
@@ -70,7 +95,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
       </Box>
-      <Field label="전화번호" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="전화 번호" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={warehouseDetail.warehouseTel}
           onChange={(e) =>
@@ -81,7 +110,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           }
         />
       </Field>
-      <Field label="우편번호" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="우편 번호" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={warehouseDetail.warehousePost}
           onChange={(e) =>
@@ -93,8 +126,12 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         />
       </Field>
 
-      <Box display="flex" gap={4}>
-        <Field label="광역시도" orientation="horizontal" mb={15}>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="광역시도" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.warehouseState}
             onChange={(e) =>
@@ -105,7 +142,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
             }
           />
         </Field>
-        <Field label="시군" orientation="horizontal" mb={15}>
+        <Field
+          label={<SpacedLabel text="시군" />}
+          orientation="horizontal"
+          mb={15}
+        >
           <Input
             value={warehouseDetail.warehouseCity}
             onChange={(e) =>
@@ -117,7 +158,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           />
         </Field>
       </Box>
-      <Field label="주소" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="주소" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={warehouseDetail.warehouseAddress}
           onChange={(e) =>
@@ -128,7 +173,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           }
         />
       </Field>
-      <Field label="상세 주소" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="상세 주소" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Input
           value={warehouseDetail.warehouseAddressDetail}
           onChange={(e) =>
@@ -139,7 +188,11 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
           }
         />
       </Field>
-      <Field label="비고" orientation="horizontal" mb={15}>
+      <Field
+        label={<SpacedLabel text="비고" />}
+        orientation="horizontal"
+        mb={15}
+      >
         <Textarea
           name="warehouseNote"
           style={{ maxHeight: "100px", overflowY: "auto" }}

@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog.jsx";
 import { Button } from "../../ui/button.jsx";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Input, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 import { Field } from "../../ui/field.jsx";
@@ -213,7 +213,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 />
               </Field>
               <Field
-                label={<SpacedLabel text="담당 업체" />}
+                label={<SpacedLabel text="담당 업체" req />}
                 orientation="horizontal"
                 mb={15}
                 required
@@ -242,7 +242,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 {/*<Button onClick={onCustomerClick}>조회</Button>*/}
               </Field>
               <Field
-                label={<SpacedLabel text="관리자" />}
+                label={<SpacedLabel text="관리자" req />}
                 orientation="horizontal"
                 mb={15}
                 required
@@ -270,9 +270,10 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 />
               </Field>
               <Field
-                label={<SpacedLabel text="전화번호" />}
+                label={<SpacedLabel text="전화번호" req />}
                 orientation="horizontal"
                 mb={15}
+                required
               >
                 <Input
                   type={"text"}
@@ -281,7 +282,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 />
               </Field>
               <Field
-                label={<SpacedLabel text="우편번호" />}
+                label={<SpacedLabel text="우편번호" req />}
                 orientation="horizontal"
                 mb={15}
                 required
@@ -294,7 +295,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
               </Field>
               <Box display="flex" gap={5}>
                 <Field
-                  label={<SpacedLabel text="광역시도" />}
+                  label={<SpacedLabel text="광역시도" req />}
                   orientation="horizontal"
                   mb={15}
                   required
@@ -306,7 +307,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                   />
                 </Field>
                 <Field
-                  label={<SpacedLabel text="시군" />}
+                  label={<SpacedLabel text="시군" req />}
                   orientation="horizontal"
                   mb={15}
                   required
@@ -319,7 +320,7 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                 </Field>
               </Box>
               <Field
-                label={<SpacedLabel text="주소" />}
+                label={<SpacedLabel text="주소" req />}
                 orientation="horizontal"
                 mb={15}
                 required
@@ -341,8 +342,14 @@ export function WarehouseAdd({ isOpen, onClose, title }) {
                   onChange={(e) => setWarehouseAddressDetail(e.target.value)}
                 />
               </Field>
-              <Field label="비고" orientation="horizontal" mb={15}>
-                <Input
+              <Field
+                label={<SpacedLabel text="비고" />}
+                orientation="horizontal"
+                mb={15}
+              >
+                <Textarea
+                  style={{ maxHeight: "100px", overflowY: "auto" }}
+                  placeholder="최대 50자"
                   type={"text"}
                   value={warehouseNote}
                   onChange={(e) => setWarehouseNote(e.target.value)}
