@@ -226,64 +226,72 @@ function ReturnList({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {returnList.map((data, index) => (
-            <Table.Row
-              key={data.returnRequestKey}
-              onDoubleClick={() => {
-                onRowClick(data.returnRequestKey);
-              }}
-              _hover={{ backgroundColor: "gray.200", cursor: "pointer" }}
-            >
-              <Table.Cell textAlign="center" width={"90px"}>
-                {index + 1}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"9%"}>
-                {data.franchiseName}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"9%"}>
-                {data.itemCommonName}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"9%"}>
-                {data.customerName}
-              </Table.Cell>
+          {returnList.length > 0 ? (
+            returnList.map((data, index) => (
+              <Table.Row
+                key={data.returnRequestKey}
+                onDoubleClick={() => {
+                  onRowClick(data.returnRequestKey);
+                }}
+                _hover={{ backgroundColor: "gray.200", cursor: "pointer" }}
+              >
+                <Table.Cell textAlign="center" width={"90px"}>
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"9%"}>
+                  {data.franchiseName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"9%"}>
+                  {data.itemCommonName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"9%"}>
+                  {data.customerName}
+                </Table.Cell>
 
-              <Table.Cell textAlign="center" width={"11%"}>
-                {data.serialNo}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"10%"}>
-                {data.returnNo ? data.returnNo : "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"9%"}>
-                {data.businessEmployeeName}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"10%"}>
-                {data.returnConsent == 1
-                  ? data.customerEmployeeName
-                  : data.returnConsent == 0
-                    ? data.disapproveEmployeeName
+                <Table.Cell textAlign="center" width={"11%"}>
+                  {data.serialNo}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"10%"}>
+                  {data.returnNo ? data.returnNo : "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"9%"}>
+                  {data.businessEmployeeName}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"10%"}>
+                  {data.returnConsent == 1
+                    ? data.customerEmployeeName
+                    : data.returnConsent == 0
+                      ? data.disapproveEmployeeName
+                      : "-"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"10%"}>
+                  {data.customerConfigurerName
+                    ? data.customerConfigurerName
                     : "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"10%"}>
-                {data.customerConfigurerName
-                  ? data.customerConfigurerName
-                  : "-"}
-              </Table.Cell>
-              <Table.Cell textAlign="center" width={"10%"}>
-                {data.returnConsent == 1
-                  ? data.returnApproveDate
-                  : data.returnConsent == 0
-                    ? data.disapproveDate
-                    : data.returnRequestDate}
-              </Table.Cell>
-              <Table.Cell textAlign="center">
-                {data.returnConsent == 1
-                  ? "승인"
-                  : data.returnConsent == 0
-                    ? "반려"
-                    : "대기"}
+                </Table.Cell>
+                <Table.Cell textAlign="center" width={"10%"}>
+                  {data.returnConsent == 1
+                    ? data.returnApproveDate
+                    : data.returnConsent == 0
+                      ? data.disapproveDate
+                      : data.returnRequestDate}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {data.returnConsent == 1
+                    ? "승인"
+                    : data.returnConsent == 0
+                      ? "반려"
+                      : "대기"}
+                </Table.Cell>
+              </Table.Row>
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell textAlign="center" colSpan="11">
+                정보가 존재하지 않습니다.
               </Table.Cell>
             </Table.Row>
-          ))}
+          )}
         </Table.Body>
       </Table.Root>
 

@@ -134,7 +134,7 @@ function CustomerList({
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
-              width="21%"
+              width="30%"
               textAlign="center"
               onClick={() => onHeader("customer_name")}
             >
@@ -145,7 +145,7 @@ function CustomerList({
               </HStack>
             </Table.ColumnHeader>
             <Table.ColumnHeader
-              width="19%"
+              width="15%"
               onClick={() => onHeader("customer_no")}
             >
               <HStack alignItems="center" justify="center">
@@ -192,28 +192,42 @@ function CustomerList({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {customerList.map((customer, index) => (
-            <Table.Row
-              key={customer.customerKey}
-              onDoubleClick={() => {
-                onRowClick(customer.customerKey);
-              }}
-              _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
-              bg={customer.customerActive ? "white" : "gray.200"}
-            >
-              <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-              <Table.Cell textAlign="center">
-                {customer.customerName}
+          {customerList.length > 0 ? (
+            customerList.map((customer, index) => (
+              <Table.Row
+                key={customer.customerKey}
+                onDoubleClick={() => {
+                  onRowClick(customer.customerKey);
+                }}
+                _hover={{ cursor: "pointer", backgroundColor: "gray.200" }}
+                bg={customer.customerActive ? "white" : "gray.200"}
+              >
+                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {customer.customerName}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {customer.customerNo}
+                </Table.Cell>
+                <Table.Cell textAlign="center">{customer.itemName}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {customer.customerRep}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {customer.customerTel}
+                </Table.Cell>
+                {/*<Table.Cell>*/}
+                {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
+                {/*</Table.Cell>*/}
+              </Table.Row>
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell textAlign="center" colSpan="7">
+                정보가 존재하지 않습니다.
               </Table.Cell>
-              <Table.Cell textAlign="center">{customer.customerNo}</Table.Cell>
-              <Table.Cell textAlign="center">{customer.itemName}</Table.Cell>
-              <Table.Cell textAlign="center">{customer.customerRep}</Table.Cell>
-              <Table.Cell textAlign="center">{customer.customerTel}</Table.Cell>
-              {/*<Table.Cell>*/}
-              {/*  {customer.customerActive ? "계약" : "계약 종료"}*/}
-              {/*</Table.Cell>*/}
             </Table.Row>
-          ))}
+          )}
         </Table.Body>
       </Table.Root>
 
