@@ -1,7 +1,7 @@
 package com.example.backend.mapper.standard.customer;
 
-import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
+import com.example.backend.dto.standard.customer.ItemCode;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -104,7 +104,7 @@ public interface CustomerMapper {
               AND ic.common_code_active = TRUE
               AND common_code_type='ITEM'
             """)
-    List<CommonCode> itemCodeList();
+    List<ItemCode> itemCodeList();
 
     //협력사 목록 총계
     @Select("""

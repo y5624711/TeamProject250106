@@ -1,7 +1,7 @@
 package com.example.backend.service.standard.customer;
 
-import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
+import com.example.backend.dto.standard.customer.ItemCode;
 import com.example.backend.mapper.standard.customer.CustomerMapper;
 import com.example.backend.mapper.standard.employee.EmployeeMapper;
 import com.example.backend.mapper.standard.item.ItemMapper;
@@ -117,7 +117,7 @@ public class CustomerService {
     }
 
     //품목 목록
-    public List<CommonCode> itemCodeList() {
+    public List<ItemCode> itemCodeList() {
         System.out.println("itemcodelist" + mapper.itemCodeList());
         return mapper.itemCodeList();
     }

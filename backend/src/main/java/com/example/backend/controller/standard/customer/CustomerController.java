@@ -1,7 +1,7 @@
 package com.example.backend.controller.standard.customer;
 
-import com.example.backend.dto.standard.commonCode.CommonCode;
 import com.example.backend.dto.standard.customer.Customer;
+import com.example.backend.dto.standard.customer.ItemCode;
 import com.example.backend.service.standard.customer.CustomerService;
 import com.example.backend.service.state.retrieve.ReturnService;
 import lombok.RequiredArgsConstructor;
@@ -157,7 +157,7 @@ public class CustomerController {
 
     //등록할 수 있는 품목 목록
     @GetMapping("itemCode/list")
-    private List<CommonCode> itemCodeList() {
+    private List<ItemCode> itemCodeList() {
 //        System.out.println(service.itemCodeList());
         return service.itemCodeList();
     }
