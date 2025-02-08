@@ -92,7 +92,7 @@ function InoutHistoryView({ inoutHistoryKey }) {
             <Input value={inoutHistoryDetail.itemName} readOnly />
           </Field>
           <Field
-            label={<SpacedLabel text="시리얼" />}
+            label={<SpacedLabel text="시리얼 번호" />}
             orientation="horizontal"
             mb={15}
           >
