@@ -29,7 +29,6 @@ public class LocationController {
                                     @RequestParam(value = "order", defaultValue = "") String order,
                                     @RequestParam(value = "active", defaultValue = "false") Boolean active,
                                     Authentication auth) {
-//        System.out.println("active: " + active);
         return service.list(searchType, searchKeyword, page, sort, order, auth, active);
     }
 

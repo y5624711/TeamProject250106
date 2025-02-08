@@ -13,4 +13,9 @@ public class Location {
     private Boolean located;
     private String locationNote;
     private Boolean locationActive;
+    private String serialNo;
+    private String itemName;
+    private String itemCode;
+    private String customerCode;
+    private String customerName;
 }

@@ -73,7 +73,17 @@ public class LocationService {
     }
 
     public Location view(Integer locationKey) {
-        return mapper.view(locationKey);
+        Location location = mapper.view(locationKey);
+
+        if (!location.getLocated()) {
+            System.out.println(location);
+            return location;
+        } else {
+            String serial = mapper.findSerialNo(locationKey);
+            location.setSerialNo(serial);
+            System.out.println(location);
+            return location;
+        }
     }
 
     public Boolean edit(Location location) {

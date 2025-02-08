@@ -22,9 +22,15 @@ public interface LocationMapper {
                 l.location_note,
                 l.located,
                 w.warehouse_name,
-                l.location_active
+                l.location_active,
+                sys.common_code_name itemName,
+                cu.item_code,
+                cu.customer_code,
+                cu.customer_name
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code = w.warehouse_code
+            LEFT JOIN TB_CUSTMST cu ON w.customer_code=cu.customer_code
+            LEFT JOIN TB_SYSCOMM sys ON cu.item_code=sys.common_code
             WHERE 
                 <if test="active == false">
                     location_active = TRUE
@@ -104,6 +110,8 @@ public interface LocationMapper {
             SELECT COUNT(*)
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_CUSTMST cu ON w.customer_code=cu.customer_code
+            LEFT JOIN TB_SYSCOMM sys ON cu.item_code=sys.common_code
             WHERE
                 <if test="active == false">
                     location_active = TRUE
@@ -174,9 +182,15 @@ public interface LocationMapper {
                 l.location_note,
                 l.located,
                 w.warehouse_name,
-                l.location_active
+                l.location_active, 
+                sys.common_code_name itemName,
+                cu.item_code,
+                cu.customer_code,
+                cu.customer_name
             FROM TB_LOCMST l
             LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
+            LEFT JOIN TB_CUSTMST cu ON w.customer_code=cu.customer_code
+            LEFT JOIN TB_SYSCOMM sys ON cu.item_code=sys.common_code
             WHERE l.location_key=#{locationKey}
             </script>
             """)
@@ -223,4 +237,15 @@ public interface LocationMapper {
             WHERE warehouse_code=#{warehouseCode}
             """)
     String getWarehouseName(String warehouseCode);
+
+    @Select("""
+            SELECT ins.serial_no
+            FROM TB_LOCMST l
+            LEFT JOIN TB_INSTK_SUB ins ON l.location_key=ins.location_key
+            LEFT JOIN TB_ITEMSUB its ON ins.serial_no=its.serial_no
+            WHERE l.location_key=#{locationKey} AND its.current_common_code='WHS'
+            ORDER BY ins.input_stock_sub_key DESC
+            LIMIT 1
+            """)
+    String findSerialNo(Integer locationKey);
 }

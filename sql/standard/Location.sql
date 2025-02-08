@@ -52,3 +52,8 @@ FROM (SELECT 1 AS num
 UPDATE TB_LOCMST
 SET col='05'
 WHERE col = '5';
+
+SELECT serial_no
+FROM TB_ITEMSUB
+WHERE current_common_code = 'WHS'
+  AND item_common_code = 'mic';
