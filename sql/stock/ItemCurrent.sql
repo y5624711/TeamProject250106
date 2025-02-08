@@ -168,7 +168,6 @@ FROM TB_ITEMSUB sub
          LEFT JOIN TB_WHMST wh ON his.warehouse_code = wh.warehouse_code
          LEFT JOIN TB_CUSTMST cus ON wh.customer_code = cus.customer_code
 WHERE sub.current_common_code = 'WHS'
-  AND sub.item_sub_active = 1
 GROUP BY sys.common_code, sys.common_code_name, wh.warehouse_name, cus.customer_name;
 
 DROP VIEW V_ITEM_CRNT;
