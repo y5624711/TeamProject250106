@@ -12,6 +12,5 @@ public class Inventory {
     private String wareHouseAddress;
     private String wareHouseAddressDetail;
     private String customerName;
-    private String inOutHistoryDate;
     private Integer count;
 }
