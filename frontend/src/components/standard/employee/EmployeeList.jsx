@@ -306,6 +306,8 @@ export function EmployeeList({ onSelect, updateList, viewKey, onChange }) {
           <Button
             onClick={() => {
               setIsModalOpen(true);
+              //버튼 누를때초기화 -1로변경
+              onSelect(-1);
             }}
             size={"lg"}
           >
