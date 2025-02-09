@@ -50,6 +50,10 @@ public interface LocationMapper {
                     AND (
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.item_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR sys.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.row LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
@@ -63,6 +67,18 @@ public interface LocationMapper {
                                 l.warehouse_code LIKE CONCAT('%', #{searchKeyword}, '%')
                             )
                             OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        </when>
+                        <when test="searchType == 'customer'">
+                            AND (
+                                cu.customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                            OR cu.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                        </when>
+                        <when test="searchType == 'item'">
+                            AND (
+                                cu.item_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                            )
+                            OR sys.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                         </when>
                         <when test="searchType == 'row'">
                             AND (
@@ -131,6 +147,10 @@ public interface LocationMapper {
                     AND (
                         l.warehouse_code LIKE CONCAT('%',#{searchKeyword},'%')
                      OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.customer_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR cu.item_code LIKE CONCAT('%',#{searchKeyword},'%')
+                     OR sys.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.row LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.col LIKE CONCAT('%',#{searchKeyword},'%')
                      OR l.shelf LIKE CONCAT('%',#{searchKeyword},'%')
@@ -145,6 +165,18 @@ public interface LocationMapper {
                                     )
                               OR w.warehouse_name LIKE CONCAT('%',#{searchKeyword},'%')
                              </when>
+                            <when test="searchType == 'customer'">
+                                AND (
+                                    cu.customer_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                                )
+                                OR cu.customer_name LIKE CONCAT('%',#{searchKeyword},'%')
+                            </when>
+                            <when test="searchType == 'item'">
+                                AND (
+                                    cu.item_code LIKE CONCAT('%', #{searchKeyword}, '%')
+                                )
+                                OR sys.common_code_name LIKE CONCAT('%',#{searchKeyword},'%')
+                            </when>
                              <when test="searchType == 'row'">
                                 AND (
                                  l.row LIKE CONCAT('%', #{searchKeyword}, '%')

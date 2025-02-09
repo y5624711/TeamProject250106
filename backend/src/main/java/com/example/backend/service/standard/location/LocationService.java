@@ -49,8 +49,12 @@ public class LocationService {
         switch (type) {
             case "location_key":
                 return "l.location_key";
+            case "customer_name":
+                return "cu.customer_name";
             case "warehouse_name":
                 return "w.warehouse_name";
+            case "item_name":
+                return "sys.common_code_name";
             case "row":
                 return "l.row";
             case "col":

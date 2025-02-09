@@ -167,7 +167,9 @@ function Location(props) {
 const locationOptionList = createListCollection({
   items: [
     { label: "전체", value: "all" },
+    { label: "담당 업체", value: "customer" },
     { label: "창고", value: "warehouse" },
+    { label: "품목", value: "item" },
     { label: "행", value: "row" },
     { label: "열", value: "col" },
     { label: "단", value: "shelf" },

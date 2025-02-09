@@ -27,7 +27,9 @@ function LocationList({
 
   // 정렬 헤더
   const sortOptions = [
+    { key: "customerName", label: "담당 업체" },
     { key: "warehouseName", label: "창고" },
+    { key: "itemName", label: "품목" },
     { key: "row", label: "행" },
     { key: "col", label: "열" },
     { key: "shelf", label: "단" },
