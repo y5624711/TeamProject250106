@@ -230,7 +230,7 @@ public interface LocationMapper {
 
     @Update("""
             UPDATE TB_LOCMST
-            SET location_note=#{locationNote}, located=#{located}, location_active=#{locationActive}
+            SET location_note=#{locationNote}, location_active=#{locationActive}
             WHERE location_key=#{locationKey}
             """)
     Integer edit(Location location);

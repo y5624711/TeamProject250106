@@ -40,7 +40,6 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
     axios
       .put(`/api/location/edit`, {
         locationKey,
-        located: locationDetail.located,
         locationNote: locationDetail.locationNote,
         locationActive: locationDetail.locationActive,
       })

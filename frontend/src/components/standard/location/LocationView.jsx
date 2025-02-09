@@ -51,15 +51,7 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
         mb={15}
       >
         <Box ml={"86px"} style={{ position: "absolute" }}>
-          <Checkbox
-            checked={locationDetail.located}
-            onClick={(e) => {
-              setLocationDetail({
-                ...locationDetail,
-                located: e.target.checked,
-              });
-            }}
-          />
+          <Checkbox checked={locationDetail.located} />
         </Box>
       </Field>
       <Field
