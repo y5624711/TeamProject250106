@@ -716,7 +716,7 @@ function StocktakingAdd({
                               setPutStocktakingType(e.target.value)
                             }
                           >
-                            <HStack gap="4">
+                            <HStack gap="9">
                               <Radio value="new">새 물품</Radio>
                               <Radio value="old">기존 물품</Radio>
                             </HStack>
@@ -780,7 +780,7 @@ function StocktakingAdd({
                               setPutStocktakingType(e.target.value)
                             }
                           >
-                            <HStack gap="4">
+                            <HStack gap="9">
                               <Radio value="new">새 물품</Radio>
                               <Radio value="old">기존 물품</Radio>
                             </HStack>
