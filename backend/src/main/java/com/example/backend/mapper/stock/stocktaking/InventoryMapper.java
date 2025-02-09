@@ -47,7 +47,7 @@ public interface InventoryMapper {
                                 <when test="sortColum == 'customerName'">customer_name</when>
                                 <when test="sortColum == 'commonCodeName'">common_code_name</when>
                                 <when test="sortColum == 'count'">count</when>
-                                    <otherwise> inout_history_date DESC</otherwise> <!-- 기본 정렬 -->
+                                    <otherwise> warehouse_code DESC</otherwise> <!-- 기본 정렬 -->
                             </choose>
                                 <if test="sortOrder == 'desc'">
                                     DESC
