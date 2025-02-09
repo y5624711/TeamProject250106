@@ -100,8 +100,6 @@ function StocktakingAdd({
     setMakeDifference(null);
     setSelectWarehouse(false);
   };
-  console.log(itemCode);
-  console.log(itemName);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
@@ -194,7 +192,6 @@ function StocktakingAdd({
       axios
         .get(`/api/stocktaking/count/${warehouseCode}`)
         .then((res) => {
-          console.log(res.data);
           setCountCurrent(res.data); // 백엔드에서 받은 전산 수량 값 설정
           setCountConfiguration(res.data); // 초기 실제수량은 전산 값과 동일
           setStocktakingAdd((prev) => ({
@@ -392,8 +389,6 @@ function StocktakingAdd({
     console.log("difference 값 변경됨:", difference);
   }, [difference]);
 
-  console.log(warehouseCode);
-
   const handleAddLocation = () => {
     axios
       .post(`/api/stocktaking/updateStock`, {
@@ -443,6 +438,8 @@ function StocktakingAdd({
 
     // axios.put(`/api/stocktaking/stockStatus`)
   };
+
+  console.log(serialNo);
   useEffect(() => {
     if (putStocktakingType === "old") {
       setSerialNo("");
@@ -677,11 +674,22 @@ function StocktakingAdd({
                           orientation="horizontal"
                           mb={15}
                         >
-                          <Input
-                            type={"text"}
-                            placeholder="시리얼 번호 생성"
-                            readOnly
-                          />
+                          {serialNo === "시리얼 번호 생성" ? (
+                            <Input
+                              type={"text"}
+                              placeholder="시리얼 번호 생성"
+                              readOnly
+                            />
+                          ) : (
+                            <Input
+                              type={"text"}
+                              value="시리얼 번호 생성"
+                              placeholder="시리얼 번호 생성"
+                              readOnly
+                              color="gray.200" // 입력 값의 색상
+                              _placeholder={{ color: "gray.200" }} // placeholder 색상
+                            />
+                          )}
                         </Field>
 
                         <Tooltip
@@ -737,11 +745,15 @@ function StocktakingAdd({
                           orientation="horizontal"
                           mb={15}
                         >
-                          <Input
-                            type={"text"}
-                            value={serialNo}
-                            onChange={(e) => setSerialNo(e.target.value)}
-                          />
+                          {serialNo === "시리얼 번호 생성" ? (
+                            <Input />
+                          ) : (
+                            <Input
+                              type={"text"}
+                              value={serialNo}
+                              onChange={(e) => setSerialNo(e.target.value)}
+                            />
+                          )}
                         </Field>
 
                         <Tooltip
