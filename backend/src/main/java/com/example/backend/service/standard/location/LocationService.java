@@ -80,12 +80,10 @@ public class LocationService {
         Location location = mapper.view(locationKey);
 
         if (!location.getLocated()) {
-            System.out.println(location);
             return location;
         } else {
             String serial = mapper.findSerialNo(locationKey);
             location.setSerialNo(serial);
-            System.out.println(location);
             return location;
         }
     }
