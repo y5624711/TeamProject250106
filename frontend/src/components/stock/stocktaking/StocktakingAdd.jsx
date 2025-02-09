@@ -706,7 +706,7 @@ function StocktakingAdd({
                         required
                       >
                         <Box
-                          ml={"86px"}
+                          ml={"92px"}
                           style={{ position: "absolute" }}
                           gap={18}
                         >
@@ -770,7 +770,7 @@ function StocktakingAdd({
                         required
                       >
                         <Box
-                          ml={"86px"}
+                          ml={"92px"}
                           style={{ position: "absolute" }}
                           gap={18}
                         >
