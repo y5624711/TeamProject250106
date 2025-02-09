@@ -78,10 +78,15 @@ function LocationDetail({
             <Box>로케이션 정보</Box>
           </DialogTitle>
         </DialogHeader>
-        <DialogBody
-          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-        >
-          <Box>
+        <DialogBody>
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "15px",
+            }}
+            css={{ "--field-label-width": "85px" }}
+          >
             {locationDetail.shelf == null ? (
               <Spinner />
             ) : (
