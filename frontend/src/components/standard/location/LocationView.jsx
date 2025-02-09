@@ -14,13 +14,56 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
 
   return (
     <Box>
-      <Field
-        label={<SpacedLabel text="창고" />}
-        orientation="horizontal"
-        mb={15}
-      >
-        <Input value={locationDetail.warehouseName} variant="subtle" readOnly />
-      </Field>
+      <Box display="flex" gap={5}>
+        <Field
+          label={<SpacedLabel text="담당 업체" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input
+            value={locationDetail.customerName}
+            variant="subtle"
+            readOnly
+          />
+        </Field>
+        <Field
+          label={<SpacedLabel text="창고" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input
+            value={locationDetail.warehouseName}
+            variant="subtle"
+            readOnly
+          />
+        </Field>
+      </Box>
+      {locationDetail.serialNo == null ? (
+        <Field
+          label={<SpacedLabel text="품목" />}
+          orientation="horizontal"
+          mb={15}
+        >
+          <Input value={locationDetail.itemName} variant="subtle" readOnly />
+        </Field>
+      ) : (
+        <Box display="flex" gap={5}>
+          <Field
+            label={<SpacedLabel text="품목" />}
+            orientation="horizontal"
+            mb={15}
+          >
+            <Input value={locationDetail.itemName} variant="subtle" readOnly />
+          </Field>
+          <Field
+            label={<SpacedLabel text="시리얼 번호" />}
+            orientation="horizontal"
+            mb={15}
+          >
+            <Input value={locationDetail.serialNo} variant="subtle" readOnly />
+          </Field>
+        </Box>
+      )}
       <Field
         label={<SpacedLabel text="로케이션" />}
         orientation="horizontal"

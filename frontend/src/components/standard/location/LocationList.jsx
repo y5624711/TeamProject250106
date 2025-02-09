@@ -101,6 +101,7 @@ function LocationList({
       </Center>
       <LocationDetail
         locationKey={selectedLocationKey}
+        setLocationKey={setSelectedLocationKey}
         isOpened={isDetailDialogOpen}
         onClosed={() => setIsDetailDialogOpen(false)}
         refresh={refresh}

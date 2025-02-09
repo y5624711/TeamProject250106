@@ -8,18 +8,25 @@ import {
   DialogRoot,
   DialogTitle,
 } from "../../ui/dialog.jsx";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Spinner } from "@chakra-ui/react";
 import { Button } from "../../ui/button.jsx";
 import LocationView from "./LocationView.jsx";
 import axios from "axios";
 import { toaster } from "../../ui/toaster.jsx";
 
-function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
+function LocationDetail({
+  isOpened,
+  onClosed,
+  locationKey,
+  refresh,
+  setLocationKey,
+}) {
   const [locationDetail, setLocationDetail] = useState([]);
 
   // 요청 창 닫히면 초기화
   const handleClose = () => {
     setLocationDetail([]);
+    setLocationKey(null);
     onClosed();
   };
 
@@ -34,7 +41,7 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
           console.error("로케이션 상세 정보 요청 중 오류 발생: ", error);
         });
     }
-  }, [locationKey, onClosed]);
+  }, [locationKey]);
 
   function handleCheckClick() {
     axios
@@ -61,7 +68,7 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
     if (!isOpened) {
       handleClose(); // 다이얼로그가 닫히면 항상 초기화
     }
-  }, [isOpened]);
+  }, [isOpened, onClosed]);
 
   return (
     <DialogRoot open={isOpened} onOpenChange={onClosed} size="lg">
@@ -75,11 +82,15 @@ function LocationDetail({ isOpened, onClosed, locationKey, refresh }) {
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
         >
           <Box>
-            <LocationView
-              locationDetail={locationDetail}
-              setLocationDetail={setLocationDetail}
-              locationKey={locationKey}
-            />
+            {locationDetail.shelf == null ? (
+              <Spinner />
+            ) : (
+              <LocationView
+                locationDetail={locationDetail}
+                setLocationDetail={setLocationDetail}
+                locationKey={locationKey}
+              />
+            )}
           </Box>
         </DialogBody>
         <DialogFooter>
