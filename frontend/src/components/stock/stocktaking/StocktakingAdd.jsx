@@ -452,6 +452,12 @@ function StocktakingAdd({
   }, [putStocktakingType]);
 
   useEffect(() => {
+    if (putStocktakingType === "new") {
+      setSerialNo("시리얼 번호 생성");
+    }
+  }, [serialNo]);
+
+  useEffect(() => {
     setTooltip(false);
     setSerialNo("");
   }, [row, col, shelf, warehouseCode, itemCode]);
@@ -483,7 +489,6 @@ function StocktakingAdd({
                   mb={15}
                 >
                   <Input value={warehouseName} readOnly variant="subtle" />
-                  {/*<Button onClick={onWarehouseClick}>조회</Button>*/}
                 </Field>
                 <Field
                   label={<SpacedLabel text="품목" />}
@@ -523,72 +528,94 @@ function StocktakingAdd({
                   </Field>
                 </Box>
 
-                {/*조회 드가자*/}
                 <Field
                   label={<SpacedLabel text="로케이션" />}
                   orientation="horizontal"
                   mb={15}
                 >
-                  <Box display="flex" gap={89}>
-                    <Select
-                      options={rowList}
-                      value={row && rowList.find((opt) => opt.value === row)}
-                      onChange={handleRowChange}
-                      placeholder="행 선택"
-                      isSearchable
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          width: "120px", // 너비 고정
-                          height: "40px",
-                        }),
-                        menu: (base) => ({
-                          ...base,
-                          zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                          width: "120px",
-                        }),
-                      }}
-                    />
-                    <Select
-                      options={colList}
-                      value={col && colList.find((opt) => opt.value === col)}
-                      onChange={handleColChange}
-                      placeholder="열 선택"
-                      isSearchable
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          width: "120px", // 너비 고정
-                          height: "40px",
-                        }),
-                        menu: (base) => ({
-                          ...base,
-                          zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                          width: "120px",
-                        }),
-                      }}
-                    />
-                    <Select
-                      options={shelfList}
-                      value={
-                        shelf && shelfList.find((opt) => opt.value === shelf)
-                      }
-                      onChange={handleShelfChange}
-                      placeholder="단 선택"
-                      isSearchable
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          width: "120px", // 너비 고정
-                          height: "40px",
-                        }),
-                        menu: (base) => ({
-                          ...base,
-                          zIndex: 100, // 선택 목록이 다른 요소를 덮도록
-                          width: "120px",
-                        }),
-                      }}
-                    />
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    width="100%"
+                  >
+                    {/* 왼쪽 선택박스 그룹 */}
+                    <Box display="flex" gap={30}>
+                      <Select
+                        options={rowList}
+                        value={row && rowList.find((opt) => opt.value === row)}
+                        onChange={handleRowChange}
+                        placeholder="행 선택"
+                        isSearchable
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            width: "120px",
+                            height: "40px",
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            zIndex: 100,
+                            width: "120px",
+                          }),
+                        }}
+                      />
+                      <Select
+                        options={colList}
+                        value={col && colList.find((opt) => opt.value === col)}
+                        onChange={handleColChange}
+                        placeholder="열 선택"
+                        isSearchable
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            width: "120px",
+                            height: "40px",
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            zIndex: 100,
+                            width: "120px",
+                          }),
+                        }}
+                      />
+                      <Select
+                        options={shelfList}
+                        value={
+                          shelf && shelfList.find((opt) => opt.value === shelf)
+                        }
+                        onChange={handleShelfChange}
+                        placeholder="단 선택"
+                        isSearchable
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            width: "120px",
+                            height: "40px",
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            zIndex: 100,
+                            width: "120px",
+                          }),
+                        }}
+                      />
+                    </Box>
+                    <Tooltip
+                      content="로케이션 입력을 완료해 주세요."
+                      openDelay={100}
+                      closeDelay={100}
+                      disabled={shelfValidate()}
+                    >
+                      <Button
+                        onClick={handleDifferentClick}
+                        disabled={!shelfValidate()}
+                        variant="outline"
+                        width="90px"
+                      >
+                        조회
+                      </Button>
+                    </Tooltip>
                   </Box>
                 </Field>
                 {makeDifference === null ? (
@@ -600,22 +627,9 @@ function StocktakingAdd({
                     >
                       <Input value={serialNo} readOnly />
                     </Field>
+
                     <Tooltip
-                      content={"로케이션 입력을 완료해 주세요."}
-                      openDelay={100}
-                      closeDelay={100}
-                      disabled={shelfValidate()}
-                    >
-                      <Button
-                        onClick={handleDifferentClick}
-                        disabled={!shelfValidate()}
-                        variant="outline"
-                      >
-                        조회
-                      </Button>
-                    </Tooltip>
-                    <Tooltip
-                      content={"시리얼 번호를 입력해 주세요."}
+                      content={"로케이션 조회를 완료해 주세요."}
                       openDelay={100}
                       closeDelay={100}
                       disabled={serialValidate()}
@@ -623,8 +637,9 @@ function StocktakingAdd({
                       <Button
                         onClick={handleAddLocation}
                         disabled={!serialValidate()}
+                        width="90px"
                       >
-                        반영
+                        실사 반영
                       </Button>
                     </Tooltip>
                   </Box>
@@ -637,22 +652,9 @@ function StocktakingAdd({
                     >
                       <Input value={serialNo} readOnly />
                     </Field>
+
                     <Tooltip
-                      content={"로케이션 입력을 완료해 주세요."}
-                      openDelay={100}
-                      closeDelay={100}
-                      disabled={shelfValidate()}
-                    >
-                      <Button
-                        onClick={handleDifferentClick}
-                        disabled={!shelfValidate()}
-                        variant="outline"
-                      >
-                        조회
-                      </Button>
-                    </Tooltip>
-                    <Tooltip
-                      content={"시리얼 번호를 입력해 주세요."}
+                      content={"로케이션 조회를 완료해 주세요."}
                       openDelay={100}
                       closeDelay={100}
                       disabled={serialValidate()}
@@ -660,8 +662,9 @@ function StocktakingAdd({
                       <Button
                         onClick={handleAddLocation}
                         disabled={!serialValidate()}
+                        width="90px"
                       >
-                        반영
+                        실사 반영
                       </Button>
                     </Tooltip>
                   </Box>
@@ -680,20 +683,7 @@ function StocktakingAdd({
                             readOnly
                           />
                         </Field>
-                        <Tooltip
-                          content={"로케이션 입력을 완료해 주세요."}
-                          openDelay={100}
-                          closeDelay={100}
-                          disabled={shelfValidate()}
-                        >
-                          <Button
-                            onClick={handleDifferentClick}
-                            disabled={!shelfValidate()}
-                            variant="outline"
-                          >
-                            조회
-                          </Button>
-                        </Tooltip>
+
                         <Tooltip
                           content={"시리얼 번호를 입력해 주세요."}
                           openDelay={100}
@@ -703,8 +693,9 @@ function StocktakingAdd({
                           <Button
                             onClick={handleAddLocation}
                             disabled={!serialValidate()}
+                            width="90px"
                           >
-                            반영
+                            {tooltip === false ? "실사 반영" : "재고 추가"}
                           </Button>
                         </Tooltip>
                       </Box>
@@ -752,22 +743,13 @@ function StocktakingAdd({
                             onChange={(e) => setSerialNo(e.target.value)}
                           />
                         </Field>
+
                         <Tooltip
-                          content={"로케이션 입력을 완료해 주세요."}
-                          openDelay={100}
-                          closeDelay={100}
-                          disabled={shelfValidate()}
-                        >
-                          <Button
-                            onClick={handleDifferentClick}
-                            disabled={!shelfValidate()}
-                            variant="outline"
-                          >
-                            조회
-                          </Button>
-                        </Tooltip>
-                        <Tooltip
-                          content={"시리얼 번호를 입력해 주세요."}
+                          content={
+                            tooltip === false
+                              ? "로케이션 조회를 완료해 주세요."
+                              : "시리얼 번호를 입력해 주세요."
+                          }
                           openDelay={100}
                           closeDelay={100}
                           disabled={serialValidate()}
@@ -775,8 +757,9 @@ function StocktakingAdd({
                           <Button
                             onClick={handleAddLocation}
                             disabled={!serialValidate()}
+                            width="90px"
                           >
-                            반영
+                            {tooltip === false ? "실사 반영" : "재고 추가"}
                           </Button>
                         </Tooltip>
                       </Box>
@@ -817,22 +800,9 @@ function StocktakingAdd({
                       >
                         <Input type={"text"} value={serialNo} readOnly />
                       </Field>
+
                       <Tooltip
-                        content={"로케이션 입력을 완료해 주세요."}
-                        openDelay={100}
-                        closeDelay={100}
-                        disabled={shelfValidate()}
-                      >
-                        <Button
-                          onClick={handleDifferentClick}
-                          disabled={!shelfValidate()}
-                          variant="outline"
-                        >
-                          조회
-                        </Button>
-                      </Tooltip>
-                      <Tooltip
-                        content={"시리얼 번호를 입력해 주세요."}
+                        content={"로케이션 조회를 완료해 주세요."}
                         openDelay={100}
                         closeDelay={100}
                         disabled={serialValidate()}
@@ -840,8 +810,9 @@ function StocktakingAdd({
                         <Button
                           onClick={handleAddLocation}
                           disabled={!serialValidate()}
+                          width="90px"
                         >
-                          반영
+                          {tooltip === false ? "실사 반영" : "재고 분실"}
                         </Button>
                       </Tooltip>
                     </Box>
