@@ -383,6 +383,13 @@ public interface StocktakingMapper {
             """)
     Integer viewMaxOutputNo(String stocktakingCode);
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM TB_ITEMSUB
+            WHERE item_common_code=#{itemCode} AND serial_no=#{serialNo}
+            """)
+    int compareSerialNoWithItemCode(String serialNo, String itemCode);
+
     //    실제 수량이 더 많을 때 사용
 //    @Select("""
 //            SELECT l.location_key

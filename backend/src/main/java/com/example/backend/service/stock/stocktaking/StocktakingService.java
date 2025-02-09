@@ -121,10 +121,6 @@ public class StocktakingService {
 
         String workType = employeeNo.substring(0, 3);
 
-        System.out.println(employeeNo);
-        System.out.println(workType);
-        System.out.println(warehouseCode);
-
         Integer access = mapper.checkAccess(warehouseCode, workType, employeeNo);
 
         return access == 1;
@@ -234,6 +230,7 @@ public class StocktakingService {
             String warehouseCode = stocktakingItem.getWarehouseCode();
             String inoutCommonCode = "STKP";
             String employeeNo = auth.getName();
+            String itemCode = stocktakingItem.getItemCode();
 
 
             int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
@@ -245,6 +242,9 @@ public class StocktakingService {
             Integer located = 1;
             int insertLocation = mapper.updateLocated(locationKey, located);
 
+            // 다른 회사의 물품 등록 불가
+            int compare = mapper.compareSerialNoWithItemCode(serialNo, itemCode);
+
             // 실사 번호 생성
             String stocktakingCode = "STK";
             Integer maxNo = mapper.viewMaxOutputNo(stocktakingCode);
@@ -255,7 +255,7 @@ public class StocktakingService {
             int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey, inoutNo);
 
 //
-            return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1;
+            return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1 && compare == 1;
         } else if (stocktakingItem.getPutStocktakingType().equals("lost")) {
 //            실사 분실인 상태
             String serialNo = stocktakingItem.getSerialNo();

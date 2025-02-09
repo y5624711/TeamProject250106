@@ -108,3 +108,8 @@ FROM TB_INOUT_HIS h
          LEFT JOIN TB_RTN_APPR rtnappr ON h.inout_no = rtnappr.return_no
          LEFT JOIN TB_RTN_REQ rtnreq ON rtnappr.return_request_key = rtnreq.return_request_key
          LEFT JOIN TB_FRNCHSMST f1 ON rtnreq.franchise_code = f1.franchise_code;
+
+
+DELETE
+FROM TB_INOUT_HIS
+WHERE inout_history_key = 230;
