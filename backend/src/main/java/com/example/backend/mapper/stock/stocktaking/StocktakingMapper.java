@@ -390,23 +390,28 @@ public interface StocktakingMapper {
             """)
     int compareSerialNoWithItemCode(String serialNo, String itemCode);
 
-    //    실제 수량이 더 많을 때 사용
-//    @Select("""
-//            SELECT l.location_key
-//            FROM TB_LOCMST l
-//            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-//            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
-//            """)
-//    List<Integer> getStocktakingLocationList(String warehouseCode, Integer getCode);
+    @Select("""
+            SELECT current_common_code
+            FROM TB_ITEMSUB
+            WHERE serial_no=#{serialNo}
+            """)
+    String findLocation(String serialNo);
 
-//    //    실제 수량이 더 많을 때 사용
-//    @Select("""
-//            SELECT l.location_key
-//            FROM TB_LOCMST l
-//            LEFT JOIN TB_WHMST w ON l.warehouse_code=w.warehouse_code
-//            LEFT JOIN TB_CUSTMST cus ON w.customer_code=cus.customer_code
-//            LEFT JOIN TB_ITEMSUB ist ON cus.item_code=ist.item_common_code
-//            WHERE w.warehouse_code=#{warehouseCode} AND l.located=#{getCode} AND l.location_active=1
-//            """)
-//    List<StocktakingItem> getStocktakingLocationList(String warehouseCode, Integer getCode);
+
+    @Select("""
+            SELECT l.location_key
+            FROM TB_LOCMST l
+            LEFT JOIN TB_INSTK_SUB ins ON l.location_key=ins.location_key
+            WHERE ins.serial_no=#{serialNo}
+            ORDER BY ins.input_stock_sub_key DESC
+            LIMIT 1
+            """)
+    Integer findLocationKey(String serialNo);
+
+    @Update("""
+            UPDATE TB_LOCMST
+            SET located=0
+            WHERE location_key=#{locKey}
+            """)
+    int putOffLocated(Integer locKey);
 }

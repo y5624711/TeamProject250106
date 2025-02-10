@@ -235,7 +235,17 @@ public class StocktakingService {
             // 다른 회사의 물품 등록 불가
             int compare = mapper.compareSerialNoWithItemCode(serialNo, itemCode);
             if (compare == 1) {
-                int updateItemSub = mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
+
+                String currentLocated = mapper.findLocation(serialNo);
+
+                if (currentLocated.equals("WHS")) {
+                    Integer locKey = mapper.findLocationKey(serialNo);
+                    mapper.putOffLocated(locKey);
+                } else {
+
+                    mapper.updateCurrentCommonCodeBySerialNo(serialNo, currentCommonCode);
+                }
+
 
 //            로케이션 키값 변경
                 int updateLocation = mapper.updateLocationAtInstkSub(locationKey, serialNo);
@@ -255,7 +265,7 @@ public class StocktakingService {
                 int insertInoutHistory = mapper.addInoutHistoryPlus(serialNo, warehouseCode, inoutCommonCode, employeeNo, locationKey, inoutNo);
 
 //
-                return updateItemSub == 1 && updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1 && compare == 1;
+                return updateLocation == 1 && insertLocation == 1 && insertInoutHistory == 1;
             } else {
                 return false;
             }

@@ -55,3 +55,10 @@ WHERE w.warehouse_code = 'WHS003'
   AND l.col = '4'
   AND l.shelf = '1'
   AND l.location_active IS TRUE;
+
+SELECT l.location_key
+FROM TB_LOCMST l
+         LEFT JOIN TB_INSTK_SUB ins ON l.location_key = ins.location_key
+WHERE ins.serial_no = 'S00062'
+ORDER BY ins.input_stock_sub_key DESC
+LIMIT 1;
