@@ -189,7 +189,7 @@ public interface InstallMapper {
             SELECT warehouse_code
             FROM TB_INOUT_HIS
             WHERE serial_no = #{serialNo}
-            AND inout_common_code IN ('INSTK', 'RETURN')
+            AND inout_common_code IN ('INSTK', 'RETURN', 'STKP')
             ORDER BY inout_history_key DESC
             LIMIT 1;
             """)
