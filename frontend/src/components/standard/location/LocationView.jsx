@@ -93,7 +93,7 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
         orientation="horizontal"
         mb={15}
       >
-        <Box ml={"86px"} style={{ position: "absolute" }}>
+        <Box ml={"92px"} style={{ position: "absolute" }}>
           <Checkbox checked={locationDetail.located} />
         </Box>
       </Field>
@@ -102,7 +102,7 @@ function LocationView({ locationDetail, setLocationDetail, locationKey }) {
         orientation="horizontal"
         mb={15}
       >
-        <Box ml={"86px"} style={{ position: "absolute" }}>
+        <Box ml={"92px"} style={{ position: "absolute" }}>
           <Checkbox
             checked={locationDetail.locationActive}
             onClick={(e) => {

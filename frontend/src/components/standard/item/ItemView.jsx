@@ -200,7 +200,7 @@ export function ItemView({ itemKey, isOpen, onClose, setChange, setItemKey }) {
                   label={<SpacedLabel text="사용 여부" />}
                   orientation="horizontal"
                 >
-                  <Box ml={"90px"} style={{ position: "absolute" }}>
+                  <Box ml={"92px"} style={{ position: "absolute" }}>
                     <Checkbox
                       name="itemActive"
                       checked={editedItem.itemActive}
