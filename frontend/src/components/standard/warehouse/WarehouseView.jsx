@@ -230,8 +230,12 @@ function WarehouseView({ warehouseDetail, setWarehouseDetail }) {
         />
       </Field>
       {/*취급 물품<Input>{warehouseDetail.}</Input>*/}
-      <Field label="사용 여부" orientation="horizontal" mb={15}>
-        <Box ml={"86px"} style={{ position: "absolute" }}>
+      <Field
+        label={<SpacedLabel text="사용 여부" />}
+        orientation="horizontal"
+        mb={15}
+      >
+        <Box ml={"87px"} style={{ position: "absolute" }}>
           <Checkbox
             checked={warehouseDetail.warehouseActive}
             onClick={(e) => {

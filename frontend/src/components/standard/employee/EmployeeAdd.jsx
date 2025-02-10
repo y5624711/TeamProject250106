@@ -413,7 +413,7 @@ export function EmployeeAdd({ viewKey, onChange, onSelect }) {
           label={<SpacedLabel text="사용 여부" />}
           orientation="horizontal"
         >
-          <Box ml={"90px"} style={{ position: "absolute" }}>
+          <Box ml={"92px"} style={{ position: "absolute" }}>
             <Checkbox
               name="employeeActive"
               checked={formData.employeeActive}
