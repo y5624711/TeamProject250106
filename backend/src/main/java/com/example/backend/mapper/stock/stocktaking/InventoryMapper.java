@@ -39,7 +39,7 @@ public interface InventoryMapper {
                     </where>
                         ORDER BY
                             <choose>
-                                <when test="sortColum == 'inOutHistoryDate'">inout_history_date</when>
+                                <when test="sortColum == 'warehouseCode'">warehouse_code</when>
                                 <when test="sortColum == 'wareHouseName'">warehouse_name</when>
                                 <when test="sortColum == 'wareHouseCity'">warehouse_city</when>
                                 <when test="sortColum == 'wareHouseAddress'">warehouse_address</when>
@@ -71,13 +71,19 @@ public interface InventoryMapper {
                                 <if test="type == 'all' or type == 'warehouseCity'">
                                     OR warehouse_city LIKE CONCAT('%', #{keyword}, '%')
                                 </if>
-                                   <if test="type == 'all' or type == 'wareHouseName'">
+                                <if test="type == 'all' or type == 'wareHouseAddress'">
+                                    OR warehouse_address LIKE CONCAT('%', #{keyword}, '%')
+                                </if>
+                                <if test="type == 'all' or type == 'wareHouseAddressDetail'">
+                                    OR warehouse_address_detail LIKE CONCAT('%', #{keyword}, '%')
+                                </if>
+                                <if test="type == 'all' or type == 'wareHouseName'">
                                     OR warehouse_name LIKE CONCAT('%', #{keyword}, '%')
-                                    </if>
+                                </if>
                                 <if test="type == 'all' or type == 'customerName'">
                                     OR customer_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>
-                                <if test="type == 'all' or type == 'itemName'">
+                                <if test="type == 'all' or type == 'commonCodeName'">
                                     OR common_code_name LIKE CONCAT('%', #{keyword}, '%')
                                 </if>
                             </if>
