@@ -81,7 +81,7 @@ export function InstkList() {
       { label: "품목", value: "item_common_name" },
       { label: "담당 업체", value: "customer_name" },
       { label: "요청자", value: "request_employee_name" },
-      { label: "승인자", value: "input_stock_employee_name" },
+      { label: "반려/승인자", value: "input_stock_employee_name" },
     ],
   });
   const sortOptions = [

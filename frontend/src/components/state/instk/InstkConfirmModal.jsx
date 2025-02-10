@@ -105,7 +105,6 @@ export function InstkConfirmModal({
         <DialogBody
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           css={{ "--field-label-width": "85px" }}
-          css={{ "--field-label-width": "85px" }}
         >
           <HStack gap={5}>
             <Field
@@ -171,6 +170,10 @@ export function InstkConfirmModal({
               <Input readOnly value={instk.requestEmployeeNo} />
             </Field>
           </HStack>
+
+          <Field orientation="horizontal" label={<SpacedLabel text="요청일" />}>
+            <Input readOnly value={instk.requestDate} />
+          </Field>
 
           <HStack gap={5}>
             <Field
