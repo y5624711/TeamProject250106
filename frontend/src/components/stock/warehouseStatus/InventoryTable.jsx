@@ -9,7 +9,7 @@ export function InventoryTable({
 }) {
   // 컬럼 배열 정의
   const columnsList = [
-    { key: "inOutHistoryDate", label: "#" },
+    { key: "warehouseCode", label: "#" },
     { key: "wareHouseName", label: "창고" },
     { key: "wareHouseCity", label: "광역시도" },
     { key: "wareHouseAddress", label: "시군" },
