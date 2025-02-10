@@ -240,9 +240,10 @@ public interface LocationMapper {
             SELECT warehouse_code, warehouse_name
             FROM TB_WHMST
             <if test="workplace == 'BIZ'">
+            WHERE warehouse_active=1
             </if>
             <if test="workplace == 'CUS'">
-            WHERE customer_code=#{workplaceCode}
+            WHERE customer_code=#{workplaceCode} AND warehouse_active=1
             </if>
             </script>
             """)
