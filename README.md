@@ -12,7 +12,8 @@
 </div>
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🧑‍💻 Contact me </h2> <br> 
-    <div style="text-align: left;"> 
+    <div style="text-align: left;">
+        <text>자산관리 링크 이동</text>
         <a href=http://54.180.144.145:8080/>  </a>
 </div>  
 <br> 
