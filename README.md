@@ -8,13 +8,12 @@
 </div>
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
-    <div style="margin: ; text-align: left;" "text-align: left;"> </div>
+    <image src="https://github.com/y5624711/TeamProject250106/blob/master/frontend/public/%EA%B8%B0%EC%88%A0.jpg"/>
 </div>
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🧑‍💻 Contact me </h2> <br> 
     <div style="text-align: left;">
-        <text>자산관리 링크 이동</text>
-        <a href=http://54.180.144.145:8080/>  </a>
+        <a href=http://54.180.144.145:8080/>자산관리 링크 클릭!</a>
 </div>  
 <br> 
 <div style="text-align: left;">  </div> 
