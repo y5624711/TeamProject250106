@@ -12,7 +12,8 @@
 </div>
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🧑‍💻 Contact me </h2> <br> 
-    <div style="text-align: left;"> <a href=http://54.180.144.145:8080/> <img src="https://img.shields.io/badge/Velog-20C997?style=plastic&logo=Velog&logoColor=white&link=http://54.180.144.145:8080/"> </a>
+    <div style="text-align: left;"> 
+        <a href=http://54.180.144.145:8080/>  </a>
 </div>  
 <br> 
 <div style="text-align: left;">  </div> 
@@ -22,7 +23,6 @@
       🏅 Stats 
     </h2> 
     <div style="text-align: left;"> 
-      <img src="https://github-readme-stats.vercel.app/api?username=y5624711&bg_color=180,000000,&title_color=000000&text_color=000000"/> 
       <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=y5624711&layout=compact&bg_color=180,000000,&title_color=000000&text_color=000000"/> 
     </div> 
 </div>
