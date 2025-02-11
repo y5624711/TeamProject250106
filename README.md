@@ -6,10 +6,6 @@
     <div style="text-align: left;">
         <a href=http://54.180.144.145:8080/>자산관리 링크 클릭!!</a>
 </div>  
-<div style="text-align: left;"> 
-    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> Hello World!! </h2>  
-    <div style="font-weight: 700; font-size: 15px; text-align: left; color: #282d33;"> 잘 부탁드립니다! </div> 
-</div>
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
     <image src="https://github.com/y5624711/TeamProject250106/blob/master/frontend/public/%EA%B8%B0%EC%88%A0.jpg"/>
