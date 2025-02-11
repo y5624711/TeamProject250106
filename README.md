@@ -2,9 +2,9 @@
     <img src="https://capsule-render.vercel.app/api?type=rect&color=auto&height=180&text=자산관리%20포트폴리오&animation=twinkling&fontColor=ffffff&fontSize=50" />
 </div>
 <div style="text-align: left;">
-    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🧑‍💻 Contact me </h2> <br> 
+    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🧑‍💻 프로젝트 결과물 </h2> <br> 
     <div style="text-align: left;">
-        <a href=http://54.180.144.145:8080/>자산관리 링크 클릭!!</a>
+        <a href=http://54.180.144.145:8080/>▶자산관리 링크 클릭</a>
 </div>  
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
