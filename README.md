@@ -1,5 +1,5 @@
 <div>
-  <img src="https://capsule-render.vercel.app/api?height=400&text=Hello%20World!&desc=Hello%20capsule%20render&textBg=true" />
+  <img src="https://capsule-render.vercel.app/api?height=300&text=자산%20관리!&desc=포트폴리오&fontColor=d6ace6" />
 </div>
 
 자산관리 사이트 : http://54.180.144.145:8080/
